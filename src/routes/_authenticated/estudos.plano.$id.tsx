@@ -1,16 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { readingPlans } from "@/data/estudos";
-import { ArrowLeft, CheckCircle2, Circle, Clock, CalendarDays } from "lucide-react";
+import { ArrowLeft, CalendarDays, CheckCircle2, Circle, Clock, Lock } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/estudos/plano/$id")({
   component: PlanoPage,
 });
 
+export function planStorageKey(id: string) {
+  return `disciple.plan.${id}`;
+}
+
 function PlanoPage() {
   const { id } = Route.useParams();
   const plan = readingPlans.find((p) => p.id === id);
-  const storageKey = `disciple.plan.${id}`;
+  const storageKey = planStorageKey(id);
   const [done, setDone] = useState<Set<number>>(new Set());
 
   useEffect(() => {
@@ -47,9 +51,13 @@ function PlanoPage() {
   };
 
   const pct = Math.round((done.size / plan.totalDays) * 100);
+  const nextDay = (() => {
+    for (let d = 1; d <= plan.totalDays; d++) if (!done.has(d)) return d;
+    return null;
+  })();
 
   return (
-    <div className="mx-auto max-w-lg space-y-5 px-4 pt-6">
+    <div className="mx-auto max-w-lg space-y-5 px-4 pt-6 pb-24">
       <Link to="/estudos" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Estudos
       </Link>
@@ -66,50 +74,82 @@ function PlanoPage() {
         </div>
       </header>
 
-      <div className="card-elevated p-4">
-        <p className="font-serif text-sm leading-relaxed text-foreground/90">{plan.intro}</p>
+      <div className="card-elevated border-l-4 border-l-success p-4">
+        <p className="scripture text-sm leading-relaxed text-foreground/90">{plan.intro}</p>
       </div>
 
       <div className="space-y-1.5">
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span>Progresso</span>
-          <span>{done.size}/{plan.totalDays} dias · {pct}%</span>
+          <span className="font-semibold text-foreground">{done.size}/{plan.totalDays} dias · {pct}%</span>
         </div>
         <div className="h-2 overflow-hidden rounded-full bg-surface-2">
-          <div className="h-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${pct}%` }} />
+          <div className="h-full bg-gradient-to-r from-success to-primary transition-all" style={{ width: `${pct}%` }} />
         </div>
       </div>
 
       <div className="space-y-2">
         {plan.days.map((d) => {
           const checked = done.has(d.day);
+          const isNext = d.day === nextDay;
+          const previousDone = d.day === 1 || done.has(d.day - 1);
+          const dimmed = !checked && !isNext && !previousDone;
           return (
-            <button
+            <article
               key={d.day}
-              onClick={() => toggle(d.day)}
-              className={`card-elevated w-full p-3 text-left transition-all ${
-                checked ? "border-success/40 bg-success/5" : "hover:border-primary/40"
+              className={`card-elevated overflow-hidden p-4 transition-all ${
+                checked
+                  ? "border-success/40 bg-success/5"
+                  : isNext
+                    ? "border-primary/60 bg-primary/5 shadow-md shadow-primary/10"
+                    : dimmed
+                      ? "opacity-60"
+                      : "border-border"
               }`}
             >
               <div className="flex items-start gap-3">
-                {checked ? (
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-success" />
-                ) : (
-                  <Circle className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground" />
-                )}
-                <div className="flex-1">
+                <button
+                  onClick={() => toggle(d.day)}
+                  className="mt-0.5 shrink-0"
+                  aria-label={checked ? `Desmarcar dia ${d.day}` : `Marcar dia ${d.day} como lido`}
+                >
+                  {checked ? (
+                    <CheckCircle2 className="h-6 w-6 text-success" />
+                  ) : dimmed ? (
+                    <Lock className="h-6 w-6 text-muted-foreground" />
+                  ) : (
+                    <Circle className="h-6 w-6 text-muted-foreground hover:text-primary" />
+                  )}
+                </button>
+                <div className="flex-1 space-y-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
+                      isNext ? "bg-primary/20 text-primary" : "bg-surface-2 text-muted-foreground"
+                    }`}>
                       Dia {d.day}
                     </span>
-                    <span className="font-serif text-sm font-medium text-ancient">
-                      {d.refs.join(" · ")}
-                    </span>
+                    {isNext && (
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-primary">Próximo</span>
+                    )}
                   </div>
-                  <p className="mt-1 text-sm text-foreground/80">{d.focus}</p>
+                  <p className="font-serif text-sm font-medium text-ancient">{d.refs.join(" · ")}</p>
+                  <p className="text-xs font-medium text-foreground/80">{d.focus}</p>
+                  <p className="text-xs leading-relaxed text-muted-foreground">{d.commentary}</p>
+                  {!checked && (
+                    <button
+                      onClick={() => toggle(d.day)}
+                      className={`mt-1 w-full rounded-xl py-2 text-xs font-semibold transition-all ${
+                        isNext
+                          ? "bg-primary text-primary-foreground hover:bg-primary-glow"
+                          : "border border-border text-muted-foreground hover:border-primary/40"
+                      }`}
+                    >
+                      Marcar como lido
+                    </button>
+                  )}
                 </div>
               </div>
-            </button>
+            </article>
           );
         })}
       </div>
