@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { readingPlans, bibleStudies, aiMeditations } from "@/data/estudos";
+import { planStorageKey } from "./estudos.plano.$id";
+
 import { ViewModeToggle } from "@/components/ViewModeToggle";
 import { Clock, CalendarDays, BookOpen, Sparkles, ArrowRight } from "lucide-react";
 
