@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ViewModeToggle } from "@/components/ViewModeToggle";
-import { getLevel, CHARACTERS } from "@/data/content";
+import { CHARACTERS } from "@/data/content";
+import { getLevel } from "@/data/levels";
+
 import { Flame, Trophy, Users, UserPlus, Medal } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/ranking")({
@@ -70,7 +72,7 @@ function RankingPage() {
 
       <div className="space-y-2">
         {rows.map((row, i) => {
-          const level = getLevel(row.xp);
+          const level = getLevel(row.streak);
           const ch = CHARACTERS.find((c) => c.id === row.avatar_char) ?? CHARACTERS[0];
           const isTop3 = i < 3;
           return (
@@ -81,8 +83,12 @@ function RankingPage() {
               }`}
             >
               <span className={`w-6 text-center text-sm font-bold ${medalColor(i).split(" ")[0]}`}>{i + 1}º</span>
-              <div className={`flex h-10 w-10 items-center justify-center rounded-full bg-surface-2 text-lg ${isTop3 ? `ring-2 ${medalColor(i).split(" ")[1]}` : ""}`}>
-                {ch.emoji}
+              <div className={`flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-surface-2 text-lg ${isTop3 ? `ring-2 ${medalColor(i).split(" ")[1]}` : ""}`}>
+                {level.avatar ? (
+                  <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
+                ) : (
+                  <span>{ch.emoji}</span>
+                )}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="flex items-center gap-1.5 truncate text-sm font-semibold">
