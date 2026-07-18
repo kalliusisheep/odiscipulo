@@ -2,7 +2,9 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ViewModeToggle } from "@/components/ViewModeToggle";
-import { CHARACTERS, BIBLE_VERSIONS, getLevel } from "@/data/content";
+import { CHARACTERS, BIBLE_VERSIONS } from "@/data/content";
+import { getLevel, streakToNextLevel, MAX_LEVEL } from "@/data/levels";
+
 import { useApp } from "@/lib/app-context";
 import { Bell, Church, LogOut, BookOpen, Flame, Trophy, Clock } from "lucide-react";
 
@@ -56,8 +58,9 @@ function PerfilPage() {
 
   if (!profile) return <div className="p-6 text-sm text-muted-foreground">Carregando…</div>;
 
-  const level = getLevel(profile.xp);
+  const level = getLevel(profile.streak);
   const ch = CHARACTERS.find((c) => c.id === profile.avatar_char) ?? CHARACTERS[0];
+  const toNext = streakToNextLevel(profile.streak);
 
   return (
     <div className="mx-auto max-w-lg space-y-4 px-4 pt-6">
@@ -68,14 +71,22 @@ function PerfilPage() {
 
       <section className="card-elevated overflow-hidden">
         <div className="bg-gradient-to-br from-primary/20 to-primary-glow/10 p-5 text-center">
-          <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-3xl bg-surface-2 text-5xl">
-            {ch.emoji}
+          <div className="mx-auto flex h-28 w-28 items-center justify-center overflow-hidden rounded-3xl bg-surface-2 ring-2 ring-primary/40 text-6xl">
+            {level.avatar ? (
+              <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
+            ) : (
+              <span>{ch.emoji}</span>
+            )}
           </div>
           <h2 className="mt-3 text-lg font-bold">{profile.display_name}</h2>
           <p className="text-xs text-muted-foreground">Sua Patente:</p>
-          <p className="text-base font-semibold text-primary">Nível {level.level}: {level.title}</p>
+          <p className="text-base font-semibold text-primary">Nível {level.level} / {MAX_LEVEL}: {level.title}</p>
+          <p className="mt-1 text-[11px] text-muted-foreground">
+            {toNext === null ? "Nível máximo alcançado 🔥" : `Faltam ${toNext} dia${toNext === 1 ? "" : "s"} de ofensiva para subir de nível`}
+          </p>
         </div>
       </section>
+
 
       <section className="card-elevated p-4">
         <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Avatar bíblico</p>
