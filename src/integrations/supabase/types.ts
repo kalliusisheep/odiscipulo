@@ -14,7 +14,215 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      demo_users: {
+        Row: {
+          avatar_char: string
+          display_name: string
+          id: string
+          level: number
+          streak: number
+          title: string
+          xp: number
+        }
+        Insert: {
+          avatar_char: string
+          display_name: string
+          id?: string
+          level: number
+          streak: number
+          title: string
+          xp: number
+        }
+        Update: {
+          avatar_char?: string
+          display_name?: string
+          id?: string
+          level?: number
+          streak?: number
+          title?: string
+          xp?: number
+        }
+        Relationships: []
+      }
+      diary_entries: {
+        Row: {
+          answer: string
+          created_at: string
+          id: string
+          lesson_id: string
+          lesson_title: string
+          question: string
+          user_id: string
+        }
+        Insert: {
+          answer: string
+          created_at?: string
+          id?: string
+          lesson_id: string
+          lesson_title: string
+          question: string
+          user_id: string
+        }
+        Update: {
+          answer?: string
+          created_at?: string
+          id?: string
+          lesson_id?: string
+          lesson_title?: string
+          question?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      groups: {
+        Row: {
+          created_at: string
+          id: string
+          leader_id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          leader_id: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          leader_id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      lesson_progress: {
+        Row: {
+          completed_at: string
+          id: string
+          lesson_id: string
+          user_id: string
+          xp_gained: number
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          lesson_id: string
+          user_id: string
+          xp_gained?: number
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          lesson_id?: string
+          user_id?: string
+          xp_gained?: number
+        }
+        Relationships: []
+      }
+      mural_amens: {
+        Row: {
+          created_at: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mural_amens_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "mural_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mural_posts: {
+        Row: {
+          amens_seed: number
+          author_name: string
+          body: string
+          created_at: string
+          id: string
+          is_answered: boolean
+          user_id: string | null
+        }
+        Insert: {
+          amens_seed?: number
+          author_name: string
+          body: string
+          created_at?: string
+          id?: string
+          is_answered?: boolean
+          user_id?: string | null
+        }
+        Update: {
+          amens_seed?: number
+          author_name?: string
+          body?: string
+          created_at?: string
+          id?: string
+          is_answered?: boolean
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_char: string
+          avatar_url: string | null
+          bible_version: string
+          church_name: string | null
+          created_at: string
+          display_name: string
+          id: string
+          is_leader: boolean
+          last_activity_date: string | null
+          notify_devocional: boolean
+          streak: number
+          updated_at: string
+          xp: number
+        }
+        Insert: {
+          avatar_char?: string
+          avatar_url?: string | null
+          bible_version?: string
+          church_name?: string | null
+          created_at?: string
+          display_name?: string
+          id: string
+          is_leader?: boolean
+          last_activity_date?: string | null
+          notify_devocional?: boolean
+          streak?: number
+          updated_at?: string
+          xp?: number
+        }
+        Update: {
+          avatar_char?: string
+          avatar_url?: string | null
+          bible_version?: string
+          church_name?: string | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          is_leader?: boolean
+          last_activity_date?: string | null
+          notify_devocional?: boolean
+          streak?: number
+          updated_at?: string
+          xp?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
