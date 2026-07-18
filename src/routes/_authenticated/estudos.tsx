@@ -92,9 +92,22 @@ function EstudosPage() {
               </div>
               <h3 className="mt-2 font-semibold">{p.title}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{p.description}</p>
-              <div className="mt-2 flex items-center gap-1 text-xs text-primary">
-                Ver plano <ArrowRight className="h-3 w-3" />
-              </div>
+              {planProgress[p.id] > 0 ? (
+                <div className="mt-3 space-y-1">
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="font-semibold text-success">Dia {planProgress[p.id]} de {p.totalDays}</span>
+                    <span className="text-muted-foreground">{Math.round((planProgress[p.id] / p.totalDays) * 100)}%</span>
+                  </div>
+                  <div className="h-1.5 overflow-hidden rounded-full bg-surface-2">
+                    <div className="h-full bg-gradient-to-r from-success to-primary" style={{ width: `${(planProgress[p.id] / p.totalDays) * 100}%` }} />
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-2 flex items-center gap-1 text-xs text-primary">
+                  Começar plano <ArrowRight className="h-3 w-3" />
+                </div>
+              )}
+
             </Link>
           ))}
         </div>
