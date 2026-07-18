@@ -20,6 +20,20 @@ const tabs: { id: Tab; label: string; icon: typeof BookOpen }[] = [
 
 function EstudosPage() {
   const [tab, setTab] = useState<Tab>("planos");
+  const [planProgress, setPlanProgress] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const next: Record<string, number> = {};
+    for (const p of readingPlans) {
+      const raw = window.localStorage.getItem(planStorageKey(p.id));
+      if (raw) {
+        try { next[p.id] = (JSON.parse(raw) as number[]).length; } catch { /* ignore */ }
+      }
+    }
+    setPlanProgress(next);
+  }, []);
+
 
   return (
     <div className="mx-auto max-w-lg space-y-5 px-4 pt-6">
