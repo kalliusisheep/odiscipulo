@@ -22,6 +22,7 @@ import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/h
 import { Route as AuthenticatedEstudosRouteImport } from './routes/_authenticated/estudos'
 import { Route as AuthenticatedLicaoIdRouteImport } from './routes/_authenticated/licao.$id'
 import { Route as AuthenticatedEstudosPlanoIdRouteImport } from './routes/_authenticated/estudos.plano.$id'
+import { Route as AuthenticatedEstudosMeditacaoIdRouteImport } from './routes/_authenticated/estudos.meditacao.$id'
 import { Route as AuthenticatedEstudosBiblicoIdRouteImport } from './routes/_authenticated/estudos.biblico.$id'
 
 const AuthRoute = AuthRouteImport.update({
@@ -90,6 +91,12 @@ const AuthenticatedEstudosPlanoIdRoute =
     path: '/plano/$id',
     getParentRoute: () => AuthenticatedEstudosRoute,
   } as any)
+const AuthenticatedEstudosMeditacaoIdRoute =
+  AuthenticatedEstudosMeditacaoIdRouteImport.update({
+    id: '/meditacao/$id',
+    path: '/meditacao/$id',
+    getParentRoute: () => AuthenticatedEstudosRoute,
+  } as any)
 const AuthenticatedEstudosBiblicoIdRoute =
   AuthenticatedEstudosBiblicoIdRouteImport.update({
     id: '/biblico/$id',
@@ -110,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/api/mentor': typeof ApiMentorRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
+  '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
 }
 export interface FileRoutesByTo {
@@ -125,6 +133,7 @@ export interface FileRoutesByTo {
   '/api/mentor': typeof ApiMentorRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
+  '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
 }
 export interface FileRoutesById {
@@ -142,6 +151,7 @@ export interface FileRoutesById {
   '/api/mentor': typeof ApiMentorRoute
   '/_authenticated/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/_authenticated/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
+  '/_authenticated/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/_authenticated/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
 }
 export interface FileRouteTypes {
@@ -159,6 +169,7 @@ export interface FileRouteTypes {
     | '/api/mentor'
     | '/licao/$id'
     | '/estudos/biblico/$id'
+    | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/api/mentor'
     | '/licao/$id'
     | '/estudos/biblico/$id'
+    | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
   id:
     | '__root__'
@@ -190,6 +202,7 @@ export interface FileRouteTypes {
     | '/api/mentor'
     | '/_authenticated/licao/$id'
     | '/_authenticated/estudos/biblico/$id'
+    | '/_authenticated/estudos/meditacao/$id'
     | '/_authenticated/estudos/plano/$id'
   fileRoutesById: FileRoutesById
 }
@@ -293,6 +306,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEstudosPlanoIdRouteImport
       parentRoute: typeof AuthenticatedEstudosRoute
     }
+    '/_authenticated/estudos/meditacao/$id': {
+      id: '/_authenticated/estudos/meditacao/$id'
+      path: '/meditacao/$id'
+      fullPath: '/estudos/meditacao/$id'
+      preLoaderRoute: typeof AuthenticatedEstudosMeditacaoIdRouteImport
+      parentRoute: typeof AuthenticatedEstudosRoute
+    }
     '/_authenticated/estudos/biblico/$id': {
       id: '/_authenticated/estudos/biblico/$id'
       path: '/biblico/$id'
@@ -305,11 +325,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedEstudosRouteChildren {
   AuthenticatedEstudosBiblicoIdRoute: typeof AuthenticatedEstudosBiblicoIdRoute
+  AuthenticatedEstudosMeditacaoIdRoute: typeof AuthenticatedEstudosMeditacaoIdRoute
   AuthenticatedEstudosPlanoIdRoute: typeof AuthenticatedEstudosPlanoIdRoute
 }
 
 const AuthenticatedEstudosRouteChildren: AuthenticatedEstudosRouteChildren = {
   AuthenticatedEstudosBiblicoIdRoute: AuthenticatedEstudosBiblicoIdRoute,
+  AuthenticatedEstudosMeditacaoIdRoute: AuthenticatedEstudosMeditacaoIdRoute,
   AuthenticatedEstudosPlanoIdRoute: AuthenticatedEstudosPlanoIdRoute,
 }
 
