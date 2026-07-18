@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { readingPlans, bibleStudies, aiMeditations } from "@/data/estudos";
+import { planStorageKey } from "./estudos.plano.$id";
+
 import { ViewModeToggle } from "@/components/ViewModeToggle";
 import { Clock, CalendarDays, BookOpen, Sparkles, ArrowRight } from "lucide-react";
 
@@ -18,6 +20,20 @@ const tabs: { id: Tab; label: string; icon: typeof BookOpen }[] = [
 
 function EstudosPage() {
   const [tab, setTab] = useState<Tab>("planos");
+  const [planProgress, setPlanProgress] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const next: Record<string, number> = {};
+    for (const p of readingPlans) {
+      const raw = window.localStorage.getItem(planStorageKey(p.id));
+      if (raw) {
+        try { next[p.id] = (JSON.parse(raw) as number[]).length; } catch { /* ignore */ }
+      }
+    }
+    setPlanProgress(next);
+  }, []);
+
 
   return (
     <div className="mx-auto max-w-lg space-y-5 px-4 pt-6">
@@ -76,9 +92,22 @@ function EstudosPage() {
               </div>
               <h3 className="mt-2 font-semibold">{p.title}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{p.description}</p>
-              <div className="mt-2 flex items-center gap-1 text-xs text-primary">
-                Ver plano <ArrowRight className="h-3 w-3" />
-              </div>
+              {planProgress[p.id] > 0 ? (
+                <div className="mt-3 space-y-1">
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="font-semibold text-success">Dia {planProgress[p.id]} de {p.totalDays}</span>
+                    <span className="text-muted-foreground">{Math.round((planProgress[p.id] / p.totalDays) * 100)}%</span>
+                  </div>
+                  <div className="h-1.5 overflow-hidden rounded-full bg-surface-2">
+                    <div className="h-full bg-gradient-to-r from-success to-primary" style={{ width: `${(planProgress[p.id] / p.totalDays) * 100}%` }} />
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-2 flex items-center gap-1 text-xs text-primary">
+                  Começar plano <ArrowRight className="h-3 w-3" />
+                </div>
+              )}
+
             </Link>
           ))}
         </div>
