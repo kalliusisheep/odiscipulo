@@ -1,7 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable";
 import { useState } from "react";
 import { Sparkles, ArrowRight } from "lucide-react";
+
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
