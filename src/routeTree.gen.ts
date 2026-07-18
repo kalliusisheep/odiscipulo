@@ -22,6 +22,7 @@ import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/h
 import { Route as AuthenticatedEstudosRouteImport } from './routes/_authenticated/estudos'
 import { Route as AuthenticatedLicaoIdRouteImport } from './routes/_authenticated/licao.$id'
 import { Route as AuthenticatedEstudosPlanoIdRouteImport } from './routes/_authenticated/estudos.plano.$id'
+import { Route as AuthenticatedEstudosBiblicoIdRouteImport } from './routes/_authenticated/estudos.biblico.$id'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -89,6 +90,12 @@ const AuthenticatedEstudosPlanoIdRoute =
     path: '/plano/$id',
     getParentRoute: () => AuthenticatedEstudosRoute,
   } as any)
+const AuthenticatedEstudosBiblicoIdRoute =
+  AuthenticatedEstudosBiblicoIdRouteImport.update({
+    id: '/biblico/$id',
+    path: '/biblico/$id',
+    getParentRoute: () => AuthenticatedEstudosRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
+  '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
 }
 export interface FileRoutesByTo {
@@ -116,6 +124,7 @@ export interface FileRoutesByTo {
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
+  '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
 }
 export interface FileRoutesById {
@@ -132,6 +141,7 @@ export interface FileRoutesById {
   '/_authenticated/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
   '/_authenticated/licao/$id': typeof AuthenticatedLicaoIdRoute
+  '/_authenticated/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/_authenticated/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
 }
 export interface FileRouteTypes {
@@ -148,6 +158,7 @@ export interface FileRouteTypes {
     | '/ranking-detalhes'
     | '/api/mentor'
     | '/licao/$id'
+    | '/estudos/biblico/$id'
     | '/estudos/plano/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -162,6 +173,7 @@ export interface FileRouteTypes {
     | '/ranking-detalhes'
     | '/api/mentor'
     | '/licao/$id'
+    | '/estudos/biblico/$id'
     | '/estudos/plano/$id'
   id:
     | '__root__'
@@ -177,6 +189,7 @@ export interface FileRouteTypes {
     | '/_authenticated/ranking-detalhes'
     | '/api/mentor'
     | '/_authenticated/licao/$id'
+    | '/_authenticated/estudos/biblico/$id'
     | '/_authenticated/estudos/plano/$id'
   fileRoutesById: FileRoutesById
 }
@@ -280,14 +293,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEstudosPlanoIdRouteImport
       parentRoute: typeof AuthenticatedEstudosRoute
     }
+    '/_authenticated/estudos/biblico/$id': {
+      id: '/_authenticated/estudos/biblico/$id'
+      path: '/biblico/$id'
+      fullPath: '/estudos/biblico/$id'
+      preLoaderRoute: typeof AuthenticatedEstudosBiblicoIdRouteImport
+      parentRoute: typeof AuthenticatedEstudosRoute
+    }
   }
 }
 
 interface AuthenticatedEstudosRouteChildren {
+  AuthenticatedEstudosBiblicoIdRoute: typeof AuthenticatedEstudosBiblicoIdRoute
   AuthenticatedEstudosPlanoIdRoute: typeof AuthenticatedEstudosPlanoIdRoute
 }
 
 const AuthenticatedEstudosRouteChildren: AuthenticatedEstudosRouteChildren = {
+  AuthenticatedEstudosBiblicoIdRoute: AuthenticatedEstudosBiblicoIdRoute,
   AuthenticatedEstudosPlanoIdRoute: AuthenticatedEstudosPlanoIdRoute,
 }
 
