@@ -13,6 +13,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiMentorRouteImport } from './routes/api/mentor'
+import { Route as AuthenticatedRankingDetalhesRouteImport } from './routes/_authenticated/ranking-detalhes'
 import { Route as AuthenticatedRankingRouteImport } from './routes/_authenticated/ranking'
 import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
 import { Route as AuthenticatedMuralRouteImport } from './routes/_authenticated/mural'
@@ -40,6 +41,12 @@ const ApiMentorRoute = ApiMentorRouteImport.update({
   path: '/api/mentor',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRankingDetalhesRoute =
+  AuthenticatedRankingDetalhesRouteImport.update({
+    id: '/ranking-detalhes',
+    path: '/ranking-detalhes',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedRankingRoute = AuthenticatedRankingRouteImport.update({
   id: '/ranking',
   path: '/ranking',
@@ -85,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/mural': typeof AuthenticatedMuralRoute
   '/perfil': typeof AuthenticatedPerfilRoute
   '/ranking': typeof AuthenticatedRankingRoute
+  '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
 }
@@ -97,6 +105,7 @@ export interface FileRoutesByTo {
   '/mural': typeof AuthenticatedMuralRoute
   '/perfil': typeof AuthenticatedPerfilRoute
   '/ranking': typeof AuthenticatedRankingRoute
+  '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
 }
@@ -111,6 +120,7 @@ export interface FileRoutesById {
   '/_authenticated/mural': typeof AuthenticatedMuralRoute
   '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
   '/_authenticated/ranking': typeof AuthenticatedRankingRoute
+  '/_authenticated/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
   '/_authenticated/licao/$id': typeof AuthenticatedLicaoIdRoute
 }
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
     | '/mural'
     | '/perfil'
     | '/ranking'
+    | '/ranking-detalhes'
     | '/api/mentor'
     | '/licao/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '/mural'
     | '/perfil'
     | '/ranking'
+    | '/ranking-detalhes'
     | '/api/mentor'
     | '/licao/$id'
   id:
@@ -150,6 +162,7 @@ export interface FileRouteTypes {
     | '/_authenticated/mural'
     | '/_authenticated/perfil'
     | '/_authenticated/ranking'
+    | '/_authenticated/ranking-detalhes'
     | '/api/mentor'
     | '/_authenticated/licao/$id'
   fileRoutesById: FileRoutesById
@@ -190,6 +203,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/mentor'
       preLoaderRoute: typeof ApiMentorRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/ranking-detalhes': {
+      id: '/_authenticated/ranking-detalhes'
+      path: '/ranking-detalhes'
+      fullPath: '/ranking-detalhes'
+      preLoaderRoute: typeof AuthenticatedRankingDetalhesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/ranking': {
       id: '/_authenticated/ranking'
@@ -250,6 +270,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMuralRoute: typeof AuthenticatedMuralRoute
   AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRoute
   AuthenticatedRankingRoute: typeof AuthenticatedRankingRoute
+  AuthenticatedRankingDetalhesRoute: typeof AuthenticatedRankingDetalhesRoute
   AuthenticatedLicaoIdRoute: typeof AuthenticatedLicaoIdRoute
 }
 
@@ -260,6 +281,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMuralRoute: AuthenticatedMuralRoute,
   AuthenticatedPerfilRoute: AuthenticatedPerfilRoute,
   AuthenticatedRankingRoute: AuthenticatedRankingRoute,
+  AuthenticatedRankingDetalhesRoute: AuthenticatedRankingDetalhesRoute,
   AuthenticatedLicaoIdRoute: AuthenticatedLicaoIdRoute,
 }
 
