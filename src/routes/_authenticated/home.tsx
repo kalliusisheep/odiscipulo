@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { trails, getLevel, CHARACTERS } from "@/data/content";
+import { trails, CHARACTERS } from "@/data/content";
+import { getLevel, streakToNextLevel } from "@/data/levels";
 import { ViewModeToggle } from "@/components/ViewModeToggle";
 import { useApp } from "@/lib/app-context";
 import { Flame, Check, Lock, Play, ChevronRight } from "lucide-react";
@@ -33,8 +34,11 @@ function HomePage() {
     })();
   }, []);
 
-  const level = getLevel(profile?.xp ?? 0);
+  const level = getLevel(profile?.streak ?? 0);
   const character = CHARACTERS.find((c) => c.id === profile?.avatar_char) ?? CHARACTERS[0];
+  const toNext = streakToNextLevel(profile?.streak ?? 0);
+  const currentLevelMin = (level.level - 1) * 3;
+  const levelProgress = Math.min(100, Math.max(0, ((profile?.streak ?? 0) - currentLevelMin) / 3 * 100));
 
   if (viewMode === "lider") {
     return <LiderInline />;
@@ -53,8 +57,12 @@ function HomePage() {
       <section className="card-elevated overflow-hidden">
         <div className="bg-gradient-to-br from-primary/20 via-primary-glow/10 to-transparent p-5">
           <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-surface-2 text-3xl">
-              {character.emoji}
+            <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-surface-2 ring-2 ring-primary/30">
+              {level.avatar ? (
+                <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
+              ) : (
+                <span className="text-3xl">{character.emoji}</span>
+              )}
             </div>
             <div className="flex-1">
               <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Seu progresso</p>
@@ -65,6 +73,16 @@ function HomePage() {
               <Flame className="h-5 w-5 text-streak" />
               <span className="text-sm font-bold text-streak">{profile?.streak ?? 0}</span>
               <span className="text-[9px] text-muted-foreground">dias</span>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <div className="mb-1.5 flex items-center justify-between text-[11px] font-medium">
+              <span className="text-muted-foreground">Progresso para o próximo nível</span>
+              <span className="text-primary">{toNext === null ? "Nível máximo" : `Faltam ${toNext} dia${toNext === 1 ? "" : "s"}`}</span>
+            </div>
+            <div className="h-2.5 overflow-hidden rounded-full bg-surface-2">
+              <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${levelProgress}%` }} />
             </div>
           </div>
         </div>
