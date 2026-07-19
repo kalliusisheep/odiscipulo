@@ -690,8 +690,6 @@ const doutrinaBasica: Trail = {
 
 // Trilhas em preparação — títulos e descrições, sem lições ainda.
 const upcoming: Trail[] = [
-  { id: "como-estudar-biblia", title: "Como Estudar a Bíblia", description: "Ferramentas simples de interpretação bíblica.", icon: "Search", color: "from-emerald-500 to-teal-600", order: 3, modules: [] },
-  { id: "oracao", title: "Oração", description: "Aprofunde sua vida de oração pessoal.", icon: "Flame", color: "from-orange-500 to-rose-500", order: 4, modules: [] },
   { id: "santificacao", title: "Santificação", description: "O caminho diário de conformação a Cristo.", icon: "Sparkles", color: "from-fuchsia-500 to-pink-500", order: 5, modules: [] },
   { id: "evangelismo", title: "Evangelismo", description: "Compartilhando o Evangelho no cotidiano.", icon: "Megaphone", color: "from-blue-500 to-cyan-500", order: 6, modules: [] },
   { id: "igreja-local", title: "Igreja Local", description: "O propósito e a beleza da comunidade cristã.", icon: "Church", color: "from-slate-500 to-gray-600", order: 7, modules: [] },
@@ -700,7 +698,10 @@ const upcoming: Trail[] = [
   { id: "missoes", title: "Missões", description: "O coração de Deus pelas nações.", icon: "Globe", color: "from-cyan-500 to-blue-600", order: 10, modules: [] },
 ];
 
-export const trails: Trail[] = [novoConvertido, doutrinaBasica, ...upcoming];
+import { additionalTrails } from "./trails-content";
+
+export const trails: Trail[] = [novoConvertido, doutrinaBasica, ...additionalTrails, ...upcoming]
+  .sort((a, b) => a.order - b.order);
 
 export const trailById = (id: string) => trails.find((t) => t.id === id);
 

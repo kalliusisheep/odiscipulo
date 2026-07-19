@@ -24,6 +24,7 @@ function HomePage() {
   const nav = useNavigate();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [completed, setCompleted] = useState<Set<string>>(new Set());
+  const [latestCompletedAt, setLatestCompletedAt] = useState<Date | null>(null);
 
   useEffect(() => {
     void (async () => {
@@ -39,10 +40,27 @@ function HomePage() {
         return;
       }
       if (p) setProfile(p as Profile);
-      const { data: lp } = await supabase.from("lesson_progress").select("lesson_id").eq("user_id", u.user.id);
-      setCompleted(new Set((lp ?? []).map((r) => r.lesson_id)));
+      const { data: lp } = await supabase
+        .from("lesson_progress")
+        .select("lesson_id, completed_at")
+        .eq("user_id", u.user.id);
+      const rows = lp ?? [];
+      setCompleted(new Set(rows.map((r) => r.lesson_id)));
+      const latest = rows
+        .map((r) => (r.completed_at ? new Date(r.completed_at) : null))
+        .filter((d): d is Date => d !== null)
+        .sort((a, b) => b.getTime() - a.getTime())[0] ?? null;
+      setLatestCompletedAt(latest);
     })();
   }, [nav]);
+
+  // Regra de liberação diária: no máximo 1 lição nova por dia.
+  const now = new Date();
+  const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const completedToday = latestCompletedAt !== null && latestCompletedAt >= todayMidnight;
+  const nextUnlockAt = completedToday
+    ? new Date(todayMidnight.getTime() + 24 * 60 * 60 * 1000)
+    : null;
 
   const level = getLevel(profile?.streak ?? 0);
   const nextLevel = getNextLevel(profile?.streak ?? 0);
@@ -145,11 +163,19 @@ function HomePage() {
                         {mod.lessons.map((lesson, i) => {
                           const isDone = completed.has(lesson.id);
                           const prevDone = i === 0 ? true : completed.has(mod.lessons[i - 1].id);
-                          const isActive = !isDone && prevDone;
-                          const isLocked = !isDone && !isActive;
+                          const wouldBeActive = !isDone && prevDone;
+                          const isDailyLocked = wouldBeActive && completedToday;
+                          const isActive = wouldBeActive && !completedToday;
+                          const state: "done" | "active" | "locked" | "daily-locked" = isDone
+                            ? "done"
+                            : isActive
+                              ? "active"
+                              : isDailyLocked
+                                ? "daily-locked"
+                                : "locked";
                           return (
                             <LessonRow key={lesson.id} title={lesson.title} id={lesson.id}
-                              state={isDone ? "done" : isActive ? "active" : "locked"} />
+                              state={state} nextUnlockAt={nextUnlockAt} />
                           );
                         })}
                       </div>
@@ -165,8 +191,25 @@ function HomePage() {
   );
 }
 
-function LessonRow({ title, id, state }: { title: string; id: string; state: "done" | "active" | "locked" }) {
+function LessonRow({ title, id, state, nextUnlockAt }: { title: string; id: string; state: "done" | "active" | "locked" | "daily-locked"; nextUnlockAt?: Date | null }) {
   const base = "flex items-center gap-3 rounded-2xl border p-3 transition-all";
+  if (state === "daily-locked") {
+    const label = nextUnlockAt
+      ? `Disponível ${nextUnlockAt.toLocaleDateString("pt-BR", { weekday: "long" })}`
+      : "Disponível amanhã";
+    return (
+      <div className={`${base} border-primary/30 bg-primary/5 opacity-80`}>
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/20">
+          <Lock className="h-4 w-4 text-primary" />
+        </div>
+        <div className="flex-1">
+          <p className="text-sm font-medium">{title}</p>
+          <span className="text-[10px] uppercase tracking-wider text-primary">Disponível amanhã</span>
+        </div>
+        <span className="text-[11px] capitalize text-primary">{label}</span>
+      </div>
+    );
+  }
   if (state === "locked") {
     return (
       <div className={`${base} border-border bg-background/50 opacity-60`}>
