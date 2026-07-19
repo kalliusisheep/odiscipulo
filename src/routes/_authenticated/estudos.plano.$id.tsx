@@ -43,15 +43,29 @@ function PlanoPage() {
   }
 
   const toggle = (day: number) => {
+    let becameChecked = false;
     setDone((prev) => {
       const next = new Set(prev);
-      if (next.has(day)) next.delete(day);
-      else next.add(day);
+      if (next.has(day)) {
+        next.delete(day);
+      } else {
+        next.add(day);
+        becameChecked = true;
+      }
       if (typeof window !== "undefined") {
         window.localStorage.setItem(storageKey, JSON.stringify([...next]));
       }
       return next;
     });
+    if (becameChecked) {
+      void (async () => {
+        const { data: u } = await supabase.auth.getUser();
+        if (!u.user) return;
+        const xp = 5;
+        const { prevStreak, newStreak } = await awardXpAndStreak(u.user.id, xp);
+        celebrateActivity({ prevStreak, newStreak, xp });
+      })();
+    }
   };
 
   const pct = Math.round((done.size / plan.totalDays) * 100);
