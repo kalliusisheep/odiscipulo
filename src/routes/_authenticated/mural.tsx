@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ViewModeToggle } from "@/components/ViewModeToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { BookHeart, CheckCircle2 } from "lucide-react";
