@@ -184,10 +184,13 @@ export type Database = {
           church_name: string | null
           created_at: string
           display_name: string
+          first_name: string | null
           id: string
           is_leader: boolean
           last_activity_date: string | null
+          last_name: string | null
           notify_devocional: boolean
+          onboarded: boolean
           streak: number
           updated_at: string
           xp: number
@@ -200,10 +203,13 @@ export type Database = {
           church_name?: string | null
           created_at?: string
           display_name?: string
+          first_name?: string | null
           id: string
           is_leader?: boolean
           last_activity_date?: string | null
+          last_name?: string | null
           notify_devocional?: boolean
+          onboarded?: boolean
           streak?: number
           updated_at?: string
           xp?: number
@@ -216,10 +222,13 @@ export type Database = {
           church_name?: string | null
           created_at?: string
           display_name?: string
+          first_name?: string | null
           id?: string
           is_leader?: boolean
           last_activity_date?: string | null
+          last_name?: string | null
           notify_devocional?: boolean
+          onboarded?: boolean
           streak?: number
           updated_at?: string
           xp?: number
