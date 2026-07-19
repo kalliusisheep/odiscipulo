@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from "react";
 import confetti from "canvas-confetti";
-import { getLevel, type Level } from "@/data/levels";
+import { getLevel, type LevelEntry } from "@/data/levels";
 import { PartyPopper, Sparkles, X } from "lucide-react";
 
 type CelebrationCtx = {
