@@ -97,6 +97,49 @@
   --background: oklch(0.17 0.03 265);
 }
 
+.light {
+  --background: oklch(0.99 0.005 265);
+  --foreground: oklch(0.18 0.03 265);
+
+  --surface: oklch(0.97 0.008 265);
+  --surface-2: oklch(0.94 0.012 265);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.03 265);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.03 265);
+
+  --primary: oklch(0.55 0.22 292);
+  --primary-foreground: oklch(0.99 0.005 292);
+  --primary-glow: oklch(0.65 0.20 285);
+
+  --secondary: oklch(0.94 0.012 265);
+  --secondary-foreground: oklch(0.22 0.03 265);
+
+  --muted: oklch(0.94 0.012 265);
+  --muted-foreground: oklch(0.45 0.02 265);
+
+  --accent: oklch(0.92 0.03 285);
+  --accent-foreground: oklch(0.22 0.05 285);
+
+  --destructive: oklch(0.58 0.22 25);
+  --destructive-foreground: oklch(0.99 0.005 25);
+
+  --success: oklch(0.55 0.18 155);
+  --success-foreground: oklch(0.99 0.005 155);
+
+  --streak: oklch(0.68 0.18 55);
+  --streak-foreground: oklch(0.2 0.03 60);
+
+  --ancient: oklch(0.55 0.15 75);
+  --ancient-foreground: oklch(0.99 0.005 75);
+
+  --border: oklch(0.9 0.01 265);
+  --input: oklch(0.94 0.012 265);
+  --ring: oklch(0.55 0.22 292);
+}
+
 @layer base {
   html, body {
     background-color: var(--color-background);

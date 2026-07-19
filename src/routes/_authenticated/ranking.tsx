@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ViewModeToggle } from "@/components/ViewModeToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { CHARACTERS } from "@/data/content";
 import { getLevel } from "@/data/levels";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -94,7 +94,7 @@ function RankingPage() {
           <p className="text-xs text-muted-foreground">Sua célula</p>
           <h1 className="text-xl font-semibold">Ranking</h1>
         </div>
-        <ViewModeToggle />
+        <ThemeToggle />
       </header>
 
       <section className="card-elevated overflow-hidden">

@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ViewModeToggle } from "@/components/ViewModeToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { ArrowLeft, TrendingUp, AlertTriangle, Users, Plus, Send, Calendar, Building2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/lider")({
@@ -27,7 +27,7 @@ function LiderPage() {
             <h1 className="text-xl font-semibold">Modo Líder</h1>
           </div>
         </div>
-        <ViewModeToggle />
+        <ThemeToggle />
       </header>
 
       {/* Painel Igreja resumido */}

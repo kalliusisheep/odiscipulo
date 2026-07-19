@@ -1,12 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ViewModeToggle } from "@/components/ViewModeToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { CHARACTERS, BIBLE_VERSIONS } from "@/data/content";
 import { getLevel, streakToNextLevel, MAX_LEVEL } from "@/data/levels";
 
 import { useApp } from "@/lib/app-context";
-import { Bell, Church, LogOut, BookOpen, Flame, Trophy, Clock } from "lucide-react";
+import { Bell, Church, LogOut, BookOpen, Flame, Trophy, Clock, Camera, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/perfil")({
   component: PerfilPage,
@@ -16,6 +17,8 @@ type Profile = {
   id: string;
   display_name: string;
   avatar_char: string;
+  avatar_url: string | null;
+  bio: string | null;
   xp: number;
   streak: number;
   bible_version: string;
@@ -27,6 +30,9 @@ type Profile = {
 function PerfilPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [lessonsCount, setLessonsCount] = useState(0);
+  const [bioDraft, setBioDraft] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
   const { bibleVersion, setBibleVersion } = useApp();
   const nav = useNavigate();
 
@@ -37,6 +43,7 @@ function PerfilPage() {
       const { data: p } = await supabase.from("profiles").select("*").eq("id", u.user.id).maybeSingle();
       if (p) {
         setProfile(p as Profile);
+        setBioDraft((p as Profile).bio ?? "");
         setBibleVersion(p.bible_version as (typeof BIBLE_VERSIONS)[number]);
       }
       const { count } = await supabase.from("lesson_progress").select("*", { count: "exact", head: true }).eq("user_id", u.user.id);
@@ -56,6 +63,30 @@ function PerfilPage() {
     await nav({ to: "/" });
   };
 
+  const onPickFile = () => fileRef.current?.click();
+
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !profile) return;
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop() ?? "jpg";
+      const path = `${profile.id}/avatar-${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage.from("avatars").upload(path, file, { upsert: true, contentType: file.type });
+      if (upErr) throw upErr;
+      const { data: signed } = await supabase.storage.from("avatars").createSignedUrl(path, 60 * 60 * 24 * 365);
+      const url = signed?.signedUrl ?? null;
+      if (url) await update({ avatar_url: url });
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  };
+
+  const saveBio = async () => {
+    await update({ bio: bioDraft.trim() || null });
+  };
+
   if (!profile) return <div className="p-6 text-sm text-muted-foreground">Carregando…</div>;
 
   const level = getLevel(profile.streak);
@@ -66,17 +97,33 @@ function PerfilPage() {
     <div className="mx-auto max-w-lg space-y-4 px-4 pt-6">
       <header className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Perfil</h1>
-        <ViewModeToggle />
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <ViewModeToggle />
+        </div>
       </header>
 
       <section className="card-elevated overflow-hidden">
         <div className="bg-gradient-to-br from-primary/20 to-primary-glow/10 p-5 text-center">
-          <div className="mx-auto flex h-28 w-28 items-center justify-center overflow-hidden rounded-3xl bg-surface-2 ring-2 ring-primary/40 text-6xl">
-            {level.avatar ? (
-              <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
-            ) : (
-              <span>{ch.emoji}</span>
-            )}
+          <div className="relative mx-auto h-28 w-28">
+            <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-3xl bg-surface-2 ring-2 ring-primary/40 text-6xl">
+              {profile.avatar_url ? (
+                <img src={profile.avatar_url} alt="Foto de perfil" className="h-full w-full object-cover" />
+              ) : level.avatar ? (
+                <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
+              ) : (
+                <span>{ch.emoji}</span>
+              )}
+            </div>
+            <button
+              onClick={onPickFile}
+              disabled={uploading}
+              className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-2 ring-background disabled:opacity-60"
+              aria-label="Enviar foto"
+            >
+              {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
+            </button>
+            <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onFileChange} />
           </div>
           <h2 className="mt-3 text-lg font-bold">{profile.display_name}</h2>
           <p className="text-xs text-muted-foreground">Sua Patente:</p>
@@ -84,6 +131,22 @@ function PerfilPage() {
           <p className="mt-1 text-[11px] text-muted-foreground">
             {toNext === null ? "Nível máximo alcançado 🔥" : `Faltam ${toNext} dia${toNext === 1 ? "" : "s"} de ofensiva para subir de nível`}
           </p>
+        </div>
+
+        <div className="border-t border-border p-4">
+          <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Bio</label>
+          <textarea
+            value={bioDraft}
+            onChange={(e) => setBioDraft(e.target.value.slice(0, 240))}
+            onBlur={() => void saveBio()}
+            placeholder="Conte um pouco sobre sua caminhada com Cristo…"
+            rows={3}
+            className="w-full resize-none rounded-2xl border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
+          />
+          <div className="mt-1 flex justify-between text-[10px] text-muted-foreground">
+            <span>Sua bio aparece no ranking e no perfil.</span>
+            <span>{bioDraft.length}/240</span>
+          </div>
         </div>
       </section>
 
