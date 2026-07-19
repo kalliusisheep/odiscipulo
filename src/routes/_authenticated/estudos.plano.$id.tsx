@@ -19,6 +19,7 @@ function PlanoPage() {
   const plan = readingPlans.find((p) => p.id === id);
   const storageKey = planStorageKey(id);
   const [done, setDone] = useState<Set<number>>(new Set());
+  const { celebrateActivity } = useCelebration();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
