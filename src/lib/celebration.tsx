@@ -79,7 +79,7 @@ function fireConfetti(intense = false) {
 }
 
 export function CelebrationProvider({ children }: { children: ReactNode }) {
-  const [levelUp, setLevelUp] = useState<Level | null>(null);
+  const [levelUp, setLevelUp] = useState<LevelEntry | null>(null);
   const busy = useRef(false);
 
   const celebrateActivity = useCallback(
@@ -118,7 +118,7 @@ export function useCelebration() {
   return ctx;
 }
 
-function LevelUpOverlay({ level, onClose }: { level: Level; onClose: () => void }) {
+function LevelUpOverlay({ level, onClose }: { level: LevelEntry; onClose: () => void }) {
   return (
     <div
       className="fixed inset-0 z-[9998] flex items-center justify-center bg-background/85 px-6 backdrop-blur-md animate-fade-in"
