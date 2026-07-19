@@ -4,6 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { bibleStudies } from "@/data/estudos";
 import { verseText } from "@/data/content";
 import { useApp } from "@/lib/app-context";
+import { useCelebration } from "@/lib/celebration";
+import { awardXpAndStreak } from "@/lib/progress";
 import {
   ArrowLeft,
   ArrowRight,
