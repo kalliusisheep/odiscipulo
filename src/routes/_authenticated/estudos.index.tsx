@@ -6,7 +6,7 @@ import { planStorageKey } from "./estudos.plano.$id";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Clock, CalendarDays, BookOpen, Sparkles, ArrowRight } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/estudos")({
+export const Route = createFileRoute("/_authenticated/estudos/")({
   component: EstudosPage,
 });
 
