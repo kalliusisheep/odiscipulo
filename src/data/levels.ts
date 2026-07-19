@@ -1,14 +1,13 @@
 // Sistema de níveis: 1 nível a cada 3 dias de ofensiva (streak), até 50.
-// Cada nível tem um título e um avatar ilustrado.
 
-const avatarModules = import.meta.glob("../assets/levels/level-*.jpg", {
+const avatarModules = import.meta.glob("../assets/levels/level-*.png", {
   eager: true,
   import: "default",
 }) as Record<string, string>;
 
 function avatarFor(level: number): string | undefined {
   const n = String(level).padStart(2, "0");
-  return avatarModules[`../assets/levels/level-${n}.jpg`];
+  return avatarModules[`../assets/levels/level-${n}.png`];
 }
 
 export type LevelEntry = {
@@ -22,51 +21,51 @@ const TITLES = [
   "Incrédulo",
   "Filho Pródigo",
   "Fugitivo de Nínive",
-  "Crente Ruim",
+  "Fariseu",
   "Estátua de Sal",
   "Tomé Duvidoso",
-  "Ouvinte do Canto do Galo",
   "Crente Assintomático",
+  "Crente Ruim",
   "Jovem Rico Apegado",
   "Ovelha Desgarrada",
   "Crente de Domingo",
-  "Novo Convertido",
-  "Batedor de Palma Sem Ritmo",
+  "Desviado",
+  "Crente Morno",
   "Cantor Gospel de Chuveiro",
-  "Publicano do Fundo",
+  "Pé no Mundo",
   "Comedor de Pão da Ceia",
   "Levita do Triângulo",
   "Organizador de Cadeiras",
   "Vaso de Barro Trincado",
   "Jejuador de Meio-Dia",
   "Varão em Observação",
-  "Sapato de Fogo",
+  "Sapatinho de Faísca",
   "Dizimista Fiel",
-  "Ovelha do Mês",
-  "Pedrada no Inferno",
-  "Cachoeira de Unção",
+  "Sobrevivente de Retiro",
+  "Terreno de Passar Anjos",
+  "Vaso no Oleiro",
   "Missionário de Bairro",
   "Guerreiro de Vigília",
   "Profeta de Rede Social",
-  "Matador de Demônios",
+  "Terreno de Passar Anjo",
   "Crente do Manto",
-  "Inimigo do Diabo",
+  "Sapateado de Fogo",
   "Ungido no Azeite Quente",
   "Falador de Mistérios",
-  "Derrubador de Muralhas",
-  "Multiplicador de Peixes",
-  "Quebrador de Maldição",
-  "Expulsador de Legião",
-  "Vaso de Ouro Maciço",
-  "Profeta",
-  "Suplente de Elias",
-  "Terror dos Fariseus",
-  "Nazireu Maromba",
-  "Surfista da Galileia",
-  "Invocador de Fogo",
-  "Pesadelo do Inferno",
   "Piloto de Carruagem de Fogo",
-  "Arrebatado Intacto",
+  "Derrubador de Muralhas",
+  "Inimigo de Satan",
+  "Quebrador de Maldição",
+  "Exorcista",
+  "Pedrada no Inferno",
+  "Passeador na Fornalha",
+  "Aniquilador de Heresias",
+  "Nazireu",
+  "Inimigo dos Filisteus",
+  "Matador de Demônios",
+  "Pesadelo de Satanás",
+  "Suplente de Elias",
+  "Profeta das Nações",
   "Melquisedeque",
   "Discípulo",
 ];
@@ -86,10 +85,16 @@ export function getLevel(streak: number): LevelEntry {
   return LEVELS[idx];
 }
 
-/** Streak necessário para o próximo nível (ou null se já é nível máximo). */
-export function streakToNextLevel(streak: number): number | null {
+/** Retorna o próximo nível ou null se já é máximo. */
+export function getNextLevel(streak: number): LevelEntry | null {
   const current = getLevel(streak);
   if (current.level >= MAX_LEVEL) return null;
-  const next = LEVELS[current.level]; // level index === current.level
+  return LEVELS[current.level];
+}
+
+/** Streak necessário para o próximo nível (ou null se já é nível máximo). */
+export function streakToNextLevel(streak: number): number | null {
+  const next = getNextLevel(streak);
+  if (!next) return null;
   return next.minStreak - streak;
 }
