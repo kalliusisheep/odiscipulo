@@ -35,6 +35,7 @@ function HomePage() {
   }, []);
 
   const level = getLevel(profile?.streak ?? 0);
+  const nextLevel = getNextLevel(profile?.streak ?? 0);
   const character = CHARACTERS.find((c) => c.id === profile?.avatar_char) ?? CHARACTERS[0];
   const toNext = streakToNextLevel(profile?.streak ?? 0);
   const currentLevelMin = (level.level - 1) * 3;
@@ -51,7 +52,7 @@ function HomePage() {
           <p className="text-xs text-muted-foreground">Paz de Cristo,</p>
           <h1 className="text-xl font-semibold">{profile?.display_name ?? "Discípulo"}</h1>
         </div>
-        <ViewModeToggle />
+        <ThemeToggle />
       </header>
 
       <section className="card-elevated overflow-hidden">
@@ -77,9 +78,11 @@ function HomePage() {
           </div>
 
           <div className="mt-4">
-            <div className="mb-1.5 flex items-center justify-between text-[11px] font-medium">
-              <span className="text-muted-foreground">Progresso para o próximo nível</span>
-              <span className="text-primary">{toNext === null ? "Nível máximo" : `Faltam ${toNext} dia${toNext === 1 ? "" : "s"}`}</span>
+            <div className="mb-1.5 flex items-center justify-between gap-2 text-[11px] font-medium">
+              <span className="text-muted-foreground">
+                {nextLevel ? <>Próximo: <span className="text-foreground font-semibold">Nível {nextLevel.level} · {nextLevel.title}</span></> : "Você atingiu o nível máximo"}
+              </span>
+              <span className="whitespace-nowrap text-primary">{toNext === null ? "🔥 Máximo" : `Faltam ${toNext} dia${toNext === 1 ? "" : "s"}`}</span>
             </div>
             <div className="h-2.5 overflow-hidden rounded-full bg-surface-2">
               <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${levelProgress}%` }} />
