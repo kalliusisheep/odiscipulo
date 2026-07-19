@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { readingPlans } from "@/data/estudos";
+import { supabase } from "@/integrations/supabase/client";
+import { useCelebration } from "@/lib/celebration";
+import { awardXpAndStreak } from "@/lib/progress";
 import { ArrowLeft, CalendarDays, CheckCircle2, Circle, Clock, Lock } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/estudos/plano/$id")({
