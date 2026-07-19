@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -6,8 +6,7 @@ import { CHARACTERS } from "@/data/content";
 import { getLevel } from "@/data/levels";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { toast } from "sonner";
-
-import { Flame, Trophy, Users, UserPlus, Medal, BarChart3, Copy, Search, Link2, Check } from "lucide-react";
+import { Flame, Users, UserPlus, Share2, Copy, Search, Link2, Check, Crown } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/ranking")({
   component: RankingPage,
@@ -47,7 +46,6 @@ function RankingPage() {
   }, []);
 
   const myIndex = useMemo(() => rows.findIndex((r) => r.isMe), [rows]);
-  const myRow = myIndex >= 0 ? rows[myIndex] : null;
   const total = rows.length;
 
   const inviteLink = typeof window !== "undefined" ? `${window.location.origin}/auth?invite=celula` : "";
@@ -63,6 +61,27 @@ function RankingPage() {
     }
   };
 
+  const shareRanking = async () => {
+    const me = rows[myIndex];
+    const text = me
+      ? `Estou em ${myIndex + 1}º de ${total} no Disciple — ${getLevel(me.streak).title} 🔥 ${me.streak} dias`
+      : `Confira o ranking da minha célula no Disciple`;
+    if (typeof navigator !== "undefined" && (navigator as Navigator & { share?: (d: ShareData) => Promise<void> }).share) {
+      try {
+        await (navigator as Navigator & { share: (d: ShareData) => Promise<void> }).share({ title: "Disciple", text, url: inviteLink });
+        return;
+      } catch {
+        /* cancelled */
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(`${text} — ${inviteLink}`);
+      toast.success("Copiado para compartilhar!");
+    } catch {
+      toast.error("Não foi possível compartilhar.");
+    }
+  };
+
   const findUser = async () => {
     const id = searchId.trim();
     if (!id) return;
@@ -74,21 +93,12 @@ function RankingPage() {
     setSearchResult((data as Row) ?? "notfound");
   };
 
-  const medalColor = (i: number) =>
-    i === 0
-      ? "text-ancient border-ancient"
-      : i === 1
-      ? "text-muted-foreground border-muted-foreground"
-      : i === 2
-      ? "text-orange-400 border-orange-400"
-      : "text-muted-foreground border-border";
-
-  const scrollToMe = () => {
-    meRowRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-  };
+  const top3 = rows.slice(0, 3);
+  const rest = rows.slice(3);
+  const [first, second, third] = [top3[0], top3[1], top3[2]];
 
   return (
-    <div className="mx-auto max-w-lg space-y-5 px-4 pt-6 pb-24">
+    <div className="mx-auto max-w-lg space-y-6 px-4 pt-6 pb-24">
       <header className="flex items-center justify-between">
         <div>
           <p className="text-xs text-muted-foreground">Sua célula</p>
@@ -97,98 +107,83 @@ function RankingPage() {
         <ThemeToggle />
       </header>
 
-      <section className="card-elevated overflow-hidden">
-        <div className="bg-gradient-to-br from-primary/30 via-primary-glow/20 to-transparent p-5">
-          <Trophy className="h-8 w-8 text-ancient" />
-          <h2 className="mt-2 text-lg font-bold">Classificação</h2>
-          <p className="text-xs text-muted-foreground">Discipulado e Constância — dentro do seu grupo.</p>
-          <div className="mt-4 flex gap-2">
-            <Link
-              to="/ranking-detalhes"
-              className="flex flex-1 items-center justify-center gap-1 rounded-full bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground"
-            >
-              <BarChart3 className="h-3.5 w-3.5" /> Detalhes
-            </Link>
-            <button
-              onClick={() => {
-                setSearchId("");
-                setSearchResult(null);
-                setAddOpen(true);
-              }}
-              className="flex flex-1 items-center justify-center gap-1 rounded-full border border-border bg-background px-3 py-2 text-xs font-semibold"
-            >
-              <UserPlus className="h-3.5 w-3.5" /> + Irmão
-            </button>
+      {/* Podium */}
+      {top3.length > 0 && (
+        <section className="card-elevated overflow-hidden bg-gradient-to-b from-primary/15 via-primary/5 to-transparent p-4 pt-6">
+          <div className="flex items-end justify-center gap-3">
+            {second && <PodiumSpot row={second} place={2} />}
+            {first && <PodiumSpot row={first} place={1} />}
+            {third && <PodiumSpot row={third} place={3} />}
           </div>
-        </div>
-      </section>
-
-      {myRow && (
-        <button
-          onClick={scrollToMe}
-          className="card-elevated flex w-full items-center gap-3 border-primary bg-primary/5 p-3 text-left transition-all hover:bg-primary/10"
-        >
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/20 text-primary">
-            <Trophy className="h-5 w-5" />
-          </div>
-          <div className="flex-1">
-            <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Sua posição</p>
-            <p className="text-sm font-bold">
-              {myIndex + 1}º de {total} · {getLevel(myRow.streak).title}
-            </p>
-          </div>
-          <div className="text-right">
-            <p className="text-lg font-bold text-primary">{myRow.xp}</p>
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">XP</p>
-          </div>
-        </button>
+        </section>
       )}
 
+      {/* Action buttons */}
+      <div className="grid grid-cols-2 gap-3">
+        <button
+          onClick={() => void shareRanking()}
+          className="flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-md transition-transform active:scale-95"
+        >
+          <Share2 className="h-4 w-4" /> Compartilhar
+        </button>
+        <button
+          onClick={() => {
+            setSearchId("");
+            setSearchResult(null);
+            setAddOpen(true);
+          }}
+          className="flex items-center justify-center gap-2 rounded-2xl border border-border bg-surface-2 px-4 py-3 text-sm font-semibold transition-transform active:scale-95"
+        >
+          <UserPlus className="h-4 w-4" /> Adicionar Irmão
+        </button>
+      </div>
+
+      {/* List */}
       <div className="space-y-2">
-        {rows.map((row, i) => {
+        {rest.map((row, idx) => {
+          const i = idx + 3;
           const level = getLevel(row.streak);
           const ch = CHARACTERS.find((c) => c.id === row.avatar_char) ?? CHARACTERS[0];
-          const isTop3 = i < 3;
           return (
             <div
               key={row.id}
               ref={row.isMe ? meRowRef : undefined}
-              className={`card-elevated flex items-center gap-3 p-3 transition-all ${
+              className={`flex items-center gap-3 rounded-2xl p-3 transition-all ${
                 row.isMe
                   ? "border-2 border-primary bg-primary/10 shadow-[0_0_0_4px_hsl(var(--primary)/0.15)]"
-                  : isTop3
-                  ? `border ${medalColor(i).split(" ")[1]}`
-                  : ""
+                  : "border border-border bg-surface-2"
               }`}
             >
-              <span className={`w-6 text-center text-sm font-bold ${row.isMe ? "text-primary" : medalColor(i).split(" ")[0]}`}>
-                {i + 1}º
+              <span className={`w-7 text-center text-sm font-bold ${row.isMe ? "text-primary" : "text-muted-foreground"}`}>
+                {i + 1}
               </span>
-              <div
-                className={`flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-surface-2 text-lg ${
-                  row.isMe ? "ring-2 ring-primary" : isTop3 ? `ring-2 ${medalColor(i).split(" ")[1]}` : ""
-                }`}
-              >
-                {level.avatar ? (
-                  <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
-                ) : (
-                  <span>{ch.emoji}</span>
-                )}
+              <div className="relative h-11 w-11 shrink-0">
+                <div
+                  className={`h-11 w-11 overflow-hidden rounded-full bg-surface ${
+                    row.isMe ? "ring-2 ring-primary" : "ring-1 ring-border"
+                  }`}
+                >
+                  {level.avatar ? (
+                    <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
+                  ) : (
+                    <span className="flex h-full w-full items-center justify-center text-lg">{ch.emoji}</span>
+                  )}
+                </div>
+                <span className="absolute -bottom-1 -right-1 flex h-5 min-w-[20px] items-center justify-center rounded-full border-2 border-background bg-primary px-1 text-[10px] font-bold text-primary-foreground">
+                  {level.level}
+                </span>
               </div>
-              <div className="flex-1 min-w-0">
+              <div className="min-w-0 flex-1">
                 <p className="flex items-center gap-1.5 truncate text-sm font-semibold">
                   {row.display_name}
                   {row.isMe && (
                     <span className="rounded bg-primary px-1.5 py-0.5 text-[9px] font-bold text-primary-foreground">VOCÊ</span>
                   )}
                 </p>
-                <p className="truncate text-[11px] text-muted-foreground">
-                  Nv {level.level} · {level.title}
-                </p>
+                <p className="truncate text-[11px] text-muted-foreground">{level.title}</p>
               </div>
-              {isTop3 && !row.isMe && <Medal className={`h-4 w-4 ${medalColor(i).split(" ")[0]}`} />}
-              <div className="flex items-center gap-1 rounded-full bg-streak/15 px-2 py-1 text-xs font-bold text-streak">
-                <Flame className="h-3 w-3" /> {row.streak}
+              <div className="flex items-center gap-1 rounded-full bg-streak/15 px-2.5 py-1 text-xs font-bold text-streak">
+                <Flame className="h-3.5 w-3.5" /> {row.streak}
               </div>
             </div>
           );
@@ -269,13 +264,61 @@ function RankingPage() {
                   {copied ? "Copiado" : "Copiar"}
                 </button>
               </div>
-              <p className="mt-2 text-[11px] text-muted-foreground">
-                Compartilhe pelo WhatsApp, e-mail ou redes sociais para chamar sua célula.
-              </p>
             </div>
           </div>
         </DialogContent>
       </Dialog>
+    </div>
+  );
+}
+
+function PodiumSpot({ row, place }: { row: Row; place: 1 | 2 | 3 }) {
+  const level = getLevel(row.streak);
+  const isFirst = place === 1;
+  const size = isFirst ? "h-24 w-24" : "h-20 w-20";
+  const ring =
+    place === 1
+      ? "ring-4 ring-ancient shadow-[0_0_24px_hsl(var(--ancient)/0.5)]"
+      : place === 2
+      ? "ring-4 ring-slate-300"
+      : "ring-4 ring-orange-400";
+  const block =
+    place === 1
+      ? "h-24 bg-gradient-to-b from-ancient to-ancient/60 text-background"
+      : place === 2
+      ? "h-16 bg-gradient-to-b from-slate-300 to-slate-400 text-slate-900"
+      : "h-12 bg-gradient-to-b from-orange-400 to-orange-600 text-white";
+  const order = place === 2 ? "order-1" : place === 1 ? "order-2" : "order-3";
+
+  return (
+    <div className={`flex w-1/3 flex-col items-center ${order}`}>
+      {isFirst && (
+        <div className="mb-1 flex items-center gap-1 rounded-full bg-ancient px-2 py-0.5 text-[10px] font-bold text-background shadow">
+          <Crown className="h-3 w-3" /> LEVEL {level.level}
+        </div>
+      )}
+      <div className={`relative ${size}`}>
+        <div className={`h-full w-full overflow-hidden rounded-full bg-surface ${ring} ${row.isMe ? "outline outline-4 outline-primary/60" : ""}`}>
+          {level.avatar ? (
+            <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
+          ) : (
+            <span className="flex h-full w-full items-center justify-center text-3xl">👤</span>
+          )}
+        </div>
+        <span className="absolute -bottom-1 -right-1 flex h-6 min-w-[24px] items-center justify-center rounded-full border-2 border-background bg-primary px-1 text-[11px] font-bold text-primary-foreground">
+          {level.level}
+        </span>
+      </div>
+      <p className="mt-2 line-clamp-1 max-w-full text-center text-xs font-semibold">
+        {row.display_name}
+        {row.isMe && <span className="ml-1 rounded bg-primary px-1 text-[9px] text-primary-foreground">VOCÊ</span>}
+      </p>
+      <p className="flex items-center gap-1 text-[10px] font-bold text-streak">
+        <Flame className="h-3 w-3" /> {row.streak}d
+      </p>
+      <div className={`mt-2 flex w-full items-start justify-center rounded-t-xl pt-2 text-lg font-black ${block}`}>
+        {place}º
+      </div>
     </div>
   );
 }
