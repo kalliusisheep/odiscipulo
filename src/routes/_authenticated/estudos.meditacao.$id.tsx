@@ -52,6 +52,9 @@ function MeditacaoPage() {
         question: med.centralQuestion,
         answer: answer.trim(),
       });
+      const xp = 8;
+      const { prevStreak, newStreak } = await awardXpAndStreak(u.user.id, xp);
+      celebrateActivity({ prevStreak, newStreak, xp });
       setSaved(true);
     }
     setSaving(false);
