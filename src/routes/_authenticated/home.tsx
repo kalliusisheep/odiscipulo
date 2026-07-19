@@ -34,8 +34,11 @@ function HomePage() {
     })();
   }, []);
 
-  const level = getLevel(profile?.xp ?? 0);
+  const level = getLevel(profile?.streak ?? 0);
   const character = CHARACTERS.find((c) => c.id === profile?.avatar_char) ?? CHARACTERS[0];
+  const toNext = streakToNextLevel(profile?.streak ?? 0);
+  const currentLevelMin = (level.level - 1) * 3;
+  const levelProgress = Math.min(100, Math.max(0, ((profile?.streak ?? 0) - currentLevelMin) / 3 * 100));
 
   if (viewMode === "lider") {
     return <LiderInline />;
