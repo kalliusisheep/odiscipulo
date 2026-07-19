@@ -198,7 +198,7 @@ function LiderInline() {
     <div className="mx-auto max-w-lg space-y-5 px-4 pt-6">
       <header className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Modo Líder</h1>
-        <ViewModeToggle />
+        <ThemeToggle />
       </header>
       <div className="card-elevated p-5">
         <p className="text-sm text-muted-foreground">
