@@ -29,6 +29,7 @@ function EstudoBiblicoPage() {
   const { id } = Route.useParams();
   const nav = useNavigate();
   const { bibleVersion } = useApp();
+  const { celebrateActivity } = useCelebration();
   const study = useMemo(() => bibleStudies.find((s) => s.id === id), [id]);
   const [step, setStep] = useState<Step>("estudo");
   const [answers, setAnswers] = useState<Record<number, number>>({});
