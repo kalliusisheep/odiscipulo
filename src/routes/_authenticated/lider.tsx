@@ -27,7 +27,7 @@ function LiderPage() {
             <h1 className="text-xl font-semibold">Modo Líder</h1>
           </div>
         </div>
-        <ViewModeToggle />
+        <ThemeToggle />
       </header>
 
       {/* Painel Igreja resumido */}
