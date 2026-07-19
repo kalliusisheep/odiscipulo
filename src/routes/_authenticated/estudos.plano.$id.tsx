@@ -1,10 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { readingPlans } from "@/data/estudos";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCelebration } from "@/lib/celebration";
 import { awardXpAndStreak } from "@/lib/progress";
-import { ArrowLeft, CalendarDays, CheckCircle2, Circle, Clock, Lock } from "lucide-react";
+import { fetchPassage } from "@/lib/bible";
+import {
+  ArrowLeft,
+  BookOpen,
+  CalendarDays,
+  CheckCircle2,
+  ChevronDown,
+  Circle,
+  Clock,
+  Lock,
+  Loader2,
+} from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/estudos/plano/$id")({
   component: PlanoPage,
@@ -14,12 +24,57 @@ export function planStorageKey(id: string) {
   return `disciple.plan.${id}`;
 }
 
+type Plan = {
+  id: string;
+  title: string;
+  description: string | null;
+  intro: string | null;
+  total_days: number;
+  minutes_per_day: number | null;
+};
+
+type PlanDay = {
+  day: number;
+  refs: string[];
+  passage_api_refs: string[];
+  focus: string;
+  context: string;
+  reflection: string;
+  application: string;
+  prayer: string;
+};
+
 function PlanoPage() {
   const { id } = Route.useParams();
-  const plan = readingPlans.find((p) => p.id === id);
   const storageKey = planStorageKey(id);
+  const [plan, setPlan] = useState<Plan | null>(null);
+  const [days, setDays] = useState<PlanDay[]>([]);
+  const [loading, setLoading] = useState(true);
   const [done, setDone] = useState<Set<number>>(new Set());
+  const [openDay, setOpenDay] = useState<number | null>(null);
   const { celebrateActivity } = useCelebration();
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setLoading(true);
+      const [{ data: p }, { data: d }] = await Promise.all([
+        supabase.from("reading_plans").select("*").eq("id", id).maybeSingle(),
+        supabase
+          .from("reading_plan_days")
+          .select("day, refs, passage_api_refs, focus, context, reflection, application, prayer")
+          .eq("plan_id", id)
+          .order("day"),
+      ]);
+      if (cancelled) return;
+      setPlan((p as Plan) ?? null);
+      setDays((d as PlanDay[]) ?? []);
+      setLoading(false);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [id]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -33,11 +88,31 @@ function PlanoPage() {
     }
   }, [storageKey]);
 
+  const nextDay = useMemo(() => {
+    if (!plan) return null;
+    for (let i = 1; i <= plan.total_days; i++) if (!done.has(i)) return i;
+    return null;
+  }, [done, plan]);
+
+  useEffect(() => {
+    if (openDay === null && nextDay) setOpenDay(nextDay);
+  }, [nextDay, openDay]);
+
+  if (loading) {
+    return (
+      <div className="mx-auto flex max-w-lg items-center justify-center px-4 pt-16">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+      </div>
+    );
+  }
+
   if (!plan) {
     return (
       <div className="mx-auto max-w-lg p-6 text-center">
         <p>Plano não encontrado.</p>
-        <Link to="/estudos" className="mt-4 inline-block text-primary underline">Voltar</Link>
+        <Link to="/estudos" className="mt-4 inline-block text-primary underline">
+          Voltar
+        </Link>
       </div>
     );
   }
@@ -61,22 +136,21 @@ function PlanoPage() {
       void (async () => {
         const { data: u } = await supabase.auth.getUser();
         if (!u.user) return;
-        const xp = 5;
+        const xp = 10;
         const { prevStreak, newStreak } = await awardXpAndStreak(u.user.id, xp);
         celebrateActivity({ prevStreak, newStreak, xp });
       })();
     }
   };
 
-  const pct = Math.round((done.size / plan.totalDays) * 100);
-  const nextDay = (() => {
-    for (let d = 1; d <= plan.totalDays; d++) if (!done.has(d)) return d;
-    return null;
-  })();
+  const pct = Math.round((done.size / plan.total_days) * 100);
 
   return (
     <div className="mx-auto max-w-lg space-y-5 px-4 pt-6 pb-24">
-      <Link to="/estudos" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+      <Link
+        to="/estudos"
+        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
         <ArrowLeft className="h-4 w-4" /> Estudos
       </Link>
 
@@ -85,37 +159,53 @@ function PlanoPage() {
           Plano de Leitura
         </span>
         <h1 className="text-2xl font-semibold">{plan.title}</h1>
-        <p className="text-sm text-muted-foreground">{plan.description}</p>
+        {plan.description && (
+          <p className="text-sm text-muted-foreground">{plan.description}</p>
+        )}
         <div className="flex items-center gap-3 text-xs text-muted-foreground">
-          <span className="inline-flex items-center gap-1"><CalendarDays className="h-3 w-3" /> {plan.totalDays} dias</span>
-          <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" /> {plan.minutesPerDay} min/dia</span>
+          <span className="inline-flex items-center gap-1">
+            <CalendarDays className="h-3 w-3" /> {plan.total_days} dias
+          </span>
+          {plan.minutes_per_day && (
+            <span className="inline-flex items-center gap-1">
+              <Clock className="h-3 w-3" /> {plan.minutes_per_day} min/dia
+            </span>
+          )}
         </div>
       </header>
 
-      <div className="card-elevated border-l-4 border-l-success p-4">
-        <p className="scripture text-sm leading-relaxed text-foreground/90">{plan.intro}</p>
-      </div>
+      {plan.intro && (
+        <div className="card-elevated border-l-4 border-l-success p-4">
+          <p className="scripture text-sm leading-relaxed text-foreground/90">{plan.intro}</p>
+        </div>
+      )}
 
       <div className="space-y-1.5">
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span>Progresso</span>
-          <span className="font-semibold text-foreground">{done.size}/{plan.totalDays} dias · {pct}%</span>
+          <span className="font-semibold text-foreground">
+            {done.size}/{plan.total_days} dias · {pct}%
+          </span>
         </div>
         <div className="h-2 overflow-hidden rounded-full bg-surface-2">
-          <div className="h-full bg-gradient-to-r from-success to-primary transition-all" style={{ width: `${pct}%` }} />
+          <div
+            className="h-full bg-gradient-to-r from-success to-primary transition-all"
+            style={{ width: `${pct}%` }}
+          />
         </div>
       </div>
 
       <div className="space-y-2">
-        {plan.days.map((d) => {
+        {days.map((d) => {
           const checked = done.has(d.day);
           const isNext = d.day === nextDay;
           const previousDone = d.day === 1 || done.has(d.day - 1);
           const dimmed = !checked && !isNext && !previousDone;
+          const open = openDay === d.day;
           return (
             <article
               key={d.day}
-              className={`card-elevated overflow-hidden p-4 transition-all ${
+              className={`card-elevated overflow-hidden transition-all ${
                 checked
                   ? "border-success/40 bg-success/5"
                   : isNext
@@ -125,11 +215,14 @@ function PlanoPage() {
                       : "border-border"
               }`}
             >
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 p-4">
                 <button
                   onClick={() => toggle(d.day)}
                   className="mt-0.5 shrink-0"
-                  aria-label={checked ? `Desmarcar dia ${d.day}` : `Marcar dia ${d.day} como lido`}
+                  disabled={dimmed}
+                  aria-label={
+                    checked ? `Desmarcar dia ${d.day}` : `Marcar dia ${d.day} como lido`
+                  }
                 >
                   {checked ? (
                     <CheckCircle2 className="h-6 w-6 text-success" />
@@ -139,38 +232,162 @@ function PlanoPage() {
                     <Circle className="h-6 w-6 text-muted-foreground hover:text-primary" />
                   )}
                 </button>
-                <div className="flex-1 space-y-2">
+                <button
+                  onClick={() => setOpenDay(open ? null : d.day)}
+                  disabled={dimmed}
+                  className="flex-1 space-y-1.5 text-left"
+                >
                   <div className="flex items-center gap-2">
-                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
-                      isNext ? "bg-primary/20 text-primary" : "bg-surface-2 text-muted-foreground"
-                    }`}>
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
+                        isNext ? "bg-primary/20 text-primary" : "bg-surface-2 text-muted-foreground"
+                      }`}
+                    >
                       Dia {d.day}
                     </span>
                     {isNext && (
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-primary">Próximo</span>
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+                        Próximo
+                      </span>
                     )}
-                  </div>
-                  <p className="font-serif text-sm font-medium text-ancient">{d.refs.join(" · ")}</p>
-                  <p className="text-xs font-medium text-foreground/80">{d.focus}</p>
-                  <p className="text-xs leading-relaxed text-muted-foreground">{d.commentary}</p>
-                  {!checked && (
-                    <button
-                      onClick={() => toggle(d.day)}
-                      className={`mt-1 w-full rounded-xl py-2 text-xs font-semibold transition-all ${
-                        isNext
-                          ? "bg-primary text-primary-foreground hover:bg-primary-glow"
-                          : "border border-border text-muted-foreground hover:border-primary/40"
+                    <ChevronDown
+                      className={`ml-auto h-4 w-4 text-muted-foreground transition-transform ${
+                        open ? "rotate-180" : ""
                       }`}
-                    >
-                      Marcar como lido
-                    </button>
-                  )}
-                </div>
+                    />
+                  </div>
+                  <p className="font-serif text-sm font-medium text-ancient">
+                    {d.refs.join(" · ")}
+                  </p>
+                  <p className="text-xs font-medium text-foreground/80">{d.focus}</p>
+                </button>
               </div>
+
+              {open && !dimmed && (
+                <DayDetails day={d} checked={checked} onComplete={() => toggle(d.day)} />
+              )}
             </article>
           );
         })}
       </div>
+    </div>
+  );
+}
+
+function DayDetails({
+  day,
+  checked,
+  onComplete,
+}: {
+  day: PlanDay;
+  checked: boolean;
+  onComplete: () => void;
+}) {
+  return (
+    <div className="space-y-4 border-t border-border/60 bg-surface/40 p-4">
+      <Section title="Passagem" icon={<BookOpen className="h-3.5 w-3.5" />}>
+        <div className="space-y-3">
+          {day.passage_api_refs.map((ref, i) => (
+            <PassageBlock key={ref} apiRef={ref} label={day.refs[i] ?? ref} />
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Contexto">
+        <p className="text-sm leading-relaxed text-foreground/85">{day.context}</p>
+      </Section>
+
+      <Section title="Reflexão devocional">
+        <div className="space-y-2">
+          {day.reflection.split("\n").filter(Boolean).map((p, i) => (
+            <p key={i} className="text-sm leading-relaxed text-foreground/85">
+              {p}
+            </p>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Aplicação prática">
+        <p className="text-sm leading-relaxed text-foreground/85">{day.application}</p>
+      </Section>
+
+      <Section title="Oração">
+        <p className="scripture text-sm italic leading-relaxed text-foreground/90">{day.prayer}</p>
+      </Section>
+
+      {!checked && (
+        <button
+          onClick={onComplete}
+          className="w-full rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary-glow"
+        >
+          Marcar como concluído · +10 XP
+        </button>
+      )}
+    </div>
+  );
+}
+
+function Section({
+  title,
+  icon,
+  children,
+}: {
+  title: string;
+  icon?: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="space-y-1.5">
+      <h3 className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-primary">
+        {icon}
+        {title}
+      </h3>
+      {children}
+    </div>
+  );
+}
+
+function PassageBlock({ apiRef, label }: { apiRef: string; label: string }) {
+  const [text, setText] = useState<string | null>(null);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    fetchPassage(apiRef)
+      .then((t) => {
+        if (!cancelled) setText(t);
+      })
+      .catch(() => {
+        if (!cancelled) setError(true);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [apiRef]);
+
+  return (
+    <div className="rounded-xl border-l-2 border-l-primary/60 bg-surface-2/50 p-3">
+      <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+        {label} · Almeida
+      </p>
+      {loading && (
+        <p className="flex items-center gap-2 text-xs text-muted-foreground">
+          <Loader2 className="h-3 w-3 animate-spin" /> Carregando passagem…
+        </p>
+      )}
+      {error && (
+        <p className="text-xs text-destructive">
+          Não foi possível carregar a passagem. Abra sua Bíblia em {label}.
+        </p>
+      )}
+      {text && (
+        <p className="scripture text-[13px] leading-relaxed text-foreground/90">{text}</p>
+      )}
     </div>
   );
 }
