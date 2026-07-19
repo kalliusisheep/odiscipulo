@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { trails, CHARACTERS } from "@/data/content";
@@ -13,6 +13,7 @@ export const Route = createFileRoute("/_authenticated/home")({
 
 type Profile = {
   display_name: string;
+  first_name: string | null;
   avatar_char: string;
   xp: number;
   streak: number;
@@ -20,6 +21,7 @@ type Profile = {
 
 function HomePage() {
   const { viewMode } = useApp();
+  const nav = useNavigate();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [completed, setCompleted] = useState<Set<string>>(new Set());
 
@@ -27,12 +29,20 @@ function HomePage() {
     void (async () => {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user) return;
-      const { data: p } = await supabase.from("profiles").select("display_name, avatar_char, xp, streak").eq("id", u.user.id).maybeSingle();
+      const { data: p } = await supabase
+        .from("profiles")
+        .select("display_name, first_name, avatar_char, xp, streak, onboarded")
+        .eq("id", u.user.id)
+        .maybeSingle();
+      if (p && !p.onboarded) {
+        void nav({ to: "/bem-vindo" });
+        return;
+      }
       if (p) setProfile(p as Profile);
       const { data: lp } = await supabase.from("lesson_progress").select("lesson_id").eq("user_id", u.user.id);
       setCompleted(new Set((lp ?? []).map((r) => r.lesson_id)));
     })();
-  }, []);
+  }, [nav]);
 
   const level = getLevel(profile?.streak ?? 0);
   const nextLevel = getNextLevel(profile?.streak ?? 0);
@@ -45,15 +55,21 @@ function HomePage() {
     return <LiderInline />;
   }
 
+  const firstName =
+    profile?.first_name?.trim() ||
+    profile?.display_name?.trim().split(/\s+/)[0] ||
+    "irmão";
+
   return (
     <div className="mx-auto max-w-lg space-y-5 px-4 pt-6">
       <header className="flex items-center justify-between">
         <div>
-          <p className="text-xs text-muted-foreground">Paz de Cristo,</p>
-          <h1 className="text-xl font-semibold">{profile?.display_name ?? "Discípulo"}</h1>
+          <p className="text-xs text-muted-foreground">Saudação</p>
+          <h1 className="text-xl font-semibold">A Paz, {firstName}</h1>
         </div>
         <ThemeToggle />
       </header>
+
 
       <section className="card-elevated overflow-hidden">
         <div className="bg-gradient-to-br from-primary/20 via-primary-glow/10 to-transparent p-5">
