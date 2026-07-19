@@ -163,11 +163,19 @@ function HomePage() {
                         {mod.lessons.map((lesson, i) => {
                           const isDone = completed.has(lesson.id);
                           const prevDone = i === 0 ? true : completed.has(mod.lessons[i - 1].id);
-                          const isActive = !isDone && prevDone;
-                          const isLocked = !isDone && !isActive;
+                          const wouldBeActive = !isDone && prevDone;
+                          const isDailyLocked = wouldBeActive && completedToday;
+                          const isActive = wouldBeActive && !completedToday;
+                          const state: "done" | "active" | "locked" | "daily-locked" = isDone
+                            ? "done"
+                            : isActive
+                              ? "active"
+                              : isDailyLocked
+                                ? "daily-locked"
+                                : "locked";
                           return (
                             <LessonRow key={lesson.id} title={lesson.title} id={lesson.id}
-                              state={isDone ? "done" : isActive ? "active" : "locked"} />
+                              state={state} nextUnlockAt={nextUnlockAt} />
                           );
                         })}
                       </div>
