@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { aiMeditations } from "@/data/estudos";
+import { useCelebration } from "@/lib/celebration";
+import { awardXpAndStreak } from "@/lib/progress";
 import { ArrowLeft, ArrowRight, BookOpen, Clock, Sparkles, Check } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/estudos/meditacao/$id")({
