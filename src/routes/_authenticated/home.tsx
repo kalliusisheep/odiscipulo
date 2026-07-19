@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { trails, CHARACTERS } from "@/data/content";
-import { getLevel, streakToNextLevel } from "@/data/levels";
-import { ViewModeToggle } from "@/components/ViewModeToggle";
+import { getLevel, getNextLevel, streakToNextLevel } from "@/data/levels";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useApp } from "@/lib/app-context";
 import { Flame, Check, Lock, Play, ChevronRight } from "lucide-react";
 
