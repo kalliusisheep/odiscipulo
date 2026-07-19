@@ -1,13 +1,16 @@
 // Sistema de níveis: 1 nível a cada 3 dias de ofensiva (streak), até 50.
 
-const avatarModules = import.meta.glob("../assets/levels/level-*.png", {
+const avatarModules = import.meta.glob("../assets/levels/level-*.{png,jpg}", {
   eager: true,
   import: "default",
 }) as Record<string, string>;
 
 function avatarFor(level: number): string | undefined {
   const n = String(level).padStart(2, "0");
-  return avatarModules[`../assets/levels/level-${n}.png`];
+  return (
+    avatarModules[`../assets/levels/level-${n}.png`] ??
+    avatarModules[`../assets/levels/level-${n}.jpg`]
+  );
 }
 
 export type LevelEntry = {
