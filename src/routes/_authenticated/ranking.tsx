@@ -94,7 +94,7 @@ function RankingPage() {
           <p className="text-xs text-muted-foreground">Sua célula</p>
           <h1 className="text-xl font-semibold">Ranking</h1>
         </div>
-        <ViewModeToggle />
+        <ThemeToggle />
       </header>
 
       <section className="card-elevated overflow-hidden">
