@@ -57,8 +57,12 @@ function HomePage() {
       <section className="card-elevated overflow-hidden">
         <div className="bg-gradient-to-br from-primary/20 via-primary-glow/10 to-transparent p-5">
           <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-surface-2 text-3xl">
-              {character.emoji}
+            <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-surface-2 ring-2 ring-primary/30">
+              {level.avatar ? (
+                <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
+              ) : (
+                <span className="text-3xl">{character.emoji}</span>
+              )}
             </div>
             <div className="flex-1">
               <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Seu progresso</p>
@@ -69,6 +73,16 @@ function HomePage() {
               <Flame className="h-5 w-5 text-streak" />
               <span className="text-sm font-bold text-streak">{profile?.streak ?? 0}</span>
               <span className="text-[9px] text-muted-foreground">dias</span>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <div className="mb-1.5 flex items-center justify-between text-[11px] font-medium">
+              <span className="text-muted-foreground">Progresso para o próximo nível</span>
+              <span className="text-primary">{toNext === null ? "Nível máximo" : `Faltam ${toNext} dia${toNext === 1 ? "" : "s"}`}</span>
+            </div>
+            <div className="h-2.5 overflow-hidden rounded-full bg-surface-2">
+              <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${levelProgress}%` }} />
             </div>
           </div>
         </div>
