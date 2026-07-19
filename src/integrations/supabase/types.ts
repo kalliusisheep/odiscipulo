@@ -180,6 +180,7 @@ export type Database = {
           avatar_char: string
           avatar_url: string | null
           bible_version: string
+          bio: string | null
           church_name: string | null
           created_at: string
           display_name: string
@@ -195,6 +196,7 @@ export type Database = {
           avatar_char?: string
           avatar_url?: string | null
           bible_version?: string
+          bio?: string | null
           church_name?: string | null
           created_at?: string
           display_name?: string
@@ -210,6 +212,7 @@ export type Database = {
           avatar_char?: string
           avatar_url?: string | null
           bible_version?: string
+          bio?: string | null
           church_name?: string | null
           created_at?: string
           display_name?: string
