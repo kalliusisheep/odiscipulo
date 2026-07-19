@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { readingPlans, bibleStudies, aiMeditations } from "@/data/estudos";
 import { planStorageKey } from "./estudos.plano.$id";
 
-import { ViewModeToggle } from "@/components/ViewModeToggle";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Clock, CalendarDays, BookOpen, Sparkles, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/estudos")({
