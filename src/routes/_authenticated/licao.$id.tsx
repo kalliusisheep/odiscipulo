@@ -3,6 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lessonById, verseText } from "@/data/content";
 import { useApp } from "@/lib/app-context";
+import { useCelebration } from "@/lib/celebration";
+import { awardXpAndStreak } from "@/lib/progress";
 import { ArrowLeft, Check, X, Sparkles, PartyPopper, Share2, ArrowRight, BookOpen, Brain, Target } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/licao/$id")({
@@ -15,6 +17,7 @@ function LicaoPage() {
   const { id } = Route.useParams();
   const nav = useNavigate();
   const { bibleVersion } = useApp();
+  const { celebrateActivity } = useCelebration();
   const found = useMemo(() => lessonById(id), [id]);
   const [step, setStep] = useState<Step>("estudo");
   const [answers, setAnswers] = useState<Record<number, number>>({});
@@ -64,30 +67,13 @@ function LicaoPage() {
           answer: reflection.trim(),
         });
       }
-      const { data: p } = await supabase
-        .from("profiles")
-        .select("xp, streak, last_activity_date")
-        .eq("id", u.user.id)
-        .maybeSingle();
-      const today = new Date().toISOString().slice(0, 10);
-      const last = p?.last_activity_date ?? null;
-      const diff = last
-        ? Math.floor((new Date(today).getTime() - new Date(last).getTime()) / 86400000)
-        : null;
-      const newStreak =
-        diff === null ? 1 : diff === 0 ? (p?.streak ?? 1) : diff === 1 ? (p?.streak ?? 0) + 1 : 1;
-      await supabase
-        .from("profiles")
-        .update({
-          xp: (p?.xp ?? 0) + lesson.xp,
-          streak: newStreak,
-          last_activity_date: today,
-        })
-        .eq("id", u.user.id);
+      const { prevStreak, newStreak } = await awardXpAndStreak(u.user.id, lesson.xp);
+      celebrateActivity({ prevStreak, newStreak, xp: lesson.xp });
     }
     setStep("done");
     setSaving(false);
   };
+
 
   return (
     <div className="mx-auto max-w-lg px-4 pt-4 pb-24 animate-slide-up">

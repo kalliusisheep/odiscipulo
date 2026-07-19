@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { readingPlans } from "@/data/estudos";
+import { supabase } from "@/integrations/supabase/client";
+import { useCelebration } from "@/lib/celebration";
+import { awardXpAndStreak } from "@/lib/progress";
 import { ArrowLeft, CalendarDays, CheckCircle2, Circle, Clock, Lock } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/estudos/plano/$id")({
@@ -16,6 +19,7 @@ function PlanoPage() {
   const plan = readingPlans.find((p) => p.id === id);
   const storageKey = planStorageKey(id);
   const [done, setDone] = useState<Set<number>>(new Set());
+  const { celebrateActivity } = useCelebration();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -39,15 +43,29 @@ function PlanoPage() {
   }
 
   const toggle = (day: number) => {
+    let becameChecked = false;
     setDone((prev) => {
       const next = new Set(prev);
-      if (next.has(day)) next.delete(day);
-      else next.add(day);
+      if (next.has(day)) {
+        next.delete(day);
+      } else {
+        next.add(day);
+        becameChecked = true;
+      }
       if (typeof window !== "undefined") {
         window.localStorage.setItem(storageKey, JSON.stringify([...next]));
       }
       return next;
     });
+    if (becameChecked) {
+      void (async () => {
+        const { data: u } = await supabase.auth.getUser();
+        if (!u.user) return;
+        const xp = 5;
+        const { prevStreak, newStreak } = await awardXpAndStreak(u.user.id, xp);
+        celebrateActivity({ prevStreak, newStreak, xp });
+      })();
+    }
   };
 
   const pct = Math.round((done.size / plan.totalDays) * 100);

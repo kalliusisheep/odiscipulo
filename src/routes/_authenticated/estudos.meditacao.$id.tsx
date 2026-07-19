@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { aiMeditations } from "@/data/estudos";
+import { useCelebration } from "@/lib/celebration";
+import { awardXpAndStreak } from "@/lib/progress";
 import { ArrowLeft, ArrowRight, BookOpen, Clock, Sparkles, Check } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/estudos/meditacao/$id")({
@@ -15,6 +17,7 @@ function MeditacaoPage() {
   const [answer, setAnswer] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const { celebrateActivity } = useCelebration();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -49,6 +52,9 @@ function MeditacaoPage() {
         question: med.centralQuestion,
         answer: answer.trim(),
       });
+      const xp = 8;
+      const { prevStreak, newStreak } = await awardXpAndStreak(u.user.id, xp);
+      celebrateActivity({ prevStreak, newStreak, xp });
       setSaved(true);
     }
     setSaving(false);

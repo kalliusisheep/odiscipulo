@@ -19,6 +19,7 @@ import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedMuralRouteImport } from './routes/_authenticated/mural'
 import { Route as AuthenticatedLiderRouteImport } from './routes/_authenticated/lider'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
+import { Route as AuthenticatedBemVindoRouteImport } from './routes/_authenticated/bem-vindo'
 import { Route as AuthenticatedEstudosIndexRouteImport } from './routes/_authenticated/estudos.index'
 import { Route as AuthenticatedLicaoIdRouteImport } from './routes/_authenticated/licao.$id'
 import { Route as AuthenticatedEstudosPlanoIdRouteImport } from './routes/_authenticated/estudos.plano.$id'
@@ -75,6 +76,11 @@ const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   path: '/home',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedBemVindoRoute = AuthenticatedBemVindoRouteImport.update({
+  id: '/bem-vindo',
+  path: '/bem-vindo',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedEstudosIndexRoute =
   AuthenticatedEstudosIndexRouteImport.update({
     id: '/estudos/',
@@ -108,6 +114,7 @@ const AuthenticatedEstudosBiblicoIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/bem-vindo': typeof AuthenticatedBemVindoRoute
   '/home': typeof AuthenticatedHomeRoute
   '/lider': typeof AuthenticatedLiderRoute
   '/mural': typeof AuthenticatedMuralRoute
@@ -124,6 +131,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/bem-vindo': typeof AuthenticatedBemVindoRoute
   '/home': typeof AuthenticatedHomeRoute
   '/lider': typeof AuthenticatedLiderRoute
   '/mural': typeof AuthenticatedMuralRoute
@@ -142,6 +150,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/bem-vindo': typeof AuthenticatedBemVindoRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/lider': typeof AuthenticatedLiderRoute
   '/_authenticated/mural': typeof AuthenticatedMuralRoute
@@ -160,6 +169,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/bem-vindo'
     | '/home'
     | '/lider'
     | '/mural'
@@ -176,6 +186,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/bem-vindo'
     | '/home'
     | '/lider'
     | '/mural'
@@ -193,6 +204,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/bem-vindo'
     | '/_authenticated/home'
     | '/_authenticated/lider'
     | '/_authenticated/mural'
@@ -286,6 +298,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHomeRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/bem-vindo': {
+      id: '/_authenticated/bem-vindo'
+      path: '/bem-vindo'
+      fullPath: '/bem-vindo'
+      preLoaderRoute: typeof AuthenticatedBemVindoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/estudos/': {
       id: '/_authenticated/estudos/'
       path: '/estudos'
@@ -325,6 +344,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedBemVindoRoute: typeof AuthenticatedBemVindoRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedLiderRoute: typeof AuthenticatedLiderRoute
   AuthenticatedMuralRoute: typeof AuthenticatedMuralRoute
@@ -339,6 +359,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedBemVindoRoute: AuthenticatedBemVindoRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedLiderRoute: AuthenticatedLiderRoute,
   AuthenticatedMuralRoute: AuthenticatedMuralRoute,
