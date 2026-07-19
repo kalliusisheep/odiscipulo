@@ -235,6 +235,98 @@ export type Database = {
         }
         Relationships: []
       }
+      reading_plan_days: {
+        Row: {
+          application: string
+          context: string
+          created_at: string
+          day: number
+          focus: string
+          id: string
+          passage_api_refs: string[]
+          plan_id: string
+          prayer: string
+          reflection: string
+          refs: string[]
+          updated_at: string
+        }
+        Insert: {
+          application: string
+          context: string
+          created_at?: string
+          day: number
+          focus: string
+          id?: string
+          passage_api_refs: string[]
+          plan_id: string
+          prayer: string
+          reflection: string
+          refs: string[]
+          updated_at?: string
+        }
+        Update: {
+          application?: string
+          context?: string
+          created_at?: string
+          day?: number
+          focus?: string
+          id?: string
+          passage_api_refs?: string[]
+          plan_id?: string
+          prayer?: string
+          reflection?: string
+          refs?: string[]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reading_plan_days_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "reading_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reading_plans: {
+        Row: {
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          intro: string
+          minutes_per_day: number
+          sort_order: number
+          title: string
+          total_days: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          icon: string
+          id: string
+          intro: string
+          minutes_per_day: number
+          sort_order?: number
+          title: string
+          total_days: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          intro?: string
+          minutes_per_day?: number
+          sort_order?: number
+          title?: string
+          total_days?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
