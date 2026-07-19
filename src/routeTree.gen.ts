@@ -19,7 +19,7 @@ import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedMuralRouteImport } from './routes/_authenticated/mural'
 import { Route as AuthenticatedLiderRouteImport } from './routes/_authenticated/lider'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
-import { Route as AuthenticatedEstudosRouteImport } from './routes/_authenticated/estudos'
+import { Route as AuthenticatedEstudosIndexRouteImport } from './routes/_authenticated/estudos.index'
 import { Route as AuthenticatedLicaoIdRouteImport } from './routes/_authenticated/licao.$id'
 import { Route as AuthenticatedEstudosPlanoIdRouteImport } from './routes/_authenticated/estudos.plano.$id'
 import { Route as AuthenticatedEstudosMeditacaoIdRouteImport } from './routes/_authenticated/estudos.meditacao.$id'
@@ -75,11 +75,12 @@ const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   path: '/home',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedEstudosRoute = AuthenticatedEstudosRouteImport.update({
-  id: '/estudos',
-  path: '/estudos',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
+const AuthenticatedEstudosIndexRoute =
+  AuthenticatedEstudosIndexRouteImport.update({
+    id: '/estudos/',
+    path: '/estudos/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedLicaoIdRoute = AuthenticatedLicaoIdRouteImport.update({
   id: '/licao/$id',
   path: '/licao/$id',
@@ -87,27 +88,26 @@ const AuthenticatedLicaoIdRoute = AuthenticatedLicaoIdRouteImport.update({
 } as any)
 const AuthenticatedEstudosPlanoIdRoute =
   AuthenticatedEstudosPlanoIdRouteImport.update({
-    id: '/plano/$id',
-    path: '/plano/$id',
-    getParentRoute: () => AuthenticatedEstudosRoute,
+    id: '/estudos/plano/$id',
+    path: '/estudos/plano/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedEstudosMeditacaoIdRoute =
   AuthenticatedEstudosMeditacaoIdRouteImport.update({
-    id: '/meditacao/$id',
-    path: '/meditacao/$id',
-    getParentRoute: () => AuthenticatedEstudosRoute,
+    id: '/estudos/meditacao/$id',
+    path: '/estudos/meditacao/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedEstudosBiblicoIdRoute =
   AuthenticatedEstudosBiblicoIdRouteImport.update({
-    id: '/biblico/$id',
-    path: '/biblico/$id',
-    getParentRoute: () => AuthenticatedEstudosRoute,
+    id: '/estudos/biblico/$id',
+    path: '/estudos/biblico/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/estudos': typeof AuthenticatedEstudosRouteWithChildren
   '/home': typeof AuthenticatedHomeRoute
   '/lider': typeof AuthenticatedLiderRoute
   '/mural': typeof AuthenticatedMuralRoute
@@ -116,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
+  '/estudos/': typeof AuthenticatedEstudosIndexRoute
   '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
@@ -123,7 +124,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/estudos': typeof AuthenticatedEstudosRouteWithChildren
   '/home': typeof AuthenticatedHomeRoute
   '/lider': typeof AuthenticatedLiderRoute
   '/mural': typeof AuthenticatedMuralRoute
@@ -132,6 +132,7 @@ export interface FileRoutesByTo {
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
+  '/estudos': typeof AuthenticatedEstudosIndexRoute
   '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
@@ -141,7 +142,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
-  '/_authenticated/estudos': typeof AuthenticatedEstudosRouteWithChildren
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/lider': typeof AuthenticatedLiderRoute
   '/_authenticated/mural': typeof AuthenticatedMuralRoute
@@ -150,6 +150,7 @@ export interface FileRoutesById {
   '/_authenticated/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
   '/_authenticated/licao/$id': typeof AuthenticatedLicaoIdRoute
+  '/_authenticated/estudos/': typeof AuthenticatedEstudosIndexRoute
   '/_authenticated/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/_authenticated/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/_authenticated/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
@@ -159,7 +160,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
-    | '/estudos'
     | '/home'
     | '/lider'
     | '/mural'
@@ -168,6 +168,7 @@ export interface FileRouteTypes {
     | '/ranking-detalhes'
     | '/api/mentor'
     | '/licao/$id'
+    | '/estudos/'
     | '/estudos/biblico/$id'
     | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
@@ -175,7 +176,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
-    | '/estudos'
     | '/home'
     | '/lider'
     | '/mural'
@@ -184,6 +184,7 @@ export interface FileRouteTypes {
     | '/ranking-detalhes'
     | '/api/mentor'
     | '/licao/$id'
+    | '/estudos'
     | '/estudos/biblico/$id'
     | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
@@ -192,7 +193,6 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
-    | '/_authenticated/estudos'
     | '/_authenticated/home'
     | '/_authenticated/lider'
     | '/_authenticated/mural'
@@ -201,6 +201,7 @@ export interface FileRouteTypes {
     | '/_authenticated/ranking-detalhes'
     | '/api/mentor'
     | '/_authenticated/licao/$id'
+    | '/_authenticated/estudos/'
     | '/_authenticated/estudos/biblico/$id'
     | '/_authenticated/estudos/meditacao/$id'
     | '/_authenticated/estudos/plano/$id'
@@ -285,11 +286,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHomeRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/estudos': {
-      id: '/_authenticated/estudos'
+    '/_authenticated/estudos/': {
+      id: '/_authenticated/estudos/'
       path: '/estudos'
-      fullPath: '/estudos'
-      preLoaderRoute: typeof AuthenticatedEstudosRouteImport
+      fullPath: '/estudos/'
+      preLoaderRoute: typeof AuthenticatedEstudosIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/licao/$id': {
@@ -301,45 +302,29 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/estudos/plano/$id': {
       id: '/_authenticated/estudos/plano/$id'
-      path: '/plano/$id'
+      path: '/estudos/plano/$id'
       fullPath: '/estudos/plano/$id'
       preLoaderRoute: typeof AuthenticatedEstudosPlanoIdRouteImport
-      parentRoute: typeof AuthenticatedEstudosRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/estudos/meditacao/$id': {
       id: '/_authenticated/estudos/meditacao/$id'
-      path: '/meditacao/$id'
+      path: '/estudos/meditacao/$id'
       fullPath: '/estudos/meditacao/$id'
       preLoaderRoute: typeof AuthenticatedEstudosMeditacaoIdRouteImport
-      parentRoute: typeof AuthenticatedEstudosRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/estudos/biblico/$id': {
       id: '/_authenticated/estudos/biblico/$id'
-      path: '/biblico/$id'
+      path: '/estudos/biblico/$id'
       fullPath: '/estudos/biblico/$id'
       preLoaderRoute: typeof AuthenticatedEstudosBiblicoIdRouteImport
-      parentRoute: typeof AuthenticatedEstudosRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
-interface AuthenticatedEstudosRouteChildren {
-  AuthenticatedEstudosBiblicoIdRoute: typeof AuthenticatedEstudosBiblicoIdRoute
-  AuthenticatedEstudosMeditacaoIdRoute: typeof AuthenticatedEstudosMeditacaoIdRoute
-  AuthenticatedEstudosPlanoIdRoute: typeof AuthenticatedEstudosPlanoIdRoute
-}
-
-const AuthenticatedEstudosRouteChildren: AuthenticatedEstudosRouteChildren = {
-  AuthenticatedEstudosBiblicoIdRoute: AuthenticatedEstudosBiblicoIdRoute,
-  AuthenticatedEstudosMeditacaoIdRoute: AuthenticatedEstudosMeditacaoIdRoute,
-  AuthenticatedEstudosPlanoIdRoute: AuthenticatedEstudosPlanoIdRoute,
-}
-
-const AuthenticatedEstudosRouteWithChildren =
-  AuthenticatedEstudosRoute._addFileChildren(AuthenticatedEstudosRouteChildren)
-
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedEstudosRoute: typeof AuthenticatedEstudosRouteWithChildren
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedLiderRoute: typeof AuthenticatedLiderRoute
   AuthenticatedMuralRoute: typeof AuthenticatedMuralRoute
@@ -347,10 +332,13 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRankingRoute: typeof AuthenticatedRankingRoute
   AuthenticatedRankingDetalhesRoute: typeof AuthenticatedRankingDetalhesRoute
   AuthenticatedLicaoIdRoute: typeof AuthenticatedLicaoIdRoute
+  AuthenticatedEstudosIndexRoute: typeof AuthenticatedEstudosIndexRoute
+  AuthenticatedEstudosBiblicoIdRoute: typeof AuthenticatedEstudosBiblicoIdRoute
+  AuthenticatedEstudosMeditacaoIdRoute: typeof AuthenticatedEstudosMeditacaoIdRoute
+  AuthenticatedEstudosPlanoIdRoute: typeof AuthenticatedEstudosPlanoIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedEstudosRoute: AuthenticatedEstudosRouteWithChildren,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedLiderRoute: AuthenticatedLiderRoute,
   AuthenticatedMuralRoute: AuthenticatedMuralRoute,
@@ -358,6 +346,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRankingRoute: AuthenticatedRankingRoute,
   AuthenticatedRankingDetalhesRoute: AuthenticatedRankingDetalhesRoute,
   AuthenticatedLicaoIdRoute: AuthenticatedLicaoIdRoute,
+  AuthenticatedEstudosIndexRoute: AuthenticatedEstudosIndexRoute,
+  AuthenticatedEstudosBiblicoIdRoute: AuthenticatedEstudosBiblicoIdRoute,
+  AuthenticatedEstudosMeditacaoIdRoute: AuthenticatedEstudosMeditacaoIdRoute,
+  AuthenticatedEstudosPlanoIdRoute: AuthenticatedEstudosPlanoIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
