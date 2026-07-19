@@ -67,30 +67,13 @@ function LicaoPage() {
           answer: reflection.trim(),
         });
       }
-      const { data: p } = await supabase
-        .from("profiles")
-        .select("xp, streak, last_activity_date")
-        .eq("id", u.user.id)
-        .maybeSingle();
-      const today = new Date().toISOString().slice(0, 10);
-      const last = p?.last_activity_date ?? null;
-      const diff = last
-        ? Math.floor((new Date(today).getTime() - new Date(last).getTime()) / 86400000)
-        : null;
-      const newStreak =
-        diff === null ? 1 : diff === 0 ? (p?.streak ?? 1) : diff === 1 ? (p?.streak ?? 0) + 1 : 1;
-      await supabase
-        .from("profiles")
-        .update({
-          xp: (p?.xp ?? 0) + lesson.xp,
-          streak: newStreak,
-          last_activity_date: today,
-        })
-        .eq("id", u.user.id);
+      const { prevStreak, newStreak } = await awardXpAndStreak(u.user.id, lesson.xp);
+      celebrateActivity({ prevStreak, newStreak, xp: lesson.xp });
     }
     setStep("done");
     setSaving(false);
   };
+
 
   return (
     <div className="mx-auto max-w-lg px-4 pt-4 pb-24 animate-slide-up">
