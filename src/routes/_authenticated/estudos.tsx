@@ -42,7 +42,7 @@ function EstudosPage() {
           <p className="text-xs text-muted-foreground">Biblioteca</p>
           <h1 className="text-xl font-semibold">Estudos</h1>
         </div>
-        <ViewModeToggle />
+        <ThemeToggle />
       </header>
 
       <p className="text-sm text-muted-foreground">
