@@ -191,8 +191,25 @@ function HomePage() {
   );
 }
 
-function LessonRow({ title, id, state }: { title: string; id: string; state: "done" | "active" | "locked" }) {
+function LessonRow({ title, id, state, nextUnlockAt }: { title: string; id: string; state: "done" | "active" | "locked" | "daily-locked"; nextUnlockAt?: Date | null }) {
   const base = "flex items-center gap-3 rounded-2xl border p-3 transition-all";
+  if (state === "daily-locked") {
+    const label = nextUnlockAt
+      ? `Disponível ${nextUnlockAt.toLocaleDateString("pt-BR", { weekday: "long" })}`
+      : "Disponível amanhã";
+    return (
+      <div className={`${base} border-primary/30 bg-primary/5 opacity-80`}>
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/20">
+          <Lock className="h-4 w-4 text-primary" />
+        </div>
+        <div className="flex-1">
+          <p className="text-sm font-medium">{title}</p>
+          <span className="text-[10px] uppercase tracking-wider text-primary">Disponível amanhã</span>
+        </div>
+        <span className="text-[11px] capitalize text-primary">{label}</span>
+      </div>
+    );
+  }
   if (state === "locked") {
     return (
       <div className={`${base} border-border bg-background/50 opacity-60`}>
