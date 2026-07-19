@@ -24,6 +24,7 @@ function HomePage() {
   const nav = useNavigate();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [completed, setCompleted] = useState<Set<string>>(new Set());
+  const [latestCompletedAt, setLatestCompletedAt] = useState<Date | null>(null);
 
   useEffect(() => {
     void (async () => {
@@ -39,10 +40,27 @@ function HomePage() {
         return;
       }
       if (p) setProfile(p as Profile);
-      const { data: lp } = await supabase.from("lesson_progress").select("lesson_id").eq("user_id", u.user.id);
-      setCompleted(new Set((lp ?? []).map((r) => r.lesson_id)));
+      const { data: lp } = await supabase
+        .from("lesson_progress")
+        .select("lesson_id, completed_at")
+        .eq("user_id", u.user.id);
+      const rows = lp ?? [];
+      setCompleted(new Set(rows.map((r) => r.lesson_id)));
+      const latest = rows
+        .map((r) => (r.completed_at ? new Date(r.completed_at) : null))
+        .filter((d): d is Date => d !== null)
+        .sort((a, b) => b.getTime() - a.getTime())[0] ?? null;
+      setLatestCompletedAt(latest);
     })();
   }, [nav]);
+
+  // Regra de liberação diária: no máximo 1 lição nova por dia.
+  const now = new Date();
+  const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const completedToday = latestCompletedAt !== null && latestCompletedAt >= todayMidnight;
+  const nextUnlockAt = completedToday
+    ? new Date(todayMidnight.getTime() + 24 * 60 * 60 * 1000)
+    : null;
 
   const level = getLevel(profile?.streak ?? 0);
   const nextLevel = getNextLevel(profile?.streak ?? 0);
