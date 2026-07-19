@@ -3,6 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lessonById, verseText } from "@/data/content";
 import { useApp } from "@/lib/app-context";
+import { useCelebration } from "@/lib/celebration";
+import { awardXpAndStreak } from "@/lib/progress";
 import { ArrowLeft, Check, X, Sparkles, PartyPopper, Share2, ArrowRight, BookOpen, Brain, Target } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/licao/$id")({
