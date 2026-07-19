@@ -30,7 +30,7 @@ function MuralPage() {
           <p className="text-xs text-muted-foreground">Comunidade</p>
           <h1 className="text-xl font-semibold">Mural</h1>
         </div>
-        <ViewModeToggle />
+        <ThemeToggle />
       </header>
 
       <div className="relative flex rounded-full border border-border bg-surface p-1 text-sm">
