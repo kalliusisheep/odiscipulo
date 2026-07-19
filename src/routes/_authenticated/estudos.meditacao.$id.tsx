@@ -17,6 +17,7 @@ function MeditacaoPage() {
   const [answer, setAnswer] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const { celebrateActivity } = useCelebration();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
