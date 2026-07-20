@@ -174,7 +174,60 @@ function PerfilPage() {
             <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onFileChange} />
           </div>
           <h2 className="mt-3 text-lg font-bold">{profile.display_name}</h2>
-          <p className="text-xs text-muted-foreground">Sua Patente:</p>
+          <div className="mt-1 flex items-center justify-center gap-1.5">
+            {editingUsername ? (
+              <div className="flex items-center gap-1.5">
+                <div className="flex items-center rounded-full border border-primary bg-background px-2 py-1">
+                  <AtSign className="h-3.5 w-3.5 text-muted-foreground" />
+                  <input
+                    autoFocus
+                    value={usernameDraft}
+                    maxLength={24}
+                    onChange={(e) => setUsernameDraft(normalizeUsername(e.target.value))}
+                    className="w-32 bg-transparent px-1 text-xs font-semibold outline-none"
+                  />
+                </div>
+                <button
+                  onClick={() => void saveUsername()}
+                  disabled={savingUsername}
+                  className="rounded-full bg-primary p-1 text-primary-foreground disabled:opacity-50"
+                  aria-label="Salvar"
+                >
+                  {savingUsername ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
+                </button>
+                <button
+                  onClick={() => setEditingUsername(false)}
+                  className="rounded-full border border-border bg-background p-1 text-muted-foreground"
+                  aria-label="Cancelar"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            ) : (
+              <>
+                <span className="text-xs font-medium text-muted-foreground">
+                  @{profile.username ?? "sem-id"}
+                </span>
+                {profile.username && (
+                  <button
+                    onClick={() => void copyUsername()}
+                    className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-surface-2 hover:text-primary"
+                    aria-label="Copiar ID"
+                  >
+                    {copied ? <Check className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
+                  </button>
+                )}
+                <button
+                  onClick={startEditUsername}
+                  className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-surface-2 hover:text-primary"
+                  aria-label="Editar ID"
+                >
+                  <Pencil className="h-3 w-3" />
+                </button>
+              </>
+            )}
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground">Sua Patente:</p>
           <p className="text-base font-semibold text-primary">Nível {level.level} / {MAX_LEVEL}: {level.title}</p>
           <p className="mt-1 text-[11px] text-muted-foreground">
             {toNext === null ? "Nível máximo alcançado 🔥" : `Faltam ${toNext} dia${toNext === 1 ? "" : "s"} de ofensiva para subir de nível`}
