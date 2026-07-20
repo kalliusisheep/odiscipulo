@@ -5,9 +5,11 @@ import { ViewModeToggle } from "@/components/ViewModeToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { CHARACTERS, BIBLE_VERSIONS } from "@/data/content";
 import { getLevel, streakToNextLevel, MAX_LEVEL } from "@/data/levels";
+import { toast } from "sonner";
+import { isUsernameAvailable, isValidUsername, normalizeUsername } from "@/lib/username";
 
 import { useApp } from "@/lib/app-context";
-import { Bell, Church, LogOut, BookOpen, Flame, Trophy, Clock, Camera, Loader2 } from "lucide-react";
+import { AtSign, Bell, Church, Copy, Check, LogOut, BookOpen, Flame, Trophy, Clock, Camera, Loader2, Pencil, X } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/perfil")({
   component: PerfilPage,
