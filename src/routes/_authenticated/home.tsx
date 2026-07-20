@@ -25,6 +25,7 @@ function HomePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [latestCompletedAt, setLatestCompletedAt] = useState<Date | null>(null);
+  const [expandedTrail, setExpandedTrail] = useState<string | null>(null);
 
   useEffect(() => {
     void (async () => {
