@@ -74,6 +74,24 @@ export type Database = {
         }
         Relationships: []
       }
+      friendships: {
+        Row: {
+          created_at: string
+          friend_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          friend_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          friend_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       groups: {
         Row: {
           created_at: string
@@ -116,6 +134,30 @@ export type Database = {
           lesson_id?: string
           user_id?: string
           xp_gained?: number
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          recipient_id: string
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          recipient_id: string
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          recipient_id?: string
+          sender_id?: string
         }
         Relationships: []
       }
@@ -193,6 +235,7 @@ export type Database = {
           onboarded: boolean
           streak: number
           updated_at: string
+          username: string | null
           xp: number
         }
         Insert: {
@@ -212,6 +255,7 @@ export type Database = {
           onboarded?: boolean
           streak?: number
           updated_at?: string
+          username?: string | null
           xp?: number
         }
         Update: {
@@ -231,6 +275,7 @@ export type Database = {
           onboarded?: boolean
           streak?: number
           updated_at?: string
+          username?: string | null
           xp?: number
         }
         Relationships: []
@@ -332,7 +377,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      are_friends: { Args: { _a: string; _b: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
