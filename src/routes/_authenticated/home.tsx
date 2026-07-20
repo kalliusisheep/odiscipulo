@@ -5,7 +5,7 @@ import { trails, CHARACTERS } from "@/data/content";
 import { getLevel, getNextLevel, streakToNextLevel } from "@/data/levels";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useApp } from "@/lib/app-context";
-import { Flame, Check, Lock, Play, ChevronRight } from "lucide-react";
+import { Flame, Check, Lock, Play, ChevronRight, ChevronDown } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/home")({
   component: HomePage,
@@ -25,6 +25,7 @@ function HomePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [latestCompletedAt, setLatestCompletedAt] = useState<Date | null>(null);
+  const [expandedTrail, setExpandedTrail] = useState<string | null>(null);
 
   useEffect(() => {
     void (async () => {
@@ -132,55 +133,72 @@ function HomePage() {
           const doneCount = allLessons.filter((l) => completed.has(l.id)).length;
           const total = allLessons.length;
           const pct = total ? (doneCount / total) * 100 : 0;
+          const isOpen = expandedTrail === t.id;
           return (
             <div key={t.id} className="card-elevated overflow-hidden">
-              <div className={`bg-gradient-to-r ${t.color} px-5 py-4`}>
-                <h3 className="text-base font-bold text-white">{t.title}</h3>
-                <p className="mt-0.5 text-xs text-white/80">{t.description}</p>
-                {total > 0 && (
-                  <>
-                    <div className="mt-3 flex items-center justify-between text-[11px] text-white/90">
-                      <span>Trilha de Estudos</span>
-                      <span>{doneCount} de {total} lições</span>
-                    </div>
-                    <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-white/20">
-                      <div className="h-full bg-white transition-all" style={{ width: `${pct}%` }} />
-                    </div>
-                  </>
-                )}
-              </div>
-
-              {t.modules.length === 0 ? (
-                <div className="px-5 py-4 text-xs text-muted-foreground">
-                  Em breve — módulos e lições estão sendo preparados.
+              <button
+                type="button"
+                onClick={() => setExpandedTrail(isOpen ? null : t.id)}
+                className={`w-full text-left bg-gradient-to-r ${t.color} px-5 py-4 transition-opacity hover:opacity-95`}
+                aria-expanded={isOpen}
+              >
+                <div className="flex items-start gap-3">
+                  <div className="flex-1">
+                    <h3 className="text-base font-bold text-white">{t.title}</h3>
+                    <p className="mt-0.5 text-xs text-white/80">{t.description}</p>
+                    {total > 0 && (
+                      <>
+                        <div className="mt-3 flex items-center justify-between text-[11px] text-white/90">
+                          <span>Trilha de Estudos</span>
+                          <span>{doneCount} de {total} lições</span>
+                        </div>
+                        <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-white/20">
+                          <div className="h-full bg-white transition-all" style={{ width: `${pct}%` }} />
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  <ChevronDown
+                    className={`h-5 w-5 shrink-0 text-white/90 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                  />
                 </div>
-              ) : (
-                <div className="space-y-4 p-4">
-                  {t.modules.map((mod) => (
-                    <div key={mod.id}>
-                      <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{mod.title}</p>
-                      <div className="space-y-2">
-                        {mod.lessons.map((lesson, i) => {
-                          const isDone = completed.has(lesson.id);
-                          const prevDone = i === 0 ? true : completed.has(mod.lessons[i - 1].id);
-                          const wouldBeActive = !isDone && prevDone;
-                          const isDailyLocked = wouldBeActive && completedToday;
-                          const isActive = wouldBeActive && !completedToday;
-                          const state: "done" | "active" | "locked" | "daily-locked" = isDone
-                            ? "done"
-                            : isActive
-                              ? "active"
-                              : isDailyLocked
-                                ? "daily-locked"
-                                : "locked";
-                          return (
-                            <LessonRow key={lesson.id} title={lesson.title} id={lesson.id}
-                              state={state} nextUnlockAt={nextUnlockAt} />
-                          );
-                        })}
-                      </div>
+              </button>
+
+              {isOpen && (
+                <div className="animate-fade-in">
+                  {t.modules.length === 0 ? (
+                    <div className="px-5 py-4 text-xs text-muted-foreground">
+                      Em breve — módulos e lições estão sendo preparados.
                     </div>
-                  ))}
+                  ) : (
+                    <div className="space-y-4 p-4">
+                      {t.modules.map((mod) => (
+                        <div key={mod.id}>
+                          <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{mod.title}</p>
+                          <div className="space-y-2">
+                            {mod.lessons.map((lesson, i) => {
+                              const isDone = completed.has(lesson.id);
+                              const prevDone = i === 0 ? true : completed.has(mod.lessons[i - 1].id);
+                              const wouldBeActive = !isDone && prevDone;
+                              const isDailyLocked = wouldBeActive && completedToday;
+                              const isActive = wouldBeActive && !completedToday;
+                              const state: "done" | "active" | "locked" | "daily-locked" = isDone
+                                ? "done"
+                                : isActive
+                                  ? "active"
+                                  : isDailyLocked
+                                    ? "daily-locked"
+                                    : "locked";
+                              return (
+                                <LessonRow key={lesson.id} title={lesson.title} id={lesson.id}
+                                  state={state} nextUnlockAt={nextUnlockAt} />
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
