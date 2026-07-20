@@ -18,6 +18,7 @@ export const Route = createFileRoute("/_authenticated/perfil")({
 type Profile = {
   id: string;
   display_name: string;
+  username: string | null;
   avatar_char: string;
   avatar_url: string | null;
   bio: string | null;
@@ -34,6 +35,10 @@ function PerfilPage() {
   const [lessonsCount, setLessonsCount] = useState(0);
   const [bioDraft, setBioDraft] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [editingUsername, setEditingUsername] = useState(false);
+  const [usernameDraft, setUsernameDraft] = useState("");
+  const [savingUsername, setSavingUsername] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const { bibleVersion, setBibleVersion } = useApp();
   const nav = useNavigate();
