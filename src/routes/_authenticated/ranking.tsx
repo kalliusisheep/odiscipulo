@@ -394,8 +394,8 @@ function PodiumSpot({ row, place }: { row: Row; place: 1 | 2 | 3 }) {
       : "h-12 bg-gradient-to-b from-orange-400 to-orange-600 text-white";
   const order = place === 2 ? "order-1" : place === 1 ? "order-2" : "order-3";
 
-  const inner = (
-    <div className={`flex w-1/3 flex-col items-center ${order}`}>
+  const body = (
+    <>
       {isFirst && (
         <div className="mb-1 flex items-center gap-1 rounded-full bg-ancient px-2 py-0.5 text-[10px] font-bold text-background shadow">
           <Crown className="h-3 w-3" /> LEVEL {level.level}
@@ -425,15 +425,16 @@ function PodiumSpot({ row, place }: { row: Row; place: 1 | 2 | 3 }) {
       <div className={`mt-2 flex w-full items-start justify-center rounded-t-xl pt-2 text-lg font-black ${block}`}>
         {place}º
       </div>
-    </div>
+    </>
   );
 
+  const cls = `flex w-1/3 flex-col items-center ${order}`;
   if (row.username && !row.isMe) {
     return (
-      <Link to="/perfil/$username" params={{ username: row.username }} className="w-1/3">
-        <div className="w-full">{inner}</div>
+      <Link to="/perfil/$username" params={{ username: row.username }} className={cls}>
+        {body}
       </Link>
     );
   }
-  return inner;
+  return <div className={cls}>{body}</div>;
 }
