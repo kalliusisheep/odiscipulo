@@ -5,7 +5,7 @@ import { trails, CHARACTERS } from "@/data/content";
 import { getLevel, getNextLevel, streakToNextLevel } from "@/data/levels";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useApp } from "@/lib/app-context";
-import { Flame, Check, Lock, Play, ChevronRight } from "lucide-react";
+import { Flame, Check, Lock, Play, ChevronRight, ChevronDown } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/home")({
   component: HomePage,
