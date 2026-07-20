@@ -22,6 +22,7 @@ import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/h
 import { Route as AuthenticatedBemVindoRouteImport } from './routes/_authenticated/bem-vindo'
 import { Route as AuthenticatedEstudosIndexRouteImport } from './routes/_authenticated/estudos.index'
 import { Route as AuthenticatedPerfilUsernameRouteImport } from './routes/_authenticated/perfil.$username'
+import { Route as AuthenticatedMensagensUsernameRouteImport } from './routes/_authenticated/mensagens.$username'
 import { Route as AuthenticatedLicaoIdRouteImport } from './routes/_authenticated/licao.$id'
 import { Route as AuthenticatedEstudosPlanoIdRouteImport } from './routes/_authenticated/estudos.plano.$id'
 import { Route as AuthenticatedEstudosMeditacaoIdRouteImport } from './routes/_authenticated/estudos.meditacao.$id'
@@ -94,6 +95,12 @@ const AuthenticatedPerfilUsernameRoute =
     path: '/$username',
     getParentRoute: () => AuthenticatedPerfilRoute,
   } as any)
+const AuthenticatedMensagensUsernameRoute =
+  AuthenticatedMensagensUsernameRouteImport.update({
+    id: '/mensagens/$username',
+    path: '/mensagens/$username',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedLicaoIdRoute = AuthenticatedLicaoIdRouteImport.update({
   id: '/licao/$id',
   path: '/licao/$id',
@@ -130,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
+  '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
   '/estudos/': typeof AuthenticatedEstudosIndexRoute
   '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
@@ -148,6 +156,7 @@ export interface FileRoutesByTo {
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
+  '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
   '/estudos': typeof AuthenticatedEstudosIndexRoute
   '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
@@ -168,6 +177,7 @@ export interface FileRoutesById {
   '/_authenticated/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
   '/_authenticated/licao/$id': typeof AuthenticatedLicaoIdRoute
+  '/_authenticated/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/_authenticated/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
   '/_authenticated/estudos/': typeof AuthenticatedEstudosIndexRoute
   '/_authenticated/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
@@ -188,6 +198,7 @@ export interface FileRouteTypes {
     | '/ranking-detalhes'
     | '/api/mentor'
     | '/licao/$id'
+    | '/mensagens/$username'
     | '/perfil/$username'
     | '/estudos/'
     | '/estudos/biblico/$id'
@@ -206,6 +217,7 @@ export interface FileRouteTypes {
     | '/ranking-detalhes'
     | '/api/mentor'
     | '/licao/$id'
+    | '/mensagens/$username'
     | '/perfil/$username'
     | '/estudos'
     | '/estudos/biblico/$id'
@@ -225,6 +237,7 @@ export interface FileRouteTypes {
     | '/_authenticated/ranking-detalhes'
     | '/api/mentor'
     | '/_authenticated/licao/$id'
+    | '/_authenticated/mensagens/$username'
     | '/_authenticated/perfil/$username'
     | '/_authenticated/estudos/'
     | '/_authenticated/estudos/biblico/$id'
@@ -332,6 +345,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPerfilUsernameRouteImport
       parentRoute: typeof AuthenticatedPerfilRoute
     }
+    '/_authenticated/mensagens/$username': {
+      id: '/_authenticated/mensagens/$username'
+      path: '/mensagens/$username'
+      fullPath: '/mensagens/$username'
+      preLoaderRoute: typeof AuthenticatedMensagensUsernameRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/licao/$id': {
       id: '/_authenticated/licao/$id'
       path: '/licao/$id'
@@ -383,6 +403,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRankingRoute: typeof AuthenticatedRankingRoute
   AuthenticatedRankingDetalhesRoute: typeof AuthenticatedRankingDetalhesRoute
   AuthenticatedLicaoIdRoute: typeof AuthenticatedLicaoIdRoute
+  AuthenticatedMensagensUsernameRoute: typeof AuthenticatedMensagensUsernameRoute
   AuthenticatedEstudosIndexRoute: typeof AuthenticatedEstudosIndexRoute
   AuthenticatedEstudosBiblicoIdRoute: typeof AuthenticatedEstudosBiblicoIdRoute
   AuthenticatedEstudosMeditacaoIdRoute: typeof AuthenticatedEstudosMeditacaoIdRoute
@@ -398,6 +419,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRankingRoute: AuthenticatedRankingRoute,
   AuthenticatedRankingDetalhesRoute: AuthenticatedRankingDetalhesRoute,
   AuthenticatedLicaoIdRoute: AuthenticatedLicaoIdRoute,
+  AuthenticatedMensagensUsernameRoute: AuthenticatedMensagensUsernameRoute,
   AuthenticatedEstudosIndexRoute: AuthenticatedEstudosIndexRoute,
   AuthenticatedEstudosBiblicoIdRoute: AuthenticatedEstudosBiblicoIdRoute,
   AuthenticatedEstudosMeditacaoIdRoute: AuthenticatedEstudosMeditacaoIdRoute,
