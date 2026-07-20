@@ -94,6 +94,47 @@ function PerfilPage() {
     await update({ bio: bioDraft.trim() || null });
   };
 
+  const copyUsername = async () => {
+    if (!profile?.username) return;
+    try {
+      await navigator.clipboard.writeText(`@${profile.username}`);
+      setCopied(true);
+      toast.success("ID copiado!");
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      toast.error("Não foi possível copiar.");
+    }
+  };
+
+  const startEditUsername = () => {
+    setUsernameDraft(profile?.username ?? "");
+    setEditingUsername(true);
+  };
+
+  const saveUsername = async () => {
+    if (!profile) return;
+    const u = normalizeUsername(usernameDraft);
+    if (!isValidUsername(u)) {
+      toast.error("ID inválido (3–24 caracteres: letras, números, . ou _).");
+      return;
+    }
+    if (u === profile.username) {
+      setEditingUsername(false);
+      return;
+    }
+    setSavingUsername(true);
+    const available = await isUsernameAvailable(u, profile.id);
+    if (!available) {
+      setSavingUsername(false);
+      toast.error("Esse ID já está em uso.");
+      return;
+    }
+    await update({ username: u });
+    setSavingUsername(false);
+    setEditingUsername(false);
+    toast.success("ID atualizado!");
+  };
+
   if (!profile) return <div className="p-6 text-sm text-muted-foreground">Carregando…</div>;
 
   const level = getLevel(profile.streak);
