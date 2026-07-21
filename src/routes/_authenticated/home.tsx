@@ -128,13 +128,29 @@ function HomePage() {
               <span className="text-muted-foreground">
                 {nextLevel ? <>Próximo: <span className="text-foreground font-semibold">Nível {nextLevel.level} · {nextLevel.title}</span></> : "Você atingiu o nível máximo"}
               </span>
-              <span className="whitespace-nowrap text-primary">{toNext === null ? "🔥 Máximo" : `Faltam ${toNext} dia${toNext === 1 ? "" : "s"}`}</span>
+              <span className="whitespace-nowrap text-primary">{xpLeft === null ? "🔥 Máximo" : `Faltam ${xpLeft} XP`}</span>
             </div>
             <div className="h-2.5 overflow-hidden rounded-full bg-surface-2">
-              <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${levelProgress}%` }} />
+              <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${levelPct}%` }} />
             </div>
           </div>
         </div>
+        {showLevel50Checklist && (
+          <div className="border-t border-border/60 bg-ancient/10 p-4">
+            <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-ancient">
+              <Sparkles className="h-3.5 w-3.5" /> Rumo ao Nível {GATED_LEVEL} · Discípulo
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Você já tem XP suficiente. Para se tornar Discípulo, conclua todo o conteúdo:
+            </p>
+            <ul className="mt-2 space-y-1 text-xs">
+              <ChecklistRow label="Trilhas de discipulado" missing={level50.missing.trails} total={level50.totals.trails} unit="lições" />
+              <ChecklistRow label="Estudos bíblicos" missing={level50.missing.bibleStudies} total={level50.totals.bibleStudies} />
+              <ChecklistRow label="Planos de leitura" missing={level50.missing.planDays} total={level50.totals.planDays} unit="dias" />
+              <ChecklistRow label="Meditações guiadas" missing={level50.missing.meditations} total={level50.totals.meditations} />
+            </ul>
+          </div>
+        )}
       </section>
 
       <section className="space-y-4">
