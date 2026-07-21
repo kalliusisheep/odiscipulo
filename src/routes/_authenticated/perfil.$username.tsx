@@ -99,7 +99,7 @@ function PublicProfilePage() {
   }
   if (!profile) return null;
 
-  const level = getLevel(profile.streak);
+  const level = getLevel(profile.xp);
   const ch = CHARACTERS.find((c) => c.id === profile.avatar_char) ?? CHARACTERS[0];
   const isSelf = myId === profile.id;
 

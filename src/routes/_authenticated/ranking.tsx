@@ -99,7 +99,7 @@ function RankingPage() {
   const shareRanking = async () => {
     const me = rows[myIndex];
     const text = me
-      ? `Estou em ${myIndex + 1}º de ${total} no Disciple — ${getLevel(me.streak).title} 🔥 ${me.streak} dias`
+      ? `Estou em ${myIndex + 1}º de ${total} no Disciple — ${getLevel(me.xp).title} 🔥 ${me.streak} dias`
       : `Confira o ranking da minha célula no Disciple`;
     const nav = navigator as Navigator & { share?: (d: ShareData) => Promise<void> };
     if (typeof navigator !== "undefined" && nav.share) {
@@ -228,7 +228,7 @@ function RankingPage() {
       <div className="space-y-2">
         {rest.map((row, idx) => {
           const i = idx + 3;
-          const level = getLevel(row.streak);
+          const level = getLevel(row.xp);
           const ch = CHARACTERS.find((c) => c.id === row.avatar_char) ?? CHARACTERS[0];
           const inner = (
             <div
@@ -328,8 +328,8 @@ function RankingPage() {
                   <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-surface">
                     {searchResult.avatar_url ? (
                       <img src={searchResult.avatar_url} alt="" className="h-full w-full object-cover" />
-                    ) : getLevel(searchResult.streak).avatar ? (
-                      <img src={getLevel(searchResult.streak).avatar} alt="" className="h-full w-full object-cover" />
+                    ) : getLevel(searchResult.xp).avatar ? (
+                      <img src={getLevel(searchResult.xp).avatar} alt="" className="h-full w-full object-cover" />
                     ) : (
                       <span>👤</span>
                     )}
@@ -337,7 +337,7 @@ function RankingPage() {
                   <div className="flex-1 min-w-0">
                     <p className="truncate text-sm font-semibold">{searchResult.display_name}</p>
                     <p className="truncate text-[11px] text-muted-foreground">
-                      @{searchResult.username} · Nv {getLevel(searchResult.streak).level}
+                      @{searchResult.username} · Nv {getLevel(searchResult.xp).level}
                     </p>
                   </div>
                   {alreadyFriend ? (
@@ -377,7 +377,7 @@ function RankingPage() {
 }
 
 function PodiumSpot({ row, place }: { row: Row; place: 1 | 2 | 3 }) {
-  const level = getLevel(row.streak);
+  const level = getLevel(row.xp);
   const isFirst = place === 1;
   const size = isFirst ? "h-24 w-24" : "h-20 w-20";
   const ring =
