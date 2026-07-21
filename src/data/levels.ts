@@ -59,7 +59,7 @@ export const GATED_LEVEL = 50;
 export const TRAIL_LESSON_IDS: string[] = trails.flatMap((t) =>
   t.modules.flatMap((m) => m.lessons.map((l) => l.id)),
 );
-export const BIBLE_STUDY_IDS: string[] = bibleStudies.map((s) => s.id);
+export const BIBLE_STUDY_IDS: string[] = bibleStudies.map((s) => `bible:${s.id}`);
 export const MEDITATION_PROGRESS_IDS: string[] = aiMeditations.map((m) => `med:${m.id}`);
 export const PLAN_DAY_PROGRESS_IDS: string[] = readingPlans.flatMap((p) =>
   Array.from({ length: p.totalDays }, (_, i) => `plan:${p.id}:${i + 1}`),
