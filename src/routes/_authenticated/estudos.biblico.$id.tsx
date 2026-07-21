@@ -75,8 +75,9 @@ function EstudoBiblicoPage() {
           answer: reflection.trim(),
         });
       }
-      const { prevStreak, newStreak } = await awardXpAndStreak(u.user.id, study.xp);
-      celebrateActivity({ prevStreak, newStreak, xp: study.xp });
+      const xpGained = 80;
+      const { prevXp, newXp } = await awardXpAndStreak(u.user.id, xpGained);
+      celebrateActivity({ prevXp, newXp, xp: xpGained });
     }
     setStep("done");
     setSaving(false);

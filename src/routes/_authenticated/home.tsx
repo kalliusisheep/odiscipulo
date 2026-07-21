@@ -1,11 +1,18 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { trails, CHARACTERS } from "@/data/content";
-import { getLevel, getNextLevel, streakToNextLevel } from "@/data/levels";
+import {
+  getLevel,
+  getNextLevel,
+  xpToNextLevel,
+  levelProgressPct,
+  checkLevel50Status,
+  GATED_LEVEL,
+} from "@/data/levels";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useApp } from "@/lib/app-context";
-import { Flame, Check, Lock, Play, ChevronRight, ChevronDown } from "lucide-react";
+import { Flame, Check, Lock, Play, ChevronRight, ChevronDown, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/home")({
   component: HomePage,
@@ -23,7 +30,7 @@ function HomePage() {
   const { viewMode } = useApp();
   const nav = useNavigate();
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [completed, setCompleted] = useState<Set<string>>(new Set());
+  const [progressIds, setProgressIds] = useState<Set<string>>(new Set());
   const [latestCompletedAt, setLatestCompletedAt] = useState<Date | null>(null);
   const [expandedTrail, setExpandedTrail] = useState<string | null>(null);
 
@@ -46,7 +53,7 @@ function HomePage() {
         .select("lesson_id, completed_at")
         .eq("user_id", u.user.id);
       const rows = lp ?? [];
-      setCompleted(new Set(rows.map((r) => r.lesson_id)));
+      setProgressIds(new Set(rows.map((r) => r.lesson_id)));
       const latest = rows
         .map((r) => (r.completed_at ? new Date(r.completed_at) : null))
         .filter((d): d is Date => d !== null)
@@ -54,6 +61,8 @@ function HomePage() {
       setLatestCompletedAt(latest);
     })();
   }, [nav]);
+
+  const completed = progressIds;
 
   // Regra de liberação diária: no máximo 1 lição nova por dia.
   const now = new Date();
@@ -63,12 +72,14 @@ function HomePage() {
     ? new Date(todayMidnight.getTime() + 24 * 60 * 60 * 1000)
     : null;
 
-  const level = getLevel(profile?.streak ?? 0);
-  const nextLevel = getNextLevel(profile?.streak ?? 0);
+  const xp = profile?.xp ?? 0;
+  const level50 = useMemo(() => checkLevel50Status(xp, progressIds), [xp, progressIds]);
+  const level = getLevel(xp, { level50Unlocked: level50.unlocked });
+  const nextLevel = getNextLevel(xp, { level50Unlocked: level50.unlocked });
   const character = CHARACTERS.find((c) => c.id === profile?.avatar_char) ?? CHARACTERS[0];
-  const toNext = streakToNextLevel(profile?.streak ?? 0);
-  const currentLevelMin = (level.level - 1) * 3;
-  const levelProgress = Math.min(100, Math.max(0, ((profile?.streak ?? 0) - currentLevelMin) / 3 * 100));
+  const xpLeft = xpToNextLevel(xp, { level50Unlocked: level50.unlocked });
+  const levelPct = levelProgressPct(xp, { level50Unlocked: level50.unlocked });
+  const showLevel50Checklist = level50.xpOk && !level50.unlocked;
 
   if (viewMode === "lider") {
     return <LiderInline />;
@@ -117,13 +128,29 @@ function HomePage() {
               <span className="text-muted-foreground">
                 {nextLevel ? <>Próximo: <span className="text-foreground font-semibold">Nível {nextLevel.level} · {nextLevel.title}</span></> : "Você atingiu o nível máximo"}
               </span>
-              <span className="whitespace-nowrap text-primary">{toNext === null ? "🔥 Máximo" : `Faltam ${toNext} dia${toNext === 1 ? "" : "s"}`}</span>
+              <span className="whitespace-nowrap text-primary">{xpLeft === null ? "🔥 Máximo" : `Faltam ${xpLeft} XP`}</span>
             </div>
             <div className="h-2.5 overflow-hidden rounded-full bg-surface-2">
-              <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${levelProgress}%` }} />
+              <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${levelPct}%` }} />
             </div>
           </div>
         </div>
+        {showLevel50Checklist && (
+          <div className="border-t border-border/60 bg-ancient/10 p-4">
+            <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-ancient">
+              <Sparkles className="h-3.5 w-3.5" /> Rumo ao Nível {GATED_LEVEL} · Discípulo
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Você já tem XP suficiente. Para se tornar Discípulo, conclua todo o conteúdo:
+            </p>
+            <ul className="mt-2 space-y-1 text-xs">
+              <ChecklistRow label="Trilhas de discipulado" missing={level50.missing.trails} total={level50.totals.trails} unit="lições" />
+              <ChecklistRow label="Estudos bíblicos" missing={level50.missing.bibleStudies} total={level50.totals.bibleStudies} />
+              <ChecklistRow label="Planos de leitura" missing={level50.missing.planDays} total={level50.totals.planDays} unit="dias" />
+              <ChecklistRow label="Meditações guiadas" missing={level50.missing.meditations} total={level50.totals.meditations} />
+            </ul>
+          </div>
+        )}
       </section>
 
       <section className="space-y-4">
@@ -267,6 +294,26 @@ function LessonRow({ title, id, state, nextUnlockAt }: { title: string; id: stri
       </div>
       <span className="rounded-full bg-primary px-3 py-1 text-[11px] font-semibold text-primary-foreground">Estudar</span>
     </Link>
+  );
+}
+
+function ChecklistRow({ label, missing, total, unit }: { label: string; missing: number; total: number; unit?: string }) {
+  const done = total - missing;
+  const complete = missing === 0;
+  return (
+    <li className="flex items-center justify-between gap-2">
+      <span className="flex items-center gap-1.5">
+        {complete ? (
+          <Check className="h-3.5 w-3.5 text-success" />
+        ) : (
+          <span className="inline-block h-3.5 w-3.5 rounded-full border border-muted-foreground/50" />
+        )}
+        <span className={complete ? "text-success" : "text-foreground"}>{label}</span>
+      </span>
+      <span className="text-[10px] font-semibold text-muted-foreground">
+        {done}/{total}{unit ? ` ${unit}` : ""}
+      </span>
+    </li>
   );
 }
 

@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { getLevel, streakToNextLevel, MAX_LEVEL } from "@/data/levels";
+import { getLevel, xpToNextLevel, levelProgressPct, MAX_LEVEL } from "@/data/levels";
 import { CHARACTERS } from "@/data/content";
 import { toast } from "sonner";
 import {
@@ -61,8 +61,8 @@ function RankingDetalhesPage() {
     })();
   }, []);
 
-  const level = useMemo(() => (me ? getLevel(me.streak) : null), [me]);
-  const toNext = useMemo(() => (me ? streakToNextLevel(me.streak) : null), [me]);
+  const level = useMemo(() => (me ? getLevel(me.xp) : null), [me]);
+  const toNext = useMemo(() => (me ? xpToNextLevel(me.xp) : null), [me]);
   const ch = me ? CHARACTERS.find((c) => c.id === me.avatar_char) ?? CHARACTERS[0] : null;
 
   const shareText = me && level && rankPos
@@ -95,8 +95,7 @@ function RankingDetalhesPage() {
 
   if (!me || !level) return <div className="p-6 text-sm text-muted-foreground">Carregando…</div>;
 
-  const progressPct =
-    toNext === null ? 100 : Math.min(100, Math.max(0, ((3 - toNext) / 3) * 100));
+  const progressPct = levelProgressPct(me.xp);
 
   return (
     <div className="mx-auto max-w-lg space-y-5 px-4 pt-6 pb-24">
@@ -138,7 +137,7 @@ function RankingDetalhesPage() {
           <div className="mb-2 flex items-center justify-between text-xs">
             <span className="text-muted-foreground">Progresso ao próximo nível</span>
             <span className="font-semibold">
-              {toNext === null ? "Máximo!" : `${toNext} dia${toNext === 1 ? "" : "s"} restantes`}
+              {toNext === null ? "Máximo!" : `Faltam ${toNext} XP`}
             </span>
           </div>
           <div className="h-2 w-full overflow-hidden rounded-full bg-surface-2">

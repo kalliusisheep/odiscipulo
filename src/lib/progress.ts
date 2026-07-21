@@ -1,8 +1,11 @@
 import { supabase } from "@/integrations/supabase/client";
 
+const STREAK_BONUS_XP = 10;
+
 /**
  * Award XP and update daily streak for the current user.
- * Returns the previous and new streak so callers can trigger a level-up celebration.
+ * When the streak advances to a new day, a +10 XP bonus is added on top of `xp`.
+ * Returns previous/new XP and streak so callers can trigger celebrations / level-ups.
  */
 export async function awardXpAndStreak(userId: string, xp: number) {
   const { data: p } = await supabase
@@ -16,15 +19,21 @@ export async function awardXpAndStreak(userId: string, xp: number) {
     ? Math.floor((new Date(today).getTime() - new Date(last).getTime()) / 86400000)
     : null;
   const prevStreak = p?.streak ?? 0;
+  const prevXp = p?.xp ?? 0;
+
   const newStreak =
     diff === null ? 1 : diff === 0 ? (prevStreak || 1) : diff === 1 ? prevStreak + 1 : 1;
+  const streakAdvanced = diff === null || diff >= 1;
+  const bonus = streakAdvanced ? STREAK_BONUS_XP : 0;
+  const newXp = prevXp + xp + bonus;
+
   await supabase
     .from("profiles")
     .update({
-      xp: (p?.xp ?? 0) + xp,
+      xp: newXp,
       streak: newStreak,
       last_activity_date: today,
     })
     .eq("id", userId);
-  return { prevStreak, newStreak };
+  return { prevStreak, newStreak, prevXp, newXp, streakBonus: bonus };
 }
