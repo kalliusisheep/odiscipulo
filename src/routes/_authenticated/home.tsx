@@ -297,6 +297,26 @@ function LessonRow({ title, id, state, nextUnlockAt }: { title: string; id: stri
   );
 }
 
+function ChecklistRow({ label, missing, total, unit }: { label: string; missing: number; total: number; unit?: string }) {
+  const done = total - missing;
+  const complete = missing === 0;
+  return (
+    <li className="flex items-center justify-between gap-2">
+      <span className="flex items-center gap-1.5">
+        {complete ? (
+          <Check className="h-3.5 w-3.5 text-success" />
+        ) : (
+          <span className="inline-block h-3.5 w-3.5 rounded-full border border-muted-foreground/50" />
+        )}
+        <span className={complete ? "text-success" : "text-foreground"}>{label}</span>
+      </span>
+      <span className="text-[10px] font-semibold text-muted-foreground">
+        {done}/{total}{unit ? ` ${unit}` : ""}
+      </span>
+    </li>
+  );
+}
+
 function LiderInline() {
   return (
     <div className="mx-auto max-w-lg space-y-5 px-4 pt-6">

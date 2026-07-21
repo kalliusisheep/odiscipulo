@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ViewModeToggle } from "@/components/ViewModeToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { CHARACTERS, BIBLE_VERSIONS } from "@/data/content";
-import { getLevel, streakToNextLevel, MAX_LEVEL } from "@/data/levels";
+import { getLevel, xpToNextLevel, MAX_LEVEL } from "@/data/levels";
 import { toast } from "sonner";
 import { isUsernameAvailable, isValidUsername, normalizeUsername } from "@/lib/username";
 
@@ -137,9 +137,9 @@ function PerfilPage() {
 
   if (!profile) return <div className="p-6 text-sm text-muted-foreground">Carregando…</div>;
 
-  const level = getLevel(profile.streak);
+  const level = getLevel(profile.xp);
   const ch = CHARACTERS.find((c) => c.id === profile.avatar_char) ?? CHARACTERS[0];
-  const toNext = streakToNextLevel(profile.streak);
+  const toNext = xpToNextLevel(profile.xp);
 
   return (
     <div className="mx-auto max-w-lg space-y-4 px-4 pt-6">
@@ -230,7 +230,7 @@ function PerfilPage() {
           <p className="mt-2 text-xs text-muted-foreground">Sua Patente:</p>
           <p className="text-base font-semibold text-primary">Nível {level.level} / {MAX_LEVEL}: {level.title}</p>
           <p className="mt-1 text-[11px] text-muted-foreground">
-            {toNext === null ? "Nível máximo alcançado 🔥" : `Faltam ${toNext} dia${toNext === 1 ? "" : "s"} de ofensiva para subir de nível`}
+            {toNext === null ? "Nível máximo alcançado 🔥" : `Faltam ${toNext} XP para subir de nível`}
           </p>
         </div>
 
