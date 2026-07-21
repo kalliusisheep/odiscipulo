@@ -52,10 +52,13 @@ function LicaoPage() {
   const finish = async () => {
     if (saving) return;
     setSaving(true);
+    const baseXp = 100;
+    const perfectBonus = allCorrect ? 20 : 0;
+    const xpGained = baseXp + perfectBonus;
     const { data: u } = await supabase.auth.getUser();
     if (u.user) {
       await supabase.from("lesson_progress").upsert(
-        { user_id: u.user.id, lesson_id: lesson.id, xp_gained: lesson.xp },
+        { user_id: u.user.id, lesson_id: lesson.id, xp_gained: xpGained },
         { onConflict: "user_id,lesson_id" },
       );
       if (reflection.trim()) {
@@ -67,8 +70,8 @@ function LicaoPage() {
           answer: reflection.trim(),
         });
       }
-      const { prevStreak, newStreak } = await awardXpAndStreak(u.user.id, lesson.xp);
-      celebrateActivity({ prevStreak, newStreak, xp: lesson.xp });
+      const { prevXp, newXp } = await awardXpAndStreak(u.user.id, xpGained);
+      celebrateActivity({ prevXp, newXp, xp: xpGained });
     }
     setStep("done");
     setSaving(false);

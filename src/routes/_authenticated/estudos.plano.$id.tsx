@@ -136,9 +136,13 @@ function PlanoPage() {
       void (async () => {
         const { data: u } = await supabase.auth.getUser();
         if (!u.user) return;
-        const xp = 10;
-        const { prevStreak, newStreak } = await awardXpAndStreak(u.user.id, xp);
-        celebrateActivity({ prevStreak, newStreak, xp });
+        const xp = 30;
+        await supabase.from("lesson_progress").upsert(
+          { user_id: u.user.id, lesson_id: `plan:${id}:${day}`, xp_gained: xp },
+          { onConflict: "user_id,lesson_id" },
+        );
+        const { prevXp, newXp } = await awardXpAndStreak(u.user.id, xp);
+        celebrateActivity({ prevXp, newXp, xp });
       })();
     }
   };
@@ -320,7 +324,7 @@ function DayDetails({
           onClick={onComplete}
           className="w-full rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary-glow"
         >
-          Marcar como concluído · +10 XP
+          Marcar como concluído · +30 XP
         </button>
       )}
     </div>

@@ -52,9 +52,13 @@ function MeditacaoPage() {
         question: med.centralQuestion,
         answer: answer.trim(),
       });
-      const xp = 8;
-      const { prevStreak, newStreak } = await awardXpAndStreak(u.user.id, xp);
-      celebrateActivity({ prevStreak, newStreak, xp });
+      await supabase.from("lesson_progress").upsert(
+        { user_id: u.user.id, lesson_id: `med:${med.id}`, xp_gained: 50 },
+        { onConflict: "user_id,lesson_id" },
+      );
+      const xp = 50;
+      const { prevXp, newXp } = await awardXpAndStreak(u.user.id, xp);
+      celebrateActivity({ prevXp, newXp, xp });
       setSaved(true);
     }
     setSaving(false);
