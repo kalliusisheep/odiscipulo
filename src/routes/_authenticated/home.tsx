@@ -1,11 +1,18 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { trails, CHARACTERS } from "@/data/content";
-import { getLevel, getNextLevel, streakToNextLevel } from "@/data/levels";
+import {
+  getLevel,
+  getNextLevel,
+  xpToNextLevel,
+  levelProgressPct,
+  checkLevel50Status,
+  GATED_LEVEL,
+} from "@/data/levels";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useApp } from "@/lib/app-context";
-import { Flame, Check, Lock, Play, ChevronRight, ChevronDown } from "lucide-react";
+import { Flame, Check, Lock, Play, ChevronRight, ChevronDown, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/home")({
   component: HomePage,
@@ -23,7 +30,7 @@ function HomePage() {
   const { viewMode } = useApp();
   const nav = useNavigate();
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [completed, setCompleted] = useState<Set<string>>(new Set());
+  const [progressIds, setProgressIds] = useState<Set<string>>(new Set());
   const [latestCompletedAt, setLatestCompletedAt] = useState<Date | null>(null);
   const [expandedTrail, setExpandedTrail] = useState<string | null>(null);
 
@@ -46,7 +53,7 @@ function HomePage() {
         .select("lesson_id, completed_at")
         .eq("user_id", u.user.id);
       const rows = lp ?? [];
-      setCompleted(new Set(rows.map((r) => r.lesson_id)));
+      setProgressIds(new Set(rows.map((r) => r.lesson_id)));
       const latest = rows
         .map((r) => (r.completed_at ? new Date(r.completed_at) : null))
         .filter((d): d is Date => d !== null)
@@ -54,6 +61,8 @@ function HomePage() {
       setLatestCompletedAt(latest);
     })();
   }, [nav]);
+
+  const completed = progressIds;
 
   // Regra de liberação diária: no máximo 1 lição nova por dia.
   const now = new Date();
@@ -63,12 +72,14 @@ function HomePage() {
     ? new Date(todayMidnight.getTime() + 24 * 60 * 60 * 1000)
     : null;
 
-  const level = getLevel(profile?.streak ?? 0);
-  const nextLevel = getNextLevel(profile?.streak ?? 0);
+  const xp = profile?.xp ?? 0;
+  const level50 = useMemo(() => checkLevel50Status(xp, progressIds), [xp, progressIds]);
+  const level = getLevel(xp, { level50Unlocked: level50.unlocked });
+  const nextLevel = getNextLevel(xp, { level50Unlocked: level50.unlocked });
   const character = CHARACTERS.find((c) => c.id === profile?.avatar_char) ?? CHARACTERS[0];
-  const toNext = streakToNextLevel(profile?.streak ?? 0);
-  const currentLevelMin = (level.level - 1) * 3;
-  const levelProgress = Math.min(100, Math.max(0, ((profile?.streak ?? 0) - currentLevelMin) / 3 * 100));
+  const xpLeft = xpToNextLevel(xp, { level50Unlocked: level50.unlocked });
+  const levelPct = levelProgressPct(xp, { level50Unlocked: level50.unlocked });
+  const showLevel50Checklist = level50.xpOk && !level50.unlocked;
 
   if (viewMode === "lider") {
     return <LiderInline />;
