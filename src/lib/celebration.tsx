@@ -4,7 +4,7 @@ import { getLevel, type LevelEntry } from "@/data/levels";
 import { PartyPopper, Sparkles, X } from "lucide-react";
 
 type CelebrationCtx = {
-  celebrateActivity: (opts: { prevStreak: number; newStreak: number; xp?: number }) => void;
+  celebrateActivity: (opts: { prevXp: number; newXp: number; xp?: number; level50Unlocked?: boolean }) => void;
 };
 
 const Ctx = createContext<CelebrationCtx | null>(null);
@@ -83,19 +83,19 @@ export function CelebrationProvider({ children }: { children: ReactNode }) {
   const busy = useRef(false);
 
   const celebrateActivity = useCallback(
-    ({ prevStreak, newStreak }: { prevStreak: number; newStreak: number; xp?: number }) => {
+    ({ prevXp, newXp, level50Unlocked }: { prevXp: number; newXp: number; xp?: number; level50Unlocked?: boolean }) => {
       if (busy.current) return;
       busy.current = true;
       setTimeout(() => (busy.current = false), 400);
 
-      const prevLevel = getLevel(prevStreak);
-      const nextLevel = getLevel(newStreak);
+      const opts = { level50Unlocked };
+      const prevLevel = getLevel(prevXp, opts);
+      const nextLevel = getLevel(newXp, opts);
       const leveledUp = nextLevel.level > prevLevel.level;
 
       fireConfetti(leveledUp);
       if (leveledUp) {
         levelUpFanfare();
-        // Show pop-up a beat after confetti begins
         setTimeout(() => setLevelUp(nextLevel), 350);
       } else {
         successChime();
