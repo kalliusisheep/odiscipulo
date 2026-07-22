@@ -74,6 +74,71 @@ export type Database = {
         }
         Relationships: []
       }
+      disciple_modules: {
+        Row: {
+          color: string | null
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          ord: number
+          title: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id: string
+          ord: number
+          title: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          ord?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      disciple_trails: {
+        Row: {
+          created_at: string
+          id: string
+          lesson_id: string | null
+          module_id: string
+          ord: number
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          lesson_id?: string | null
+          module_id: string
+          ord: number
+          title: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          lesson_id?: string | null
+          module_id?: string
+          ord?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "disciple_trails_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "disciple_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       friendships: {
         Row: {
           created_at: string
