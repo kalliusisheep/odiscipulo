@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { trails, CHARACTERS } from "@/data/content";
+import { CHARACTERS } from "@/data/content";
 import {
   getLevel,
   getNextLevel,
@@ -12,7 +12,7 @@ import {
 } from "@/data/levels";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useApp } from "@/lib/app-context";
-import { Flame, Check, Lock, Play, ChevronRight, ChevronDown, Sparkles } from "lucide-react";
+import { Flame, Check, ChevronRight, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/home")({
   component: HomePage,
@@ -26,51 +26,54 @@ type Profile = {
   streak: number;
 };
 
+type ModuleRow = {
+  id: string;
+  ord: number;
+  title: string;
+  description: string | null;
+  color: string | null;
+};
+
+type TrailRow = {
+  id: string;
+  module_id: string;
+  ord: number;
+  title: string;
+  lesson_id: string | null;
+};
+
 function HomePage() {
   const { viewMode } = useApp();
   const nav = useNavigate();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [progressIds, setProgressIds] = useState<Set<string>>(new Set());
-  const [latestCompletedAt, setLatestCompletedAt] = useState<Date | null>(null);
-  const [expandedTrail, setExpandedTrail] = useState<string | null>(null);
+  const [modules, setModules] = useState<ModuleRow[]>([]);
+  const [trails, setTrails] = useState<TrailRow[]>([]);
 
   useEffect(() => {
     void (async () => {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user) return;
-      const { data: p } = await supabase
-        .from("profiles")
-        .select("display_name, first_name, avatar_char, xp, streak, onboarded")
-        .eq("id", u.user.id)
-        .maybeSingle();
+      const [{ data: p }, { data: lp }, { data: mods }, { data: trs }] = await Promise.all([
+        supabase
+          .from("profiles")
+          .select("display_name, first_name, avatar_char, xp, streak, onboarded")
+          .eq("id", u.user.id)
+          .maybeSingle(),
+        supabase.from("lesson_progress").select("lesson_id").eq("user_id", u.user.id),
+        supabase.from("disciple_modules").select("id, ord, title, description, color").order("ord"),
+        supabase.from("disciple_trails").select("id, module_id, ord, title, lesson_id").order("ord"),
+      ]);
       if (p && !p.onboarded) {
         void nav({ to: "/bem-vindo" });
         return;
       }
       if (p) setProfile(p as Profile);
-      const { data: lp } = await supabase
-        .from("lesson_progress")
-        .select("lesson_id, completed_at")
-        .eq("user_id", u.user.id);
-      const rows = lp ?? [];
-      setProgressIds(new Set(rows.map((r) => r.lesson_id)));
-      const latest = rows
-        .map((r) => (r.completed_at ? new Date(r.completed_at) : null))
-        .filter((d): d is Date => d !== null)
-        .sort((a, b) => b.getTime() - a.getTime())[0] ?? null;
-      setLatestCompletedAt(latest);
+      setProgressIds(new Set((lp ?? []).map((r) => r.lesson_id)));
+      setModules((mods ?? []) as ModuleRow[]);
+      setTrails((trs ?? []) as TrailRow[]);
     })();
   }, [nav]);
-
-  const completed = progressIds;
-
-  // Regra de liberação diária: no máximo 1 lição nova por dia.
-  const now = new Date();
-  const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const completedToday = latestCompletedAt !== null && latestCompletedAt >= todayMidnight;
-  const nextUnlockAt = completedToday
-    ? new Date(todayMidnight.getTime() + 24 * 60 * 60 * 1000)
-    : null;
 
   const xp = profile?.xp ?? 0;
   const level50 = useMemo(() => checkLevel50Status(xp, progressIds), [xp, progressIds]);
@@ -90,6 +93,13 @@ function HomePage() {
     profile?.display_name?.trim().split(/\s+/)[0] ||
     "irmão";
 
+  const trailsByModule = new Map<string, TrailRow[]>();
+  for (const t of trails) {
+    const arr = trailsByModule.get(t.module_id) ?? [];
+    arr.push(t);
+    trailsByModule.set(t.module_id, arr);
+  }
+
   return (
     <div className="mx-auto max-w-lg space-y-5 px-4 pt-6">
       <header className="flex items-center justify-between">
@@ -99,7 +109,6 @@ function HomePage() {
         </div>
         <ThemeToggle />
       </header>
-
 
       <section className="card-elevated overflow-hidden">
         <div className="bg-gradient-to-br from-primary/20 via-primary-glow/10 to-transparent p-5">
@@ -141,179 +150,58 @@ function HomePage() {
               <Sparkles className="h-3.5 w-3.5" /> Rumo ao Nível {GATED_LEVEL} · Discípulo
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              Você já tem XP suficiente. Para se tornar Discípulo, conclua todo o conteúdo:
+              Você já tem XP suficiente. Para se tornar Discípulo, conclua todo o conteúdo.
             </p>
-            <ul className="mt-2 space-y-1 text-xs">
-              <ChecklistRow label="Trilhas de discipulado" missing={level50.missing.trails} total={level50.totals.trails} unit="lições" />
-              <ChecklistRow label="Estudos bíblicos" missing={level50.missing.bibleStudies} total={level50.totals.bibleStudies} />
-              <ChecklistRow label="Planos de leitura" missing={level50.missing.planDays} total={level50.totals.planDays} unit="dias" />
-              <ChecklistRow label="Meditações guiadas" missing={level50.missing.meditations} total={level50.totals.meditations} />
-            </ul>
           </div>
         )}
       </section>
 
-      <section className="space-y-4">
-        <h2 className="text-sm font-semibold text-muted-foreground">Trilhas de Discipulado</h2>
-        {trails.map((t) => {
-          const allLessons = t.modules.flatMap((m) => m.lessons);
-          const doneCount = allLessons.filter((l) => completed.has(l.id)).length;
-          const total = allLessons.length;
+      <section className="space-y-3">
+        <h2 className="text-sm font-semibold text-muted-foreground">Módulos de Discipulado</h2>
+        {modules.map((m) => {
+          const mtrails = trailsByModule.get(m.id) ?? [];
+          const withLesson = mtrails.filter((t) => t.lesson_id);
+          const doneCount = withLesson.filter((t) => t.lesson_id && progressIds.has(t.lesson_id)).length;
+          const total = mtrails.length;
           const pct = total ? (doneCount / total) * 100 : 0;
-          const isOpen = expandedTrail === t.id;
           return (
-            <div key={t.id} className="card-elevated overflow-hidden">
-              <button
-                type="button"
-                onClick={() => setExpandedTrail(isOpen ? null : t.id)}
-                className={`w-full text-left bg-gradient-to-r ${t.color} px-5 py-4 transition-opacity hover:opacity-95`}
-                aria-expanded={isOpen}
-              >
+            <Link
+              key={m.id}
+              to="/modulo/$id"
+              params={{ id: m.id }}
+              className="card-elevated block overflow-hidden transition-transform active:scale-[0.99]"
+            >
+              <div className={`bg-gradient-to-r ${m.color ?? "from-slate-500 to-slate-700"} px-5 py-4`}>
                 <div className="flex items-start gap-3">
                   <div className="flex-1">
-                    <h3 className="text-base font-bold text-white">{t.title}</h3>
-                    <p className="mt-0.5 text-xs text-white/80">{t.description}</p>
-                    {total > 0 && (
-                      <>
-                        <div className="mt-3 flex items-center justify-between text-[11px] text-white/90">
-                          <span>Trilha de Estudos</span>
-                          <span>{doneCount} de {total} lições</span>
-                        </div>
-                        <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-white/20">
-                          <div className="h-full bg-white transition-all" style={{ width: `${pct}%` }} />
-                        </div>
-                      </>
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-white/70">
+                      Módulo {m.ord}
+                    </p>
+                    <h3 className="mt-0.5 text-base font-bold text-white">{m.title}</h3>
+                    {m.description && (
+                      <p className="mt-0.5 text-xs text-white/80">{m.description}</p>
                     )}
+                    <div className="mt-3 flex items-center justify-between text-[11px] text-white/90">
+                      <span>Progresso</span>
+                      <span>{doneCount} de {total} trilhas</span>
+                    </div>
+                    <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-white/20">
+                      <div className="h-full bg-white transition-all" style={{ width: `${pct}%` }} />
+                    </div>
                   </div>
-                  <ChevronDown
-                    className={`h-5 w-5 shrink-0 text-white/90 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
-                  />
+                  <ChevronRight className="h-5 w-5 shrink-0 text-white/90" />
                 </div>
-              </button>
-
-              {isOpen && (
-                <div className="animate-fade-in">
-                  {t.modules.length === 0 ? (
-                    <div className="px-5 py-4 text-xs text-muted-foreground">
-                      Em breve — módulos e lições estão sendo preparados.
-                    </div>
-                  ) : (
-                    <div className="space-y-4 p-4">
-                      {t.modules.map((mod) => (
-                        <div key={mod.id}>
-                          <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{mod.title}</p>
-                          <div className="space-y-2">
-                            {mod.lessons.map((lesson, i) => {
-                              const isDone = completed.has(lesson.id);
-                              const prevDone = i === 0 ? true : completed.has(mod.lessons[i - 1].id);
-                              const wouldBeActive = !isDone && prevDone;
-                              const isDailyLocked = wouldBeActive && completedToday;
-                              const isActive = wouldBeActive && !completedToday;
-                              const state: "done" | "active" | "locked" | "daily-locked" = isDone
-                                ? "done"
-                                : isActive
-                                  ? "active"
-                                  : isDailyLocked
-                                    ? "daily-locked"
-                                    : "locked";
-                              return (
-                                <LessonRow key={lesson.id} title={lesson.title} id={lesson.id}
-                                  state={state} nextUnlockAt={nextUnlockAt} />
-                              );
-                            })}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
+              </div>
+            </Link>
           );
         })}
+        {modules.length === 0 && (
+          <div className="card-elevated p-4 text-center text-xs text-muted-foreground">
+            Carregando módulos...
+          </div>
+        )}
       </section>
     </div>
-  );
-}
-
-function LessonRow({ title, id, state, nextUnlockAt }: { title: string; id: string; state: "done" | "active" | "locked" | "daily-locked"; nextUnlockAt?: Date | null }) {
-  const base = "flex items-center gap-3 rounded-2xl border p-3 transition-all";
-  if (state === "daily-locked") {
-    const label = nextUnlockAt
-      ? `Disponível ${nextUnlockAt.toLocaleDateString("pt-BR", { weekday: "long" })}`
-      : "Disponível amanhã";
-    return (
-      <div className={`${base} border-primary/30 bg-primary/5 opacity-80`}>
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/20">
-          <Lock className="h-4 w-4 text-primary" />
-        </div>
-        <div className="flex-1">
-          <p className="text-sm font-medium">{title}</p>
-          <span className="text-[10px] uppercase tracking-wider text-primary">Disponível amanhã</span>
-        </div>
-        <span className="text-[11px] capitalize text-primary">{label}</span>
-      </div>
-    );
-  }
-  if (state === "locked") {
-    return (
-      <div className={`${base} border-border bg-background/50 opacity-60`}>
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted">
-          <Lock className="h-4 w-4 text-muted-foreground" />
-        </div>
-        <div className="flex-1">
-          <p className="text-sm font-medium">{title}</p>
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Bloqueada</span>
-        </div>
-        <span className="text-xs text-muted-foreground">Aguarde</span>
-      </div>
-    );
-  }
-  if (state === "done") {
-    return (
-      <Link to="/licao/$id" params={{ id }} className={`${base} border-success/30 bg-success/5 hover:border-success/60`}>
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-success text-success-foreground">
-          <Check className="h-4 w-4" />
-        </div>
-        <div className="flex-1">
-          <p className="text-sm font-medium">{title}</p>
-          <span className="text-[10px] uppercase tracking-wider text-success">Concluída</span>
-        </div>
-        <ChevronRight className="h-4 w-4 text-muted-foreground" />
-      </Link>
-    );
-  }
-  return (
-    <Link to="/licao/$id" params={{ id }} className={`${base} border-primary bg-primary/10 hover:bg-primary/15`}>
-      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
-        <Play className="h-4 w-4" />
-      </div>
-      <div className="flex-1">
-        <p className="text-sm font-semibold">{title}</p>
-        <span className="text-[10px] uppercase tracking-wider text-primary">Para hoje</span>
-      </div>
-      <span className="rounded-full bg-primary px-3 py-1 text-[11px] font-semibold text-primary-foreground">Estudar</span>
-    </Link>
-  );
-}
-
-function ChecklistRow({ label, missing, total, unit }: { label: string; missing: number; total: number; unit?: string }) {
-  const done = total - missing;
-  const complete = missing === 0;
-  return (
-    <li className="flex items-center justify-between gap-2">
-      <span className="flex items-center gap-1.5">
-        {complete ? (
-          <Check className="h-3.5 w-3.5 text-success" />
-        ) : (
-          <span className="inline-block h-3.5 w-3.5 rounded-full border border-muted-foreground/50" />
-        )}
-        <span className={complete ? "text-success" : "text-foreground"}>{label}</span>
-      </span>
-      <span className="text-[10px] font-semibold text-muted-foreground">
-        {done}/{total}{unit ? ` ${unit}` : ""}
-      </span>
-    </li>
   );
 }
 
@@ -336,5 +224,14 @@ function LiderInline() {
         </Link>
       </div>
     </div>
+  );
+}
+
+// Confetti/celebração removida deste arquivo — permanece disponível globalmente pelos hooks de lição.
+export function ChecklistDone({ label }: { label: string }) {
+  return (
+    <span className="inline-flex items-center gap-1 text-success">
+      <Check className="h-3.5 w-3.5" /> {label}
+    </span>
   );
 }
