@@ -152,86 +152,98 @@ function PerfilPage() {
       </header>
 
       <section className="card-elevated overflow-hidden">
-        <div className="bg-gradient-to-br from-primary/20 to-primary-glow/10 p-5 text-center">
-          <div className="relative mx-auto h-28 w-28">
-            <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-3xl bg-surface-2 ring-2 ring-primary/40 text-6xl">
-              {profile.avatar_url ? (
-                <img src={profile.avatar_url} alt="Foto de perfil" className="h-full w-full object-cover" />
-              ) : level.avatar ? (
-                <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
+        <div
+          className="relative overflow-hidden p-5 text-center"
+          style={{
+            backgroundImage: "url(/sheep-profile.jpeg)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          {/* overlay escuro para manter texto e botões legíveis */}
+          <div className="absolute inset-0 bg-black/50" />
+
+          <div className="relative z-10">
+            <div className="relative mx-auto h-28 w-28">
+              <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-3xl bg-surface-2 ring-2 ring-primary/40 text-6xl">
+                {profile.avatar_url ? (
+                  <img src={profile.avatar_url} alt="Foto de perfil" className="h-full w-full object-cover" />
+                ) : level.avatar ? (
+                  <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
+                ) : (
+                  <span>{ch.emoji}</span>
+                )}
+              </div>
+              <button
+                onClick={onPickFile}
+                disabled={uploading}
+                className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-2 ring-background disabled:opacity-60"
+                aria-label="Enviar foto"
+              >
+                {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
+              </button>
+              <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onFileChange} />
+            </div>
+            <h2 className="mt-3 text-lg font-bold text-white">{profile.display_name}</h2>
+            <div className="mt-1 flex items-center justify-center gap-1.5">
+              {editingUsername ? (
+                <div className="flex items-center gap-1.5">
+                  <div className="flex items-center rounded-full border border-primary bg-background px-2 py-1">
+                    <AtSign className="h-3.5 w-3.5 text-muted-foreground" />
+                    <input
+                      autoFocus
+                      value={usernameDraft}
+                      maxLength={24}
+                      onChange={(e) => setUsernameDraft(normalizeUsername(e.target.value))}
+                      className="w-32 bg-transparent px-1 text-xs font-semibold outline-none"
+                    />
+                  </div>
+                  <button
+                    onClick={() => void saveUsername()}
+                    disabled={savingUsername}
+                    className="rounded-full bg-primary p-1 text-primary-foreground disabled:opacity-50"
+                    aria-label="Salvar"
+                  >
+                    {savingUsername ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
+                  </button>
+                  <button
+                    onClick={() => setEditingUsername(false)}
+                    className="rounded-full border border-border bg-background p-1 text-muted-foreground"
+                    aria-label="Cancelar"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                </div>
               ) : (
-                <span>{ch.emoji}</span>
+                <>
+                  <span className="text-xs font-medium text-white/80">
+                    @{profile.username ?? "sem-id"}
+                  </span>
+                  {profile.username && (
+                    <button
+                      onClick={() => void copyUsername()}
+                      className="rounded-full p-1 text-white/80 transition-colors hover:bg-white/10 hover:text-primary"
+                      aria-label="Copiar ID"
+                    >
+                      {copied ? <Check className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
+                    </button>
+                  )}
+                  <button
+                    onClick={startEditUsername}
+                    className="rounded-full p-1 text-white/80 transition-colors hover:bg-white/10 hover:text-primary"
+                    aria-label="Editar ID"
+                  >
+                    <Pencil className="h-3 w-3" />
+                  </button>
+                </>
               )}
             </div>
-            <button
-              onClick={onPickFile}
-              disabled={uploading}
-              className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-2 ring-background disabled:opacity-60"
-              aria-label="Enviar foto"
-            >
-              {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
-            </button>
-            <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onFileChange} />
+            <p className="mt-2 text-xs text-white/80">Sua Patente:</p>
+            <p className="text-base font-semibold text-primary">Nível {level.level} / {MAX_LEVEL}: {level.title}</p>
+            <p className="mt-1 text-[11px] text-white/70">
+              {toNext === null ? "Nível máximo alcançado 🔥" : `Faltam ${toNext} XP para subir de nível`}
+            </p>
           </div>
-          <h2 className="mt-3 text-lg font-bold">{profile.display_name}</h2>
-          <div className="mt-1 flex items-center justify-center gap-1.5">
-            {editingUsername ? (
-              <div className="flex items-center gap-1.5">
-                <div className="flex items-center rounded-full border border-primary bg-background px-2 py-1">
-                  <AtSign className="h-3.5 w-3.5 text-muted-foreground" />
-                  <input
-                    autoFocus
-                    value={usernameDraft}
-                    maxLength={24}
-                    onChange={(e) => setUsernameDraft(normalizeUsername(e.target.value))}
-                    className="w-32 bg-transparent px-1 text-xs font-semibold outline-none"
-                  />
-                </div>
-                <button
-                  onClick={() => void saveUsername()}
-                  disabled={savingUsername}
-                  className="rounded-full bg-primary p-1 text-primary-foreground disabled:opacity-50"
-                  aria-label="Salvar"
-                >
-                  {savingUsername ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
-                </button>
-                <button
-                  onClick={() => setEditingUsername(false)}
-                  className="rounded-full border border-border bg-background p-1 text-muted-foreground"
-                  aria-label="Cancelar"
-                >
-                  <X className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            ) : (
-              <>
-                <span className="text-xs font-medium text-muted-foreground">
-                  @{profile.username ?? "sem-id"}
-                </span>
-                {profile.username && (
-                  <button
-                    onClick={() => void copyUsername()}
-                    className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-surface-2 hover:text-primary"
-                    aria-label="Copiar ID"
-                  >
-                    {copied ? <Check className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
-                  </button>
-                )}
-                <button
-                  onClick={startEditUsername}
-                  className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-surface-2 hover:text-primary"
-                  aria-label="Editar ID"
-                >
-                  <Pencil className="h-3 w-3" />
-                </button>
-              </>
-            )}
-          </div>
-          <p className="mt-2 text-xs text-muted-foreground">Sua Patente:</p>
-          <p className="text-base font-semibold text-primary">Nível {level.level} / {MAX_LEVEL}: {level.title}</p>
-          <p className="mt-1 text-[11px] text-muted-foreground">
-            {toNext === null ? "Nível máximo alcançado 🔥" : `Faltam ${toNext} XP para subir de nível`}
-          </p>
         </div>
 
         <div className="border-t border-border p-4">
