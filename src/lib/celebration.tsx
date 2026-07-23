@@ -159,26 +159,26 @@ function LevelUpOverlay({ level, onClose }: { level: LevelEntry; onClose: () => 
           </div>
 
          <div className="relative mx-auto mt-5 h-48 w-80">
-            <img
-              src="/level-up-bg.jpeg"
-              alt=""
-              className="absolute left-1/2 top-1/2 h-44 w-80 -translate-x-1/2 -translate-y-1/2 rounded-2xl object-cover"
-            />
+  <img
+    src="/level-up-bg.jpeg"
+    alt=""
+    className="absolute left-1/2 top-1/2 h-44 w-80 -translate-x-1/2 -translate-y-1/2 rounded-2xl object-cover"
+  />
 
-            <div className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full ring-4 ring-ancient shadow-[0_0_60px_hsl(var(--ancient)/0.7)] animate-scale-in">
-              {level.avatar ? (
-                <img
-                  src={level.avatar}
-                  alt={level.title}
-                  className="h-full w-full scale-125 object-cover"
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center bg-primary/30">
-                  <PartyPopper className="h-16 w-16 text-ancient" />
-                </div>
-              )}
-            </div>
-          </div>
+  <div className="absolute left-1/2 top-[62%] h-28 w-28 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full ring-4 ring-ancient shadow-[0_0_60px_hsl(var(--ancient)/0.7)] animate-scale-in">
+    {level.avatar ? (
+      <img
+        src={level.avatar}
+        alt={level.title}
+        className="h-full w-full scale-125 object-cover"
+      />
+    ) : (
+      <div className="flex h-full w-full items-center justify-center bg-primary/30">
+        <PartyPopper className="h-16 w-16 text-ancient" />
+      </div>
+    )}
+  </div>
+</div>
 <p className="mt-5 text-[11px] font-semibold uppercase tracking-widest text-white/60">
             Nível {level.level}
           </p>
