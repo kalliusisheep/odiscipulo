@@ -43,6 +43,20 @@ const MODULE_ORDER_TO_ICON: Record<number, React.ComponentType<{ className?: str
   11: Globe,
 };
 
+const MODULE_ORDER_TO_GRADIENT: Record<number, string> = {
+  1: "from-emerald-950 via-teal-900 to-emerald-950",
+  2: "from-slate-900 via-indigo-950 to-slate-900",
+  3: "from-stone-950 via-amber-950 to-stone-900",
+  4: "from-slate-900 via-blue-950 to-slate-900",
+  5: "from-red-950 via-rose-950 to-slate-900",
+  6: "from-emerald-950 via-green-950 to-slate-900",
+  7: "from-slate-900 via-purple-950 to-slate-900",
+  8: "from-cyan-950 via-slate-900 to-slate-900",
+  9: "from-rose-950 via-pink-950 to-slate-900",
+  10: "from-amber-950 via-orange-950 to-slate-900",
+  11: "from-violet-950 via-indigo-950 to-slate-900",
+};
+
 const MODULE_ORDER_TO_RGB: Record<number, string> = {
   1: "16 185 129",
   2: "99 102 241",
@@ -145,6 +159,13 @@ function HomePage() {
 
   return (
     <div className="mx-auto max-w-lg space-y-5 px-4 pt-6">
+      <style>{`
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
+
       <header className="flex items-center justify-between">
         <div>
           <p className="text-xs text-muted-foreground">Saudação</p>
@@ -209,6 +230,7 @@ function HomePage() {
           const pct = total ? (doneCount / total) * 100 : 0;
 
           const Icon = MODULE_ORDER_TO_ICON[m.ord] ?? BookOpen;
+          const gradient = MODULE_ORDER_TO_GRADIENT[m.ord] ?? "from-slate-900 via-slate-800 to-slate-900";
           const rgb = MODULE_ORDER_TO_RGB[m.ord] ?? "99 102 241";
           const isLocked = pct === 0;
           const isComplete = pct === 100;
@@ -227,9 +249,11 @@ function HomePage() {
               to="/modulo/$id"
               params={{ id: m.id }}
               style={accentStyle}
-              className={`group relative block overflow-hidden rounded-3xl bg-gradient-to-br ${m.color ?? "from-slate-900 via-slate-800 to-slate-900"} p-4 border border-white/10 transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_0_30px_var(--accent-dim)] hover:border-[var(--accent-border)]`}
+              className={`group relative block overflow-hidden rounded-3xl bg-gradient-to-br ${gradient} p-4 border border-white/10 transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_0_30px_var(--accent-dim)] hover:border-[var(--accent-border)]`}
             >
               <div className="absolute -top-12 -right-12 w-32 h-32 bg-[var(--accent-soft)] blur-3xl rounded-full group-hover:bg-[var(--accent-dim)] transition-colors duration-500" />
+
+              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/5 to-transparent transition-transform duration-1000 ease-in-out pointer-events-none" />
 
               <div className="relative flex items-center gap-4">
                 <div className="h-12 w-12 rounded-2xl flex items-center justify-center shrink-0 bg-white/10 backdrop-blur-sm border border-white/10 group-hover:bg-[var(--accent-soft)] group-hover:border-[var(--accent-border)] transition-colors duration-300">
@@ -243,7 +267,7 @@ function HomePage() {
                     </span>
                     {!isLocked && (
                       <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-[var(--accent-badge)] border border-[var(--accent-border)] text-[9px] font-bold uppercase tracking-wider text-[var(--accent)]">
-                        <span className="w-1 h-1 rounded-full bg-[var(--accent)]" />
+                        <span className="w-1 h-1 rounded-full bg-[var(--accent)] animate-pulse" />
                         Nível {m.ord}
                       </span>
                     )}
@@ -257,9 +281,14 @@ function HomePage() {
                   <div className="mt-2.5 flex items-center gap-3">
                     <div className="h-2 flex-1 rounded-full bg-white/10 overflow-hidden p-[2px]">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-[var(--accent)] to-[var(--accent-light)] shadow-[0_0_10px_var(--accent-soft)] transition-all duration-500"
+                        className="h-full rounded-full bg-gradient-to-r from-[var(--accent)] to-[var(--accent-light)] shadow-[0_0_10px_var(--accent-soft)] transition-all duration-500 relative overflow-hidden"
                         style={{ width: `${pct}%` }}
-                      />
+                      >
+                        <div
+                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                          style={{ animation: "shimmer 2s infinite" }}
+                        />
+                      </div>
                     </div>
                     <span className="text-[10px] text-white/70 whitespace-nowrap font-bold">
                       {doneCount}/{total}
