@@ -194,15 +194,13 @@ function RankingPage() {
 
      {/* Podium */}
       {top3.length > 0 && (
-        <section className="card-elevated overflow-hidden bg-gradient-to-b from-primary/15 via-primary/5 to-transparent p-4 pt-6">
-          <div className="-mx-4 -mt-6 mb-4 overflow-hidden rounded-t-2xl">
-            <img
-              src="/ranking-banner.png"
-              alt="Ovelhas comemorando com troféu"
-              className="h-auto w-full object-cover"
-            />
-          </div>
-          <div className="flex items-end justify-center gap-3">
+        <section className="card-elevated overflow-hidden bg-gradient-to-b from-primary/15 via-primary/5 to-transparent">
+          <img
+            src="/ranking-banner.png"
+            alt="Ovelhas comemorando com troféu"
+            className="h-52 w-full object-cover"
+          />
+          <div className="-mt-10 flex items-end justify-center gap-3 px-4 pb-4">
             {second && <PodiumSpot row={second} place={2} />}
             {first && <PodiumSpot row={first} place={1} />}
             {third && <PodiumSpot row={third} place={3} />}
