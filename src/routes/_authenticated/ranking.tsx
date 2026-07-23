@@ -198,9 +198,9 @@ function RankingPage() {
           <img
             src="/ranking-banner.png"
             alt="Ovelhas comemorando com troféu"
-            className="h-52 w-full object-cover"
+            className="h-56 w-full object-cover object-top"
           />
-          <div className="-mt-10 flex items-end justify-center gap-3 px-4 pb-4">
+          <div className="-mt-16 flex items-end justify-center gap-3 px-4 pb-4">
             {second && <PodiumSpot row={second} place={2} />}
             {first && <PodiumSpot row={first} place={1} />}
             {third && <PodiumSpot row={third} place={3} />}
