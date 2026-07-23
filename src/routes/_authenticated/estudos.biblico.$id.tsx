@@ -102,7 +102,6 @@ function EstudoBiblicoPage() {
             <span className={step === "aplicar" ? "font-bold text-primary" : ""}>Aplicar</span>
           </div>
         </div>
-        <FontSizeControls scaleIndex={scaleIndex} onIncrease={increase} onDecrease={decrease} />
         <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">+{study.xp} XP</span>
       </div>
 
@@ -112,9 +111,12 @@ function EstudoBiblicoPage() {
             <span className="inline-block rounded-full bg-primary/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary">
               Estudo Bíblico
             </span>
-            <div className="mt-2 flex items-center gap-2">
-              <BookOpen className="h-5 w-5 text-primary" />
-              <h1 className="text-2xl font-bold">{study.title}</h1>
+            <div className="mt-2 flex items-center justify-between gap-2">
+              <div className="flex min-w-0 items-center gap-2">
+                <BookOpen className="h-5 w-5 shrink-0 text-primary" />
+                <h1 className="truncate text-2xl font-bold">{study.title}</h1>
+              </div>
+              <FontSizeControls scaleIndex={scaleIndex} onIncrease={increase} onDecrease={decrease} />
             </div>
             <p className="mt-1 font-serif text-xs italic text-ancient">{study.passage}</p>
           </div>
@@ -174,9 +176,12 @@ function EstudoBiblicoPage() {
 
       {step === "fixar" && (
         <div style={contentZoomStyle} className="space-y-5">
-          <div className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-primary" />
-            <h2 className="text-2xl font-bold">Fixar</h2>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Brain className="h-5 w-5 text-primary" />
+              <h2 className="text-2xl font-bold">Fixar</h2>
+            </div>
+            <FontSizeControls scaleIndex={scaleIndex} onIncrease={increase} onDecrease={decrease} />
           </div>
           <p className="text-sm text-muted-foreground">Responda as perguntas — pode tentar novamente até acertar.</p>
 
@@ -243,9 +248,12 @@ function EstudoBiblicoPage() {
 
       {step === "aplicar" && (
         <div style={contentZoomStyle} className="space-y-5">
-          <div className="flex items-center gap-2">
-            <Target className="h-5 w-5 text-primary" />
-            <h2 className="text-2xl font-bold">Aplicar</h2>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Target className="h-5 w-5 text-primary" />
+              <h2 className="text-2xl font-bold">Aplicar</h2>
+            </div>
+            <FontSizeControls scaleIndex={scaleIndex} onIncrease={increase} onDecrease={decrease} />
           </div>
 
           <div className="card-elevated p-5">
