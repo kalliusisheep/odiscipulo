@@ -8,7 +8,7 @@ import { lovable } from "@/integrations/lovable/index";
 import sheepMascot from "@/assets/sheep-mascot.png.asset.json";
 
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/estudos/")({
   head: () => ({
     meta: [
       { title: "O Discípulo — Entrar" },
