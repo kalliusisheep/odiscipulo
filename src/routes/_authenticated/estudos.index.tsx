@@ -48,7 +48,7 @@ function EstudosPage() {
       <img
         src="/sheep-scholar.jpeg"
         alt=""
-        className="h-40 w-full rounded-2xl object-cover"
+        className="h-50 w-full rounded-2xl object-cover"
       />
 
       <p className="text-sm text-muted-foreground">
