@@ -217,7 +217,7 @@ function LoginPage() {
           <div className="absolute left-1/2 -top-22 z-20 -translate-x-1/2">
             <div className="relative h-44 w-44 overflow-hidden rounded-full">
               <img
-                src={sheepMascot.url}
+                src={sheepMascot}
                 alt="Mascote ovelha com bíblia"
                 width={512}
                 height={512}
