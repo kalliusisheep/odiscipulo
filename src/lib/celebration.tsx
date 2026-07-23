@@ -179,3 +179,25 @@ function LevelUpOverlay({ level, onClose }: { level: LevelEntry; onClose: () => 
               )}
             </div>
           </div>
+<p className="mt-5 text-[11px] font-semibold uppercase tracking-widest text-white/60">
+            Nível {level.level}
+          </p>
+          <h2 className="mt-1 text-2xl font-black leading-tight">
+            Você alcançou:
+            <br />
+            <span className="bg-gradient-to-r from-ancient via-primary-glow to-ancient bg-clip-text text-transparent">
+              {level.title}
+            </span>
+          </h2>
+
+          <button
+            onClick={onClose}
+            className="mt-6 w-full rounded-2xl bg-gradient-to-r from-primary to-primary-glow py-3 text-sm font-bold shadow-lg shadow-primary/30 transition-transform active:scale-95"
+          >
+            Continuar jornada
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
