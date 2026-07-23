@@ -197,11 +197,11 @@ function RankingPage() {
         <section className="card-elevated overflow-hidden bg-gradient-to-b from-primary/15 via-primary/5 to-transparent">
          <div className="relative">
             <img
-              src="/ranking-banner.png"
+              src="/ranking-banner.jpg"
               alt="Ovelhas comemorando com troféu"
-              className="h-80 w-full object-cover object-top"
+              className="h-96 w-full object-cover object-top"
             />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent via-background/70 to-background" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-b from-transparent to-background" />
           </div>
           <div className="-mt-16 flex items-end justify-center gap-3 px-4 pb-4">
             {second && <PodiumSpot row={second} place={2} />}
