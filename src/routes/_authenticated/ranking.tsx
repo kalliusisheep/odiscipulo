@@ -197,7 +197,7 @@ function RankingPage() {
         <section className="card-elevated overflow-hidden bg-gradient-to-b from-primary/15 via-primary/5 to-transparent">
          <div className="relative">
             <img
-              src="/ranking-banner.jpg"
+              src="/ranking-banner.png"
               alt="Ovelhas comemorando com troféu"
               className="h-96 w-full object-cover object-top"
             />
