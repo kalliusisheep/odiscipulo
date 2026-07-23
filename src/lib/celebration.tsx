@@ -131,7 +131,7 @@ function LevelUpOverlay({ level, onClose }: { level: LevelEntry; onClose: () => 
         <button
           onClick={onClose}
           aria-label="Fechar"
-          className="absolute right-3 top-3 rounded-full p-1.5 text-white/60 hover:bg-white/10 hover:text-white"
+          className="absolute right-3 top-3 z-20 rounded-full p-1.5 text-white/60 hover:bg-white/10 hover:text-white"
         >
           <X className="h-5 w-5" />
         </button>
@@ -158,14 +158,22 @@ function LevelUpOverlay({ level, onClose }: { level: LevelEntry; onClose: () => 
             <Sparkles className="h-3.5 w-3.5" /> Nível conquistado <Sparkles className="h-3.5 w-3.5" />
           </div>
 
-          <div className="mx-auto mt-5 h-40 w-40 overflow-hidden rounded-full ring-4 ring-ancient shadow-[0_0_60px_hsl(var(--ancient)/0.7)] animate-scale-in">
-            {level.avatar ? (
-              <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center bg-primary/30">
-                <PartyPopper className="h-16 w-16 text-ancient" />
-              </div>
-            )}
+          <div className="relative mx-auto mt-5 h-40 w-64">
+            <img
+              src="/level-up-bg.jpeg"
+              alt=""
+              className="absolute left-1/2 top-1/2 h-36 w-64 -translate-x-1/2 -translate-y-1/2 rounded-2xl object-cover"
+            />
+
+            <div className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-slate-950 ring-4 ring-ancient shadow-[0_0_60px_hsl(var(--ancient)/0.7)] animate-scale-in">
+              {level.avatar ? (
+                <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-primary/30">
+                  <PartyPopper className="h-16 w-16 text-ancient" />
+                </div>
+              )}
+            </div>
           </div>
 
           <p className="mt-5 text-[11px] font-semibold uppercase tracking-widest text-white/60">
@@ -187,6 +195,9 @@ function LevelUpOverlay({ level, onClose }: { level: LevelEntry; onClose: () => 
           </button>
         </div>
       </div>
+    </div>
+  );
+}
     </div>
   );
 }
