@@ -33,6 +33,14 @@ function MuralPage() {
         <ThemeToggle />
       </header>
 
+      <div className="overflow-hidden rounded-2xl">
+        <img
+          src="/mural-banner.jpg"
+          alt="Ovelha em oração em meio à tempestade"
+          className="h-auto w-full object-cover"
+        />
+      </div>
+
       <div className="relative flex rounded-full border border-border bg-surface p-1 text-sm">
         <button
           onClick={() => setTab("clamores")}
