@@ -45,6 +45,12 @@ function EstudosPage() {
         <ThemeToggle />
       </header>
 
+      <img
+        src="/sheep-scholar.jpeg"
+        alt=""
+        className="h-40 w-full rounded-2xl object-cover"
+      />
+
       <p className="text-sm text-muted-foreground">
         Conteúdo avulso — planos de leitura, estudos temáticos e meditações guiadas com IA.
       </p>
