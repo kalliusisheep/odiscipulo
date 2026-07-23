@@ -1,5 +1,5 @@
 import { useApp } from "@/lib/app-context";
-import { Sparkles, Send, X, Loader2 } from "lucide-react";
+import { Send, X, Loader2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 
 export function MentorFAB() {
@@ -9,9 +9,9 @@ export function MentorFAB() {
     <button
       onClick={() => setMentorOpen(true)}
       aria-label="Abrir Mentor Espiritual"
-      className="fixed bottom-24 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-glow text-primary-foreground shadow-2xl shadow-primary/40 transition-all hover:scale-105 active:scale-95"
+      className="fixed bottom-24 right-4 z-40 flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-glow shadow-2xl shadow-primary/40 transition-all hover:scale-105 active:scale-95"
     >
-      <Sparkles className="h-6 w-6" />
+      <img src="/isheep-img.png" alt="Mentor Espiritual" className="h-full w-full object-cover" />
     </button>
   );
 }
@@ -99,8 +99,8 @@ export function MentorChat() {
       <div className="flex h-[85vh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl border border-border bg-surface shadow-2xl sm:rounded-3xl animate-slide-up">
         <header className="flex items-center justify-between border-b border-border bg-gradient-to-r from-primary/20 to-primary-glow/20 px-4 py-3">
           <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-glow">
-              <Sparkles className="h-4 w-4 text-primary-foreground" />
+            <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-glow">
+              <img src="/isheep-img.png" alt="Mentor Espiritual" className="h-full w-full object-cover" />
             </div>
             <div>
               <h2 className="text-sm font-semibold">Mentor Espiritual</h2>
