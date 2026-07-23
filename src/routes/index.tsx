@@ -215,7 +215,7 @@ function LoginPage() {
 
           {/* Mascot */}
           <div className="absolute left-1/2 -top-24 z-20 -translate-x-1/2">
-            <div className="relative h-48 w-48 overflow-hidden rounded-full border-2 border-purple-400/80 bg-[#0f0f1c] shadow-[0_10px_40px_-10px_rgba(139,92,246,0.7)]">
+            <div className="relative h-48 w-48 overflow-hidden rounded-full border-2 border-purple-400/80 bg-[#0f0f1c]">
               <img
                 src={sheepMascot.url}
                 alt="Mascote ovelha com bíblia"
