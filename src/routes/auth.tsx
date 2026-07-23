@@ -248,9 +248,7 @@ function AuthPage() {
           </div>
         </section>
 
-        <p className="mx-auto mt-8 max-w-xs text-center text-xs leading-relaxed text-slate-500">
-          <Link to="/" className="underline underline-offset-2">Voltar</Link>
-        </p>
+        
       </div>
     </main>
   );
