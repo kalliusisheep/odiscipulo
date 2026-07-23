@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { useState } from "react";
 import { Sparkles, ArrowRight, Loader2 } from "lucide-react";
-import sheepMascot from "@/assets/sheep-mascot.png";
+
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
@@ -133,7 +133,7 @@ function AuthPage() {
           <div className="absolute left-1/2 -top-22 z-20 -translate-x-1/2">
             <div className="relative h-44 w-44 overflow-hidden rounded-full shadow-[0_0_40px_rgba(168,85,247,0.5)]">
               <img
-                src={sheepMascot}
+                src="/sheep-mascot.png"
                 alt="Mascote ovelha com bíblia"
                 className="h-full w-full object-cover"
               />
