@@ -203,7 +203,7 @@ function RankingPage() {
             />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-b from-transparent to-background" />
           </div>
-         <div className="-mt-48 flex items-end justify-center gap-3 px-4 pb-4">
+         <div className="-mt-36 flex items-end justify-center gap-3 px-4 pb-4">
             {second && <PodiumSpot row={second} place={2} />}
             {first && <PodiumSpot row={first} place={1} />}
             {third && <PodiumSpot row={third} place={3} />}
