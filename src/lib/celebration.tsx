@@ -198,6 +198,3 @@ function LevelUpOverlay({ level, onClose }: { level: LevelEntry; onClose: () => 
     </div>
   );
 }
-    </div>
-  );
-}
