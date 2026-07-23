@@ -158,16 +158,20 @@ function LevelUpOverlay({ level, onClose }: { level: LevelEntry; onClose: () => 
             <Sparkles className="h-3.5 w-3.5" /> Nível conquistado <Sparkles className="h-3.5 w-3.5" />
           </div>
 
-          <div className="relative mx-auto mt-5 h-40 w-64">
+         <div className="relative mx-auto mt-5 h-48 w-80">
             <img
               src="/level-up-bg.jpeg"
               alt=""
-              className="absolute left-1/2 top-1/2 h-36 w-64 -translate-x-1/2 -translate-y-1/2 rounded-2xl object-cover"
+              className="absolute left-1/2 top-1/2 h-44 w-80 -translate-x-1/2 -translate-y-1/2 rounded-2xl object-cover"
             />
 
-            <div className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-slate-950 ring-4 ring-ancient shadow-[0_0_60px_hsl(var(--ancient)/0.7)] animate-scale-in">
+            <div className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full ring-4 ring-ancient shadow-[0_0_60px_hsl(var(--ancient)/0.7)] animate-scale-in">
               {level.avatar ? (
-                <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
+                <img
+                  src={level.avatar}
+                  alt={level.title}
+                  className="h-full w-full scale-125 object-cover"
+                />
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-primary/30">
                   <PartyPopper className="h-16 w-16 text-ancient" />
@@ -175,26 +179,3 @@ function LevelUpOverlay({ level, onClose }: { level: LevelEntry; onClose: () => 
               )}
             </div>
           </div>
-
-          <p className="mt-5 text-[11px] font-semibold uppercase tracking-widest text-white/60">
-            Nível {level.level}
-          </p>
-          <h2 className="mt-1 text-2xl font-black leading-tight">
-            Você alcançou:
-            <br />
-            <span className="bg-gradient-to-r from-ancient via-primary-glow to-ancient bg-clip-text text-transparent">
-              {level.title}
-            </span>
-          </h2>
-
-          <button
-            onClick={onClose}
-            className="mt-6 w-full rounded-2xl bg-gradient-to-r from-primary to-primary-glow py-3 text-sm font-bold shadow-lg shadow-primary/30 transition-transform active:scale-95"
-          >
-            Continuar jornada
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
