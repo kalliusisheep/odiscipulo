@@ -50,7 +50,7 @@ function useReadingFontScale() {
 
 function FontSizeControls({ onIncrease, onDecrease, disabled }: { onIncrease: () => void; onDecrease: () => void; disabled: { min: boolean; max: boolean } }) {
   return (
-    <div className="flex items-center gap-1 rounded-full border border-border bg-surface p-1">
+    <div className="flex shrink-0 items-center gap-1 rounded-full border border-border bg-surface p-1">
       <button
         type="button"
         onClick={onDecrease}
@@ -86,6 +86,11 @@ function LicaoPage() {
   const [saving, setSaving] = useState(false);
   const { scaleIndex, increase, decrease } = useReadingFontScale();
   const contentZoomStyle = { zoom: `${FONT_SCALES[scaleIndex]}%` } as React.CSSProperties;
+  const fontControlsProps = {
+    onIncrease: increase,
+    onDecrease: decrease,
+    disabled: { min: scaleIndex === 0, max: scaleIndex === FONT_SCALES.length - 1 },
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -143,37 +148,31 @@ function LicaoPage() {
 
   return (
     <div className="mx-auto max-w-lg px-4 pt-4 pb-24 animate-slide-up">
-      <div className="mb-4 space-y-2">
-        <div className="flex items-center gap-3">
-          <button onClick={() => nav({ to: "/home" })} className="rounded-full p-2 text-muted-foreground hover:bg-surface">
-            <ArrowLeft className="h-5 w-5" />
-          </button>
-          <div className="flex-1">
-            <div className="h-1.5 overflow-hidden rounded-full bg-surface">
-              <div className="h-full bg-primary transition-all" style={{ width: `${progressPct}%` }} />
-            </div>
-            <div className="mt-1 flex justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
-              <span className={step === "estudo" ? "font-bold text-primary" : ""}>Estudo</span>
-              <span className={step === "fixar" ? "font-bold text-primary" : ""}>Fixar</span>
-              <span className={step === "aplicar" ? "font-bold text-primary" : ""}>Aplicar</span>
-            </div>
+      <div className="mb-4 flex items-center gap-3">
+        <button onClick={() => nav({ to: "/home" })} className="rounded-full p-2 text-muted-foreground hover:bg-surface">
+          <ArrowLeft className="h-5 w-5" />
+        </button>
+        <div className="flex-1">
+          <div className="h-1.5 overflow-hidden rounded-full bg-surface">
+            <div className="h-full bg-primary transition-all" style={{ width: `${progressPct}%` }} />
+          </div>
+          <div className="mt-1 flex justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
+            <span className={step === "estudo" ? "font-bold text-primary" : ""}>Estudo</span>
+            <span className={step === "fixar" ? "font-bold text-primary" : ""}>Fixar</span>
+            <span className={step === "aplicar" ? "font-bold text-primary" : ""}>Aplicar</span>
           </div>
         </div>
-        <div className="flex items-center justify-end gap-2">
-          <FontSizeControls
-            onIncrease={increase}
-            onDecrease={decrease}
-            disabled={{ min: scaleIndex === 0, max: scaleIndex === FONT_SCALES.length - 1 }}
-          />
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">+{lesson.xp} XP</span>
-        </div>
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">+{lesson.xp} XP</span>
       </div>
 
       {step === "estudo" && (
         <div style={contentZoomStyle} className="space-y-5">
-          <div className="flex items-center gap-2">
-            <BookOpen className="h-5 w-5 text-primary" />
-            <h1 className="text-2xl font-bold">{lesson.title}</h1>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex min-w-0 items-center gap-2">
+              <BookOpen className="h-5 w-5 shrink-0 text-primary" />
+              <h1 className="truncate text-2xl font-bold">{lesson.title}</h1>
+            </div>
+            <FontSizeControls {...fontControlsProps} />
           </div>
 
           {/* 1. Introdução */}
@@ -241,9 +240,12 @@ function LicaoPage() {
 
       {step === "fixar" && (
         <div style={contentZoomStyle} className="space-y-5">
-          <div className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-primary" />
-            <h2 className="text-2xl font-bold">Fixar</h2>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Brain className="h-5 w-5 text-primary" />
+              <h2 className="text-2xl font-bold">Fixar</h2>
+            </div>
+            <FontSizeControls {...fontControlsProps} />
           </div>
           <p className="text-sm text-muted-foreground">
             Responda as perguntas abaixo. Você pode tentar novamente até acertar.
@@ -322,9 +324,12 @@ function LicaoPage() {
 
       {step === "aplicar" && (
         <div style={contentZoomStyle} className="space-y-5">
-          <div className="flex items-center gap-2">
-            <Target className="h-5 w-5 text-primary" />
-            <h2 className="text-2xl font-bold">Aplicar</h2>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Target className="h-5 w-5 text-primary" />
+              <h2 className="text-2xl font-bold">Aplicar</h2>
+            </div>
+            <FontSizeControls {...fontControlsProps} />
           </div>
 
           {/* 1. Aplicação prática */}
