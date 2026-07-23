@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
-import sheepMascot from "@/assets/sheep-mascot.png.asset.json";
+import sheepMascot from "@/assets/sheep-mascot.png";
 
 
 export const Route = createFileRoute("/")({
