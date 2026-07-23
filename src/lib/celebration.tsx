@@ -165,7 +165,7 @@ function LevelUpOverlay({ level, onClose }: { level: LevelEntry; onClose: () => 
     className="absolute left-1/2 top-1/2 h-44 w-80 -translate-x-1/2 -translate-y-1/2 rounded-2xl object-cover"
   />
 
-  <div className="absolute left-1/2 top-[62%] h-28 w-28 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full ring-4 ring-ancient shadow-[0_0_60px_hsl(var(--ancient)/0.7)] animate-scale-in">
+  <div className="absolute left-1/2 top-[75%] h-28 w-28 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full ring-4 ring-ancient shadow-[0_0_60px_hsl(var(--ancient)/0.7)] animate-scale-in">
     {level.avatar ? (
       <img
         src={level.avatar}
