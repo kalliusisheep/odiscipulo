@@ -35,7 +35,7 @@ function MuralPage() {
 
       <div className="overflow-hidden rounded-2xl">
         <img
-          src="/mural-banner.jpg"
+          src="/mural-banner.png"
           alt="Ovelha em oração em meio à tempestade"
           className="h-auto w-full object-cover"
         />
