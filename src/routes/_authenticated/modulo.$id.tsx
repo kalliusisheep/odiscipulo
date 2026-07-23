@@ -1,7 +1,67 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Check, ChevronRight, Lock, Play, Sparkles } from "lucide-react";
+import {
+  ArrowLeft,
+  Check,
+  ChevronRight,
+  Lock,
+  Play,
+  Sparkles,
+  Sprout,
+  ScrollText,
+  BookOpen,
+  HandHeart,
+  Flame,
+  Megaphone,
+  Church,
+  Compass,
+  Home as HomeIcon,
+  Crown,
+  Globe,
+} from "lucide-react";
+
+const MODULE_ORDER_TO_ICON: Record<number, React.ComponentType<{ className?: string }>> = {
+  1: Sprout,
+  2: BookOpen,
+  3: ScrollText,
+  4: HandHeart,
+  5: Flame,
+  6: Megaphone,
+  7: Church,
+  8: Compass,
+  9: HomeIcon,
+  10: Crown,
+  11: Globe,
+};
+
+const MODULE_ORDER_TO_GRADIENT: Record<number, string> = {
+  1: "from-emerald-950 via-teal-900 to-emerald-950",
+  2: "from-slate-900 via-indigo-950 to-slate-900",
+  3: "from-stone-950 via-amber-950 to-stone-900",
+  4: "from-slate-900 via-blue-950 to-slate-900",
+  5: "from-red-950 via-rose-950 to-slate-900",
+  6: "from-emerald-950 via-green-950 to-slate-900",
+  7: "from-slate-900 via-purple-950 to-slate-900",
+  8: "from-cyan-950 via-slate-900 to-slate-900",
+  9: "from-rose-950 via-pink-950 to-slate-900",
+  10: "from-amber-950 via-orange-950 to-slate-900",
+  11: "from-violet-950 via-indigo-950 to-slate-900",
+};
+
+const MODULE_ORDER_TO_RGB: Record<number, string> = {
+  1: "16 185 129",
+  2: "99 102 241",
+  3: "245 158 11",
+  4: "59 130 246",
+  5: "244 63 94",
+  6: "34 197 94",
+  7: "168 85 247",
+  8: "6 182 212",
+  9: "236 72 153",
+  10: "249 115 22",
+  11: "139 92 246",
+};
 
 export const Route = createFileRoute("/_authenticated/modulo/$id")({
   component: ModulePage,
@@ -99,12 +159,19 @@ function ModulePage() {
   const withLesson = trails.filter((t) => t.lesson_id);
   const doneCount = withLesson.filter((t) => t.lesson_id && progressIds.has(t.lesson_id)).length;
   const total = trails.length;
-  const pct = total ? (doneCount / total) * 100 : 0;
+
+  const Icon = MODULE_ORDER_TO_ICON[mod.ord] ?? Sprout;
+  const gradient = MODULE_ORDER_TO_GRADIENT[mod.ord] ?? "from-slate-900 via-slate-800 to-slate-900";
+  const rgb = MODULE_ORDER_TO_RGB[mod.ord] ?? "99 102 241";
+  const accentStyle = {
+    "--accent": `rgb(${rgb})`,
+    "--accent-badge": `color-mix(in srgb, rgb(${rgb}) 15%, transparent)`,
+    "--accent-border": `color-mix(in srgb, rgb(${rgb}) 30%, transparent)`,
+    "--accent-soft": `color-mix(in srgb, rgb(${rgb}) 20%, transparent)`,
+  } as React.CSSProperties;
 
   // Determinar estado por trilha: apenas trilhas com lesson_id participam do progresso.
   // Sequência: uma trilha só fica "ativa" se a anterior (que tenha lesson_id) foi concluída.
-  const gradient = mod.color ?? "from-slate-500 to-slate-700";
-
   let previousDoneOrEmpty = true; // primeira sempre disponível
   const rendered = trails.map((t) => {
     const hasLesson = !!t.lesson_id;
@@ -133,30 +200,39 @@ function ModulePage() {
         onClick={() => void nav({ to: "/home" })}
         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
-        <ArrowLeft className="h-4 w-4" /> Voltar para Inicial
+        <ArrowLeft className="h-4 w-4" /> Voltar
       </button>
 
-      <section className={`card-elevated overflow-hidden`}>
-        <div className={`bg-gradient-to-br ${gradient} px-5 py-5`}>
-          <p className="text-[10px] font-bold uppercase tracking-wider text-white/80">
-            Módulo {mod.ord}
-          </p>
-          <h1 className="mt-0.5 text-2xl font-bold text-white">{mod.title}</h1>
-          {mod.description && (
-            <p className="mt-1 text-sm text-white/85">{mod.description}</p>
-          )}
-          <div className="mt-4 flex items-center justify-between text-[11px] text-white/90">
-            <span>Progresso do módulo</span>
-            <span>{doneCount} de {total} trilhas</span>
+      <section
+        style={accentStyle}
+        className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${gradient} p-5 border border-white/10`}
+      >
+        <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-[var(--accent-soft)] blur-3xl" />
+
+        <div className="relative flex items-center gap-3">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/10 backdrop-blur-sm">
+            <Icon className="h-5 w-5 text-white/90" />
           </div>
-          <div className="mt-1 h-2 overflow-hidden rounded-full bg-white/20">
-            <div className="h-full bg-white transition-all" style={{ width: `${pct}%` }} />
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-white/70">
+              Módulo {mod.ord}
+            </span>
+            <span className="inline-flex items-center gap-1 rounded-full border border-[var(--accent-border)] bg-[var(--accent-badge)] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">
+              Nível {mod.ord}
+            </span>
           </div>
         </div>
+
+        <h1 className="relative mt-3 text-2xl font-bold text-white">{mod.title}</h1>
+        {mod.description && (
+          <p className="relative mt-1 text-sm text-white/85">{mod.description}</p>
+        )}
       </section>
 
       <section className="space-y-2">
-        <h2 className="text-sm font-semibold text-muted-foreground">Trilhas</h2>
+        <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+          {total} Trilhas
+        </h2>
         {rendered.map(({ trail, state }, i) => (
           <TrailRow
             key={trail.id}
@@ -169,6 +245,18 @@ function ModulePage() {
         ))}
       </section>
     </div>
+  );
+}
+
+function TrailNumber({ index, tone }: { index: number; tone: "muted" | "primary" }) {
+  return (
+    <span
+      className={`w-6 shrink-0 text-sm font-bold ${
+        tone === "primary" ? "text-primary" : "text-muted-foreground/60"
+      }`}
+    >
+      {String(index).padStart(2, "0")}
+    </span>
   );
 }
 
@@ -185,21 +273,17 @@ function TrailRow({
   state: "done" | "active" | "locked" | "daily-locked" | "coming-soon";
   nextUnlockAt: Date | null;
 }) {
-  const base = "flex items-center gap-3 rounded-2xl border p-3 transition-all";
+  const base = "flex items-center gap-3 rounded-2xl border p-3.5 transition-all";
 
   if (state === "coming-soon") {
     return (
       <div className={`${base} border-border/60 bg-background/50 opacity-70`}>
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted">
-          <Sparkles className="h-4 w-4 text-muted-foreground" />
-        </div>
+        <TrailNumber index={index} tone="muted" />
         <div className="flex-1">
-          <p className="text-sm font-medium">
-            <span className="mr-1.5 text-muted-foreground">{index}.</span>
-            {title}
-          </p>
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Em breve</span>
+          <p className="text-sm font-semibold">{title}</p>
+          <span className="text-[11px] text-muted-foreground">Conteúdo em breve</span>
         </div>
+        <Sparkles className="h-4 w-4 text-muted-foreground" />
       </div>
     );
   }
@@ -209,18 +293,13 @@ function TrailRow({
       ? `Disponível ${nextUnlockAt.toLocaleDateString("pt-BR", { weekday: "long" })}`
       : "Disponível amanhã";
     return (
-      <div className={`${base} border-primary/30 bg-primary/5 opacity-80`}>
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/20">
-          <Lock className="h-4 w-4 text-primary" />
-        </div>
+      <div className={`${base} border-primary/30 bg-primary/5 opacity-90`}>
+        <TrailNumber index={index} tone="primary" />
         <div className="flex-1">
-          <p className="text-sm font-medium">
-            <span className="mr-1.5 text-muted-foreground">{index}.</span>
-            {title}
-          </p>
-          <span className="text-[10px] uppercase tracking-wider text-primary">Disponível amanhã</span>
+          <p className="text-sm font-semibold">{title}</p>
+          <span className="text-[11px] capitalize text-primary">{label}</span>
         </div>
-        <span className="text-[11px] capitalize text-primary">{label}</span>
+        <Lock className="h-4 w-4 text-primary" />
       </div>
     );
   }
@@ -228,17 +307,12 @@ function TrailRow({
   if (state === "locked") {
     return (
       <div className={`${base} border-border bg-background/50 opacity-60`}>
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted">
-          <Lock className="h-4 w-4 text-muted-foreground" />
-        </div>
+        <TrailNumber index={index} tone="muted" />
         <div className="flex-1">
-          <p className="text-sm font-medium">
-            <span className="mr-1.5 text-muted-foreground">{index}.</span>
-            {title}
-          </p>
-          <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Bloqueada</span>
+          <p className="text-sm font-semibold">{title}</p>
+          <span className="text-[11px] text-muted-foreground">Aguarde</span>
         </div>
-        <span className="text-xs text-muted-foreground">Aguarde</span>
+        <Lock className="h-4 w-4 text-muted-foreground" />
       </div>
     );
   }
@@ -250,15 +324,12 @@ function TrailRow({
         params={{ id: lessonId }}
         className={`${base} border-success/30 bg-success/5 hover:border-success/60`}
       >
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-success text-success-foreground">
-          <Check className="h-4 w-4" />
-        </div>
+        <TrailNumber index={index} tone="muted" />
         <div className="flex-1">
-          <p className="text-sm font-medium">
-            <span className="mr-1.5 text-muted-foreground">{index}.</span>
-            {title}
-          </p>
-          <span className="text-[10px] uppercase tracking-wider text-success">Concluída</span>
+          <p className="text-sm font-semibold">{title}</p>
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-success">
+            <Check className="h-3 w-3" /> Concluída
+          </span>
         </div>
         <ChevronRight className="h-4 w-4 text-muted-foreground" />
       </Link>
@@ -273,19 +344,14 @@ function TrailRow({
         params={{ id: lessonId }}
         className={`${base} border-primary bg-primary/10 hover:bg-primary/15`}
       >
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
-          <Play className="h-4 w-4" />
-        </div>
+        <TrailNumber index={index} tone="primary" />
         <div className="flex-1">
-          <p className="text-sm font-semibold">
-            <span className="mr-1.5 text-primary/80">{index}.</span>
-            {title}
-          </p>
-          <span className="text-[10px] uppercase tracking-wider text-primary">Para hoje</span>
+          <p className="text-sm font-semibold">{title}</p>
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-primary">
+            <Play className="h-3 w-3" /> Disponível hoje
+          </span>
         </div>
-        <span className="rounded-full bg-primary px-3 py-1 text-[11px] font-semibold text-primary-foreground">
-          Estudar
-        </span>
+        <ChevronRight className="h-4 w-4 text-primary" />
       </Link>
     );
   }
