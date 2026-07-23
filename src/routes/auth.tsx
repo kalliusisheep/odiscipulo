@@ -40,11 +40,11 @@ function AuthPage() {
           },
         });
         if (error) throw error;
-        await navigate({ to: "/bem-vindo" });
+        await navigate({ to: "/home" });
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        await navigate({ to: "/bem-vindo" });
+        await navigate({ to: "/home" });
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro");
@@ -94,7 +94,7 @@ function AuthPage() {
                 return;
               }
               if (result.redirected) return;
-              await navigate({ to: "/bem-vindo" });
+              await navigate({ to: "/home" });
             }}
             className="mb-3 flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-background py-2.5 text-sm font-medium transition-all hover:bg-muted"
           >
