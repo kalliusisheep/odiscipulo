@@ -107,8 +107,8 @@ function AuthPage() {
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pt-6 pb-10">
         {/* Header */}
         <header className="flex items-center justify-center">
-          <h1 className="text-lg font-extrabold tracking-tight text-white/95">
-            Disciple
+           <h1 className="text-lg font-extrabold tracking-tight text-white/95">
+            O Discípulo
           </h1>
         </header>
 
@@ -120,7 +120,9 @@ function AuthPage() {
             um passo por dia
           </h2>
           <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-slate-400">
-            Sua jornada de fé, gamificada e sustentada pela sua comunidade.
+            Inicie sua jornada de formação espiritual em uma trilha interativa, onde cada passo é intencionalmente desenhado para forjar o caráter de Cristo em você.
+            <br />
+            Trilhas curtas, planos de leitura, estudo bíblico, mentor IA e um sistema de níveis e títulos motivador, criado para tornar o seu aprendizado interativo e constante.
           </p>
         </section>
 
