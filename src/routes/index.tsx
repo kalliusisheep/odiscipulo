@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
-import sheepMascot from "@/assets/sheep-mascot.png";
+import sheepMascot from "@/assets/sheep-mascot.png.asset.json";
 
 
 export const Route = createFileRoute("/")({
@@ -214,10 +214,10 @@ function LoginPage() {
           <div className="absolute -inset-x-2 top-3 h-full rounded-[2rem] border border-white/10 bg-white/[0.03]" />
 
           {/* Mascot */}
-          <div className="absolute left-1/2 -top-22 z-20 -translate-x-1/2">
-            <div className="relative h-44 w-44 overflow-hidden rounded-full">
+          <div className="absolute left-1/2 -top-24 z-20 -translate-x-1/2">
+            <div className="relative h-48 w-48 overflow-hidden rounded-full border-2 border-purple-400/80 bg-[#0f0f1c] shadow-[0_10px_40px_-10px_rgba(139,92,246,0.7)]">
               <img
-                src={sheepMascot}
+                src={sheepMascot.url}
                 alt="Mascote ovelha com bíblia"
                 width={512}
                 height={512}
