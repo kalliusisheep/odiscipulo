@@ -12,7 +12,50 @@ import {
 } from "@/data/levels";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useApp } from "@/lib/app-context";
-import { Flame, Check, ChevronRight, Sparkles } from "lucide-react";
+import {
+  Flame,
+  Check,
+  ChevronRight,
+  Sparkles,
+  Sprout,
+  ScrollText,
+  BookOpen,
+  HandHeart,
+  Megaphone,
+  Church,
+  Compass,
+  Home as HomeIcon,
+  Crown,
+  Globe,
+} from "lucide-react";
+
+const MODULE_ORDER_TO_ICON: Record<number, React.ComponentType<{ className?: string }>> = {
+  1: Sprout,
+  2: BookOpen,
+  3: ScrollText,
+  4: HandHeart,
+  5: Flame,
+  6: Megaphone,
+  7: Church,
+  8: Compass,
+  9: HomeIcon,
+  10: Crown,
+  11: Globe,
+};
+
+const MODULE_ORDER_TO_RGB: Record<number, string> = {
+  1: "16 185 129",
+  2: "99 102 241",
+  3: "245 158 11",
+  4: "59 130 246",
+  5: "244 63 94",
+  6: "34 197 94",
+  7: "168 85 247",
+  8: "6 182 212",
+  9: "236 72 153",
+  10: "249 115 22",
+  11: "139 92 246",
+};
 
 export const Route = createFileRoute("/_authenticated/home")({
   component: HomePage,
@@ -164,34 +207,74 @@ function HomePage() {
           const doneCount = withLesson.filter((t) => t.lesson_id && progressIds.has(t.lesson_id)).length;
           const total = mtrails.length;
           const pct = total ? (doneCount / total) * 100 : 0;
+
+          const Icon = MODULE_ORDER_TO_ICON[m.ord] ?? BookOpen;
+          const rgb = MODULE_ORDER_TO_RGB[m.ord] ?? "99 102 241";
+          const isLocked = pct === 0;
+          const isComplete = pct === 100;
+          const accentStyle = {
+            "--accent": `rgb(${rgb})`,
+            "--accent-light": `color-mix(in srgb, rgb(${rgb}) 72%, white)`,
+            "--accent-dim": `color-mix(in srgb, rgb(${rgb}) 14%, transparent)`,
+            "--accent-soft": `color-mix(in srgb, rgb(${rgb}) 20%, transparent)`,
+            "--accent-border": `color-mix(in srgb, rgb(${rgb}) 30%, transparent)`,
+            "--accent-badge": `color-mix(in srgb, rgb(${rgb}) 15%, transparent)`,
+          } as React.CSSProperties;
+
           return (
             <Link
               key={m.id}
               to="/modulo/$id"
               params={{ id: m.id }}
-              className="card-elevated block overflow-hidden transition-transform active:scale-[0.99]"
+              style={accentStyle}
+              className={`group relative block overflow-hidden rounded-3xl bg-gradient-to-br ${m.color ?? "from-slate-900 via-slate-800 to-slate-900"} p-4 border border-white/10 transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_0_30px_var(--accent-dim)] hover:border-[var(--accent-border)]`}
             >
-              <div className={`bg-gradient-to-r ${m.color ?? "from-slate-500 to-slate-700"} px-5 py-4`}>
-                <div className="flex items-start gap-3">
-                  <div className="flex-1">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-white/70">
+              <div className="absolute -top-12 -right-12 w-32 h-32 bg-[var(--accent-soft)] blur-3xl rounded-full group-hover:bg-[var(--accent-dim)] transition-colors duration-500" />
+
+              <div className="relative flex items-center gap-4">
+                <div className="h-12 w-12 rounded-2xl flex items-center justify-center shrink-0 bg-white/10 backdrop-blur-sm border border-white/10 group-hover:bg-[var(--accent-soft)] group-hover:border-[var(--accent-border)] transition-colors duration-300">
+                  <Icon className="h-5 w-5 text-white/90 group-hover:text-[var(--accent)] transition-colors duration-300" />
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/70">
                       Módulo {m.ord}
-                    </p>
-                    <h3 className="mt-0.5 text-base font-bold text-white">{m.title}</h3>
-                    {m.description && (
-                      <p className="mt-0.5 text-xs text-white/80">{m.description}</p>
+                    </span>
+                    {!isLocked && (
+                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-[var(--accent-badge)] border border-[var(--accent-border)] text-[9px] font-bold uppercase tracking-wider text-[var(--accent)]">
+                        <span className="w-1 h-1 rounded-full bg-[var(--accent)]" />
+                        Nível {m.ord}
+                      </span>
                     )}
-                    <div className="mt-3 flex items-center justify-between text-[11px] text-white/90">
-                      <span>Progresso</span>
-                      <span>{doneCount} de {total} trilhas</span>
-                    </div>
-                    <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-white/20">
-                      <div className="h-full bg-white transition-all" style={{ width: `${pct}%` }} />
-                    </div>
                   </div>
-                  <ChevronRight className="h-5 w-5 shrink-0 text-white/90" />
+
+                  <p className="font-semibold truncate text-white/95 mt-0.5">{m.title}</p>
+                  {m.description && (
+                    <p className="text-xs text-white/60 truncate">{m.description}</p>
+                  )}
+
+                  <div className="mt-2.5 flex items-center gap-3">
+                    <div className="h-2 flex-1 rounded-full bg-white/10 overflow-hidden p-[2px]">
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-[var(--accent)] to-[var(--accent-light)] shadow-[0_0_10px_var(--accent-soft)] transition-all duration-500"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                    <span className="text-[10px] text-white/70 whitespace-nowrap font-bold">
+                      {doneCount}/{total}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="h-9 w-9 rounded-xl flex items-center justify-center shrink-0 bg-white/5 border border-white/10 group-hover:bg-[var(--accent-soft)] group-hover:border-[var(--accent-border)] group-hover:translate-x-0.5 transition-all duration-300">
+                  <ChevronRight className="h-4 w-4 text-white/60 group-hover:text-[var(--accent)] transition-colors duration-300" />
                 </div>
               </div>
+
+              {isComplete && (
+                <div className="absolute top-3 right-3 h-2 w-2 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]" />
+              )}
             </Link>
           );
         })}
