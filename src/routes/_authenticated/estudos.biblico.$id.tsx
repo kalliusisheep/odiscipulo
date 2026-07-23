@@ -6,15 +6,15 @@ import { verseText } from "@/data/content";
 import { useApp } from "@/lib/app-context";
 import { useCelebration } from "@/lib/celebration";
 import { awardXpAndStreak } from "@/lib/progress";
+import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
+import { FontSizeControls } from "@/components/font-size-controls";
 import {
   ArrowLeft,
   ArrowRight,
   BookOpen,
   Brain,
   Check,
-  Minus,
   PartyPopper,
-  Plus,
   Share2,
   Sparkles,
   Target,
@@ -27,76 +27,6 @@ export const Route = createFileRoute("/_authenticated/estudos/biblico/$id")({
 
 type Step = "estudo" | "fixar" | "aplicar" | "done";
 
-const FONT_SCALES = [87.5, 100, 112.5, 125, 137.5];
-const FONT_SCALE_KEY = "disciple-font-scale-index";
-
-function useReadingFontScale() {
-  const [scaleIndex, setScaleIndex] = useState(1);
-
-  useEffect(() => {
-    const saved = localStorage.getItem(FONT_SCALE_KEY);
-    if (saved !== null) {
-      const idx = Number(saved);
-      if (!Number.isNaN(idx) && idx >= 0 && idx < FONT_SCALES.length) {
-        setScaleIndex(idx);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    const root = document.documentElement;
-    const previous = root.style.fontSize;
-    root.style.fontSize = `${FONT_SCALES[scaleIndex]}%`;
-    return () => {
-      root.style.fontSize = previous;
-    };
-  }, [scaleIndex]);
-
-  const increase = () => {
-    setScaleIndex((i) => {
-      const next = Math.min(i + 1, FONT_SCALES.length - 1);
-      localStorage.setItem(FONT_SCALE_KEY, String(next));
-      return next;
-    });
-  };
-
-  const decrease = () => {
-    setScaleIndex((i) => {
-      const next = Math.max(i - 1, 0);
-      localStorage.setItem(FONT_SCALE_KEY, String(next));
-      return next;
-    });
-  };
-
-  return { scaleIndex, increase, decrease };
-}
-
-function FontSizeControls({ onIncrease, onDecrease, disabled }: { onIncrease: () => void; onDecrease: () => void; disabled: { min: boolean; max: boolean } }) {
-  return (
-    <div className="flex items-center gap-1 rounded-full border border-border bg-surface p-1">
-      <button
-        type="button"
-        onClick={onDecrease}
-        disabled={disabled.min}
-        aria-label="Diminuir fonte"
-        className="flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-background disabled:opacity-30"
-      >
-        <Minus className="h-3 w-3" />
-      </button>
-      <span className="px-0.5 text-[11px] font-bold text-muted-foreground">A</span>
-      <button
-        type="button"
-        onClick={onIncrease}
-        disabled={disabled.max}
-        aria-label="Aumentar fonte"
-        className="flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-background disabled:opacity-30"
-      >
-        <Plus className="h-3 w-3" />
-      </button>
-    </div>
-  );
-}
-
 function EstudoBiblicoPage() {
   const { id } = Route.useParams();
   const nav = useNavigate();
@@ -107,7 +37,7 @@ function EstudoBiblicoPage() {
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [reflection, setReflection] = useState("");
   const [saving, setSaving] = useState(false);
-  const { scaleIndex, increase, decrease } = useReadingFontScale();
+  const { scaleIndex, increase, decrease, contentZoomStyle } = useReadingFontScale();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -172,16 +102,12 @@ function EstudoBiblicoPage() {
             <span className={step === "aplicar" ? "font-bold text-primary" : ""}>Aplicar</span>
           </div>
         </div>
-        <FontSizeControls
-          onIncrease={increase}
-          onDecrease={decrease}
-          disabled={{ min: scaleIndex === 0, max: scaleIndex === FONT_SCALES.length - 1 }}
-        />
+        <FontSizeControls scaleIndex={scaleIndex} onIncrease={increase} onDecrease={decrease} />
         <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">+{study.xp} XP</span>
       </div>
 
       {step === "estudo" && (
-        <div className="space-y-5">
+        <div style={contentZoomStyle} className="space-y-5">
           <div>
             <span className="inline-block rounded-full bg-primary/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary">
               Estudo Bíblico
@@ -247,7 +173,7 @@ function EstudoBiblicoPage() {
       )}
 
       {step === "fixar" && (
-        <div className="space-y-5">
+        <div style={contentZoomStyle} className="space-y-5">
           <div className="flex items-center gap-2">
             <Brain className="h-5 w-5 text-primary" />
             <h2 className="text-2xl font-bold">Fixar</h2>
@@ -316,7 +242,7 @@ function EstudoBiblicoPage() {
       )}
 
       {step === "aplicar" && (
-        <div className="space-y-5">
+        <div style={contentZoomStyle} className="space-y-5">
           <div className="flex items-center gap-2">
             <Target className="h-5 w-5 text-primary" />
             <h2 className="text-2xl font-bold">Aplicar</h2>
@@ -360,7 +286,7 @@ function EstudoBiblicoPage() {
       )}
 
       {step === "done" && (
-        <div className="flex flex-col items-center text-center">
+        <div style={contentZoomStyle} className="flex flex-col items-center text-center">
           <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-glow shadow-2xl shadow-primary/40">
             <PartyPopper className="h-12 w-12 text-primary-foreground" />
           </div>
