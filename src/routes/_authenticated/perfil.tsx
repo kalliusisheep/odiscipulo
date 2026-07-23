@@ -264,23 +264,7 @@ function PerfilPage() {
       </section>
 
 
-      <section className="card-elevated p-4">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Avatar bíblico</p>
-        <div className="grid grid-cols-4 gap-2">
-          {CHARACTERS.map((c) => (
-            <button
-              key={c.id}
-              onClick={() => void update({ avatar_char: c.id })}
-              className={`flex flex-col items-center gap-1 rounded-2xl border p-3 transition-all ${
-                profile.avatar_char === c.id ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"
-              }`}
-            >
-              <span className="text-2xl">{c.emoji}</span>
-              <span className="text-[10px] font-medium">{c.name}</span>
-            </button>
-          ))}
-        </div>
-      </section>
+     
 
       <section className="card-elevated p-4">
         <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Versão da Bíblia</p>
