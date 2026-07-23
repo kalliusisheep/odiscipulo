@@ -142,7 +142,7 @@ function AuthPage() {
 
           {/* Card */}
           <div className="relative rounded-[2rem] bg-gradient-to-b from-purple-500/40 to-blue-500/40 p-[1.5px]">
-            <div className="rounded-[calc(2rem-1.5px)] bg-[#0f0f1c]/85 px-6 pb-7 pt-16 backdrop-blur-xl shadow-[0_0_50px_-10px_rgba(139,92,246,0.35)]">
+            <div className="rounded-[calc(2rem-1.5px)] bg-[#0f0f1c]/85 px-6 pb-7 pt-24 backdrop-blur-xl shadow-[0_0_50px_-10px_rgba(139,92,246,0.35)]">
               {/* Tabs */}
               <div className="mx-auto flex w-full rounded-full bg-white/5 p-1">
                 <button
