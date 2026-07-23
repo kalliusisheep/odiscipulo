@@ -119,10 +119,8 @@ function AuthPage() {
             <br />
             um passo por dia
           </h2>
-          <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-slate-400">
+         <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-slate-400">
             Inicie sua jornada de formação espiritual em uma trilha interativa, onde cada passo é intencionalmente desenhado para forjar o caráter de Cristo em você.
-            <br />
-            Trilhas curtas, planos de leitura, estudo bíblico, mentor IA e um sistema de níveis e títulos motivador, criado para tornar o seu aprendizado interativo e constante.
           </p>
         </section>
 
