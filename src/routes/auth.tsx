@@ -7,8 +7,8 @@ import { Sparkles, ArrowRight, Loader2 } from "lucide-react";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Entrar — Disciple" },
-      { name: "description", content: "Entre no Disciple e comece sua jornada de discipulado cristão gamificado." },
+      { title: "Entrar — O Discípulo" },
+      { name: "description", content: "Entre em O Discípulo e comece sua jornada de discipulado cristão gamificado." },
     ],
   }),
   ssr: false,
@@ -130,8 +130,8 @@ function AuthPage() {
           <div className="absolute -inset-x-2 top-3 h-full rounded-[2rem] border border-white/10 bg-white/[0.03]" />
 
           {/* Mascote */}
-          <div className="absolute left-1/2 -top-22 z-20 -translate-x-1/2">
-            <div className="relative h-44 w-44 overflow-hidden rounded-full shadow-[0_0_40px_rgba(168,85,247,0.5)]">
+<div className="absolute left-1/2 -top-16 z-20 -translate-x-1/2">
+            <div className="relative h-36 w-36 overflow-hidden rounded-full shadow-[0_0_40px_rgba(168,85,247,0.5)]">
               <img
                 src="/sheep-mascot.png"
                 alt="Mascote ovelha com bíblia"
