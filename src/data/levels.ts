@@ -32,7 +32,7 @@ const TITLES = [
   "Crente de Domingo","Desviado","Crente Morno","Cantor Gospel de Chuveiro","Pé no Mundo",
   "Comedor de Pão da Ceia","Levita do Triângulo","Organizador de Cadeiras","Vaso de Barro Trincado","Jejuador de Meio-Dia",
   "Varão em Observação","Sapatinho de Faísca","Dizimista Fiel","Sobrevivente de Retiro","Terreno de Passar Anjos",
-  "Vaso no Oleiro","Missionário de Bairro","Guerreiro de Vigília","Profeta de Rede Social","Terreno de Passar Anjo",
+  "Vaso no Oleiro","Missionário de Bairro","Guerreiro de Vigília","Profeta de Rede Social","Evangelista Flamejante",
   "Crente do Manto","Sapateado de Fogo","Ungido no Azeite Quente","Falador de Mistérios","Piloto de Carruagem de Fogo",
   "Derrubador de Muralhas","Inimigo de Satan","Quebrador de Maldição","Exorcista","Pedrada no Inferno",
   "Passeador na Fornalha","Aniquilador de Heresias","Nazireu","Inimigo dos Filisteus","Matador de Demônios",
