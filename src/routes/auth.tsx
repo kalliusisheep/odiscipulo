@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { useState } from "react";
 import { Sparkles, ArrowRight, Loader2 } from "lucide-react";
-
+import sheepMascot from "@/assets/sheep-mascot.png";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
@@ -129,10 +129,14 @@ function AuthPage() {
           <div className="absolute -inset-x-4 top-6 h-full rounded-[2rem] border border-white/5 bg-white/[0.02]" />
           <div className="absolute -inset-x-2 top-3 h-full rounded-[2rem] border border-white/10 bg-white/[0.03]" />
 
-          {/* PLACEHOLDER DE LOGO — troque pela imagem depois */}
-          <div className="absolute left-1/2 -top-16 z-20 -translate-x-1/2">
-            <div className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-blue-500 shadow-[0_0_40px_rgba(168,85,247,0.5)]">
-              <Sparkles className="h-12 w-12 text-white" />
+          {/* Mascote */}
+          <div className="absolute left-1/2 -top-22 z-20 -translate-x-1/2">
+            <div className="relative h-44 w-44 overflow-hidden rounded-full shadow-[0_0_40px_rgba(168,85,247,0.5)]">
+              <img
+                src={sheepMascot}
+                alt="Mascote ovelha com bíblia"
+                className="h-full w-full object-cover"
+              />
             </div>
           </div>
 
