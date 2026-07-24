@@ -27,14 +27,24 @@ export type Quiz = {
 export type Lesson = {
   id: string;
   title: string;
-  // ── PÁGINA 1: ESTUDO ─────────────────────────────────
-  intro: string[]; // 3-5 parágrafos
-  verses: Verse[]; // ≥ 2
-  keywords: Original[]; // 2-3 palavras-chave do idioma original
-  deepDive: string; // aprofundamento / reflexão teológica
-  theologianQuote: { author: string; text: string };
+  difficulty?: 1 | 2 | 3 | 4 | 5; // calibra densidade — opcional, padrão 1
+  // ── PÁGINA 1: ESTUDO (núcleo) ────────────────────────
+  intro: string[];
+  verses: Verse[];
+  keywords: Original[];
+  deepDive: string;
+  theologianQuote: { author: string; text: string; source?: string };
+  // ── APROFUNDAR (opcional — exibe botão só se existir) ─
+  deepen?: {
+    additionalVerses?: Verse[];
+    additionalKeywords?: Original[];
+    historicalContext?: string;
+    exegeticalNotes?: string;
+    theologicalDebate?: string;
+    secondQuote?: { author: string; text: string; source?: string };
+  };
   // ── PÁGINA 2: FIXAR ──────────────────────────────────
-  quizzes: Quiz[]; // múltiplas questões
+  quizzes: Quiz[];
   // ── PÁGINA 3: APLICAR ────────────────────────────────
   application: string;
   prayer: string;
