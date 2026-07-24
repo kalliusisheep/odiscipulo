@@ -88,7 +88,6 @@ function ModulePage() {
   const [mod, setMod] = useState<ModuleRow | null>(null);
   const [trails, setTrails] = useState<TrailRow[]>([]);
   const [progressIds, setProgressIds] = useState<Set<string>>(new Set());
-  const [latestCompletedAt, setLatestCompletedAt] = useState<Date | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -109,29 +108,17 @@ function ModulePage() {
         u.user
           ? supabase
               .from("lesson_progress")
-              .select("lesson_id, completed_at")
+              .select("lesson_id")
               .eq("user_id", u.user.id)
-          : Promise.resolve({ data: [] as { lesson_id: string; completed_at: string | null }[] }),
+          : Promise.resolve({ data: [] as { lesson_id: string }[] }),
       ]);
       setMod((m ?? null) as ModuleRow | null);
       setTrails((ts ?? []) as TrailRow[]);
-      const rows = (lpRes.data ?? []) as { lesson_id: string; completed_at: string | null }[];
+      const rows = (lpRes.data ?? []) as { lesson_id: string }[];
       setProgressIds(new Set(rows.map((r) => r.lesson_id)));
-      const latest = rows
-        .map((r) => (r.completed_at ? new Date(r.completed_at) : null))
-        .filter((d): d is Date => d !== null)
-        .sort((a, b) => b.getTime() - a.getTime())[0] ?? null;
-      setLatestCompletedAt(latest);
       setLoading(false);
     })();
   }, [id]);
-
-  const now = new Date();
-  const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const completedToday = latestCompletedAt !== null && latestCompletedAt >= todayMidnight;
-  const nextUnlockAt = completedToday
-    ? new Date(todayMidnight.getTime() + 24 * 60 * 60 * 1000)
-    : null;
 
   if (loading) {
     return (
@@ -170,23 +157,20 @@ function ModulePage() {
     "--accent-soft": `color-mix(in srgb, rgb(${rgb}) 20%, transparent)`,
   } as React.CSSProperties;
 
-  // Determinar estado por trilha: apenas trilhas com lesson_id participam do progresso.
-  // Sequência: uma trilha só fica "ativa" se a anterior (que tenha lesson_id) foi concluída.
-  let previousDoneOrEmpty = true; // primeira sempre disponível
+  let previousDoneOrEmpty = true;
   const rendered = trails.map((t) => {
     const hasLesson = !!t.lesson_id;
     const isDone = hasLesson && t.lesson_id && progressIds.has(t.lesson_id);
-    let state: "done" | "active" | "locked" | "daily-locked" | "coming-soon";
+    let state: "done" | "active" | "locked" | "coming-soon";
     if (!hasLesson) {
       state = "coming-soon";
     } else if (isDone) {
       state = "done";
     } else if (previousDoneOrEmpty) {
-      state = completedToday ? "daily-locked" : "active";
+      state = "active";
     } else {
       state = "locked";
     }
-    // Para efeito de progresso sequencial, só bloqueamos a partir da primeira lição com conteúdo pendente.
     if (hasLesson && !isDone) {
       previousDoneOrEmpty = false;
     }
@@ -240,7 +224,6 @@ function ModulePage() {
             title={trail.title}
             lessonId={trail.lesson_id}
             state={state}
-            nextUnlockAt={nextUnlockAt}
           />
         ))}
       </section>
@@ -265,13 +248,11 @@ function TrailRow({
   title,
   lessonId,
   state,
-  nextUnlockAt,
 }: {
   index: number;
   title: string;
   lessonId: string | null;
-  state: "done" | "active" | "locked" | "daily-locked" | "coming-soon";
-  nextUnlockAt: Date | null;
+  state: "done" | "active" | "locked" | "coming-soon";
 }) {
   const base = "flex items-center gap-3 rounded-2xl border p-3.5 transition-all";
 
@@ -284,22 +265,6 @@ function TrailRow({
           <span className="text-[11px] text-muted-foreground">Conteúdo em breve</span>
         </div>
         <Sparkles className="h-4 w-4 text-muted-foreground" />
-      </div>
-    );
-  }
-
-  if (state === "daily-locked") {
-    const label = nextUnlockAt
-      ? `Disponível ${nextUnlockAt.toLocaleDateString("pt-BR", { weekday: "long" })}`
-      : "Disponível amanhã";
-    return (
-      <div className={`${base} border-primary/30 bg-primary/5 opacity-90`}>
-        <TrailNumber index={index} tone="primary" />
-        <div className="flex-1">
-          <p className="text-sm font-semibold">{title}</p>
-          <span className="text-[11px] capitalize text-primary">{label}</span>
-        </div>
-        <Lock className="h-4 w-4 text-primary" />
       </div>
     );
   }
@@ -336,7 +301,6 @@ function TrailRow({
     );
   }
 
-  // active
   if (lessonId) {
     return (
       <Link
