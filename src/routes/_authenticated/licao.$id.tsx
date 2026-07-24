@@ -5,7 +5,7 @@ import { lessonById, verseText } from "@/data/content";
 import { useApp } from "@/lib/app-context";
 import { useCelebration } from "@/lib/celebration";
 import { awardXpAndStreak } from "@/lib/progress";
-import { ArrowLeft, Check, X, Sparkles, PartyPopper, Share2, ArrowRight, BookOpen, Brain, Target, Minus, Plus } from "lucide-react";
+import { ArrowLeft, Check, X, Sparkles, Share2, ArrowRight, BookOpen, Brain, Target, Minus, Plus } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/licao/$id")({
   component: LicaoPage,
@@ -385,8 +385,8 @@ function DoneScreen({ title, xp }: { title: string; xp: number }) {
   return (
     <div className="flex flex-col items-center text-center">
       <div className="relative">
-        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-glow shadow-2xl shadow-primary/40">
-          <PartyPopper className="h-12 w-12 text-primary-foreground" />
+        <div className="h-24 w-24 overflow-hidden rounded-full shadow-2xl shadow-primary/40">
+          <img src="/sheep-party.jpeg" alt="" className="h-full w-full object-cover" />
         </div>
         {[...Array(8)].map((_, i) => (
           <span
@@ -406,10 +406,10 @@ function DoneScreen({ title, xp }: { title: string; xp: number }) {
       <div className="mt-8 w-full max-w-xs rounded-3xl bg-gradient-to-br from-slate-800 to-slate-900 p-6 text-white">
         <Sparkles className="mx-auto h-8 w-8 text-ancient" />
         <p className="mt-4 scripture text-center text-lg leading-snug">"{title}"</p>
-        <p className="mt-3 text-center text-[10px] uppercase tracking-[0.3em] text-slate-400">The Disciple</p>
+        <p className="mt-3 text-center text-[10px] uppercase tracking-[0.3em] text-slate-400">O Discípulo</p>
       </div>
 
-      <div className="mt-6 flex w-full flex-col gap-2">
+      <div className="mt-6 flex w-full max-w-xs flex-col gap-2">
         <button className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary py-3 text-sm font-semibold text-primary-foreground">
           <Share2 className="h-4 w-4" /> Compartilhar
         </button>
