@@ -8,10 +8,10 @@ export function MentorFAB() {
   return (
     <button
       onClick={() => setMentorOpen(true)}
-      aria-label="Abrir Mentor Espiritual"
+      aria-label="Abrir Barnabéé, Mentor IA"
       className="fixed bottom-24 right-4 z-40 flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-glow shadow-2xl shadow-primary/40 transition-all hover:scale-105 active:scale-95"
     >
-      <img src="/isheep-img.png" alt="Mentor Espiritual" className="h-full w-full object-cover" />
+      <img src="/isheep-img.png" alt="Barnabéé, Mentor IA" className="h-full w-full object-cover" />
     </button>
   );
 }
@@ -24,7 +24,7 @@ export function MentorChat() {
     {
       role: "assistant",
       content:
-        "Paz de Cristo, irmão(ã). Sou o Mentor Espiritual — estou aqui para te ajudar a compreender a Palavra, mas jamais para substituir seu pastor, discipulador ou igreja local. Como posso servir você hoje?",
+        "Paz de Cristo, irmão(ã). Sou o Barnabéé, seu Mentor IA — estou aqui para te ajudar a compreender a Palavra, mas jamais para substituir seu pastor, discipulador ou igreja local. Como posso servir você hoje?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -100,11 +100,11 @@ export function MentorChat() {
         <header className="flex items-center justify-between border-b border-border bg-gradient-to-r from-primary/20 to-primary-glow/20 px-4 py-3">
           <div className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-glow">
-              <img src="/isheep-img.png" alt="Mentor Espiritual" className="h-full w-full object-cover" />
+              <img src="/isheep-img.png" alt="Barnabéé, Mentor IA" className="h-full w-full object-cover" />
             </div>
             <div>
-              <h2 className="text-sm font-semibold">Mentor Espiritual</h2>
-              <p className="text-[10px] text-muted-foreground">Companheiro de estudo, não substituto pastoral</p>
+              <h2 className="text-sm font-semibold">Barnabéé</h2>
+              <p className="text-[10px] text-muted-foreground">Mentor IA · Companheiro de estudo, não substituto pastoral</p>
             </div>
           </div>
           <button
