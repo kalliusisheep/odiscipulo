@@ -422,6 +422,219 @@ const novoConvertido: Trail = {
         },
       ],
     },
+    {
+      id: "nc-mod-3",
+      title: "Módulo III: Evangelho e Filiação",
+      lessons: [
+        {
+          id: "nc-3-1",
+          title: "O que é o Evangelho?",
+          intro: [
+            "'Evangelho' virou uma palavra tão comum entre cristãos que quase perdemos o susto que ela deveria causar. Antes de ser um rótulo religioso, era um anúncio público: no mundo greco-romano, 'euangelion' era a notícia oficial de que um novo imperador havia nascido, de que uma guerra fora vencida, de que um novo governo começaria. Era declaração, não conselho.",
+            "Quando o Novo Testamento usa essa palavra para descrever a obra de Jesus, ele está dizendo algo muito específico: aconteceu, na história, um evento que muda o mundo — e ele precisa ser anunciado. O Evangelho, portanto, não é primeiramente uma técnica para melhorar de vida nem uma lista de exigências morais. É notícia sobre o que Deus fez em Cristo.",
+            "Paulo resume esse conteúdo em quatro cláusulas simples em 1 Coríntios 15: Cristo morreu pelos nossos pecados, foi sepultado, ressuscitou ao terceiro dia e apareceu a testemunhas. Cada uma dessas afirmações é um fato histórico com significado teológico. Retire uma e o Evangelho desmorona; junte-as e você tem a notícia que sustenta a Igreja há dois mil anos.",
+            "Praticamente, entender isso muda o ângulo da sua fé. Você não está tentando conquistar Deus com um bom comportamento; você está respondendo à notícia de que Deus, em Cristo, conquistou salvação para você. O que se pede não é performance — é confiança que se traduz em obediência agradecida.",
+          ],
+          verses: [
+            {
+              ref: "1 Coríntios 15:3-4",
+              textByVersion: {
+                NVI: "Pois o que recebi transmiti a vocês, como de primeira importância: que Cristo morreu pelos nossos pecados, segundo as Escrituras, foi sepultado, foi ressuscitado no terceiro dia, segundo as Escrituras.",
+                NAA: "Porque, em primeiro lugar, entreguei a vocês o que também recebi: que Cristo morreu pelos nossos pecados, segundo as Escrituras, e que foi sepultado e ressuscitou ao terceiro dia, segundo as Escrituras.",
+                ACF: "Porque primeiramente vos entreguei o que também recebi: que Cristo morreu por nossos pecados, segundo as Escrituras, e que foi sepultado, e que ressuscitou ao terceiro dia, segundo as Escrituras.",
+                NVT: "Transmiti a vocês o que é da mais alta importância e que também me foi passado: Cristo morreu por nossos pecados, como dizem as Escrituras. Foi sepultado e ressuscitou no terceiro dia, como dizem as Escrituras.",
+              },
+              originals: [
+                { word: "εὐαγγέλιον", translit: "euangélion", meaning: "'boa notícia' — anúncio público de um acontecimento que muda a realidade", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Romanos 1:16",
+              textByVersion: {
+                NVI: "Não me envergonho do evangelho, porque é o poder de Deus para a salvação de todo aquele que crê: primeiro do judeu, depois do grego.",
+                NAA: "Porque não me envergonho do evangelho, pois é o poder de Deus para a salvação de todo aquele que crê, primeiro do judeu e também do grego.",
+                ACF: "Porque não me envergonho do evangelho de Cristo, pois é o poder de Deus para salvação de todo aquele que crê; primeiro do judeu, e também do grego.",
+                NVT: "Não me envergonho da Boa Nova sobre Cristo. Ela é o poder de Deus em ação, para salvar todo aquele que crê — primeiro os judeus e também os gentios.",
+              },
+              originals: [
+                { word: "δύναμις", translit: "dýnamis", meaning: "'poder' — força efetiva que produz resultado; origem da palavra 'dinamite'", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Marcos 1:15",
+              textByVersion: {
+                NVI: "'O tempo é chegado', dizia ele. 'O Reino de Deus está próximo. Arrependam-se e creiam nas boas novas!'",
+                NAA: "E dizia: — O tempo está cumprido, e o Reino de Deus está próximo; arrependam-se e creiam no evangelho.",
+                ACF: "E dizendo: O tempo está cumprido, e o reino de Deus está próximo. Arrependei-vos, e crede no evangelho.",
+                NVT: "'Chegou o tempo prometido por Deus!', ele anunciava. 'O Reino de Deus está próximo! Arrependam-se dos seus pecados e creiam na Boa Nova!'",
+              },
+              originals: [
+                { word: "μετανοεῖτε", translit: "metanoeîte", meaning: "'mudai de mente' — reorientação profunda de pensamento, afetos e direção", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "εὐαγγέλιον", translit: "euangélion", meaning: "'boa notícia'. No mundo romano, o anúncio da vitória ou da coroação de um imperador. Para Paulo, o anúncio de que Jesus é o verdadeiro Rei que venceu o pecado e a morte.", lang: "grego" },
+            { word: "δύναμις", translit: "dýnamis", meaning: "'poder efetivo'. O Evangelho não é apenas informação — é força de Deus que produz salvação real em quem crê.", lang: "grego" },
+            { word: "πίστις", translit: "pístis", meaning: "'fé, confiança'. Não é assentimento intelectual apenas, mas descanso confiante em Cristo e naquilo que Ele fez.", lang: "grego" },
+          ],
+          deepDive:
+            "John Stott dizia que o Evangelho tem três tempos verbais: passado, presente e futuro. No passado, Cristo morreu e ressuscitou por nós — é fato histórico consumado. No presente, esse mesmo Evangelho continua sendo 'dýnamis' de Deus para salvação — não é apenas o portal por onde entramos na fé, mas o poder que nos sustenta nela. No futuro, esse Evangelho aponta para o Reino que virá em plenitude quando Cristo voltar. Muitos cristãos tratam o Evangelho como algo apenas para não-convertidos — uma espécie de porta de entrada. Mas o Novo Testamento apresenta o Evangelho como o próprio ar que respiramos. Paulo escreve aos cristãos de Roma, gente já convertida, dizendo que quer pregar o Evangelho a eles (Romanos 1:15). Nós nunca deixamos de precisar dele. Toda vez que a culpa acusa, voltamos ao Evangelho. Toda vez que o orgulho infla, voltamos ao Evangelho. Toda vez que o cansaço bate, voltamos ao Evangelho. Ele não é o ABC da fé — ele é a fé inteira, do primeiro dia ao último.",
+          theologianQuote: {
+            author: "John Stott",
+            text: "O Evangelho não é um bom conselho a ser seguido; é uma boa notícia a ser crida. Antes de ser algo que fazemos, é algo que Deus fez.",
+          },
+          quizzes: [
+            {
+              question: "O que a palavra grega 'euangélion' significa originalmente?",
+              options: [
+                "Um código secreto religioso",
+                "Um anúncio público de uma notícia que muda a realidade",
+                "Um manual de moral",
+                "Um sinônimo de milagre",
+              ],
+              correctIndex: 1,
+              explanation: "'Euangélion' era o anúncio de vitórias ou da coroação de um imperador. O Novo Testamento usa a palavra para dizer: Jesus é o verdadeiro Rei, e a notícia da sua vitória precisa ser proclamada.",
+            },
+            {
+              question: "Segundo 1 Coríntios 15:3-4, o conteúdo central do Evangelho é:",
+              options: [
+                "Um conjunto de princípios éticos de Jesus",
+                "Que Cristo morreu por nossos pecados, foi sepultado e ressuscitou ao terceiro dia",
+                "Que devemos ser boas pessoas para agradar a Deus",
+                "Uma promessa de prosperidade material",
+              ],
+              correctIndex: 1,
+              explanation: "Paulo entrega esses fatos como 'de primeira importância'. O Evangelho é história antes de ser aplicação.",
+            },
+            {
+              question: "Em Romanos 1:16, Paulo diz que o Evangelho é 'dýnamis' de Deus, isto é:",
+              options: [
+                "Uma sugestão religiosa opcional",
+                "Poder efetivo que produz salvação em quem crê",
+                "Um símbolo apenas simbólico da bondade divina",
+                "Uma técnica para ter uma vida melhor",
+              ],
+              correctIndex: 1,
+              explanation: "'Dýnamis' aponta para força que produz resultado real. O Evangelho salva de fato quem crê.",
+            },
+          ],
+          application:
+            "Escolha hoje uma acusação que costuma pesar sobre você — uma falha do passado, um pecado recorrente, uma vergonha antiga. Traga essa acusação e coloque-a lado a lado com 1 Coríntios 15:3-4. Diga em voz alta: 'Cristo morreu pelos meus pecados, foi sepultado e ressuscitou'. Essa é a notícia que decide o veredito sobre você — não a acusação.",
+          prayer:
+            "Pai, obrigado pela Boa Notícia. Confesso que muitas vezes vivo como se ainda precisasse conquistar teu favor, esquecendo que Cristo já fez tudo o que era necessário. Perdoa-me quando trato o Evangelho como assunto antigo — como se ele fosse apenas a porta de entrada da fé, e não o chão onde piso todos os dias. Renova em mim o assombro do que Jesus fez: morreu pelos meus pecados, foi sepultado, ressuscitou. Que essa notícia me sustente na acusação, me humilhe no orgulho, me console no cansaço. Ensina-me a viver, hoje, à luz dessa vitória. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Escreva, em três frases suas, o que é o Evangelho. Guarde essa versão no celular. Ao longo da semana, compartilhe-a com pelo menos uma pessoa — pode ser um irmão de fé, para conferir; pode ser alguém que ainda não conhece a Cristo, como testemunho.",
+          reflectionQuestion:
+            "Em que área da sua vida você ainda vive como se o Evangelho não bastasse — como se você precisasse acrescentar algo do seu próprio esforço para ser aceito por Deus?",
+          xp: 20,
+        },
+        {
+          id: "nc-3-2",
+          title: "Graça e Adoção: chamado de filho",
+          intro: [
+            "Quando o Novo Testamento quer descrever o que aconteceu na sua salvação, ele usa várias imagens: você foi justificado (linguagem de tribunal), reconciliado (linguagem de relacionamento quebrado e restaurado), redimido (linguagem de escravo comprado da escravidão). Mas há uma imagem que Paulo prefere quando quer descrever o coração da salvação: adoção.",
+            "'Huiothesía' é a palavra grega. Ela vem do mundo romano, onde a adoção era um ato jurídico irrevogável. Um pai romano podia deserdar um filho biológico; jamais podia deserdar um filho adotivo. A adoção conferia nome, herança e status para sempre. Quando Paulo usa essa palavra para descrever nossa relação com Deus, ele está dizendo algo muito específico: você não é apenas perdoado — você é família.",
+            "Historicamente, a teologia da adoção foi um pouco esquecida durante séculos, tratada como consequência lateral da justificação. Foi J. I. Packer, no século XX, quem devolveu o brilho a essa doutrina, chamando-a de 'o maior privilégio que o Evangelho oferece'. Não porque a justificação seja menos — mas porque a adoção descreve a intimidade que a justificação torna possível.",
+            "Praticamente, a diferença entre viver como servo e viver como filho muda tudo. Servos trabalham por medo de perder o emprego; filhos trabalham por amor pela casa. Servos precisam merecer a comida do dia; filhos comem à mesa como parte da família. A graça não te faz apenas um perdoado com boa conduta — ela te faz filho de Deus.",
+          ],
+          verses: [
+            {
+              ref: "Efésios 1:4-5",
+              textByVersion: {
+                NVI: "Porque Deus nos escolheu nele antes da criação do mundo, para sermos santos e irrepreensíveis em sua presença. Em amor nos predestinou para sermos adotados como filhos por meio de Jesus Cristo, conforme o bom propósito da sua vontade.",
+                NAA: "Assim como nos escolheu, nele, antes da fundação do mundo, para sermos santos e irrepreensíveis diante dele no amor; e nos predestinou para sermos adotados como filhos, por meio de Jesus Cristo, para si mesmo, conforme o bom propósito da sua vontade.",
+                ACF: "Como também nos elegeu nele antes da fundação do mundo, para que fôssemos santos e irrepreensíveis diante dele em amor; e nos predestinou para filhos de adoção por Jesus Cristo, para si mesmo, segundo o beneplácito de sua vontade.",
+                NVT: "Antes mesmo de criar o mundo, Deus nos amou e nos escolheu em Cristo para sermos santos e irrepreensíveis diante dele. Deus decidiu de antemão que nos adotaria em sua própria família, trazendo-nos a si mesmo por meio de Jesus Cristo. Isso lhe deu enorme prazer.",
+              },
+              originals: [
+                { word: "υἱοθεσία", translit: "huiothesía", meaning: "'adoção como filho' — ato jurídico irrevogável no mundo greco-romano, conferindo nome, herança e status permanente", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Romanos 8:15",
+              textByVersion: {
+                NVI: "Pois vocês não receberam um espírito que os torne novamente escravos do medo, mas receberam o Espírito que os adota como filhos, por meio do qual clamamos: 'Aba, Pai'.",
+                NAA: "Porque vocês não receberam o espírito de escravidão para, de novo, terem medo, mas receberam o Espírito de adoção, pelo qual clamamos: — Aba, Pai!",
+                ACF: "Porque não recebestes o espírito de escravidão, para outra vez estardes em temor, mas recebestes o Espírito de adoção de filhos, pelo qual clamamos: Aba, Pai.",
+                NVT: "Vocês não receberam de Deus um espírito que os torne outra vez escravos do medo; receberam, ao contrário, o Espírito de Deus, quando ele os adotou como seus próprios filhos. E, pelo Espírito, dizemos: 'Aba, Pai'.",
+              },
+              originals: [
+                { word: "Ἀββά", translit: "Abbá", meaning: "termo aramaico íntimo pelo qual um filho chamava o pai; carrega ternura, confiança e proximidade", lang: "grego" },
+              ],
+            },
+            {
+              ref: "João 1:12",
+              textByVersion: {
+                NVI: "Contudo, aos que o receberam, aos que creram em seu nome, deu-lhes o direito de se tornarem filhos de Deus.",
+                NAA: "Mas a todos quantos o receberam, aos que creem no seu nome, deu-lhes o direito de se tornarem filhos de Deus.",
+                ACF: "Mas, a todos quantos o receberam, deu-lhes o poder de serem feitos filhos de Deus, aos que crêem no seu nome.",
+                NVT: "Mas, a todos que creram nele e o aceitaram, ele deu o direito de se tornarem filhos de Deus.",
+              },
+              originals: [
+                { word: "τέκνα", translit: "tékna", meaning: "'filhos' pelo laço de nascimento; termo afetivo que sublinha o vínculo familiar real", lang: "grego" },
+                { word: "ἐξουσίαν", translit: "exousían", meaning: "'direito, autoridade' — não capacidade humana, mas prerrogativa concedida por Deus", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "χάρις", translit: "cháris", meaning: "'graça' — favor totalmente imerecido. É o solo em que a adoção acontece: ninguém é adotado por mérito próprio.", lang: "grego" },
+            { word: "υἱοθεσία", translit: "huiothesía", meaning: "'adoção como filho'. No direito romano, um ato irrevogável que conferia nome, herança e identidade permanente ao adotado.", lang: "grego" },
+            { word: "Ἀββά", translit: "Abbá", meaning: "palavra aramaica que Jesus mesmo usou para se dirigir ao Pai (Marcos 14:36). Colocada em nossos lábios pelo Espírito, ela é sinal de que somos família.", lang: "grego" },
+          ],
+          deepDive:
+            "A graça abre caminho para a adoção, e a adoção é onde a graça alcança seu ápice. Paulo escolhe a palavra 'huiothesía' com precisão jurídica: no mundo romano, o filho adotivo assumia um novo nome, entrava numa nova linhagem, herdava plenamente e não podia ser deserdado. Aplicado à salvação, isso significa que Deus não te deu apenas um perdão — Ele te deu um sobrenome. Você chama-se, agora, filho. E, mais impressionante ainda, o Espírito Santo põe nos seus lábios a mesma palavra que Jesus usou no Getsêmani: 'Abbá' (Marcos 14:36). É o vocabulário familiar da Trindade sendo emprestado a você. J. I. Packer disse que se você quer avaliar o quanto entendeu o cristianismo, pergunte-se se você pensa em Deus, e se dirige a Deus, como Pai. Se sim, você entendeu o Evangelho. Se essa palavra ainda soa estranha, distante, aterrorizante — o problema não é teológico, é filial. A boa notícia é que o próprio Espírito ensina o coração adotado a soletrar 'Abbá'. Não com esforço religioso, mas com descanso confiante. Você não precisa merecer ser filho; você já é. O que resta é aprender a viver como um.",
+          theologianQuote: {
+            author: "J. I. Packer",
+            text: "A adoção é o mais alto privilégio que o Evangelho oferece: mais alto que a própria justificação. A justificação nos dá um veredito favorável; a adoção nos dá um Pai.",
+          },
+          quizzes: [
+            {
+              question: "A palavra grega 'huiothesía' descreve:",
+              options: [
+                "Um estado provisório que pode ser revertido",
+                "Um ato jurídico irrevogável que confere nome, herança e status de filho",
+                "Um sentimento passageiro de proximidade com Deus",
+                "Uma prática ritual do Antigo Testamento",
+              ],
+              correctIndex: 1,
+              explanation: "No mundo romano, a adoção era irrevogável: um pai podia deserdar um filho biológico, mas jamais um filho adotivo. Paulo usa essa força jurídica para descrever nossa segurança em Deus.",
+            },
+            {
+              question: "Segundo Romanos 8:15, o Espírito Santo produz no filho adotado:",
+              options: [
+                "Medo constante de perder a salvação",
+                "Um clamor íntimo e confiante: 'Abbá, Pai'",
+                "A obrigação de ganhar a aprovação de Deus por obras",
+                "Uma sensação vaga de espiritualidade",
+              ],
+              correctIndex: 1,
+              explanation: "O mesmo Espírito que estava sobre Jesus no Getsêmani coloca em seus lábios a mesma palavra íntima: 'Abbá'. É sinal de família, não de escravidão.",
+            },
+            {
+              question: "A diferença entre viver como servo e viver como filho de Deus é:",
+              options: [
+                "Nenhuma — os dois trabalham igualmente",
+                "O servo trabalha por medo de perder o lugar; o filho serve por amor e pertence à casa",
+                "O filho não precisa mais obedecer",
+                "O servo tem mais herança",
+              ],
+              correctIndex: 1,
+              explanation: "A adoção não anula a obediência — ela muda o motivo. Filhos obedecem por amor, não por medo.",
+            },
+          ],
+          application:
+            "Nesta semana, quando você orar, comece deliberadamente com a palavra 'Pai'. Se soar estranho, permaneça alguns segundos em silêncio antes de continuar — deixe o Espírito Santo confirmar dentro de você que essa palavra é verdadeira. Repita esse exercício todos os dias. Você não está tentando gerar um sentimento — está aprendendo a reconhecer uma identidade que já é sua.",
+          prayer:
+            "Pai, obrigado por não me tratar como servo distante, mas como filho amado. Confesso que, muitas vezes, ainda ajo como escravo do medo — trabalhando para conquistar teu favor, escondendo minhas falhas por vergonha, achando que preciso merecer a tua presença. Ensina-me a viver como quem já foi adotado por ti em Cristo. Quando eu esquecer, que teu Espírito me lembre, colocando de novo em meus lábios a palavra 'Abbá'. Que essa identidade filial molde minha oração, meu trabalho, minhas relações, minhas quedas e minha alegria. Em nome de Jesus, teu Filho e meu irmão mais velho, amém.",
+          weeklyChallenge:
+            "Escreva num caderno: 'Sou filho(a) de Deus por adoção em Cristo. Isso é verdade sobre mim, hoje.' Releia essa frase toda manhã, por sete dias, antes de qualquer outra atividade. Ao fim da semana, anote como essa lembrança começou a mudar suas reações diante de erros, medos e conquistas.",
+          reflectionQuestion:
+            "Em que áreas da sua vida você ainda vive como servo com medo, e não como filho amado? O que mudaria hoje se você abraçasse plenamente a identidade de filho(a) adotado(a) em Cristo?",
+          xp: 20,
+        },
+      ],
+    },
   ],
 };
 
