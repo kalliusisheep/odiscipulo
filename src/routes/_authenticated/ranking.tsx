@@ -161,16 +161,13 @@ function RankingPage() {
       return;
     }
     setAdding(true);
-    // bidirectional: two rows
-    const { error } = await supabase.from("friendships").insert([
-      { user_id: u.user.id, friend_id: searchResult.id },
-      { user_id: searchResult.id, friend_id: u.user.id },
-    ]);
+    const { error } = await supabase.rpc("add_friend", { _target: searchResult.id });
     setAdding(false);
-    if (error && !/duplicate/i.test(error.message)) {
+    if (error) {
       toast.error("Não foi possível adicionar. Tente novamente.");
       return;
     }
+
     toast.success(`${searchResult.display_name} adicionado(a) como irmão!`);
     setAddOpen(false);
     setSearchInput("");
