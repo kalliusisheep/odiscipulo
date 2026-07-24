@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Sparkles, ArrowRight, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
@@ -54,7 +54,35 @@ function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [checkingSession, setCheckingSession] = useState(true);
   const navigate = useNavigate();
+
+  // Handles the case where we just landed back here after a full-page
+  // OAuth redirect (e.g. Google). The session may already be set, or the
+  // auth client may still be finishing the exchange — watch both so we
+  // never get stuck showing the login form (or a blank screen) forever.
+  useEffect(() => {
+    let active = true;
+
+    supabase.auth.getUser().then(({ data }) => {
+      if (active && data.user) {
+        void navigate({ to: "/bem-vindo" });
+        return;
+      }
+      if (active) setCheckingSession(false);
+    });
+
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (active && session?.user) {
+        void navigate({ to: "/bem-vindo" });
+      }
+    });
+
+    return () => {
+      active = false;
+      sub.subscription.unsubscribe();
+    };
+  }, [navigate]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,7 +116,7 @@ function AuthPage() {
     setError(null);
     setGoogleLoading(true);
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin + "/home",
+      redirect_uri: window.location.origin + "/auth",
     });
     if (result.error) {
       setError(result.error instanceof Error ? result.error.message : "Erro ao entrar com Google");
@@ -99,6 +127,18 @@ function AuthPage() {
     await navigate({ to: "/bem-vindo" });
     setGoogleLoading(false);
   };
+
+  if (checkingSession) {
+    return (
+      <main className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-background font-sans text-foreground">
+        <Starfield />
+        <div className="relative z-10 flex flex-col items-center gap-3">
+          <Loader2 className="h-8 w-8 animate-spin text-purple-400" />
+          <p className="text-sm text-slate-400">Entrando...</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="relative min-h-screen w-full overflow-hidden bg-background font-sans text-foreground">
