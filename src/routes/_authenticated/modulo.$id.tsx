@@ -157,7 +157,6 @@ function ModulePage() {
     "--accent-soft": `color-mix(in srgb, rgb(${rgb}) 20%, transparent)`,
   } as React.CSSProperties;
 
-  let previousDoneOrEmpty = true;
   const rendered = trails.map((t) => {
     const hasLesson = !!t.lesson_id;
     const isDone = hasLesson && t.lesson_id && progressIds.has(t.lesson_id);
@@ -166,13 +165,8 @@ function ModulePage() {
       state = "coming-soon";
     } else if (isDone) {
       state = "done";
-    } else if (previousDoneOrEmpty) {
-      state = "active";
     } else {
-      state = "locked";
-    }
-    if (hasLesson && !isDone) {
-      previousDoneOrEmpty = false;
+      state = "active";
     }
     return { trail: t, state };
   });
