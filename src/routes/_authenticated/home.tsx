@@ -1,26 +1,18 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { CHARACTERS } from "@/data/content";
 import {
-  getLevel,
-  getNextLevel,
-  xpToNextLevel,
-  levelProgressPct,
-  checkLevel50Status,
-  GATED_LEVEL,
-} from "@/data/levels";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { useApp } from "@/lib/app-context";
-import {
-  Flame,
+  ArrowLeft,
   Check,
   ChevronRight,
+  Lock,
+  Play,
   Sparkles,
   Sprout,
   ScrollText,
   BookOpen,
   HandHeart,
+  Flame,
   Megaphone,
   Church,
   Compass,
@@ -71,17 +63,9 @@ const MODULE_ORDER_TO_RGB: Record<number, string> = {
   11: "139 92 246",
 };
 
-export const Route = createFileRoute("/_authenticated/home")({
-  component: HomePage,
+export const Route = createFileRoute("/_authenticated/modulo/$id")({
+  component: ModulePage,
 });
-
-type Profile = {
-  display_name: string;
-  first_name: string | null;
-  avatar_char: string;
-  xp: number;
-  streak: number;
-};
 
 type ModuleRow = {
   id: string;
@@ -93,257 +77,252 @@ type ModuleRow = {
 
 type TrailRow = {
   id: string;
-  module_id: string;
   ord: number;
   title: string;
   lesson_id: string | null;
 };
 
-function HomePage() {
-  const { viewMode } = useApp();
+function ModulePage() {
+  const { id } = Route.useParams();
   const nav = useNavigate();
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [progressIds, setProgressIds] = useState<Set<string>>(new Set());
-  const [modules, setModules] = useState<ModuleRow[]>([]);
+  const [mod, setMod] = useState<ModuleRow | null>(null);
   const [trails, setTrails] = useState<TrailRow[]>([]);
+  const [progressIds, setProgressIds] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     void (async () => {
+      setLoading(true);
       const { data: u } = await supabase.auth.getUser();
-      if (!u.user) return;
-      const [{ data: p }, { data: lp }, { data: mods }, { data: trs }] = await Promise.all([
+      const [{ data: m }, { data: ts }, lpRes] = await Promise.all([
         supabase
-          .from("profiles")
-          .select("display_name, first_name, avatar_char, xp, streak, onboarded")
-          .eq("id", u.user.id)
+          .from("disciple_modules")
+          .select("id, ord, title, description, color")
+          .eq("id", id)
           .maybeSingle(),
-        supabase.from("lesson_progress").select("lesson_id").eq("user_id", u.user.id),
-        supabase.from("disciple_modules").select("id, ord, title, description, color").order("ord"),
-        supabase.from("disciple_trails").select("id, module_id, ord, title, lesson_id").order("ord"),
+        supabase
+          .from("disciple_trails")
+          .select("id, ord, title, lesson_id")
+          .eq("module_id", id)
+          .order("ord"),
+        u.user
+          ? supabase
+              .from("lesson_progress")
+              .select("lesson_id")
+              .eq("user_id", u.user.id)
+          : Promise.resolve({ data: [] as { lesson_id: string }[] }),
       ]);
-      if (p && !p.onboarded) {
-        void nav({ to: "/bem-vindo" });
-        return;
-      }
-      if (p) setProfile(p as Profile);
-      setProgressIds(new Set((lp ?? []).map((r) => r.lesson_id)));
-      setModules((mods ?? []) as ModuleRow[]);
-      setTrails((trs ?? []) as TrailRow[]);
+      setMod((m ?? null) as ModuleRow | null);
+      setTrails((ts ?? []) as TrailRow[]);
+      const rows = (lpRes.data ?? []) as { lesson_id: string }[];
+      setProgressIds(new Set(rows.map((r) => r.lesson_id)));
+      setLoading(false);
     })();
-  }, [nav]);
+  }, [id]);
 
-  const xp = profile?.xp ?? 0;
-  const level50 = useMemo(() => checkLevel50Status(xp, progressIds), [xp, progressIds]);
-  const level = getLevel(xp, { level50Unlocked: level50.unlocked });
-  const nextLevel = getNextLevel(xp, { level50Unlocked: level50.unlocked });
-  const character = CHARACTERS.find((c) => c.id === profile?.avatar_char) ?? CHARACTERS[0];
-  const xpLeft = xpToNextLevel(xp, { level50Unlocked: level50.unlocked });
-  const levelPct = levelProgressPct(xp, { level50Unlocked: level50.unlocked });
-  const showLevel50Checklist = level50.xpOk && !level50.unlocked;
-
-  if (viewMode === "lider") {
-    return <LiderInline />;
-  }
-
-  const firstName =
-    profile?.first_name?.trim() ||
-    profile?.display_name?.trim().split(/\s+/)[0] ||
-    "irmão";
-
-  const trailsByModule = new Map<string, TrailRow[]>();
-  for (const t of trails) {
-    const arr = trailsByModule.get(t.module_id) ?? [];
-    arr.push(t);
-    trailsByModule.set(t.module_id, arr);
-  }
-
-  return (
-    <div className="mx-auto max-w-lg space-y-5 px-4 pt-6">
-      <style>{`
-        @keyframes shimmer {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-      `}</style>
-
-      <header className="flex items-center justify-between">
-        <div>
-          <p className="text-xs text-muted-foreground">Saudação</p>
-          <h1 className="text-xl font-semibold">A Paz, {firstName}</h1>
-        </div>
-        <ThemeToggle />
-      </header>
-
-      <section className="card-elevated overflow-hidden">
-        <div className="bg-gradient-to-br from-primary/20 via-primary-glow/10 to-transparent p-5">
-          <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-surface-2 ring-2 ring-primary/30">
-              {level.avatar ? (
-                <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
-              ) : (
-                <span className="text-3xl">{character.emoji}</span>
-              )}
-            </div>
-            <div className="flex-1">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Seu progresso</p>
-              <p className="mt-0.5 text-lg font-bold text-primary">Nível {level.level}: {level.title}</p>
-              <p className="text-xs text-muted-foreground">{profile?.xp ?? 0} XP acumulados</p>
-            </div>
-            <div className="flex flex-col items-center rounded-2xl bg-streak/20 px-3 py-2">
-              <Flame className="h-5 w-5 text-streak" />
-              <span className="text-sm font-bold text-streak">{profile?.streak ?? 0}</span>
-              <span className="text-[9px] text-muted-foreground">dias</span>
-            </div>
-          </div>
-
-          <div className="mt-4">
-            <div className="mb-1.5 flex items-center justify-between gap-2 text-[11px] font-medium">
-              <span className="text-muted-foreground">
-                {nextLevel ? <>Próximo: <span className="text-foreground font-semibold">Nível {nextLevel.level} · {nextLevel.title}</span></> : "Você atingiu o nível máximo"}
-              </span>
-              <span className="whitespace-nowrap text-primary">{xpLeft === null ? "🔥 Máximo" : `Faltam ${xpLeft} XP`}</span>
-            </div>
-            <div className="h-2.5 overflow-hidden rounded-full bg-surface-2">
-              <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${levelPct}%` }} />
-            </div>
-          </div>
-        </div>
-        {showLevel50Checklist && (
-          <div className="border-t border-border/60 bg-ancient/10 p-4">
-            <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-ancient">
-              <Sparkles className="h-3.5 w-3.5" /> Rumo ao Nível {GATED_LEVEL} · Discípulo
-            </p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Você já tem XP suficiente. Para se tornar Discípulo, conclua todo o conteúdo.
-            </p>
-          </div>
-        )}
-      </section>
-
-      <section className="space-y-3">
-        <h2 className="text-sm font-semibold text-muted-foreground">Módulos de Discipulado</h2>
-        {modules.map((m) => {
-          const mtrails = trailsByModule.get(m.id) ?? [];
-          const withLesson = mtrails.filter((t) => t.lesson_id);
-          const doneCount = withLesson.filter((t) => t.lesson_id && progressIds.has(t.lesson_id)).length;
-          const total = mtrails.length;
-          const pct = total ? (doneCount / total) * 100 : 0;
-
-          const Icon = MODULE_ORDER_TO_ICON[m.ord] ?? BookOpen;
-          const gradient = MODULE_ORDER_TO_GRADIENT[m.ord] ?? "from-slate-900 via-slate-800 to-slate-900";
-          const rgb = MODULE_ORDER_TO_RGB[m.ord] ?? "99 102 241";
-          const isLocked = pct === 0;
-          const isComplete = pct === 100;
-          const accentStyle = {
-            "--accent": `rgb(${rgb})`,
-            "--accent-light": `color-mix(in srgb, rgb(${rgb}) 72%, white)`,
-            "--accent-dim": `color-mix(in srgb, rgb(${rgb}) 14%, transparent)`,
-            "--accent-soft": `color-mix(in srgb, rgb(${rgb}) 20%, transparent)`,
-            "--accent-border": `color-mix(in srgb, rgb(${rgb}) 30%, transparent)`,
-            "--accent-badge": `color-mix(in srgb, rgb(${rgb}) 15%, transparent)`,
-          } as React.CSSProperties;
-
-          return (
-            <Link
-              key={m.id}
-              to="/modulo/$id"
-              params={{ id: m.id }}
-              style={accentStyle}
-              className={`group relative block overflow-hidden rounded-3xl bg-gradient-to-br ${gradient} p-4 border border-white/10 transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_0_30px_var(--accent-dim)] hover:border-[var(--accent-border)]`}
-            >
-              <div className="absolute -top-12 -right-12 w-32 h-32 bg-[var(--accent-soft)] blur-3xl rounded-full group-hover:bg-[var(--accent-dim)] transition-colors duration-500" />
-
-              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/5 to-transparent transition-transform duration-1000 ease-in-out pointer-events-none" />
-
-              <div className="relative flex items-center gap-4">
-                <div className="h-12 w-12 rounded-2xl flex items-center justify-center shrink-0 bg-white/10 backdrop-blur-sm border border-white/10 group-hover:bg-[var(--accent-soft)] group-hover:border-[var(--accent-border)] transition-colors duration-300">
-                  <Icon className="h-5 w-5 text-white/90 group-hover:text-[var(--accent)] transition-colors duration-300" />
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/70">
-                      Módulo {m.ord}
-                    </span>
-                    {!isLocked && (
-                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-[var(--accent-badge)] border border-[var(--accent-border)] text-[9px] font-bold uppercase tracking-wider text-[var(--accent)]">
-                        <span className="w-1 h-1 rounded-full bg-[var(--accent)] animate-pulse" />
-                        Nível {m.ord}
-                      </span>
-                    )}
-                  </div>
-
-                  <p className="font-semibold truncate text-white/95 mt-0.5">{m.title}</p>
-                  {m.description && (
-                    <p className="text-xs text-white/60 truncate">{m.description}</p>
-                  )}
-
-                  <div className="mt-2.5 flex items-center gap-3">
-                    <div className="h-2 flex-1 rounded-full bg-white/10 overflow-hidden p-[2px]">
-                      <div
-                        className="h-full rounded-full bg-gradient-to-r from-[var(--accent)] to-[var(--accent-light)] shadow-[0_0_10px_var(--accent-soft)] transition-all duration-500 relative overflow-hidden"
-                        style={{ width: `${pct}%` }}
-                      >
-                        <div
-                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                          style={{ animation: "shimmer 2s infinite" }}
-                        />
-                      </div>
-                    </div>
-                    <span className="text-[10px] text-white/70 whitespace-nowrap font-bold">
-                      {doneCount}/{total}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="h-9 w-9 rounded-xl flex items-center justify-center shrink-0 bg-white/5 border border-white/10 group-hover:bg-[var(--accent-soft)] group-hover:border-[var(--accent-border)] group-hover:translate-x-0.5 transition-all duration-300">
-                  <ChevronRight className="h-4 w-4 text-white/60 group-hover:text-[var(--accent)] transition-colors duration-300" />
-                </div>
-              </div>
-
-              {isComplete && (
-                <div className="absolute top-3 right-3 h-2 w-2 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]" />
-              )}
-            </Link>
-          );
-        })}
-        {modules.length === 0 && (
-          <div className="card-elevated p-4 text-center text-xs text-muted-foreground">
-            Carregando módulos...
-          </div>
-        )}
-      </section>
-    </div>
-  );
-}
-
-function LiderInline() {
-  return (
-    <div className="mx-auto max-w-lg space-y-5 px-4 pt-6">
-      <header className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Modo Líder</h1>
-        <ThemeToggle />
-      </header>
-      <div className="card-elevated p-5">
-        <p className="text-sm text-muted-foreground">
-          Acompanhe seus discípulos, crie grupos e envie mensagens.
-        </p>
-        <Link
-          to="/lider"
-          className="mt-4 inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
-        >
-          Abrir painel <ChevronRight className="h-4 w-4" />
-        </Link>
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-lg px-4 pt-6 text-sm text-muted-foreground">
+        Carregando módulo...
       </div>
+    );
+  }
+
+  if (!mod) {
+    return (
+      <div className="mx-auto max-w-lg space-y-4 px-4 pt-6">
+        <button
+          type="button"
+          onClick={() => void nav({ to: "/home" })}
+          className="inline-flex items-center gap-1 text-sm text-muted-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" /> Voltar
+        </button>
+        <div className="card-elevated p-5 text-sm">Módulo não encontrado.</div>
+      </div>
+    );
+  }
+
+  const withLesson = trails.filter((t) => t.lesson_id);
+  const doneCount = withLesson.filter((t) => t.lesson_id && progressIds.has(t.lesson_id)).length;
+  const total = trails.length;
+
+  const Icon = MODULE_ORDER_TO_ICON[mod.ord] ?? Sprout;
+  const gradient = MODULE_ORDER_TO_GRADIENT[mod.ord] ?? "from-slate-900 via-slate-800 to-slate-900";
+  const rgb = MODULE_ORDER_TO_RGB[mod.ord] ?? "99 102 241";
+  const accentStyle = {
+    "--accent": `rgb(${rgb})`,
+    "--accent-badge": `color-mix(in srgb, rgb(${rgb}) 15%, transparent)`,
+    "--accent-border": `color-mix(in srgb, rgb(${rgb}) 30%, transparent)`,
+    "--accent-soft": `color-mix(in srgb, rgb(${rgb}) 20%, transparent)`,
+  } as React.CSSProperties;
+
+  // Determinar estado por trilha: apenas trilhas com lesson_id participam do progresso.
+  // Sequência: uma trilha só fica "ativa" se a anterior (que tenha lesson_id) foi concluída.
+  // Sem trava diária — a pessoa pode avançar quantas lições quiser no mesmo dia.
+  let previousDoneOrEmpty = true; // primeira sempre disponível
+  const rendered = trails.map((t) => {
+    const hasLesson = !!t.lesson_id;
+    const isDone = hasLesson && t.lesson_id && progressIds.has(t.lesson_id);
+    let state: "done" | "active" | "locked" | "coming-soon";
+    if (!hasLesson) {
+      state = "coming-soon";
+    } else if (isDone) {
+      state = "done";
+    } else if (previousDoneOrEmpty) {
+      state = "active";
+    } else {
+      state = "locked";
+    }
+    if (hasLesson && !isDone) {
+      previousDoneOrEmpty = false;
+    }
+    return { trail: t, state };
+  });
+
+  return (
+    <div className="mx-auto max-w-lg space-y-5 px-4 pt-6">
+      <button
+        type="button"
+        onClick={() => void nav({ to: "/home" })}
+        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
+        <ArrowLeft className="h-4 w-4" /> Voltar
+      </button>
+
+      <section
+        style={accentStyle}
+        className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${gradient} p-5 border border-white/10`}
+      >
+        <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-[var(--accent-soft)] blur-3xl" />
+
+        <div className="relative flex items-center gap-3">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/10 backdrop-blur-sm">
+            <Icon className="h-5 w-5 text-white/90" />
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-white/70">
+              Módulo {mod.ord}
+            </span>
+            <span className="inline-flex items-center gap-1 rounded-full border border-[var(--accent-border)] bg-[var(--accent-badge)] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">
+              Nível {mod.ord}
+            </span>
+          </div>
+        </div>
+
+        <h1 className="relative mt-3 text-2xl font-bold text-white">{mod.title}</h1>
+        {mod.description && (
+          <p className="relative mt-1 text-sm text-white/85">{mod.description}</p>
+        )}
+      </section>
+
+      <section className="space-y-2">
+        <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+          {total} Trilhas
+        </h2>
+        {rendered.map(({ trail, state }, i) => (
+          <TrailRow
+            key={trail.id}
+            index={i + 1}
+            title={trail.title}
+            lessonId={trail.lesson_id}
+            state={state}
+          />
+        ))}
+      </section>
     </div>
   );
 }
 
-// Confetti/celebração removida deste arquivo — permanece disponível globalmente pelos hooks de lição.
-export function ChecklistDone({ label }: { label: string }) {
+function TrailNumber({ index, tone }: { index: number; tone: "muted" | "primary" }) {
   return (
-    <span className="inline-flex items-center gap-1 text-success">
-      <Check className="h-3.5 w-3.5" /> {label}
+    <span
+      className={`w-6 shrink-0 text-sm font-bold ${
+        tone === "primary" ? "text-primary" : "text-muted-foreground/60"
+      }`}
+    >
+      {String(index).padStart(2, "0")}
     </span>
   );
+}
+
+function TrailRow({
+  index,
+  title,
+  lessonId,
+  state,
+}: {
+  index: number;
+  title: string;
+  lessonId: string | null;
+  state: "done" | "active" | "locked" | "coming-soon";
+}) {
+  const base = "flex items-center gap-3 rounded-2xl border p-3.5 transition-all";
+
+  if (state === "coming-soon") {
+    return (
+      <div className={`${base} border-border/60 bg-background/50 opacity-70`}>
+        <TrailNumber index={index} tone="muted" />
+        <div className="flex-1">
+          <p className="text-sm font-semibold">{title}</p>
+          <span className="text-[11px] text-muted-foreground">Conteúdo em breve</span>
+        </div>
+        <Sparkles className="h-4 w-4 text-muted-foreground" />
+      </div>
+    );
+  }
+
+  if (state === "locked") {
+    return (
+      <div className={`${base} border-border bg-background/50 opacity-60`}>
+        <TrailNumber index={index} tone="muted" />
+        <div className="flex-1">
+          <p className="text-sm font-semibold">{title}</p>
+          <span className="text-[11px] text-muted-foreground">Aguarde</span>
+        </div>
+        <Lock className="h-4 w-4 text-muted-foreground" />
+      </div>
+    );
+  }
+
+  if (state === "done" && lessonId) {
+    return (
+      <Link
+        to="/licao/$id"
+        params={{ id: lessonId }}
+        className={`${base} border-success/30 bg-success/5 hover:border-success/60`}
+      >
+        <TrailNumber index={index} tone="muted" />
+        <div className="flex-1">
+          <p className="text-sm font-semibold">{title}</p>
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-success">
+            <Check className="h-3 w-3" /> Concluída
+          </span>
+        </div>
+        <ChevronRight className="h-4 w-4 text-muted-foreground" />
+      </Link>
+    );
+  }
+
+  // active
+  if (lessonId) {
+    return (
+      <Link
+        to="/licao/$id"
+        params={{ id: lessonId }}
+        className={`${base} border-primary bg-primary/10 hover:bg-primary/15`}
+      >
+        <TrailNumber index={index} tone="primary" />
+        <div className="flex-1">
+          <p className="text-sm font-semibold">{title}</p>
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-primary">
+            <Play className="h-3 w-3" /> Disponível hoje
+          </span>
+        </div>
+        <ChevronRight className="h-4 w-4 text-primary" />
+      </Link>
+    );
+  }
+
+  return null;
 }
