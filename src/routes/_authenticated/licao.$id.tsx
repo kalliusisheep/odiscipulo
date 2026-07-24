@@ -175,7 +175,6 @@ function LicaoPage() {
             <FontSizeControls {...fontControlsProps} />
           </div>
 
-          {/* 1. Introdução */}
           <section className="card-elevated p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Introdução ao tópico</p>
             <div className="mt-2 space-y-3 text-sm leading-relaxed">
@@ -185,7 +184,6 @@ function LicaoPage() {
             </div>
           </section>
 
-          {/* 2. Passagens bíblicas */}
           <section className="space-y-3">
             <p className="px-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
               Passagens bíblicas ({bibleVersion})
@@ -200,7 +198,6 @@ function LicaoPage() {
             ))}
           </section>
 
-          {/* 3. Palavras-chave nas línguas originais */}
           <section className="card-elevated border-l-4 border-l-ancient p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
               Palavras-chave no idioma original
@@ -218,7 +215,6 @@ function LicaoPage() {
             </ul>
           </section>
 
-          {/* 4. Aprofundamento */}
           <section className="card-elevated p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Aprofundamento e reflexão</p>
             <p className="mt-2 text-sm leading-relaxed">{lesson.deepDive}</p>
@@ -332,25 +328,21 @@ function LicaoPage() {
             <FontSizeControls {...fontControlsProps} />
           </div>
 
-          {/* 1. Aplicação prática */}
           <div className="card-elevated p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Aplicação prática</p>
             <p className="mt-2 text-sm leading-relaxed">{lesson.application}</p>
           </div>
 
-          {/* 2. Oração sugerida */}
           <div className="card-elevated p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Oração sugerida</p>
             <p className="mt-2 scripture text-sm leading-relaxed">{lesson.prayer}</p>
           </div>
 
-          {/* 3. Desafio da semana */}
           <div className="card-elevated border-l-4 border-l-ancient p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">Desafio da semana</p>
             <p className="mt-2 text-sm leading-relaxed">{lesson.weeklyChallenge}</p>
           </div>
 
-          {/* 4. Reflexão pessoal */}
           <div className="card-elevated p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Pergunta de reflexão</p>
             <p className="mt-2 text-sm font-medium">{lesson.reflectionQuestion}</p>
@@ -386,7 +378,7 @@ function DoneScreen({ title, xp }: { title: string; xp: number }) {
     <div className="flex flex-col items-center text-center">
       <div className="relative">
         <div className="h-24 w-24 overflow-hidden rounded-full shadow-2xl shadow-primary/40">
-          <img src="/sheep-party.jpeg" alt="" className="h-full w-full object-cover" />
+          <img src="/sheep-party.jpeg" alt="Ovelha comemorando" className="h-full w-full object-cover" />
         </div>
         {[...Array(8)].map((_, i) => (
           <span
@@ -403,13 +395,13 @@ function DoneScreen({ title, xp }: { title: string; xp: number }) {
       <p className="mt-1 text-sm text-muted-foreground">{title}</p>
       <p className="mt-4 rounded-full bg-primary/20 px-4 py-1.5 text-sm font-bold text-primary">+{xp} XP</p>
 
-      <div className="mt-8 w-full max-w-xs rounded-3xl bg-gradient-to-br from-slate-800 to-slate-900 p-6 text-white">
+      <div className="mt-8 w-full max-w-xs mx-auto rounded-3xl bg-gradient-to-br from-slate-800 to-slate-900 p-6 text-white">
         <Sparkles className="mx-auto h-8 w-8 text-ancient" />
         <p className="mt-4 scripture text-center text-lg leading-snug">"{title}"</p>
         <p className="mt-3 text-center text-[10px] uppercase tracking-[0.3em] text-slate-400">O Discípulo</p>
       </div>
 
-      <div className="mt-6 flex w-full max-w-xs flex-col gap-2">
+      <div className="mt-6 flex w-full max-w-xs mx-auto flex-col gap-2">
         <button className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary py-3 text-sm font-semibold text-primary-foreground">
           <Share2 className="h-4 w-4" /> Compartilhar
         </button>
