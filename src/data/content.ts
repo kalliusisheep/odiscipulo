@@ -636,7 +636,7 @@ const novoConvertido: Trail = {
           application:
             "Nesta semana, quando você orar, comece deliberadamente com a palavra 'Pai'. Se soar estranho, permaneça alguns segundos em silêncio antes de continuar — deixe o Espírito Santo confirmar dentro de você que essa palavra é verdadeira. Repita esse exercício todos os dias. Você não está tentando gerar um sentimento — está aprendendo a reconhecer uma identidade que já é sua.",
           prayer:
-            "Pai, obrigado por não me tratar como servo distante, mas como filho amado. Confesso que, muitas vezes, ainda ajo como escravo do medo — trabalhando para conquistar teu favor, escondendo minhas falhas por vergonha, achando que preciso merecer a tua presença. Ensina-me a viver como quem já foi adotado por ti em Cristo. Quando eu esquecer, que teu Espírito me lembre, colocando de novo em meus lábios a palavra 'Abbá'. Que essa identidade filial molde minha oração, meu trabalho, minhas relações, minhas quedas e minha alegria. Em nome de Jesus, teu Filho e meu Senhor, amém.",
+            "Pai, obrigado por não me tratar como servo distante, mas como filho amado. Confesso que, muitas vezes, ainda ajo como escravo do medo — trabalhando para conquistar teu favor, escondendo minhas falhas por vergonha, achando que preciso merecer a tua presença. Ensina-me a viver como quem já foi adotado por ti em Cristo. Quando eu esquecer, que teu Espírito me lembre, colocando de novo em meus lábios a palavra 'Abbá'. Que essa identidade filial molde minha oração, meu trabalho, minhas relações, minhas quedas e minha alegria. Em nome de Jesus, teu Filho e meu irmão mais velho, amém.",
           weeklyChallenge:
             "Escreva num caderno: 'Sou filho(a) de Deus por adoção em Cristo. Isso é verdade sobre mim, hoje.' Releia essa frase toda manhã, por sete dias, antes de qualquer outra atividade. Ao fim da semana, anote como essa lembrança começou a mudar suas reações diante de erros, medos e conquistas.",
           reflectionQuestion:
@@ -913,17 +913,15 @@ const doutrinaBasica: Trail = {
 
 import { additionalTrails } from "./trails-content";
 import { additionalTrails2 } from "./trails-content-2";
+import { additionalTrails4 } from "./trails-content-4";
 
 // Trilhas em preparação — títulos e descrições, sem lições ainda.
 const upcoming: Trail[] = [
   { id: "evangelismo", title: "Evangelismo", description: "Compartilhando o Evangelho no cotidiano.", icon: "Megaphone", color: "from-blue-500 to-cyan-500", order: 6, modules: [] },
-  { id: "igreja-local", title: "Igreja Local", description: "O propósito e a beleza da comunidade cristã.", icon: "Church", color: "from-slate-500 to-gray-600", order: 7, modules: [] },
-  { id: "familia-crista", title: "Família Cristã", description: "Casamento, filhos e casa segundo a Bíblia.", icon: "Home", color: "from-amber-500 to-yellow-600", order: 8, modules: [] },
   { id: "lideranca", title: "Liderança", description: "Formando líderes servos no Reino.", icon: "Crown", color: "from-purple-600 to-indigo-700", order: 9, modules: [] },
-  { id: "missoes", title: "Missões", description: "O coração de Deus pelas nações.", icon: "Globe", color: "from-cyan-500 to-blue-600", order: 10, modules: [] },
 ];
 
-export const trails: Trail[] = [novoConvertido, doutrinaBasica, ...additionalTrails, ...additionalTrails2, ...upcoming]
+export const trails: Trail[] = [novoConvertido, doutrinaBasica, ...additionalTrails, ...additionalTrails2, ...additionalTrails4, ...upcoming]
   .sort((a, b) => a.order - b.order);
 
 export const trailById = (id: string) => trails.find((t) => t.id === id);
