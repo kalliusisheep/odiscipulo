@@ -49,11 +49,23 @@ function LicaoPage() {
   useEffect(() => {
     if (step === "estudo") {
       const key = `licao-scroll-${id}`;
-      const saved = sessionStorage.getItem(key);
-      if (saved !== null) {
-        sessionStorage.removeItem(key);
-        requestAnimationFrame(() => window.scrollTo(0, Number(saved)));
-        return;
+      const raw = sessionStorage.getItem(key);
+      sessionStorage.removeItem(key);
+      if (raw !== null) {
+        try {
+          const { y, t } = JSON.parse(raw) as { y: number; t: number };
+          // Only honor a saved scroll position if it was set moments ago
+          // (i.e. we really did just come back from "Aprofundar"). This
+          // prevents a stale/leftover value from an earlier, unrelated
+          // visit from ever hijacking a fresh page load.
+          const isFresh = Date.now() - t < 15000;
+          if (isFresh && Number.isFinite(y)) {
+            requestAnimationFrame(() => window.scrollTo(0, y));
+            return;
+          }
+        } catch {
+          // Malformed or legacy value — ignore and fall through to top.
+        }
       }
     }
     window.scrollTo(0, 0);
@@ -71,7 +83,10 @@ function LicaoPage() {
   const { lesson } = found;
 
   const openDeepen = () => {
-    sessionStorage.setItem(`licao-scroll-${id}`, String(window.scrollY));
+    sessionStorage.setItem(
+      `licao-scroll-${id}`,
+      JSON.stringify({ y: window.scrollY, t: Date.now() }),
+    );
     void nav({ to: "/licao/$id/aprofundar", params: { id } });
   };
   const totalQuiz = lesson.quizzes.length;
