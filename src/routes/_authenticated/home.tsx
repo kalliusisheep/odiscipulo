@@ -91,6 +91,19 @@ function HomePage() {
   const levelPct = levelProgressPct(xp, { level50Unlocked: level50.unlocked });
   const showLevel50Checklist = level50.xpOk && !level50.unlocked;
 
+  // Títulos de nível variam muito de tamanho ("Crente Ruim" vs "Piloto de Carruagem
+  // de Fogo") — o tamanho da fonte se ajusta ao comprimento do texto pra sempre
+  // caber em uma linha só, sem quebrar e sem reticências.
+  const levelTitleText = `Nível ${level.level}: ${level.title}`;
+  const levelTitleSizeClass =
+    levelTitleText.length > 33
+      ? "text-xs"
+      : levelTitleText.length > 27
+      ? "text-sm"
+      : levelTitleText.length > 20
+      ? "text-base"
+      : "text-lg";
+
   if (viewMode === "lider") {
     return <LiderInline />;
   }
@@ -127,7 +140,7 @@ function HomePage() {
       <section className="card-elevated overflow-hidden">
         <div className="bg-gradient-to-br from-primary/20 via-primary-glow/10 to-transparent p-5">
           <div className="flex items-stretch gap-4">
-            <div className="relative w-32 shrink-0 overflow-hidden rounded-2xl bg-surface-2 ring-2 ring-primary/30">
+            <div className="relative w-24 shrink-0 overflow-hidden rounded-2xl bg-surface-2 ring-2 ring-primary/30">
               {level.avatar ? (
                 <img src={level.avatar} alt={level.title} className="absolute inset-0 h-full w-full object-cover" />
               ) : (
@@ -139,7 +152,7 @@ function HomePage() {
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Seu progresso</p>
-                  <p className="mt-0.5 truncate text-lg font-bold text-primary">Nível {level.level}: {level.title}</p>
+                  <p className={`mt-0.5 whitespace-nowrap font-bold text-primary ${levelTitleSizeClass}`}>{levelTitleText}</p>
                   <p className="text-xs text-muted-foreground">{profile?.xp ?? 0} XP acumulados</p>
                 </div>
                 <div className="flex shrink-0 flex-col items-center rounded-2xl bg-streak/20 px-2.5 py-1.5">
