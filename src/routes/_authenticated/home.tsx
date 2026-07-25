@@ -127,11 +127,11 @@ function HomePage() {
       <section className="card-elevated overflow-hidden">
         <div className="bg-gradient-to-br from-primary/20 via-primary-glow/10 to-transparent p-5">
           <div className="flex items-stretch gap-4">
-            <div className="flex w-32 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-surface-2 ring-2 ring-primary/30">
+            <div className="relative w-32 shrink-0 overflow-hidden rounded-2xl bg-surface-2 ring-2 ring-primary/30">
               {level.avatar ? (
-                <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
+                <img src={level.avatar} alt={level.title} className="absolute inset-0 h-full w-full object-cover" />
               ) : (
-                <span className="text-5xl">{character.emoji}</span>
+                <span className="absolute inset-0 flex items-center justify-center text-5xl">{character.emoji}</span>
               )}
             </div>
 
