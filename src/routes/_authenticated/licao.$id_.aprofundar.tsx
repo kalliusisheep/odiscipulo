@@ -37,16 +37,16 @@ function AprofundarPage() {
 
   return (
     <div className="mx-auto max-w-lg pb-24 animate-slide-up">
-      {/* Banner no topo da tela de Aprofundar (compartilhado por todas as trilhas) */}
-      <div className="-mt-4 mb-4 h-28 w-full overflow-hidden sm:h-36">
-        <img
-          src="/aprofundar-banner.jpg"
-          alt=""
-          className="h-full w-full object-cover object-[center_28%]"
-        />
-      </div>
-
       <div className="px-4">
+        {/* Banner no topo da tela de Aprofundar (compartilhado por todas as trilhas) */}
+        <div className="mt-3 mb-4 h-28 w-full overflow-hidden rounded-2xl sm:h-36">
+          <img
+            src="/aprofundar-banner.jpg"
+            alt=""
+            className="h-full w-full object-cover object-[center_28%]"
+          />
+        </div>
+
         <div className="mb-4 flex items-center gap-3">
           <button
             type="button"
