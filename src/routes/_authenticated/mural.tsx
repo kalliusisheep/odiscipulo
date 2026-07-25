@@ -211,7 +211,7 @@ function Diario() {
             {formatDistanceToNow(new Date(e.created_at), { locale: ptBR, addSuffix: true })}
           </p>
           <p className="mt-3 text-sm font-medium">{e.question}</p>
-          <p className="mt-2 rounded-xl bg-surface-2 p-3 text-sm leading-relaxed text-foreground/90 scripture">
+          <p className="mt-2 rounded-xl bg-surface-2 p-3 text-base leading-relaxed text-foreground/90 scripture">
             "{e.answer}"
           </p>
         </article>
