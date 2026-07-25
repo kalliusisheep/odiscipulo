@@ -406,7 +406,7 @@ function PassageBlock({
         </p>
       )}
       {text && (
-        <p className="scripture text-[13px] leading-relaxed text-foreground/90">{text}</p>
+        <p className="scripture text-sm leading-relaxed text-foreground/90">{text}</p>
       )}
     </div>
   );
