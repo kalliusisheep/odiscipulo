@@ -7,7 +7,7 @@ import { useCelebration } from "@/lib/celebration";
 import { awardXpAndStreak } from "@/lib/progress";
 import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
 import { FontSizeControls } from "@/components/font-size-controls";
-import { ArrowLeft, Check, X, Sparkles, Share2, ArrowRight, BookOpen, Brain, Target, ChevronDown, ChevronUp, Layers } from "lucide-react";
+import { ArrowLeft, Check, X, Sparkles, Share2, ArrowRight, BookOpen, Brain, Target, ChevronRight, Layers } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/licao/$id")({
   component: LicaoPage,
@@ -15,131 +15,17 @@ export const Route = createFileRoute("/_authenticated/licao/$id")({
 
 type Step = "estudo" | "fixar" | "aplicar" | "done";
 
-
-function DeepenSection({ deepen }: { deepen: NonNullable<ReturnType<typeof lessonById>>["lesson"]["deepen"] }) {
-  const [open, setOpen] = useState(false);
-  const { bibleVersion } = useApp();
-
-  if (!deepen) return null;
-
-  const hasContent =
+function hasDeepenContent(
+  deepen: NonNullable<ReturnType<typeof lessonById>>["lesson"]["deepen"],
+): boolean {
+  if (!deepen) return false;
+  return !!(
     deepen.historicalContext ||
     deepen.exegeticalNotes ||
     deepen.theologicalDebate ||
     deepen.secondQuote ||
     (deepen.additionalVerses && deepen.additionalVerses.length > 0) ||
-    (deepen.additionalKeywords && deepen.additionalKeywords.length > 0);
-
-  if (!hasContent) return null;
-
-  return (
-    <div className="rounded-2xl border border-ancient/30 bg-ancient/5 overflow-hidden">
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center justify-between gap-2 p-4 text-left"
-      >
-        <div className="flex items-center gap-2">
-          <Layers className="h-4 w-4 text-ancient" />
-          <span className="text-sm font-bold text-ancient">Aprofundar</span>
-          <span className="text-[10px] uppercase tracking-wider text-ancient/70">
-            contexto, exegese e mais
-          </span>
-        </div>
-        {open ? (
-          <ChevronUp className="h-4 w-4 text-ancient" />
-        ) : (
-          <ChevronDown className="h-4 w-4 text-ancient" />
-        )}
-      </button>
-
-      {open && (
-        <div className="space-y-4 border-t border-ancient/20 p-4 pt-4 animate-slide-up">
-          {deepen.historicalContext && (
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
-                Contexto histórico e cultural
-              </p>
-              <p className="mt-1.5 text-sm leading-relaxed">{deepen.historicalContext}</p>
-            </div>
-          )}
-
-          {deepen.additionalVerses && deepen.additionalVerses.length > 0 && (
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
-                Passagens de apoio ({bibleVersion})
-              </p>
-              <div className="mt-1.5 space-y-2">
-                {deepen.additionalVerses.map((v) => (
-                  <div key={v.ref} className="rounded-xl bg-background/60 p-3">
-                    <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                      {v.ref}
-                    </p>
-                    <p className="mt-1 scripture text-base text-foreground/85">
-                      "{verseText(v, bibleVersion)}"
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {deepen.exegeticalNotes && (
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
-                Notas de exegese
-              </p>
-              <p className="mt-1.5 text-sm leading-relaxed">{deepen.exegeticalNotes}</p>
-            </div>
-          )}
-
-          {deepen.additionalKeywords && deepen.additionalKeywords.length > 0 && (
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
-                Mais palavras no idioma original
-              </p>
-              <ul className="mt-1.5 space-y-2">
-                {deepen.additionalKeywords.map((o, i) => (
-                  <li key={i} className="rounded-xl border border-ancient/20 bg-background/60 p-2.5">
-                    <div className="flex items-baseline gap-2">
-                      <span className="ancient-text text-lg text-ancient">{o.word}</span>
-                      <span className="text-xs text-ancient/80">({o.translit}, {o.lang})</span>
-                    </div>
-                    <p className="mt-1 text-xs text-foreground/80">{o.meaning}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {deepen.theologicalDebate && (
-            <div className="rounded-xl border border-border bg-background/60 p-3">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Panorama entre tradições cristãs
-              </p>
-              <p className="mt-1.5 text-sm leading-relaxed">{deepen.theologicalDebate}</p>
-              <p className="mt-2 text-[11px] italic text-muted-foreground">
-                Para aprofundar essa questão, converse com seu pastor ou líder de discipulado.
-              </p>
-            </div>
-          )}
-
-          {deepen.secondQuote && (
-            <blockquote className="border-l-4 border-l-ancient pl-3">
-              <p className="scripture text-base leading-relaxed text-ancient">
-                "{deepen.secondQuote.text}"
-              </p>
-              <footer className="mt-1.5 text-xs font-semibold text-ancient/80">
-                — {deepen.secondQuote.author}
-              </footer>
-              {deepen.secondQuote.source && (
-                <p className="mt-0.5 text-[10px] text-muted-foreground">{deepen.secondQuote.source}</p>
-              )}
-            </blockquote>
-          )}
-        </div>
-      )}
-    </div>
+    (deepen.additionalKeywords && deepen.additionalKeywords.length > 0)
   );
 }
 
@@ -161,8 +47,17 @@ function LicaoPage() {
   };
 
   useEffect(() => {
+    if (step === "estudo") {
+      const key = `licao-scroll-${id}`;
+      const saved = sessionStorage.getItem(key);
+      if (saved !== null) {
+        sessionStorage.removeItem(key);
+        requestAnimationFrame(() => window.scrollTo(0, Number(saved)));
+        return;
+      }
+    }
     window.scrollTo(0, 0);
-  }, [step]);
+  }, [step, id]);
 
   if (!found) {
     return (
@@ -174,6 +69,11 @@ function LicaoPage() {
   }
 
   const { lesson } = found;
+
+  const openDeepen = () => {
+    sessionStorage.setItem(`licao-scroll-${id}`, String(window.scrollY));
+    void nav({ to: "/licao/$id/aprofundar", params: { id } });
+  };
   const totalQuiz = lesson.quizzes.length;
   const correctCount = Object.entries(answers).filter(
     ([i, v]) => v === lesson.quizzes[Number(i)].correctIndex,
@@ -300,8 +200,23 @@ function LicaoPage() {
             )}
           </blockquote>
 
-          {/* 5. Aprofundar (opcional, oculto por padrão) */}
-          <DeepenSection deepen={lesson.deepen} />
+          {/* 5. Aprofundar (opcional — abre em tela própria) */}
+          {hasDeepenContent(lesson.deepen) && (
+            <button
+              type="button"
+              onClick={openDeepen}
+              className="flex w-full items-center justify-between gap-2 rounded-2xl border border-ancient/30 bg-ancient/5 p-4 text-left transition-colors hover:bg-ancient/10"
+            >
+              <div className="flex items-center gap-2">
+                <Layers className="h-4 w-4 text-ancient" />
+                <span className="text-sm font-bold text-ancient">Aprofundar</span>
+                <span className="text-[10px] uppercase tracking-wider text-ancient/70">
+                  contexto, exegese e mais
+                </span>
+              </div>
+              <ChevronRight className="h-4 w-4 shrink-0 text-ancient" />
+            </button>
+          )}
 
           <button
             onClick={() => setStep("fixar")}
