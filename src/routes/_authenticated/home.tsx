@@ -126,35 +126,40 @@ function HomePage() {
 
       <section className="card-elevated overflow-hidden">
         <div className="bg-gradient-to-br from-primary/20 via-primary-glow/10 to-transparent p-5">
-          <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-surface-2 ring-2 ring-primary/30">
+          <div className="flex items-stretch gap-4">
+            <div className="flex h-[92px] w-[92px] shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-surface-2 ring-2 ring-primary/30">
               {level.avatar ? (
                 <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
               ) : (
-                <span className="text-3xl">{character.emoji}</span>
+                <span className="text-4xl">{character.emoji}</span>
               )}
             </div>
-            <div className="flex-1">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Seu progresso</p>
-              <p className="mt-0.5 text-lg font-bold text-primary">Nível {level.level}: {level.title}</p>
-              <p className="text-xs text-muted-foreground">{profile?.xp ?? 0} XP acumulados</p>
-            </div>
-            <div className="flex flex-col items-center rounded-2xl bg-streak/20 px-3 py-2">
-              <Flame className="h-5 w-5 text-streak" />
-              <span className="text-sm font-bold text-streak">{profile?.streak ?? 0}</span>
-              <span className="text-[9px] text-muted-foreground">dias</span>
-            </div>
-          </div>
 
-          <div className="mt-4">
-            <div className="mb-1.5 flex items-center justify-between gap-2 text-[11px] font-medium">
-              <span className="text-muted-foreground">
-                {nextLevel ? <>Próximo: <span className="text-foreground font-semibold">Nível {nextLevel.level} · {nextLevel.title}</span></> : "Você atingiu o nível máximo"}
-              </span>
-              <span className="whitespace-nowrap text-primary">{xpLeft === null ? "🔥 Máximo" : `Faltam ${xpLeft} XP`}</span>
-            </div>
-            <div className="h-2.5 overflow-hidden rounded-full bg-surface-2">
-              <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${levelPct}%` }} />
+            <div className="flex min-w-0 flex-1 flex-col justify-center">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Seu progresso</p>
+                  <p className="mt-0.5 truncate text-lg font-bold text-primary">Nível {level.level}: {level.title}</p>
+                  <p className="text-xs text-muted-foreground">{profile?.xp ?? 0} XP acumulados</p>
+                </div>
+                <div className="flex shrink-0 flex-col items-center rounded-2xl bg-streak/20 px-2.5 py-1.5">
+                  <Flame className="h-4 w-4 text-streak" />
+                  <span className="text-sm font-bold text-streak">{profile?.streak ?? 0}</span>
+                  <span className="text-[9px] text-muted-foreground">dias</span>
+                </div>
+              </div>
+
+              <div className="mt-2.5">
+                <div className="mb-1 flex items-center justify-between gap-2 text-[10px] font-medium">
+                  <span className="truncate text-muted-foreground">
+                    {nextLevel ? <>Próx: <span className="text-foreground font-semibold">Nv {nextLevel.level} · {nextLevel.title}</span></> : "Nível máximo"}
+                  </span>
+                  <span className="shrink-0 whitespace-nowrap text-primary">{xpLeft === null ? "🔥 Máx" : `Faltam ${xpLeft} XP`}</span>
+                </div>
+                <div className="h-2.5 overflow-hidden rounded-full bg-surface-2">
+                  <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${levelPct}%` }} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
