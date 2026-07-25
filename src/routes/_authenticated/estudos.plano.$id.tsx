@@ -1,9 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useApp } from "@/lib/app-context";
 import { useCelebration } from "@/lib/celebration";
 import { awardXpAndStreak } from "@/lib/progress";
-import { fetchPassage } from "@/lib/bible";
+import { fetchPassage, bibleLabelFor } from "@/lib/bible";
+import type { BibleVersion } from "@/data/content";
 import {
   ArrowLeft,
   BookOpen,
@@ -12,7 +14,6 @@ import {
   ChevronDown,
   Circle,
   Clock,
-  Lock,
   Loader2,
 } from "lucide-react";
 
@@ -53,6 +54,7 @@ function PlanoPage() {
   const [done, setDone] = useState<Set<number>>(new Set());
   const [openDay, setOpenDay] = useState<number | null>(null);
   const { celebrateActivity } = useCelebration();
+  const { bibleVersion } = useApp();
 
   useEffect(() => {
     let cancelled = false;
@@ -203,8 +205,6 @@ function PlanoPage() {
         {days.map((d) => {
           const checked = done.has(d.day);
           const isNext = d.day === nextDay;
-          const previousDone = d.day === 1 || done.has(d.day - 1);
-          const dimmed = !checked && !isNext && !previousDone;
           const open = openDay === d.day;
           return (
             <article
@@ -214,31 +214,25 @@ function PlanoPage() {
                   ? "border-success/40 bg-success/5"
                   : isNext
                     ? "border-primary/60 bg-primary/5 shadow-md shadow-primary/10"
-                    : dimmed
-                      ? "opacity-60"
-                      : "border-border"
+                    : "border-border"
               }`}
             >
               <div className="flex items-start gap-3 p-4">
                 <button
                   onClick={() => toggle(d.day)}
                   className="mt-0.5 shrink-0"
-                  disabled={dimmed}
                   aria-label={
                     checked ? `Desmarcar dia ${d.day}` : `Marcar dia ${d.day} como lido`
                   }
                 >
                   {checked ? (
                     <CheckCircle2 className="h-6 w-6 text-success" />
-                  ) : dimmed ? (
-                    <Lock className="h-6 w-6 text-muted-foreground" />
                   ) : (
                     <Circle className="h-6 w-6 text-muted-foreground hover:text-primary" />
                   )}
                 </button>
                 <button
                   onClick={() => setOpenDay(open ? null : d.day)}
-                  disabled={dimmed}
                   className="flex-1 space-y-1.5 text-left"
                 >
                   <div className="flex items-center gap-2">
@@ -267,8 +261,13 @@ function PlanoPage() {
                 </button>
               </div>
 
-              {open && !dimmed && (
-                <DayDetails day={d} checked={checked} onComplete={() => toggle(d.day)} />
+              {open && (
+                <DayDetails
+                  day={d}
+                  checked={checked}
+                  onComplete={() => toggle(d.day)}
+                  version={bibleVersion}
+                />
               )}
             </article>
           );
@@ -282,17 +281,24 @@ function DayDetails({
   day,
   checked,
   onComplete,
+  version,
 }: {
   day: PlanDay;
   checked: boolean;
   onComplete: () => void;
+  version: BibleVersion;
 }) {
   return (
     <div className="space-y-4 border-t border-border/60 bg-surface/40 p-4">
       <Section title="Passagem" icon={<BookOpen className="h-3.5 w-3.5" />}>
         <div className="space-y-3">
           {day.passage_api_refs.map((ref, i) => (
-            <PassageBlock key={ref} apiRef={ref} label={day.refs[i] ?? ref} />
+            <PassageBlock
+              key={ref}
+              apiRef={ref}
+              label={day.refs[i] ?? ref}
+              version={version}
+            />
           ))}
         </div>
       </Section>
@@ -351,7 +357,15 @@ function Section({
   );
 }
 
-function PassageBlock({ apiRef, label }: { apiRef: string; label: string }) {
+function PassageBlock({
+  apiRef,
+  label,
+  version,
+}: {
+  apiRef: string;
+  label: string;
+  version: BibleVersion;
+}) {
   const [text, setText] = useState<string | null>(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -359,7 +373,9 @@ function PassageBlock({ apiRef, label }: { apiRef: string; label: string }) {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    fetchPassage(apiRef)
+    setError(false);
+    setText(null);
+    fetchPassage(apiRef, version)
       .then((t) => {
         if (!cancelled) setText(t);
       })
@@ -372,12 +388,12 @@ function PassageBlock({ apiRef, label }: { apiRef: string; label: string }) {
     return () => {
       cancelled = true;
     };
-  }, [apiRef]);
+  }, [apiRef, version]);
 
   return (
     <div className="rounded-xl border-l-2 border-l-primary/60 bg-surface-2/50 p-3">
       <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-        {label} · Almeida
+        {label} · {bibleLabelFor(version)}
       </p>
       {loading && (
         <p className="flex items-center gap-2 text-xs text-muted-foreground">

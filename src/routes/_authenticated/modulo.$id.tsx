@@ -2,66 +2,20 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import {
+  MODULE_ORDER_TO_ICON,
+  MODULE_ORDER_TO_GRADIENT,
+  MODULE_ORDER_TO_RGB,
+  DEFAULT_MODULE_GRADIENT,
+  DEFAULT_MODULE_RGB,
+} from "@/data/module-visuals";
+import {
   ArrowLeft,
   Check,
   ChevronRight,
-  Lock,
   Play,
   Sparkles,
   Sprout,
-  ScrollText,
-  BookOpen,
-  HandHeart,
-  Flame,
-  Megaphone,
-  Church,
-  Compass,
-  Home as HomeIcon,
-  Crown,
-  Globe,
 } from "lucide-react";
-
-const MODULE_ORDER_TO_ICON: Record<number, React.ComponentType<{ className?: string }>> = {
-  1: Sprout,
-  2: BookOpen,
-  3: ScrollText,
-  4: HandHeart,
-  5: Flame,
-  6: Megaphone,
-  7: Church,
-  8: Compass,
-  9: HomeIcon,
-  10: Crown,
-  11: Globe,
-};
-
-const MODULE_ORDER_TO_GRADIENT: Record<number, string> = {
-  1: "from-emerald-950 via-teal-900 to-emerald-950",
-  2: "from-slate-900 via-indigo-950 to-slate-900",
-  3: "from-stone-950 via-amber-950 to-stone-900",
-  4: "from-slate-900 via-blue-950 to-slate-900",
-  5: "from-red-950 via-rose-950 to-slate-900",
-  6: "from-emerald-950 via-green-950 to-slate-900",
-  7: "from-slate-900 via-purple-950 to-slate-900",
-  8: "from-cyan-950 via-slate-900 to-slate-900",
-  9: "from-rose-950 via-pink-950 to-slate-900",
-  10: "from-amber-950 via-orange-950 to-slate-900",
-  11: "from-violet-950 via-indigo-950 to-slate-900",
-};
-
-const MODULE_ORDER_TO_RGB: Record<number, string> = {
-  1: "16 185 129",
-  2: "99 102 241",
-  3: "245 158 11",
-  4: "59 130 246",
-  5: "244 63 94",
-  6: "34 197 94",
-  7: "168 85 247",
-  8: "6 182 212",
-  9: "236 72 153",
-  10: "249 115 22",
-  11: "139 92 246",
-};
 
 export const Route = createFileRoute("/_authenticated/modulo/$id")({
   component: ModulePage,
@@ -148,8 +102,8 @@ function ModulePage() {
   const total = trails.length;
 
   const Icon = MODULE_ORDER_TO_ICON[mod.ord] ?? Sprout;
-  const gradient = MODULE_ORDER_TO_GRADIENT[mod.ord] ?? "from-slate-900 via-slate-800 to-slate-900";
-  const rgb = MODULE_ORDER_TO_RGB[mod.ord] ?? "99 102 241";
+  const gradient = MODULE_ORDER_TO_GRADIENT[mod.ord] ?? DEFAULT_MODULE_GRADIENT;
+  const rgb = MODULE_ORDER_TO_RGB[mod.ord] ?? DEFAULT_MODULE_RGB;
   const accentStyle = {
     "--accent": `rgb(${rgb})`,
     "--accent-badge": `color-mix(in srgb, rgb(${rgb}) 15%, transparent)`,
@@ -160,7 +114,7 @@ function ModulePage() {
   const rendered = trails.map((t) => {
     const hasLesson = !!t.lesson_id;
     const isDone = hasLesson && t.lesson_id && progressIds.has(t.lesson_id);
-    let state: "done" | "active" | "locked" | "coming-soon";
+    let state: "done" | "active" | "coming-soon";
     if (!hasLesson) {
       state = "coming-soon";
     } else if (isDone) {
@@ -246,7 +200,7 @@ function TrailRow({
   index: number;
   title: string;
   lessonId: string | null;
-  state: "done" | "active" | "locked" | "coming-soon";
+  state: "done" | "active" | "coming-soon";
 }) {
   const base = "flex items-center gap-3 rounded-2xl border p-3.5 transition-all";
 
@@ -263,18 +217,6 @@ function TrailRow({
     );
   }
 
-  if (state === "locked") {
-    return (
-      <div className={`${base} border-border bg-background/50 opacity-60`}>
-        <TrailNumber index={index} tone="muted" />
-        <div className="flex-1">
-          <p className="text-sm font-semibold">{title}</p>
-          <span className="text-[11px] text-muted-foreground">Aguarde</span>
-        </div>
-        <Lock className="h-4 w-4 text-muted-foreground" />
-      </div>
-    );
-  }
 
   if (state === "done" && lessonId) {
     return (
