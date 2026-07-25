@@ -180,8 +180,8 @@ function HomePage() {
           const pct = total ? (doneCount / total) * 100 : 0;
 
           const Icon = MODULE_ORDER_TO_ICON[m.ord] ?? BookOpen;
-          const gradient = MODULE_ORDER_TO_GRADIENT[m.ord] ?? "from-slate-900 via-slate-800 to-slate-900";
-          const rgb = MODULE_ORDER_TO_RGB[m.ord] ?? "99 102 241";
+          const gradient = MODULE_ORDER_TO_GRADIENT[m.ord] ?? DEFAULT_MODULE_GRADIENT;
+          const rgb = MODULE_ORDER_TO_RGB[m.ord] ?? DEFAULT_MODULE_RGB;
           const isLocked = pct === 0;
           const isComplete = pct === 100;
           const accentStyle = {

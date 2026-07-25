@@ -102,8 +102,8 @@ function ModulePage() {
   const total = trails.length;
 
   const Icon = MODULE_ORDER_TO_ICON[mod.ord] ?? Sprout;
-  const gradient = MODULE_ORDER_TO_GRADIENT[mod.ord] ?? "from-slate-900 via-slate-800 to-slate-900";
-  const rgb = MODULE_ORDER_TO_RGB[mod.ord] ?? "99 102 241";
+  const gradient = MODULE_ORDER_TO_GRADIENT[mod.ord] ?? DEFAULT_MODULE_GRADIENT;
+  const rgb = MODULE_ORDER_TO_RGB[mod.ord] ?? DEFAULT_MODULE_RGB;
   const accentStyle = {
     "--accent": `rgb(${rgb})`,
     "--accent-badge": `color-mix(in srgb, rgb(${rgb}) 15%, transparent)`,
