@@ -25,7 +25,7 @@ import { Route as AuthenticatedPerfilUsernameRouteImport } from './routes/_authe
 import { Route as AuthenticatedModuloIdRouteImport } from './routes/_authenticated/modulo.$id'
 import { Route as AuthenticatedMensagensUsernameRouteImport } from './routes/_authenticated/mensagens.$username'
 import { Route as AuthenticatedLicaoIdRouteImport } from './routes/_authenticated/licao.$id'
-import { Route as AuthenticatedLicaoIdAprofundarRouteImport } from './routes/_authenticated/licao.$id.aprofundar'
+import { Route as AuthenticatedLicaoIdAprofundarRouteImport } from './routes/_authenticated/licao.$id_.aprofundar'
 import { Route as AuthenticatedEstudosPlanoIdRouteImport } from './routes/_authenticated/estudos.plano.$id'
 import { Route as AuthenticatedEstudosMeditacaoIdRouteImport } from './routes/_authenticated/estudos.meditacao.$id'
 import { Route as AuthenticatedEstudosBiblicoIdRouteImport } from './routes/_authenticated/estudos.biblico.$id'
