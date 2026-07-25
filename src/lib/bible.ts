@@ -20,9 +20,6 @@ export function apiTranslationFor(version: BibleVersion): string {
 }
 
 export function bibleLabelFor(version: BibleVersion): string {
-  // Deixamos claro para o leitor quando o texto exibido é Almeida (fallback).
-  const api = apiTranslationFor(version);
-  if (api === "almeida" && version !== "ACF") return `${version} (Almeida)`;
   return version;
 }
 
