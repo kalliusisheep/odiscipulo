@@ -263,7 +263,7 @@ function EstudoBiblicoPage() {
 
           <div className="card-elevated p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Oração sugerida</p>
-            <p className="mt-2 scripture text-sm leading-relaxed">{study.prayer}</p>
+            <p className="mt-2 scripture text-base leading-relaxed">{study.prayer}</p>
           </div>
 
           <div className="card-elevated border-l-4 border-l-ancient p-5">
