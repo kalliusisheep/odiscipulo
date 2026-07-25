@@ -153,12 +153,11 @@ function LicaoPage() {
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [reflection, setReflection] = useState("");
   const [saving, setSaving] = useState(false);
-  const { scaleIndex, increase, decrease } = useReadingFontScale();
-  const contentZoomStyle = { zoom: `${FONT_SCALES[scaleIndex]}%` } as React.CSSProperties;
+  const { scaleIndex, increase, decrease, contentZoomStyle } = useReadingFontScale();
   const fontControlsProps = {
+    scaleIndex,
     onIncrease: increase,
     onDecrease: decrease,
-    disabled: { min: scaleIndex === 0, max: scaleIndex === FONT_SCALES.length - 1 },
   };
 
   useEffect(() => {
