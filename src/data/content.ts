@@ -153,7 +153,6 @@ const novoConvertido: Trail = {
           theologianQuote: {
             author: "C.S. Lewis",
             text: "Um homem que fosse meramente humano e dissesse as coisas que Jesus disse não seria um grande mestre moral. Ou ele é o Filho de Deus, ou é um louco, ou algo pior. Você precisa escolher.",
-            source: "Cristianismo Puro e Simples — paráfrase de conteúdo amplamente conhecido; verificação da tradução exata recomendada antes de publicação.",
           },
           deepen: {
             additionalVerses: [
@@ -183,7 +182,6 @@ const novoConvertido: Trail = {
             secondQuote: {
               author: "John Stott",
               text: "Jesus Cristo não é apenas um bom exemplo a seguir; ele é o próprio Deus que se fez homem para nos alcançar onde estávamos.",
-              source: "Paráfrase de tema recorrente na obra de Stott — verificação de fonte exata recomendada antes de publicação.",
             },
           },
           quizzes: [
@@ -306,7 +304,6 @@ const novoConvertido: Trail = {
             secondQuote: {
               author: "John Wesley",
               text: "O novo nascimento é aquela grande mudança que Deus opera na alma quando a traz à vida em Cristo, transformando-a de morte espiritual em vida espiritual.",
-              source: "Paráfrase de tema recorrente nos sermões de Wesley sobre o novo nascimento — verificação de fonte exata recomendada antes de publicação.",
             },
           },
           quizzes: [
@@ -426,7 +423,6 @@ const novoConvertido: Trail = {
             secondQuote: {
               author: "John Wesley",
               text: "O testemunho do Espírito é uma impressão interior na alma, pela qual o Espírito de Deus testifica diretamente ao meu espírito que sou filho de Deus.",
-              source: "Paráfrase de tema recorrente no sermão 'A Witness of the Spirit' — verificação de fonte exata recomendada antes de publicação.",
             },
           },
           quizzes: [
@@ -541,7 +537,6 @@ const novoConvertido: Trail = {
             secondQuote: {
               author: "Charles Spurgeon",
               text: "Uma Bíblia que se desfaz pelo uso normalmente pertence a alguém que não se desfaz.",
-              source: "Citação amplamente atribuída a Spurgeon — verificação de fonte exata recomendada antes de publicação.",
             },
           },
           quizzes: [
@@ -650,7 +645,6 @@ const novoConvertido: Trail = {
             secondQuote: {
               author: "Charles Spurgeon",
               text: "A oração é o respirar da alma nova, o clamor natural do coração que Deus regenerou.",
-              source: "Paráfrase de tema recorrente na pregação de Spurgeon sobre oração — verificação de fonte exata recomendada antes de publicação.",
             },
           },
           quizzes: [
@@ -778,7 +772,6 @@ const novoConvertido: Trail = {
             secondQuote: {
               author: "Tim Keller",
               text: "O Evangelho não é apenas o ABC da vida cristã, mas o A a Z. Não avançamos além dele; avançamos mais fundo nele.",
-              source: "Paráfrase de tema recorrente na obra de Keller — verificação de fonte exata recomendada antes de publicação.",
             },
           },
           quizzes: [
@@ -912,7 +905,6 @@ const novoConvertido: Trail = {
             secondQuote: {
               author: "Wayne Grudem",
               text: "A adoção é um ato de Deus pelo qual Ele nos torna membros de sua família, com todos os privilégios e responsabilidades de filhos.",
-              source: "Paráfrase de definição semelhante à encontrada em 'Teologia Sistemática' — verificação de fonte exata recomendada antes de publicação.",
             },
           },
           quizzes: [
@@ -1006,7 +998,6 @@ const novoConvertido: Trail = {
           theologianQuote: {
             author: "Dietrich Bonhoeffer",
             text: "A presença física de outros cristãos é uma fonte de alegria e força incomparáveis para o crente.",
-            source: "Life Together (Vida em Comunhão), 1939, p. 19 — verificação de tradução exata recomendada antes de publicação.",
           },
           deepen: {
             historicalContext:
@@ -1099,7 +1090,6 @@ const novoConvertido: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "A simplicidade e a aparente inutilidade da ordenança devem levar o crente a dizer: 'Faço isso porque se torna, para mim, o melhor teste da minha obediência ao meu Mestre.'",
-            source: "Sermão 'Baptismal Regeneration' (spurgeon.org) — verificação de tradução exata recomendada antes de publicação.",
           },
           deepen: {
             additionalVerses: [
@@ -1205,7 +1195,6 @@ const novoConvertido: Trail = {
           theologianQuote: {
             author: "John Stott",
             text: "Almas são ganhas para Cristo por lágrimas, suor e dor, especialmente na oração e na amizade pessoal e sacrificial.",
-            source: "Reading Timothy and Titus with John Stott — verificação de tradução exata recomendada antes de publicação.",
           },
           deepen: {
             additionalVerses: [
