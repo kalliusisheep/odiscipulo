@@ -92,17 +92,12 @@ function HomePage() {
   const showLevel50Checklist = level50.xpOk && !level50.unlocked;
 
   // Títulos de nível variam muito de tamanho ("Crente Ruim" vs "Piloto de Carruagem
-  // de Fogo") — o tamanho da fonte se ajusta ao comprimento do texto pra sempre
-  // caber em uma linha só, sem quebrar e sem reticências.
+  // de Fogo") — o streak não fica mais no caminho do título (foi para a linha do
+  // rótulo "Seu progresso"), então a maioria cabe tranquilamente no tamanho grande.
+  // Só os pouquíssimos títulos realmente compridos (>32 caracteres) usam uma fonte
+  // menor, pra garantir: sem quebra de linha, sem reticências.
   const levelTitleText = `Nível ${level.level}: ${level.title}`;
-  const levelTitleSizeClass =
-    levelTitleText.length > 33
-      ? "text-xs"
-      : levelTitleText.length > 27
-      ? "text-sm"
-      : levelTitleText.length > 20
-      ? "text-base"
-      : "text-lg";
+  const levelTitleSizeClass = levelTitleText.length > 32 ? "text-sm" : "text-lg";
 
   if (viewMode === "lider") {
     return <LiderInline />;
@@ -149,18 +144,16 @@ function HomePage() {
             </div>
 
             <div className="flex min-w-0 flex-1 flex-col justify-center">
-              <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0">
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Seu progresso</p>
-                  <p className={`mt-0.5 whitespace-nowrap font-bold text-primary ${levelTitleSizeClass}`}>{levelTitleText}</p>
-                  <p className="text-xs text-muted-foreground">{profile?.xp ?? 0} XP acumulados</p>
-                </div>
-                <div className="flex shrink-0 flex-col items-center rounded-2xl bg-streak/20 px-2.5 py-1.5">
-                  <Flame className="h-4 w-4 text-streak" />
-                  <span className="text-sm font-bold text-streak">{profile?.streak ?? 0}</span>
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Seu progresso</p>
+                <div className="flex shrink-0 items-center gap-1 rounded-full bg-streak/20 px-2.5 py-1">
+                  <Flame className="h-3.5 w-3.5 text-streak" />
+                  <span className="text-xs font-bold text-streak">{profile?.streak ?? 0}</span>
                   <span className="text-[9px] text-muted-foreground">dias</span>
                 </div>
               </div>
+              <p className={`mt-0.5 whitespace-nowrap font-bold text-primary ${levelTitleSizeClass}`}>{levelTitleText}</p>
+              <p className="text-xs text-muted-foreground">{profile?.xp ?? 0} XP acumulados</p>
 
               <div className="mt-2.5">
                 <div className="mb-1 flex items-center justify-between gap-2 text-[10px] font-medium">
