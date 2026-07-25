@@ -114,7 +114,7 @@ function ModulePage() {
   const rendered = trails.map((t) => {
     const hasLesson = !!t.lesson_id;
     const isDone = hasLesson && t.lesson_id && progressIds.has(t.lesson_id);
-    let state: "done" | "active" | "locked" | "coming-soon";
+    let state: "done" | "active" | "coming-soon";
     if (!hasLesson) {
       state = "coming-soon";
     } else if (isDone) {
@@ -200,7 +200,7 @@ function TrailRow({
   index: number;
   title: string;
   lessonId: string | null;
-  state: "done" | "active" | "locked" | "coming-soon";
+  state: "done" | "active" | "coming-soon";
 }) {
   const base = "flex items-center gap-3 rounded-2xl border p-3.5 transition-all";
 
@@ -217,18 +217,6 @@ function TrailRow({
     );
   }
 
-  if (state === "locked") {
-    return (
-      <div className={`${base} border-border bg-background/50 opacity-60`}>
-        <TrailNumber index={index} tone="muted" />
-        <div className="flex-1">
-          <p className="text-sm font-semibold">{title}</p>
-          <span className="text-[11px] text-muted-foreground">Aguarde</span>
-        </div>
-        <Lock className="h-4 w-4 text-muted-foreground" />
-      </div>
-    );
-  }
 
   if (state === "done" && lessonId) {
     return (
