@@ -144,7 +144,7 @@ function HomePage() {
             </div>
 
             <div className="flex min-w-0 flex-1 flex-col justify-center">
-              <div className="flex items-center justify-between gap-2">
+              <div className="flex items-start justify-between gap-2">
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Seu progresso</p>
                 <div className="flex shrink-0 items-center gap-1 rounded-full bg-streak/20 px-2.5 py-1">
                   <Flame className="h-3.5 w-3.5 text-streak" />
