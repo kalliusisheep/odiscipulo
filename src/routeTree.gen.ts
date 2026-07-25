@@ -18,6 +18,7 @@ import { Route as AuthenticatedRankingRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
 import { Route as AuthenticatedMuralRouteImport } from './routes/_authenticated/mural'
 import { Route as AuthenticatedLiderRouteImport } from './routes/_authenticated/lider'
+import { Route as AuthenticatedNiveisRouteImport } from './routes/_authenticated/niveis'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedBemVindoRouteImport } from './routes/_authenticated/bem-vindo'
 import { Route as AuthenticatedEstudosIndexRouteImport } from './routes/_authenticated/estudos.index'
@@ -73,6 +74,11 @@ const AuthenticatedMuralRoute = AuthenticatedMuralRouteImport.update({
 const AuthenticatedLiderRoute = AuthenticatedLiderRouteImport.update({
   id: '/lider',
   path: '/lider',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedNiveisRoute = AuthenticatedNiveisRouteImport.update({
+  id: '/niveis',
+  path: '/niveis',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
@@ -145,6 +151,7 @@ export interface FileRoutesByFullPath {
   '/home': typeof AuthenticatedHomeRoute
   '/lider': typeof AuthenticatedLiderRoute
   '/mural': typeof AuthenticatedMuralRoute
+  '/niveis': typeof AuthenticatedNiveisRoute
   '/perfil': typeof AuthenticatedPerfilRouteWithChildren
   '/ranking': typeof AuthenticatedRankingRoute
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
@@ -166,6 +173,7 @@ export interface FileRoutesByTo {
   '/home': typeof AuthenticatedHomeRoute
   '/lider': typeof AuthenticatedLiderRoute
   '/mural': typeof AuthenticatedMuralRoute
+  '/niveis': typeof AuthenticatedNiveisRoute
   '/perfil': typeof AuthenticatedPerfilRouteWithChildren
   '/ranking': typeof AuthenticatedRankingRoute
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
@@ -189,6 +197,7 @@ export interface FileRoutesById {
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/lider': typeof AuthenticatedLiderRoute
   '/_authenticated/mural': typeof AuthenticatedMuralRoute
+  '/_authenticated/niveis': typeof AuthenticatedNiveisRoute
   '/_authenticated/perfil': typeof AuthenticatedPerfilRouteWithChildren
   '/_authenticated/ranking': typeof AuthenticatedRankingRoute
   '/_authenticated/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
@@ -212,6 +221,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/lider'
     | '/mural'
+    | '/niveis'
     | '/perfil'
     | '/ranking'
     | '/ranking-detalhes'
@@ -233,6 +243,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/lider'
     | '/mural'
+    | '/niveis'
     | '/perfil'
     | '/ranking'
     | '/ranking-detalhes'
@@ -255,6 +266,7 @@ export interface FileRouteTypes {
     | '/_authenticated/home'
     | '/_authenticated/lider'
     | '/_authenticated/mural'
+    | '/_authenticated/niveis'
     | '/_authenticated/perfil'
     | '/_authenticated/ranking'
     | '/_authenticated/ranking-detalhes'
@@ -349,6 +361,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHomeRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/niveis': {
+      id: '/_authenticated/niveis'
+      path: '/niveis'
+      fullPath: '/niveis'
+      preLoaderRoute: typeof AuthenticatedNiveisRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/bem-vindo': {
       id: '/_authenticated/bem-vindo'
       path: '/bem-vindo'
@@ -438,6 +457,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedLiderRoute: typeof AuthenticatedLiderRoute
   AuthenticatedMuralRoute: typeof AuthenticatedMuralRoute
+  AuthenticatedNiveisRoute: typeof AuthenticatedNiveisRoute
   AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRouteWithChildren
   AuthenticatedRankingRoute: typeof AuthenticatedRankingRoute
   AuthenticatedRankingDetalhesRoute: typeof AuthenticatedRankingDetalhesRoute
@@ -456,6 +476,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedLiderRoute: AuthenticatedLiderRoute,
   AuthenticatedMuralRoute: AuthenticatedMuralRoute,
+  AuthenticatedNiveisRoute: AuthenticatedNiveisRoute,
   AuthenticatedPerfilRoute: AuthenticatedPerfilRouteWithChildren,
   AuthenticatedRankingRoute: AuthenticatedRankingRoute,
   AuthenticatedRankingDetalhesRoute: AuthenticatedRankingDetalhesRoute,
