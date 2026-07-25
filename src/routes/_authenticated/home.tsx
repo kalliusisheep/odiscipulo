@@ -179,6 +179,15 @@ function HomePage() {
             </p>
           </div>
         )}
+        <div className="flex justify-end border-t border-border/60 p-3">
+          <Link
+            to="/niveis"
+            className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-colors hover:bg-primary/20"
+          >
+            Conheça os níveis
+            <ChevronRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
       </section>
 
       <section className="space-y-3">
