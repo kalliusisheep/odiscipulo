@@ -182,7 +182,7 @@ function PlanoPage() {
 
       {plan.intro && (
         <div className="card-elevated border-l-4 border-l-success p-4">
-          <p className="scripture text-sm leading-relaxed text-foreground/90">{plan.intro}</p>
+          <p className="scripture text-base leading-relaxed text-foreground/90">{plan.intro}</p>
         </div>
       )}
 
@@ -322,7 +322,7 @@ function DayDetails({
       </Section>
 
       <Section title="Oração">
-        <p className="scripture text-sm italic leading-relaxed text-foreground/90">{day.prayer}</p>
+        <p className="scripture text-base italic leading-relaxed text-foreground/90">{day.prayer}</p>
       </Section>
 
       {!checked && (
@@ -406,7 +406,7 @@ function PassageBlock({
         </p>
       )}
       {text && (
-        <p className="scripture text-sm leading-relaxed text-foreground/90">{text}</p>
+        <p className="scripture text-base leading-relaxed text-foreground/90">{text}</p>
       )}
     </div>
   );
