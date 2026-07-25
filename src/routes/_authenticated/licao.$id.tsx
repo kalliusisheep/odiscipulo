@@ -75,7 +75,7 @@ function DeepenSection({ deepen }: { deepen: NonNullable<ReturnType<typeof lesso
                     <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                       {v.ref}
                     </p>
-                    <p className="mt-1 scripture text-sm text-foreground/85">
+                    <p className="mt-1 scripture text-base text-foreground/85">
                       "{verseText(v, bibleVersion)}"
                     </p>
                   </div>
@@ -126,7 +126,7 @@ function DeepenSection({ deepen }: { deepen: NonNullable<ReturnType<typeof lesso
 
           {deepen.secondQuote && (
             <blockquote className="border-l-4 border-l-ancient pl-3">
-              <p className="scripture text-sm leading-relaxed text-ancient">
+              <p className="scripture text-base leading-relaxed text-ancient">
                 "{deepen.secondQuote.text}"
               </p>
               <footer className="mt-1.5 text-xs font-semibold text-ancient/80">
@@ -413,7 +413,7 @@ function LicaoPage() {
 
           <div className="card-elevated p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Oração sugerida</p>
-            <p className="mt-2 scripture text-sm leading-relaxed">{lesson.prayer}</p>
+            <p className="mt-2 scripture text-base leading-relaxed">{lesson.prayer}</p>
           </div>
 
           <div className="card-elevated border-l-4 border-l-ancient p-5">
