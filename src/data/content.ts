@@ -95,6 +95,143 @@ const novoConvertido: Trail = {
       title: "Módulo I: O Encontro",
       lessons: [
         {
+          id: "db-1-2",
+          title: "Quem é Jesus?",
+          difficulty: 1,
+          intro: [
+            "Toda a fé cristã se apoia numa única pergunta, feita pelo próprio Jesus aos seus discípulos: 'e vocês, quem dizem que eu sou?' (Mateus 16:15). Não é uma pergunta de curiosidade histórica. É a pergunta mais decisiva que qualquer ser humano pode responder — porque a resposta determina tudo o que vem depois na sua fé.",
+            "Muita gente admira Jesus como grande professor de moral, como líder religioso ou como exemplo de bondade. Mas o próprio Jesus nunca deixou essa porta aberta. C.S. Lewis observou que alguém que diz as coisas que Jesus disse — 'antes de Abraão existir, eu sou' (João 8:58), 'eu e o Pai somos um' (João 10:30) — só pode ser uma dessas três coisas: um mentiroso, um louco, ou exatamente quem afirmou ser: o Senhor. A opção de 'grande mestre moral, mas não Deus' simplesmente não está disponível para quem lê os Evangelhos com honestidade.",
+            "A Bíblia ensina que Jesus é plenamente Deus e plenamente homem — uma só pessoa, duas naturezas, unidas sem confusão, sem mistura, sem separação. Esse é o coração da fé cristã histórica, confessado desde os primeiros séculos da Igreja: 'o Verbo se fez carne e habitou entre nós' (João 1:14). Deus não enviou uma mensagem sobre si mesmo; Ele veio pessoalmente, em carne humana.",
+            "Entender quem é Jesus não é um exercício acadêmico distante — é o fundamento sobre o qual toda a sua vida cristã será construída. Se Jesus é apenas um bom homem, seguir seus ensinos é opcional, uma entre várias filosofias de vida. Se Jesus é Deus encarnado, então tudo o que Ele disse tem autoridade absoluta, e a resposta correta diante dele não é admiração distante, mas adoração, confiança e entrega.",
+          ],
+          verses: [
+            {
+              ref: "João 1:1,14",
+              textByVersion: {
+                NVI: "No princípio era aquele que é a Palavra. Ele estava com Deus, e era Deus... Aquele que é a Palavra tornou-se carne e viveu entre nós. Vimos a sua glória, glória como do Unigênito vindo do Pai, cheio de graça e de verdade.",
+                NAA: "No princípio era o Verbo, e o Verbo estava com Deus, e o Verbo era Deus... E o Verbo se fez carne e habitou entre nós, cheio de graça e de verdade; e vimos a sua glória, glória como do unigênito do Pai.",
+                ACF: "No princípio era o Verbo, e o Verbo estava com Deus, e o Verbo era Deus... E o Verbo se fez carne, e habitou entre nós, e vimos a sua glória, como a glória do unigênito do Pai, cheio de graça e de verdade.",
+                KJV: "No princípio era o Verbo, e o Verbo estava com Deus, e o Verbo era Deus... E o Verbo se fez carne, e habitou entre nós, e vimos a sua glória, como a glória do unigênito do Pai, cheio de graça e de verdade.",
+                NVT: "No princípio, antes de todas as coisas começarem, a Palavra já existia. A Palavra estava com Deus e era Deus... Assim, a Palavra tornou-se homem e viveu aqui na terra entre nós. Ele estava cheio de amor inabalável e fidelidade. E nós vimos a sua glória, a glória do único Filho do Pai.",
+              },
+              originals: [
+                { word: "λόγος", translit: "lógos", meaning: "'Palavra, Verbo' — expressão perfeita e eterna do próprio Deus, presente desde antes da criação", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Colossenses 1:15-17",
+              textByVersion: {
+                NVI: "Ele é a imagem do Deus invisível, o primogênito de toda a criação, pois nele foram criadas todas as coisas... Ele é antes de todas as coisas, e nele tudo subsiste.",
+                NAA: "Ele é a imagem do Deus invisível, o primogênito de toda a criação, porque nele foram criadas todas as coisas... Ele é antes de todas as coisas, e nele subsistem todas as coisas.",
+                ACF: "O qual é imagem do Deus invisível, o primogênito de toda a criação; porque nele foram criadas todas as coisas... e ele é antes de todas as coisas, e todas as coisas subsistem por ele.",
+                NVT: "Cristo é a imagem visível do Deus invisível. Ele existia antes que qualquer coisa fosse criada e é supremo sobre toda a criação, pois, por meio dele, Deus criou tudo... Ele existia antes de tudo o mais, e é ele quem mantém a criação unida.",
+              },
+              originals: [
+                { word: "εἰκὼν", translit: "eikōn", meaning: "'imagem' — não uma cópia imperfeita, mas a representação exata e visível do que é invisível", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Mateus 16:15-16",
+              textByVersion: {
+                NVI: "'E vocês', perguntou ele, 'quem dizem que eu sou?' Simão Pedro respondeu: 'Tu és o Cristo, o Filho do Deus vivo'.",
+                NAA: "Ele lhes perguntou: — E vocês, quem dizem que eu sou? Respondeu-lhe Simão Pedro: — Tu és o Cristo, o Filho do Deus vivo.",
+                ACF: "Disse-lhes ele: E vós, quem dizeis que eu sou? E Simão Pedro, respondendo, disse: Tu és o Cristo, o Filho do Deus vivo.",
+                NVT: "'E vocês?', ele perguntou. 'Quem vocês dizem que eu sou?' Simão Pedro respondeu: 'Tu és o Messias, o Filho do Deus vivo'.",
+              },
+              originals: [
+                { word: "Χριστός", translit: "Christós", meaning: "'Ungido, Messias' — o Rei prometido desde o Antigo Testamento, aguardado por Israel", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "λόγος", translit: "lógos", meaning: "'Palavra, Verbo'. João escolhe esse termo para dizer que Jesus é a auto-expressão eterna de Deus — não uma criatura, mas Deus mesmo se comunicando e se revelando.", lang: "grego" },
+            { word: "εἰκὼν", translit: "eikōn", meaning: "'imagem'. Jesus não aponta apenas para Deus — ele torna Deus visível. Quem vê a Jesus, vê o caráter e a glória do Pai (João 14:9).", lang: "grego" },
+            { word: "Χριστός", translit: "Christós", meaning: "'Ungido, Messias'. Título que liga Jesus às promessas do Antigo Testamento sobre um Rei, Sacerdote e Profeta enviado por Deus para salvar seu povo.", lang: "grego" },
+          ],
+          deepDive:
+            "João abre seu Evangelho ecoando deliberadamente Gênesis 1:1 — 'no princípio' — para dizer que Jesus, o 'lógos', já estava lá antes de qualquer coisa existir, e que esse Lógos 'era Deus'. Não uma força impessoal, não um anjo superior, não uma criatura exaltada: Deus mesmo. E então vem a afirmação mais chocante do cristianismo: esse Deus eterno 'se fez carne' — tornou-se plenamente humano, sem deixar de ser plenamente divino. Paulo, em Colossenses, acrescenta outra peça: Jesus é a 'eikōn' do Deus invisível — não uma pintura aproximada, mas a representação exata e visível daquilo que ninguém jamais viu. E tudo isso desemboca na pergunta pessoal que Jesus faz a Pedro: não 'o que as pessoas pensam de mim', mas 'quem vocês dizem que eu sou'. A resposta de Pedro — 'o Cristo, o Filho do Deus vivo' — é a confissão que sustenta toda a Igreja cristã através dos séculos. Conhecer fatos sobre Jesus não é o mesmo que confessá-lo como Senhor; a fé cristã nasce quando essa verdade deixa de ser informação e se torna confissão pessoal.",
+          theologianQuote: {
+            author: "C.S. Lewis",
+            text: "Um homem que fosse meramente humano e dissesse as coisas que Jesus disse não seria um grande mestre moral. Ou ele é o Filho de Deus, ou é um louco, ou algo pior. Você precisa escolher.",
+            source: "Cristianismo Puro e Simples — paráfrase de conteúdo amplamente conhecido; verificação da tradução exata recomendada antes de publicação.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Filipenses 2:6-7",
+                textByVersion: {
+                  NVI: "Que, embora tendo a natureza de Deus, não considerou que ser igual a Deus era algo a que devia se apegar; mas esvaziou-se de si mesmo, vindo a ser servo, tornando-se semelhante aos seres humanos.",
+                },
+              },
+              {
+                ref: "Hebreus 1:3",
+                textByVersion: {
+                  NVI: "O Filho é o resplendor da glória de Deus e a expressão exata do seu ser, sustentando todas as coisas por sua palavra poderosa.",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "μορφῇ", translit: "morphē", meaning: "'forma, natureza essencial'. Paulo usa esse termo em Filipenses 2:6 para afirmar que Jesus possui, por natureza, a essência plena de Deus — não uma aparência, mas a realidade.", lang: "grego" },
+              { word: "χαρακτὴρ", translit: "charaktēr", meaning: "'expressão exata, marca impressa'. Assim como um selo produz uma marca idêntica à sua gravação, Jesus é a impressão exata do próprio ser de Deus (Hebreus 1:3).", lang: "grego" },
+            ],
+            historicalContext:
+              "A confissão de que Jesus é plenamente Deus e plenamente homem não nasceu de especulação filosófica tardia — ela já está presente nos escritos mais antigos do Novo Testamento, como o hino cristológico de Filipenses 2 (provavelmente um cântico usado pela igreja primitiva antes mesmo de Paulo escrever a carta) e nas afirmações diretas dos Evangelhos. Nos primeiros séculos, a Igreja precisou defender essa verdade contra distorções: o docetismo (que negava a humanidade real de Jesus, tratando-a como aparência) e o arianismo (que negava sua plena divindade, tratando-o como a primeira e maior criatura de Deus). O Concílio de Niceia (325 d.C.) e o Concílio de Calcedônia (451 d.C.) não inventaram a doutrina da encarnação — eles a defenderam e a formularam com precisão diante de erros que ameaçavam distorcer o Evangelho.",
+            exegeticalNotes:
+              "O prólogo de João (1:1-18) é cuidadosamente estruturado: 'o Verbo era Deus' (afirmando plena divindade) e, ao mesmo tempo, 'o Verbo estava com Deus' (afirmando distinção pessoal entre o Pai e o Filho). O grego evita tanto o erro de dizer que Jesus é 'um deus' menor (não há artigo definido antes de 'Deus' na segunda cláusula, o que os gramáticos entendem como ênfase qualitativa: o Verbo possui a mesma natureza divina) quanto o erro de apagar a distinção entre as pessoas da Trindade. É precisão teológica extrema construída em poucas palavras gregas.",
+            theologicalDebate:
+              "A doutrina da encarnação — Jesus plenamente Deus e plenamente homem numa só pessoa — é uma doutrina essencial da fé cristã histórica, confessada por praticamente toda a Igreja ortodoxa ao longo dos séculos, e não é um tema de divergência legítima entre cristãos fiéis, diferente de outros temas tratados nesta trilha. Ainda assim, é importante saber que grupos que negam a plena divindade de Cristo (como as Testemunhas de Jeová, historicamente) ou sua plena humanidade se afastam, neste ponto, da ortodoxia cristã histórica. Se você tiver dúvidas específicas sobre esse tema ao conversar com pessoas de outras tradições religiosas, procure seu pastor ou líder de discipulado para aprofundar com cuidado pastoral.",
+            secondQuote: {
+              author: "John Stott",
+              text: "Jesus Cristo não é apenas um bom exemplo a seguir; ele é o próprio Deus que se fez homem para nos alcançar onde estávamos.",
+              source: "Paráfrase de tema recorrente na obra de Stott — verificação de fonte exata recomendada antes de publicação.",
+            },
+          },
+          quizzes: [
+            {
+              question: "Segundo João 1:1 e 1:14, quem é o 'Verbo' (lógos)?",
+              options: [
+                "Um anjo poderoso enviado por Deus",
+                "Deus mesmo, que existia desde o princípio e se fez carne",
+                "Um título simbólico sem realidade pessoal",
+                "A primeira criatura feita por Deus",
+              ],
+              correctIndex: 1,
+              explanation: "João afirma que o Verbo 'era Deus' e, ao se encarnar, não deixou de sê-lo — Jesus é plenamente Deus e plenamente homem.",
+            },
+            {
+              question: "De acordo com o argumento de C.S. Lewis apresentado na lição, o que NÃO é uma opção coerente diante das afirmações de Jesus sobre si mesmo?",
+              options: [
+                "Que ele seja o Senhor, exatamente quem afirmou ser",
+                "Que ele fosse um mentiroso deliberado",
+                "Que ele estivesse enganado, como um louco",
+                "Que ele fosse apenas um bom mestre moral, mas não Deus",
+              ],
+              correctIndex: 3,
+              explanation: "Quem afirma ser igual ao Pai e preexistente a Abraão não deixa espaço para ser classificado apenas como 'bom professor' — essa opção não está disponível diante do que Jesus realmente disse.",
+            },
+            {
+              question: "Qual foi a resposta de Pedro à pergunta de Jesus em Mateus 16:15-16, e por que ela é importante?",
+              options: [
+                "'Tu és um grande profeta' — reconhecendo apenas um dom espiritual",
+                "'Tu és o Cristo, o Filho do Deus vivo' — confissão que sustenta a fé cristã histórica",
+                "'Não sei quem tu és' — expressando dúvida legítima",
+                "'Tu és um anjo do Senhor' — atribuindo natureza angelical a Jesus",
+              ],
+              correctIndex: 1,
+              explanation: "A confissão de Pedro identifica Jesus como o Messias prometido e o Filho de Deus — o fundamento da fé que a Igreja confessa desde então.",
+            },
+          ],
+          application:
+            "Responda, hoje, por escrito, a mesma pergunta que Jesus fez a Pedro: 'quem eu digo que Jesus é?'. Não escreva o que você aprendeu sobre ele — escreva o que você crê, com suas próprias palavras. Se houver hesitação ou dúvida, leve-a numa conversa franca com Deus em oração, e também com seu líder de discipulado.",
+          prayer:
+            "Senhor Jesus, tu não vieste apenas para me ensinar um caminho — tu és o caminho, a verdade e a vida. Confesso que muitas vezes reduzo você a um bom exemplo a seguir, esquecendo que você é Deus que se fez carne para me alcançar. Perdoa minha lentidão em reconhecer sua glória plena. Que eu, como Pedro, possa confessar de coração: tu és o Cristo, o Filho do Deus vivo. Molda toda a minha vida a partir dessa verdade. Em teu próprio nome, amém.",
+          weeklyChallenge:
+            "Leia o capítulo 1 do Evangelho de João nesta semana, um pedaço por dia se necessário, sublinhando toda vez que o texto afirmar algo sobre quem Jesus é. Ao final, escreva uma lista com pelo menos cinco dessas afirmações.",
+          reflectionQuestion:
+            "Antes de conhecer a Cristo, quem você pensava que Jesus era? O que mudou nessa percepção — e o que ainda precisa mudar?",
+          xp: 15,
+        },
+        {
           id: "nc-1-1",
           title: "O que aconteceu comigo?",
           intro: [
@@ -141,6 +278,36 @@ const novoConvertido: Trail = {
           theologianQuote: {
             author: "Paul Washer",
             text: "A conversão verdadeira não é uma decisão que você toma. É uma obra que Deus faz — e ela deixa marcas.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Tito 3:5",
+                textByVersion: {
+                  NVI: "Ele nos salvou, não por causa de atos de justiça que tivéssemos feito, mas por sua misericórdia, por meio do lavar regenerador e renovador do Espírito Santo.",
+                },
+              },
+              {
+                ref: "Ezequiel 36:26",
+                textByVersion: {
+                  NVI: "Darei a vocês um novo coração e porei um novo espírito em vocês; tirarei de vocês o coração de pedra e lhes darei um coração de carne.",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "παλιγγενεσία", translit: "palingenesía", meaning: "'regeneração, novo começo'. Termo usado em Tito 3:5 para descrever o lavar renovador do Espírito — a mesma realidade que Jesus chama de 'nascer de novo' em João 3.", lang: "grego" },
+            ],
+            historicalContext:
+              "Nicodemos era fariseu e 'mestre de Israel' (João 3:10) — alguém treinado para explicar as Escrituras a outros. Jesus provavelmente alude a Ezequiel 36:25-27, onde Deus promete um dia aspergir água pura sobre o povo, dar-lhe um coração novo e colocar seu Espírito nele. Um mestre da lei deveria reconhecer essa promessa profética. A surpresa de Nicodemos não é por desconhecer a ideia de renovação espiritual, mas por não ter percebido que essa promessa profética precisava se cumprir nele mesmo, um judeu religioso e não apenas nos gentios distantes.",
+            exegeticalNotes:
+              "A expressão 'nascer da água e do Espírito' (João 3:5) tem sido lida de formas diferentes ao longo da história da Igreja: alguns veem uma referência ao batismo cristão; outros, ecoando Ezequiel 36, entendem 'água' como imagem de purificação espiritual paralela ao 'Espírito', descrevendo uma única realidade de limpeza e regeneração, não dois eventos separados. Esta segunda leitura tem a vantagem de manter coerência com o contexto imediato, que é sobre nascimento espiritual, não sobre um rito.",
+            theologicalDebate:
+              "Um tema em que cristãos fiéis historicamente divergem é a ordem entre a regeneração (o novo nascimento) e a fé: tradições reformadas ensinam que a regeneração é obra soberana do Espírito que precede e capacita a fé (o cego passa a ver antes de escolher olhar); tradições arminianas — à qual esta trilha está mais alinhada — ensinam que a graça preveniente de Deus capacita toda pessoa a responder livremente ao chamado do Evangelho, e a fé e o novo nascimento acontecem de forma unida nesse instante de resposta. Em ambas as tradições, a ênfase central desta lição permanece verdadeira e inegociável: o novo nascimento é obra de Deus, não conquista humana. Esta é uma questão importante, mas secundária — vale a pena estudá-la com seu pastor ou líder de discipulado.",
+            secondQuote: {
+              author: "John Wesley",
+              text: "O novo nascimento é aquela grande mudança que Deus opera na alma quando a traz à vida em Cristo, transformando-a de morte espiritual em vida espiritual.",
+              source: "Paráfrase de tema recorrente nos sermões de Wesley sobre o novo nascimento — verificação de fonte exata recomendada antes de publicação.",
+            },
           },
           quizzes: [
             {
@@ -232,6 +399,36 @@ const novoConvertido: Trail = {
             author: "Charles Spurgeon",
             text: "A fé não é maior por ter sentimentos fortes, e não é menor por não os ter. A fé se apoia em Cristo, não em si mesma.",
           },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "João 10:28-29",
+                textByVersion: {
+                  NVI: "Eu lhes dou a vida eterna, e elas jamais perecerão; ninguém as arrancará da minha mão. Meu Pai, que as deu para mim, é maior do que todos; ninguém pode arrancá-las da mão de meu Pai.",
+                },
+              },
+              {
+                ref: "2 Coríntios 13:5",
+                textByVersion: {
+                  NVI: "Examinem-se a vocês mesmos, para ver se estão na fé; provem-se a vocês mesmos. Vocês não reconhecem que Cristo Jesus está em vocês? A menos que fracassem no exame!",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "ἁρπάσει", translit: "harpásei", meaning: "'arrebatar à força'. Jesus usa esse verbo forte em João 10:28 para garantir que ninguém — nem circunstância, nem inimigo — consegue arrancar o crente da mão que o segura.", lang: "grego" },
+            ],
+            historicalContext:
+              "A doutrina da segurança do crente foi debatida com intensidade especial entre os puritanos ingleses do século XVII, que distinguiam cuidadosamente entre 'ter fé salvadora' e 'ter certeza consciente dessa fé' — reconhecendo que um cristão genuíno pode, por temporadas, viver sem plena certeza subjetiva, sem que isso signifique ausência de salvação real. Já a Reforma Protestante, de modo geral, reagiu contra o ensino medieval que tornava a certeza da salvação quase impossível para o crente comum, prendendo-a a méritos e sacramentos administrados pela Igreja; os reformadores insistiram que a segurança podia — e devia — ser buscada diretamente nas promessas de Cristo.",
+            exegeticalNotes:
+              "O verbo grego 'oídate' (1 João 5:13, 'saibam') pertence à mesma família de palavras que descrevem conhecimento firme e consciente, não impressão vaga. É significativo que João escreva toda a sua carta para produzir esse tipo de certeza — o texto inteiro de 1 João funciona como um conjunto de 'testes' práticos (obediência aos mandamentos, amor aos irmãos, rejeição do pecado como estilo de vida) que servem de evidência externa confirmando a realidade interna da fé.",
+            theologicalDebate:
+              "Um tema em que cristãos fiéis historicamente divergem é se a salvação, uma vez recebida, pode ser perdida. Tradições reformadas defendem a perseverança dos santos ('uma vez salvo, sempre salvo'), apoiadas em textos como João 10:28-29. Tradições arminianas — à qual esta trilha está mais alinhada — reconhecem a força dessas promessas, mas também levam a sério advertências sérias do Novo Testamento (como Hebreus 6:4-6 e 10:26-29) como reais e não meramente hipotéticas, entendendo que a fé precisa perseverar até o fim para se provar genuína. Esta é uma questão doutrinária importante, mas secundária ao Evangelho — cristãos sinceros de ambos os lados concordam que a salvação é pela graça, mediante a fé em Cristo, e nenhum lado ensina que o crente deve viver com ansiedade constante sobre sua salvação. Se essa dúvida pesa sobre você, converse com seu pastor ou líder espiritual.",
+            secondQuote: {
+              author: "John Wesley",
+              text: "O testemunho do Espírito é uma impressão interior na alma, pela qual o Espírito de Deus testifica diretamente ao meu espírito que sou filho de Deus.",
+              source: "Paráfrase de tema recorrente no sermão 'A Witness of the Spirit' — verificação de fonte exata recomendada antes de publicação.",
+            },
+          },
           quizzes: [
             {
               question: "A segurança da salvação vem principalmente de:",
@@ -317,6 +514,36 @@ const novoConvertido: Trail = {
             author: "Hernandes Dias Lopes",
             text: "A Bíblia não é um livro que lemos apenas; é um livro que nos lê. Ela nos revela quem somos diante de Deus.",
           },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Atos 17:11",
+                textByVersion: {
+                  NVI: "Os bereanos eram mais nobres do que os tessalonicenses, pois receberam a mensagem com grande interesse e examinavam diariamente as Escrituras, para ver se as coisas eram assim mesmo.",
+                },
+              },
+              {
+                ref: "2 Timóteo 3:16-17",
+                textByVersion: {
+                  NVI: "Toda a Escritura é inspirada por Deus e útil para o ensino, para a repreensão, para a correção e para a instrução na justiça, para que o homem de Deus seja apto e plenamente preparado para toda boa obra.",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "ἀνακρίνοντες", translit: "anakrínontes", meaning: "'examinando cuidadosamente'. Descreve os bereanos investigando as Escrituras dia após dia, o padrão de um leitor sério, não apenas de um ouvinte passivo.", lang: "grego" },
+            ],
+            historicalContext:
+              "Durante boa parte da história da Igreja, o acesso pessoal às Escrituras foi limitado — manuscritos eram caros, a alfabetização era rara, e por séculos a Bíblia circulava principalmente em latim, uma língua que o povo comum não falava mais no dia a dia. A Reforma Protestante do século XVI, com a tradução da Bíblia para línguas vernáculas e a invenção da imprensa, devolveu ao crente comum algo que a Igreja primitiva já valorizava: o acesso direto e diário à Palavra, como se vê no elogio que Lucas faz aos bereanos em Atos 17:11, que examinavam as Escrituras por conta própria para confirmar até o ensino do apóstolo Paulo.",
+            exegeticalNotes:
+              "Salmos 119 é o maior capítulo da Bíblia, um poema acróstico hebraico de 22 estrofes (uma para cada letra do alfabeto hebraico), inteiramente dedicado a celebrar a Palavra de Deus sob diferentes ângulos — lei, testemunho, preceito, promessa, mandamento. Essa estrutura cuidadosa não é acidental: o salmista organiza deliberadamente todo o alfabeto ao redor da Palavra, como quem diz que não existe letra da experiência humana que a Palavra de Deus não alcance.",
+            theologicalDebate:
+              "Um tema prático, e não propriamente doutrinário, é a escolha da versão bíblica para leitura diária. Traduções de equivalência dinâmica (como NVI e NVT) priorizam clareza e fluência na leitura; traduções de equivalência formal (como ACF e a tradição da KJV) priorizam proximidade literal com o texto original, sendo úteis para estudo mais detido. Nenhuma escolha é errada — muitos leitores se beneficiam de usar uma versão de leitura fluente no dia a dia e consultar uma mais literal ao estudar com mais profundidade.",
+            secondQuote: {
+              author: "Charles Spurgeon",
+              text: "Uma Bíblia que se desfaz pelo uso normalmente pertence a alguém que não se desfaz.",
+              source: "Citação amplamente atribuída a Spurgeon — verificação de fonte exata recomendada antes de publicação.",
+            },
+          },
           quizzes: [
             {
               question: "Segundo Salmos 119:105, a Palavra é uma lâmpada porque:",
@@ -395,6 +622,36 @@ const novoConvertido: Trail = {
           theologianQuote: {
             author: "C.S. Lewis",
             text: "Oramos não porque Deus precise ser informado, mas porque nós precisamos ser transformados no processo.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Lucas 11:1",
+                textByVersion: {
+                  NVI: "Certa vez Jesus estava orando em determinado lugar. Quando terminou, um de seus discípulos lhe disse: 'Senhor, ensina-nos a orar, como João ensinou aos discípulos dele'.",
+                },
+              },
+              {
+                ref: "Salmos 62:8",
+                textByVersion: {
+                  NVI: "Confiem nele em todo tempo, ó povo; derramem diante dele o coração, pois Deus é o nosso refúgio.",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "στεναγμοῖς", translit: "stenagmoîs", meaning: "'gemidos'. Palavra usada em Romanos 8:26 para descrever a intercessão do Espírito — algo mais profundo do que palavras articuladas, expressando a própria compaixão de Deus por nós.", lang: "grego" },
+            ],
+            historicalContext:
+              "No judaísmo do primeiro século, as orações formais (como a Amidá) geralmente se dirigiam a Deus com títulos de reverência distante — 'Senhor do universo', 'Rei eterno'. Chamar Deus de 'Abbá/Pai' de forma tão direta e íntima, como Jesus ensina no Pai Nosso, era incomum para os padrões religiosos da época. Os discípulos, ao pedirem 'ensina-nos a orar' (Lucas 11:1), reconheciam que havia algo distintivo na vida de oração de Jesus que eles queriam aprender.",
+            exegeticalNotes:
+              "A expressão 'gemidos inexprimíveis' de Romanos 8:26 tem sido interpretada de formas diferentes ao longo da história da interpretação: alguns leem como referência à oração em línguas; a leitura mais natural do contexto, porém, é que Paulo descreve o próprio Espírito gemendo — não o crente — intercedendo de um modo que ultrapassa qualquer fala humana articulada, seja ordinária ou extraordinária. O texto descreve a ajuda do Espírito na nossa fraqueza ao orar, mais do que uma prática específica a ser reproduzida.",
+            theologicalDebate:
+              "Cristãos de tradições continuístas entendem os 'gemidos inexprimíveis' de Romanos 8:26, ou expressões semelhantes, como relacionados à oração em línguas como prática contínua na igreja hoje. Esta trilha segue uma perspectiva cessacionista moderada, entendendo que os dons de línguas descritos no Novo Testamento eram idiomas humanos reais (como em Atos 2) com um propósito específico de sinal para aquela fase da história da redenção, e que o texto de Romanos 8:26 descreve a intercessão do próprio Espírito, distinta de qualquer fala humana. Cristãos fiéis discordam legitimamente sobre esse tema — é uma questão secundária, e vale conversar com sua liderança espiritual sobre como sua igreja local o compreende.",
+            secondQuote: {
+              author: "Charles Spurgeon",
+              text: "A oração é o respirar da alma nova, o clamor natural do coração que Deus regenerou.",
+              source: "Paráfrase de tema recorrente na pregação de Spurgeon sobre oração — verificação de fonte exata recomendada antes de publicação.",
+            },
           },
           quizzes: [
             {
@@ -493,6 +750,36 @@ const novoConvertido: Trail = {
           theologianQuote: {
             author: "John Stott",
             text: "O Evangelho não é um bom conselho a ser seguido; é uma boa notícia a ser crida. Antes de ser algo que fazemos, é algo que Deus fez.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Isaías 52:7",
+                textByVersion: {
+                  NVI: "Como são belos, sobre os montes, os pés daquele que traz boas novas, que proclama a paz, que anuncia boas novas, que proclama a salvação, que diz a Sião: 'O teu Deus reina!'",
+                },
+              },
+              {
+                ref: "Lucas 4:18",
+                textByVersion: {
+                  NVI: "O Espírito do Senhor está sobre mim, porque ele me ungiu para pregar boas novas aos pobres. Ele me enviou para proclamar liberdade aos presos e recuperação da vista aos cegos, para libertar os oprimidos.",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "מְבַשֵּׂר", translit: "mevasser", meaning: "'aquele que anuncia boas novas'. Termo hebraico de Isaías 52:7 que prepara, séculos antes, o vocabulário que o Novo Testamento usará para descrever o anúncio do Evangelho.", lang: "hebraico" },
+            ],
+            historicalContext:
+              "No mundo greco-romano do primeiro século, 'euangélion' já era palavra conhecida fora dos círculos religiosos: usava-se para anunciar publicamente vitórias militares, o nascimento de um herdeiro imperial ou a ascensão de um novo César ao trono — como registra, por exemplo, a inscrição do calendário de Priene (9 a.C.), que chama o nascimento do imperador Augusto de 'boa notícia (euangelion) para o mundo'. Quando os apóstolos anunciam o 'evangelho de Jesus Cristo', eles usam deliberadamente essa linguagem política de proclamação real — dizendo, em contraste direto com César, que o verdadeiro Rei e Senhor do mundo é Jesus.",
+            exegeticalNotes:
+              "1 Coríntios 15:3-4 é reconhecido por estudiosos como uma fórmula credal extremamente antiga — Paulo usa o vocabulário técnico de 'receber' e 'entregar' (parádosis), linguagem usada para transmissão cuidadosa de tradição fixa, sugerindo que ele está citando uma confissão de fé já estabelecida na Igreja antes mesmo de escrever a carta, datável a poucos anos da morte e ressurreição de Jesus. Isso é relevante historicamente: o núcleo do Evangelho não é lenda que cresceu com o tempo, mas proclamação fixada muito cedo pela comunidade cristã original.",
+            theologicalDebate:
+              "Existe uma diferença de ênfase entre teólogos sobre a extensão do 'Evangelho': uma leitura mais restrita entende o Evangelho primariamente como a mensagem da salvação pessoal pela fé em Cristo; uma leitura mais ampla, associada a autores como N.T. Wright e a tradições que enfatizam a 'missão integral' (Michael Goheen, Leslie Newbigin, David Bosch), entende o Evangelho também como o anúncio do reinado de Cristo sobre toda a criação, com implicações sociais e cósmicas. Esta trilha entende que o centro do Evangelho é, inegociavelmente, a obra salvadora de Cristo por pecadores (1 Coríntios 15:3-4) — mas reconhece que essa boa notícia tem, de fato, implicações que alcançam toda a vida e toda a criação. É uma questão de ênfase, não de essência do Evangelho, e vale a pena explorá-la com sua liderança espiritual.",
+            secondQuote: {
+              author: "Tim Keller",
+              text: "O Evangelho não é apenas o ABC da vida cristã, mas o A a Z. Não avançamos além dele; avançamos mais fundo nele.",
+              source: "Paráfrase de tema recorrente na obra de Keller — verificação de fonte exata recomendada antes de publicação.",
+            },
           },
           quizzes: [
             {
@@ -597,6 +884,36 @@ const novoConvertido: Trail = {
           theologianQuote: {
             author: "J. I. Packer",
             text: "A adoção é o mais alto privilégio que o Evangelho oferece: mais alto que a própria justificação. A justificação nos dá um veredito favorável; a adoção nos dá um Pai.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Oséias 11:1",
+                textByVersion: {
+                  NVI: "Quando Israel era menino, eu o amei, e do Egito chamei o meu filho.",
+                },
+              },
+              {
+                ref: "1 João 3:1",
+                textByVersion: {
+                  NVI: "Vejam como é grande o amor que o Pai nos concedeu, que sejamos chamados filhos de Deus! E de fato somos! Por isso o mundo não nos conhece, porque não o conheceu.",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "τέκνα Θεοῦ", translit: "tékna Theoú", meaning: "'filhos de Deus'. Termo preferido do apóstolo João, com ênfase no vínculo de nascimento (nova criação); complementa a imagem jurídica de 'huiothesía' que Paulo usa, com ênfase no ato legal de adoção.", lang: "grego" },
+            ],
+            historicalContext:
+              "No mundo romano, a adoção de um herdeiro era prática comum entre famílias de posição social, e nem sempre envolvia crianças: o caso mais famoso da história romana é a adoção de Otávio (o futuro imperador Augusto) por Júlio César, que o tornou herdeiro legal pleno, com novo nome e status, apesar de Otávio já ser adulto. Esse pano de fundo cultural ilumina por que Paulo escolhe a linguagem de adoção, e não apenas de nascimento, para descrever nossa nova relação com Deus: ela enfatiza uma decisão deliberada e um ato legal, não apenas um evento biológico.",
+            exegeticalNotes:
+              "É digno de nota que a palavra grega 'huiothesía' aparece apenas cinco vezes no Novo Testamento, todas em cartas de Paulo (Romanos 8:15, 8:23, 9:4; Gálatas 4:5; Efésios 1:5) — nunca nos escritos de João, que prefere a imagem de 'tékna Theoú' ('filhos de Deus'), com ênfase no nascimento espiritual (ver nc-1-1). As duas imagens não competem: Paulo enfatiza o ato jurídico e a mudança de status; João enfatiza a origem nova e o vínculo íntimo. Juntas, formam um quadro completo — você se tornou filho tanto por um novo nascimento quanto por um ato de adoção deliberado da parte de Deus.",
+            theologicalDebate:
+              "A relação entre a adoção do crente individual e o conceito bíblico mais amplo de 'filiação' de Israel como povo (Êxodo 4:22, Oséias 11:1) é discutida de formas diferentes por tradições teológicas: teologias de aliança tendem a enfatizar continuidade entre a filiação de Israel e a adoção da Igreja como o povo renovado de Deus; outras tradições, incluindo boa parte da tradição batista, enfatizam mais a novidade radical da adoção individual trazida pelo Evangelho, sem negar a continuidade da história da redenção. Esta é uma questão secundária de teologia bíblica, e não afeta a certeza central desta lição: em Cristo, você é verdadeiramente filho de Deus.",
+            secondQuote: {
+              author: "Wayne Grudem",
+              text: "A adoção é um ato de Deus pelo qual Ele nos torna membros de sua família, com todos os privilégios e responsabilidades de filhos.",
+              source: "Paráfrase de definição semelhante à encontrada em 'Teologia Sistemática' — verificação de fonte exata recomendada antes de publicação.",
+            },
           },
           quizzes: [
             {
