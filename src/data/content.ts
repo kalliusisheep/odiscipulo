@@ -645,6 +645,314 @@ const novoConvertido: Trail = {
         },
       ],
     },
+    {
+      id: "nc-mod-4",
+      title: "Módulo IV: Corpo e Missão",
+      lessons: [
+        {
+          id: "nc-4-1",
+          title: "Igreja e Comunhão",
+          difficulty: 2,
+          intro: [
+            "Um erro comum entre novos convertidos é pensar que a vida cristã é, no fundo, um assunto entre 'eu e Deus' — e que a igreja é só um complemento opcional, útil para quem gosta desse tipo de coisa. A Bíblia ensina algo bem diferente: no instante em que você nasceu de novo, você foi colocado dentro de um corpo. Não existe, no Novo Testamento, a categoria de 'cristão sozinho'.",
+            "Desde o dia de Pentecostes, a marca dos primeiros convertidos não foi apenas a fé pessoal, mas a vida compartilhada: 'perseveravam na doutrina dos apóstolos, na comunhão, no partir do pão e nas orações' (Atos 2:42). A igreja não nasceu como uma ideia organizacional posterior — ela nasceu junto com a conversão dos primeiros três mil, no mesmo dia.",
+            "Isso não significa que frequentar reuniões substitui a comunhão real. 'Koinonia' — a palavra grega para comunhão — descreve participação compartilhada, vida em comum, não apenas presença física num mesmo prédio. É possível estar numa igreja cheia e viver espiritualmente sozinho; e é isso que o Novo Testamento quer evitar quando manda os crentes não abandonarem 'a nossa congregação' (Hebreus 10:25).",
+          ],
+          verses: [
+            {
+              ref: "Atos 2:42",
+              textByVersion: {
+                NVI: "Eles se dedicavam ao ensino dos apóstolos e à comunhão, ao partir do pão e às orações.",
+                NAA: "E perseveravam na doutrina dos apóstolos, e na comunhão, e no partir do pão, e nas orações.",
+                ACF: "E perseveravam na doutrina dos apóstolos, e na comunhão, e no partir do pão, e nas orações.",
+                NVT: "Todos os credores se dedicavam com fervor ao ensino dos apóstolos, à vida em comunidade, à Ceia do Senhor e às orações.",
+              },
+              originals: [
+                { word: "κοινωνία", translit: "koinōnía", meaning: "comunhão, participação compartilhada, vida em comum", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Hebreus 10:24-25",
+              textByVersion: {
+                NVI: "E consideremos uns aos outros, a fim de incentivar-nos ao amor e às boas obras, não abandonando a nossa congregação, como é costume de alguns, mas encorajando-nos uns aos outros, ainda mais quando vocês vêem que se aproxima o Dia.",
+                NAA: "E consideremos uns aos outros, para nos incentivarmos ao amor e às boas obras. Não deixemos de reunir-nos, como é costume de alguns; antes, façamos admoestações mútuas, e tanto mais quanto vedes que se aproxima aquele Dia.",
+                ACF: "E consideremo-nos uns aos outros, para nos estimularmos ao amor e às boas obras, não deixando a nossa congregação, como é costume de alguns; antes, admoestando-nos uns aos outros; e tanto mais, quanto vedes que se vai aproximando aquele dia.",
+                NVT: "Também vamos pensar em maneiras de estimular uns aos outros a atos de amor e boas obras. E não deixemos de nos reunir, como é costume de alguns, mas encorajemo-nos uns aos outros, principalmente agora que o dia da volta do Senhor está se aproximando.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "κοινωνία", translit: "koinōnía", meaning: "'comunhão'. Não é sinônimo de socializar — descreve participação real e compartilhada na vida, nos recursos e no sofrimento uns dos outros.", lang: "grego" },
+          ],
+          deepDive:
+            "'Koinōnía' aparece em Atos 2:42 ao lado de três outras práticas — ensino, partir do pão, orações — como parte do mesmo pacote da vida cristã inicial, não como opcional avançado. E o contexto de Hebreus 10:24-25 é revelador: o autor não manda simplesmente 'não faltar aos cultos' — ele conecta a reunião com um propósito específico, 'incentivar-nos ao amor e às boas obras' e 'encorajar-nos uns aos outros'. Ou seja, a igreja existe para que crentes ativamente cuidem uns dos outros, não apenas para que ouçam uma pregação em silêncio e vão embora. Um cristão que evita a igreja local não está apenas perdendo um benefício espiritual — está retirando de si mesmo um dos meios que Deus escolheu para sua própria santificação, e retirando de outros o cuidado que ele deveria oferecer.",
+          theologianQuote: {
+            author: "Dietrich Bonhoeffer",
+            text: "A presença física de outros cristãos é uma fonte de alegria e força incomparáveis para o crente.",
+            source: "Life Together (Vida em Comunhão), 1939, p. 19 — verificação de tradução exata recomendada antes de publicação.",
+          },
+          deepen: {
+            historicalContext:
+              "A carta aos Hebreus foi escrita para uma comunidade de cristãos judeus sob pressão de perseguição, provavelmente tentados a abandonar as reuniões cristãs para evitar exposição pública ou para retornar à segurança social da sinagoga. Nesse contexto, 'não abandonar a nossa congregação' não é um conselho genérico de boa prática religiosa — é uma exortação urgente contra o isolamento voluntário como estratégia de autoproteção diante da perseguição, algo que a igreja perseguida enfrenta até hoje em diversas partes do mundo.",
+            exegeticalNotes:
+              "O verbo grego por trás de 'consideremos uns aos outros' (katanoōmen) sugere observação atenta e propositada — não um olhar distraído. A igreja primitiva entendia que 'ir à igreja' envolvia estudar ativamente as necessidades dos irmãos ao redor, e não apenas consumir um culto. Isso é coerente com a tradição batista congregacional, que historicamente enfatiza a participação ativa de cada membro na vida e no cuidado mútuo da igreja local, e não apenas a presença passiva.",
+            theologicalDebate:
+              "Existe uma diferença legítima entre tradições cristãs sobre a estrutura de governo da igreja local (congregacional, presbiteriana, episcopal). Esta trilha segue a tradição batista, de governo congregacional, na qual a autoridade de decisão pertence à congregação reunida, sob a liderança de pastores/presbíteros e diáconos servos. Isso é uma questão secundária de eclesiologia, na qual cristãos fiéis discordam com base em leituras diferentes do Novo Testamento — vale conversar com seu pastor sobre como sua igreja local está estruturada e por quê.",
+          },
+          quizzes: [
+            {
+              question: "Segundo Atos 2:42, o que caracterizava a vida dos primeiros convertidos, além da fé pessoal?",
+              options: [
+                "Isolamento para estudo bíblico individual",
+                "Perseverança conjunta no ensino, na comunhão, no partir do pão e nas orações",
+                "Reuniões apenas uma vez por ano",
+                "Dependência exclusiva dos apóstolos para tudo",
+              ],
+              correctIndex: 1,
+              explanation: "A vida cristã nasceu, desde o início, como vida compartilhada — não como prática individual isolada.",
+            },
+            {
+              question: "Um cristão que diz 'minha fé é só entre mim e Deus, não preciso de igreja' está em desacordo com qual ensino bíblico central desta lição?",
+              options: [
+                "Com nenhum — essa é uma posição bíblica legítima",
+                "Com o padrão do Novo Testamento, no qual a conversão insere o crente num corpo, e a comunhão é meio de crescimento e cuidado mútuo",
+                "Apenas com uma tradição cultural, sem base bíblica",
+                "Com a doutrina da salvação apenas pela graça",
+              ],
+              correctIndex: 1,
+              explanation: "Hebreus 10:24-25 e Atos 2:42 mostram que a comunhão não é acessório — é parte do desenho bíblico da vida cristã.",
+            },
+            {
+              question: "Por que o autor de Hebreus manda os crentes 'não abandonar a nossa congregação'?",
+              options: [
+                "Apenas por tradição religiosa, sem propósito declarado",
+                "Para que se incentivem mutuamente ao amor e às boas obras, especialmente diante da pressão e da perseguição",
+                "Porque a oração individual não tem valor",
+                "Porque a Bíblia proíbe qualquer tempo a sós com Deus",
+              ],
+              correctIndex: 1,
+              explanation: "O propósito da reunião é explicitamente relacional e mútuo — incentivo e encorajamento uns aos outros.",
+            },
+          ],
+          application:
+            "Esta semana, além de participar de um culto ou reunião da sua igreja, procure ativamente um irmão ou irmã na fé e pergunte como ele está — de verdade. Ouça, e ofereça oração ou ajuda concreta se for o caso. Pratique 'koinōnía', não apenas presença.",
+          prayer:
+            "Pai, obrigado por não me deixares sozinho na fé. Perdoa-me quando trato a igreja como opcional, ou quando vou às reuniões sem realmente me importar com quem está ao meu lado. Ensina-me a viver em comunhão de verdade — a considerar os outros, a encorajar, a ser encorajado. Que eu nunca abandone a congregação dos teus filhos, especialmente nos dias difíceis. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Identifique um irmão ou irmã da sua igreja que você conhece pouco. Esta semana, tome a iniciativa de conversar com essa pessoa e conhecer sua história de fé.",
+          reflectionQuestion:
+            "Você tem vivido a fé cristã como algo compartilhado, ou tem mantido distância da comunhão da igreja? O que te impede de se aproximar mais?",
+          xp: 20,
+        },
+        {
+          id: "nc-4-2",
+          title: "Batismo",
+          difficulty: 2,
+          intro: [
+            "Depois de crer em Cristo, toda pessoa no Novo Testamento é chamada a dar um passo público e concreto: o batismo. Não é um convite opcional para quem 'se sentir à vontade' — no livro de Atos, o batismo acontece imediatamente após a conversão, quase sempre no mesmo dia (Atos 2:41; 8:36-38; 16:33).",
+            "É importante entender o que o batismo é e o que ele não é. Ele não salva ninguém — a salvação vem exclusivamente pela graça, mediante a fé em Cristo (Efésios 2:8-9). O batismo é, antes, um testemunho público: uma declaração visível de algo que já aconteceu invisivelmente no coração. É por isso que, nesta trilha, seguimos o entendimento batista de que o batismo é para aqueles que já professam fé pessoal em Cristo — batismo do crente, por imersão, e não um rito que gera ou garante a salvação por si mesmo.",
+            "Paulo usa uma imagem poderosa para explicar o significado do batismo: ele representa a nossa união com a morte, sepultamento e ressurreição de Cristo (Romanos 6:3-4). Ao ser imerso na água, o crente encena visivelmente o que já é verdade espiritual: o velho homem morreu com Cristo, e uma vida nova ressuscitou com Ele.",
+          ],
+          verses: [
+            {
+              ref: "Romanos 6:3-4",
+              textByVersion: {
+                NVI: "Ou vocês não sabem que todos nós, que fomos batizados em Cristo Jesus, fomos batizados em sua morte? Fomos sepultados com ele por meio do batismo na morte, a fim de que, assim como Cristo foi ressuscitado dentre os mortos mediante a glória do Pai, também nós vivamos uma vida nova.",
+                NAA: "Ou não sabeis que todos quantos fomos batizados em Cristo Jesus fomos batizados na sua morte? Fomos, pois, sepultados com ele pelo batismo na morte, para que, assim como Cristo ressuscitou dentre os mortos, pela glória do Pai, assim também andemos nós em novidade de vida.",
+                ACF: "Ou não sabeis que todos quantos fomos batizados em Jesus Cristo fomos batizados na sua morte? De sorte que fomos sepultados com ele pelo batismo na morte, para que, como Cristo ressuscitou dentre os mortos pela glória do Pai, assim andemos nós também em novidade de vida.",
+                NVT: "Vocês não sabem que, quando fomos batizados para nos unirmos a Cristo Jesus, todos nós fomos batizados em sua morte? Pois fomos sepultados com Cristo pelo batismo na morte. E, assim como Cristo foi ressuscitado dos mortos pela glória gloriosa do Pai, agora nós também podemos viver uma vida nova.",
+              },
+              originals: [
+                { word: "βαπτίζω", translit: "baptízō", meaning: "imergir, mergulhar completamente — a imagem visual de ser submerso e emergir", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Atos 8:36-38",
+              textByVersion: {
+                NVI: "Indo eles pelo caminho, chegaram a um lugar onde havia água, e o eunuco disse: 'Aqui há água. Que me impede de ser batizado?' [...] E desceram ambos à água, e Filipe o batizou.",
+                NAA: "E, indo eles caminhando, chegaram a um lugar onde havia água. Então, disse o eunuco: — Eis aqui água; que impede que eu seja batizado? [...] E desceram ambos à água, tanto Filipe como o eunuco, e Filipe o batizou.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "βαπτίζω", translit: "baptízō", meaning: "'imergir, mergulhar completamente'. A própria palavra descreve o modo do batismo praticado no Novo Testamento: por imersão, não por aspersão.", lang: "grego" },
+          ],
+          deepDive:
+            "Em cada caso registrado no livro de Atos, o padrão é o mesmo: uma pessoa ouve o Evangelho, crê, e é batizada — nessa ordem, e geralmente sem demora. O eunuco etíope, ao ver água no caminho, pergunta 'que me impede de ser batizado?' — evidência de que ele já entendia o batismo como resposta natural e imediata à fé, não como um processo burocrático a ser agendado meses depois. A palavra grega 'baptízō' descrevia, no uso comum da época, o ato de mergulhar um tecido no tingimento ou afundar um navio — sempre com o sentido de submersão completa, o que explica por que a prática batista histórica é o batismo por imersão total, e não aspersão. O significado teológico, segundo Romanos 6, não é lavagem de pecados (isso já aconteceu pela fé), mas identificação visível com a morte e ressurreição de Cristo — o crente 'morre' simbolicamente ao ser submerso, e 'ressuscita' ao emergir da água, numa encenação pública do Evangelho que ele já criu.",
+          theologianQuote: {
+            author: "Charles Spurgeon",
+            text: "A simplicidade e a aparente inutilidade da ordenança devem levar o crente a dizer: 'Faço isso porque se torna, para mim, o melhor teste da minha obediência ao meu Mestre.'",
+            source: "Sermão 'Baptismal Regeneration' (spurgeon.org) — verificação de tradução exata recomendada antes de publicação.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Mateus 28:19",
+                textByVersion: {
+                  NVI: "Portanto, vão e façam discípulos de todas as nações, batizando-os em nome do Pai e do Filho e do Espírito Santo.",
+                },
+              },
+            ],
+            historicalContext:
+              "No judaísmo do primeiro século, já existia a prática de imersão ritual (mikveh) para purificação cerimonial, e João Batista chocou seus contemporâneos ao chamar judeus — não apenas gentios convertidos — a esse mesmo ato, como sinal de arrependimento. Isso preparou o terreno cultural para que o batismo cristão fosse entendido, desde o início, como um rito visível e público de identificação com uma nova realidade espiritual.",
+            exegeticalNotes:
+              "O verbo 'baptízō' na literatura grega secular da época (por exemplo, em textos sobre tingimento de tecidos) descreve consistentemente imersão completa, não aspersão parcial. Isso é relevante para o modo do batismo, mas — é importante dizer com honestidade — o Novo Testamento não descreve com detalhes técnicos exatos a quantidade de água ou a postura física em cada caso registrado; a convicção sobre o modo (imersão) apoia-se principalmente no sentido lexical do verbo e no simbolismo de sepultamento e ressurreição de Romanos 6.",
+            theologicalDebate:
+              "Este é um tema em que cristãos fiéis historicamente divergem, e é importante apresentar isso com honestidade. Tradições paedobatistas (que praticam o batismo de bebês de famílias cristãs, comuns em igrejas reformadas, luteranas, anglicanas e católicas) entendem o batismo como sinal de aliança, análogo à circuncisão no Antigo Testamento, aplicado à família do crente. Tradições credobatistas — à qual esta trilha está alinhada, sendo uma trilha de identidade batista — entendem que o Novo Testamento consistentemente liga o batismo à profissão pessoal de fé que precede o rito (por isso 'batismo do crente'), e portanto reservam o batismo para quem já é capaz de professar fé conscientemente. Ambas as tradições concordam que o batismo não salva por si mesmo, e que a fé em Cristo é indispensável. Esta é uma questão doutrinária importante, mas não essencial à salvação — se você tem dúvidas ou vem de uma tradição diferente, converse com seu pastor ou líder de discipulado antes de tomar uma decisão sobre seu próprio batismo.",
+          },
+          quizzes: [
+            {
+              question: "Segundo a lição, qual é a relação correta entre fé e batismo?",
+              options: [
+                "O batismo salva a pessoa, independentemente da fé",
+                "A fé salva; o batismo é o testemunho público de uma salvação que já aconteceu",
+                "Fé e batismo são exatamente a mesma coisa",
+                "O batismo deve ser adiado por vários anos após a conversão para testar a fé",
+              ],
+              correctIndex: 1,
+              explanation: "Efésios 2:8-9 é claro: a salvação vem pela graça, mediante a fé. O batismo é resposta obediente e pública a essa salvação, não sua causa.",
+            },
+            {
+              question: "O que o batismo representa, segundo Romanos 6:3-4?",
+              options: [
+                "Uma limpeza física do corpo",
+                "A identificação do crente com a morte, sepultamento e ressurreição de Cristo",
+                "Um ritual sem qualquer significado teológico",
+                "A entrada automática no céu",
+              ],
+              correctIndex: 1,
+              explanation: "O crente 'morre' simbolicamente ao ser imerso e 'ressuscita' ao emergir — uma encenação visível do Evangelho que ele já criu.",
+            },
+            {
+              question: "No relato do eunuco etíope (Atos 8:36-38), o que chama atenção sobre o momento do batismo?",
+              options: [
+                "Ele foi orientado a esperar meses antes de ser batizado",
+                "Ele foi batizado imediatamente após crer, assim que havia água disponível",
+                "Ele recusou o batismo por não entender seu significado",
+                "Ele exigiu um exame teológico longo antes do batismo",
+              ],
+              correctIndex: 1,
+              explanation: "O padrão do livro de Atos é batismo como resposta imediata à fé, não um processo burocrático distante.",
+            },
+          ],
+          application:
+            "Se você já creu em Cristo e ainda não foi batizado, converse esta semana com seu pastor ou líder da igreja sobre os próximos passos. Se você já foi batizado, escreva num papel o que esse dia significou — e agradeça a Deus por ele.",
+          prayer:
+            "Senhor, obrigado pela salvação que já é minha pela graça, mediante a fé em Cristo. Ensina-me a não ter vergonha de declarar publicamente o que aconteceu no meu coração. Que meu batismo — já vivido ou ainda por vir — seja um testemunho fiel da minha morte para o pecado e da minha nova vida em ti. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Se você ainda não foi batizado como crente, dê o primeiro passo esta semana: converse com sua liderança espiritual sobre agendar seu batismo. Se já foi batizado, compartilhe seu testemunho de batismo com alguém que ainda não o conhece.",
+          reflectionQuestion:
+            "O que impede você de dar (ou de valorizar) o passo público do batismo como testemunho da sua fé?",
+          xp: 20,
+        },
+        {
+          id: "nc-4-3",
+          title: "Missão Inicial",
+          difficulty: 3,
+          intro: [
+            "Uma das primeiras coisas que Jesus fez com cada pessoa que chamou foi enviá-la a contar para outra. André, assim que encontrou o Messias, foi direto ao seu irmão Simão e disse: 'Achamos o Messias' (João 1:41). Ele não esperou anos de maturidade teológica — sua própria experiência recente já era suficiente para um convite simples e honesto.",
+            "Isso não significa que todo novo convertido precisa se tornar um evangelista treinado da noite para o dia — essa formação mais completa é o assunto de uma trilha própria, mais à frente. Mas o Novo Testamento não conhece a categoria de 'cristão silencioso por vocação'. Antes mesmo de saber muita teologia, você já tem a coisa mais persuasiva que existe: sua própria história de como Cristo mudou sua vida.",
+            "Jesus deu essa mesma missão ao endemoninhado gadareno, curado ainda antes de qualquer discipulado formal: 'Vai para tua casa, para os teus, e anuncia-lhes quão grandes coisas o Senhor te fez' (Marcos 5:19). A missão inicial de todo novo crente começa exatamente onde ele está — na própria casa, entre os próprios amigos.",
+          ],
+          verses: [
+            {
+              ref: "João 1:40-42",
+              textByVersion: {
+                NVI: "André, irmão de Simão Pedro, era um dos dois que tinham ouvido as palavras de João e seguido Jesus. O primeiro que ele encontrou foi seu irmão Simão, a quem disse: 'Achamos o Messias' (isto é, o Cristo). E o levou a Jesus.",
+                NAA: "Um dos dois que ouviram João falar, seguindo a Jesus, era André, irmão de Simão Pedro. Ele foi primeiro ter com seu irmão, Simão, e lhe disse: — Achamos o Messias (que quer dizer Cristo). E o levou a Jesus.",
+              },
+            },
+            {
+              ref: "Marcos 5:19",
+              textByVersion: {
+                NVI: "Jesus, porém, não o permitiu, mas disse: 'Vá para casa, para a sua família, e conte-lhes quanto o Senhor fez por você, e como teve misericórdia de você.'",
+                NAA: "Jesus, porém, não lho permitiu, mas lhe disse: — Vai para tua casa, para os teus, e anuncia-lhes quão grandes coisas te fez o Senhor e como teve compaixão de ti.",
+              },
+            },
+            {
+              ref: "Atos 1:8",
+              textByVersion: {
+                NVI: "Mas receberão poder quando o Espírito Santo descer sobre vocês, e serão minhas testemunhas em Jerusalém, em toda a Judeia e Samaria, e até os confins da terra.",
+                NAA: "Mas recebereis poder ao descer sobre vós o Espírito Santo e sereis minhas testemunhas tanto em Jerusalém como em toda a Judeia e Samaria e até os confins da terra.",
+              },
+              originals: [
+                { word: "μάρτυς", translit: "mártys", meaning: "testemunha — a mesma raiz de onde vem a palavra 'mártir'; testemunhar pode custar caro", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "μάρτυς", translit: "mártys", meaning: "'testemunha'. No grego, é a mesma palavra que originou 'mártir' — quem testemunha, no relato bíblico, frequentemente paga um preço por isso.", lang: "grego" },
+          ],
+          deepDive:
+            "Repare no padrão relacional do início do discipulado no Evangelho de João: André encontra Jesus e vai direto ao irmão; Filipe encontra Jesus e vai direto a Natanael (João 1:45). Nenhum dos dois espera 'estar pronto'. A ferramenta que usam não é um argumento apologético sofisticado, mas o convite mais simples possível: 'vem e vê' (João 1:46). Jesus segue esse mesmo padrão com o gadareno liberto — ele não é levado para acompanhar os discípulos em treinamento; é enviado de volta para casa, para contar aos seus. Isso ensina algo importante para quem está começando: sua missão inicial não é distante nem espetacular. Ela começa no espaço mais próximo que você tem — sua família, seus amigos, seu ambiente de trabalho — e a matéria-prima é a sua própria experiência com Cristo, contada com honestidade. Atos 1:8 amplia esse chamado para o mundo inteiro, mas note a ordem geográfica: Jerusalém primeiro — o lugar mais próximo, mais familiar, às vezes o mais difícil de todos para testemunhar.",
+          theologianQuote: {
+            author: "John Stott",
+            text: "Almas são ganhas para Cristo por lágrimas, suor e dor, especialmente na oração e na amizade pessoal e sacrificial.",
+            source: "Reading Timothy and Titus with John Stott — verificação de tradução exata recomendada antes de publicação.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "João 1:45-46",
+                textByVersion: {
+                  NVI: "Filipe encontrou Natanael e lhe disse: 'Achamos aquele sobre quem Moisés escreveu na Lei, e sobre quem os profetas também escreveram: Jesus de Nazaré, filho de José.' Perguntou Natanael: 'Nazaré? Pode vir alguma coisa boa de lá?' Disse Filipe: 'Vem e vê.'",
+                },
+              },
+            ],
+            historicalContext:
+              "No mundo antigo, o testemunho pessoal e a rede de relacionamentos familiares e de amizade eram, de longe, o principal meio de disseminação de qualquer movimento religioso ou filosófico — muito antes de existir qualquer estrutura de comunicação em massa. O crescimento explosivo do cristianismo nos primeiros três séculos, mesmo sob perseverança e sem apoio do Estado, é amplamente atribuído por historiadores da igreja a essa rede orgânica de testemunho pessoal entre vizinhos, familiares e colegas de trabalho — o mesmo padrão relacional visto em João 1.",
+            exegeticalNotes:
+              "A palavra grega 'mártys' (testemunha) carrega, já no Novo Testamento, a sombra de seu desenvolvimento posterior para 'mártir' — alguém que testemunha até o preço máximo. Isso não significa que toda testemunha cristã enfrentará martírio físico, mas revela que o testemunho bíblico nunca foi pensado como uma atividade confortável ou sem custo: envolve vulnerabilidade, honestidade sobre a própria vida, e disposição a ser rejeitado.",
+            theologicalDebate:
+              "Vale distinguir aqui entre o chamado geral de todo crente a testemunhar (o que esta lição aborda, e que é para todos, sem exceção) e o dom espiritual específico de evangelista (Efésios 4:11), que nem todo cristão recebe da mesma forma. Nem todos serão pregadores públicos ou evangelistas vocacionados, mas todos são chamados a compartilhar sua própria história, no espaço relacional em que já vivem. Um estudo mais completo sobre estratégias e treinamento de evangelismo será tratado numa trilha própria, mais adiante.",
+          },
+          quizzes: [
+            {
+              question: "No padrão visto em João 1 (André e Filipe), qual foi o principal método de testemunho usado?",
+              options: [
+                "Um sermão público bem estruturado",
+                "Um convite relacional simples e direto a alguém próximo: 'vem e vê'",
+                "Um debate teológico formal",
+                "A distribuição de panfletos",
+              ],
+              correctIndex: 1,
+              explanation: "O testemunho inicial no Evangelho de João acontece de pessoa para pessoa, dentro de relações já existentes — irmão para irmão, amigo para amigo.",
+            },
+            {
+              question: "Por que Jesus enviou o gadareno liberto de volta para casa, em vez de levá-lo para acompanhar os discípulos (Marcos 5:19)?",
+              options: [
+                "Porque ele não era digno de seguir Jesus",
+                "Para que ele testemunhasse primeiro no espaço mais próximo e familiar que já tinha",
+                "Porque Jesus não queria mais discípulos naquele momento",
+                "Porque a família dele exigiu isso",
+              ],
+              correctIndex: 1,
+              explanation: "A missão inicial começa no lugar mais próximo — família e conhecidos — antes de qualquer alcance mais distante.",
+            },
+            {
+              question: "Qual é a diferença entre o chamado geral ao testemunho e o dom espiritual de evangelista, segundo a lição?",
+              options: [
+                "Não existe diferença — são a mesma coisa",
+                "Todo crente é chamado a testemunhar sua própria história; nem todos recebem o dom específico de evangelista vocacionado",
+                "Só quem tem o dom de evangelista deve falar de Cristo",
+                "O dom de evangelista substitui a necessidade de testemunho pessoal",
+              ],
+              correctIndex: 1,
+              explanation: "Efésios 4:11 descreve o dom de evangelista como específico a alguns; mas o chamado a testemunhar (Atos 1:8) é para toda a igreja.",
+            },
+          ],
+          application:
+            "Escreva, em poucas frases, sua própria história de como Cristo entrou na sua vida — o que você era antes, o que aconteceu, o que mudou. Esta semana, procure uma oportunidade natural de compartilhar essa história com alguém próximo (um familiar, um amigo, um colega).",
+          prayer:
+            "Senhor, obrigado pela minha própria história com Cristo — mesmo que ainda pareça pequena ou recente. Tira de mim o medo e a vergonha de falar sobre ti para quem está mais perto de mim. Assim como André foi ao seu irmão, e o gadareno voltou para os seus, ajuda-me a começar minha missão exatamente onde estou. Dá-me coragem e palavras simples e verdadeiras. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Escolha uma pessoa próxima — da família, do trabalho ou de amizade — e ore especificamente por ela todos os dias desta semana, pedindo a Deus uma oportunidade natural de compartilhar sua fé com ela.",
+          reflectionQuestion:
+            "Quem, no seu círculo mais próximo, ainda não ouviu sua história com Cristo — e o que te impede de contá-la?",
+          xp: 25,
+        },
+      ],
+    },
   ],
 };
 
