@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, MessageCircle } from "lucide-react";
+import { ArrowLeft, MessageCircle, Plus } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -95,10 +95,17 @@ function MensagensListPage() {
         <Link to="/home" className="text-muted-foreground hover:text-primary">
           <ArrowLeft className="h-5 w-5" />
         </Link>
-        <div>
+        <div className="flex-1">
           <p className="text-xs text-muted-foreground">Suas conversas</p>
           <h1 className="text-xl font-semibold">Mensagens</h1>
         </div>
+        <Link
+          to="/mensagens/novo"
+          aria-label="Nova mensagem"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm transition-transform hover:scale-105"
+        >
+          <Plus className="h-5 w-5" />
+        </Link>
       </header>
 
       {loading && <p className="text-sm text-muted-foreground">Carregando…</p>}
