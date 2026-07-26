@@ -28,7 +28,7 @@ type Profile = {
 };
 
 function PublicProfilePage() {
-  const { username } = useParams({ from: "/_authenticated/perfil/$username" });
+  const { username } = useParams({ from: "/_authenticated/perfil_/$username" });
   const [profile, setProfile] = useState<Profile | null>(null);
   const [lessons, setLessons] = useState(0);
   const [loading, setLoading] = useState(true);
