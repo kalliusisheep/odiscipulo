@@ -387,6 +387,30 @@ const igrejaLocal: Trail = {
             author: "Alexander Strauch",
             text: "A liderança bíblica nunca é sobre um homem no topo, mas sobre uma pluralidade de pastores servindo juntos, debaixo de Cristo.",
           },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Tito 1:6-9",
+                textByVersion: {
+                  NVI: "O bispo deve ser irrepreensível, marido de uma só mulher... apegado à mensagem fiel, como lhe foi ensinada, para que seja capaz de encorajar outros pela sã doutrina e de refutar os que a contradizem.",
+                },
+              },
+              {
+                ref: "1 Pedro 5:2-3",
+                textByVersion: {
+                  NVI: "Pastoreiem o rebanho de Deus que está aos seus cuidados... não por imposição, mas de boa vontade, como Deus quer; não por ganância, mas com o desejo de servir; não como quem domina os que estão sob seus cuidados, mas sendo exemplos para o rebanho.",
+                },
+              },
+            ],
+            historicalContext:
+              "Nas cartas pastorais e em Atos, os termos 'presbítero' (ancião), 'bispo/supervisor' e 'pastor' são usados de forma intercambiável para o mesmo ofício — Paulo, em Atos 20, chama os mesmos homens de 'presbíteros' (v. 17) e diz que o Espírito os fez 'bispos/supervisores' para 'pastorear' a igreja (v. 28). Só séculos depois, gradualmente, um único 'bispo' passou a ter autoridade sobre vários presbíteros e várias igrejas — um desenvolvimento histórico posterior ao Novo Testamento, não um mandamento apostólico direto.",
+            theologicalDebate:
+              "Um debate sensível entre cristãos fiéis é sobre quem pode ocupar o ofício de pastor/presbítero. A leitura complementarista — adotada por esta trilha, com base em 1 Timóteo 2:12 e 3:2 ('marido de uma mulher') — entende que o ofício de ensino e governo pastoral é reservado a homens qualificados, sem que isso diminua a igual dignidade e o chamado ministerial das mulheres em tantas outras funções da igreja. Irmãos igualitaristas leem esses textos de forma diferente, com sinceridade e zelo pelas Escrituras também.",
+            secondQuote: {
+              author: "John MacArthur",
+              text: "Uma igreja liderada por uma pluralidade de pastores qualificados reflete melhor o padrão do Novo Testamento do que a liderança solitária de um único homem.",
+            },
+          },
           quizzes: [
             {
               question: "Segundo Filipenses 1:1, quantos ofícios permanentes Paulo saúda na igreja?",
@@ -468,6 +492,30 @@ const igrejaLocal: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "O batismo e a Ceia são os dois braços com que a igreja visível abraça e proclama o Evangelho ao mundo que observa.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Atos 2:38,41",
+                textByVersion: {
+                  NVI: "Arrependam-se, e cada um de vocês seja batizado em nome de Jesus Cristo... Os que aceitaram a mensagem foram batizados, e naquele dia agregaram-se à igreja cerca de três mil pessoas.",
+                },
+              },
+              {
+                ref: "1 Coríntios 11:27-29",
+                textByVersion: {
+                  NVI: "Todo aquele que comer o pão ou beber o cálice do Senhor, indignamente, será culpado de pecar contra o corpo e o sangue do Senhor. Examine-se cada um, e então coma do pão e beba do cálice.",
+                },
+              },
+            ],
+            historicalContext:
+              "No século XVI, grupos conhecidos como anabatistas ('rebatizadores') foram perseguidos — inclusive por outros protestantes — por insistirem que o batismo deveria seguir a profissão pessoal de fé, e não ocorrer na infância. Essa convicção, considerada radical na época, é hoje a posição histórica de batistas, muitas igrejas evangélicas livres e pentecostais em todo o mundo, embora a maioria das denominações cristãs históricas (católica, ortodoxa, luterana, reformada, anglicana) ainda pratique o batismo infantil.",
+            theologicalDebate:
+              "Além da questão do modo e do momento do batismo, cristãos fiéis divergem sobre a frequência ideal da Ceia (semanal, como nas igrejas mais litúrgicas, ou mensal/trimestral, como em muitas igrejas batistas) e sobre quem pode participar dela: comunhão fechada (restrita aos membros da própria igreja ou denominação) ou comunhão aberta (estendida a todo crente batizado de qualquer igreja cristã fiel, posição adotada nesta trilha).",
+            secondQuote: {
+              author: "Billy Graham",
+              text: "O batismo não faz de você um cristão — ele declara publicamente que você já é um.",
+            },
           },
           quizzes: [
             {
@@ -558,6 +606,30 @@ const igrejaLocal: Trail = {
             author: "Dietrich Bonhoeffer",
             text: "Aquele que não pode estar sozinho deve tomar cuidado com a comunidade; aquele que não está em comunidade deve tomar cuidado com a solidão.",
           },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Atos 20:20",
+                textByVersion: {
+                  NVI: "Vocês sabem que não deixei de pregar-lhes coisa alguma que os beneficiasse, mas ensinei-lhes publicamente e de casa em casa.",
+                },
+              },
+              {
+                ref: "Tiago 5:16",
+                textByVersion: {
+                  NVI: "Confessem os seus pecados uns aos outros e orem uns pelos outros, para que sejam curados. A oração de um justo é poderosa e eficaz.",
+                },
+              },
+            ],
+            historicalContext:
+              "No século XVIII, John Wesley organizou os primeiros metodistas em pequenas 'sociedades' e 'classes' — grupos de cerca de doze pessoas que se reuniam semanalmente para prestar contas mútuas sobre sua vida espiritual. Historiadores atribuem a esse sistema de pequenos grupos boa parte da perseverança e do crescimento explosivo do movimento metodista, muito além do que os grandes cultos ao ar livre de Wesley conseguiriam sozinhos.",
+            theologicalDebate:
+              "Igrejas fiéis organizam seus pequenos grupos de formas variadas: alguns seguem estudos preparados centralmente pela liderança, ligados ao sermão do domingo; outros dão mais liberdade de tema ao próprio grupo. Ambos os modelos podem ser saudáveis, desde que mantenham fidelidade doutrinária e conexão real com a igreja local — o risco maior não está no formato, mas no isolamento ou na ausência de supervisão pastoral.",
+            secondQuote: {
+              author: "John Wesley",
+              text: "Não conheço nenhuma forma de religião que não implique uma comunhão constante, próxima e responsável com outros cristãos.",
+            },
+          },
           quizzes: [
             {
               question: "Segundo Atos 2:46, onde a igreja primitiva vivia sua comunhão, além do templo?",
@@ -630,6 +702,30 @@ const igrejaLocal: Trail = {
           theologianQuote: {
             author: "Jonathan Leeman",
             text: "A disciplina da igreja não existe para proteger a reputação da igreja, mas para proteger o Evangelho e, com amor, chamar o irmão de volta a ele.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "1 Coríntios 5:4-5",
+                textByVersion: {
+                  NVI: "Quando vocês estiverem reunidos em nome de nosso Senhor Jesus... entreguem esse homem a Satanás, para a destruição da carne, a fim de que o seu espírito seja salvo no dia do Senhor.",
+                },
+              },
+              {
+                ref: "2 Coríntios 2:6-8",
+                textByVersion: {
+                  NVI: "Para esse homem, é suficiente o castigo que lhe foi imposto pela maioria. Agora, ao contrário, vocês devem perdoá-lo e consolá-lo, para que ele não seja dominado por excessiva tristeza. Por isso eu recomendo que vocês reafirmem o amor que têm por ele.",
+                },
+              },
+            ],
+            historicalContext:
+              "A Reforma Protestante do século XVI recuperou a disciplina eclesiástica como uma das marcas essenciais de uma igreja verdadeira, ao lado da pregação fiel da Palavra e da correta administração das ordenanças — presente em confissões de fé reformadas da época. João Calvino a chamava de 'os nervos' que sustentam o corpo da igreja unido e saudável. Ao longo do século XX, porém, boa parte das igrejas evangélicas praticamente abandonou essa prática, temendo parecer legalista ou hostil.",
+            theologicalDebate:
+              "Há divergência sobre o quanto de um processo disciplinar deve ser comunicado publicamente à congregação, e em que estágio. Algumas igrejas comunicam apenas quando a pessoa se torna impenitente diante da igreja (o passo final de Mateus 18:17); outras comunicam desde etapas anteriores, buscando oração coletiva pelo processo. Ambas as práticas podem ser fiéis, desde que preservem primeiro a busca privada por restauração, e nunca exponham a pessoa de forma desnecessária ou vingativa.",
+            secondQuote: {
+              author: "João Calvino",
+              text: "Assim como a salvação da alma consiste na doutrina de Cristo, também a disciplina serve como um freio para conter e domar os que se rebelam contra essa doutrina.",
+            },
           },
           quizzes: [
             {
@@ -708,6 +804,30 @@ const igrejaLocal: Trail = {
           theologianQuote: {
             author: "Ken Sande",
             text: "Conflito é uma oportunidade — de glorificar a Deus, servir aos outros e crescer para sermos mais como Cristo, não apenas um problema a evitar.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Mateus 5:23-24",
+                textByVersion: {
+                  NVI: "Se você estiver apresentando sua oferta diante do altar e ali se lembrar de que seu irmão tem algo contra você, deixe sua oferta ali diante do altar e vá primeiro reconciliar-se com seu irmão; depois volte e apresente sua oferta.",
+                },
+              },
+              {
+                ref: "1 Coríntios 6:1,7",
+                textByVersion: {
+                  NVI: "Se algum de vocês tem uma queixa contra outro, ousa levar o caso a juízo perante os injustos, e não perante os santos?... O fato de haver litígios entre vocês já significa uma completa derrota.",
+                },
+              },
+            ],
+            historicalContext:
+              "A partir da segunda metade do século XX, movimentos como o Peacemaker Ministries (fundado por Ken Sande) recuperaram, de forma sistemática, a prática da mediação e reconciliação bíblica entre cristãos, oferecendo uma alternativa explicitamente fiel a 1 Coríntios 6 — que repreende irmãos por levarem disputas entre si a tribunais seculares, em vez de resolvê-las dentro da comunidade da fé.",
+            theologicalDebate:
+              "Nem todo conflito exige o mesmo nível de intervenção: Provérbios 19:11 elogia quem 'passa por cima da ofensa' em assuntos menores, enquanto Mateus 18 prescreve um processo mais estruturado para pecados sérios e não confessados. Discernir quando simplesmente suportar com amor (Ef 4:2) e quando confrontar ativamente (Gl 6:1) exige sabedoria pastoral, e cristãos maduros podem, de boa fé, avaliar essa linha de forma diferente em situações específicas.",
+            secondQuote: {
+              author: "Corrie ten Boom",
+              text: "O perdão é a chave que abre a porta do ressentimento e as algemas do ódio. É um ato de vontade, não um sentimento.",
+            },
           },
           quizzes: [
             {
@@ -791,6 +911,30 @@ const igrejaLocal: Trail = {
           theologianQuote: {
             author: "John Piper",
             text: "Missões existem porque a adoração não existe — mas a igreja que adora de verdade não consegue deixar de enviar.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Romanos 10:14-15",
+                textByVersion: {
+                  NVI: "Como, pois, invocarão aquele em quem não creram? E como crerão naquele de quem não ouviram falar? E como ouvirão, se não houver quem pregue? E como pregarão, se não forem enviados?",
+                },
+              },
+              {
+                ref: "3 João 1:5-8",
+                textByVersion: {
+                  NVI: "Amado, você é fiel no que faz pelos irmãos, mesmo sendo eles estranhos... Enviando-os em sua viagem de maneira digna de Deus, você fará bem. Pois eles saíram por causa do Nome... Portanto, devemos receber com hospitalidade a tais homens, para que sejamos cooperadores com a verdade.",
+                },
+              },
+            ],
+            historicalContext:
+              "Em 1792, o pastor batista inglês William Carey — considerado o 'pai das missões modernas' — ajudou a fundar uma das primeiras sociedades missionárias organizadas por igrejas, num tempo em que muitos cristãos acreditavam que a Grande Comissão já havia sido cumprida apenas pelos apóstolos. Seu lema, 'esperai grandes coisas de Deus, empreendei grandes coisas para Deus', ajudou a inaugurar uma era de envio missionário corporativo e sistemático por igrejas locais e denominações inteiras.",
+            theologicalDebate:
+              "Hoje, igrejas fiéis diferem sobre o melhor modelo estrutural de envio: algumas enviam e sustentam missionários diretamente, sem intermediários; outras trabalham por meio de agências e juntas missionárias paraeclesiásticas especializadas, que oferecem suporte logístico, treinamento e cuidado que uma igreja local sozinha nem sempre consegue prover. Ambos os modelos podem glorificar a Deus, desde que a igreja local nunca terceirize por completo sua responsabilidade de oração, cuidado pastoral e conexão pessoal com quem enviou.",
+            secondQuote: {
+              author: "William Carey",
+              text: "Esperai grandes coisas de Deus; empreendei grandes coisas para Deus.",
+            },
           },
           quizzes: [
             {
