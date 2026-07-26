@@ -341,6 +341,504 @@ const igrejaLocal: Trail = {
         },
       ],
     },
+    {
+      id: "il-mod-3",
+      title: "Módulo III: Ofícios e Ordenanças",
+      lessons: [
+        {
+          id: "il-3-1",
+          title: "Ofícios Bíblicos: Pastores e Diáconos",
+          intro: [
+            "Deus não deixou sua igreja sem estrutura. Desde o início, ele levantou homens para servir em ofícios específicos, com responsabilidades e qualificações claramente definidas nas Escrituras. Isso não é burocracia religiosa — é o próprio Cristo, Cabeça da igreja, cuidando do seu corpo por meio de líderes que ele mesmo capacita e chama.",
+            "O Novo Testamento descreve basicamente dois ofícios permanentes na igreja local: pastores/presbíteros/bispos (os três termos descrevem a mesma função, vista por ângulos diferentes — pastoreio, maturidade e supervisão) e diáconos. Em Filipenses 1:1, Paulo saúda 'a igreja... com os bispos e diáconos' — os dois ofícios já operando lado a lado desde os primeiros anos da igreja.",
+            "Os pastores são responsáveis por ensinar a Palavra, cuidar espiritualmente do rebanho e supervisionar a vida da igreja (1 Pe 5:1-3). Os diáconos, cujo nome vem da palavra grega para 'servo', cuidam das necessidades práticas da congregação — como no relato de Atos 6, quando sete homens foram escolhidos para cuidar da distribuição de alimentos, liberando os apóstolos para a oração e o ensino.",
+            "Em tradição batista congregacional, esses ofícios servem sob a autoridade final da própria congregação, reunida para tomar decisões importantes diante de Deus. Isso não diminui a autoridade pastoral — o rebanho ainda deve 'obedecer aos seus líderes' (Hb 13:17) — mas garante que nenhum homem, sozinho, concentre poder que pertence a Cristo e ao seu povo reunido.",
+          ],
+          verses: [
+            {
+              ref: "1 Timóteo 3:1-2,8",
+              textByVersion: {
+                NVI: "Quem deseja ser bispo, excelente trabalho almeja. É necessário, pois, que o bispo seja irrepreensível... Da mesma forma, os diáconos devem ser dignos de respeito.",
+                NAA: "Fiel é esta palavra: se alguém aspira ao episcopado, excelente obra deseja. É necessário, pois, que o bispo seja irrepreensível... Da mesma maneira, os diáconos sejam sérios.",
+                ACF: "Esta é uma palavra fiel: Se alguém deseja o episcopado, excelente obra deseja. Convém, pois, que o bispo seja irrepreensível... Da mesma sorte os diáconos sejam honestos.",
+              },
+              originals: [
+                { word: "ἐπίσκοπος", translit: "episkopos", meaning: "'supervisor, bispo' — aquele que vela pela igreja; termo usado como sinônimo de presbítero/pastor", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Atos 6:2-4",
+              textByVersion: {
+                NVI: "Não é certo que negligenciemos o ministério da palavra de Deus para servir às mesas... e nós nos dedicaremos à oração e ao ministério da palavra.",
+                ACF: "Não é razoável que nós deixemos a palavra de Deus e sirvamos às mesas... e nós perseveraremos na oração e no ministério da palavra.",
+              },
+              originals: [
+                { word: "διακονέω", translit: "diakoneō", meaning: "servir, cuidar de necessidades práticas — raiz do ofício de diácono", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "πρεσβύτερος", translit: "presbyteros", meaning: "'ancião, presbítero' — termo que enfatiza maturidade espiritual, usado como sinônimo de pastor/bispo", lang: "grego" },
+            { word: "διάκονος", translit: "diakonos", meaning: "'servo, diácono' — ofício voltado ao cuidado prático e material da igreja", lang: "grego" },
+          ],
+          deepDive:
+            "Uma questão legítima entre cristãos fiéis é o modelo de governo eclesiástico: episcopal (bispos com autoridade regional), presbiteriano (conselho de presbíteros com autoridade final) ou congregacional (a congregação local como instância final de decisão, sob pastores e diáconos). Esta trilha adota o modelo congregacional, comum na tradição batista: uma pluralidade de pastores/presbíteros ensina e pastoreia, diáconos servem nas necessidades práticas, e decisões maiores — como a recepção de membros, disciplina e escolha de líderes — são levadas à congregação reunida, seguindo o padrão visto em Atos 6:3 e 15:22, onde 'toda a igreja' participa de decisões importantes. Irmãos de outras tradições organizam essa autoridade de forma diferente, com zelo igualmente sincero pelas Escrituras.",
+          theologianQuote: {
+            author: "Alexander Strauch",
+            text: "A liderança bíblica nunca é sobre um homem no topo, mas sobre uma pluralidade de pastores servindo juntos, debaixo de Cristo.",
+          },
+          quizzes: [
+            {
+              question: "Segundo Filipenses 1:1, quantos ofícios permanentes Paulo saúda na igreja?",
+              options: ["Apenas um: o apóstolo", "Dois: bispos e diáconos", "Três: bispos, presbíteros e diáconos como cargos distintos", "Nenhum ofício formal é mencionado"],
+              correctIndex: 1,
+              explanation: "Paulo saúda especificamente 'os bispos e diáconos' — os dois ofícios da igreja local.",
+            },
+            {
+              question: "Qual foi o motivo da criação do ofício de diácono em Atos 6?",
+              options: [
+                "Substituir os apóstolos no ensino da Palavra",
+                "Cuidar das necessidades práticas, liberando os apóstolos para oração e ensino",
+                "Governar a igreja com autoridade superior à dos apóstolos",
+                "Uma inovação sem base nas necessidades reais da igreja",
+              ],
+              correctIndex: 1,
+              explanation: "Os sete foram escolhidos para o cuidado prático, para que os apóstolos se dedicassem à Palavra e à oração.",
+            },
+            {
+              question: "No modelo congregacional adotado nesta trilha, quem tem a autoridade final para decisões maiores da igreja?",
+              options: [
+                "Um bispo regional, sozinho",
+                "Um conselho externo à igreja local",
+                "A própria congregação reunida, sob o ensino de seus pastores",
+                "Nenhuma autoridade humana é reconhecida",
+              ],
+              correctIndex: 2,
+              explanation: "No modelo congregacional, decisões importantes são levadas à congregação, seguindo o padrão de Atos 6 e 15.",
+            },
+          ],
+          application:
+            "Descubra quem são os pastores e diáconos da sua igreja local e ore especificamente por cada um esta semana, pedindo sabedoria, integridade e proteção espiritual para eles.",
+          prayer:
+            "Senhor, obrigado por cuidares da tua igreja através de homens chamados e capacitados por ti. Abençoa os pastores e diáconos da minha igreja — dá-lhes sabedoria, integridade e perseverança. Ensina-me a honrá-los e a servir ao lado deles, e não apenas como espectador. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Envie uma mensagem de encorajamento a um pastor ou diácono da sua igreja esta semana, agradecendo especificamente por algo que ele fez ou ensinou.",
+          reflectionQuestion:
+            "Como você tem honrado (ou negligenciado) a liderança que Deus colocou sobre sua igreja local?",
+          xp: 28,
+        },
+        {
+          id: "il-3-2",
+          title: "Batismo e Ceia: As Ordenanças de Cristo",
+          intro: [
+            "Cristo deixou à sua igreja dois sinais visíveis e físicos do Evangelho invisível: o batismo e a Ceia do Senhor. A tradição batista os chama de 'ordenanças' — não porque salvem ou concedam graça automaticamente, mas porque foram literalmente 'ordenados' por Cristo como atos de obediência e testemunho para todo crente e toda igreja.",
+            "O batismo é o primeiro passo de obediência pública de quem creu. Ele não causa a salvação — é um testemunho dela. Em Romanos 6:3-4, Paulo explica que ser batizado é ser 'sepultado com Cristo' e ressuscitado com ele 'para andarmos em novidade de vida'. É por isso que esta trilha entende o batismo bíblico como o de crentes, por imersão, após a conversão consciente — e não de crianças, já que o Novo Testamento sempre liga o batismo à fé pessoal e ao arrependimento (At 2:38,41).",
+            "A Ceia do Senhor, por sua vez, é celebrada 'em memória' de Cristo (1 Co 11:24-25) — um lembrete visível, repetido, do seu corpo partido e sangue derramado por nós. Não se trata de repetir o sacrifício de Cristo (Hb 10:12 é claro que essa oferta foi feita 'uma vez para sempre'), mas de proclamar, ao redor da mesa, a morte do Senhor 'até que ele venha' (1 Co 11:26).",
+            "Como igreja de tradição aberta, entendemos que a mesa do Senhor pertence a Cristo, não a uma denominação — por isso recebemos à Ceia todo aquele que genuinamente confia em Jesus, mesmo vindo de outra igreja cristã fiel. Já a participação plena na membresia e o próprio batismo seguem o padrão bíblico do crente que professa fé e é imerso.",
+          ],
+          verses: [
+            {
+              ref: "Romanos 6:3-4",
+              textByVersion: {
+                NVI: "Vocês não sabem que todos nós, que fomos batizados em Cristo Jesus, fomos batizados em sua morte? Fomos, pois, sepultados com ele na morte por meio do batismo, para que, assim como Cristo foi ressuscitado dentre os mortos... também nós vivamos uma vida nova.",
+                ACF: "Ou não sabeis que todos quantos fomos batizados em Jesus Cristo fomos batizados na sua morte? De sorte que fomos sepultados com ele pelo batismo na morte... para que também andemos nós em novidade de vida.",
+              },
+              originals: [
+                { word: "βαπτίζω", translit: "baptizō", meaning: "'imergir, mergulhar completamente' — o termo grego descreve literalmente a submersão em água", lang: "grego" },
+              ],
+            },
+            {
+              ref: "1 Coríntios 11:24-26",
+              textByVersion: {
+                NVI: "Isto é o meu corpo, que é dado em favor de vocês; façam isto em memória de mim... Porque, sempre que comerem deste pão e beberem deste cálice, vocês anunciam a morte do Senhor, até que ele venha.",
+                ACF: "Isto é o meu corpo, que é partido por vós; fazei isto em memória de mim... Porque todas as vezes que comerdes este pão e beberdes este cálice, anunciais a morte do Senhor, até que venha.",
+                NVT: "Este é o meu corpo, que é dado em seu benefício. Façam isto em memória de mim... Pois sempre que vocês comerem deste pão e beberem deste cálice, vocês estão anunciando a morte do Senhor até que ele volte.",
+              },
+              originals: [
+                { word: "ἀνάμνησις", translit: "anamnesis", meaning: "'memória, lembrança ativa' — não uma simples recordação mental, mas um ato que reapresenta o significado do evento lembrado", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "βαπτίζω", translit: "baptizō", meaning: "imergir — ato que retrata visualmente a morte, sepultamento e ressurreição com Cristo", lang: "grego" },
+            { word: "ἀνάμνησις", translit: "anamnesis", meaning: "memória viva — o propósito declarado da Ceia do Senhor", lang: "grego" },
+          ],
+          deepDive:
+            "Sobre o batismo infantil (pedobatismo), praticado por irmãos de tradições reformadas, luteranas e católicas, há divergência histórica e sincera. Esta trilha, alinhada à convicção batista, entende que todos os exemplos e ensinos do Novo Testamento ligam o batismo à profissão pessoal de fé — não há um único caso claro de batismo de bebê nas Escrituras. Da mesma forma, sobre a natureza da Ceia, há visões diversas: a transubstanciação católica, a presença real luterana, a presença espiritual reformada e a visão memorial batista aqui adotada — que entende o pão e o vinho como símbolos poderosos, não como o corpo e sangue literais de Cristo. Reconhecemos essas diferenças com respeito, mantendo o essencial: ambas as ordenanças proclamam o Evangelho e devem ser tratadas com reverência, não como rituais vazios.",
+          theologianQuote: {
+            author: "Charles Spurgeon",
+            text: "O batismo e a Ceia são os dois braços com que a igreja visível abraça e proclama o Evangelho ao mundo que observa.",
+          },
+          quizzes: [
+            {
+              question: "Segundo Romanos 6:3-4, o que o batismo retrata visualmente?",
+              options: [
+                "A causa da salvação, sem a qual ninguém pode ser salvo",
+                "A morte, sepultamento e ressurreição do crente com Cristo",
+                "Um rito cultural sem conexão com a fé pessoal",
+                "A substituição da fé por um ato religioso externo",
+              ],
+              correctIndex: 1,
+              explanation: "Paulo liga diretamente o batismo à identificação do crente com a morte e ressurreição de Cristo.",
+            },
+            {
+              question: "De acordo com 1 Coríntios 11:24-26, qual é o propósito declarado da Ceia do Senhor?",
+              options: [
+                "Repetir o sacrifício de Cristo a cada celebração",
+                "Anunciar e lembrar a morte do Senhor até que ele volte",
+                "Substituir a necessidade da pregação da Palavra",
+                "Servir apenas como uma refeição social entre os membros",
+              ],
+              correctIndex: 1,
+              explanation: "O texto é explícito: a Ceia anuncia a morte do Senhor 'até que ele venha' — é memorial e proclamação.",
+            },
+            {
+              question: "Qual visão do batismo esta trilha adota, e por quê?",
+              options: [
+                "Batismo infantil, por tradição familiar",
+                "Batismo de crentes por imersão, após profissão pessoal de fé",
+                "Qualquer forma é irrelevante, pois o rito não importa",
+                "Apenas o batismo no Espírito, sem elemento de água",
+              ],
+              correctIndex: 1,
+              explanation: "A trilha segue a convicção batista de que o Novo Testamento sempre liga o batismo à fé pessoal consciente.",
+            },
+          ],
+          application:
+            "Se você já é crente mas ainda não foi batizado por imersão após sua conversão, converse com seu pastor esta semana sobre dar esse passo de obediência pública. Se já foi batizado, reflita sobre o que esse ato significou e ainda significa para você.",
+          prayer:
+            "Senhor Jesus, obrigado por nos deixares sinais visíveis do teu Evangelho invisível. Ajuda-me a nunca tratar o batismo ou a Ceia como rituais vazios, mas como proclamações vivas da tua morte e ressurreição por mim. Renova em mim a alegria da minha própria identificação contigo. Amém.",
+          weeklyChallenge:
+            "Na próxima vez que sua igreja celebrar a Ceia do Senhor, participe com atenção redobrada — silenciando distrações e meditando conscientemente no corpo partido e sangue derramado de Cristo por você.",
+          reflectionQuestion:
+            "O que o seu batismo (ou a falta dele) diz sobre o seu compromisso público e visível com Cristo?",
+          xp: 28,
+        },
+      ],
+    },
+    {
+      id: "il-mod-4",
+      title: "Módulo IV: Comunidade, Correção e Missão",
+      lessons: [
+        {
+          id: "il-4-1",
+          title: "Pequenos Grupos: Igreja em Casa",
+          intro: [
+            "A igreja do Novo Testamento nunca foi apenas um evento de domingo. Atos 2:46 descreve os primeiros cristãos perseverando 'todos os dias, unânimes, no templo, e partindo o pão de casa em casa' — a vida comunitária acontecia tanto no grande culto público quanto na intimidade dos lares. Sem esse segundo espaço, a fé cristã tende a ficar rasa, anônima e facilmente escondida.",
+            "Pequenos grupos — células, grupos de estudo, grupos familiares, como cada igreja os chame — recuperam esse padrão bíblico. É num círculo pequeno que as pessoas são realmente conhecidas: alguém percebe quando você falta, ora por seus problemas específicos, e nota quando você está se afastando espiritualmente antes que isso vire uma crise.",
+            "Hebreus 10:24-25 conecta diretamente essa vida em comunidade próxima com perseverança na fé: 'consideremo-nos uns aos outros para nos incentivarmos ao amor e às boas obras. Não deixemos de reunir-nos... antes façamos as devidas exortações'. A palavra usada para 'considerar' implica atenção deliberada e contínua à vida do outro — algo praticamente impossível numa multidão, mas natural num pequeno grupo.",
+            "Participar de um pequeno grupo não é um extra opcional para cristãos mais 'engajados' — é o ambiente onde os 'uns aos outros' do Novo Testamento (ame uns aos outros, exortai-vos uns aos outros, confessai as faltas uns aos outros) realmente acontecem na prática.",
+          ],
+          verses: [
+            {
+              ref: "Atos 2:46-47",
+              textByVersion: {
+                NVI: "Todos os dias reuniam-se nos átrios do templo. Partiam o pão em casa e comiam juntos, com alegria e sinceridade de coração.",
+                ACF: "E, perseverando unânimes todos os dias no templo, e partindo o pão de casa em casa, comiam juntos com alegria e singeleza de coração.",
+              },
+              originals: [
+                { word: "κατ' οἶκον", translit: "kat' oikon", meaning: "'de casa em casa' — expressão que descreve a vida comunitária cristã nos lares, complementar ao culto público", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Hebreus 10:24-25",
+              textByVersion: {
+                NVI: "E consideremo-nos uns aos outros para nos incentivarmos ao amor e às boas obras. Não deixemos de reunir-nos como igreja, segundo o costume de alguns, antes façamos as devidas exortações; e tanto mais quanto vedes que se aproxima aquele dia.",
+                ACF: "E consideremo-nos uns aos outros, para nos estimularmos ao amor e às boas obras, não deixando a nossa congregação, como é costume de alguns, antes, admoestando-nos uns aos outros.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "κατ' οἶκον", translit: "kat' oikon", meaning: "de casa em casa — a dimensão íntima da vida da igreja primitiva", lang: "grego" },
+            { word: "κοινωνία", translit: "koinonia", meaning: "comunhão, participação conjunta — vida compartilhada, não apenas presença física simultânea", lang: "grego" },
+          ],
+          deepDive:
+            "Alguns cristãos temem que pequenos grupos criem 'igrejinhas' desconectadas da igreja local ou substituam a autoridade dos pastores por lideranças informais. É um risco real, mas administrável: um bom pequeno grupo funciona sob a supervisão e a doutrina da igreja local, com líderes acompanhados por pastores, e existe para servir à igreja como um todo — não competir com ela. Quando bem estruturado, o pequeno grupo é simplesmente a igreja local em formato mais próximo e acessível, não uma entidade paralela.",
+          theologianQuote: {
+            author: "Dietrich Bonhoeffer",
+            text: "Aquele que não pode estar sozinho deve tomar cuidado com a comunidade; aquele que não está em comunidade deve tomar cuidado com a solidão.",
+          },
+          quizzes: [
+            {
+              question: "Segundo Atos 2:46, onde a igreja primitiva vivia sua comunhão, além do templo?",
+              options: ["Apenas em eventos públicos oficiais", "De casa em casa, partindo o pão juntos", "Isoladamente, sem reuniões regulares", "Somente por meio de cartas"],
+              correctIndex: 1,
+              explanation: "O texto descreve claramente a dimensão doméstica e íntima da vida da igreja primitiva.",
+            },
+            {
+              question: "Qual verbo Hebreus 10:24 usa para descrever como devemos tratar uns aos outros?",
+              options: ["Ignorar", "Considerar/estimular deliberadamente", "Competir", "Evitar contato"],
+              correctIndex: 1,
+              explanation: "O texto pede atenção deliberada e contínua ao próximo, algo mais natural em grupos pequenos.",
+            },
+            {
+              question: "Segundo esta trilha, como um pequeno grupo deve se relacionar com a igreja local?",
+              options: [
+                "Como uma entidade paralela e independente",
+                "Substituindo a autoridade pastoral por líderes informais",
+                "Sob a supervisão e doutrina da igreja local, servindo-a",
+                "Sem qualquer conexão ou prestação de contas",
+              ],
+              correctIndex: 2,
+              explanation: "Um bom pequeno grupo funciona como extensão da igreja local, não como substituto dela.",
+            },
+          ],
+          application:
+            "Se você ainda não participa de um pequeno grupo na sua igreja, inscreva-se em um esta semana. Se já participa, convide alguém que você sabe estar espiritualmente isolado para vir com você.",
+          prayer:
+            "Pai, obrigado por não nos chamares para uma fé solitária. Ajuda-me a encontrar (ou fortalecer) uma comunidade próxima de irmãos que me conheçam de verdade, que orem por mim e me chamem à responsabilidade. Que eu também seja esse tipo de irmão para outros. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Compartilhe com seu pequeno grupo (ou com um amigo cristão próximo) uma luta real que você está enfrentando, pedindo oração específica sobre ela.",
+          reflectionQuestion:
+            "Alguém na sua igreja te conhece o suficiente para perceber quando você está se afastando espiritualmente?",
+          xp: 26,
+        },
+        {
+          id: "il-4-2",
+          title: "Disciplina Eclesiástica: Amor que Corrige",
+          intro: [
+            "Poucos temas assustam tanto os cristãos modernos quanto 'disciplina eclesiástica' — soa a julgamento, exposição pública e exclusão vingativa. Mas o texto que a institui, Mateus 18:15-17, tem um tom completamente diferente: é sobre amor que não desiste de um irmão que está se afastando em pecado não confessado.",
+            "O processo que Jesus ensina é gradual e protetor: primeiro, uma conversa privada, a sós ('vá e, a sós com ele, mostre-lhe a sua falta'); se não houver arrependimento, leve uma ou duas testemunhas; só depois disso, envolva a igreja; e apenas como último recurso, se a pessoa persistir impenitente, ela é tratada como alguém fora da comunhão. Em nenhum momento o objetivo é humilhar — é 'ganhar' o irmão de volta (v. 15).",
+            "Gálatas 6:1 mostra o espírito correto para esse processo: 'se alguém for surpreendido em algum pecado, vocês que são espirituais devem restaurá-lo com mansidão. Cuidado, porém, para que você também não seja tentado'. A restauração — não a punição — é o coração da disciplina bíblica, e quem corrige deve fazê-lo com humildade, sabendo que também é vulnerável à queda.",
+            "Disciplina eclesiástica bem aplicada é, paradoxalmente, uma das expressões mais profundas do amor de uma igreja: ela recusa fingir que o pecado não importa, e recusa abandonar quem está preso a ele.",
+          ],
+          verses: [
+            {
+              ref: "Mateus 18:15-17",
+              textByVersion: {
+                NVI: "Se seu irmão pecar contra você, vá e, a sós com ele, mostre-lhe a sua falta. Se ele o ouvir, você ganhou seu irmão. Mas, se não o ouvir, leve consigo mais um ou dois... Se ele se recusar a ouvi-los, conte à igreja.",
+                ACF: "Ora, se teu irmão pecar contra ti, vai, e repreende-o entre ti e ele só; se te ouvir, ganhaste a teu irmão; se, porém, não te ouvir, leva ainda contigo um ou dois... e, se recusar ouvi-los, dize-o à igreja.",
+              },
+            },
+            {
+              ref: "Gálatas 6:1",
+              textByVersion: {
+                NVI: "Irmãos, se alguém for surpreendido em algum pecado, vocês que são espirituais deverão restaurá-lo com mansidão. Cuidado, porém, para que vocês também não sejam tentados.",
+                ACF: "Irmãos, se algum homem chegar a ser surpreendido em algum delito, vós, que sois espirituais, encaminhai o tal com espírito de mansidão; olhando por ti mesmo, para que não sejas também tentado.",
+              },
+              originals: [
+                { word: "καταρτίζω", translit: "katartizō", meaning: "'restaurar, consertar, ajustar' — o mesmo termo usado para consertar redes de pesca; implica cuidado, não violência", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "ἐλέγχω", translit: "elenchō", meaning: "'repreender, mostrar a falta' — confrontar com o objetivo de trazer à luz e à correção, não humilhar", lang: "grego" },
+            { word: "καταρτίζω", translit: "katartizō", meaning: "restaurar cuidadosamente — o objetivo final de toda disciplina bíblica genuína", lang: "grego" },
+          ],
+          deepDive:
+            "É importante distinguir disciplina eclesiástica de pecados que exigem denúncia imediata às autoridades civis — como abuso, violência ou crimes contra menores. Mateus 18 descreve o processo pastoral comum para pecados pessoais e interpessoais; ele nunca substitui a responsabilidade legal e moral de proteger vítimas e reportar crimes às autoridades competentes. Além disso, esse processo pressupõe pecado claro e não confessado, não meras diferenças de opinião, gostos pessoais ou convicções secundárias — usar disciplina para forçar conformidade em áreas de liberdade cristã é um abuso grave desse instrumento bíblico.",
+          theologianQuote: {
+            author: "Jonathan Leeman",
+            text: "A disciplina da igreja não existe para proteger a reputação da igreja, mas para proteger o Evangelho e, com amor, chamar o irmão de volta a ele.",
+          },
+          quizzes: [
+            {
+              question: "Qual é o primeiro passo indicado por Jesus em Mateus 18:15 diante do pecado de um irmão?",
+              options: [
+                "Expor publicamente o pecado imediatamente",
+                "Uma conversa privada, a sós com a pessoa",
+                "Excluir a pessoa da igreja sem conversa prévia",
+                "Ignorar o problema, esperando que se resolva sozinho",
+              ],
+              correctIndex: 1,
+              explanation: "O processo bíblico começa de forma privada e protetora, não pública.",
+            },
+            {
+              question: "Segundo Gálatas 6:1, com que atitude a restauração deve ser feita?",
+              options: ["Com dureza e distanciamento", "Com mansidão, e vigilância sobre a própria vulnerabilidade", "Com indiferença", "Com superioridade moral"],
+              correctIndex: 1,
+              explanation: "O texto pede mansidão e autoconsciência de que quem corrige também pode cair.",
+            },
+            {
+              question: "O que esta trilha esclarece sobre os limites da disciplina eclesiástica segundo Mateus 18?",
+              options: [
+                "Ela substitui qualquer responsabilidade de reportar crimes às autoridades civis",
+                "Ela deve ser usada para forçar conformidade em qualquer diferença de opinião",
+                "Ela não substitui a obrigação de proteger vítimas e reportar crimes às autoridades competentes",
+                "Ela é opcional e nunca deve ser praticada",
+              ],
+              correctIndex: 2,
+              explanation: "Disciplina eclesiástica trata de pecado pessoal não confessado; crimes exigem reporte às autoridades.",
+            },
+          ],
+          application:
+            "Se você tem algo contra um irmão (ou sabe de um pecado não confessado em sua própria vida), dê o primeiro passo bíblico esta semana: busque uma conversa privada e humilde, em vez de guardar mágoa ou espalhar a questão para terceiros.",
+          prayer:
+            "Senhor, dá-me coragem para buscar reconciliação de forma bíblica, e humildade para receber correção quando eu for o que está errado. Que eu nunca use a disciplina como arma, mas sempre como expressão de amor que busca restaurar. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Examine se há alguma mágoa ou ofensa não resolvida entre você e um irmão na fé. Dê o passo de buscar uma conversa privada e humilde esta semana.",
+          reflectionQuestion:
+            "Você reage à correção como alguém que quer ser restaurado, ou como alguém que se defende a qualquer custo?",
+          xp: 27,
+        },
+        {
+          id: "il-4-3",
+          title: "Pacificação: Vivendo em Paz na Igreja",
+          intro: [
+            "Onde há pessoas reais convivendo de perto, haverá conflito — e a igreja local não é exceção. A pergunta não é se conflitos vão acontecer, mas como lidamos com eles quando surgem. Romanos 12:18 estabelece o padrão: 'se for possível, quanto depender de vocês, vivam em paz com todos'.",
+            "Jesus vai além de apenas tolerar conflitos — ele chama seus seguidores de 'pacificadores', prometendo que 'serão chamados filhos de Deus' (Mt 5:9). Pacificador, aqui, não é sinônimo de pessoa passiva que evita todo confronto; é alguém que ativamente busca reconciliação, mesmo quando isso exige coragem para confrontar com amor.",
+            "Efésios 4:2-3 descreve as atitudes que sustentam a paz na igreja: 'toda humildade e mansidão, com paciência, suportando uns aos outros em amor, procurando com diligência guardar a unidade do Espírito pelo vínculo da paz'. Note que a unidade não é automática — ela exige diligência ativa e disposição para suportar as fraquezas alheias.",
+            "Conflitos não resolvidos entre irmãos não ficam contidos — eles corroem a comunhão, dividem grupos, e frequentemente afastam pessoas da igreja por completo. Aprender a fazer as pazes biblicamente não é um dom espiritual raro; é uma disciplina que toda igreja saudável precisa cultivar em seus membros.",
+          ],
+          verses: [
+            {
+              ref: "Romanos 12:18",
+              textByVersion: {
+                NVI: "Se for possível, e quanto depender de vocês, vivam em paz com todos.",
+                ACF: "Se for possível, quanto estiver em vós, tende paz com todos os homens.",
+              },
+            },
+            {
+              ref: "Mateus 5:9",
+              textByVersion: {
+                NVI: "Bem-aventurados os pacificadores, pois serão chamados filhos de Deus.",
+                ACF: "Bem-aventurados os pacificadores, porque eles serão chamados filhos de Deus.",
+              },
+              originals: [
+                { word: "εἰρηνοποιός", translit: "eirēnopoios", meaning: "'pacificador' — aquele que faz, produz e constrói a paz ativamente, não apenas a deseja", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "εἰρηνοποιός", translit: "eirēnopoios", meaning: "pacificador — quem busca ativamente a reconciliação, não apenas evita conflito", lang: "grego" },
+            { word: "καταλλαγή", translit: "katallagē", meaning: "'reconciliação' — a restauração de um relacionamento rompido, tema central do Evangelho (2 Co 5:18)", lang: "grego" },
+          ],
+          deepDive:
+            "Fazer as pazes bíblicas não significa evitar todo desconforto ou fingir que ofensas não aconteceram. A verdadeira pacificação envolve, quando necessário, confrontar com amor (Gl 6:1, Mt 18:15), confessar a própria contribuição para o conflito, perdoar genuinamente a ofensa do outro, e buscar ativamente a reconciliação — mesmo quando isso é desconfortável. Ken Sande, fundador do ministério Peacemaker Ministries, descreve quatro compromissos práticos da reconciliação bíblica: (1) glorificar a Deus acima de 'ganhar' a discussão, (2) tirar a trave do próprio olho antes de apontar o cisco do outro, (3) restaurar suavemente, e (4) perdoar como Cristo perdoou.",
+          theologianQuote: {
+            author: "Ken Sande",
+            text: "Conflito é uma oportunidade — de glorificar a Deus, servir aos outros e crescer para sermos mais como Cristo, não apenas um problema a evitar.",
+          },
+          quizzes: [
+            {
+              question: "Segundo Romanos 12:18, qual é a condição para viver em paz com todos?",
+              options: [
+                "Nenhuma condição — é sempre garantido",
+                "Quanto depender de nós, buscarmos ativamente a paz",
+                "Apenas quando o outro pedir desculpas primeiro",
+                "Somente com quem já concorda conosco",
+              ],
+              correctIndex: 1,
+              explanation: "O texto reconhece que nem sempre a paz depende só de nós, mas exige nosso esforço ativo.",
+            },
+            {
+              question: "O que significa, biblicamente, ser um 'pacificador' (Mateus 5:9)?",
+              options: [
+                "Evitar qualquer confronto, a qualquer custo",
+                "Buscar ativamente a reconciliação, mesmo exigindo coragem",
+                "Fingir que os conflitos não existem",
+                "Concordar sempre com o outro para evitar desconforto",
+              ],
+              correctIndex: 1,
+              explanation: "O termo grego implica ação — construir a paz, não apenas desejá-la passivamente.",
+            },
+            {
+              question: "Segundo o resumo de Ken Sande citado nesta trilha, qual é o primeiro compromisso da reconciliação bíblica?",
+              options: [
+                "Vencer a discussão a qualquer custo",
+                "Glorificar a Deus acima de 'ganhar' o conflito",
+                "Ignorar a própria contribuição para o problema",
+                "Esperar que o outro mude primeiro",
+              ],
+              correctIndex: 1,
+              explanation: "O primeiro compromisso é buscar glorificar a Deus, e não simplesmente vencer a disputa.",
+            },
+          ],
+          application:
+            "Identifique um conflito não resolvido com um irmão na fé. Esta semana, dê o primeiro passo — seja pedindo perdão pela sua parte, seja buscando uma conversa honesta e cheia de graça para reconciliação.",
+          prayer:
+            "Senhor, tu és o Deus da reconciliação — reconciliaste-me contigo ao custo da cruz. Torna-me um pacificador na minha igreja: dá-me coragem para confrontar com amor, humildade para reconhecer minhas falhas, e graça para perdoar como fui perdoado. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Pratique um dos quatro compromissos da reconciliação bíblica citados nesta trilha em uma situação real de conflito (mesmo pequeno) que você esteja enfrentando.",
+          reflectionQuestion:
+            "Há algum conflito na sua igreja ou família que você tem evitado resolver? O que te impede de dar o primeiro passo?",
+          xp: 27,
+        },
+        {
+          id: "il-4-4",
+          title: "Missão Corporativa: A Igreja Enviada",
+          intro: [
+            "Evangelismo pessoal é essencial, mas a Bíblia mostra algo além disso: igrejas inteiras, reunidas, enviando e sustentando missão juntas. Atos 13:1-3 registra o momento em que a igreja de Antioquia, reunida em jejum e oração, ouviu o Espírito Santo dizer 'separai-me a Barnabé e Saulo' e, como corpo, 'lhes impuseram as mãos e os despediram'. A missão nasceu de uma decisão corporativa, não apenas de uma iniciativa individual.",
+            "Isso muda a forma como enxergamos missões: não é apenas 'os missionários lá fora fazendo o trabalho' enquanto a igreja local apenas observa. Filipenses 4:15-16 mostra a igreja de Filipos sustentando financeiramente o ministério de Paulo repetidas vezes — participando ativamente da obra, mesmo sem estar fisicamente presente no campo missionário.",
+            "Toda igreja local tem um papel na missão de Deus, mesmo que a maioria dos membros nunca cruze uma fronteira: orando com constância pelos que foram enviados, sustentando financeiramente o trabalho missionário, mantendo contato pastoral com os obreiros, e mobilizando novos candidatos ao chamado missionário a partir da própria congregação.",
+            "Uma igreja saudável não pergunta apenas 'quem entre nós vai?', mas 'como todos nós, juntos, enviamos, sustentamos e participamos da missão de Deus até os confins da terra?'.",
+          ],
+          verses: [
+            {
+              ref: "Atos 13:2-3",
+              textByVersion: {
+                NVI: "Enquanto adoravam ao Senhor e jejuavam, disse o Espírito Santo: 'Separem-me Barnabé e Saulo para a obra a que os tenho chamado'. Então, depois de jejuarem, orarem e lhes imporem as mãos, eles os enviaram.",
+                ACF: "E, servindo eles ao Senhor, e jejuando, disse o Espírito Santo: Apartai-me a Barnabé e a Saulo para a obra para que os tenho chamado. Então, jejuando, e orando, e pondo sobre eles as mãos, os despediram.",
+              },
+              originals: [
+                { word: "ἀφορίζω", translit: "aphorizō", meaning: "'separar, apartar para um propósito específico' — decisão tomada pela igreja reunida, conduzida pelo Espírito", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Filipenses 4:15-16",
+              textByVersion: {
+                NVI: "Vocês mesmos sabem que, no início da obra do evangelho... nenhuma igreja participou comigo no dar e no receber, a não ser vocês somente; pois, estando eu ainda em Tessalônica, vocês me enviaram ajuda mais de uma vez para suprir as minhas necessidades.",
+                ACF: "E bem sabeis também, ó filipenses, que, no princípio do evangelho... nenhuma igreja comunicou comigo em razão de dar e receber, senão vós somente; Porque também uma e outra vez me enviastes o necessário a Tessalônica.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "ἀφορίζω", translit: "aphorizō", meaning: "separar para um propósito — o ato corporativo da igreja de comissionar alguém para a missão", lang: "grego" },
+            { word: "ἀποστέλλω", translit: "apostellō", meaning: "'enviar com autoridade e propósito' — raiz da palavra 'apóstolo', aquele que é enviado", lang: "grego" },
+          ],
+          deepDive:
+            "É comum reduzir 'apoio a missões' a uma simples contribuição financeira mensal, sem qualquer outro envolvimento. Embora o sustento financeiro seja bíblico e necessário (Fp 4:15-16), o padrão de Antioquia em Atos 13 mostra um envolvimento mais profundo: a igreja orou e jejuou coletivamente antes de enviar, impôs as mãos como ato público de comissionamento, e manteve vínculo com os enviados — Paulo e Barnabé voltaram a Antioquia para relatar 'tudo quanto Deus fizera por meio deles' (At 14:27). Uma igreja que só transfere dinheiro, sem oração constante, comunicação e cuidado pastoral com seus missionários, perdeu a essência corporativa do envio bíblico.",
+          theologianQuote: {
+            author: "John Piper",
+            text: "Missões existem porque a adoração não existe — mas a igreja que adora de verdade não consegue deixar de enviar.",
+          },
+          quizzes: [
+            {
+              question: "Em Atos 13:2-3, quem toma a decisão de separar Barnabé e Saulo para a missão?",
+              options: [
+                "Apenas Barnabé e Saulo, individualmente, sem envolvimento da igreja",
+                "A igreja reunida, em adoração e jejum, guiada pelo Espírito Santo",
+                "Uma autoridade externa e distante da igreja local",
+                "Uma votação sem qualquer busca espiritual prévia",
+              ],
+              correctIndex: 1,
+              explanation: "O envio nasceu de um momento corporativo de adoração e busca do Espírito pela igreja reunida.",
+            },
+            {
+              question: "Segundo Filipenses 4:15-16, como a igreja de Filipos participou da obra missionária de Paulo?",
+              options: [
+                "Apenas orando, sem qualquer outro tipo de apoio",
+                "Sustentando financeiramente o ministério dele repetidas vezes",
+                "Enviando membros para substituí-lo no campo",
+                "De forma alguma — permaneceram alheios ao trabalho dele",
+              ],
+              correctIndex: 1,
+              explanation: "O texto menciona claramente o apoio financeiro repetido da igreja de Filipos a Paulo.",
+            },
+            {
+              question: "Segundo esta trilha, o que caracteriza um envolvimento corporativo mais completo com a missão, além do dinheiro?",
+              options: [
+                "Nada além do sustento financeiro é necessário",
+                "Oração constante, comunicação e cuidado pastoral com os enviados",
+                "Ignorar os missionários após o envio inicial",
+                "Delegar toda a responsabilidade a agências externas, sem envolvimento da igreja",
+              ],
+              correctIndex: 1,
+              explanation: "O padrão de Atos 13 e 14 mostra vínculo contínuo — oração, comissionamento e prestação de contas mútua.",
+            },
+          ],
+          application:
+            "Descubra quais missionários ou projetos missionários sua igreja apoia atualmente. Escolha um deles para orar especificamente por nome esta semana, e considere enviar uma mensagem de encorajamento direto.",
+          prayer:
+            "Senhor da messe, obrigado por incluíres minha igreja local na tua missão de alcançar as nações. Ajuda-nos a ser uma igreja que não apenas contribui financeiramente, mas ora com constância, se importa genuinamente e participa de coração da tua obra até os confins da terra. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Ore diariamente por um missionário específico apoiado pela sua igreja durante toda esta semana, e envie a ele (ou à família dele) uma palavra de encorajamento.",
+          reflectionQuestion:
+            "Sua igreja local tem sido apenas espectadora ou participante ativa na missão de Deus pelo mundo?",
+          xp: 29,
+        },
+      ],
+    },
   ],
 };
 
