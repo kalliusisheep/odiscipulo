@@ -18,6 +18,7 @@ import {
   DEFAULT_MODULE_RGB,
 } from "@/data/module-visuals";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { MessagesLinkButton } from "@/components/MessagesLinkButton";
 import { useApp } from "@/lib/app-context";
 import { Flame, Check, ChevronRight, Sparkles, BookOpen } from "lucide-react";
 
