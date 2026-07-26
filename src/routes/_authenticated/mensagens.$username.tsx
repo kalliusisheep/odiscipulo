@@ -63,7 +63,10 @@ function MessagesPage() {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    if (myId && peer && typeof window !== "undefined") {
+      window.localStorage.setItem(`disciple.lastRead.${myId}.${peer.id}`, new Date().toISOString());
+    }
+  }, [messages, myId, peer]);
 
   const send = async () => {
     const body = text.trim();

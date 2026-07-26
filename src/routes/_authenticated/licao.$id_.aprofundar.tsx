@@ -6,7 +6,7 @@ import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
 import { FontSizeControls } from "@/components/font-size-controls";
 import { ArrowLeft, Layers } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/licao/$id/aprofundar")({
+export const Route = createFileRoute("/_authenticated/licao/$id_/aprofundar")({
   component: AprofundarPage,
 });
 

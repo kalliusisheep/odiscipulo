@@ -15,14 +15,16 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiMentorRouteImport } from './routes/api/mentor'
 import { Route as AuthenticatedRankingDetalhesRouteImport } from './routes/_authenticated/ranking-detalhes'
 import { Route as AuthenticatedRankingRouteImport } from './routes/_authenticated/ranking'
+import { Route as AuthenticatedPreview_niveisRouteImport } from './routes/_authenticated/preview_niveis'
 import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
+import { Route as AuthenticatedNiveisRouteImport } from './routes/_authenticated/niveis'
 import { Route as AuthenticatedMuralRouteImport } from './routes/_authenticated/mural'
 import { Route as AuthenticatedLiderRouteImport } from './routes/_authenticated/lider'
-import { Route as AuthenticatedNiveisRouteImport } from './routes/_authenticated/niveis'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedBemVindoRouteImport } from './routes/_authenticated/bem-vindo'
+import { Route as AuthenticatedMensagensIndexRouteImport } from './routes/_authenticated/mensagens.index'
 import { Route as AuthenticatedEstudosIndexRouteImport } from './routes/_authenticated/estudos.index'
-import { Route as AuthenticatedPerfilUsernameRouteImport } from './routes/_authenticated/perfil.$username'
+import { Route as AuthenticatedPerfilUsernameRouteImport } from './routes/_authenticated/perfil_.$username'
 import { Route as AuthenticatedModuloIdRouteImport } from './routes/_authenticated/modulo.$id'
 import { Route as AuthenticatedMensagensUsernameRouteImport } from './routes/_authenticated/mensagens.$username'
 import { Route as AuthenticatedLicaoIdRouteImport } from './routes/_authenticated/licao.$id'
@@ -61,9 +63,20 @@ const AuthenticatedRankingRoute = AuthenticatedRankingRouteImport.update({
   path: '/ranking',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedPreview_niveisRoute =
+  AuthenticatedPreview_niveisRouteImport.update({
+    id: '/preview_niveis',
+    path: '/preview_niveis',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPerfilRoute = AuthenticatedPerfilRouteImport.update({
   id: '/perfil',
   path: '/perfil',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedNiveisRoute = AuthenticatedNiveisRouteImport.update({
+  id: '/niveis',
+  path: '/niveis',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedMuralRoute = AuthenticatedMuralRouteImport.update({
@@ -76,11 +89,6 @@ const AuthenticatedLiderRoute = AuthenticatedLiderRouteImport.update({
   path: '/lider',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedNiveisRoute = AuthenticatedNiveisRouteImport.update({
-  id: '/niveis',
-  path: '/niveis',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   id: '/home',
   path: '/home',
@@ -91,6 +99,12 @@ const AuthenticatedBemVindoRoute = AuthenticatedBemVindoRouteImport.update({
   path: '/bem-vindo',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedMensagensIndexRoute =
+  AuthenticatedMensagensIndexRouteImport.update({
+    id: '/mensagens/',
+    path: '/mensagens/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedEstudosIndexRoute =
   AuthenticatedEstudosIndexRouteImport.update({
     id: '/estudos/',
@@ -99,9 +113,9 @@ const AuthenticatedEstudosIndexRoute =
   } as any)
 const AuthenticatedPerfilUsernameRoute =
   AuthenticatedPerfilUsernameRouteImport.update({
-    id: '/$username',
-    path: '/$username',
-    getParentRoute: () => AuthenticatedPerfilRoute,
+    id: '/perfil_/$username',
+    path: '/perfil/$username',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedModuloIdRoute = AuthenticatedModuloIdRouteImport.update({
   id: '/modulo/$id',
@@ -121,7 +135,7 @@ const AuthenticatedLicaoIdRoute = AuthenticatedLicaoIdRouteImport.update({
 } as any)
 const AuthenticatedLicaoIdAprofundarRoute =
   AuthenticatedLicaoIdAprofundarRouteImport.update({
-    id: '/licao/$id/aprofundar',
+    id: '/licao/$id_/aprofundar',
     path: '/licao/$id/aprofundar',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
@@ -152,19 +166,21 @@ export interface FileRoutesByFullPath {
   '/lider': typeof AuthenticatedLiderRoute
   '/mural': typeof AuthenticatedMuralRoute
   '/niveis': typeof AuthenticatedNiveisRoute
-  '/perfil': typeof AuthenticatedPerfilRouteWithChildren
+  '/perfil': typeof AuthenticatedPerfilRoute
+  '/preview_niveis': typeof AuthenticatedPreview_niveisRoute
   '/ranking': typeof AuthenticatedRankingRoute
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
-  '/licao/$id/aprofundar': typeof AuthenticatedLicaoIdAprofundarRoute
   '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/modulo/$id': typeof AuthenticatedModuloIdRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
   '/estudos/': typeof AuthenticatedEstudosIndexRoute
+  '/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
+  '/licao/$id/aprofundar': typeof AuthenticatedLicaoIdAprofundarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -174,19 +190,21 @@ export interface FileRoutesByTo {
   '/lider': typeof AuthenticatedLiderRoute
   '/mural': typeof AuthenticatedMuralRoute
   '/niveis': typeof AuthenticatedNiveisRoute
-  '/perfil': typeof AuthenticatedPerfilRouteWithChildren
+  '/perfil': typeof AuthenticatedPerfilRoute
+  '/preview_niveis': typeof AuthenticatedPreview_niveisRoute
   '/ranking': typeof AuthenticatedRankingRoute
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
-  '/licao/$id/aprofundar': typeof AuthenticatedLicaoIdAprofundarRoute
   '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/modulo/$id': typeof AuthenticatedModuloIdRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
   '/estudos': typeof AuthenticatedEstudosIndexRoute
+  '/mensagens': typeof AuthenticatedMensagensIndexRoute
   '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
+  '/licao/$id/aprofundar': typeof AuthenticatedLicaoIdAprofundarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -198,19 +216,21 @@ export interface FileRoutesById {
   '/_authenticated/lider': typeof AuthenticatedLiderRoute
   '/_authenticated/mural': typeof AuthenticatedMuralRoute
   '/_authenticated/niveis': typeof AuthenticatedNiveisRoute
-  '/_authenticated/perfil': typeof AuthenticatedPerfilRouteWithChildren
+  '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
+  '/_authenticated/preview_niveis': typeof AuthenticatedPreview_niveisRoute
   '/_authenticated/ranking': typeof AuthenticatedRankingRoute
   '/_authenticated/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
   '/_authenticated/licao/$id': typeof AuthenticatedLicaoIdRoute
-  '/_authenticated/licao/$id/aprofundar': typeof AuthenticatedLicaoIdAprofundarRoute
   '/_authenticated/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/_authenticated/modulo/$id': typeof AuthenticatedModuloIdRoute
-  '/_authenticated/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
+  '/_authenticated/perfil_/$username': typeof AuthenticatedPerfilUsernameRoute
   '/_authenticated/estudos/': typeof AuthenticatedEstudosIndexRoute
+  '/_authenticated/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/_authenticated/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/_authenticated/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/_authenticated/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
+  '/_authenticated/licao/$id_/aprofundar': typeof AuthenticatedLicaoIdAprofundarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -223,18 +243,20 @@ export interface FileRouteTypes {
     | '/mural'
     | '/niveis'
     | '/perfil'
+    | '/preview_niveis'
     | '/ranking'
     | '/ranking-detalhes'
     | '/api/mentor'
     | '/licao/$id'
-    | '/licao/$id/aprofundar'
     | '/mensagens/$username'
     | '/modulo/$id'
     | '/perfil/$username'
     | '/estudos/'
+    | '/mensagens/'
     | '/estudos/biblico/$id'
     | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
+    | '/licao/$id/aprofundar'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -245,18 +267,20 @@ export interface FileRouteTypes {
     | '/mural'
     | '/niveis'
     | '/perfil'
+    | '/preview_niveis'
     | '/ranking'
     | '/ranking-detalhes'
     | '/api/mentor'
     | '/licao/$id'
-    | '/licao/$id/aprofundar'
     | '/mensagens/$username'
     | '/modulo/$id'
     | '/perfil/$username'
     | '/estudos'
+    | '/mensagens'
     | '/estudos/biblico/$id'
     | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
+    | '/licao/$id/aprofundar'
   id:
     | '__root__'
     | '/'
@@ -268,18 +292,20 @@ export interface FileRouteTypes {
     | '/_authenticated/mural'
     | '/_authenticated/niveis'
     | '/_authenticated/perfil'
+    | '/_authenticated/preview_niveis'
     | '/_authenticated/ranking'
     | '/_authenticated/ranking-detalhes'
     | '/api/mentor'
     | '/_authenticated/licao/$id'
-    | '/_authenticated/licao/$id/aprofundar'
     | '/_authenticated/mensagens/$username'
     | '/_authenticated/modulo/$id'
-    | '/_authenticated/perfil/$username'
+    | '/_authenticated/perfil_/$username'
     | '/_authenticated/estudos/'
+    | '/_authenticated/mensagens/'
     | '/_authenticated/estudos/biblico/$id'
     | '/_authenticated/estudos/meditacao/$id'
     | '/_authenticated/estudos/plano/$id'
+    | '/_authenticated/licao/$id_/aprofundar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -333,11 +359,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRankingRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/preview_niveis': {
+      id: '/_authenticated/preview_niveis'
+      path: '/preview_niveis'
+      fullPath: '/preview_niveis'
+      preLoaderRoute: typeof AuthenticatedPreview_niveisRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/perfil': {
       id: '/_authenticated/perfil'
       path: '/perfil'
       fullPath: '/perfil'
       preLoaderRoute: typeof AuthenticatedPerfilRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/niveis': {
+      id: '/_authenticated/niveis'
+      path: '/niveis'
+      fullPath: '/niveis'
+      preLoaderRoute: typeof AuthenticatedNiveisRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/mural': {
@@ -361,18 +401,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHomeRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/niveis': {
-      id: '/_authenticated/niveis'
-      path: '/niveis'
-      fullPath: '/niveis'
-      preLoaderRoute: typeof AuthenticatedNiveisRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/bem-vindo': {
       id: '/_authenticated/bem-vindo'
       path: '/bem-vindo'
       fullPath: '/bem-vindo'
       preLoaderRoute: typeof AuthenticatedBemVindoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/mensagens/': {
+      id: '/_authenticated/mensagens/'
+      path: '/mensagens'
+      fullPath: '/mensagens/'
+      preLoaderRoute: typeof AuthenticatedMensagensIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/estudos/': {
@@ -382,12 +422,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEstudosIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/perfil/$username': {
-      id: '/_authenticated/perfil/$username'
-      path: '/$username'
+    '/_authenticated/perfil_/$username': {
+      id: '/_authenticated/perfil_/$username'
+      path: '/perfil/$username'
       fullPath: '/perfil/$username'
       preLoaderRoute: typeof AuthenticatedPerfilUsernameRouteImport
-      parentRoute: typeof AuthenticatedPerfilRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/modulo/$id': {
       id: '/_authenticated/modulo/$id'
@@ -410,8 +450,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLicaoIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/licao/$id/aprofundar': {
-      id: '/_authenticated/licao/$id/aprofundar'
+    '/_authenticated/licao/$id_/aprofundar': {
+      id: '/_authenticated/licao/$id_/aprofundar'
       path: '/licao/$id/aprofundar'
       fullPath: '/licao/$id/aprofundar'
       preLoaderRoute: typeof AuthenticatedLicaoIdAprofundarRouteImport
@@ -441,34 +481,26 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AuthenticatedPerfilRouteChildren {
-  AuthenticatedPerfilUsernameRoute: typeof AuthenticatedPerfilUsernameRoute
-}
-
-const AuthenticatedPerfilRouteChildren: AuthenticatedPerfilRouteChildren = {
-  AuthenticatedPerfilUsernameRoute: AuthenticatedPerfilUsernameRoute,
-}
-
-const AuthenticatedPerfilRouteWithChildren =
-  AuthenticatedPerfilRoute._addFileChildren(AuthenticatedPerfilRouteChildren)
-
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedBemVindoRoute: typeof AuthenticatedBemVindoRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedLiderRoute: typeof AuthenticatedLiderRoute
   AuthenticatedMuralRoute: typeof AuthenticatedMuralRoute
   AuthenticatedNiveisRoute: typeof AuthenticatedNiveisRoute
-  AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRouteWithChildren
+  AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRoute
+  AuthenticatedPreview_niveisRoute: typeof AuthenticatedPreview_niveisRoute
   AuthenticatedRankingRoute: typeof AuthenticatedRankingRoute
   AuthenticatedRankingDetalhesRoute: typeof AuthenticatedRankingDetalhesRoute
   AuthenticatedLicaoIdRoute: typeof AuthenticatedLicaoIdRoute
-  AuthenticatedLicaoIdAprofundarRoute: typeof AuthenticatedLicaoIdAprofundarRoute
   AuthenticatedMensagensUsernameRoute: typeof AuthenticatedMensagensUsernameRoute
   AuthenticatedModuloIdRoute: typeof AuthenticatedModuloIdRoute
+  AuthenticatedPerfilUsernameRoute: typeof AuthenticatedPerfilUsernameRoute
   AuthenticatedEstudosIndexRoute: typeof AuthenticatedEstudosIndexRoute
+  AuthenticatedMensagensIndexRoute: typeof AuthenticatedMensagensIndexRoute
   AuthenticatedEstudosBiblicoIdRoute: typeof AuthenticatedEstudosBiblicoIdRoute
   AuthenticatedEstudosMeditacaoIdRoute: typeof AuthenticatedEstudosMeditacaoIdRoute
   AuthenticatedEstudosPlanoIdRoute: typeof AuthenticatedEstudosPlanoIdRoute
+  AuthenticatedLicaoIdAprofundarRoute: typeof AuthenticatedLicaoIdAprofundarRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -477,17 +509,20 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedLiderRoute: AuthenticatedLiderRoute,
   AuthenticatedMuralRoute: AuthenticatedMuralRoute,
   AuthenticatedNiveisRoute: AuthenticatedNiveisRoute,
-  AuthenticatedPerfilRoute: AuthenticatedPerfilRouteWithChildren,
+  AuthenticatedPerfilRoute: AuthenticatedPerfilRoute,
+  AuthenticatedPreview_niveisRoute: AuthenticatedPreview_niveisRoute,
   AuthenticatedRankingRoute: AuthenticatedRankingRoute,
   AuthenticatedRankingDetalhesRoute: AuthenticatedRankingDetalhesRoute,
   AuthenticatedLicaoIdRoute: AuthenticatedLicaoIdRoute,
-  AuthenticatedLicaoIdAprofundarRoute: AuthenticatedLicaoIdAprofundarRoute,
   AuthenticatedMensagensUsernameRoute: AuthenticatedMensagensUsernameRoute,
   AuthenticatedModuloIdRoute: AuthenticatedModuloIdRoute,
+  AuthenticatedPerfilUsernameRoute: AuthenticatedPerfilUsernameRoute,
   AuthenticatedEstudosIndexRoute: AuthenticatedEstudosIndexRoute,
+  AuthenticatedMensagensIndexRoute: AuthenticatedMensagensIndexRoute,
   AuthenticatedEstudosBiblicoIdRoute: AuthenticatedEstudosBiblicoIdRoute,
   AuthenticatedEstudosMeditacaoIdRoute: AuthenticatedEstudosMeditacaoIdRoute,
   AuthenticatedEstudosPlanoIdRoute: AuthenticatedEstudosPlanoIdRoute,
+  AuthenticatedLicaoIdAprofundarRoute: AuthenticatedLicaoIdAprofundarRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { LEVELS } from "@/data/levels";
 
-export const Route = createFileRoute("/_authenticated/niveis")({
+export const Route = createFileRoute("/_authenticated/preview_niveis")({
   component: NiveisPage,
 });
 
