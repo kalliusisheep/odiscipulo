@@ -129,7 +129,10 @@ function HomePage() {
           <p className="text-xs text-muted-foreground">Saudação</p>
           <h1 className="text-xl font-semibold">A Paz, {firstName}</h1>
         </div>
-        <ThemeToggle />
+        <div className="flex items-center gap-2">
+          <MessagesLinkButton />
+          <ThemeToggle />
+        </div>
       </header>
 
       <section className="card-elevated overflow-hidden">
