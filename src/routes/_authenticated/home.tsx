@@ -148,23 +148,23 @@ function HomePage() {
             </div>
 
             <div className="flex min-w-0 flex-1 flex-col justify-center">
-              <div className="flex items-start justify-between gap-2">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Seu progresso</p>
-                <div className="flex shrink-0 items-center gap-1 rounded-full bg-streak/20 px-2.5 py-1">
-                  <Flame className="h-3.5 w-3.5 text-streak" />
-                  <span className="text-xs font-bold text-streak">{profile?.streak ?? 0}</span>
-                  <span className="text-[9px] text-muted-foreground">dias</span>
-                </div>
-              </div>
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Seu progresso</p>
               <p className={`mt-0.5 whitespace-nowrap font-bold text-primary ${levelTitleSizeClass}`}>{levelTitleText}</p>
               <p className="text-xs text-muted-foreground">{profile?.xp ?? 0} XP acumulados</p>
 
               <div className="mt-2.5">
-                <div className="mb-1 flex items-center justify-between gap-2 text-[10px] font-medium">
-                  <span className="truncate text-muted-foreground">
+                <div className="mb-1 flex items-end justify-between gap-2">
+                  <span className="truncate self-center text-[10px] font-medium text-muted-foreground">
                     {nextLevel ? <>Próx: <span className="text-foreground font-semibold">Nv {nextLevel.level} · {nextLevel.title}</span></> : "Nível máximo"}
                   </span>
-                  <span className="shrink-0 whitespace-nowrap text-primary">{xpLeft === null ? "🔥 Máx" : `Faltam ${xpLeft} XP`}</span>
+                  <div className="flex shrink-0 flex-col items-end gap-1">
+                    <div className="flex items-center gap-1 rounded-full bg-streak/20 px-2.5 py-1">
+                      <Flame className="h-3.5 w-3.5 text-streak" />
+                      <span className="text-xs font-bold text-streak">{profile?.streak ?? 0}</span>
+                      <span className="text-[9px] text-muted-foreground">dias</span>
+                    </div>
+                    <span className="whitespace-nowrap text-[10px] font-medium text-primary">{xpLeft === null ? "🔥 Máx" : `Faltam ${xpLeft} XP`}</span>
+                  </div>
                 </div>
                 <div className="h-2.5 overflow-hidden rounded-full bg-surface-2">
                   <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${levelPct}%` }} />
