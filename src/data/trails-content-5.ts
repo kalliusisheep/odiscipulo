@@ -685,6 +685,8 @@ const evangelismo: Trail = {
             "Qual pergunta difícil sobre a fé cristã você mais teme ouvir — e você já buscou, com honestidade e humildade, uma resposta refletida para ela?",
           xp: 30,
         },
+      ],
+    },
     {
       id: "ev-mod-4",
       title: "Módulo IV: Aprofundando a Missão",
