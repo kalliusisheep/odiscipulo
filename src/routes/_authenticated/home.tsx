@@ -167,6 +167,9 @@ function HomePage() {
           </div>
 
           <div className="mt-3">
+            <div className="mb-1 flex justify-end">
+              <span className="text-[10px] font-semibold text-muted-foreground">{Math.round(levelPct)}%</span>
+            </div>
             <div className="h-2.5 overflow-hidden rounded-full bg-surface-2">
               <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${levelPct}%` }} />
             </div>
