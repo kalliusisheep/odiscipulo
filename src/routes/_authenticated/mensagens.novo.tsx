@@ -1,7 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Search, UserPlus, Users } from "lucide-react";
+import { normalizeUsername } from "@/lib/username";
+import { toast } from "sonner";
+import { ArrowLeft, AtSign, Loader2, Search, UserCheck, UserPlus, Users } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/mensagens/novo")({
   component: NovaMensagemPage,
@@ -15,9 +17,39 @@ type Contact = {
 };
 
 function NovaMensagemPage() {
+  const nav = useNavigate();
+  const [myId, setMyId] = useState<string | null>(null);
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [friendIds, setFriendIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
+
+  // Busca real por ID (username) na tabela profiles do Supabase/Lovable Cloud
+  const [searching, setSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState<Contact[]>([]);
+  const [searchedOnce, setSearchedOnce] = useState(false);
+  const [addingId, setAddingId] = useState<string | null>(null);
+
+  const loadContacts = async (currentMyId: string) => {
+    const { data: fr } = await supabase.from("friendships").select("friend_id").eq("user_id", currentMyId);
+    const ids = (fr ?? []).map((r) => r.friend_id as string);
+    setFriendIds(new Set(ids));
+
+    if (ids.length === 0) {
+      setContacts([]);
+      return;
+    }
+
+    const { data: profiles } = await supabase
+      .from("profiles")
+      .select("id, display_name, username, avatar_url")
+      .in("id", ids);
+
+    const list = ((profiles ?? []) as Contact[])
+      .filter((p) => p.username)
+      .sort((a, b) => a.display_name.localeCompare(b.display_name));
+    setContacts(list);
+  };
 
   useEffect(() => {
     void (async () => {
@@ -27,42 +59,65 @@ function NovaMensagemPage() {
         setLoading(false);
         return;
       }
-      const myId = u.user.id;
-
-      const { data: fr } = await supabase
-        .from("friendships")
-        .select("friend_id")
-        .eq("user_id", myId);
-      const friendIds = (fr ?? []).map((r) => r.friend_id);
-
-      if (friendIds.length === 0) {
-        setContacts([]);
-        setLoading(false);
-        return;
-      }
-
-      const { data: profiles } = await supabase
-        .from("profiles")
-        .select("id, display_name, username, avatar_url")
-        .in("id", friendIds);
-
-      const list = ((profiles ?? []) as Contact[])
-        .filter((p) => p.username)
-        .sort((a, b) => a.display_name.localeCompare(b.display_name));
-      setContacts(list);
+      setMyId(u.user.id);
+      await loadContacts(u.user.id);
       setLoading(false);
     })();
   }, []);
 
-  const filtered = useMemo(() => {
+  // Busca por ID em tempo real (com pequeno atraso para não disparar a cada tecla)
+  useEffect(() => {
+    const q = normalizeUsername(query);
+    if (!myId || q.length < 2) {
+      setSearchResults([]);
+      setSearchedOnce(false);
+      return;
+    }
+    setSearching(true);
+    const timeout = setTimeout(async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("id, display_name, username, avatar_url")
+        .ilike("username", `%${q}%`)
+        .neq("id", myId)
+        .limit(8);
+
+      if (!error) {
+        setSearchResults(((data ?? []) as Contact[]).filter((p) => p.username));
+      }
+      setSearching(false);
+      setSearchedOnce(true);
+    }, 350);
+    return () => clearTimeout(timeout);
+  }, [query, myId]);
+
+  const filteredContacts = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return contacts;
     return contacts.filter(
-      (c) =>
-        c.display_name.toLowerCase().includes(q) ||
-        c.username.toLowerCase().includes(q),
+      (c) => c.display_name.toLowerCase().includes(q) || c.username.toLowerCase().includes(q),
     );
   }, [contacts, query]);
+
+  const addFriend = async (contact: Contact) => {
+    if (!myId) return;
+    setAddingId(contact.id);
+    const { error } = await supabase.from("friendships").insert([
+      { user_id: myId, friend_id: contact.id },
+      { user_id: contact.id, friend_id: myId },
+    ]);
+    setAddingId(null);
+    if (error && !/duplicate/i.test(error.message)) {
+      toast.error("Não foi possível adicionar esse irmão(ã).");
+      return;
+    }
+    toast.success(`${contact.display_name} agora é seu irmão(ã)!`);
+    setFriendIds((prev) => new Set(prev).add(contact.id));
+    await loadContacts(myId);
+    await nav({ to: "/mensagens/$username", params: { username: contact.username } });
+  };
+
+  const isSearchingById = normalizeUsername(query).length >= 2;
 
   return (
     <div className="mx-auto max-w-lg space-y-4 px-4 pt-6 pb-24">
@@ -81,56 +136,131 @@ function NovaMensagemPage() {
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Buscar por nome ou @usuário…"
+          placeholder="Buscar pelo ID do seu irmão(ã)…"
           className="w-full rounded-full border border-border bg-input py-2.5 pl-10 pr-4 text-sm outline-none focus:border-primary"
         />
       </div>
 
-      {loading && <p className="text-sm text-muted-foreground">Carregando contatos…</p>}
+      {loading && <p className="text-sm text-muted-foreground">Carregando…</p>}
 
-      {!loading && contacts.length === 0 && (
-        <div className="card-elevated flex flex-col items-center gap-3 p-8 text-center">
-          <Users className="h-10 w-10 text-primary" />
-          <p className="text-sm font-semibold">Você ainda não tem contatos</p>
-          <p className="text-xs text-muted-foreground">
-            Adicione irmãos no Ranking para poder trocar mensagens com eles.
+      {/* Resultados da busca real por ID (usuários de verdade, sejam ou não seus contatos) */}
+      {!loading && isSearchingById && (
+        <section className="space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Resultados da busca
           </p>
-          <Link
-            to="/ranking"
-            className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground"
-          >
-            <UserPlus className="h-3.5 w-3.5" /> Adicionar contatos
-          </Link>
-        </div>
+
+          {searching && (
+            <p className="flex items-center gap-2 text-xs text-muted-foreground">
+              <Loader2 className="h-3.5 w-3.5 animate-spin" /> Buscando pelo ID…
+            </p>
+          )}
+
+          {!searching && searchedOnce && searchResults.length === 0 && (
+            <p className="rounded-2xl border border-dashed border-border p-4 text-center text-xs text-muted-foreground">
+              Nenhum usuário encontrado com o ID "{normalizeUsername(query)}".
+            </p>
+          )}
+
+          <ul className="space-y-2">
+            {searchResults.map((p) => {
+              const alreadyFriend = friendIds.has(p.id);
+              return (
+                <li
+                  key={p.id}
+                  className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-surface-2 p-3"
+                >
+                  <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-surface">
+                    {p.avatar_url && <img src={p.avatar_url} alt="" className="h-full w-full object-cover" />}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold">{p.display_name}</p>
+                    <p className="truncate text-xs text-muted-foreground">@{p.username}</p>
+                  </div>
+                  {alreadyFriend ? (
+                    <Link
+                      to="/mensagens/$username"
+                      params={{ username: p.username }}
+                      className="flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground"
+                    >
+                      <UserCheck className="h-3.5 w-3.5" /> Conversar
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={() => void addFriend(p)}
+                      disabled={addingId === p.id}
+                      className="flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-background px-3 py-2 text-xs font-semibold transition-colors hover:border-primary disabled:opacity-60"
+                    >
+                      {addingId === p.id ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <UserPlus className="h-3.5 w-3.5" />
+                      )}
+                      Adicionar
+                    </button>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </section>
       )}
 
-      {!loading && contacts.length > 0 && filtered.length === 0 && (
-        <p className="pt-4 text-center text-xs text-muted-foreground">
-          Nenhum contato encontrado para "{query}".
-        </p>
-      )}
+      {/* Lista de contatos já adicionados */}
+      {!loading && !isSearchingById && (
+        <>
+          {contacts.length === 0 ? (
+            <div className="card-elevated flex flex-col items-center gap-3 p-6 text-center">
+              <Users className="h-10 w-10 text-primary" />
+              <p className="text-sm font-semibold">Você ainda não tem contatos</p>
+              <p className="text-xs text-muted-foreground">
+                Solicite ao seu irmão(ã) o ID de usuário atribuído na hora da criação da conta.
+              </p>
 
-      <ul className="space-y-2">
-        {filtered.map((c) => (
-          <li key={c.id}>
-            <Link
-              to="/mensagens/$username"
-              params={{ username: c.username }}
-              className="flex items-center gap-3 rounded-2xl border border-border bg-surface-2 p-3 transition-colors hover:border-primary/40"
-            >
-              <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-surface">
-                {c.avatar_url && (
-                  <img src={c.avatar_url} alt="" className="h-full w-full object-cover" />
-                )}
+              <div className="mt-1 flex w-full items-start gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-3 text-left">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+                  <AtSign className="h-4 w-4" />
+                </div>
+                <p className="text-[11px] leading-relaxed text-muted-foreground">
+                  <span className="font-semibold text-foreground">Como encontrar o ID:</span> basta seu
+                  irmão(ã) abrir a aba <span className="font-semibold text-primary">Perfil</span>. O ID
+                  aparece logo abaixo da foto de perfil.
+                </p>
               </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-semibold">{c.display_name}</p>
-                <p className="truncate text-xs text-muted-foreground">@{c.username}</p>
-              </div>
-            </Link>
-          </li>
-        ))}
-      </ul>
+            </div>
+          ) : (
+            <>
+              {filteredContacts.length === 0 ? (
+                <p className="pt-4 text-center text-xs text-muted-foreground">
+                  Nenhum contato encontrado para "{query}".
+                </p>
+              ) : (
+                <ul className="space-y-2">
+                  {filteredContacts.map((c) => (
+                    <li key={c.id}>
+                      <Link
+                        to="/mensagens/$username"
+                        params={{ username: c.username }}
+                        className="flex items-center gap-3 rounded-2xl border border-border bg-surface-2 p-3 transition-colors hover:border-primary/40"
+                      >
+                        <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-surface">
+                          {c.avatar_url && (
+                            <img src={c.avatar_url} alt="" className="h-full w-full object-cover" />
+                          )}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-sm font-semibold">{c.display_name}</p>
+                          <p className="truncate text-xs text-muted-foreground">@{c.username}</p>
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 }
