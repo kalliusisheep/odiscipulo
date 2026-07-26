@@ -151,7 +151,7 @@ function HomePage() {
               <p className={`mt-0.5 font-bold leading-snug text-primary ${levelTitleSizeClass}`}>{levelTitleText}</p>
               <p className="text-xs text-muted-foreground">{profile?.xp ?? 0} XP acumulados</p>
 
-              <div className="mt-2.5">
+              <div className="mt-1">
                 <div className="mb-1 flex items-end justify-between gap-2">
                   <span className="truncate self-center text-[10px] font-medium text-muted-foreground">
                     {nextLevel ? <>Próx: <span className="text-foreground font-semibold">Nv {nextLevel.level} · {nextLevel.title}</span></> : "Nível máximo"}
