@@ -1,20 +1,116 @@
 import { useApp } from "@/lib/app-context";
 import { Send, X, Loader2 } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type PointerEvent as ReactPointerEvent } from "react";
+
+const FAB_SIZE = 56;
+const STORAGE_KEY = "disciple.mentorFabPos";
 
 export function MentorFAB() {
   const { setMentorOpen, mentorOpen } = useApp();
-  if (mentorOpen) return null;
+  const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
+  const dragRef = useRef<{
+    startX: number;
+    startY: number;
+    origX: number;
+    origY: number;
+    moved: boolean;
+    pointerId: number;
+  } | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const clamp = (x: number, y: number) => ({
+      x: Math.min(Math.max(8, x), window.innerWidth - FAB_SIZE - 8),
+      y: Math.min(Math.max(8, y), window.innerHeight - FAB_SIZE - 8),
+    });
+    const saved = window.localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const p = JSON.parse(saved) as { x: number; y: number };
+        setPos(clamp(p.x, p.y));
+        return;
+      } catch {
+        /* ignore */
+      }
+    }
+    setPos(clamp(window.innerWidth - FAB_SIZE - 16, window.innerHeight - FAB_SIZE - 96));
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onResize = () => {
+      setPos((p) =>
+        p
+          ? {
+              x: Math.min(Math.max(8, p.x), window.innerWidth - FAB_SIZE - 8),
+              y: Math.min(Math.max(8, p.y), window.innerHeight - FAB_SIZE - 8),
+            }
+          : p,
+      );
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  if (mentorOpen || !pos) return null;
+
+  const onPointerDown = (e: ReactPointerEvent<HTMLButtonElement>) => {
+    (e.currentTarget as HTMLButtonElement).setPointerCapture(e.pointerId);
+    dragRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      origX: pos.x,
+      origY: pos.y,
+      moved: false,
+      pointerId: e.pointerId,
+    };
+  };
+
+  const onPointerMove = (e: ReactPointerEvent<HTMLButtonElement>) => {
+    const d = dragRef.current;
+    if (!d || d.pointerId !== e.pointerId) return;
+    const dx = e.clientX - d.startX;
+    const dy = e.clientY - d.startY;
+    if (!d.moved && Math.hypot(dx, dy) < 5) return;
+    d.moved = true;
+    const nx = Math.min(Math.max(8, d.origX + dx), window.innerWidth - FAB_SIZE - 8);
+    const ny = Math.min(Math.max(8, d.origY + dy), window.innerHeight - FAB_SIZE - 8);
+    setPos({ x: nx, y: ny });
+  };
+
+  const onPointerUp = (e: ReactPointerEvent<HTMLButtonElement>) => {
+    const d = dragRef.current;
+    dragRef.current = null;
+    if (!d) return;
+    if (d.moved) {
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(pos));
+      }
+    } else {
+      setMentorOpen(true);
+    }
+    try {
+      (e.currentTarget as HTMLButtonElement).releasePointerCapture(e.pointerId);
+    } catch {
+      /* ignore */
+    }
+  };
+
   return (
     <button
-      onClick={() => setMentorOpen(true)}
-      aria-label="Abrir Barnabéé, Mentor IA"
-      className="fixed bottom-24 right-4 z-40 flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-glow shadow-2xl shadow-primary/40 transition-all hover:scale-105 active:scale-95"
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
+      aria-label="Abrir Barnabéé, Mentor IA (arraste para mover)"
+      style={{ left: pos.x, top: pos.y, touchAction: "none" }}
+      className="fixed z-40 flex h-14 w-14 cursor-grab items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-glow shadow-2xl shadow-primary/40 transition-transform active:scale-95 active:cursor-grabbing"
     >
-      <img src="/isheep-img.png" alt="Barnabéé, Mentor IA" className="h-full w-full object-cover" />
+      <img src="/isheep-img.png" alt="Barnabéé, Mentor IA" className="pointer-events-none h-full w-full object-cover" draggable={false} />
     </button>
   );
 }
+
 
 type Msg = { role: "user" | "assistant"; content: string };
 
