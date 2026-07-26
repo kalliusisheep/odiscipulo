@@ -81,12 +81,12 @@ function PublicProfilePage() {
   const addFriend = async () => {
     if (!profile || !myId || profile.id === myId) return;
     setAdding(true);
-    const { error } = await supabase.from("friendships").insert([
-      { user_id: myId, friend_id: profile.id },
-      { user_id: profile.id, friend_id: myId },
-    ]);
+    // Usa a função add_friend (SECURITY DEFINER) do banco, que insere a amizade
+    // nos dois sentidos. Um insert direto na tabela friendships falha, pois a
+    // policy de RLS só permite inserir linhas onde user_id = você mesmo.
+    const { error } = await supabase.rpc("add_friend", { _target: profile.id });
     setAdding(false);
-    if (error && !/duplicate/i.test(error.message)) {
+    if (error) {
       toast.error("Erro ao adicionar.");
       return;
     }
