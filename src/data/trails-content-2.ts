@@ -661,6 +661,210 @@ const santificacao: Trail = {
         },
       ],
     },
+    {
+      id: "st-mod-5",
+      title: "Módulo V: O Espírito e o Sofrimento na Santificação",
+      lessons: [
+        {
+          id: "st-5-1",
+          title: "O Papel do Espírito Santo na Santificação",
+          intro: [
+            "Se a santificação exige esforço real do crente, é fácil concluir, por engano, que ela depende basicamente de força de vontade — como se fosse mais um projeto de autoaperfeiçoamento, só que com temas religiosos. A Bíblia corrige essa ideia logo na raiz: o agente principal da santificação não é você. É o Espírito Santo.",
+            "Jesus prometeu que, ao subir aos céus, não deixaria os discípulos órfãos — enviaria 'outro Consolador' (João 14:16-17), que habitaria permanentemente em cada crente. Diferente do Antigo Testamento, em que o Espírito vinha sobre pessoas específicas para tarefas específicas, hoje todo aquele que crê em Cristo recebe o Espírito Santo de forma permanente, no momento da conversão (Ef 1:13-14).",
+            "Mas habitar não é o mesmo que encher. Paulo ordena aos efésios: 'sejam cheios do Espírito' (Ef 5:18) — um mandamento no imperativo, repetido continuamente, que descreve um crente cada vez mais rendido, cada vez mais controlado pelo Espírito, em vez de controlado por si mesmo ou por qualquer outra coisa. A presença do Espírito é dada uma vez; o enchimento e a submissão a ele são renovados dia após dia.",
+            "É o Espírito quem aplica, na prática diária, tudo o que Cristo conquistou na cruz: ele nos convence do pecado, nos capacita a matar a carne (Rm 8:13), produz o fruto em nós (Gl 5:22-23), intercede por nós quando nem sabemos orar direito (Rm 8:26) e nos dá a certeza íntima de que somos filhos de Deus (Rm 8:15-16). Sem o Espírito, a santificação seria moralismo cansativo; com ele, é obra de graça vivida em cooperação real.",
+          ],
+          verses: [
+            {
+              ref: "Romanos 8:13-14",
+              textByVersion: {
+                NVI: "Pois, se vocês viverem de acordo com a carne, morrerão; mas, se pelo Espírito vocês fizerem morrer os atos do corpo, viverão, porque todos os que são guiados pelo Espírito de Deus são filhos de Deus.",
+                NAA: "Porque, se viverdes de acordo com a carne, morrereis; mas, se, pelo Espírito, fizerdes morrer os feitos do corpo, vivereis. Pois todos os que são guiados pelo Espírito de Deus são filhos de Deus.",
+                ACF: "Porque, se viverdes segundo a carne, morrereis; mas, se pelo Espírito mortificardes as obras do corpo, vivereis. Porque todos os que são guiados pelo Espírito de Deus esses são filhos de Deus.",
+                NVT: "Pois, se vocês viverem de acordo com a natureza pecaminosa, vão morrer. Mas, se pelo poder do Espírito vocês derem morte às ações pecaminosas do corpo, vão viver. Pois todos os que são guiados pelo Espírito de Deus são filhos de Deus.",
+              },
+              originals: [
+                { word: "πνεύματι", translit: "pneumati", meaning: "'pelo Espírito' — instrumento e agente ativo da mortificação do pecado, não o crente isolado", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Efésios 5:18",
+              textByVersion: {
+                NVI: "Não se embriaguem com vinho, que leva ao libertinagem, mas deixem-se encher pelo Espírito.",
+                NAA: "E não vos embriagueis com vinho, no qual há dissolução, mas enchei-vos do Espírito.",
+                ACF: "E não vos embriagueis com vinho, em que há contenda, mas enchei-vos do Espírito.",
+              },
+              originals: [
+                { word: "πληροῦσθε", translit: "plērousthe", meaning: "'sejam cheios' — verbo no imperativo presente passivo: uma ordem contínua, renovada a cada dia, não um evento único", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "παράκλητος", translit: "paráklētos", meaning: "'Consolador, Advogado, Aquele que vem ao lado'. Título usado por Jesus para o Espírito Santo em João 14-16, indicando presença ativa e permanente de ajuda.", lang: "grego" },
+            { word: "πληρόω", translit: "plēroō", meaning: "'encher, dominar completamente'. Usado em Efésios 5:18 no imperativo contínuo — o crente é chamado a viver constantemente rendido ao controle do Espírito.", lang: "grego" },
+          ],
+          deepDive:
+            "Há uma diferença importante, muitas vezes esquecida, entre a habitação do Espírito e o enchimento do Espírito. A habitação (o Espírito vivendo permanentemente em cada crente genuíno) acontece uma única vez, no momento da conversão, e nunca é retirada — é selo e garantia da salvação (Ef 1:13-14). Já o enchimento é repetido, condicional à submissão do crente, e descreve o quanto, no dia a dia, uma pessoa está de fato rendida ao controle do Espírito, em vez de andar segundo seus próprios impulsos. Por isso Paulo pode, na mesma carta, afirmar que todo crente tem o Espírito (Ef 1:13) e, ainda assim, ordenar que os efésios 'sejam cheios' dele (Ef 5:18) — a presença é garantida pela graça; o enchimento prático depende de uma entrega diária e renovada. Romanos 8 amplia esse quadro: é 'pelo Espírito' que o crente mata as obras da carne (v.13), é o Espírito quem 'guia' os filhos de Deus (v.14), e é o mesmo Espírito quem intercede por nós 'com gemidos inexprimíveis' quando nem sabemos como orar diante de uma dor (v.26). A santificação, portanto, nunca é uma tarefa solitária de força de vontade — é cooperação real e diária entre o esforço do crente e a obra ativa, presente e pessoal do Espírito Santo dentro dele.",
+          theologianQuote: {
+            author: "J.I. Packer",
+            text: "O Espírito Santo não nos deixa lutar sozinhos contra o pecado; ele mesmo entra na batalha, do lado de dentro, tornando possível o que, por nós mesmos, jamais conseguiríamos.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "João 14:16-17",
+                textByVersion: {
+                  NVI: "E eu pedirei ao Pai, e ele lhes dará outro Conselheiro para estar com vocês para sempre: o Espírito da verdade... vocês o conhecem, porque ele vive com vocês e estará em vocês.",
+                },
+              },
+              {
+                ref: "Gálatas 5:25",
+                textByVersion: {
+                  NVI: "Se vivemos pelo Espírito, andemos também pelo Espírito.",
+                },
+              },
+            ],
+            historicalContext:
+              "A promessa de um Consolador que habitaria permanentemente em cada crente marca uma diferença importante entre a experiência do povo de Deus no Antigo Testamento e a experiência da igreja depois de Pentecostes (At 2). No Antigo Testamento, o Espírito vinha sobre juízes, reis e profetas especificamente para capacitá-los a tarefas específicas, e podia se retirar (como no caso de Saul, em 1 Samuel 16:14). Depois de Pentecostes, porém, o Espírito passou a habitar permanentemente em todo aquele que crê em Cristo, sem exceção — não apenas em líderes ou pessoas especiais. É uma das marcas centrais da Nova Aliança anunciada pelos profetas (Ez 36:26-27).",
+            theologicalDebate:
+              "Tradições cristãs divergem sobre como e quando certas manifestações visíveis do Espírito (como línguas e profecia) operam hoje — um tema onde cristãos fiéis e comprometidos com a Escritura mantêm posições diferentes. Esta lição não trata desse debate específico; o que a Bíblia afirma sem controvérsia entre evangélicos é que todo crente genuíno recebe o Espírito Santo permanentemente na conversão, e que ele é o agente ativo e indispensável da santificação diária, independentemente da posição que alguém adote sobre dons específicos.",
+          },
+          quizzes: [
+            {
+              question: "Qual é a diferença entre a habitação do Espírito e o enchimento do Espírito, segundo a lição?",
+              options: [
+                "São a mesma coisa, sem distinção bíblica",
+                "A habitação acontece uma vez, na conversão, e permanece; o enchimento é repetido e depende da submissão diária do crente",
+                "O enchimento acontece uma vez; a habitação precisa ser repetida",
+                "Nenhum dos dois está disponível para todo crente",
+              ],
+              correctIndex: 1,
+              explanation: "A presença do Espírito é dada uma vez e selada; o enchimento (Ef 5:18) é uma ordem contínua, renovada dia após dia.",
+            },
+            {
+              question: "Segundo Romanos 8:13, como o crente mata as obras da carne?",
+              options: [
+                "Por pura força de vontade, sem ajuda externa",
+                "Pelo Espírito — é ele quem capacita e atua na mortificação do pecado",
+                "Apenas por meio de regras e disciplina religiosa",
+                "Isso não é possível nesta vida",
+              ],
+              correctIndex: 1,
+              explanation: "O texto grego é claro: 'pelo Espírito' (pneumati) — o Espírito é agente ativo, não apenas espectador do esforço humano.",
+            },
+          ],
+          application:
+            "Antes de começar seu dia amanhã, faça uma oração simples e específica: peça a Deus que te encha do Espírito Santo para aquele dia — não como fórmula mágica, mas como um ato consciente de rendição e dependência, reconhecendo que você não consegue viver a santidade sozinho.",
+          prayer:
+            "Espírito Santo, obrigado por habitares em mim desde o dia em que cri. Reconheço que muitas vezes tento viver a santidade com minhas próprias forças, e falho. Enche-me hoje, controla meus desejos, minhas palavras e minhas escolhas, para que eu reflita cada vez mais o caráter de Jesus. Em nome dele, amém.",
+          weeklyChallenge:
+            "Todos os dias desta semana, antes de sair de casa, dedique um minuto para orar pedindo o enchimento do Espírito Santo para aquele dia específico. Ao final da semana, escreva o que percebeu de diferente em suas reações e escolhas.",
+          reflectionQuestion:
+            "Em que áreas da sua vida você tem tentado viver a santidade apenas com esforço próprio, sem depender conscientemente do Espírito Santo?",
+          xp: 25,
+        },
+        {
+          id: "st-5-2",
+          title: "Sofrimento e Santificação: o propósito por trás da dor",
+          intro: [
+            "Nenhuma explicação teológica sobre santificação está completa sem enfrentar uma pergunta dolorosamente prática: por que Deus permite sofrimento na vida de quem já é seu filho? A resposta bíblica não minimiza a dor nem finge que ela não existe — mas revela um propósito que a mera dor, sozinha, não consegue ver.",
+            "Paulo escreve, em Romanos 5, uma sequência que soa quase chocante: 'gloriamo-nos nas tribulações, porque a tribulação produz perseverança; a perseverança, um caráter aprovado; e o caráter aprovado, esperança'. Ele não diz que o sofrimento em si é bom — diz que, nas mãos de Deus, ele se torna instrumento de formação de caráter, algo que o conforto sozinho raramente produz.",
+            "Hebreus 12 usa uma imagem ainda mais direta: a de um pai que disciplina o filho que ama, 'para o nosso próprio bem, para que participemos da sua santidade'. A disciplina, ali, não é sinal de rejeição — é evidência de que você é, de fato, filho, e não um estranho a quem Deus é indiferente.",
+            "Isso não significa que toda dor tenha uma explicação simples e imediata, nem que devemos procurar um 'motivo específico' para cada sofrimento particular, como se fosse sempre punição por um pecado identificável — a Bíblia rejeita explicitamente essa leitura simplista (ver o livro de Jó). Significa, sim, que Deus é soberano mesmo sobre a dor, e que ele promete usá-la, em suas mãos sábias e boas, para nos conformar à imagem de Cristo (Rm 8:28-29).",
+          ],
+          verses: [
+            {
+              ref: "Romanos 5:3-5",
+              textByVersion: {
+                NVI: "Não só isso, mas também nos gloriamos nas tribulações, porque sabemos que a tribulação produz perseverança; a perseverança, um caráter aprovado; e o caráter aprovado, esperança. E a esperança não nos decepciona, porque Deus derramou seu amor em nossos corações, por meio do Espírito Santo que nos foi concedido.",
+                NAA: "E não somente isto, mas também nos gloriamos nas tribulações, sabendo que a tribulação produz perseverança; e a perseverança, um caráter aprovado; e o caráter aprovado, esperança; e a esperança não nos decepciona, porquanto o amor de Deus é derramado em nosso coração pelo Espírito Santo que nos foi dado.",
+                ACF: "E não somente isto, mas também nos gloriamos nas tribulações; sabendo que a tribulação produz a paciência, E a paciência a experiência, e a experiência a esperança. E a esperança não confunde, porquanto o amor de Deus está derramado em nossos corações pelo Espírito Santo que nos foi dado.",
+                NVT: "Também temos alegria em nossos sofrimentos, porque sabemos que o sofrimento produz perseverança. E a perseverança desenvolve firmeza de caráter, e o caráter fortalece nossa esperança na salvação. E a esperança não decepciona, porque temos a certeza de que Deus nos ama profundamente, pois derramou seu amor em nosso coração por meio do Espírito Santo, que nos foi dado.",
+              },
+              originals: [
+                { word: "ὑπομονή", translit: "hypomonē", meaning: "'perseverança, resistência ativa' — a mesma qualidade formada pela tribulação, quando recebida com fé", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Hebreus 12:10-11",
+              textByVersion: {
+                NVI: "Nossos pais nos disciplinavam por um breve período, segundo lhes parecia melhor; mas Deus nos disciplina para o nosso bem, para que participemos da sua santidade. Nenhuma disciplina parece ser motivo de alegria no momento, mas sim de tristeza. Mais tarde, porém, produz fruto de justiça e paz para aqueles que por ela foram exercitados.",
+                NAA: "Pois eles, na verdade, por um pouco de tempo, nos disciplinavam, segundo lhes parecia bem, mas este, para nosso proveito, a fim de que participemos da sua santidade. Na verdade, nenhuma disciplina, ao presente, parece ser motivo de alegria, mas de tristeza; contudo, depois, produz fruto pacífico de justiça nos exercitados por ela.",
+                ACF: "Porque aqueles por um pouco de tempo, como bem lhes parecia, nos castigavam; mas este, para nosso proveito, para sermos participantes da sua santidade. Ora, nenhum castigo, ao presente, parece ser causa de gozo, senão de tristeza; mas depois produz um fruto pacífico de justiça nos exercitados por ele.",
+              },
+              originals: [
+                { word: "γυμνάζω", translit: "gymnazō", meaning: "'exercitar, treinar' — mesma raiz de 'ginástica'; a disciplina treina o crente como um atleta, não o destrói", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "ὑπομονή", translit: "hypomonē", meaning: "'perseverança' — resistência ativa formada pela tribulação recebida com fé, não amargura passiva.", lang: "grego" },
+            { word: "παιδεία", translit: "paideia", meaning: "'disciplina, educação formativa'. Usada em Hebreus 12 para descrever o sofrimento permitido por Deus como treino de um pai que ama, não como punição de um juiz hostil.", lang: "grego" },
+          ],
+          deepDive:
+            "É importante notar a ordem cuidadosa da cadeia lógica em Romanos 5:3-5: tribulação produz perseverança (hypomonē); perseverança produz caráter aprovado (a qualidade de quem foi testado e passou no teste); e caráter aprovado produz esperança mais firme, porque já viu, na prática, a fidelidade de Deus sustentando através da dor. Nenhum desses elos aparece automaticamente — a mesma tribulação pode produzir amargura em vez de perseverança, se recebida com descrença em vez de fé. Por isso Tiago 1:2-4 conecta a mesma ideia à sabedoria: 'se algum de vocês tem falta de sabedoria, peça-a a Deus'. Já Hebreus 12 usa a metáfora da disciplina paterna e do treino atlético (paideia, gymnazō) — o sofrimento permitido por Deus na vida do crente não é sinal de abandono, mas evidência de que ele nos trata como filhos legítimos, investindo em nosso caráter a longo prazo. Isso é radicalmente diferente da ideia, comum em algumas correntes religiosas, de que todo sofrimento é resultado direto de um pecado específico ou de falta de fé — o livro de Jó existe justamente para desmontar essa equação simplista. O propósito de Deus no sofrimento não é sempre visível ou explicável no momento, mas sua promessa em Romanos 8:28-29 permanece: ele opera todas as coisas para o bem daqueles que o amam, conformando-os à imagem de Cristo. Diante de dor profunda ou perda significativa, essa verdade nunca deve ser usada como resposta apressada ou insensível para outra pessoa que sofre — ela é, antes, um alicerce para a própria fé se firmar, e um cuidado pastoral atento, junto com a igreja local, é essencial para caminhar com quem sofre.",
+          theologianQuote: {
+            author: "Charles Spurgeon",
+            text: "Deus poda a videira, não porque a odeia, mas porque quer que ela dê mais fruto; toda tesoura na mão do Pai serve à mesma videira que ele ama.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Tiago 1:2-4",
+                textByVersion: {
+                  NVI: "Meus irmãos, considerem motivo de grande alegria o fato de passarem por diversas provações, pois vocês sabem que a prova da sua fé produz perseverança. E a perseverança deve levar a obra a termo, para que vocês sejam maduros e íntegros, sem que falte a vocês coisa alguma.",
+                },
+              },
+              {
+                ref: "1 Pedro 1:6-7",
+                textByVersion: {
+                  NVI: "Nisso vocês exultam, mesmo tendo sido, por um breve tempo, entristecidos por várias provações, a fim de que a prova de sua fé, mais preciosa que o ouro, que perece, mas é aprovado pelo fogo, seja motivo de louvor, glória e honra quando Jesus Cristo for revelado.",
+                },
+              },
+            ],
+            theologicalDebate:
+              "Cristãos fiéis divergem sobre até que ponto se pode identificar um propósito específico e individual em cada episódio particular de sofrimento (por exemplo, 'Deus permitiu isso especificamente para me ensinar X'). Esta lição evita essa afirmação categórica caso a caso — o que a Escritura garante com clareza é o propósito geral (formar caráter e conformar à imagem de Cristo), não necessariamente uma explicação detalhada para cada dor específica. Ao acompanhar alguém que sofre, a prudência pastoral pede cuidado redobrado antes de declarar 'o motivo' de uma dor alheia.",
+            secondQuote: {
+              author: "Tim Keller",
+              text: "O cristianismo não promete uma vida sem sofrimento; promete um Deus que sofre conosco e que, mesmo através da dor, nunca deixa de trabalhar para o nosso bem eterno.",
+            },
+          },
+          quizzes: [
+            {
+              question: "Segundo Romanos 5:3-5, qual é a sequência que a tribulação pode produzir na vida do crente?",
+              options: [
+                "Tribulação leva direto à esperança, sem passos intermediários",
+                "Tribulação produz perseverança; perseverança produz caráter aprovado; caráter aprovado produz esperança",
+                "A tribulação sempre produz amargura, independentemente da resposta do crente",
+                "A tribulação não tem nenhum propósito formativo",
+              ],
+              correctIndex: 1,
+              explanation: "Paulo descreve uma cadeia: tribulação → perseverança → caráter aprovado → esperança, quando recebida com fé.",
+            },
+            {
+              question: "Como Hebreus 12:10-11 descreve o propósito da disciplina de Deus na vida do crente?",
+              options: [
+                "Como punição de um juiz hostil e distante",
+                "Como treino de um Pai que ama, visando nosso bem e nossa participação na santidade dele",
+                "Como algo sem nenhum propósito real",
+                "Como prova de que Deus abandonou o crente",
+              ],
+              correctIndex: 1,
+              explanation: "'Paideia' descreve disciplina formativa de um pai amoroso, não punição hostil — o objetivo é participarmos da santidade de Deus.",
+            },
+          ],
+          application:
+            "Pense numa dificuldade real que você está enfrentando (ou enfrentou recentemente). Em vez de perguntar apenas 'por que isso está acontecendo comigo?', escreva uma oração pedindo a Deus para revelar o que ele quer formar em seu caráter através dessa experiência — sem forçar uma resposta simplista, mas com confiança na sua bondade.",
+          prayer:
+            "Pai, eu não entendo todo sofrimento que vivo ou vejo ao meu redor, e não quero fingir que entendo. Mas escolho confiar que tu és soberano mesmo sobre a dor, e que a usas, nas tuas mãos boas, para me formar à imagem de Jesus. Sustenta minha fé nos dias difíceis, e me dá um coração compassivo para caminhar com quem sofre. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Escreva sobre uma dificuldade passada da sua vida e identifique, em retrospecto, algo de caráter, sabedoria ou dependência de Deus que cresceu em você por causa dela — sem minimizar a dor que sentiu na época.",
+          reflectionQuestion:
+            "Existe algum sofrimento atual em sua vida que você tem enfrentado sozinho, com amargura, em vez de trazê-lo diante de Deus com fé e em comunhão com sua igreja?",
+          xp: 25,
+        },
+      ],
+    },
   ],
 };
 
