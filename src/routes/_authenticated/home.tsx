@@ -93,12 +93,11 @@ function HomePage() {
   const showLevel50Checklist = level50.xpOk && !level50.unlocked;
 
   // Títulos de nível variam muito de tamanho ("Crente Ruim" vs "Piloto de Carruagem
-  // de Fogo") — o streak não fica mais no caminho do título (foi para a linha do
-  // rótulo "Seu progresso"), então a maioria cabe tranquilamente no tamanho grande.
-  // Só os pouquíssimos títulos realmente compridos (>32 caracteres) usam uma fonte
-  // menor, pra garantir: sem quebra de linha, sem reticências.
+  // de Fogo") — em vez de cortar o texto (nowrap + overflow-hidden do card),
+  // deixamos quebrar em até 2 linhas, com fonte um pouco menor para os títulos
+  // mais compridos, pra garantir que nada fique cortado em telas estreitas.
   const levelTitleText = `Nível ${level.level}: ${level.title}`;
-  const levelTitleSizeClass = levelTitleText.length > 32 ? "text-sm" : "text-lg";
+  const levelTitleSizeClass = levelTitleText.length > 32 ? "text-sm" : "text-base";
 
   if (viewMode === "lider") {
     return <LiderInline />;
@@ -149,7 +148,7 @@ function HomePage() {
 
             <div className="flex min-w-0 flex-1 flex-col justify-center">
               <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Seu progresso</p>
-              <p className={`mt-0.5 whitespace-nowrap font-bold text-primary ${levelTitleSizeClass}`}>{levelTitleText}</p>
+              <p className={`mt-0.5 font-bold leading-snug text-primary ${levelTitleSizeClass}`}>{levelTitleText}</p>
               <p className="text-xs text-muted-foreground">{profile?.xp ?? 0} XP acumulados</p>
 
               <div className="mt-2.5">
