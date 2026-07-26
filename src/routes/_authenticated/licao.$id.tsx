@@ -80,7 +80,11 @@ function LicaoPage() {
     );
   }
 
-  const { lesson } = found;
+  const { lesson, module } = found;
+
+  const goBack = () => {
+    void nav({ to: "/modulo/$id", params: { id: module.id } });
+  };
 
   const openDeepen = () => {
     sessionStorage.setItem(
@@ -132,7 +136,7 @@ function LicaoPage() {
   return (
     <div className="mx-auto max-w-lg px-4 pt-4 pb-24 animate-slide-up">
       <div className="mb-4 flex items-center gap-3">
-        <button onClick={() => nav({ to: "/home" })} className="rounded-full p-2 text-muted-foreground hover:bg-surface">
+        <button onClick={goBack} className="rounded-full p-2 text-muted-foreground hover:bg-surface">
           <ArrowLeft className="h-5 w-5" />
         </button>
         <div className="flex-1">
@@ -376,12 +380,12 @@ function LicaoPage() {
         </div>
       )}
 
-      {step === "done" && <DoneScreen title={lesson.title} xp={lesson.xp} />}
+      {step === "done" && <DoneScreen title={lesson.title} xp={lesson.xp} moduleId={module.id} />}
     </div>
   );
 }
 
-function DoneScreen({ title, xp }: { title: string; xp: number }) {
+function DoneScreen({ title, xp, moduleId }: { title: string; xp: number; moduleId: string }) {
   return (
     <div className="flex flex-col items-center text-center">
       <div className="relative">
@@ -413,7 +417,11 @@ function DoneScreen({ title, xp }: { title: string; xp: number }) {
         <button className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary py-3 text-sm font-semibold text-primary-foreground">
           <Share2 className="h-4 w-4" /> Compartilhar
         </button>
-        <Link to="/home" className="rounded-2xl border border-border py-3 text-sm font-medium text-muted-foreground">
+        <Link
+          to="/modulo/$id"
+          params={{ id: moduleId }}
+          className="rounded-2xl border border-border py-3 text-sm font-medium text-muted-foreground"
+        >
           Voltar às trilhas
         </Link>
       </div>
