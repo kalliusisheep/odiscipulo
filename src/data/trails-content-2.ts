@@ -58,6 +58,30 @@ const santificacao: Trail = {
             author: "John Wesley",
             text: "A graça de Deus não anula nossa responsabilidade; ela a possibilita. Somos salvos pela graça, e é a mesma graça que nos capacita a buscar, com todo o empenho, a santidade sem a qual ninguém verá o Senhor.",
           },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "1 Coríntios 6:11",
+                textByVersion: {
+                  NVI: "Assim foram alguns de vocês. Mas vocês foram lavados, foram santificados, foram justificados em nome do Senhor Jesus Cristo e pelo Espírito do nosso Deus.",
+                },
+              },
+              {
+                ref: "Tito 2:11-12",
+                textByVersion: {
+                  NVI: "Porque a graça de Deus se manifestou salvadora a todos os homens, ensinando-nos a renunciar à impiedade e às paixões mundanas e a viver de forma sensata, justa e piedosa nesta era presente.",
+                },
+              },
+            ],
+            historicalContext:
+              "A distinção clara entre justificação (veredito jurídico instantâneo) e santificação (processo contínuo) foi um dos pontos centrais recuperados pela Reforma Protestante no século XVI. Antes dela, havia confusão generalizada entre os dois conceitos na teologia medieval, o que, na prática, deixava a segurança da salvação do crente dependente do seu próprio progresso moral. Reformadores como Lutero insistiram que a justificação é 'somente pela fé' (sola fide) — completa e imediata —, enquanto a santificação, sua consequência necessária, se desenrola ao longo de toda a vida cristã.",
+            theologicalDebate:
+              "Tradições cristãs fiéis diferem quanto à ênfase quanto à cooperação humana na santificação: correntes mais reformadas tendem a enfatizar a obra soberana e monergista de Deus mesmo no processo contínuo, enquanto correntes arminianas e wesleyanas — como a adotada nesta trilha — enfatizam a resposta ativa e responsável do crente à graça oferecida, numa cooperação real entre Deus e o crente. Ambas concordam, porém, que a santificação nunca é mérito humano isolado, mas sempre resposta a uma graça que vem primeiro de Deus.",
+            secondQuote: {
+              author: "Charles Hodge",
+              text: "A justificação nos declara justos diante de Deus; a santificação nos torna, progressivamente, justos de fato. Uma é obra concluída na cruz; a outra é obra em andamento no coração.",
+            },
+          },
           quizzes: [
             {
               question: "Qual a diferença central entre justificação e santificação?",
@@ -148,6 +172,30 @@ const santificacao: Trail = {
             author: "Charles Swindoll",
             text: "A vitória sobre a carne não é uma experiência única e mágica, mas uma caminhada diária de escolhas — escolher, a cada momento, andar pelo Espírito em vez de ceder ao impulso antigo.",
           },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Romanos 7:21-23",
+                textByVersion: {
+                  NVI: "Assim, encontro esta lei que atua em mim: quando quero fazer o bem, o mal está junto a mim. Pois, no íntimo, tenho prazer na lei de Deus; mas vejo outra lei atuando nos meus membros, guerreando contra a lei da minha mente.",
+                },
+              },
+              {
+                ref: "Colossenses 3:9-10",
+                textByVersion: {
+                  NVI: "Não mintam uns aos outros, visto que vocês já se despiram do velho homem com as suas práticas e se revestiram do novo, que está sendo renovado em conhecimento, à imagem do seu Criador.",
+                },
+              },
+            ],
+            exegeticalNotes:
+              "Romanos 7:14-25 é um dos textos mais debatidos entre os intérpretes: alguns entendem que Paulo descreve ali sua própria experiência antes da conversão (sob a Lei, sem o Espírito); outros entendem que ele descreve a experiência normal do crente já convertido, que ainda luta contra a carne mesmo tendo o Espírito. Esta segunda leitura é a mais comum entre exegetas evangélicos, e se conecta diretamente com Gálatas 5:16-17: a guerra interior não é sinal de fé falsa, mas da tensão real entre a natureza antiga que ainda resiste e a nova natureza que o Espírito já implantou.",
+            theologicalDebate:
+              "John Wesley, citado nesta lição, defendia a possibilidade de uma 'santificação inteira' nesta vida — um estado de maturidade em que o amor a Deus domina de tal forma o coração que o crente não peca mais deliberadamente contra o amor. Essa é uma posição minoritária mesmo dentro da tradição wesleyana, e a maioria das tradições evangélicas entende, com base em textos como Romanos 7 e 1 João 1:8, que a luta contra a carne continuará, em algum grau, até a glorificação final do crente. É um tema em que cristãos sinceros e comprometidos com a Escritura mantêm posições diferentes, sem que isso afete o essencial do Evangelho.",
+            secondQuote: {
+              author: "Agostinho de Hipona",
+              text: "Ainda carrego em mim a guerra entre o velho e o novo homem; mas não desespero, porque sei em quem confio para vencê-la.",
+            },
+          },
           quizzes: [
             {
               question: "O que a lição ensina sobre a guerra entre a carne e o Espírito?",
@@ -227,6 +275,30 @@ const santificacao: Trail = {
             author: "Richard Foster",
             text: "As disciplinas espirituais não produzem o fruto do Espírito por si mesmas — elas nos colocam no lugar onde Deus pode agir. Somos responsáveis por plantar e regar; a Deus pertence dar o crescimento.",
           },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Mateus 7:17-18",
+                textByVersion: {
+                  NVI: "Assim, toda árvore boa dá frutos bons, mas a árvore má dá frutos maus. Uma árvore boa não pode dar frutos maus, e uma árvore má não pode dar frutos bons.",
+                },
+              },
+              {
+                ref: "Efésios 5:9",
+                textByVersion: {
+                  NVI: "Pois o fruto da luz consiste em toda a bondade, justiça e verdade.",
+                },
+              },
+            ],
+            exegeticalNotes:
+              "Vale notar o contraste gramatical proposital em Gálatas 5:19-23: as 'obras da carne' (v.19) aparecem no plural (ἔργα, erga) — uma lista solta e desconexa de comportamentos —, enquanto o 'fruto do Espírito' (v.22) aparece no singular (καρπός, karpos) — um resultado único e integrado. O pecado fragmenta o caráter em impulsos isolados; o Espírito produz um caráter coeso, em que amor, alegria, paz e as demais qualidades crescem juntas, como faces de uma mesma vida transformada.",
+            historicalContext:
+              "A imagem da árvore e do fruto era profundamente familiar para os ouvintes originais de Jesus e de Paulo, numa cultura agrária onde quase toda família dependia de oliveiras, videiras e figueiras. Um agricultor da época sabia, por experiência, que não se apressa uma árvore a dar fruto — ele planta, cuida da terra, espera as estações certas. Essa paciência agrícola é exatamente a atitude que a Escritura pede do crente em relação ao próprio crescimento espiritual: cuidado ativo, mas sem a ilusão de que o fruto pode ser forçado antes do tempo.",
+            secondQuote: {
+              author: "A. W. Tozer",
+              text: "Você pode amarrar frutos plásticos numa árvore morta, mas isso não a fará viva. O fruto genuíno só brota de uma raiz genuína — e a raiz do cristão é Cristo mesmo, não o esforço de parecer espiritual.",
+            },
+          },
           quizzes: [
             {
               question: "Por que Paulo usa a palavra 'fruto' no singular em Gálatas 5:22-23?",
@@ -299,6 +371,30 @@ const santificacao: Trail = {
           theologianQuote: {
             author: "Dallas Willard (citado por Richard Foster)",
             text: "As disciplinas espirituais não são um fim em si mesmas; são um meio pelo qual nos colocamos diante de Deus, treinando a alma para a piedade, do mesmo modo que um atleta treina o corpo para a competição.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Mateus 6:16-18",
+                textByVersion: {
+                  NVI: "Quando vocês jejuarem, não fiquem carrancudos como os hipócritas... o seu Pai, que vê o que é feito em secreto, os recompensará.",
+                },
+              },
+              {
+                ref: "Atos 2:42",
+                textByVersion: {
+                  NVI: "Todos eles se dedicavam ao ensino dos apóstolos e à comunhão, ao partir do pão e às orações.",
+                },
+              },
+            ],
+            historicalContext:
+              "As disciplinas espirituais têm uma longa história na igreja, remontando aos primeiros séculos — Atos 2:42 já descreve a igreja primitiva devotada ao ensino, à comunhão, à ceia e à oração como práticas regulares. Ao longo da Idade Média, porém, algumas dessas práticas foram, em certas correntes, associadas a um sistema de méritos para alcançar o favor de Deus, distorção que a Reforma Protestante combateu com força, reafirmando que a salvação e o crescimento espiritual dependem da graça recebida pela fé, e não do acúmulo de práticas religiosas.",
+            theologicalDebate:
+              "Tradições cristãs diferem no vocabulário e na compreensão precisa do termo 'meios de graça': algumas tradições sacramentais entendem que certas práticas (como os sacramentos) conferem graça de forma direta e objetiva; a tradição evangélica, adotada nesta trilha, entende as disciplinas espirituais como canais pelos quais o crente se posiciona para receber e cooperar com uma graça que Deus já concede livremente pela fé em Cristo — nunca como um mecanismo automático de obtenção de favor divino.",
+            secondQuote: {
+              author: "Donald Whitney",
+              text: "As disciplinas espirituais são, para a alma, o que o exercício é para o corpo: sem elas, a piedade genuína raramente cresce forte.",
+            },
           },
           quizzes: [
             {
@@ -383,6 +479,28 @@ const santificacao: Trail = {
             author: "John Wesley",
             text: "A santidade não é a ausência de tentação, mas a recusa deliberada, sustentada pela graça, de alimentar aquilo que nos afasta de Deus.",
           },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Romanos 6:12-13",
+                textByVersion: {
+                  NVI: "Portanto, não deixem que o pecado continue dominando o seu corpo mortal, fazendo com que vocês obedeçam aos seus desejos... antes ofereçam-se a Deus, como quem voltou da morte para a vida.",
+                },
+              },
+              {
+                ref: "Gálatas 2:20",
+                textByVersion: {
+                  NVI: "Fui crucificado com Cristo, e já não sou eu quem vive, mas Cristo vive em mim; e a vida que agora vivo no corpo, vivo-a pela fé no Filho de Deus, que me amou e se entregou por mim.",
+                },
+              },
+            ],
+            historicalContext:
+              "A expressão 'mortificação do pecado' ficou historicamente associada ao puritano inglês John Owen (1616-1683), autor do clássico tratado 'A Mortificação do Pecado nos Crentes'. Owen argumentava que todo crente genuíno já possui, em Cristo, poder real sobre o pecado — mas que esse poder precisa ser exercido ativamente, dia após dia, e não apenas presumido. Sua frase mais conhecida, citada por gerações de cristãos, resume o tema desta lição: 'seja em constante mortificação do pecado, ou o pecado estará sempre trabalhando para sua destruição'.",
+            secondQuote: {
+              author: "John Owen",
+              text: "Sê matando o pecado, ou ele te matará. Não há meio-termo nessa guerra: ou você trata o pecado com a seriedade que ele merece, ou ele, aos poucos, endurece seu coração.",
+            },
+          },
           quizzes: [
             {
               question: "O que o verbo 'façam morrer' (nekrōsate) em Colossenses 3:5 comunica sobre como tratar o pecado?",
@@ -456,6 +574,30 @@ const santificacao: Trail = {
           theologianQuote: {
             author: "James W. Sire",
             text: "Toda cosmovisão molda silenciosamente o que consideramos óbvio. Por isso a renovação da mente não é um evento único, mas uma reeducação constante à luz da Palavra de Deus.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "2 Coríntios 10:5",
+                textByVersion: {
+                  NVI: "Destruímos todo argumento e toda pretensão que se levanta contra o conhecimento de Deus, e levamos cativo todo pensamento, para torná-lo obediente a Cristo.",
+                },
+              },
+              {
+                ref: "Colossenses 3:1-2",
+                textByVersion: {
+                  NVI: "Assim, se vocês ressuscitaram com Cristo, procurem as coisas do alto, onde Cristo está assentado à direita de Deus. Pensem nas coisas do alto, não nas coisas terrenas.",
+                },
+              },
+            ],
+            historicalContext:
+              "O conceito de 'cosmovisão' (do alemão Weltanschauung) tornou-se ferramenta importante da reflexão cristã evangélica no século XX para explicar como pressupostos não examinados — sobre o que é real, verdadeiro e valioso — moldam silenciosamente o pensamento de uma pessoa, mesmo antes de qualquer argumento consciente. Autores como James Sire e Francis Schaeffer ajudaram a igreja a perceber que a 'renovação da mente' de Romanos 12:2 não é apenas trocar algumas opiniões, mas reexaminar, à luz da Escritura, as próprias lentes através das quais enxergamos o mundo.",
+            theologicalDebate:
+              "Cristãos fiéis divergem sobre o grau de engajamento que a igreja deve ter com a cultura ao seu redor: algumas tradições enfatizam mais a separação de padrões culturais considerados mundanos; outras enfatizam o engajamento transformador, presente no mundo sem se conformar a ele. Ambas as ênfases buscam obedecer ao mesmo mandamento de Romanos 12:2 — não se conformar, mas se transformar —, ainda que apliquem esse princípio de formas um pouco diferentes na prática cotidiana.",
+            secondQuote: {
+              author: "Francis Schaeffer",
+              text: "Nenhum cristão pensa num vácuo; ou permite que a Palavra de Deus reeduque sua mente, ou absorve, sem perceber, as pressuposições do mundo ao seu redor.",
+            },
           },
           quizzes: [
             {
@@ -537,6 +679,26 @@ const santificacao: Trail = {
             author: "Dietrich Bonhoeffer",
             text: "Aquele que está sozinho com sua fé está sozinho com o pecado, com a tentação e com a acusação. A comunidade cristã não é um luxo — é o lugar onde recebemos e oferecemos o socorro que só o corpo de Cristo pode dar.",
           },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Gálatas 6:1-2",
+                textByVersion: {
+                  NVI: "Irmãos, se alguém for surpreendido em algum pecado, vocês, que são espirituais, deverão restaurá-lo com mansidão... Levem os fardos uns dos outros e assim cumpram a lei de Cristo.",
+                },
+              },
+              {
+                ref: "Atos 2:44-46",
+                textByVersion: {
+                  NVI: "Todos os que criam estavam juntos e tinham tudo em comum... Todos os dias reuniam-se nos átrios do templo. Partiam o pão em casa e juntos participavam das refeições, com alegria e sinceridade de coração.",
+                },
+              },
+            ],
+            historicalContext:
+              "Dietrich Bonhoeffer escreveu sua obra mais conhecida sobre comunhão cristã, 'Vida em Comunhão', enquanto liderava um pequeno seminário clandestino na Alemanha nazista, num contexto de perseguição real à igreja confessante. Sua convicção de que a comunhão cristã é sustento indispensável — e não apenas conveniência social — nasceu de uma experiência concreta de comunidade sob pressão extrema, o que dá peso adicional às suas palavras sobre a igreja como corpo que sustenta seus membros.",
+            exegeticalNotes:
+              "É útil notar que quase todos os mandamentos do Novo Testamento voltados à santificação vêm no plural — 'estimulai-vos uns aos outros', 'confessai as vossas culpas uns aos outros' (Tg 5:16), 'exortai-vos uns aos outros' (Hb 3:13). A gramática do Novo Testamento pressupõe, quase sempre, um crente inserido numa comunidade viva, e não um indivíduo isolado buscando a santidade sozinho diante de Deus.",
+          },
           quizzes: [
             {
               question: "Segundo Hebreus 10:24-25, qual é o propósito de 'considerar uns aos outros'?",
@@ -613,6 +775,28 @@ const santificacao: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Se Deus começou a boa obra, é porque decidiu terminá-la; ele não é homem, para começar edifícios que não tem meios ou vontade de concluir.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "João 10:27-29",
+                textByVersion: {
+                  NVI: "As minhas ovelhas ouvem a minha voz; eu as conheço, e elas me seguem. Eu lhes dou a vida eterna, e elas jamais perecerão; ninguém as arrebatará da minha mão.",
+                },
+              },
+              {
+                ref: "1 João 2:19",
+                textByVersion: {
+                  NVI: "Eles saíram do nosso meio, mas na realidade não eram dos nossos, pois, se fossem dos nossos, teriam permanecido conosco; a saída deles mostrou que nenhum deles era dos nossos.",
+                },
+              },
+            ],
+            theologicalDebate:
+              "A chamada 'perseverança dos santos' é um dos temas em que tradições evangélicas fiéis mantêm posições diferentes. Correntes mais reformadas entendem que todo aquele que é genuinamente regenerado perseverará necessariamente até o fim, de forma incondicional, porque essa perseverança é garantida pela obra soberana de Deus. Correntes arminianas e wesleyanas — a base teológica adotada nesta trilha — entendem que a segurança do crente está firmemente ancorada na fidelidade de Deus, mas que a Escritura também contém advertências sérias e reais contra o abandono da fé (como Hebreus 6 e 10), a serem levadas a sério, não apenas como hipótese retórica. Em ambas as leituras, o alicerce da esperança do crente nunca é o próprio desempenho, mas a fidelidade de Deus, e o caminho de resposta é o mesmo: perseverar ativamente na fé, apoiado nessa fidelidade.",
+            secondQuote: {
+              author: "F. F. Bruce",
+              text: "A segurança do crente não está numa garantia abstrata e impessoal, mas na mão do Bom Pastor que o segura — e é justamente essa segurança que o capacita a continuar seguindo-o com fé viva, dia após dia.",
+            },
           },
           quizzes: [
             {
