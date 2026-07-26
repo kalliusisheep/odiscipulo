@@ -6,7 +6,7 @@ import { CHARACTERS } from "@/data/content";
 import { toast } from "sonner";
 import { ArrowLeft, MessageCircle, Flame, Trophy, BookOpen, Clock, UserPlus, Check, Copy } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/perfil/$username")({
+export const Route = createFileRoute("/_authenticated/perfil_/$username")({
   component: PublicProfilePage,
   errorComponent: ({ error }) => (
     <div className="p-6 text-sm text-destructive">Erro: {(error as Error).message}</div>
