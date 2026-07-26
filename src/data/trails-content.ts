@@ -1795,6 +1795,106 @@ const oracao: Trail = {
             "Minha espiritualidade tem sido separada da minha ética prática com os necessitados ao meu redor? O que Isaías 58 revela sobre essa possível separação?",
           xp: 30,
         },
+        {
+          id: "or-4-3",
+          title: "Vida Devocional: Construindo um Ritmo Sustentável",
+          intro: [
+            "Todas as lições anteriores desta trilha ensinaram tipos e disciplinas de oração — adoração, confissão, súplica, intercessão, perseverança no silêncio, jejum. Falta uma última pergunta, talvez a mais prática de todas: como transformar tudo isso em um ritmo diário que resista ao cansaço, à correria e às fases secas da vida, em vez de depender só de motivação passageira?",
+            "A Bíblia não prescreve um horário fixo, nem uma duração mínima obrigatória, para o tempo devocional do crente. Mas ela mostra, repetidas vezes, pessoas que separaram um tempo intencional e recorrente para buscar a Deus — não por obrigação religiosa, mas porque entenderam que a alma precisa de alimento regular, assim como o corpo.",
+            "Jesus, em meio a uma agenda de multidões, curas e ensino constante, ainda assim se retirava sozinho para orar, de madrugada, antes do dia começar. Se o próprio Filho de Deus, em sua humanidade plena, precisou desse ritmo, seria ingenuidade pensar que nós, discípulos, podemos prescindir dele.",
+            "Vida devocional não é uma disciplina a mais na lista — é o solo onde todas as outras disciplinas espirituais criam raiz. Sem ritmo, a oração vira evento ocasional; com ritmo, ela se torna caminho de vida.",
+          ],
+          verses: [
+            {
+              ref: "Marcos 1:35",
+              textByVersion: {
+                NVI: "De madrugada, quando ainda estava escuro, Jesus levantou-se, saiu de casa e foi para um lugar deserto, onde ficou orando.",
+              },
+              originals: [
+                { word: "πρωΐ", translit: "prōi", meaning: "de madrugada, bem cedo", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Salmos 5:3",
+              textByVersion: {
+                NVI: "De manhã, Senhor, ouves a minha voz; de manhã te apresento a minha oração e fico esperando.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "πρωΐ", translit: "prōi", meaning: "'de madrugada, bem cedo'. Marca o hábito de Jesus de buscar a sós o Pai antes do movimento do dia (Mc 1:35).", lang: "grego" },
+            { word: "בֹּקֶר", translit: "boqer", meaning: "'manhã'. Palavra usada no Salmo 5:3 para descrever o ritmo diário de apresentar a oração a Deus e esperar por sua resposta.", lang: "hebraico" },
+          ],
+          deepDive:
+            "É significativo que Marcos registre o horário do encontro de Jesus com o Pai: 'de madrugada, quando ainda estava escuro'. Não foi um acidente de agenda — foi escolha deliberada, feita antes que qualquer pedido, cura ou multidão pudesse disputar sua atenção. O Salmo 5:3 usa duas ideias que parecem simples, mas revelam maturidade: 'apresento' (ação ativa e intencional) e 'fico esperando' (postura de expectativa, não de checklist cumprido). Vida devocional sustentável nasce dessa combinação: disciplina que separa o tempo, e expectativa que transforma esse tempo em encontro real, não em tarefa religiosa marcada e esquecida.",
+          theologianQuote: {
+            author: "Richard Foster",
+            text: "A disciplina espiritual não existe para tornar Deus mais presente — Ele já está presente. Ela existe para nos tornar mais capazes de perceber e responder a essa presença.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Salmos 1:1-2",
+                textByVersion: {
+                  NVI: "Como é feliz o homem que não anda segundo o conselho dos ímpios... Pois seu prazer está na lei do Senhor, e nessa lei medita dia e noite.",
+                },
+              },
+              {
+                ref: "1 Timóteo 4:7-8",
+                textByVersion: {
+                  NVI: "Exercite-se na piedade. Pois, o exercício físico é de pouco proveito; a piedade, porém, para tudo é proveitosa, porque tem promessa da vida presente e da futura.",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "γυμνάζω", translit: "gymnazō", meaning: "'exercitar, treinar com disciplina repetida'. Metáfora atlética usada por Paulo para descrever o cultivo da piedade — algo construído com prática constante, não conquistado de uma vez (1 Tm 4:7).", lang: "grego" },
+              { word: "הָגָה", translit: "hagah", meaning: "'meditar, murmurar em voz baixa, ruminar'. Descreve a meditação hebraica na Palavra como algo quase físico — repetido em voz baixa até penetrar o coração (Sl 1:2).", lang: "hebraico" },
+            ],
+            historicalContext:
+              "A ideia de um tempo diário reservado para oração e leitura das Escrituras não é invenção da espiritualidade evangélica moderna: já aparece em Daniel, que orava três vezes ao dia mesmo sob risco de morte (Dn 6:10), e foi praticada de forma estruturada pela igreja primitiva, que seguia horas fixas de oração herdadas da sinagoga judaica. Ao longo da história da igreja, tradições monásticas desenvolveram rotinas ainda mais elaboradas; o movimento evangélico simplificou essa herança no que hoje comumente se chama de 'tempo devocional' ou 'quiet time' — pessoal, diário, sem exigir estrutura litúrgica complexa.",
+            exegeticalNotes:
+              "O verbo hebraico 'hagah' (Sl 1:2), traduzido 'medita', descrevia originalmente um som quase audível — o hábito antigo de repetir um texto em voz baixa até memorizá-lo e absorvê-lo. Isso ajuda a entender que a meditação bíblica descrita nos Salmos não era um exercício silencioso e abstrato, mas uma interação ativa, quase física, com o texto sagrado — bem diferente de técnicas de meditação vazias de conteúdo, preenchidas apenas com repetição sem substância.",
+            theologicalDebate:
+              "Cristãos fiéis divergem legitimamente sobre o formato ideal do tempo devocional: alguns preferem um horário fixo pela manhã (seguindo o padrão de Jesus em Mc 1:35 e do Salmo 5:3), outros encontram mais frutífero um tempo à noite, ou dividido ao longo do dia. A Escritura não prescreve um horário universal obrigatório — o padrão consistente é a intencionalidade e a regularidade, não um relógio específico. É uma questão de prática pessoal, não de doutrina essencial, e vale a pena buscar orientação do seu discipulador ou líder de célula para encontrar o ritmo que melhor se sustenta na sua rotina real.",
+            secondQuote: {
+              author: "John Mark Comer",
+              text: "Um ritmo de vida com Deus não é sobre encaixar mais uma tarefa religiosa num dia já cheio; é sobre reorganizar o dia inteiro em torno da presença dele.",
+            },
+          },
+          quizzes: [
+            {
+              question: "O que Marcos 1:35 revela sobre a vida devocional de Jesus?",
+              options: [
+                "Que ele só orava quando enfrentava alguma crise",
+                "Que ele separava intencionalmente um tempo, de madrugada, antes da agenda do dia",
+                "Que a oração era desnecessária para ele, por ser Deus",
+                "Que ele orava apenas em público, diante das multidões",
+              ],
+              correctIndex: 1,
+              explanation: "Jesus se levantou de madrugada, deliberadamente, para buscar o Pai a sós antes de qualquer outra demanda do dia.",
+            },
+            {
+              question: "Segundo 1 Timóteo 4:7-8, como Paulo descreve o cultivo da piedade?",
+              options: [
+                "Como algo automático, que não exige esforço",
+                "Como um exercício, algo treinado com disciplina repetida",
+                "Como irrelevante diante do exercício físico",
+                "Como algo reservado apenas a líderes da igreja",
+              ],
+              correctIndex: 1,
+              explanation: "'Gymnazō' é a mesma raiz de onde vem 'ginástica' — Paulo compara a piedade a um treino constante, não a um dom instantâneo.",
+            },
+          ],
+          application:
+            "Escolha, esta semana, um horário fixo e realista dentro da sua rotina (não o horário 'ideal' de outra pessoa) para um tempo breve e diário com Deus — leitura de um trecho bíblico e oração. Comece pequeno e sustentável, em vez de ambicioso e abandonável em poucos dias.",
+          prayer:
+            "Senhor, ensina-me a construir um ritmo de encontro contigo que resista ao cansaço e à correria dos meus dias. Que eu não busque apenas cumprir um horário, mas te encontrar de verdade nele, como Jesus te buscava de madrugada. Amém.",
+          weeklyChallenge:
+            "Durante 7 dias seguidos, no mesmo horário escolhido, reserve pelo menos 10 minutos só para ler um trecho da Bíblia e orar. Anote no diário, ao final da semana, o que mudou — mesmo que pareça pouco.",
+          reflectionQuestion:
+            "O que tem impedido minha vida devocional de ser constante — falta de tempo real, falta de prioridade, ou expectativas exageradas demais para começar pequeno?",
+          xp: 30,
+        },
       ],
     },
   ],
