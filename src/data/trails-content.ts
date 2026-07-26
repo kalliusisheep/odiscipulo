@@ -915,13 +915,13 @@ const oracao: Trail = {
       title: "Módulo I: Fundamentos da Oração",
       lessons: [
         {
-          id: "or-teo-1",
-          title: "O que Realmente Acontece Quando Oramos?",
+          id: "or-1-1",
+          title: "O Que Realmente Acontece Quando Oramos?",
           intro: [
-            "Antes de aprender técnicas ou fórmulas de oração, é preciso entender o que, teologicamente, está acontecendo quando um cristão ora. Muita gente ora anos a fio sem nunca ter parado para pensar nisso — e acaba tratando a oração como um telefone mágico para pedidos, ou como um ritual de bom comportamento religioso.",
-            "A Bíblia descreve a oração como algo muito mais profundo: um ato de aliança. Quando você ora, você não está apenas 'mandando uma mensagem' para um Deus distante — você está exercendo um privilégio que só existe porque Cristo abriu caminho entre você e o Pai. Oração pressupõe relacionamento, não transação.",
-            "Teologicamente, a oração envolve as três Pessoas da Trindade ao mesmo tempo: oramos ao Pai, por meio do Filho, no poder do Espírito. Isso não é jargão religioso — é a estrutura real de toda oração cristã genuína, mesmo quando o orante não tem plena consciência disso.",
-            "Entender essa base muda tudo na prática: você deixa de orar como quem implora a um estranho, e começa a orar como filho que fala com o Pai, sabendo que o Filho intercede e o Espírito o ajuda a orar.",
+            "Antes de aprender técnicas ou modelos de oração, é preciso entender o que, teologicamente, está acontecendo quando um cristão ora. Muita gente ora a vida inteira tratando a oração como um formulário de pedidos entregue a um Deus distante, sem nunca parar para perguntar o que realmente ocorre nesse encontro.",
+            "A Bíblia descreve a oração como algo muito mais profundo do que um pedido: é participação em um relacionamento de aliança, aberto unicamente pela obra de Cristo. Você não está mandando uma mensagem para um destinatário desconhecido — está sendo recebido por um Pai, através de um Mediador, com a ajuda de um Auxiliador.",
+            "Toda oração cristã genuína tem uma estrutura trinitária, mesmo quando o orante não tem plena consciência disso: oramos ao Pai, por meio do Filho, no poder do Espírito Santo. Essa não é uma curiosidade teológica de bastidores — é a razão pela qual um pecador pode se aproximar de um Deus santo com confiança.",
+            "Entender essa arquitetura muda a textura da oração: você deixa de orar como quem implora a um estranho e passa a orar como filho que fala com o Pai, sabendo que o Filho intercede por você agora e o Espírito o ajuda a orar quando faltam palavras.",
           ],
           verses: [
             {
@@ -930,34 +930,57 @@ const oracao: Trail = {
                 NVI: "Pois por meio dele [Cristo] tanto nós como vocês temos acesso ao Pai, por um só Espírito.",
                 NAA: "Porque é por meio dele que nós, tanto quanto vocês, temos acesso ao Pai, em um só Espírito.",
                 ACF: "Porque por ele ambos temos acesso ao Pai em um mesmo Espírito.",
-                KJV: "Porque por ele ambos temos acesso ao Pai em um mesmo Espírito.",
-                NVT: "Agora, por meio de Cristo, todos nós, judeus e gentios, podemos ser recebidos na presença de Deus Pai, por meio do mesmo Espírito Santo.",
               },
               originals: [
                 { word: "προσαγωγή", translit: "prosagōgē", meaning: "acesso, introdução formal à presença de alguém importante", lang: "grego" },
               ],
             },
             {
-              ref: "Romanos 8:34",
+              ref: "Romanos 8:26",
               textByVersion: {
-                NVI: "Quem os condenará? Cristo Jesus, que morreu e, mais do que isso, ressuscitou, está à direita de Deus e também intercede por nós.",
-                NAA: "Quem os condenará? Cristo Jesus é quem morreu, ou antes, quem ressuscitou, o qual está à direita de Deus e também intercede por nós.",
-                ACF: "Quem é que condenará? Christo é o que morreu, ou antes, o que também resuscitou, o que está à direita de Deus, o que também intercede por nós.",
-                KJV: "Quem é o que condenará? Cristo é quem morreu, e, mais do que isso, quem também ressuscitou dentre os mortos, o qual está à mão direita de Deus, e também intercede por nós.",
-                NVT: "Quem, então, poderá nos condenar? Não Cristo Jesus, pois ele morreu por nós e ressuscitou por nós e está sentado no lugar de honra, junto a Deus, intercedendo por nós.",
+                NVI: "Da mesma forma o Espírito nos ajuda em nossa fraqueza, pois não sabemos como orar, nem o que pedir, mas o próprio Espírito intercede por nós com gemidos inexprimíveis.",
               },
             },
           ],
           keywords: [
-            { word: "προσαγωγή", translit: "prosagōgē", meaning: "'acesso, introdução'. Termo usado para descrever alguém sendo formalmente apresentado à corte de um rei. Cristo é quem nos apresenta ao Pai.", lang: "grego" },
-            { word: "ἐντυγχάνω", translit: "entynchanō", meaning: "'interceder, intervir em favor de'. É o que Cristo faz agora mesmo, à direita do Pai, enquanto você ora.", lang: "grego" },
-            { word: "Ἀββά", translit: "Abbá", meaning: "'Papai' — palavra aramaica de intimidade familiar que Paulo diz que o Espírito coloca em nossa boca (Rm 8:15).", lang: "grego" },
+            { word: "προσαγωγή", translit: "prosagōgē", meaning: "'acesso, introdução formal'. Termo usado para descrever alguém sendo apresentado à corte de um rei. Cristo é quem nos apresenta ao Pai.", lang: "grego" },
+            { word: "στεναγμός", translit: "stenagmos", meaning: "'gemido, suspiro profundo demais para palavras'. Descreve a intercessão do Espírito quando nem sabemos como orar (Rm 8:26).", lang: "grego" },
           ],
           deepDive:
-            "O que a Bíblia ensina: a oração cristã tem uma arquitetura trinitária. Oramos ao Pai (é a Ele que nos dirigimos), por meio do Filho (é Ele quem nos dá 'prosagōgē' — acesso formal, como alguém apresentado à corte de um rei), e no poder do Espírito (é Ele quem nos ajuda a orar e coloca em nossa boca o grito de 'Abbá', Papai). Contexto e exegese: Paulo escreve Efésios 2:18 para judeus e gentios reunidos numa só família — o acesso ao Pai não depende de mérito étnico ou religioso, mas da obra de Cristo. Em Romanos 8:34, o apóstolo descreve Cristo ressuscitado, vivo, intercedendo agora. Aplicação: isso significa que, mesmo numa oração simples e desajeitada, um cristão genuíno participa de algo estruturado pela própria Trindade — o Filho intercede no céu enquanto o Espírito intercede em você (Rm 8:26). Erro comum: tratar a oração como técnica de persuasão ou fórmula mágica, esquecendo que ela nasce de um relacionamento de aliança, não de uma transação.",
+            "A oração cristã tem uma arquitetura trinitária, e essa não é uma nota de rodapé: é a estrutura real de toda oração genuína. Oramos ao Pai — é a Ele que nos dirigimos. Oramos por meio do Filho — é Ele quem nos dá 'prosagōgē', acesso formal, como alguém apresentado à corte de um rei, e que agora intercede por nós à direita do Pai (Rm 8:34). Oramos no poder do Espírito — é Ele quem nos ajuda quando não sabemos as palavras certas, gemendo por nós de um jeito que nenhuma linguagem humana alcançaria. Isso significa que mesmo uma oração simples, desajeitada, feita por um cristão cansado ao final de um dia difícil, participa de algo sustentado pela própria Trindade. Esquecer isso reduz a oração a técnica de persuasão; lembrar disso a devolve ao lugar de relacionamento filial.",
           theologianQuote: {
             author: "John Stott",
             text: "A oração cristã não é um monólogo religioso; é uma conversa trinitária na qual somos convidados a participar — falamos ao Pai, pelo Filho, no Espírito.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "João 14:13-14",
+                textByVersion: {
+                  NVI: "E eu farei o que vocês pedirem em meu nome, para que o Filho traga glória ao Pai. O que vocês pedirem em meu nome eu farei.",
+                },
+              },
+              {
+                ref: "Gálatas 4:6",
+                textByVersion: {
+                  NVI: "Porque vocês são filhos, Deus enviou aos nossos corações o Espírito de seu Filho, que clama: 'Aba, Pai'.",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "Ἀββά", translit: "Abbá", meaning: "'Papai'. Palavra aramaica de intimidade familiar que Paulo diz que o próprio Espírito coloca em nossa boca ao orarmos (Gl 4:6; Rm 8:15).", lang: "grego" },
+              { word: "ἐντυγχάνω", translit: "entynchanō", meaning: "'interceder, intervir em favor de alguém'. É o que Cristo faz agora, à direita do Pai, enquanto você ora (Rm 8:34).", lang: "grego" },
+            ],
+            historicalContext:
+              "A compreensão trinitária da oração não é invenção tardia da teologia sistemática — ela nasce diretamente do modo como o Novo Testamento descreve a experiência de oração da igreja primitiva, e foi defendida com precisão nos concílios que formularam a ortodoxia trinitária (Niceia, 325 d.C.; Constantinopla, 381 d.C.) contra distorções que rebaixavam a plena divindade do Filho ou do Espírito. Se o Filho não fosse plenamente Deus, sua intercessão não teria o peso que a Escritura lhe atribui; se o Espírito não fosse plenamente Deus, sua ajuda na oração seria apenas assistência angélica, não comunhão divina real.",
+            exegeticalNotes:
+              "O termo grego 'prosagōgē' (Ef 2:18) era usado no mundo antigo para descrever a introdução formal de alguém à presença de um soberano — um oficial da corte conduzia o visitante até o rei. Paulo usa essa imagem para dizer que Cristo desempenha esse papel entre o crente e o Pai: não somos nós que abrimos caminho por mérito próprio; somos conduzidos por Ele.",
+            theologicalDebate:
+              "A maior parte das orações no Novo Testamento é dirigida ao Pai, por meio do Filho, no Espírito — esse é o padrão normativo ensinado por Jesus. Ainda assim, há registros bíblicos de oração dirigida diretamente ao Filho (como Estêvão em Atos 7:59) ou de invocação do Espírito em contextos de adoração. Isso não contradiz o padrão trinitário; mostra que ele comporta variações legítimas de expressão devocional, sem que isso seja uma questão de doutrina essencial — é mais uma questão de prática e ênfase espiritual.",
+            secondQuote: {
+              author: "Millard Erickson",
+              text: "A doutrina da Trindade não é um quebra-cabeça abstrato para teólogos; ela molda a própria experiência devocional do crente, dando forma e sentido a cada oração que fazemos.",
+            },
           },
           quizzes: [
             {
@@ -972,32 +995,21 @@ const oracao: Trail = {
               explanation: "'Prosagōgē' descreve a introdução formal que Cristo nos concede à presença do Pai, pelo Espírito.",
             },
             {
-              question: "O que Romanos 8:34 revela sobre o que Cristo faz agora?",
+              question: "O que Romanos 8:26 ensina sobre o papel do Espírito na oração?",
               options: [
-                "Ele já concluiu toda sua obra e está inativo",
-                "Ele intercede por nós à direita do Pai",
-                "Ele julga os que oram errado",
-                "Ele apenas observa as orações de longe",
+                "Ele apenas observa nossas orações à distância",
+                "Ele intercede por nós quando não sabemos como orar",
+                "Ele só age quando oramos em voz alta",
+                "Ele substitui a necessidade de orarmos",
               ],
               correctIndex: 1,
-              explanation: "Cristo ressuscitado continua ativamente intercedendo por você — a oração cristã tem mediação constante.",
-            },
-            {
-              question: "Qual a estrutura trinitária da oração cristã descrita na lição?",
-              options: [
-                "Oramos apenas ao Espírito Santo",
-                "Oramos ao Pai, pelo Filho, no poder do Espírito",
-                "Oramos igualmente às três Pessoas sem distinção de papel",
-                "A Trindade não tem relação com a oração",
-              ],
-              correctIndex: 1,
-              explanation: "Cada Pessoa da Trindade tem um papel: o Pai é o destinatário, o Filho é o mediador, o Espírito é o auxiliador.",
+              explanation: "O Espírito ajuda o crente em sua fraqueza, intercedendo com gemidos que vão além das palavras.",
             },
           ],
           application:
             "Na próxima vez que for orar, faça conscientemente as três etapas: dirija-se ao Pai nomeando-o assim; agradeça a Cristo por lhe dar acesso; peça ao Espírito que o ajude a orar bem. Perceba como isso muda a textura da sua oração.",
           prayer:
-            "Pai, obrigado por me receberes não como estranho, mas como filho. Obrigado, Jesus, por teres aberto o caminho até o Pai e por intercederes por mim agora mesmo, à direita dele. Espírito Santo, ajuda-me a orar quando não sei as palavras, e coloca em minha boca o grito de 'Abbá, Pai'. Que eu nunca mais ore como quem fala sozinho, mas como quem participa da comunhão eterna da Trindade. Em nome de Jesus, amém.",
+            "Pai, obrigado por me receberes não como estranho, mas como filho. Obrigado, Jesus, por teres aberto o caminho até o Pai e por intercederes por mim agora mesmo. Espírito Santo, ajuda-me a orar quando não sei as palavras. Em nome de Jesus, amém.",
           weeklyChallenge:
             "Durante 7 dias, antes de cada oração, diga em voz alta: 'Pai, venho a ti pelo Filho, no poder do Espírito.' Observe, ao final da semana, se isso mudou sua percepção sobre o que acontece quando você ora.",
           reflectionQuestion:
@@ -1005,18 +1017,18 @@ const oracao: Trail = {
           xp: 20,
         },
         {
-          id: "or-1-1",
+          id: "or-1-2",
           title: "A Oração Ensinada por Jesus",
           intro: [
-            "Os discípulos passaram três anos com Jesus. Viram-no acalmar tempestades, ressuscitar mortos, andar sobre as águas. Nenhuma dessas cenas produziu neles o pedido que Lucas 11:1 registra: 'Senhor, ensina-nos a orar'. Foi a vida de oração de Jesus — e não seus milagres — que fez os discípulos perceber que oravam de forma primária, quase infantil, comparada a Ele.",
-            "A oração do Pai Nosso não é uma fórmula para repetir; é um mapa para orar. Ela nos ensina por onde começar (adoração), o que priorizar (o Reino de Deus antes das nossas necessidades), o que pedir (pão, perdão, livramento) e em quem confiar (o Pai que está nos céus).",
-            "Aprender a orar é aprender a estar com Deus como filho, não como pedinte.",
+            "Os discípulos passaram anos observando Jesus curar enfermos, alimentar multidões e acalmar tempestades com uma palavra. Curiosamente, nenhuma dessas cenas gerou o pedido registrado em Lucas 11:1: 'Senhor, ensina-nos a orar.' Foi a vida de oração de Jesus — não seus milagres — que os fez perceber o quanto ainda tinham a aprender.",
+            "A resposta de Jesus, o Pai Nosso, não foi dada como fórmula mágica para repetir mecanicamente, mas como um mapa: por onde começar (adorando o nome de Deus), o que priorizar (o Reino antes das nossas necessidades), o que pedir (pão, perdão, livramento) e em quem confiar (o Pai que está nos céus).",
+            "Chamar Deus de 'Pai' era, para ouvidos judaicos do primeiro século, algo quase chocante em sua intimidade. Jesus ensina seus discípulos a começar cada oração no colo de Deus, e não diante de um tribunal distante.",
           ],
           verses: [
             {
               ref: "Mateus 6:9-13",
               textByVersion: {
-                NVI: "Vocês, orem assim: Pai nosso, que estás nos céus! Santificado seja o teu nome. Venha o teu Reino; seja feita a tua vontade, assim na terra como no céu. Dá-nos hoje o nosso pão de cada dia. Perdoa as nossas dívidas, assim como perdoamos aos nossos devedores. E não nos deixes cair em tentação, mas livra-nos do mal, porque teu é o Reino, o poder e a glória para sempre. Amém.",
+                NVI: "Vocês, orem assim: Pai nosso, que estás nos céus! Santificado seja o teu nome. Venha o teu Reino; seja feita a tua vontade, assim na terra como no céu. Dá-nos hoje o nosso pão de cada dia. Perdoa as nossas dívidas, assim como perdoamos aos nossos devedores. E não nos deixes cair em tentação, mas livra-nos do mal.",
               },
             },
             {
@@ -1024,20 +1036,47 @@ const oracao: Trail = {
               textByVersion: {
                 NVI: "Certo dia Jesus estava orando em determinado lugar. Tendo terminado, um dos seus discípulos lhe disse: 'Senhor, ensina-nos a orar, como também João ensinou aos seus discípulos'.",
               },
-              originals: [
-                { word: "προσεύχεσθε", translit: "proseuchesthe", meaning: "orem (imperativo plural)", lang: "grego" },
-              ],
             },
           ],
           keywords: [
-            { word: "προσεύχομαι", translit: "proseuchomai", meaning: "orar, dirigir-se a Deus", lang: "grego" },
-            { word: "πάτερ", translit: "pater", meaning: "Pai — endereçamento familiar e íntimo", lang: "grego" },
+            { word: "πάτερ", translit: "pater", meaning: "'Pai'. Forma de endereçamento familiar e íntimo, incomum na oração judaica formal da época.", lang: "grego" },
+            { word: "ἁγιασθήτω", translit: "hagiasthētō", meaning: "'seja santificado'. Verbo no imperativo, primeira petição do Pai Nosso — antes de qualquer pedido pessoal.", lang: "grego" },
           ],
           deepDive:
-            "Chamar Deus de 'Pai' era revolucionário. No judaísmo, o Nome era tão sagrado que nem se pronunciava; Jesus ensina os discípulos a começarem cada oração no colo de Deus. Ao mesmo tempo, 'Pai nosso' — não 'meu' — coloca o orante dentro de uma família. Não há oração cristã puramente individualista. E 'santificado seja o teu nome' precede 'dá-nos o pão': primeiro Deus, depois nós. Essa ordem inverte a maioria das nossas orações.",
+            "A ordem das petições do Pai Nosso ensina uma teologia inteira em poucas linhas. 'Santificado seja o teu nome' e 'venha o teu Reino' vêm antes de 'dá-nos o pão de cada dia' — primeiro Deus, depois nós. Essa sequência inverte a maioria das orações espontâneas, que costumam começar direto pelas necessidades pessoais. E 'Pai nosso', não 'meu Pai', coloca imediatamente o orante dentro de uma família: não existe oração cristã genuinamente individualista, mesmo quando feita a sós no quarto.",
           theologianQuote: {
             author: "John Wesley",
             text: "Deus não faz nada senão em resposta à oração. É por isso que Ele nos ensinou a orar antes de nos ensinar qualquer outra coisa a respeito da vida cristã.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Lucas 11:2-4",
+                textByVersion: {
+                  NVI: "Ele lhes disse: 'Quando orarem, digam: Pai, santificado seja o teu nome. Venha o teu Reino. Dá-nos cada dia o pão de cada dia. Perdoa-nos os nossos pecados, pois também perdoamos a todos que nos devem. E não nos deixes cair em tentação'.",
+                },
+              },
+              {
+                ref: "Mateus 6:7-8",
+                textByVersion: {
+                  NVI: "E, ao orar, não fiquem sempre repetindo a mesma coisa, como fazem os pagãos, pois eles pensam que serão ouvidos por causa de suas muitas palavras. Não sejam como eles, pois o Pai de vocês sabe do que vocês precisam, antes mesmo de o pedirem.",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "βαττολογήσητε", translit: "battalogēsēte", meaning: "'fiquem repetindo, tagarelando sem sentido'. Termo raro usado por Jesus para condenar a oração vazia, mecânica, feita para impressionar (Mt 6:7).", lang: "grego" },
+              { word: "מַלְכוּת", translit: "malkut", meaning: "'reino, reinado, soberania'. Conceito central por trás de 'venha o teu Reino' — não apenas um lugar, mas o governo ativo de Deus sobre tudo.", lang: "hebraico" },
+            ],
+            historicalContext:
+              "No judaísmo do primeiro século, orações formais como a Amidá (série de dezoito bênçãos recitadas diariamente) eram estruturadas e memorizadas, mas raramente se dirigiam a Deus com a intimidade de 'Pai'. O ensino de Jesus rompe esse padrão sem abandonar a reverência. O texto cristão mais antigo fora do Novo Testamento, o Didaquê (manual de ensino da igreja do início do segundo século), já instruía os cristãos a orarem o Pai Nosso três vezes ao dia — evidência de quão rapidamente essa oração se tornou o centro da devoção cristã.",
+            exegeticalNotes:
+              "Mateus registra uma versão mais longa do Pai Nosso, no contexto do Sermão do Monte; Lucas registra uma versão mais breve, como resposta direta a um pedido específico dos discípulos. As duas não se contradizem — provavelmente refletem ocasiões diferentes em que Jesus ensinou o mesmo padrão essencial de oração, adaptando a extensão ao momento.",
+            theologicalDebate:
+              "Tradições cristãs diferem quanto ao uso litúrgico do Pai Nosso: algumas o recitam palavra por palavra em todo culto público, como oração fixa da comunidade; outras o tratam principalmente como padrão flexível, um guia para estruturar orações espontâneas com as próprias palavras. Ambas as práticas honram a intenção de Jesus; a diferença é de ênfase litúrgica, uma questão secundária de prática de adoração, não de doutrina essencial.",
+            secondQuote: {
+              author: "Philip Ryken",
+              text: "O Pai Nosso não é apenas uma oração para recitar; é uma escola inteira de espiritualidade, ensinando o que adorar, o que pedir e em quem confiar.",
+            },
           },
           quizzes: [
             {
@@ -1072,11 +1111,11 @@ const oracao: Trail = {
           xp: 20,
         },
         {
-          id: "or-1-2",
+          id: "or-1-3",
           title: "Ousadia Diante do Trono da Graça",
           intro: [
-            "Um dos maiores paradoxos da fé cristã é este: nós nos aproximamos de um Deus infinitamente santo com uma confiança que nenhuma religião humana ousaria ter. Essa ousadia não é atrevimento — é fruto da cruz. Porque Jesus rasgou o véu do templo, temos acesso direto ao Pai.",
-            "Hebreus 4:16 nos convida a nos 'aproximarmos com confiança' (parrēsia — franqueza, liberdade de falar tudo) do trono da graça. Nem é 'trono do juízo', nem é 'balcão de atendimento': é o trono de um Rei que se tornou pai por causa de Cristo.",
+            "Um dos maiores paradoxos da fé cristã é este: nos aproximamos de um Deus infinitamente santo com uma confiança que nenhuma religião humana ousaria propor. Essa ousadia não é atrevimento — é fruto direto da cruz. Porque Jesus rasgou o véu do templo com seu próprio corpo, temos acesso direto ao Pai.",
+            "Hebreus 4:16 convida o crente a se 'aproximar com confiança' — a palavra grega ali, parrēsia, significa franqueza, liberdade de falar tudo — do trono da graça. Não é trono de juízo distante, nem um balcão de atendimento: é o trono de um Rei que se tornou Pai por causa de Cristo.",
             "Orar com ousadia é diferente de orar com arrogância. A ousadia se ajoelha; a arrogância exige. A ousadia crê que Deus quer nos ouvir; a arrogância crê que Deus nos deve algo.",
           ],
           verses: [
@@ -1097,14 +1136,44 @@ const oracao: Trail = {
             },
           ],
           keywords: [
-            { word: "παρρησία", translit: "parrēsia", meaning: "confiança livre, liberdade de expressão", lang: "grego" },
-            { word: "χάρις", translit: "charis", meaning: "graça, favor imerecido", lang: "grego" },
+            { word: "παρρησία", translit: "parrēsia", meaning: "confiança livre, liberdade de expressão, ousadia sem medo", lang: "grego" },
+            { word: "χάρις", translit: "charis", meaning: "graça, favor totalmente imerecido", lang: "grego" },
           ],
           deepDive:
-            "A ousadia cristã na oração não repousa em nossa performance espiritual — se assim fosse, seria arrogância. Ela repousa no sangue de Cristo. Ele é nosso Sumo Sacerdote (Hb 4:14), e é o mérito dele que abre a porta. Por isso oramos 'em nome de Jesus' — não como fórmula final, mas como confissão de que só entramos na sala de Deus por causa de Cristo. E é por isso que a oração cristã não hesita em pedir coisas grandes: pedimos apoiados em um mérito grande.",
+            "A ousadia cristã na oração não repousa em nenhuma performance espiritual — se assim fosse, seria arrogância disfarçada de fé. Ela repousa inteiramente no sangue de Cristo. Ele é nosso Sumo Sacerdote (Hb 4:14), e é o mérito dele, não o nosso, que abre a porta. Por isso oramos 'em nome de Jesus': não como fórmula mágica de encerramento, mas como confissão de que só entramos na presença de Deus por causa dele. E é justamente por isso que a oração cristã não hesita em pedir coisas grandes: pedimos apoiados em um mérito grande, que já foi pago.",
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Orar pequenas orações a um grande Deus é uma espécie de insulto. Peça grandes coisas ao Rei, pois o custo já foi pago pelo sangue de seu Filho.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Mateus 27:51",
+                textByVersion: {
+                  NVI: "Nesse momento, o véu do santuário do templo foi rasgado em dois, de alto a baixo. A terra tremeu, e as rochas se partiram.",
+                },
+              },
+              {
+                ref: "Romanos 8:15",
+                textByVersion: {
+                  NVI: "Vocês não receberam um espírito que os escravize para novamente temer, mas receberam o Espírito que os adota como filhos, por meio do qual clamamos: 'Aba, Pai'.",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "καταπέτασμα", translit: "katapetasma", meaning: "'véu, cortina'. A cortina que separava o Lugar Santíssimo no templo, rasgada de alto a baixo na morte de Cristo (Mt 27:51), sinalizando acesso aberto a Deus.", lang: "grego" },
+              { word: "υἱοθεσία", translit: "huiothesia", meaning: "'adoção como filho'. Ato legal e afetuoso pelo qual o crente é incorporado à família de Deus como herdeiro (Rm 8:15).", lang: "grego" },
+            ],
+            historicalContext:
+              "No judaísmo do segundo templo, o Lugar Santíssimo — separado pelo véu — era um espaço de acesso restrito: apenas o sumo sacerdote entrava ali, uma vez por ano, no Dia da Expiação, e com grande temor cerimonial. Para os primeiros leitores do Evangelho de Mateus, a notícia de que esse véu se rasgou 'de alto a baixo' (indicando ação de Deus, não humana) no momento da morte de Cristo era um sinal teológico chocante: o acesso restrito havia terminado.",
+            exegeticalNotes:
+              "A mesma palavra grega 'parrēsia' usada em Hebreus 4:16 para a ousadia na oração é usada em Atos 4:13 para descrever a coragem dos apóstolos ao pregarem publicamente diante do Sinédrio. É a mesma ousadia concedida pelo Espírito — expressa tanto na proclamação pública do evangelho quanto na intimidade da oração privada.",
+            theologicalDebate:
+              "É importante distinguir a ousadia bíblica na oração de distorções da chamada 'teologia da prosperidade', que tratam a confiança ao orar como uma fórmula que garante automaticamente qualquer pedido específico feito com fé suficiente. A ousadia bíblica é sobre a certeza de sermos ouvidos e recebidos por Deus — não uma garantia de que todo pedido será concedido exatamente como pedido (1 João 5:14 já condiciona isso a 'de acordo com a sua vontade'). Se você encontrar ensino nesse sentido, vale a pena conversar com seu pastor.",
+            secondQuote: {
+              author: "F. F. Bruce",
+              text: "O rasgar do véu não foi apenas um evento dramático no templo; foi a declaração visível de que, em Cristo, o caminho até Deus estava, de uma vez por todas, aberto.",
+            },
           },
           quizzes: [
             {
@@ -1129,95 +1198,316 @@ const oracao: Trail = {
             },
           ],
           application:
-            "Escreva um pedido 'grande' que você tem medo de fazer a Deus. Traga-o em oração esta semana, apoiado no mérito de Cristo, não no seu.",
+            "Escreva um pedido 'grande' que você tem receio de fazer a Deus. Traga-o em oração esta semana, apoiado no mérito de Cristo, não no seu.",
           prayer:
             "Pai, obrigado porque o véu foi rasgado. Entro no teu trono não porque eu mereça, mas porque Jesus me abriu a porta. Recebe minha confiança como um filho recebe o abraço do pai. Amém.",
           weeklyChallenge:
-            "Todos os dias, ore por uma coisa 'impossível' — algo que só Deus pode fazer. Registre no diário como sua fé cresce ao longo da semana.",
+            "Todos os dias, ore por uma coisa que só Deus pode resolver. Registre no diário como sua confiança se transforma ao longo da semana.",
           reflectionQuestion:
             "Minhas orações têm sido tímidas por medo ou por descrença? Como o mérito de Cristo muda a ousadia dos meus pedidos?",
-          xp: 25,
+          xp: 20,
         },
       ],
     },
     {
       id: "or-mod-2",
-      title: "Módulo II: Vida de Oração Diária",
+      title: "Módulo II: As Formas da Oração",
       lessons: [
         {
           id: "or-2-1",
-          title: "A Oração Perseverante",
+          title: "Adoração e Ação de Graças",
           intro: [
-            "Jesus contou uma parábola inteira 'para mostrar aos seus discípulos que eles deviam orar sempre e nunca desanimar' (Lc 18:1). Se Ele achou necessário ensinar isso, é porque o desânimo na oração é a experiência universal do crente. Ninguém escapa de orar durante meses por algo que parece ficar cada vez mais distante.",
-            "Perseverança não é sinônimo de repetição vazia. É a fé que continua batendo à porta mesmo quando a resposta demora, porque conhece o coração de quem está do outro lado.",
-            "Paulo resume isso em três palavras impossíveis se lidas de forma literalista: 'orai sem cessar' (1 Ts 5:17). Não como monólogo constante em voz alta, mas como consciência permanente da presença de Deus — vivendo em conversa contínua com o Pai.",
+            "Existe uma diferença entre orar pedindo e orar admirando. A adoração é o tipo de oração que se detém no próprio Deus — em quem Ele é — antes mesmo de tocar no que Ele pode fazer. É a oração que diz 'Senhor, tu és santo' antes de dizer 'Senhor, eu preciso'.",
+            "O Saltério, o livro de orações de Israel, está repleto de salmos que começam exatamente assim: convocando a alma, e até a criação inteira, a render louvor a Deus só porque Ele é digno. A ação de graças caminha lado a lado com a adoração — é o reconhecimento consciente de que tudo o que temos vem da mão de Deus.",
+            "Começar a oração pela adoração e pela gratidão reordena o coração: as ansiedades que pareciam gigantes diminuem de tamanho diante da grandeza que acabamos de contemplar.",
           ],
           verses: [
             {
-              ref: "Lucas 18:1",
+              ref: "Salmos 100:4",
               textByVersion: {
-                NVI: "Jesus contou aos seus discípulos uma parábola, para mostrar-lhes que eles deviam orar sempre e nunca desanimar.",
+                NVI: "Entrem por suas portas com ações de graças e em seus átrios com louvor; deem-lhe graças e bendigam o seu nome.",
               },
             },
             {
-              ref: "1 Tessalonicenses 5:17",
+              ref: "Filipenses 4:6",
               textByVersion: {
-                NVI: "Orem continuamente.",
+                NVI: "Em tudo, pela oração e súplicas, e com ação de graças, apresentem seus pedidos a Deus.",
               },
-              originals: [
-                { word: "ἀδιαλείπτως", translit: "adialeiptōs", meaning: "sem interrupção, constantemente", lang: "grego" },
-              ],
             },
           ],
           keywords: [
-            { word: "ἀδιαλείπτως", translit: "adialeiptōs", meaning: "sem cessar, constantemente", lang: "grego" },
-            { word: "προσκαρτερέω", translit: "proskartereō", meaning: "perseverar firmemente, aplicar-se com constância", lang: "grego" },
+            { word: "תְּהִלָּה", translit: "tehillah", meaning: "'louvor, canto de adoração'. Raiz da palavra 'Salmos' em hebraico (Tehillim), o livro de louvores de Israel.", lang: "hebraico" },
+            { word: "εὐχαριστία", translit: "eucharistia", meaning: "'ação de graças, gratidão expressa em palavras'. Raiz da palavra 'eucaristia', usada na tradição cristã para a Ceia do Senhor.", lang: "grego" },
           ],
           deepDive:
-            "A oração perseverante é escola de caráter. Deus poderia responder tudo no primeiro pedido — e às vezes responde —, mas frequentemente demora não porque não queira, mas porque a espera está formando em nós algo mais precioso que a resposta. Aprendemos dependência, humildade e discernimento. Enquanto oramos, Deus não está apenas ouvindo o pedido: está moldando o pedinte. Por isso, muitas vezes, quando a resposta finalmente chega, já não somos os mesmos que a pediram — e podemos recebê-la sem que ela nos destrua.",
+            "A ordem importa: 'entrem por suas portas com ações de graças' vem antes de qualquer pedido no Salmo 100. Isso não é regra rígida de etiqueta espiritual, mas sabedoria psicológica e teológica profunda — começar reconhecendo quem Deus é e o que Ele já fez recalibra a perspectiva antes de apresentarmos qualquer necessidade. Paulo, em Filipenses 4:6, escrito de dentro de uma prisão, ainda assim instrui a igreja a misturar toda súplica com ação de graças. Gratidão em meio à dificuldade não é ingenuidade — é fé que já sabe como a história termina.",
           theologianQuote: {
-            author: "Paul Washer",
-            text: "Deus não atrasa suas respostas por indiferença; atrasa porque o processo de esperar em oração é, muitas vezes, mais transformador do que a resposta em si.",
+            author: "Davi Lago",
+            text: "Adorar não é uma técnica para conseguir algo de Deus; é a resposta natural de um coração que finalmente enxergou quem Ele é.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Salmos 150:6",
+                textByVersion: {
+                  NVI: "Que tudo o que tem vida dê louvor ao Senhor! Aleluia!",
+                },
+              },
+              {
+                ref: "Colossenses 3:17",
+                textByVersion: {
+                  NVI: "E tudo o que fizerem, seja em palavra ou em ação, façam-no em nome do Senhor Jesus, dando por meio dele graças a Deus Pai.",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "זָמַר", translit: "zamar", meaning: "'louvar cantando, tocar instrumento em louvor'. Verbo hebraico que aparece repetidamente no Saltério, ligando louvor e música.", lang: "hebraico" },
+              { word: "δοξολογία", translit: "doxologia", meaning: "'palavra de louvor, atribuição de glória'. Raiz da palavra 'doxologia', usada para hinos e orações que exaltam a glória de Deus.", lang: "grego" },
+            ],
+            historicalContext:
+              "Os Salmos serviam como o hinário e o livro de orações oficial do templo em Israel, cantados comunitariamente em festas e sacrifícios. A igreja primitiva herdou esse hábito: Efésios 5:19 e Colossenses 3:16 instruem os cristãos a se edificarem 'com salmos, hinos e cânticos espirituais' — mostrando que a adoração cantada em comunidade sempre foi parte central, não periférica, da vida devocional cristã.",
+            exegeticalNotes:
+              "A expressão 'em tudo' (en panti), em Filipenses 4:6, é abrangente por design: Paulo não restringe a oração agradecida a momentos de crise ou a datas especiais — ela deve permear toda a vida, inclusive as circunstâncias mais adversas, como as que o próprio apóstolo vivia ao escrever essa carta, preso em Roma.",
+            theologicalDebate:
+              "Diferenças de estilo entre adoração mais contemplativa e silenciosa e adoração mais expressiva e cantada em voz alta refletem tradições e temperamentos distintos dentro do cristianismo evangélico — não uma questão de doutrina essencial, mas de preferência legítima de expressão cultural e comunitária. O que a Escritura exige não é um estilo específico, mas um coração genuinamente grato e voltado a Deus.",
+            secondQuote: {
+              author: "C. S. Lewis",
+              text: "Não louvamos as coisas apenas para expressar, mas para completar nosso prazer nelas; o louvor é o modo natural de a alegria transbordar.",
+            },
           },
           quizzes: [
             {
-              question: "Por que Jesus contou a parábola de Lucas 18?",
+              question: "Segundo o Salmo 100:4, como devemos entrar na presença de Deus?",
               options: [
-                "Para ensinar sobre juízes injustos",
-                "Para mostrar que os discípulos deviam orar sempre e não desanimar",
-                "Para condenar viúvas insistentes",
-                "Para provar que Deus é indiferente",
+                "Com listas de pedidos urgentes",
+                "Com ações de graças e louvor",
+                "Em silêncio absoluto, sem palavras",
+                "Apenas em ocasiões especiais",
               ],
               correctIndex: 1,
             },
             {
-              question: "O que significa 'orai sem cessar' (1 Ts 5:17)?",
+              question: "O que Filipenses 4:6 ensina sobre como apresentar pedidos a Deus?",
               options: [
-                "Falar em voz alta 24 horas por dia",
-                "Cumprir horários fixos de oração",
-                "Viver em consciência contínua da presença de Deus",
-                "Repetir sempre a mesma oração",
+                "Que devemos escondê-los até estarmos completamente calmos",
+                "Que devemos misturar toda súplica com ação de graças",
+                "Que só devemos orar quando estamos felizes",
+                "Que a gratidão é opcional na oração",
               ],
-              correctIndex: 2,
+              correctIndex: 1,
             },
           ],
           application:
-            "Escolha um pedido pelo qual você orará todos os dias durante 40 dias. Marque no calendário e não desista, mesmo sem resposta.",
+            "Antes de fazer qualquer pedido hoje, escreva cinco motivos concretos de gratidão a Deus. Só depois apresente suas necessidades.",
           prayer:
-            "Pai, quando eu quiser desistir de orar, lembra-me que o silêncio não é ausência — é escola. Fortalece minha fé para bater à tua porta com constância. Amém.",
+            "Senhor, perdoa-me por tantas vezes correr direto para os meus pedidos sem parar para te contemplar. Que minha primeira palavra hoje seja de louvor, não de carência. Amém.",
           weeklyChallenge:
-            "Comece um caderno de oração com três colunas: pedido, data em que começou, data em que foi respondido. Preencha as duas primeiras esta semana.",
+            "Escreva um salmo pessoal de louvor de dez linhas, sem nenhum pedido — apenas admiração por quem Deus é e gratidão pelo que Ele já fez.",
           reflectionQuestion:
-            "O que costumo fazer quando uma oração demora a ser respondida? Desisto ou persevero?",
+            "Minhas orações têm mais espaço para pedidos ou para louvor? O que isso revela sobre a imagem de Deus que carrego no coração?",
           xp: 25,
         },
         {
           id: "or-2-2",
+          title: "Confissão e Arrependimento no Diálogo com Deus",
+          intro: [
+            "A confissão é o tipo de oração que a carne humana menos gosta de fazer, e talvez por isso seja um dos termômetros mais confiáveis da saúde espiritual de alguém. Confessar não é informar a Deus algo que Ele já sabe — é concordar com Ele sobre o que fizemos, sem desculpas nem minimizações.",
+            "O modelo mais completo de confissão na Bíblia é o Salmo 51, escrito por Davi depois de seu pecado com Bate-Seba. Ali não há autopiedade nem racionalização — há reconhecimento nu do pecado e clamor por um coração novo.",
+            "É importante distinguir a confissão que restaura a comunhão diária com o Pai (1 João 1:9) da justificação que já nos salvou de uma vez por todas em Cristo. Confessar pecados não é reconquistar a salvação a cada dia — é manter limpo o relacionamento com o Pai que já nos adotou como filhos.",
+          ],
+          verses: [
+            {
+              ref: "1 João 1:9",
+              textByVersion: {
+                NVI: "Se confessarmos os nossos pecados, ele é fiel e justo para perdoar os nossos pecados e nos purificar de toda injustiça.",
+              },
+            },
+            {
+              ref: "Salmos 51:3-4",
+              textByVersion: {
+                NVI: "Sei quais são as minhas transgressões, e o meu pecado está sempre diante de mim. Só contra ti pequei e fiz o que tu reprovas.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "ὁμολογέω", translit: "homologeō", meaning: "'confessar, concordar com'. Literalmente, 'dizer a mesma coisa' que Deus diz sobre o pecado — sem minimizar nem justificar.", lang: "grego" },
+            { word: "חָטָא", translit: "chata", meaning: "'pecar, errar o alvo'. Imagem de uma flecha que não atinge o centro pretendido — desviar-se do padrão de Deus.", lang: "hebraico" },
+          ],
+          deepDive:
+            "Confessar, no grego original, é 'homologeō' — literalmente, dizer a mesma coisa que Deus diz. Isso significa que a confissão genuína não é apenas admitir um erro, mas concordar plenamente com o diagnóstico de Deus sobre esse pecado, sem tentar suavizá-lo. Davi, no Salmo 51, não culpa Bate-Seba, nem as circunstâncias, nem a pressão do poder — ele diz 'meu pecado está sempre diante de mim'. Esse tipo de confissão sem desculpas é o que abre espaço para a restauração genuína. A promessa de 1 João 1:9 é notável: Deus é 'fiel e justo' para perdoar — fiel à sua promessa, justo porque o preço do pecado já foi pago integralmente na cruz.",
+          theologianQuote: {
+            author: "Jonas Madureira",
+            text: "Confessar não é se afogar em culpa; é subir à superfície da verdade, onde a graça de Deus já está esperando para purificar o que a culpa só sabia esconder.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Salmos 32:3-5",
+                textByVersion: {
+                  NVI: "Enquanto guardei silêncio, meus ossos se consumiam em meu gemer o dia inteiro... Então confessei a ti o meu pecado e não escondi a minha iniquidade.",
+                },
+              },
+              {
+                ref: "2 Coríntios 7:10",
+                textByVersion: {
+                  NVI: "A tristeza segundo Deus produz arrependimento que leva à salvação e não traz arrependimento nenhum; a tristeza do mundo, porém, produz morte.",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "נָחַם", translit: "nacham", meaning: "'arrepender-se, mudar de propósito, consolar-se'. Verbo hebraico que descreve uma reviravolta genuína de direção, não apenas remorso emocional.", lang: "hebraico" },
+              { word: "μετάνοια", translit: "metanoia", meaning: "'mudança de mente'. Termo grego que descreve arrependimento genuíno como transformação de rumo, não apenas sentimento de pesar.", lang: "grego" },
+            ],
+            historicalContext:
+              "A prática de confessar pecados sempre esteve presente na vida da igreja, mas assumiu formas diferentes ao longo da história. Na igreja primitiva havia momentos de confissão pública para pecados graves e reconciliação com a comunidade; ao longo da Idade Média desenvolveu-se a prática sacramental da confissão auricular a um sacerdote. A Reforma Protestante recuperou a ênfase bíblica de que o crente confessa diretamente a Deus, sem necessidade de mediação sacerdotal humana para o perdão — embora Tiago 5:16 continue recomendando a confiança mútua entre irmãos como parte saudável da vida em comunidade.",
+            exegeticalNotes:
+              "O verbo 'confessarmos', em 1 João 1:9, está no tempo presente no grego, sugerindo uma prática contínua, um ritmo de vida, não um evento único. Isso reforça a distinção entre a confissão que restaura comunhão (um processo diário) e a justificação diante de Deus, que já foi selada de uma vez por todas pela obra de Cristo na cruz.",
+            theologicalDebate:
+              "A prática de confessar pecados a um sacerdote como parte de um sacramento formal de penitência é uma tradição histórica de outras famílias cristãs, diferente da prática evangélica de confissão direta a Deus, com apoio fraterno opcional entre crentes de confiança. Essa é uma diferença histórica legítima entre tradições cristãs, que merece ser tratada com respeito, sem ridicularizar nenhum lado; a posição evangélica se apoia em textos como 1 Timóteo 2:5, que afirma um único Mediador entre Deus e os homens.",
+            secondQuote: {
+              author: "Charles Finney",
+              text: "O arrependimento genuíno não termina na tristeza pelo pecado; ele termina na mudança de direção. Onde não há mudança de vida, ainda não houve arrependimento completo.",
+            },
+          },
+          quizzes: [
+            {
+              question: "O que a palavra grega 'homologeō' comunica sobre a confissão de pecados?",
+              options: [
+                "Informar a Deus algo que Ele ainda não sabia",
+                "Concordar com Deus sobre o pecado, sem minimizá-lo",
+                "Um ritual sem relação com o coração",
+                "Uma obrigação para reconquistar a salvação",
+              ],
+              correctIndex: 1,
+            },
+            {
+              question: "Qual é a diferença entre a confissão de 1 João 1:9 e a justificação em Cristo?",
+              options: [
+                "Não há diferença nenhuma",
+                "A confissão restaura a comunhão diária; a justificação já nos salvou de uma vez por todas",
+                "A confissão é mais importante que a justificação",
+                "A justificação depende de confissões diárias para se manter válida",
+              ],
+              correctIndex: 1,
+            },
+          ],
+          application:
+            "Reserve um tempo hoje para confessar a Deus, com palavras específicas (não genéricas), algo que você tem evitado admitir. Não peça apenas perdão — peça também um coração transformado, como Davi no Salmo 51.",
+          prayer:
+            "Senhor, não quero esconder de ti o que já vês. Confesso meu pecado sem desculpas e recebo tua purificação com gratidão. Cria em mim um coração puro, e renova um espírito estável dentro de mim. Amém.",
+          weeklyChallenge:
+            "Leia o Salmo 51 inteiro uma vez por dia esta semana, em oração pausada, permitindo que suas próprias palavras de confissão surjam ao longo da leitura.",
+          reflectionQuestion:
+            "Existe algo que tenho evitado confessar a Deus com sinceridade? O que me impede de fazer isso hoje?",
+          xp: 25,
+        },
+      ],
+    },
+    {
+      id: "or-mod-3",
+      title: "Módulo III: Súplica e Intercessão",
+      lessons: [
+        {
+          id: "or-3-1",
+          title: "Súplica: Apresentando Nossos Pedidos a Deus",
+          intro: [
+            "Depois de adorar, agradecer e confessar, chegamos ao tipo de oração mais familiar para a maioria dos cristãos: o pedido. Súplica é apresentar a Deus, com honestidade e confiança, aquilo de que realmente precisamos — sem fingir força que não temos, nem exigir respostas como se fôssemos credores de Deus.",
+            "Jesus incentiva a súplica sem rodeios: 'peçam, e lhes será dado' (Mt 7:7). Ao mesmo tempo, ensina que os pedidos de um filho devem estar em sintonia com o caráter e a vontade do Pai — não é manipulação, é confiança filial.",
+            "Suplicar não é sinal de fraqueza espiritual; é reconhecimento de dependência. O cristão maduro não deixa de pedir — aprende a pedir com humildade, especificidade e submissão à vontade de Deus.",
+          ],
+          verses: [
+            {
+              ref: "Mateus 7:7-8",
+              textByVersion: {
+                NVI: "Peçam, e lhes será dado; busquem, e encontrarão; batam, e a porta lhes será aberta. Pois todo o que pede recebe; o que busca encontra; e àquele que bate, a porta é aberta.",
+              },
+            },
+            {
+              ref: "Filipenses 4:6-7",
+              textByVersion: {
+                NVI: "Não andem ansiosos por coisa alguma, mas em tudo, pela oração e súplicas, e com ação de graças, apresentem seus pedidos a Deus. E a paz de Deus, que excede todo o entendimento, guardará o coração e a mente de vocês em Cristo Jesus.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "αἰτέω", translit: "aiteō", meaning: "'pedir'. Verbo comum usado por Jesus em Mateus 7:7 para incentivar o pedido direto e confiante a Deus.", lang: "grego" },
+            { word: "δέησις", translit: "deēsis", meaning: "'súplica, pedido urgente'. Palavra usada em Filipenses 4:6 para descrever a apresentação sincera de uma necessidade específica.", lang: "grego" },
+          ],
+          deepDive:
+            "A promessa de Mateus 7:7-8 não é um cheque em branco emocional — o próprio contexto do Sermão do Monte já ensinou que os pedidos devem estar alinhados com o caráter do Pai que 'sabe dar boas dádivas aos seus filhos' (Mt 7:11). Suplicar bem é, portanto, um exercício de fé e humildade ao mesmo tempo: fé para acreditar que Deus ouve e se importa, humildade para reconhecer que Ele, e não nós, define o que é realmente bom. O resultado da súplica entregue com confiança, segundo Paulo, não é necessariamente a resposta exata que pedimos, mas 'a paz de Deus, que excede todo o entendimento' — uma tranquilidade que vem antes mesmo da resposta chegar.",
+          theologianQuote: {
+            author: "Hernandes Dias Lopes",
+            text: "Deus não se cansa dos nossos pedidos; Ele se alegra quando um filho corre para Ele em vez de tentar resolver tudo sozinho.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Salmos 37:4",
+                textByVersion: {
+                  NVI: "Que o Senhor seja a sua alegria, e ele atenderá aos desejos do seu coração.",
+                },
+              },
+              {
+                ref: "Tiago 4:2-3",
+                textByVersion: {
+                  NVI: "Vocês cobiçam coisas e não as têm; matam e invejam, mas não conseguem obter o que querem... Quando pedem, não recebem, pois pedem por motivos errados.",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "ζητέω", translit: "zēteō", meaning: "'buscar'. Segundo verbo da tríade de Mateus 7:7, sugerindo que a súplica muitas vezes exige persistência ativa, não apenas um pedido único.", lang: "grego" },
+              { word: "שָׁאַל", translit: "shaal", meaning: "'pedir, solicitar'. Verbo hebraico comum para pedido, usado, por exemplo, em 1 Samuel 1 quando Ana pede um filho ao Senhor.", lang: "hebraico" },
+            ],
+            historicalContext:
+              "A oração de súplica sempre teve lugar central na piedade de Israel: Ana pedindo um filho (1 Samuel 1), Ezequias pedindo cura e vida mais longa (2 Reis 20), Neemias pedindo favor diante do rei (Neemias 1-2) — todos são exemplos bíblicos de súplica honesta, específica e confiante, sem que isso fosse visto como falta de fé ou espiritualidade imatura.",
+            exegeticalNotes:
+              "Tiago 4:2-3 acrescenta um contraponto necessário à promessa de Mateus 7: nem todo pedido não atendido revela falta de fé — às vezes revela motivação errada ('para gastarem em seus próprios prazeres'). A súplica madura examina não apenas o que se pede, mas por quê.",
+            theologicalDebate:
+              "Existe uma tensão pastoral legítima entre incentivar a súplica ousada e confiante (Mt 7:7) e alertar contra pedidos motivados por egoísmo (Tg 4:3) — cristãos fiéis às vezes hesitam entre ênfases diferentes aqui, alguns priorizando a confiança da criança que pede sem medo, outros priorizando o exame de consciência antes de pedir. As duas ênfases são bíblicas e se complementam; não são posições concorrentes, mas faces da mesma moeda da maturidade na oração.",
+            secondQuote: {
+              author: "Craig Keener",
+              text: "A súplica bíblica nunca é indigna de um Deus soberano; pelo contrário, é o próprio convite que Ele estende aos seus filhos para participarem ativamente de seus propósitos no mundo.",
+            },
+          },
+          quizzes: [
+            {
+              question: "Segundo Filipenses 4:6-7, o que geralmente acompanha a súplica entregue com confiança a Deus?",
+              options: [
+                "A garantia de receber exatamente o que foi pedido",
+                "A paz de Deus, que excede todo entendimento",
+                "O fim imediato de toda ansiedade externa",
+                "A eliminação da necessidade de continuar orando",
+              ],
+              correctIndex: 1,
+            },
+            {
+              question: "Segundo Tiago 4:2-3, por que algumas súplicas não são atendidas?",
+              options: [
+                "Porque Deus não tem poder para atendê-las",
+                "Porque são pedidas com motivações egoístas",
+                "Porque a oração nunca funciona de verdade",
+                "Porque só pedidos grandes são ouvidos",
+              ],
+              correctIndex: 1,
+            },
+          ],
+          application:
+            "Escreva uma lista de três pedidos concretos que você tem hesitado em levar a Deus. Ore por eles esta semana com honestidade, examinando também suas próprias motivações.",
+          prayer:
+            "Pai, ensina-me a pedir com confiança de filho, sem medo de incomodar-te, e com humildade suficiente para examinar por que peço o que peço. Que minha súplica glorifique a ti, não apenas a mim. Amém.",
+          weeklyChallenge:
+            "Escolha um pedido específico e ore por ele todos os dias desta semana, anotando a data de início. Revise, ao final, se sua fé ou sua motivação mudaram durante o processo.",
+          reflectionQuestion:
+            "Tenho hesitado em pedir algo a Deus por achar que é pequeno demais, ou grande demais? O que isso revela sobre a imagem que tenho dele?",
+          xp: 25,
+        },
+        {
+          id: "or-3-2",
           title: "Intercessão pelos Outros",
           intro: [
-            "A oração cristã amadurece quando deixa de ser lista de pedidos pessoais e passa a incluir os outros. Paulo pede a Timóteo que 'súplicas, orações, intercessões e ações de graças sejam feitas em favor de todos os homens' (1 Tm 2:1). Interceder é ficar diante de Deus em nome de outra pessoa — é um ministério silencioso, quase invisível, mas de altíssimo peso espiritual.",
-            "Interceder por alguém muda o interceptor. É quase impossível continuar odiando quem você tem orado com sinceridade. É por isso que Jesus manda orar pelos inimigos: não porque eles precisem — precisam sim — mas porque nós precisamos.",
-            "A intercessão é o modo mais concreto de amar quem está longe de você.",
+            "A oração cristã amadurece quando deixa de ser apenas uma lista de pedidos pessoais e passa a incluir os outros. Paulo pede a Timóteo que 'súplicas, orações, intercessões e ações de graças sejam feitas em favor de todos os homens' (1 Tm 2:1). Interceder é ficar diante de Deus em nome de outra pessoa — um ministério silencioso, quase invisível, mas de altíssimo peso espiritual.",
+            "Interceder por alguém muda o interceptor. É quase impossível continuar guardando ressentimento de quem você tem levado a Deus com sinceridade. É por isso que Jesus ordena orar pelos inimigos: não apenas porque eles precisam — precisam sim —, mas porque nós também precisamos.",
+            "A intercessão é o modo mais concreto de amar quem está distante de você fisicamente ou emocionalmente.",
           ],
           verses: [
             {
@@ -1230,21 +1520,51 @@ const oracao: Trail = {
               ],
             },
             {
-              ref: "Efésios 6:18",
+              ref: "Hebreus 7:25",
               textByVersion: {
-                NVI: "Orem no Espírito em todas as ocasiões, com toda oração e súplica; tendo isso em mente, estejam atentos e perseverem na oração por todos os santos.",
+                NVI: "Por isso ele é capaz de salvar definitivamente aqueles que, por meio dele, se aproximam de Deus, pois vive sempre para interceder por eles.",
               },
             },
           ],
           keywords: [
             { word: "ἔντευξις", translit: "enteuxis", meaning: "intercessão, apelo em favor de outrem", lang: "grego" },
-            { word: "פָּגַע", translit: "paga", meaning: "encontrar, intervir, interceder", lang: "hebraico" },
+            { word: "בַּעַד", translit: "ba'ad", meaning: "'em favor de, por trás de'. Preposição hebraica usada em orações intercessórias no Antigo Testamento.", lang: "hebraico" },
           ],
           deepDive:
-            "A intercessão tem raízes profundas na Bíblia: Abraão intercede por Sodoma, Moisés intercede por Israel, Jó intercede pelos amigos, Jesus intercede pelos discípulos em João 17 — e continua intercedendo por nós agora (Rm 8:34; Hb 7:25). Quando você intercede, participa do próprio ministério celestial de Cristo. Não é exagero: é a Escritura. Isso muda o peso das nossas orações intercessórias: não estamos falando sozinhos com Deus a respeito de alguém — estamos nos juntando à voz de Jesus.",
+            "A intercessão tem raízes profundas na Bíblia: Abraão intercede por Sodoma (Gn 18), Moisés intercede por Israel depois do bezerro de ouro (Êx 32), Jesus intercede pelos discípulos em João 17 — e continua intercedendo por nós agora, segundo Hebreus 7:25. Quando você intercede por alguém, participa do próprio ministério celestial de Cristo, que 'vive sempre para interceder'. Isso muda o peso das nossas orações intercessórias: não estamos falando sozinhos com Deus a respeito de alguém — estamos nos juntando à voz de Jesus, que já ora por essa mesma pessoa.",
           theologianQuote: {
-            author: "John Lennox",
-            text: "Interceder é assumir diante de Deus a responsabilidade espiritual por alguém que talvez nem saiba que estamos orando por ele. É o ato de amor mais escondido — e um dos mais poderosos.",
+            author: "Dietrich Bonhoeffer",
+            text: "Interceder por alguém é levá-lo até a presença de Deus e deixá-lo ali, confiando que Deus fará por ele o que nós mesmos não temos poder para fazer.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Gênesis 18:23-25",
+                textByVersion: {
+                  NVI: "Então Abraão aproximou-se e perguntou: 'Serás capaz de exterminar o justo com o ímpio?... Longe de ti fazer tal coisa! Matar o justo com o ímpio, tratando o justo e o ímpio da mesma maneira!'",
+                },
+              },
+              {
+                ref: "João 17:20",
+                textByVersion: {
+                  NVI: "Minha oração não é apenas por eles. Rogo também por aqueles que crerão em mim, por meio da mensagem deles.",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "ὑπέρ", translit: "hyper", meaning: "'em favor de, por causa de'. Preposição-chave do vocabulário intercessório do Novo Testamento, usada repetidamente para descrever a obra de Cristo e a oração cristã em favor de outros.", lang: "grego" },
+              { word: "פָּגַע", translit: "paga", meaning: "'encontrar, intervir, interceder'. Usado, entre outros lugares, sobre o Servo Sofredor que 'intercede pelos transgressores' em Isaías 53:12.", lang: "hebraico" },
+            ],
+            historicalContext:
+              "A prática de intercessão organizada por outros — listas de oração, cadeias de intercessão, tempos dedicados a orar por líderes, missionários e necessidades da igreja — tem raízes na tradição monástica de intercessão constante pelo mundo, e foi amplamente adotada por igrejas evangélicas como parte estrutural da vida comunitária. Essa prática segue o padrão bíblico estabelecido muito antes de qualquer organização eclesiástica formal, já visível em Abraão e Moisés.",
+            exegeticalNotes:
+              "A expressão grega usada em Hebreus 7:25 para descrever a intercessão contínua de Cristo — 'eis to pantelēs', algo como 'totalmente, completamente e para sempre' — enfatiza tanto a permanência quanto a suficiência dessa intercessão. Não é uma oração ocasional de Cristo por nós; é uma atividade celestial ininterrupta, o fundamento por trás de toda intercessão humana.",
+            theologicalDebate:
+              "Algumas tradições cristãs historicamente pediram também a santos falecidos que intercedessem por elas diante de Deus. A teologia evangélica, apoiada em 1 Timóteo 2:5 ('há um só Deus e um só Mediador entre Deus e os homens, Jesus Cristo'), entende que a intercessão bíblica válida ocorre entre crentes vivos uns pelos outros, e sobretudo por meio da intercessão única e suficiente de Cristo — sem necessidade, nem base bíblica, para intercessão de santos falecidos. Essa é uma diferença histórica legítima entre tradições cristãs, que deve ser tratada com respeito.",
+            secondQuote: {
+              author: "Leslie Newbigin",
+              text: "A intercessão pelas nações e pelos que ainda não creem não é um extra opcional da vida cristã; é parte essencial de como a igreja participa da missão de Deus no mundo.",
+            },
           },
           quizzes: [
             {
@@ -1258,25 +1578,222 @@ const oracao: Trail = {
               correctIndex: 1,
             },
             {
-              question: "Por que orar pelos inimigos é tão importante?",
+              question: "Segundo Hebreus 7:25, o que Cristo faz continuamente por nós?",
               options: [
-                "Porque eles precisam mudar de vida",
-                "Porque nós também precisamos que Deus mude nosso coração em relação a eles",
-                "Porque é uma exigência religiosa vazia",
-                "Porque garante nossa salvação",
+                "Ele julga nossas orações antes de as ouvir",
+                "Ele intercede por nós, vivendo sempre para isso",
+                "Ele delega a intercessão a anjos",
+                "Ele intercede apenas em momentos de crise extrema",
               ],
               correctIndex: 1,
             },
           ],
           application:
-            "Faça uma lista de 5 pessoas por quem você intercederá diariamente esta semana. Inclua pelo menos uma pessoa que te feriu.",
+            "Faça uma lista de 5 pessoas por quem você intercederá diariamente esta semana. Inclua pelo menos uma pessoa com quem você tem dificuldade de se relacionar.",
           prayer:
             "Senhor, ensina-me a interceder. Que meus olhos vejam os outros como tu vês, e que minha oração se torne uma ponte entre a tua graça e a vida deles. Em nome de Jesus, amém.",
           weeklyChallenge:
             "Envie uma mensagem esta semana a cada uma das 5 pessoas da sua lista dizendo apenas: 'Estou orando por você'. Não explique motivos.",
           reflectionQuestion:
-            "Quem tem me faltado orar por, e por quê? O que Deus quer fazer em mim ao me colocar a orar por essa pessoa?",
+            "Quem tenho deixado de orar por, e por quê? O que Deus quer fazer em mim ao me colocar a orar por essa pessoa?",
           xp: 25,
+        },
+      ],
+    },
+    {
+      id: "or-mod-4",
+      title: "Módulo IV: Perseverança e Disciplina na Oração",
+      lessons: [
+        {
+          id: "or-4-1",
+          title: "Quando Deus Parece Silencioso",
+          intro: [
+            "Toda vida de oração séria, mais cedo ou mais tarde, atravessa um período de aparente silêncio de Deus. O apóstolo Paulo pediu três vezes que um 'espinho na carne' fosse removido, e a resposta que recebeu não foi a remoção do problema, mas uma promessa: 'a minha graça é suficiente para você' (2 Coríntios 12:9). Até Jesus, no Getsêmani, orou pedindo que o cálice passasse — e ainda assim o cálice não passou.",
+            "O silêncio de Deus não é o mesmo que ausência de Deus. A Bíblia tem um gênero inteiro dedicado a essa experiência: os salmos de lamento, que clamam abertamente 'até quando, Senhor?' sem que isso seja tratado como falta de fé.",
+            "Aprender a orar no silêncio, sem abandonar a confiança em Deus, é uma das marcas mais profundas de maturidade espiritual — e uma das mais difíceis de ensinar, porque só se aprende de verdade atravessando a experiência.",
+          ],
+          verses: [
+            {
+              ref: "2 Coríntios 12:8-9",
+              textByVersion: {
+                NVI: "Três vezes roguei ao Senhor que o tirasse de mim. Mas ele me disse: 'Minha graça é suficiente para você, pois o meu poder se aperfeiçoa na fraqueza'.",
+              },
+              originals: [
+                { word: "σκόλοψ", translit: "skolops", meaning: "espinho, estaca cravada na carne", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Habacuque 1:2",
+              textByVersion: {
+                NVI: "Até quando, Senhor, clamarei por ajuda e tu não ouvirás? Até quando gritarei 'violência!' e tu não salvarás?",
+              },
+            },
+          ],
+          keywords: [
+            { word: "σκόλοψ", translit: "skolops", meaning: "'espinho, estaca'. Imagem usada por Paulo para descrever um sofrimento persistente que Deus permitiu, mas não removeu (2 Co 12:7).", lang: "grego" },
+            { word: "עַד־אָנָה", translit: "ad-anah", meaning: "'até quando?'. Expressão comum nos lamentos bíblicos, marca de um clamor honesto que não abandona a fé mesmo diante da demora.", lang: "hebraico" },
+          ],
+          deepDive:
+            "O 'não' de Deus a Paulo em 2 Coríntios 12 não é rejeição — é redirecionamento. Deus não removeu o espinho, mas concedeu algo mais profundo: a compreensão de que sua graça basta, e que o poder divino se manifesta com mais clareza justamente na fraqueza humana, não apesar dela. Isso não significa que toda dor tem uma explicação clara e imediata que possamos identificar — muitas vezes não tem, e forçar uma explicação onde a Escritura não a dá (como fizeram os amigos de Jó) só acrescenta sofrimento ao sofrimento. O que a Bíblia oferece, em vez de uma explicação garantida para cada silêncio, é a certeza do caráter de Deus: bom, sábio e presente, mesmo quando as respostas demoram.",
+          theologianQuote: {
+            author: "Larry Crabb",
+            text: "Deus raramente explica o sofrimento da forma como gostaríamos; Ele nos convida, em vez disso, a confiar em seu caráter mesmo quando seus caminhos permanecem incompreensíveis.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Salmos 13:1-2",
+                textByVersion: {
+                  NVI: "Até quando, Senhor? Vais esquecer-te de mim para sempre? Até quando esconderás de mim o teu rosto?",
+                },
+              },
+              {
+                ref: "Mateus 26:39",
+                textByVersion: {
+                  NVI: "Indo um pouco mais adiante, prostrou-se com o rosto em terra e orou: 'Meu Pai, se é possível, afasta de mim este cálice; contudo, não seja como eu quero, mas como tu queres'.",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "יָחַל", translit: "yachal", meaning: "'esperar, aguardar com expectativa'. Verbo hebraico usado repetidamente nos Salmos para descrever a espera confiante em Deus mesmo em meio à demora.", lang: "hebraico" },
+              { word: "ὑπομονή", translit: "hypomonē", meaning: "'perseverança, resistência paciente sob pressão'. Palavra grega que descreve a capacidade de permanecer firme durante um período prolongado de dificuldade.", lang: "grego" },
+            ],
+            historicalContext:
+              "Os salmos de lamento formam a maior categoria isolada de salmos no Saltério — mais numerosos até que os salmos de louvor puro. Isso mostra que a tradição de oração de Israel sempre reservou espaço legítimo para o clamor honesto diante da dor, sem tratá-lo como falta de fé. A cultura devocional evangélica contemporânea, por vezes, tende a evitar essa linguagem de lamento, preferindo um tom apenas positivo — um desequilíbrio que vale a pena corrigir à luz do próprio Saltério.",
+            exegeticalNotes:
+              "Em 2 Coríntios 12:8, o verbo grego traduzido como 'roguei' (parakaleō) aparece repetido, reforçando a insistência do pedido de Paulo. A resposta de Deus não nega a legitimidade do pedido — apenas reformula a resposta em torno de um bem maior que o próprio Paulo talvez não pudesse enxergar no momento do pedido.",
+            theologicalDebate:
+              "Existe uma diferença legítima de ênfase pastoral entre cristãos que buscam ativamente identificar 'lições' específicas por trás de cada período de silêncio de Deus, e outros que preferem reconhecer, com mais humildade, que 'as coisas ocultas pertencem ao Senhor, nosso Deus' (Dt 29:29), sem insistir em uma explicação plenamente satisfatória para cada sofrimento. Ambas as posturas têm base bíblica; o cuidado pastoral necessário é evitar o erro dos amigos de Jó, que presumiram conhecer a causa exata do sofrimento alheio. Em situações pessoais difíceis, é sempre sábio buscar acompanhamento do seu pastor ou líder espiritual.",
+            secondQuote: {
+              author: "Alister McGrath",
+              text: "A fé cristã nunca prometeu respostas completas para o mistério do sofrimento; prometeu, isso sim, um Deus que sofreu conosco na cruz e que permanece fiel mesmo no silêncio.",
+            },
+          },
+          quizzes: [
+            {
+              question: "O que Deus respondeu a Paulo sobre o 'espinho na carne' (2 Co 12:9)?",
+              options: [
+                "Que o espinho seria removido imediatamente",
+                "Que sua graça é suficiente, e seu poder se aperfeiçoa na fraqueza",
+                "Que Paulo não tinha fé suficiente",
+                "Que ele deveria parar de pedir",
+              ],
+              correctIndex: 1,
+            },
+            {
+              question: "O que os salmos de lamento (como o Salmo 13) ensinam sobre orar na dificuldade?",
+              options: [
+                "Que clamar 'até quando, Senhor?' é sinal de falta de fé",
+                "Que é legítimo, bíblico, expressar dor e demora honestamente a Deus",
+                "Que só devemos orar quando estamos em paz",
+                "Que Deus se ofende com perguntas sinceras",
+              ],
+              correctIndex: 1,
+            },
+          ],
+          application:
+            "Se você está enfrentando um silêncio de Deus em alguma área da sua vida, escreva uma oração de lamento honesta, nos moldes do Salmo 13, sem esconder sua dor nem fingir uma paz que ainda não sente.",
+          prayer:
+            "Senhor, não entendo por que este silêncio persiste, mas escolho confiar no teu caráter mesmo quando não vejo teus caminhos. Sustenta minha fé enquanto espero. Amém.",
+          weeklyChallenge:
+            "Leia um salmo de lamento por dia esta semana (Salmos 13, 22, 42, 77, 88) e observe como cada um termina — a maioria retorna à confiança em Deus, mesmo sem resolver o problema.",
+          reflectionQuestion:
+            "Já tratei minha própria dúvida ou dor diante do silêncio de Deus como algo proibido de expressar? O que os salmos de lamento libertam em mim ao ler isso?",
+          xp: 30,
+        },
+        {
+          id: "or-4-2",
+          title: "Jejum e Oração: Intensificando a Busca por Deus",
+          intro: [
+            "O jejum bíblico é a prática voluntária de abster-se de alimento (ou de outra necessidade legítima) por um período determinado, com o propósito de intensificar a busca por Deus. Moisés, Elias, Ester, a igreja de Antioquia e o próprio Jesus jejuaram — sempre associando essa disciplina à oração, nunca isolada dela.",
+            "Jejuar não é uma técnica para forçar a mão de Deus, nem um mérito espiritual que compra respostas mais rápidas. É, antes, um ato físico que expressa e reforça uma urgência espiritual: 'isto importa tanto para mim que estou disposto a abrir mão até das minhas necessidades básicas para buscar a Deus com mais atenção.'",
+            "Jesus adverte contra o jejum performático, feito para impressionar os outros (Mt 6:16-18), e o profeta Isaías denuncia o jejum religioso vazio, que não se traduz em justiça e misericórdia concreta (Is 58). O jejum genuíno é sempre acompanhado de sinceridade de coração.",
+          ],
+          verses: [
+            {
+              ref: "Atos 13:2-3",
+              textByVersion: {
+                NVI: "Enquanto adoravam o Senhor e jejuavam, o Espírito Santo disse: 'Separem-me Barnabé e Saulo para a obra a qual os chamei'. Assim, depois de jejuar, orar e lhes impor as mãos, eles os enviaram.",
+              },
+            },
+            {
+              ref: "Mateus 6:16-18",
+              textByVersion: {
+                NVI: "Quando vocês jejuarem, não fiquem carrancudos como os hipócritas... Mas quando você jejuar, penteie os cabelos e lave o rosto, para que não pareça aos outros que você está jejuando, mas somente a seu Pai, que vê o que é feito em secreto.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "צוֹם", translit: "tsom", meaning: "'jejum'. Abstenção voluntária de alimento, praticada em Israel em momentos de luto, arrependimento ou busca intensa por direção divina.", lang: "hebraico" },
+            { word: "νηστεύω", translit: "nēsteuō", meaning: "'jejuar'. Verbo grego usado nos Evangelhos e em Atos para descrever a prática cristã de abstinência voluntária associada à oração.", lang: "grego" },
+          ],
+          deepDive:
+            "O jejum bíblico nunca aparece isolado — ele sempre acompanha a oração, humilhando o corpo para focar o espírito. Em Atos 13, é durante um período de jejum e adoração que a igreja de Antioquia recebe clareza sobre o chamado missionário de Barnabé e Saulo — um lembrete de que o jejum não força respostas de Deus, mas cria espaço de escuta mais atenta. Ao mesmo tempo, Jesus e os profetas denunciam com força o jejum vazio: ritual sem coração, performance sem transformação de vida. O jejum genuíno é medido não pela duração ou pela dificuldade, mas pela sinceridade e pela mudança de vida que produz.",
+          theologianQuote: {
+            author: "Richard Foster",
+            text: "O jejum revela o que está escondido dentro de nós; quando o estômago se cala, muitas vezes descobrimos o quanto dependíamos de outras coisas além de Deus para nos sentirmos seguros.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Isaías 58:6-7",
+                textByVersion: {
+                  NVI: "Este não é o jejum que escolhi: [...] soltar as correntes da injustiça e desatar as cordas do jugo... É partilhar sua comida com o faminto e abrigar em sua casa o pobre.",
+                },
+              },
+              {
+                ref: "Mateus 4:1-2",
+                textByVersion: {
+                  NVI: "Então Jesus foi levado pelo Espírito ao deserto, para ser tentado pelo Diabo. Depois de jejuar quarenta dias e quarenta noites, teve fome.",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "עִנָּה", translit: "innah", meaning: "'afligir, humilhar'. Verbo hebraico usado para descrever o ato de 'afligir a alma' associado ao jejum ritual no Dia da Expiação (Lv 16, 23).", lang: "hebraico" },
+              { word: "ταπεινόω", translit: "tapeinoō", meaning: "'humilhar-se, abaixar-se voluntariamente'. Verbo grego que descreve a postura de humildade que deveria acompanhar qualquer prática de jejum.", lang: "grego" },
+            ],
+            historicalContext:
+              "O jejum acompanhava momentos-chave da vida de Israel, como o Dia da Expiação e tempos de arrependimento nacional. No período entre os testamentos, práticas de jejum regular (como o jejum semanal dos fariseus) se popularizaram, e Jesus critica não o jejum em si, mas sua distorção performática (Mt 6:16). A igreja primitiva manteve a prática — o Didaquê, manual cristão do início do segundo século, já registra dias fixos de jejum semanal entre os cristãos, associados sempre à oração.",
+            exegeticalNotes:
+              "Isaías 58 usa uma estrutura retórica de contraste deliberado: o povo pergunta por que Deus não vê seu jejum religioso (v. 3), e Deus responde detalhando o tipo de 'jejum' que realmente lhe agrada — um que se traduz em justiça social concreta. O texto ensina que espiritualidade genuína e ética prática nunca podem ser separadas.",
+            theologicalDebate:
+              "Tradições evangélicas variam quanto à frequência e ao formato recomendado de jejum — algumas praticam jejuns corporativos regulares como igreja, outras deixam inteiramente à convicção pessoal de cada crente. A Escritura não prescreve uma frequência obrigatória de jejum para o cristão do Novo Testamento (diferente da Lei mosaica para Israel), tornando essa uma questão de prática pessoal, não de doutrina essencial. É importante lembrar que o jejum envolve o corpo, e pessoas com condições de saúde específicas devem buscar orientação médica e conversar com seu pastor antes de praticá-lo, ajustando a forma de buscar a Deus com sinceridade sem colocar sua saúde em risco.",
+            secondQuote: {
+              author: "Thom Rainer",
+              text: "Igrejas e cristãos que reservam tempos de jejum e oração diante de decisões importantes frequentemente relatam maior clareza de discernimento — não porque o jejum manipule Deus, mas porque aquieta o coração para ouvi-lo melhor.",
+            },
+          },
+          quizzes: [
+            {
+              question: "Segundo Atos 13:2-3, em que contexto a igreja de Antioquia recebeu direção do Espírito Santo sobre Barnabé e Saulo?",
+              options: [
+                "Durante um culto de celebração",
+                "Enquanto adoravam o Senhor e jejuavam",
+                "Após uma votação da liderança",
+                "Em um sonho de um dos líderes",
+              ],
+              correctIndex: 1,
+            },
+            {
+              question: "Segundo Isaías 58, qual é o jejum que verdadeiramente agrada a Deus?",
+              options: [
+                "Apenas a abstenção rigorosa de alimento",
+                "Um jejum que se traduz em justiça e cuidado com os necessitados",
+                "Jejuns longos, quanto mais dias, melhor",
+                "Jejuns feitos publicamente, para que outros vejam",
+              ],
+              correctIndex: 1,
+            },
+          ],
+          application:
+            "Se sua saúde permitir e você sentir isso como um chamado sincero, considere reservar um período breve de jejum (como pular uma refeição) dedicado à oração por uma necessidade específica, conversando antes com seu pastor ou líder se tiver qualquer dúvida ou condição de saúde relevante.",
+          prayer:
+            "Senhor, ensina-me a buscar-te com todo o meu ser, inclusive com disciplinas que aquietam meu corpo para que meu espírito escute com mais atenção. Que meu jejum, se e quando eu o praticar, seja sincero diante de ti, e nunca um espetáculo diante dos outros. Amém.",
+          weeklyChallenge:
+            "Leia Isaías 58 inteiro e escreva um parágrafo relacionando jejum, oração e justiça prática — como essas três coisas se conectam na visão de Deus para a espiritualidade do seu povo.",
+          reflectionQuestion:
+            "Minha espiritualidade tem sido separada da minha ética prática com os necessitados ao meu redor? O que Isaías 58 revela sobre essa possível separação?",
+          xp: 30,
         },
       ],
     },
