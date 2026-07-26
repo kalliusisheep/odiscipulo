@@ -35,6 +35,7 @@ function LicaoPage() {
   const { bibleVersion } = useApp();
   const { celebrateActivity } = useCelebration();
   const found = useMemo(() => lessonById(id), [id]);
+  const [dbModuleId, setDbModuleId] = useState<string | null>(null);
   const [step, setStep] = useState<Step>("estudo");
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [reflection, setReflection] = useState("");
@@ -45,6 +46,21 @@ function LicaoPage() {
     onIncrease: increase,
     onDecrease: decrease,
   };
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const { data } = await supabase
+        .from("disciple_trails")
+        .select("module_id")
+        .eq("lesson_id", id)
+        .maybeSingle();
+      if (!cancelled) setDbModuleId((data?.module_id as string | undefined) ?? null);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [id]);
 
   useEffect(() => {
     if (step === "estudo") {
@@ -80,10 +96,14 @@ function LicaoPage() {
     );
   }
 
-  const { lesson, module } = found;
+  const { lesson } = found;
 
   const goBack = () => {
-    void nav({ to: "/modulo/$id", params: { id: module.id } });
+    if (dbModuleId) {
+      void nav({ to: "/modulo/$id", params: { id: dbModuleId } });
+    } else {
+      void nav({ to: "/home" });
+    }
   };
 
   const openDeepen = () => {
@@ -380,12 +400,12 @@ function LicaoPage() {
         </div>
       )}
 
-      {step === "done" && <DoneScreen title={lesson.title} xp={lesson.xp} moduleId={module.id} />}
+      {step === "done" && <DoneScreen title={lesson.title} xp={lesson.xp} moduleId={dbModuleId} />}
     </div>
   );
 }
 
-function DoneScreen({ title, xp, moduleId }: { title: string; xp: number; moduleId: string }) {
+function DoneScreen({ title, xp, moduleId }: { title: string; xp: number; moduleId: string | null }) {
   return (
     <div className="flex flex-col items-center text-center">
       <div className="relative">
@@ -417,13 +437,19 @@ function DoneScreen({ title, xp, moduleId }: { title: string; xp: number; module
         <button className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary py-3 text-sm font-semibold text-primary-foreground">
           <Share2 className="h-4 w-4" /> Compartilhar
         </button>
-        <Link
-          to="/modulo/$id"
-          params={{ id: moduleId }}
-          className="rounded-2xl border border-border py-3 text-sm font-medium text-muted-foreground"
-        >
-          Voltar às trilhas
-        </Link>
+        {moduleId ? (
+          <Link
+            to="/modulo/$id"
+            params={{ id: moduleId }}
+            className="rounded-2xl border border-border py-3 text-sm font-medium text-muted-foreground"
+          >
+            Voltar às trilhas
+          </Link>
+        ) : (
+          <Link to="/home" className="rounded-2xl border border-border py-3 text-sm font-medium text-muted-foreground">
+            Voltar às trilhas
+          </Link>
+        )}
       </div>
     </div>
   );
