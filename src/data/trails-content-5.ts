@@ -685,6 +685,412 @@ const evangelismo: Trail = {
             "Qual pergunta difícil sobre a fé cristã você mais teme ouvir — e você já buscou, com honestidade e humildade, uma resposta refletida para ela?",
           xp: 30,
         },
+    {
+      id: "ev-mod-4",
+      title: "Módulo IV: Aprofundando a Missão",
+      lessons: [
+        {
+          id: "ev-4-1",
+          title: "Teologia da Evangelização: Soberania de Deus e Responsabilidade Humana",
+          difficulty: 3,
+          intro: [
+            "Uma pergunta honesta surge cedo ou tarde na mente de todo cristão reflexivo: se a salvação depende de Deus, por que evangelizar? Se Deus quer salvar alguém, Ele não salvaria de qualquer jeito, com ou sem a nossa participação? Essa pergunta não é nova — Paulo já a antecipa e responde diretamente em Romanos 10.",
+            "A resposta bíblica não diminui a soberania de Deus para exaltar o esforço humano, nem diminui a responsabilidade humana para exaltar apenas a soberania divina — ela une as duas coisas como partes do mesmo plano: Deus soberanamente ordenou não apenas o fim (a salvação dos eleitos), mas também os meios pelos quais esse fim se realiza (a pregação fiel do Evangelho por pessoas reais).",
+            "Romanos 10:14-15 é decisivo aqui: 'Como, pois, invocarão aquele em quem não creram? E como crerão naquele de quem nunca ouviram? E como ouvirão, se não há quem pregue?' A pergunta retórica de Paulo é uma cadeia de necessidade: sem pregador, não há mensagem ouvida; sem mensagem ouvida, não há fé; sem fé, não há salvação invocada. Deus decidiu, em sua soberania, tornar a pregação humana um elo indispensável nessa corrente — não porque precise de nós, mas porque escolheu nos incluir como instrumentos de sua obra.",
+            "Isso significa que evangelismo não é uma atividade opcional 'apesar' da soberania de Deus — é precisamente o meio que Deus soberanamente designou para operar. Orar por alguém e testemunhar a essa mesma pessoa não são atitudes concorrentes ou contraditórias; são as duas metades do mesmo ato de fé, confiando que Deus opera através dos meios que Ele mesmo instituiu.",
+          ],
+          verses: [
+            {
+              ref: "Romanos 10:14-15,17",
+              textByVersion: {
+                NVI: "Como, pois, invocarão aquele em quem não creram? E como crerão naquele de quem não ouviram? E como ouvirão, se não há quem pregue?... Consequentemente, a fé vem por se ouvir a mensagem, e a mensagem é ouvida mediante a palavra de Cristo.",
+                ACF: "Como pois invocarão aquele em quem não creram? e como crerão naquele de quem não ouviram? e como ouvirão, se não há quem pregue?... De sorte que a fé é pelo ouvir, e o ouvir pela palavra de Deus.",
+              },
+              originals: [
+                { word: "κηρύσσων", translit: "kērýssōn", meaning: "'quem pregue, quem proclame' — particípio ligado à necessidade de um proclamador humano real para que a fé aconteça", lang: "grego" },
+              ],
+            },
+            {
+              ref: "1 Coríntios 3:6-7",
+              textByVersion: {
+                NVI: "Eu plantei, Apolo regou, mas Deus deu o crescimento. Assim, nem o que planta é alguma coisa, nem o que rega, mas Deus, que dá o crescimento.",
+                ACF: "Eu plantei, Apolo regou, mas o crescimento veio de Deus. De modo que, nem o que planta é alguma coisa, nem o que rega, mas Deus, que dá o crescimento.",
+              },
+            },
+            {
+              ref: "2 Timóteo 2:10",
+              textByVersion: {
+                NVI: "Por isso, tudo suporto por causa dos eleitos, para que também eles alcancem a salvação que está em Cristo Jesus, com glória eterna.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "κηρύσσω", translit: "kērýssō", meaning: "'pregar, proclamar publicamente' — anúncio autorizado, como um arauto anunciando a mensagem do rei.", lang: "grego" },
+            { word: "συνεργός", translit: "synergós", meaning: "'cooperador, cocolaborador' — usado por Paulo (1 Co 3:9) para descrever pregadores como colaboradores de Deus, nunca como sua fonte de poder.", lang: "grego" },
+          ],
+          deepDive:
+            "É útil pensar nessa relação com uma analogia simples: Deus decretou soberanamente que uma plantação cresça — mas também decretou que ela cresça através de sementes plantadas, terra regada e sol brilhando, não por mágica desconectada de causas reais. Ninguém pergunta 'se Deus decidiu a colheita, por que plantar sementes?' — a soberania divina sobre o resultado não anula, mas *inclui*, os meios ordinários pelos quais esse resultado acontece. O mesmo vale para a evangelização: a soberania de Deus na salvação nunca é usada, na Escritura, como desculpa para a passividade humana — pelo contrário, é precisamente o fundamento da confiança com que evangelizamos, sabendo que nosso esforço não depende, no fim, apenas do nosso próprio talento ou eloquência, mas da obra segura de Deus através dele.",
+          theologianQuote: {
+            author: "Charles Spurgeon",
+            text: "Se Deus escolheu quem será salvo, essa mesma eleição inclui os meios: e um desses meios é a nossa boca aberta, anunciando o Evangelho a toda criatura.",
+          },
+          deepen: {
+            historicalContext:
+              "A pergunta 'por que evangelizar, se Deus é soberano?' não é nova nem exclusiva de nenhuma tradição teológica específica — ela já aparece, com nuances diferentes, em debates entre correntes reformadas (que historicamente enfatizaram fortemente a eleição soberana) e correntes arminianas e wesleyanas desde o século XVIII, sem que isso jamais tenha diminuído o zelo missionário de nenhuma das duas tradições: os grandes movimentos missionários modernos (como o de William Carey, batista, e o de George Whitefield, mais próximo do calvinismo) nasceram de ambos os lados dessa discussão teológica, evidenciando que a convicção da soberania de Deus, bem compreendida, historicamente inflama o zelo evangelístico, em vez de apagá-lo.",
+            exegeticalNotes:
+              "O verbo grego por trás de 'pregue', em Romanos 10:14 ('kērýssōn'), vem do mundo do arauto real — alguém enviado oficialmente para proclamar publicamente a mensagem de um rei, com autoridade delegada, mas sem originar a mensagem por si mesmo. Isso ilustra bem o papel do evangelista: mensageiro autorizado, nunca autor da mensagem que proclama.",
+            theologicalDebate:
+              "A relação entre a soberania de Deus na eleição e a responsabilidade humana na evangelização é compreendida de formas diferentes entre tradições reformadas e arminianas — como já visto em outras lições desta trilha. Tradições reformadas tendem a enfatizar que a pregação é o meio pelo qual Deus efetivamente chama os eleitos, de forma certa e garantida; tradições arminianas — à qual esta trilha está mais alinhada — enfatizam que a graça preveniente de Deus capacita genuinamente qualquer ouvinte a responder, tornando a pregação um convite real e sincero a todos, não apenas aos já predeterminados. Ambas as tradições concordam, sem exceção, que a evangelização é um meio ordenado e necessário por Deus, e que negligenciá-la é desobediência, independentemente de como se entende os detalhes da eleição.",
+            secondQuote: {
+              author: "J. I. Packer",
+              text: "A soberania de Deus na salvação e a genuína responsabilidade humana de evangelizar não são um paradoxo a ser resolvido pela razão, mas duas verdades bíblicas a serem sustentadas juntas, com humildade, diante do mistério de Deus.",
+            },
+          },
+          quizzes: [
+            {
+              question: "Segundo Romanos 10:14-15, qual é a cadeia de necessidade que Paulo estabelece para que alguém creia?",
+              options: [
+                "A fé acontece independentemente de qualquer pregação humana",
+                "Sem pregador não há mensagem ouvida; sem mensagem ouvida não há fé; a pregação humana é meio necessário nesse processo",
+                "A pregação é opcional, pois Deus salva sem qualquer meio humano",
+                "Somente experiências místicas diretas geram fé salvadora",
+              ],
+              correctIndex: 1,
+              explanation: "Paulo estabelece uma cadeia lógica: crer depende de ouvir, ouvir depende de pregação, e pregação depende de alguém ser enviado — tornando a evangelização meio necessário, não opcional.",
+            },
+            {
+              question: "Qual analogia a lição usa para explicar a relação entre soberania divina e meios humanos na evangelização?",
+              options: [
+                "Um sorteio aleatório, sem qualquer meio envolvido",
+                "O plantio de uma colheita: Deus decreta o crescimento, mas através de meios reais como sementes plantadas e terra regada",
+                "Um jogo de sorte em que os meios são irrelevantes",
+                "Um contrato comercial entre Deus e o evangelista",
+              ],
+              correctIndex: 1,
+              explanation: "Assim como a soberania de Deus sobre a colheita não anula a necessidade de plantar sementes, sua soberania na salvação não anula, mas inclui, a pregação humana como meio.",
+            },
+            {
+              question: "Segundo a lição, o que tradições reformadas e arminianas concordam sobre evangelização, apesar de suas diferenças sobre eleição?",
+              options: [
+                "Que a evangelização é dispensável para quem já é eleito",
+                "Que a evangelização é um meio ordenado e necessário por Deus, e negligenciá-la é desobediência, independentemente da posição sobre eleição",
+                "Que apenas os reformados devem evangelizar",
+                "Que a evangelização substitui a necessidade de oração",
+              ],
+              correctIndex: 1,
+              explanation: "Apesar de divergirem nos detalhes sobre a eleição, ambas as tradições concordam que a pregação fiel é meio necessário e ordenado por Deus, nunca opcional.",
+            },
+          ],
+          application:
+            "Nesta semana, ore antes de cada oportunidade de testemunho pedindo a Deus que use sua fala como meio de sua obra soberana — e depois, com a mesma convicção, fale, confiando que Deus opera através do seu esforço real, não apesar dele.",
+          prayer:
+            "Senhor, tua soberania sobre a salvação não me exime de agir — ela me dá confiança para agir, sabendo que meu testemunho é o meio que escolheste usar. Tira de mim tanto a passividade que se esconde atrás da tua soberania, quanto o orgulho que esquece que só tu dás o crescimento. Usa minhas palavras, ainda que fracas, para tua obra soberana e boa. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Escreva, em poucas frases, como você explicaria a alguém por que a evangelização continua necessária mesmo acreditando na soberania de Deus sobre a salvação.",
+          reflectionQuestion:
+            "Você já usou a soberania de Deus como desculpa (mesmo que inconsciente) para não testemunhar? O que muda em você ao entender que a pregação é o meio, não um obstáculo, à obra soberana de Deus?",
+          xp: 30,
+        },
+        {
+          id: "ev-4-2",
+          title: "Testemunho Digital: o Evangelho nas Redes",
+          difficulty: 2,
+          intro: [
+            "Boa parte da vida relacional de hoje acontece por telas — mensagens, redes sociais, comentários, grupos. Isso muda o cenário do evangelismo cotidiano, mas não muda seus princípios bíblicos fundamentais: continuamos precisando de sabedoria, mansidão, clareza e amor genuíno — só que agora aplicados a um espaço com características próprias, e riscos próprios.",
+            "Vale notar que o povo de Deus sempre usou os meios de comunicação disponíveis em cada época para espalhar sua mensagem: cartas apostólicas circulavam entre igrejas (Colossenses 4:16), a invenção da imprensa acelerou imensamente a Reforma Protestante, o rádio e a televisão levaram o Evangelho a lugares inacessíveis no século XX. As redes sociais são apenas o meio mais recente dessa longa história — nem inerentemente santo, nem inerentemente profano, mas uma ferramenta a ser usada com sabedoria.",
+            "Colossenses 4:5-6, já estudado nesta trilha, pede sabedoria com os 'de fora' e conversa 'temperada com sal' — princípios que valem tanto para uma conversa presencial quanto para um comentário público na internet. A diferença é que o ambiente digital tem características próprias: é permanente (o que se escreve dificilmente se apaga de verdade), é público (frequentemente visto por muito mais gente do que se imagina) e tende a recompensar reações rápidas e emocionais, não reflexão cuidadosa.",
+            "Isso pede um cuidado adicional: testemunhar bem online geralmente significa resistir ao impulso de responder rápido e de forma agressiva a discussões acaloradas, e privilegiar mensagens que ilustrem graça, verdade e paciência — sabendo que, no ambiente digital, um comentário impaciente pode prejudicar o testemunho de Cristo tanto quanto uma palavra sábia pode abrir portas reais.",
+          ],
+          verses: [
+            {
+              ref: "Colossenses 4:5-6",
+              textByVersion: {
+                NVI: "Sejam sábios no procedimento de vocês para com os de fora, aproveitando ao máximo cada oportunidade. A conversa de vocês seja sempre agradável e temperada com sal, para que saibam como responder a cada um.",
+                ACF: "Andai em sabedoria para com os que estão de fora, remindo o tempo. A vossa palavra seja sempre agradável, adubada com sal, para que saibais como vos convém responder a cada um.",
+              },
+            },
+            {
+              ref: "Tiago 1:19",
+              textByVersion: {
+                NVI: "Cada um seja pronto para ouvir, tardio para falar, tardio para se irar.",
+                ACF: "Todo homem seja pronto para ouvir, tardio para falar, tardio para se irar.",
+              },
+            },
+            {
+              ref: "1 Pedro 3:15-16",
+              textByVersion: {
+                NVI: "Estejam sempre preparados para responder a qualquer pessoa que lhes pedir a razão da esperança que há em vocês. Contudo, façam isso com mansidão e respeito, conservando boa consciência.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "πραΰτης", translit: "praǘtēs", meaning: "'mansidão' — força sob controle, não fraqueza; qualidade explicitamente exigida ao dar razão da fé (1 Pe 3:15), tanto presencial quanto digitalmente.", lang: "grego" },
+            { word: "καιρός", translit: "kairós", meaning: "'ocasião oportuna' — reconhecer quando um comentário edifica e quando apenas alimenta discórdia é parte da sabedoria pedida em Colossenses 4:5.", lang: "grego" },
+          ],
+          deepDive:
+            "Três princípios práticos ajudam a aplicar a sabedoria bíblica ao ambiente digital: primeiro, lembre-se de que por trás de cada comentário há uma pessoa real, criada à imagem de Deus — o anonimato relativo das telas facilita esquecer isso, e é justamente aí que a mansidão bíblica (1 Pedro 3:15) precisa ser mais deliberadamente praticada. Segundo, nem toda discussão pede resposta pública imediata — Tiago 1:19 ('tardio para falar, tardio para se irar') é sabedoria especialmente relevante num ambiente desenhado para reações rápidas; às vezes, uma conversa privada, mais lenta e pessoal, comunica mais amor do que um comentário público defendendo um ponto. Terceiro, seu perfil e sua conduta digital consistente ao longo do tempo — o que você compartilha, como reage, como trata quem discorda — comunicam tanto quanto qualquer postagem isolada e explicitamente evangelística; a coerência entre vida online e offline é, ela mesma, um testemunho silencioso poderoso.",
+          theologianQuote: {
+            author: "John Mark Comer",
+            text: "As ferramentas digitais amplificam quem já somos — se nossa vida interior é apressada e reativa, a internet vai apenas expor isso mais rápido e para mais gente.",
+          },
+          deepen: {
+            historicalContext:
+              "A Reforma Protestante do século XVI é um exemplo histórico notável do uso de uma nova tecnologia de comunicação (a imprensa, inventada por Gutenberg poucas décadas antes) para a rápida disseminação do Evangelho e do ensino bíblico em larga escala — panfletos e traduções bíblicas impressas circularam pela Europa numa velocidade sem precedentes para a época. A Igreja historicamente não temeu novos meios de comunicação; aprendeu a usá-los com discernimento, sem perder de vista os princípios bíblicos permanentes de sabedoria e amor ao próximo.",
+            exegeticalNotes:
+              "A palavra 'kairós' (ocasião oportuna), em Colossenses 4:5, contrasta deliberadamente com 'chrónos' (tempo cronológico sequencial) — Paulo não está pedindo presença constante e onipresente em toda conversa disponível (o que o ambiente digital tenta constantemente exigir), mas discernimento sábio sobre quando uma oportunidade específica realmente vale a pena ser aproveitada.",
+            theologicalDebate:
+              "Cristãos fiéis divergem, de forma prática e não doutrinária, sobre o quanto de debate teológico ou apologético público vale a pena travar nas redes sociais: alguns veem valor real em defesas públicas visíveis da fé diante de objeções amplamente compartilhadas; outros preferem reservar discussões mais profundas para conversas privadas e relacionais, considerando o ambiente público das redes menos propício à humildade e à escuta genuína. Não é uma questão de fidelidade bíblica, mas de sabedoria situacional (Colossenses 4:5) — cada um deve avaliar, com oração, onde seu testemunho digital é mais frutífero.",
+            secondQuote: {
+              author: "Vishal Mangalwadi",
+              text: "Toda tecnologia de comunicação é uma ferramenta neutra em si mesma; o que a torna boa ou má é o caráter e a sabedoria de quem a utiliza.",
+            },
+          },
+          quizzes: [
+            {
+              question: "Segundo a lição, qual princípio de Colossenses 4:5-6 se aplica diretamente ao testemunho nas redes sociais?",
+              options: [
+                "Falar o máximo possível sobre qualquer assunto religioso, em qualquer contexto",
+                "Ter sabedoria no procedimento com os 'de fora' e uma conversa agradável, temperada com sal",
+                "Evitar completamente qualquer presença nas redes sociais",
+                "Responder imediatamente a toda crítica recebida online",
+              ],
+              correctIndex: 1,
+              explanation: "A sabedoria e a fala 'temperada com sal' pedidas por Paulo se aplicam tanto a conversas presenciais quanto a interações digitais.",
+            },
+            {
+              question: "Por que Tiago 1:19 ('tardio para falar, tardio para se irar') é especialmente relevante no ambiente digital?",
+              options: [
+                "Porque as redes sociais não têm relação com esse princípio",
+                "Porque o ambiente digital tende a recompensar reações rápidas e emocionais, tornando a pausa reflexiva ainda mais necessária",
+                "Porque esse princípio só se aplica a conversas presenciais",
+                "Porque é melhor nunca comentar nada online",
+              ],
+              correctIndex: 1,
+              explanation: "O design de muitas redes sociais incentiva respostas imediatas; a sabedoria de ser 'tardio para falar' é um contrapeso bíblico deliberado a essa pressão.",
+            },
+            {
+              question: "Segundo a lição, o que comunica testemunho tão poderoso quanto uma postagem explicitamente evangelística?",
+              options: [
+                "O número de seguidores de um perfil",
+                "A coerência entre a conduta digital consistente ao longo do tempo e a vida offline da pessoa",
+                "A frequência de postagens religiosas",
+                "O uso de linguagem teológica complexa online",
+              ],
+              correctIndex: 1,
+              explanation: "A consistência de caráter, tanto online quanto offline, é, por si só, um testemunho silencioso e poderoso, tanto quanto qualquer postagem explícita.",
+            },
+          ],
+          application:
+            "Nesta semana, antes de comentar ou responder a algo potencialmente polêmico nas redes sociais, pare por trinta segundos e pergunte: 'isso edifica, ou apenas alimenta discórdia?' — e considere se uma mensagem privada não comunicaria mais amor do que uma resposta pública.",
+          prayer:
+            "Senhor, minha vida digital também te pertence. Dá-me sabedoria para saber quando falar e quando ficar em silêncio, mansidão para responder mesmo quando provocado, e coerência entre o que professo online e como vivo offline. Que meu testemunho nas redes reflita graça e verdade, nunca impaciência ou orgulho. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Revise seu próprio perfil nas redes sociais esta semana e pergunte, com honestidade: o que ele comunica sobre Cristo, mesmo sem uma única postagem explicitamente religiosa?",
+          reflectionQuestion:
+            "Sua conduta online, ao longo do tempo, tem refletido mansidão e sabedoria bíblica — ou você já se arrependeu de alguma reação apressada nas redes?",
+          xp: 25,
+        },
+        {
+          id: "ev-4-3",
+          title: "Discipulado Inicial: Cuidando de Quem Acabou de Crer",
+          difficulty: 2,
+          intro: [
+            "Uma pessoa acabou de professar fé em Cristo através do seu testemunho. E agora? Esse é um momento decisivo, muitas vezes negligenciado: a Grande Comissão não termina em 'fazer decisões' — ela pede que façamos discípulos, 'ensinando-os a obedecer a tudo o que eu ordenei' (Mateus 28:20). Um recém-convertido deixado sem cuidado nos primeiros passos está muito mais vulnerável a esfriar, se confundir ou até abandonar a fé.",
+            "Isso não significa que você precisa se tornar sozinho o mentor completo dessa pessoa para sempre — significa, principalmente, garantir que ela seja conectada rapidamente a três âncoras essenciais: a Palavra de Deus (o hábito de ler e entender a Bíblia), a oração pessoal, e — de forma indispensável — uma igreja local que possa acompanhá-la de perto (retome, se necessário, a trilha 'Novo Convertido' para relembrar essas bases).",
+            "Barnabé, no livro de Atos, é um modelo bonito desse cuidado inicial: quando Paulo, recém-convertido, ainda era temido e mal recebido pela igreja de Jerusalém, foi Barnabé quem o acolheu, apresentou aos apóstolos e testemunhou pessoalmente por sua conversão genuína (Atos 9:26-27). Sem esse cuidado inicial de Barnabé, a história da igreja primitiva poderia ter sido bem diferente.",
+            "Discipular alguém recém-convertido não exige respostas teológicas perfeitas para tudo — exige presença, paciência, e disposição de caminhar ao lado, como Barnabé caminhou ao lado de Paulo, até que essa pessoa esteja bem enraizada em sua própria caminhada com Cristo e sua própria igreja local.",
+          ],
+          verses: [
+            {
+              ref: "Mateus 28:19-20",
+              textByVersion: {
+                NVI: "Portanto, vão e façam discípulos de todas as nações, batizando-os em nome do Pai, do Filho e do Espírito Santo, ensinando-os a obedecer a tudo o que eu ordenei.",
+              },
+              originals: [
+                { word: "τηρεῖν", translit: "tēreîn", meaning: "'guardar, obedecer continuamente' — não apenas conhecer intelectualmente, mas praticar de forma perseverante", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Atos 9:26-27",
+              textByVersion: {
+                NVI: "Chegando a Jerusalém, Saulo procurava reunir-se aos discípulos, mas todos tinham medo dele, não acreditando que ele fosse discípulo. Barnabé, porém, tomou-o consigo e o levou aos apóstolos.",
+              },
+            },
+            {
+              ref: "1 Tessalonicenses 2:7-8,11",
+              textByVersion: {
+                NVI: "Antes, fomos meigos entre vocês, como uma mãe cuida com carinho de seus filhos. Em nosso profundo afeto por vocês, decidimos dar-lhes não somente o evangelho de Deus, mas também a nossa própria vida... Sabem também como tratamos cada um de vocês como um pai trata os seus filhos.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "τηρέω", translit: "tēréō", meaning: "'guardar, obedecer continuamente' — discipulado genuíno inclui prática perseverante, não apenas conhecimento intelectual.", lang: "grego" },
+            { word: "νήπιος", translit: "nḗpios", meaning: "'criancinha, recém-nascido' — imagem usada por Paulo (1 Co 3:1) para crentes ainda imaturos, que precisam de cuidado apropriado à sua fase.", lang: "grego" },
+          ],
+          deepDive:
+            "Cuidar bem de um recém-convertido nas primeiras semanas costuma incluir passos simples, mas decisivos: ajudá-lo a começar um hábito realista de leitura bíblica (mesmo que pequeno no início — cinco minutos são melhores do que uma meta ambiciosa e abandonada em uma semana), introduzi-lo pessoalmente a uma igreja local e, idealmente, apresentá-lo você mesmo a algumas pessoas ali (assim como Barnabé apresentou Paulo aos apóstolos, reduzindo o medo natural de chegar sozinho a um lugar novo), conversar abertamente sobre o batismo como próximo passo público de obediência, e estar disponível para dúvidas simples nas primeiras semanas, sem pressa de que a pessoa 'já saiba tudo'. O erro mais comum é acompanhar intensamente até a decisão de fé, e depois desaparecer — deixando a pessoa sozinha justamente na fase mais frágil e vulnerável do seu crescimento espiritual.",
+          theologianQuote: {
+            author: "Thom Rainer",
+            text: "Ganhar alguém para Cristo e depois abandoná-lo sem cuidado nas primeiras semanas é como trazer um recém-nascido ao mundo e depois deixá-lo sozinho para se alimentar.",
+          },
+          deepen: {
+            historicalContext:
+              "O nome 'Barnabé' significa, segundo o próprio Lucas explica em Atos 4:36, 'filho da consolação/encorajamento' — um apelido dado pela própria igreja primitiva, provavelmente por seu caráter reconhecido de acolhimento generoso. É significativo que seja justamente esse homem, conhecido por encorajar, quem aparece repetidamente em Atos cuidando de pessoas recém-chegadas à fé ou à comunidade — com Paulo em Atos 9, e depois com a nova e frágil igreja gentia de Antioquia em Atos 11:22-24.",
+            exegeticalNotes:
+              "O verbo grego 'tēreîn' (guardar, obedecer), em Mateus 28:20, aparece no tempo presente contínuo no texto grego, sugerindo uma prática constante e perseverante — não um evento único de instrução, mas um acompanhamento contínuo de obediência crescente ao longo do tempo, exatamente o que o discipulado inicial de um recém-convertido precisa oferecer.",
+            theologicalDebate:
+              "Tradições cristãs diferem legitimamente sobre o momento e a forma ideal do batismo dentro do processo de discipulado inicial de um recém-convertido — algumas priorizam o batismo o mais rápido possível após a profissão de fé genuína (seguindo o padrão de Atos, onde batismos muitas vezes aconteciam no mesmo dia da conversão, como em Atos 8:36-38 e 16:33), outras preferem um período mais longo de instrução e observação antes do batismo. Esta é uma questão de prática eclesiástica, sobre a qual vale conversar com a liderança da igreja local específica, e não uma questão que altera o núcleo do discipulado inicial descrito nesta lição.",
+            secondQuote: {
+              author: "Josué K. Reichow",
+              text: "Ninguém deveria caminhar sozinho nas primeiras semanas depois de conhecer a Cristo — esse é exatamente o momento em que a igreja mais precisa se parecer com família.",
+            },
+          },
+          quizzes: [
+            {
+              question: "Segundo Mateus 28:19-20, o que a Grande Comissão pede além de simplesmente levar alguém a uma decisão inicial de fé?",
+              options: [
+                "Nada além disso — a Grande Comissão termina na decisão de fé",
+                "Ensinar o novo crente a obedecer continuamente a tudo o que Cristo ordenou",
+                "Apenas o batismo, sem qualquer ensino posterior",
+                "Deixar a pessoa por conta própria para descobrir a fé sozinha",
+              ],
+              correctIndex: 1,
+              explanation: "'Fazer discípulos' inclui explicitamente ensinar obediência contínua e perseverante, não apenas gerar uma decisão pontual de fé.",
+            },
+            {
+              question: "O que Barnabé fez por Paulo, recém-convertido, em Atos 9:26-27?",
+              options: [
+                "Evitou-o, com medo de sua conversão não ser genuína",
+                "Acolheu-o, apresentou-o pessoalmente aos apóstolos, reduzindo o medo natural da igreja em recebê-lo",
+                "Exigiu que Paulo provasse sua fé através de testes públicos",
+                "Ignorou completamente a situação",
+              ],
+              correctIndex: 1,
+              explanation: "Barnabé modela o cuidado inicial de acolher e apresentar um recém-convertido à comunidade, quando ele mais precisava desse apoio.",
+            },
+            {
+              question: "Qual erro comum a lição aponta no discipulado de recém-convertidos?",
+              options: [
+                "Cuidar demais da pessoa nas primeiras semanas",
+                "Acompanhar intensamente até a decisão de fé e depois desaparecer, deixando a pessoa sozinha na fase mais frágil",
+                "Apresentar o novo crente a uma igreja local cedo demais",
+                "Falar sobre o batismo como próximo passo",
+              ],
+              correctIndex: 1,
+              explanation: "O erro mais comum e prejudicial é o abandono logo após a conversão — exatamente quando o cuidado contínuo é mais necessário.",
+            },
+          ],
+          application:
+            "Se você já levou alguém a Cristo recentemente (ou vier a levar), agende, esta semana, um próximo encontro concreto com essa pessoa — para ler a Bíblia juntos, apresentá-la à sua igreja, ou simplesmente conversar sobre como ela está se sentindo nesses primeiros passos.",
+          prayer:
+            "Senhor, obrigado por quem cuidou de mim nos meus primeiros passos de fé — e me ajuda a fazer o mesmo por outros. Dá-me o coração de Barnabé: disposto a acolher, apresentar e acompanhar quem ainda está aprendendo a andar contigo. Que eu nunca abandone alguém logo depois de vê-lo crer, mas caminhe ao lado até que esteja bem enraizado em ti e em tua igreja. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Pense em alguém que você conhece que é cristão há pouco tempo (mesmo que não tenha sido você quem o evangelizou). Convide essa pessoa para um café ou uma conversa esta semana, perguntando como você pode apoiá-la nessa fase.",
+          reflectionQuestion:
+            "Se você levasse alguém a Cristo amanhã, você já sabe, concretamente, quais seriam seus próximos três passos de cuidado com essa pessoa?",
+          xp: 25,
+        },
+        {
+          id: "ev-4-4",
+          title: "Multiplicação: Discípulos que Fazem Discípulos",
+          difficulty: 3,
+          intro: [
+            "Há uma diferença importante entre adição e multiplicação no crescimento do Reino de Deus. Um evangelista que ganha pessoas para Cristo, uma a uma, ao longo da vida, soma um número real e valioso de vidas transformadas. Mas um discipulador que ensina outros a também evangelizarem e discipularem multiplica esse impacto através de gerações espirituais que ele talvez nunca chegue a conhecer pessoalmente.",
+            "Paulo descreve esse princípio com clareza notável em sua última carta, escrita já perto do fim da vida: 'o que você ouviu de mim na presença de muitas testemunhas, confie a homens fiéis, que sejam também idôneos para ensinar a outros' (2 Timóteo 2:2). Note a estrutura: Paulo ensina Timóteo, Timóteo ensina homens fiéis, esses homens ensinam ainda outros — quatro gerações espirituais mencionadas em uma única frase.",
+            "Esse padrão de multiplicação não é uma técnica moderna de gestão aplicada à igreja — está enraizado na própria estrutura da Grande Comissão: 'fazer discípulos... ensinando-os a obedecer a tudo o que eu ordenei' (Mateus 28:19-20) inclui, necessariamente, ensinar os novos discípulos a também discipularem outros, porque isso está entre as coisas que Cristo ordenou (a própria Grande Comissão).",
+            "Multiplicação genuína exige um investimento maior a curto prazo (é mais rápido simplesmente evangelizar alguém do que treiná-lo para também evangelizar e discipular outros), mas produz um fruto multiplicado a longo prazo — e reflete a própria generosidade de Deus, que não guarda a graça recebida só para si, mas a passa adiante através de gerações inteiras de fiéis.",
+          ],
+          verses: [
+            {
+              ref: "2 Timóteo 2:2",
+              textByVersion: {
+                NVI: "E aquilo que você me ouviu dizer na presença de muitas testemunhas, confie a homens fiéis que sejam também capazes de ensinar a outros.",
+                ACF: "E o que de mim, entre muitas testemunhas, ouviste, confia-o a homens fiéis, que sejam idôneos para também ensinarem os outros.",
+              },
+              originals: [
+                { word: "παράθου", translit: "paráthou", meaning: "'confie, deposite como depósito seguro' — imagem financeira de um depósito confiado a alguém de confiança, para ser preservado e repassado", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Atos 18:24-26",
+              textByVersion: {
+                NVI: "Chegou a Éfeso um judeu chamado Apolo... Áquila e Priscila... o convidaram para ir à sua casa e explicaram-lhe com mais precisão o caminho de Deus.",
+              },
+            },
+            {
+              ref: "Filipenses 4:9",
+              textByVersion: {
+                NVI: "O que vocês aprenderam, receberam, ouviram e viram em mim, ponham em prática. E o Deus da paz estará com vocês.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "παρατίθημι", translit: "paratíthēmi", meaning: "'depositar, confiar' — termo financeiro para um depósito seguro; discipular é confiar um tesouro recebido a outra pessoa de confiança.", lang: "grego" },
+            { word: "πιστός", translit: "pistós", meaning: "'fiel, digno de confiança' — a qualificação central que Paulo pede em quem recebe esse depósito espiritual, mais do que talento ou eloquência.", lang: "grego" },
+          ],
+          deepDive:
+            "Vale notar, em 2 Timóteo 2:2, que a única qualificação explicitamente exigida por Paulo para receber esse 'depósito' e repassá-lo adiante é ser 'fiel' (pistós) — não brilhante, não eloquente, não formado teologicamente, apenas fiel e capaz de ensinar. Isso é uma boa notícia prática: multiplicar discípulos não exige que você seja um especialista teológico antes de começar — exige fidelidade em compartilhar o que você já genuinamente aprendeu e vive, com disposição de investir tempo pessoal em outra pessoa específica, assim como alguém provavelmente investiu tempo em você. Áquila e Priscila, em Atos 18, ilustram isso bem: um casal comum, sem cargo formal de ensino público, que investiu tempo pessoal explicando 'com mais precisão' o caminho de Deus a Apolo, um pregador já talentoso — multiplicação acontece tanto em conversas informais quanto em discipulados formalmente estruturados.",
+          theologianQuote: {
+            author: "Josué K. Reichow",
+            text: "Um discípulo que nunca aprende a discipular outros interrompeu, sem perceber, a corrente que deveria continuar fluindo depois dele.",
+          },
+          deepen: {
+            historicalContext:
+              "2 Timóteo é geralmente reconhecida, mesmo entre estudiosos mais céticos quanto à autoria paulina de outras cartas pastorais, como escrita perto do fim da vida de Paulo, possivelmente já em sua segunda e última prisão romana, pouco antes de seu martírio. Isso confere um peso especial a 2 Timóteo 2:2: são, essencialmente, as últimas instruções de um homem que sabe que seu tempo pessoal de ministério está terminando, preocupado em garantir que a mensagem continue viva através de outros, muito depois de sua própria morte.",
+            exegeticalNotes:
+              "O verbo 'parátithēmi', em 2 Timóteo 2:2, era comumente usado no mundo comercial e bancário para descrever um depósito confiado a um banco ou a uma pessoa de confiança, com a expectativa clara de que seria preservado e devolvido (ou, no caso aqui, repassado) fielmente. Paulo escolhe deliberadamente essa imagem financeira para descrever o Evangelho e o ensino apostólico: um tesouro valioso, que não deve ser guardado egoisticamente, mas administrado com fidelidade e repassado adiante.",
+            theologicalDebate:
+              "Diferentes tradições e igrejas aplicam de formas distintas, mas igualmente legítimas, o princípio da multiplicação de discípulos: algumas enfatizam estruturas formais de discipulado um-a-um ou em pequenos grupos, com materiais e etapas bem definidas; outras enfatizam relações mais orgânicas e informais de mentoria dentro da vida cotidiana da igreja, sem uma estrutura rígida. O padrão bíblico (Paulo-Timóteo, Áquila-Priscila-Apolo) sustenta ambas as aplicações — o que é central e inegociável é que todo discípulo maduro deveria estar, de alguma forma intencional, investindo em outros, e não apenas recebendo passivamente de quem já o discipulou.",
+            secondQuote: {
+              author: "David L. Allen",
+              text: "A fidelidade de uma geração cristã se mede, em boa parte, por quantas outras gerações ela deixou preparadas para continuar depois dela.",
+            },
+          },
+          quizzes: [
+            {
+              question: "Em 2 Timóteo 2:2, quantas gerações espirituais de ensino Paulo menciona explicitamente em uma única frase?",
+              options: [
+                "Apenas duas: Paulo e Timóteo",
+                "Quatro: Paulo, Timóteo, homens fiéis, e os outros que esses homens ensinarão",
+                "Nenhuma — o versículo fala apenas de Paulo",
+                "Dez gerações completas",
+              ],
+              correctIndex: 1,
+              explanation: "Paulo descreve uma cadeia de multiplicação: ele ensina Timóteo, que confia a homens fiéis, que ensinarão ainda outros — quatro gerações mencionadas.",
+            },
+            {
+              question: "Segundo a lição, qual é a única qualificação explicitamente exigida por Paulo em 2 Timóteo 2:2 para alguém receber e repassar o ensino apostólico?",
+              options: [
+                "Formação teológica avançada",
+                "Ser fiel ('pistós') e capaz de ensinar a outros — não talento excepcional ou eloquência",
+                "Ocupar um cargo formal de liderança na igreja",
+                "Ter conhecido pessoalmente o apóstolo Paulo",
+              ],
+              correctIndex: 1,
+              explanation: "A qualificação central exigida é fidelidade, não brilho intelectual ou eloquência — o que torna a multiplicação acessível a qualquer discípulo maduro e fiel.",
+            },
+            {
+              question: "O que Áquila e Priscila fizeram por Apolo, em Atos 18:24-26?",
+              options: [
+                "Ignoraram-no por ele já ser um pregador talentoso",
+                "Investiram tempo pessoal para explicar-lhe 'com mais precisão' o caminho de Deus, mesmo sem ocupar um cargo formal de ensino público",
+                "Publicamente o corrigiram e envergonharam diante da multidão",
+                "Recusaram-se a ajudá-lo por ele ser estrangeiro",
+              ],
+              correctIndex: 1,
+              explanation: "Um casal comum investiu tempo pessoal e discreto para aprofundar o entendimento de um pregador já talentoso — um belo exemplo de multiplicação informal.",
+            },
+          ],
+          application:
+            "Identifique uma pessoa específica, mais nova na fé do que você, em quem você poderia investir intencionalmente — mesmo que de forma simples, como um café mensal ou uma leitura bíblica compartilhada. Convide-a esta semana.",
+          prayer:
+            "Senhor, obrigado por quem investiu em mim para que eu chegasse até aqui. Ajuda-me a não guardar esse tesouro só para mim, mas a confiá-lo, com fidelidade, a outras pessoas que também possam ensinar outros. Que minha vida não termine em adição, mas contribua para uma verdadeira multiplicação de discípulos fiéis, para tua glória. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Ao longo desta semana, ore pedindo a Deus para revelar uma pessoa específica em quem você deveria começar a investir intencionalmente como discipulador — e dê o primeiro passo concreto de convite.",
+          reflectionQuestion:
+            "Se você parasse de crescer espiritualmente hoje, o que você já teria repassado, com fidelidade, para a próxima geração de discípulos?",
+          xp: 30,
+        },
       ],
     },
   ],
