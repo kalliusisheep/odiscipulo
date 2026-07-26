@@ -161,7 +161,6 @@ function HomePage() {
                   <span className="text-xs font-bold text-streak">{profile?.streak ?? 0}</span>
                   <span className="text-[9px] text-muted-foreground">dias</span>
                 </div>
-                <span className="whitespace-nowrap text-[10px] font-medium text-primary">{xpLeft === null ? "🔥 Máx" : `Faltam ${xpLeft} XP`}</span>
               </div>
             </div>
           </div>
@@ -172,6 +171,9 @@ function HomePage() {
             </div>
             <div className="h-2.5 overflow-hidden rounded-full bg-surface-2">
               <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${levelPct}%` }} />
+            </div>
+            <div className="mt-1 flex justify-end">
+              <span className="whitespace-nowrap text-[10px] font-medium text-primary">{xpLeft === null ? "🔥 Nível máximo" : `Faltam ${xpLeft} XP`}</span>
             </div>
           </div>
         </div>
