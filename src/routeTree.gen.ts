@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as ApiMentorRouteImport } from './routes/api/mentor'
 import { Route as AuthenticatedRankingDetalhesRouteImport } from './routes/_authenticated/ranking-detalhes'
 import { Route as AuthenticatedRankingRouteImport } from './routes/_authenticated/ranking'
@@ -46,6 +47,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiTtsRoute = ApiTtsRouteImport.update({
+  id: '/api/tts',
+  path: '/api/tts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiMentorRoute = ApiMentorRouteImport.update({
@@ -178,6 +184,7 @@ export interface FileRoutesByFullPath {
   '/ranking': typeof AuthenticatedRankingRoute
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
+  '/api/tts': typeof ApiTtsRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
@@ -203,6 +210,7 @@ export interface FileRoutesByTo {
   '/ranking': typeof AuthenticatedRankingRoute
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
+  '/api/tts': typeof ApiTtsRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
@@ -230,6 +238,7 @@ export interface FileRoutesById {
   '/_authenticated/ranking': typeof AuthenticatedRankingRoute
   '/_authenticated/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
+  '/api/tts': typeof ApiTtsRoute
   '/_authenticated/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/_authenticated/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/_authenticated/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
@@ -257,6 +266,7 @@ export interface FileRouteTypes {
     | '/ranking'
     | '/ranking-detalhes'
     | '/api/mentor'
+    | '/api/tts'
     | '/licao/$id'
     | '/mensagens/$username'
     | '/mensagens/novo'
@@ -282,6 +292,7 @@ export interface FileRouteTypes {
     | '/ranking'
     | '/ranking-detalhes'
     | '/api/mentor'
+    | '/api/tts'
     | '/licao/$id'
     | '/mensagens/$username'
     | '/mensagens/novo'
@@ -308,6 +319,7 @@ export interface FileRouteTypes {
     | '/_authenticated/ranking'
     | '/_authenticated/ranking-detalhes'
     | '/api/mentor'
+    | '/api/tts'
     | '/_authenticated/licao/$id'
     | '/_authenticated/mensagens/$username'
     | '/_authenticated/mensagens/novo'
@@ -326,6 +338,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ApiMentorRoute: typeof ApiMentorRoute
+  ApiTtsRoute: typeof ApiTtsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -349,6 +362,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/tts': {
+      id: '/api/tts'
+      path: '/api/tts'
+      fullPath: '/api/tts'
+      preLoaderRoute: typeof ApiTtsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/mentor': {
@@ -555,17 +575,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ApiMentorRoute: ApiMentorRoute,
+  ApiTtsRoute: ApiTtsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
