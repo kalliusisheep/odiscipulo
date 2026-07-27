@@ -45,7 +45,7 @@ export function MascotAvatar({ src, size = 96, className = "", showMessage = tru
           aria-label="Fazer carinho na ovelha"
           className={`h-full w-full overflow-hidden rounded-full shadow-lg ring-2 ring-primary/30 ${animClass}`}
         >
-          <img src={src || FALLBACK_SRC} alt="Mascote" className="h-full w-full object-cover" />
+          <img src={src || FALLBACK_SRC} alt="Mascote" className="h-full w-full animate-mascot-face object-cover" />
         </button>
 
         <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-surface text-xs shadow ring-1 ring-border">
