@@ -1149,10 +1149,301 @@ const familiaCrista: Trail = {
     },
     {
       id: "fc-mod-2",
-      title: "Módulo II: Filhos e o Altar Doméstico",
+      title: "Módulo II: Comunicação, Conflito e Perdão no Casamento",
       lessons: [
         {
           id: "fc-2-1",
+          title: "Falando a Verdade em Amor",
+          intro: [
+            "Todo casamento é feito de duas pessoas pecadoras tentando viver 'uma só carne'. Isso significa que o conflito não é sinal de que algo deu errado — é parte esperada da vida a dois neste mundo caído. A pergunta bíblica não é 'como evitar todo conflito?', mas 'como conversar e discordar de um jeito que honre a Deus e edifique o casamento?'.",
+            "Efésios 4:15 dá a chave: 'seguindo a verdade em amor'. São duas coisas que muitos casais separam, para o próprio mal. Alguns falam a verdade sem amor — de forma dura, sarcástica, humilhante — e chamam isso de 'sinceridade'. Outros oferecem um amor sem verdade — evitam todo assunto difícil para preservar uma paz aparente — e chamam isso de 'não brigar'. A Bíblia pede as duas coisas juntas: honestidade real, entregue com gentileza real.",
+            "Tiago 1:19 acrescenta um princípio prático poderoso: 'seja pronto para ouvir, tardio para falar, tardio para se irar'. A ordem importa. A maioria dos conflitos conjugais piora não porque os cônjuges discordam, mas porque falam antes de realmente ouvir, e reagem com irritação antes de buscar entender. Comunicação bíblica começa com os ouvidos, não com a boca.",
+          ],
+          verses: [
+            {
+              ref: "Efésios 4:15,29",
+              textByVersion: {
+                NVI: "Seguindo a verdade em amor, cresçamos em tudo naquele que é a cabeça, Cristo... Não saia da boca de vocês nenhuma palavra corrompida, mas apenas a que for útil para edificar os outros.",
+                ACF: "Antes, seguindo a verdade em amor, cresçamos em tudo naquele que é a cabeça, Cristo... Não saia da vossa boca nenhuma palavra torpe, mas só a que for boa para promover a edificação.",
+              },
+              originals: [
+                { word: "ἀληθεύοντες", translit: "alētheuontes", meaning: "vivendo/falando a verdade — particípio contínuo, um estilo de vida sincero, não apenas um ato isolado", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Tiago 1:19",
+              textByVersion: {
+                NVI: "Que todo homem seja pronto para ouvir, tardio para falar e tardio para irar-se.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "ἀληθεύω", translit: "alētheuō", meaning: "falar/viver a verdade com constância — não é confrontação pontual, é um caráter de honestidade contínua", lang: "grego" },
+            { word: "οἰκοδομή", translit: "oikodomē", meaning: "edificação — o critério bíblico para saber se uma fala é útil: ela constrói ou destrói o outro?", lang: "grego" },
+          ],
+          deepDive:
+            "Efésios 4:29 dá um teste prático extremamente útil antes de qualquer conversa difícil no casamento: essa palavra vai edificar ('oikodomē') ou vai destruir? Isso não significa evitar temas difíceis — significa escolher o momento, o tom e as palavras que constroem, mesmo quando o conteúdo é uma correção necessária. Sobre técnicas específicas de comunicação (linguagem não violenta, tempo de fala, métodos de resolução de conflito), a Bíblia não prescreve uma metodologia única — são ferramentas humanas que podem, sim, ajudar bastante quando usadas dentro do caráter descrito em Efésios 4 e Tiago 1: verdade, amor, prontidão para ouvir e lentidão para se irar. A ferramenta serve ao caráter; o caráter não nasce da ferramenta.",
+          theologianQuote: {
+            author: "Charles Swindoll",
+            text: "A comunicação no casamento não é sobre vencer o argumento, é sobre entender o coração do outro; quando entendemos primeiro, quase sempre falamos diferente depois.",
+          },
+          quizzes: [
+            {
+              question: "Segundo Efésios 4:15, como a verdade deve ser comunicada entre cristãos, especialmente no casamento?",
+              options: [
+                "Com dureza, priorizando estar certo acima de tudo",
+                "Em amor, buscando o crescimento mútuo",
+                "Evitando qualquer confronto ou correção",
+                "Apenas por meio de terceiros, nunca diretamente",
+              ],
+              correctIndex: 1,
+              explanation: "O texto une verdade e amor como inseparáveis: falar a verdade sem amor fere; amar sem verdade não edifica.",
+            },
+            {
+              question: "De acordo com Tiago 1:19, qual é a ordem recomendada diante de um conflito?",
+              options: [
+                "Falar primeiro para deixar claro o próprio ponto de vista",
+                "Ser pronto para ouvir, tardio para falar e tardio para se irar",
+                "Evitar completamente qualquer conversa sobre o assunto",
+                "Reagir imediatamente para não perder a oportunidade de se defender",
+              ],
+              correctIndex: 1,
+              explanation: "Tiago inverte o instinto natural: primeiro ouvir, depois falar, e por último — se necessário — expressar irritação, com cautela.",
+            },
+          ],
+          application:
+            "Na próxima conversa difícil com seu cônjuge (ou familiar próximo), pratique o padrão de Tiago 1:19: escute completamente antes de responder, repita o que entendeu com suas próprias palavras, e só então fale sua posição, com gentileza.",
+          prayer:
+            "Senhor, ensina-me a falar a verdade com amor e a ouvir antes de responder. Perdoa-me pelas vezes em que usei palavras para ferir, ou pelo silêncio para evitar covardemente uma verdade necessária. Faz das minhas palavras, especialmente dentro de casa, instrumentos de edificação e não de destruição. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Escolha um assunto pendente e não resolvido no seu casamento (ou relacionamento próximo) e agende um momento específico, sem pressa, para conversar sobre ele seguindo o padrão de 'ouvir primeiro, falar depois, com verdade e amor'.",
+          reflectionQuestion:
+            "Nos seus conflitos mais recentes, você tem priorizado ser entendido ou entender o outro primeiro? O que isso revela sobre o seu coração?",
+          xp: 27,
+        },
+        {
+          id: "fc-2-2",
+          title: "Perdão Conjugal: Não Deixando o Sol se Pôr",
+          intro: [
+            "Nenhum casamento sobrevive sem perdão constante, porque nenhum casamento é feito de duas pessoas perfeitas. Paulo é direto em Efésios 4:26: 'não se ponha o sol sobre a vossa ira' — um princípio que, aplicado ao casamento, significa não deixar mágoas se acumularem em silêncio, dia após dia, até formarem uma distância que parece impossível de atravessar.",
+            "O perdão bíblico não é fingir que a ofensa não doeu, nem é dizer 'tudo bem' quando não está tudo bem. Perdão é uma decisão, tomada diante de Deus, de não cobrar mais a dívida do outro — mesmo sentindo a dor da ofensa. Colossenses 3:13 conecta diretamente o perdão conjugal ao perdão que já recebemos: 'perdoando-vos uns aos outros... como o Senhor vos perdoou, assim fazei vós também'.",
+            "Isso não significa que toda mágoa deva ser varrida para debaixo do tapete sem conversa. Perdão genuíno geralmente caminha junto com uma conversa honesta sobre o que doeu (Mt 18:15) — mas o objetivo final dessa conversa nunca é vencer ou fazer o outro se sentir pior; é reconciliação. Casais que aprendem a pedir perdão rápido e a perdoar de verdade constroem, ao longo dos anos, uma intimidade que casais que acumulam ressentimento nunca alcançam.",
+          ],
+          verses: [
+            {
+              ref: "Efésios 4:26,32",
+              textByVersion: {
+                NVI: "Quando ficarem irados, não pequem. Que o sol não se ponha estando vocês ainda irados... Sejam bondosos e compassivos uns para com os outros, perdoando-se mutuamente, assim como Deus perdoou vocês em Cristo.",
+                ACF: "Irai-vos, e não pequeis; não se ponha o sol sobre a vossa ira... Antes sede uns para com os outros benignos, misericordiosos, perdoando-vos uns aos outros, como também Deus vos perdoou em Cristo.",
+              },
+            },
+            {
+              ref: "Colossenses 3:13",
+              textByVersion: {
+                NVI: "Suportem-se uns aos outros e perdoem as ofensas que tiverem uns contra os outros. Perdoem como o Senhor lhes perdoou.",
+              },
+              originals: [
+                { word: "χαρίζομαι", translit: "charizomai", meaning: "perdoar generosamente, por graça — a mesma raiz de 'charis' (graça); perdão como dádiva imerecida, não obrigação fria", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "χαρίζομαι", translit: "charizomai", meaning: "conceder por graça, perdoar — refletindo o mesmo perdão gracioso recebido de Deus", lang: "grego" },
+            { word: "παροργισμός", translit: "parorgismos", meaning: "irritação intensa, ira prolongada — o tipo de raiva que Efésios 4:26 pede que não se estenda além de um dia", lang: "grego" },
+          ],
+          deepDive:
+            "O mandamento 'não se ponha o sol sobre a vossa ira' não exige que todo conflito seja totalmente resolvido em vinte e quatro horas — algumas questões são complexas e exigem várias conversas. O que o texto exige é que a ira não seja alimentada em silêncio, sem intenção de reconciliação; que haja, ainda naquele dia, uma disposição de coração para buscar a paz, mesmo que os detalhes práticos levem mais tempo para se resolver. Sobre a diferença entre perdão e reconciliação plena: o perdão é uma decisão unilateral, que o ofendido pode tomar diante de Deus independentemente da resposta do outro; a reconciliação plena da relação normalmente exige arrependimento genuíno e, em casos de ofensa repetida ou grave, tempo, mudança comprovada de comportamento e, muitas vezes, o acompanhamento de um pastor ou conselheiro cristão maduro.",
+          theologianQuote: {
+            author: "Lucas Gesta",
+            text: "Perdoar no casamento não é dizer que a dor não existiu; é escolher, todos os dias, não usar essa dor como arma contra quem já pediu perdão — porque foi assim que Cristo nos tratou.",
+          },
+          quizzes: [
+            {
+              question: "O que Efésios 4:26 ensina sobre lidar com a ira dentro do casamento?",
+              options: [
+                "Que a raiva nunca deve ser sentida por um cristão",
+                "Que a ira não deve ser alimentada além do mesmo dia, sem buscar reconciliação",
+                "Que é melhor guardar a mágoa até se sentir totalmente pronto para perdoar",
+                "Que expressar irritação é sempre pecado",
+              ],
+              correctIndex: 1,
+              explanation: "O texto não proíbe sentir irritação, mas proíbe deixá-la se acumular sem resolução, dia após dia.",
+            },
+            {
+              question: "Segundo Colossenses 3:13, qual é o modelo e o motivo para o perdão conjugal?",
+              options: [
+                "Perdoar apenas quando o outro merecer",
+                "Perdoar como o Senhor perdoou — por graça, generosamente",
+                "Perdoar somente após uma punição adequada",
+                "Evitar perdoar para não parecer fraco",
+              ],
+              correctIndex: 1,
+              explanation: "O padrão do perdão cristão é o próprio perdão de Deus em Cristo — gracioso e imerecido.",
+            },
+          ],
+          application:
+            "Se há uma mágoa não resolvida no seu casamento (ou em outro relacionamento próximo), dê o primeiro passo esta semana: peça perdão por sua parte no conflito, mesmo que a outra pessoa também tenha errado, e ofereça perdão genuíno pela parte dela.",
+          prayer:
+            "Pai, obrigado por teres me perdoado em Cristo quando eu não merecia. Ensina-me a oferecer esse mesmo perdão a quem me ofende, especialmente dentro de casa. Não deixe que o orgulho me faça guardar mágoa além da conta. Onde há reconciliação pendente na minha vida, dá-me coragem para buscá-la hoje. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Escreva (só para você, não precisa mostrar a ninguém) uma lista de pequenas mágoas que você tem guardado silenciosamente contra seu cônjuge ou familiar próximo, e entregue cada uma delas a Deus em oração, decidindo, uma a uma, perdoar.",
+          reflectionQuestion:
+            "Existe alguma mágoa em sua casa que 'o sol já se pôs' várias vezes sobre ela? O que está te impedindo de buscar reconciliação hoje?",
+          xp: 27,
+        },
+      ],
+    },
+    {
+      id: "fc-mod-3",
+      title: "Módulo III: Intimidade Sexual e Pureza Conjugal",
+      lessons: [
+        {
+          id: "fc-3-1",
+          title: "O Design de Deus para a Intimidade Sexual",
+          intro: [
+            "A sexualidade não é um tema que a Bíblia evita ou trata com vergonha — é um dom criado por Deus, declarado 'muito bom' junto com o restante da criação (Gn 1:31). Antes de qualquer discussão sobre limites e pureza, é preciso afirmar isso com clareza: Deus é o autor da sexualidade, e o prazer dentro do desenho dele não é pecado, é presente.",
+            "1 Coríntios 7 ensina que, dentro do casamento, a intimidade sexual é mútua, generosa e não deve ser negada como forma de controle ou punição: 'o marido cumpra o dever conjugal para com a mulher, e da mesma forma a mulher para com o marido' (v.3). O texto descreve reciprocidade e cuidado mútuo, não um direito unilateral de um cônjuge sobre o outro.",
+            "Hebreus 13:4 resume o princípio bíblico com uma frase equilibrada: 'o matrimônio seja honrado por todos, e o leito conjugal seja mantido puro'. Duas coisas juntas: honra ao casamento como instituição valiosa, e pureza do leito conjugal — o que implica tanto guardar a sexualidade para dentro da aliança do casamento quanto desfrutá-la livremente e sem culpa dentro dela.",
+          ],
+          verses: [
+            {
+              ref: "Hebreus 13:4",
+              textByVersion: {
+                NVI: "O matrimônio seja honrado por todos, e a união conjugal, mantida pura, pois Deus julgará os imorais e os adúlteros.",
+                ACF: "Honroso seja entre todos o matrimônio e o leito sem mácula; porém aos fornicadores e adúlteros Deus os julgará.",
+              },
+              originals: [
+                { word: "τίμιος", translit: "timios", meaning: "honroso, precioso, de grande valor — o casamento (e o que acontece dentro dele) tem valor e dignidade diante de Deus", lang: "grego" },
+              ],
+            },
+            {
+              ref: "1 Coríntios 7:3-5",
+              textByVersion: {
+                NVI: "O marido cumpra o dever conjugal para com sua mulher, e da mesma forma a mulher para com o marido... Não se recusem um ao outro.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "τίμιος", translit: "timios", meaning: "honroso, de valor precioso — descreve tanto o casamento quanto a intimidade sexual dentro dele", lang: "grego" },
+            { word: "ἀμίαντος", translit: "amiantos", meaning: "não contaminado, puro — o 'leito conjugal' descrito como algo a ser preservado sem mancha", lang: "grego" },
+          ],
+          deepDive:
+            "É significativo que Hebreus 13:4 coloque honra e pureza lado a lado, sem contradição: a Bíblia nunca ensina que sexualidade seja algo sujo que precise apenas ser tolerado para fins de procriação — ela é chamada de 'honrosa'. Ao mesmo tempo, 1 Coríntios 7:3-5 ensina generosidade mútua dentro do casamento, incluindo até mesmo a orientação de que privações prolongadas da intimidade conjugal, quando não acordadas por ambos e por um tempo limitado (geralmente para oração, v.5), podem abrir espaço para tentação. Sobre questões práticas específicas de vida sexual dentro do casamento — frequência, expressões de intimidade, desafios físicos ou emocionais —, a Bíblia estabelece princípios de honra, pureza, generosidade mútua e ausência de coerção, mas não um manual detalhado; casais que enfrentam dificuldades nessa área fazem bem em buscar, com humildade, aconselhamento pastoral ou profissional cristão qualificado.",
+          theologianQuote: {
+            author: "Tim Keller",
+            text: "O sexo dentro do casamento não é apenas permitido, é celebrado pela Escritura, como uma linguagem de entrega total, corpo e alma, dentro da segurança de uma aliança que promete permanecer.",
+          },
+          quizzes: [
+            {
+              question: "Segundo Hebreus 13:4, como a Bíblia descreve a união conjugal dentro do casamento?",
+              options: [
+                "Como algo vergonhoso, apenas tolerado",
+                "Como honrosa e a ser mantida pura",
+                "Como irrelevante para a vida espiritual",
+                "Como opcional, sem importância real",
+              ],
+              correctIndex: 1,
+              explanation: "O texto une honra e pureza: a intimidade conjugal é valiosa aos olhos de Deus quando vivida dentro do casamento.",
+            },
+            {
+              question: "O que 1 Coríntios 7:3-5 ensina sobre a intimidade sexual entre marido e mulher?",
+              options: [
+                "Que deve ser negada como forma de controle sobre o cônjuge",
+                "Que envolve reciprocidade e cuidado mútuo, sem recusa unilateral",
+                "Que é opcional e sem relevância espiritual no casamento",
+                "Que compete apenas ao marido decidir sozinho",
+              ],
+              correctIndex: 1,
+              explanation: "O texto descreve um dever mútuo, dado e recebido por ambos os cônjuges com generosidade.",
+            },
+          ],
+          application:
+            "Se você é casado, converse com seu cônjuge, com honestidade e sem constrangimento, sobre como vocês têm cultivado (ou negligenciado) essa área da intimidade conjugal. Se você não é casado, guarde seu coração e corpo dentro do padrão bíblico, confiando que o desenho de Deus para essa área da vida é bom, mesmo quando exige espera.",
+          prayer:
+            "Senhor, obrigado por teres criado a intimidade conjugal como um dom bom, e não como algo vergonhoso. Ajuda-me a honrar esse dom — seja guardando-o com pureza até o casamento, seja cultivando-o com generosidade dentro dele. Guarda meu coração de qualquer visão distorcida sobre sexualidade, seja de vergonha excessiva, seja de libertinagem. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Se casado(a), tenha uma conversa aberta e gentil com seu cônjuge sobre essa área do casamento nesta semana. Se solteiro(a), escreva uma oração pedindo a Deus força e clareza para guardar a pureza até o momento certo.",
+          reflectionQuestion:
+            "Sua visão sobre sexualidade tem sido moldada mais pela cultura ao redor ou pelo desenho bíblico de honra, pureza e generosidade mútua dentro do casamento?",
+          xp: 26,
+        },
+        {
+          id: "fc-3-2",
+          title: "Guardando a Fidelidade e a Pureza do Coração",
+          intro: [
+            "Jesus elevou o padrão de pureza sexual muito além do simples ato externo: 'todo aquele que olhar para uma mulher e a cobiçar, em seu coração já cometeu adultério com ela' (Mt 5:28). Isso não é uma regra extra e opressiva — é uma revelação de que o pecado sexual sempre começa no coração, muito antes de qualquer ato visível, e que a verdadeira pureza precisa alcançar os pensamentos, não apenas o comportamento.",
+            "Vivemos numa cultura onde a tentação sexual — pela pornografia, por relacionamentos fora do casamento, por fantasias alimentadas em segredo — está a um clique de distância. Paulo é direto sobre a estratégia diante disso: 'fujam da imoralidade sexual' (1 Co 6:18). Não 'resistam bravamente enquanto ficam perto da tentação', mas fujam — reconheçam os próprios pontos fracos e tomem distância deles, com humildade e prontidão.",
+            "1 Coríntios 6:19-20 dá a razão mais profunda para essa fuga: 'vocês não sabem que o corpo de vocês é santuário do Espírito Santo?... vocês foram comprados por preço. Portanto, glorifiquem a Deus com o corpo'. A pureza sexual não é uma regra arbitrária — é uma resposta de gratidão de quem entende que seu corpo já não lhe pertence, mas foi comprado pelo sangue de Cristo.",
+          ],
+          verses: [
+            {
+              ref: "Mateus 5:27-28",
+              textByVersion: {
+                NVI: "Vocês ouviram o que foi dito: 'Não adulterarás'. Mas eu digo: qualquer que olhar para uma mulher e a cobiçar, em seu coração já cometeu adultério com ela.",
+              },
+            },
+            {
+              ref: "1 Coríntios 6:18-20",
+              textByVersion: {
+                NVI: "Fujam da imoralidade sexual... vocês não sabem que o corpo de vocês é santuário do Espírito Santo?... Portanto, glorifiquem a Deus com o corpo de vocês.",
+              },
+              originals: [
+                { word: "φεύγετε", translit: "pheugete", meaning: "fujam — imperativo presente, ação contínua e ativa de se afastar da tentação, não passividade", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "φεύγω", translit: "pheugō", meaning: "fugir — a estratégia bíblica diante da tentação sexual é distância ativa, não confronto direto", lang: "grego" },
+            { word: "ναός", translit: "naos", meaning: "santuário, templo interior — o corpo do cristão é descrito como lugar sagrado onde o Espírito habita", lang: "grego" },
+          ],
+          deepDive:
+            "Jesus, em Mateus 5:27-28, não está dizendo que sentir uma atração inicial seja, por si só, pecado equivalente ao adultério — ele está confrontando a cobiça deliberada e cultivada, o ato voluntário da mente e do coração de alimentar um desejo que sabe ser errado. A diferença é sutil, mas importante pastoralmente: sentir uma tentação não é falha moral automática; ceder a ela em pensamento, alimentá-la, é. Sobre a luta específica com pornografia, fantasias recorrentes ou tentações que parecem incontroláveis, a Bíblia oferece o caminho de 1 Coríntios 6 e 10:13 (Deus sempre provê uma saída), mas reconhece que padrões enraizados de pecado sexual muitas vezes exigem, além do arrependimento individual, prestação de contas em comunidade, confissão a alguém de confiança (Tg 5:16) e, quando necessário, acompanhamento pastoral e profissional — buscar ajuda não é fraqueza espiritual, é sabedoria bíblica.",
+          theologianQuote: {
+            author: "John Piper",
+            text: "A luta pela pureza sexual não vence apenas dizendo não a um pecado; vence quando o coração descobre um prazer maior em Cristo do que qualquer coisa que o pecado promete e nunca cumpre.",
+          },
+          quizzes: [
+            {
+              question: "Segundo Mateus 5:27-28, o que Jesus revela sobre a origem do pecado sexual?",
+              options: [
+                "Que ele só existe quando há um ato físico externo",
+                "Que já começa no coração, na cobiça deliberadamente cultivada",
+                "Que é irrelevante para a vida espiritual",
+                "Que apenas as mulheres precisam se preocupar com esse padrão",
+              ],
+              correctIndex: 1,
+              explanation: "Jesus eleva o padrão para o coração: a cobiça cultivada já é, moralmente, o início do adultério.",
+            },
+            {
+              question: "Qual estratégia Paulo recomenda em 1 Coríntios 6:18 diante da tentação sexual?",
+              options: [
+                "Permanecer perto da tentação para provar força de vontade",
+                "Fugir ativamente, tomando distância da situação de risco",
+                "Ignorar completamente o assunto, sem qualquer cuidado prático",
+                "Enfrentar a tentação sozinho, sem buscar ajuda de ninguém",
+              ],
+              correctIndex: 1,
+              explanation: "O verbo grego indica ação contínua de fuga ativa — afastamento deliberado, não confronto direto e arriscado.",
+            },
+          ],
+          application:
+            "Identifique, com honestidade diante de Deus, uma área específica de vulnerabilidade sexual em sua vida (pensamentos, conteúdo consumido, situações de risco) e dê um passo prático e concreto de 'fuga' esta semana — um bloqueio, uma prestação de contas a alguém de confiança, uma mudança de hábito.",
+          prayer:
+            "Senhor, meu corpo é teu, comprado pelo sangue de Cristo. Perdoa-me pelas vezes em que tratei minha pureza com descuido, seja em pensamentos, seja em atos. Dá-me força para fugir da tentação, não para flertar com ela. Faz de mim alguém que glorifica a ti com o corpo, dentro e fora do casamento. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Se necessário, converse com alguém maduro na fé (cônjuge, líder, discipulador) sobre uma luta de pureza que você tem enfrentado em segredo — a confissão em comunidade é um dos meios bíblicos mais poderosos de libertação (Tg 5:16).",
+          reflectionQuestion:
+            "Existe alguma área da sua vida sexual — pensamentos, hábitos, relacionamentos — que você tem escondido até de Deus? O que te impede de trazê-la à luz?",
+          xp: 29,
+        },
+      ],
+    },
+    {
+      id: "fc-mod-4",
+      title: "Módulo IV: Filhos e o Altar Doméstico",
+      lessons: [
+        {
+          id: "fc-4-1",
           title: "Educando os Filhos no Senhor",
           intro: [
             "Nenhum manual de criação de filhos garante resultados automáticos — nem mesmo a Bíblia promete isso de forma mecânica (Pv 22:6 é um princípio geral de sabedoria, não uma fórmula infalível). Mas a Escritura dá aos pais cristãos algo mais valioso que uma fórmula: um propósito claro e um método consistente com o caráter de Deus para a tarefa de criar filhos.",
@@ -1181,7 +1472,7 @@ const familiaCrista: Trail = {
           ],
           keywords: [
             { word: "παιδεία", translit: "paideia", meaning: "formação de caráter através de disciplina consistente e amorosa", lang: "grego" },
-            { word: "נוּ֙חַ", translit: "nouthesia (grego, cf. hebr. musar)", meaning: "instrução que corrige e direciona a mente e o coração para a sabedoria de Deus", lang: "grego" },
+            { word: "νουθεσία", translit: "nouthesia", meaning: "instrução que corrige e direciona a mente e o coração para a sabedoria de Deus", lang: "grego" },
           ],
           deepDive:
             "Deuteronômio 6:6-7 estabelece o padrão veterotestamentário que Efésios 6:4 assume e aprofunda: a formação espiritual dos filhos não é tarefa isolada em horários específicos ('hora do culto em casa'), mas um estilo de vida contínuo — 'quando estiver sentado em casa, quando andar pelo caminho, quando se deitar e quando se levantar'. Isso não significa sermões constantes, mas uma vida em que a fé é natural, visível e conversada em meio às atividades comuns do dia. Sobre métodos específicos de disciplina (formas concretas de correção, limites, consequências), a Bíblia dá princípios de caráter — amor, consistência, ausência de ira descontrolada, propósito redentivo — mais do que uma técnica única aplicável a toda criança e toda cultura; pais sábios buscam conselho pastoral e, quando necessário, profissional, para aplicar esses princípios com sabedoria à realidade específica de cada filho.",
@@ -1207,7 +1498,7 @@ const familiaCrista: Trail = {
                 "Apenas impor regras rígidas, sem explicação",
                 "Formar caráter (disciplina) e instruir ativamente na Palavra (admoestação)",
                 "Deixar que os filhos decidam por si mesmos, sem qualquer direção",
-                "Delegar toda a educação espiritual à igreja"
+                "Delegar toda a educação espiritual à igreja",
               ],
               correctIndex: 1,
               explanation: "As duas palavras gregas combinam formação de caráter com instrução intencional na verdade de Deus.",
@@ -1224,7 +1515,7 @@ const familiaCrista: Trail = {
           xp: 28,
         },
         {
-          id: "fc-2-2",
+          id: "fc-4-2",
           title: "O Altar Doméstico: Fé Vivida em Casa",
           intro: [
             "Ao longo da história da igreja, muitas famílias cristãs mantiveram uma prática simples, mas poderosa: o chamado 'altar doméstico' ou 'culto doméstico' — um momento regular, dentro de casa, dedicado à leitura da Palavra, à oração e ao louvor em família. Não é um mandamento explícito e detalhado no Novo Testamento, mas é uma aplicação natural e sábia de princípios bíblicos claros sobre a transmissão da fé no lar.",
@@ -1293,6 +1584,871 @@ const familiaCrista: Trail = {
           reflectionQuestion:
             "Se seus filhos, familiares ou pessoas próximas só pudessem observar sua vida — sem ouvir uma palavra sua sobre fé — o que concluiriam sobre o lugar que Deus ocupa na sua casa?",
           xp: 30,
+        },
+      ],
+    },
+    {
+      id: "fc-mod-5",
+      title: "Módulo V: Honra aos Pais e Legado entre Gerações",
+      lessons: [
+        {
+          id: "fc-5-1",
+          title: "Honrar Pai e Mãe: Um Mandamento com Promessa",
+          intro: [
+            "Entre os Dez Mandamentos, o quinto se destaca por vir acompanhado de uma promessa explícita: 'honra teu pai e tua mãe, para que se prolonguem os teus dias na terra que o Senhor, teu Deus, te dá' (Êx 20:12). Paulo, em Efésios 6:2-3, chama atenção justamente para esse detalhe: é 'o primeiro mandamento com promessa'.",
+            "Honrar não é sinônimo de obedecer cegamente, nem de concordar com tudo. Honrar significa reconhecer o lugar, o valor e, geralmente, a autoridade que Deus concedeu aos pais na vida de um filho — tratá-los com respeito, gratidão e cuidado, mesmo quando adultos, mesmo quando as opiniões divergem, mesmo quando o relacionamento é imperfeito.",
+            "Esse mandamento não termina na infância. Provérbios repetidamente instrui filhos adultos a não desprezarem seus pais quando envelhecem (Pv 23:22), e Jesus repreendeu duramente líderes religiosos que usavam tecnicalidades espirituais para escapar da responsabilidade de cuidar dos próprios pais idosos (Mc 7:9-13). Honrar os pais é um chamado para a vida inteira, adaptado a cada fase — obediência na infância, respeito e cuidado na vida adulta.",
+          ],
+          verses: [
+            {
+              ref: "Êxodo 20:12",
+              textByVersion: {
+                NVI: "Honra teu pai e tua mãe, para que tenhas vida longa na terra que o Senhor, teu Deus, te dá.",
+                ACF: "Honra a teu pai e a tua mãe, para que se prolonguem os teus dias na terra que o Senhor teu Deus te dá.",
+              },
+              originals: [
+                { word: "כַּבֵּד", translit: "kabbed", meaning: "honrar — literalmente 'dar peso, tratar como pesado/importante'; reconhecer o valor real de alguém", lang: "hebraico" },
+              ],
+            },
+            {
+              ref: "Efésios 6:1-3",
+              textByVersion: {
+                NVI: "Filhos, obedeçam a seus pais no Senhor, pois isso é justo... este é o primeiro mandamento com promessa.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "כָּבוֹד", translit: "kabod", meaning: "honra, peso, glória — dar a alguém o reconhecimento e o respeito que seu lugar merece", lang: "hebraico" },
+            { word: "ὑπακούω", translit: "hypakouō", meaning: "obedecer — ouvir com submissão ativa; distinto de 'honrar', que continua mesmo depois que a obediência infantil termina", lang: "grego" },
+          ],
+          deepDive:
+            "É importante distinguir, com cuidado pastoral, 'obedecer' (Ef 6:1, dirigido especialmente a filhos que ainda vivem sob a autoridade parental) de 'honrar' (Êx 20:12, um mandamento permanente, para toda a vida). Um filho adulto já não deve obediência incondicional aos pais — ele responde, em primeiro lugar, a Deus e, se casado, também ao seu próprio lar —, mas continua devendo honra: respeito, gratidão, cuidado prático quando necessário, e a recusa de desprezar ou menosprezar seus pais. Sobre situações de famílias marcadas por abuso, abandono ou pais que exigem coisas contrárias à Palavra de Deus, a honra bíblica nunca significa submissão a pecado ou exposição a dano: 'importa antes obedecer a Deus do que aos homens' (At 5:29) permanece o princípio final, mesmo dentro da própria família; nesses casos, buscar apoio pastoral e, quando necessário, proteção legal e profissional, é sabedoria bíblica, não desonra.",
+          theologianQuote: {
+            author: "Wayne Grudem",
+            text: "Honrar os pais é reconhecer, com gratidão, que fomos formados por mãos que Deus usou antes que soubéssemos formar nada por nós mesmos — mesmo quando essas mãos, sendo humanas, também erraram.",
+          },
+          quizzes: [
+            {
+              question: "O que torna o quinto mandamento (Êx 20:12) único entre os Dez Mandamentos, segundo Efésios 6:2-3?",
+              options: [
+                "É o único mandamento sobre a vida familiar",
+                "É o primeiro mandamento acompanhado de uma promessa explícita",
+                "É o único mandamento que se aplica somente a crianças",
+                "É o mandamento menos importante da lista",
+              ],
+              correctIndex: 1,
+              explanation: "Paulo destaca explicitamente que este é 'o primeiro mandamento com promessa' — bênção associada à obediência.",
+            },
+            {
+              question: "Qual a diferença bíblica entre 'obedecer' e 'honrar' os pais, segundo o ensino apresentado?",
+              options: [
+                "São exatamente a mesma coisa, sem distinção",
+                "Obedecer é para toda a vida; honrar termina na vida adulta",
+                "Obedecer é próprio da infância sob autoridade parental; honrar é um chamado permanente",
+                "Nenhuma das duas se aplica a filhos adultos",
+              ],
+              correctIndex: 2,
+              explanation: "A obediência plena está ligada à autoridade parental na infância; a honra — respeito, gratidão, cuidado — permanece por toda a vida.",
+            },
+          ],
+          application:
+            "Faça, esta semana, um gesto concreto de honra aos seus pais (ou, se já falecidos, a alguém que exerceu esse papel em sua vida) — uma ligação, uma visita, uma palavra de gratidão específica, ou um ato prático de cuidado, especialmente se eles já são idosos.",
+          prayer:
+            "Senhor, obrigado pelos pais que me deste, com todas as suas limitações e imperfeições. Ensina-me a honrá-los de verdade — com respeito, gratidão e cuidado prático, sem fingir que tudo foi perfeito, mas também sem desprezo. Onde há mágoas antigas na minha relação com meus pais, traz cura e, quando possível, reconciliação. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Escreva uma carta ou mensagem (mesmo que curta) para um de seus pais ou figura parental, agradecendo por algo específico que Deus usou na vida dele(a) para te formar, mesmo que essa pessoa não seja cristã.",
+          reflectionQuestion:
+            "Existe alguma mágoa não resolvida na sua relação com seus pais que está impedindo você de honrá-los como a Bíblia ensina? O que seria um primeiro passo saudável nessa direção?",
+          xp: 26,
+        },
+        {
+          id: "fc-5-2",
+          title: "Legado Espiritual: Semeando para Gerações que Você Não Verá",
+          intro: [
+            "Uma das promessas mais bonitas — e mais desafiadoras — da Bíblia sobre a família é a ideia de fidelidade que atravessa gerações. Deus se revela a Moisés como aquele que usa 'misericórdia até a milésima geração com os que me amam e guardam os meus mandamentos' (Êx 20:6). Isso descreve algo que a cultura moderna, obcecada pelo imediato, muitas vezes esquece: as escolhas de fé de hoje moldam gerações que ainda nem nasceram.",
+            "Timóteo é um exemplo bíblico concreto dessa realidade. Paulo lembra a ele 'a fé sincera que primeiro habitou em sua avó Lóide e em sua mãe Eunice' (2 Tm 1:5). Nenhuma dessas mulheres viveu para ver todo o alcance do ministério de Timóteo, mas sua fidelidade silenciosa, geração após geração, preparou o terreno para um dos maiores obreiros do Novo Testamento.",
+            "Isso muda a forma de pensar sobre o legado familiar. Herança material é boa e a Bíblia a valoriza (Pv 13:22), mas o legado mais duradouro que uma família cristã pode deixar não é financeiro — é espiritual: uma fé genuína, vivida de forma consistente, que os filhos e netos possam olhar e imitar, mesmo décadas depois que os avós já tiverem partido para a presença do Senhor.",
+          ],
+          verses: [
+            {
+              ref: "2 Timóteo 1:5",
+              textByVersion: {
+                NVI: "Recordo-me da sinceridade da sua fé, a qual habitou primeiro em sua avó Lóide e em sua mãe Eunice, e estou convencido de que também habita em você.",
+              },
+            },
+            {
+              ref: "Salmo 103:17-18",
+              textByVersion: {
+                NVI: "Mas, para os que o temem, a bondade do Senhor dura para sempre, e a sua justiça salva os filhos dos filhos... daqueles que se lembram de obedecer aos seus preceitos.",
+              },
+              originals: [
+                { word: "חֶסֶד", translit: "chesed", meaning: "bondade leal, amor fiel de aliança — a fidelidade constante de Deus que se estende através das gerações", lang: "hebraico" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "חֶסֶד", translit: "chesed", meaning: "amor fiel de aliança, bondade leal — a base do compromisso de Deus com as famílias que o temem, geração após geração", lang: "hebraico" },
+            { word: "ἀνυπόκριτος", translit: "anypokritos", meaning: "sincero, sem hipocrisia — a fé de Lóide e Eunice descrita como genuína, não apenas aparente", lang: "grego" },
+          ],
+          deepDive:
+            "Paulo não menciona o pai de Timóteo (que, segundo Atos 16:1, era grego, provavelmente não cristão) — o texto foca deliberadamente na linha materna de fé, mostrando que Deus usa quem está disponível, mesmo em famílias espiritualmente divididas ou incompletas, para construir um legado de fé genuína. Isso é um encorajamento importante para mães solteiras, avós que criam netos sozinhas, ou qualquer pessoa que sinta que sua família 'não é o modelo ideal': Deus trabalha com fidelidade real, não com estruturas familiares perfeitas. Sobre o alcance exato dessa promessa de bênção geracional (Êx 20:6), o texto descreve um princípio geral de como Deus normalmente trata famílias fiéis através do tempo, não uma garantia automática de que todo descendente de um crente será salvo independentemente de sua própria resposta pessoal ao Evangelho — cada geração precisa, por si mesma, responder à fé que recebeu.",
+          theologianQuote: {
+            author: "Charles Spurgeon",
+            text: "Um homem que teme a Deus e caminha corretamente deixa atrás de si mais do que riqueza; deixa um caminho pisado, por onde seus filhos e netos podem, se quiserem, encontrar o mesmo Deus que ele encontrou.",
+          },
+          quizzes: [
+            {
+              question: "O que o exemplo de Lóide e Eunice, em 2 Timóteo 1:5, ensina sobre legado espiritual?",
+              options: [
+                "Que apenas pais (homens) podem transmitir fé genuína aos filhos",
+                "Que a fidelidade de gerações anteriores pode preparar terreno para o chamado de um filho ou neto",
+                "Que a fé de avós e mães não tem valor espiritual duradouro",
+                "Que Timóteo se tornou cristão sem qualquer influência familiar",
+              ],
+              correctIndex: 1,
+              explanation: "Paulo destaca explicitamente a fé sincera transmitida por Lóide e Eunice como raiz da fé de Timóteo.",
+            },
+            {
+              question: "Segundo o texto de Salmo 103:17-18, o que caracteriza a bondade de Deus que 'salva os filhos dos filhos'?",
+              options: [
+                "Uma garantia automática, independente da fé de cada geração",
+                "Um princípio geral de fidelidade de Deus para com quem o teme e guarda seus preceitos",
+                "Uma promessa apenas para famílias ricas ou socialmente influentes",
+                "Uma ideia sem qualquer base bíblica",
+              ],
+              correctIndex: 1,
+              explanation: "O salmo descreve o padrão fiel de Deus para com quem o teme, sem eliminar a necessidade de resposta pessoal de cada geração.",
+            },
+          ],
+          application:
+            "Pense em uma pessoa da sua família (viva ou já falecida) cuja fidelidade espiritual, mesmo pequena ou silenciosa, moldou sua própria fé hoje. Agradeça a Deus por ela — e, se possível, agradeça também à pessoa diretamente.",
+          prayer:
+            "Senhor, obrigado pela fé que recebi de quem veio antes de mim, e pelo privilégio de poder deixar um legado espiritual para quem vem depois. Ajuda-me a viver hoje de um jeito que meus filhos, netos e aqueles que observam minha vida possam, um dia, olhar para trás e ver fidelidade genuína, não apenas aparência religiosa. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Escreva uma breve carta (para guardar ou entregar) contando a um filho, sobrinho, afilhado ou jovem próximo como Deus tem agido na sua vida — um pequeno registro de fé para a próxima geração.",
+          reflectionQuestion:
+            "Se sua fé de hoje fosse a única semente espiritual que sua família recebesse por três gerações, que tipo de fruto ela provavelmente geraria?",
+          xp: 27,
+        },
+      ],
+    },
+    {
+      id: "fc-mod-6",
+      title: "Módulo VI: Solteirice, Namoro e Relacionamentos com Propósito",
+      lessons: [
+        {
+          id: "fc-6-1",
+          title: "A Solteirice Como Dom, Não Como Espera Vazia",
+          intro: [
+            "Numa cultura (e, muitas vezes, numa igreja) que trata o casamento como o grande marco de maturidade cristã, é preciso recuperar algo que Paulo ensina com clareza em 1 Coríntios 7: a solteirice também é um dom de Deus, tão legítimo e tão útil ao Reino quanto o casamento — não uma etapa inferior ou uma espera incompleta.",
+            "Paulo, ele mesmo solteiro, chega a dizer que gostaria que mais pessoas tivessem esse dom (1 Co 7:7), destacando uma vantagem real: o solteiro pode se dedicar 'às coisas do Senhor' com uma liberdade de tempo, energia e mobilidade que o casado, com responsabilidades legítimas para com cônjuge e filhos, simplesmente não tem da mesma forma (1 Co 7:32-34).",
+            "Isso não significa que o desejo de casar seja pecaminoso, nem que toda pessoa solteira tenha o 'dom' da solteirice permanente — muitos solteiros estão numa temporada, não numa vocação para a vida toda. Mas significa que a identidade e o valor de uma pessoa diante de Deus nunca dependem do seu estado civil. Cristo, o homem mais pleno e mais completo que já existiu, viveu e morreu solteiro.",
+          ],
+          verses: [
+            {
+              ref: "1 Coríntios 7:7-8",
+              textByVersion: {
+                NVI: "Gostaria que todos fossem como eu. Mas cada um tem de Deus o seu próprio dom... digo aos solteiros e às viúvas: é bom que permaneçam como eu.",
+              },
+            },
+            {
+              ref: "1 Coríntios 7:32-34",
+              textByVersion: {
+                NVI: "Gostaria que vocês estivessem livres de preocupações. O homem solteiro preocupa-se com as coisas do Senhor, em como agradar ao Senhor.",
+              },
+              originals: [
+                { word: "ἀπερισπάστως", translit: "aperispastōs", meaning: "sem distração — a liberdade que o solteiro pode ter para se dedicar às coisas do Senhor sem as divisões legítimas do casamento", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "χάρισμα", translit: "charisma", meaning: "dom de graça — tanto a capacidade de viver solteiro quanto a de viver casado são chamadas de dons dados por Deus", lang: "grego" },
+            { word: "ἀπερισπάστως", translit: "aperispastōs", meaning: "sem distração, com atenção indivisa — descreve a possível dedicação exclusiva do solteiro às coisas do Senhor", lang: "grego" },
+          ],
+          deepDive:
+            "É importante notar que Paulo não está desvalorizando o casamento em 1 Coríntios 7 — em outros textos (Ef 5) ele o eleva como retrato do Evangelho. O que ele está corrigindo é a ideia, presente já naquela cultura e ainda hoje, de que o casamento é 'o próximo passo natural e obrigatório' para toda pessoa madura, e de que a pessoa solteira está, de alguma forma, incompleta. Sobre discernir se a solteirice de alguém é temporária (uma temporada de espera) ou um chamado mais duradouro, a Bíblia não dá um teste específico — isso normalmente se torna mais claro com o tempo, através de oração, dos próprios desejos da pessoa (1 Co 7:9) e do aconselhamento de líderes espirituais maduros que a conhecem bem. Em ambos os casos, temporário ou permanente, a solteirice pode e deve ser vivida com plenitude, propósito e alegria no Senhor — nunca como uma sala de espera vazia.",
+          theologianQuote: {
+            author: "John Stott",
+            text: "Jesus Cristo, o homem mais realizado e mais pleno que a história já conheceu, nunca se casou; isso deveria ser suficiente para libertar qualquer cristão solteiro da mentira de que sua vida está incompleta.",
+          },
+          quizzes: [
+            {
+              question: "Segundo 1 Coríntios 7:7, como Paulo descreve tanto o casamento quanto a solteirice?",
+              options: [
+                "Como estados opostos, sendo um claramente superior ao outro",
+                "Como dons diferentes, ambos dados por Deus",
+                "Como irrelevantes para a vida espiritual",
+                "Como escolhas puramente humanas, sem qualquer chamado divino",
+              ],
+              correctIndex: 1,
+              explanation: "Paulo usa a palavra 'dom' (charisma) para descrever tanto a capacidade de viver solteiro quanto a de viver casado.",
+            },
+            {
+              question: "Qual vantagem específica Paulo destaca sobre a vida solteira em 1 Coríntios 7:32-34?",
+              options: [
+                "Uma vida mais fácil, sem qualquer desafio",
+                "Maior liberdade e atenção indivisa para se dedicar às coisas do Senhor",
+                "Superioridade espiritual automática sobre os casados",
+                "Ausência total de tentação ou luta pessoal",
+              ],
+              correctIndex: 1,
+              explanation: "O texto descreve a possibilidade de dedicação 'sem distração' às coisas do Senhor, algo distinto (não superior) à vida do casado.",
+            },
+          ],
+          application:
+            "Se você é solteiro(a), identifique uma forma concreta em que sua atual liberdade de tempo e mobilidade pode ser usada para servir a Deus e à igreja nesta temporada — algo que seria mais difícil fazer estando casado(a). Se você é casado(a), valorize e incentive publicamente os solteiros da sua igreja, sem tratá-los como incompletos.",
+          prayer:
+            "Senhor, obrigado porque meu valor diante de ti nunca dependeu do meu estado civil. Se estou solteiro(a), ajuda-me a viver essa temporada (ou vocação) com plenitude e propósito, sem viver em espera ansiosa. Se estou casado(a), ajuda-me a nunca tratar irmãos e irmãs solteiros como se estivessem incompletos. Que toda a igreja valorize os dons que tu distribuis de formas diferentes. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Esta semana, converse com pelo menos um irmão ou irmã solteiro(a) da sua igreja sobre como ele(a) tem vivido essa temporada — ouvindo, sem clichês fáceis nem pressão sobre casamento.",
+          reflectionQuestion:
+            "Você tem tratado a solteirice (a sua ou a de outros) como um dom com propósito próprio, ou como um problema à espera de solução?",
+          xp: 26,
+        },
+        {
+          id: "fc-6-2",
+          title: "Namoro com Propósito: Intencionalidade e Pureza",
+          intro: [
+            "A Bíblia não usa a palavra 'namoro' — esse é um formato cultural relativamente recente. Mas ela dá princípios claros que devem moldar qualquer relacionamento romântico que caminha em direção ao casamento: intencionalidade de propósito, pureza de conduta, e sujeição a Deus e, sempre que possível, ao conselho da comunidade cristã.",
+            "1 Coríntios 6:19-20 já ensinou que o corpo do cristão é santuário do Espírito Santo — isso vale plenamente também para relacionamentos pré-matrimoniais. Namorar com pureza não é uma lista fria de 'proibições', mas o reconhecimento de que a intimidade física (em suas várias formas e graus) foi desenhada por Deus para dentro do compromisso público e definitivo do casamento, não para relacionamentos ainda não selados por aliança.",
+            "1 Tessalonicenses 4:3-6 dá um princípio adicional importante: guardar-se da imoralidade sexual não é apenas sobre o próprio coração, mas também sobre não 'ultrapassar e enganar' o outro. Um namoro cristão saudável protege ativamente a pureza e o coração da outra pessoa, não apenas evita o próprio pecado — trata o outro com honra, não como um meio para satisfação própria.",
+          ],
+          verses: [
+            {
+              ref: "1 Tessalonicenses 4:3-6",
+              textByVersion: {
+                NVI: "A vontade de Deus é que sejam santificados: abstenham-se da imoralidade sexual... ninguém prejudique seu irmão nessa questão, nem dele se aproveite.",
+              },
+              originals: [
+                { word: "ἁγιασμός", translit: "hagiasmos", meaning: "santificação — o propósito declarado de Deus para a área sexual: separação para pureza, não repressão sem sentido", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Provérbios 4:23",
+              textByVersion: {
+                NVI: "Acima de tudo, guarde o seu coração, pois dele depende toda a sua vida.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "ἁγιασμός", translit: "hagiasmos", meaning: "santificação, separação para um propósito santo — a razão bíblica para a pureza no relacionamento pré-matrimonial", lang: "grego" },
+            { word: "לֵב", translit: "lev", meaning: "coração — em Provérbios 4:23, o centro da vontade e das emoções, que precisa ser guardado com cuidado ativo", lang: "hebraico" },
+          ],
+          deepDive:
+            "Sobre limites físicos específicos dentro de um namoro cristão (o que é ou não apropriado em cada etapa do relacionamento), a Bíblia não estabelece uma lista detalhada — ela dá o princípio de pureza, honra mútua e ausência de aproveitamento (1 Ts 4:3-6), deixando espaço para que casais, sob aconselhamento pastoral, apliquem esse princípio com sabedoria prática à sua própria realidade e temporada de relacionamento. O que permanece claro e não negociável é o alvo: guardar o corpo (1 Co 6) e o coração (Pv 4:23) do outro com o mesmo cuidado que se esperaria receber, e reservar a expressão física plena da sexualidade para dentro da aliança pública do casamento. Namoro cristão saudável também normalmente inclui transparência com pais ou líderes espirituais e um propósito claro e comunicado: caminhar, com discernimento e oração, em direção a um possível casamento — não apenas 'viver o momento' sem direção nem compromisso real.",
+          theologianQuote: {
+            author: "John Mark Comer",
+            text: "Um namoro que glorifica a Deus não é definido pela ausência total de atração, mas pela presença de honra: tratar a pessoa amada como filho ou filha de Deus, nunca como objeto de satisfação própria.",
+          },
+          quizzes: [
+            {
+              question: "Segundo 1 Tessalonicenses 4:3-6, qual é um dos objetivos da pureza sexual em um relacionamento?",
+              options: [
+                "Apenas evitar o próprio pecado, sem se importar com o outro",
+                "Proteger também o irmão ou irmã de ser prejudicado ou enganado",
+                "Impedir totalmente qualquer forma de relacionamento romântico",
+                "Garantir apenas benefícios sociais ou familiares",
+              ],
+              correctIndex: 1,
+              explanation: "O texto é explícito: ninguém deve prejudicar ou se aproveitar do irmão/irmã nessa área — a pureza protege ambos.",
+            },
+            {
+              question: "Qual princípio Provérbios 4:23 ensina, aplicável também aos relacionamentos românticos?",
+              options: [
+                "Que o coração não precisa de cuidado especial",
+                "Que guardar o coração é essencial, pois dele depende toda a vida",
+                "Que emoções não têm relevância espiritual",
+                "Que apenas ações externas importam, não o coração",
+              ],
+              correctIndex: 1,
+              explanation: "O coração — centro da vontade e das emoções — precisa ser guardado com cuidado ativo, inclusive em relacionamentos.",
+            },
+          ],
+          application:
+            "Se você está namorando, converse com seu(sua) parceiro(a) sobre limites claros de pureza para essa fase do relacionamento, e considere ser transparente com um líder espiritual ou pais sobre como o relacionamento tem caminhado. Se você não está namorando, reflita sobre que tipo de pessoa você quer se tornar antes de entrar em um relacionamento sério.",
+          prayer:
+            "Senhor, se estou em um relacionamento, ajuda-me a honrar essa pessoa como filho(a) teu, guardando seu coração e seu corpo com o mesmo cuidado que gostaria de receber. Dá-nos sabedoria e submissão ao teu propósito de pureza. Se não estou namorando, forma em mim, nesta temporada, o caráter que um bom casamento vai exigir. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Se estiver namorando, tenha uma conversa honesta sobre limites e propósito do relacionamento com seu(sua) parceiro(a) nesta semana, e, se possível, também com um líder espiritual de confiança.",
+          reflectionQuestion:
+            "No seu relacionamento atual (ou no seu padrão de relacionamentos passados), você tem tratado o outro com honra e cuidado ativo, ou priorizado seus próprios desejos e conveniência?",
+          xp: 27,
+        },
+      ],
+    },
+    {
+      id: "fc-mod-7",
+      title: "Módulo VII: Mordomia, Trabalho e Provisão na Família",
+      lessons: [
+        {
+          id: "fc-7-1",
+          title: "Mordomia Financeira: Tudo Pertence a Deus",
+          intro: [
+            "A forma como uma família cristã lida com dinheiro revela, com clareza, aquilo em que ela realmente confia. Jesus falou sobre dinheiro e posses mais do que sobre quase qualquer outro tema prático, porque sabia o quanto essa área testa e revela o coração: 'onde estiver o seu tesouro, aí também estará o seu coração' (Mt 6:21).",
+            "O princípio bíblico fundamental de mordomia é simples de enunciar e desafiador de viver: tudo pertence a Deus — 'do Senhor é a terra e tudo o que nela existe' (Sl 24:1) — e nós somos apenas administradores temporários daquilo que ele nos confiou. Isso muda a pergunta central: não é 'quanto do meu dinheiro devo dar a Deus?', mas 'como devo administrar o dinheiro de Deus que está, por enquanto, em minhas mãos?'.",
+            "Provérbios ensina, repetidas vezes, sabedoria prática sobre trabalho diligente, planejamento e evitar dívidas desnecessárias (Pv 21:5; 22:7). Uma família que administra bem suas finanças — trabalhando com diligência, planejando com sabedoria, dando com generosidade e evitando o consumismo desenfreado — está, na prática, adorando a Deus com uma das áreas mais concretas e cotidianas da vida.",
+          ],
+          verses: [
+            {
+              ref: "Mateus 6:19-21",
+              textByVersion: {
+                NVI: "Não acumulem para vocês tesouros na terra... Acumulem para vocês tesouros no céu... Pois onde estiver o seu tesouro, aí também estará o seu coração.",
+              },
+            },
+            {
+              ref: "1 Timóteo 6:17-19",
+              textByVersion: {
+                NVI: "Aos ricos deste mundo, mande que não sejam arrogantes nem ponham a esperança na incerteza da riqueza, mas em Deus... que sejam generosos e prontos a repartir.",
+              },
+              originals: [
+                { word: "εὐμετάδοτος", translit: "eumetadotos", meaning: "pronto para repartir, generoso — descreve o caráter esperado de quem administra bem recursos financeiros", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "εὐμετάδοτος", translit: "eumetadotos", meaning: "pronto e disposto a repartir generosamente — o oposto de acumular egoisticamente", lang: "grego" },
+            { word: "מַמּוֹן", translit: "mamom", meaning: "riqueza, dinheiro — usado por Jesus como um possível 'senhor' rival de Deus no coração humano (Mt 6:24)", lang: "hebraico" },
+          ],
+          deepDive:
+            "É digno de nota que Jesus não condena a riqueza em si — Abraão, Jó e outros homens fiéis eram ricos — mas condena colocar a confiança na riqueza em vez de em Deus, e o coração dividido entre dois senhores (Mt 6:24). Sobre proporções específicas de dízimos e ofertas, percentuais de poupança, ou modelos exatos de orçamento familiar, a Bíblia estabelece princípios de generosidade proporcional, planejamento sábio (Pv 21:5) e liberdade da escravidão da dívida (Pv 22:7), mais do que uma fórmula financeira única aplicável a toda família em toda época — famílias cristãs de boa consciência aplicam esses princípios de formas distintas, conforme sua realidade, e fazem bem em buscar tanto conselho pastoral quanto orientação financeira prática e responsável quando enfrentam dificuldades nessa área.",
+          theologianQuote: {
+            author: "Thom Rainer",
+            text: "A família que entende que tudo pertence a Deus para de perguntar 'quanto é meu para eu guardar?' e passa a perguntar 'quanto do que Deus me confiou eu posso usar para o Reino, com sabedoria e generosidade?'.",
+          },
+          quizzes: [
+            {
+              question: "Segundo Mateus 6:21, o que revela onde está o verdadeiro tesouro de uma pessoa ou família?",
+              options: [
+                "O valor total de seus bens materiais",
+                "Onde está o seu coração",
+                "A quantidade de dízimo que ela dá",
+                "Sua posição social ou profissional",
+              ],
+              correctIndex: 1,
+              explanation: "Jesus conecta diretamente o lugar do tesouro com o lugar do coração — onde investimos revela o que amamos.",
+            },
+            {
+              question: "Qual atitude 1 Timóteo 6:17-19 recomenda a quem possui recursos financeiros?",
+              options: [
+                "Arrogância e confiança na própria riqueza",
+                "Esperança colocada em Deus e generosidade disposta a repartir",
+                "Acúmulo silencioso, sem qualquer partilha",
+                "Desprezo total por qualquer forma de planejamento financeiro",
+              ],
+              correctIndex: 1,
+              explanation: "O texto pede humildade, esperança em Deus (não na riqueza) e prontidão generosa para repartir com outros.",
+            },
+          ],
+          application:
+            "Revise, esta semana, o orçamento da sua casa (ou pessoal) com a pergunta 'isso reflete que tudo pertence a Deus?' — identifique uma área de consumo desnecessário para reduzir e uma área de generosidade para aumentar.",
+          prayer:
+            "Senhor, tudo o que tenho vem de ti e pertence a ti. Perdoa-me pelas vezes em que tratei meu dinheiro como se fosse só meu, sem consultar a ti sobre como usá-lo. Ensina minha família a trabalhar com diligência, planejar com sabedoria e dar com generosidade, para que nosso coração esteja sempre voltado para ti, e não para as coisas que possuímos. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Converse em família (ou sozinho, diante de Deus) sobre uma decisão financeira concreta que reflita confiança em Deus em vez de ansiedade ou acúmulo egoísta — pode ser uma oferta específica, um corte de gastos ou um plano de poupança sábio.",
+          reflectionQuestion:
+            "Se alguém observasse apenas seu extrato bancário do último mês, que conclusão tiraria sobre onde está o seu tesouro — e o seu coração?",
+          xp: 27,
+        },
+        {
+          id: "fc-7-2",
+          title: "Trabalho, Provisão e Contentamento",
+          intro: [
+            "O trabalho não é uma maldição resultante da queda — ele existia antes do pecado, quando Deus colocou Adão no jardim do Éden 'para cultivá-lo e cuidar dele' (Gn 2:15). O que a queda trouxe foi a frustração e o suor difícil no trabalho (Gn 3:17-19), não o trabalho em si. Isso significa que trabalhar, prover para a própria casa, é parte do bom desenho de Deus para a vida humana, não um mal necessário.",
+            "Paulo é firme sobre a responsabilidade de prover: 'se alguém não cuida dos seus, e em especial dos de sua própria família, negou a fé e é pior que um descrente' (1 Tm 5:8). Essa é uma das declarações mais fortes do Novo Testamento sobre um tema prático — mostrando o quanto Deus leva a sério a responsabilidade de sustentar a própria casa, seja através de trabalho remunerado, seja através de outras formas legítimas de contribuição ao lar.",
+            "Ao mesmo tempo, a Bíblia adverte contra a ansiedade e a obsessão pelo trabalho e pela provisão material, como se tudo dependesse apenas do esforço humano. 'A menos que o Senhor edifique a casa, em vão trabalham os construtores' (Sl 127:1). O contentamento cristão nasce de confiar que Deus é, em última instância, quem provê — mesmo quando ele usa o trabalho humano diligente como o meio ordinário para isso.",
+          ],
+          verses: [
+            {
+              ref: "1 Timóteo 5:8",
+              textByVersion: {
+                NVI: "Se alguém não cuida dos seus, e em especial dos de sua própria família, negou a fé e é pior que um descrente.",
+              },
+            },
+            {
+              ref: "Filipenses 4:11-13",
+              textByVersion: {
+                NVI: "Não estou dizendo isso porque esteja necessitado, pois aprendi a viver contente, seja qual for a minha situação... tudo posso naquele que me fortalece.",
+              },
+              originals: [
+                { word: "αὐτάρκης", translit: "autarkēs", meaning: "contente, autossuficiente — não no sentido de independência humana, mas de suficiência encontrada em Cristo, independente das circunstâncias", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "αὐτάρκεια", translit: "autarkeia", meaning: "contentamento — suficiência interior aprendida (não natural), fundamentada em Cristo, não nas circunstâncias externas", lang: "grego" },
+            { word: "עָבַד", translit: "avad", meaning: "trabalhar, servir, cultivar — a mesma palavra usada para o trabalho de Adão no Éden antes da queda", lang: "hebraico" },
+          ],
+          deepDive:
+            "Paulo, em Filipenses 4:11, diz explicitamente que 'aprendeu' a viver contente — o contentamento bíblico não é um traço de personalidade natural, é uma disciplina espiritual desenvolvida ao longo do tempo, muitas vezes através de experiências de escassez e de abundância. Isso é especialmente relevante para famílias que enfrentam desemprego, dificuldades financeiras ou mudanças bruscas de renda: a ausência momentânea de provisão material não significa ausência da fidelidade de Deus, embora a família deva, com responsabilidade, buscar meios legítimos de trabalho e sustento (2 Ts 3:10-12 adverte contra a ociosidade voluntária, distinta da falta involuntária de oportunidade). Sobre como equilibrar dedicação ao trabalho com tempo de qualidade em família — um desafio real e concreto para muitos lares hoje —, a Bíblia não dá uma fórmula de horas específicas, mas dá o princípio de que o trabalho deve servir à família e a Deus, e não o contrário; quando o trabalho começa a devorar o tempo devido ao cônjuge, aos filhos e à igreja, é sinal de que a ordem de prioridades bíblicas precisa ser revista.",
+          theologianQuote: {
+            author: "Hernandes Dias Lopes",
+            text: "Deus não chama o cristão a ser ansioso provedor de si mesmo, mas a ser trabalhador fiel e confiante — trabalhando com diligência como se tudo dependesse dele, e descansando como se tudo dependesse de Deus, porque, no fim, realmente depende.",
+          },
+          quizzes: [
+            {
+              question: "Segundo 1 Timóteo 5:8, qual é a gravidade de negligenciar o sustento da própria família?",
+              options: [
+                "É um erro pequeno, sem grande importância espiritual",
+                "É descrito como uma negação prática da fé, mais grave que descrença",
+                "Aplica-se apenas a homens casados",
+                "Não tem relação com a fé cristã",
+              ],
+              correctIndex: 1,
+              explanation: "Paulo usa linguagem extremamente forte para descrever a seriedade de não prover para a própria casa.",
+            },
+            {
+              question: "O que Paulo ensina sobre o contentamento em Filipenses 4:11-13?",
+              options: [
+                "Que é um talento natural que algumas pessoas já nascem tendo",
+                "Que é algo aprendido, fundamentado em Cristo, independente das circunstâncias",
+                "Que só é possível na abundância material",
+                "Que contentamento significa não trabalhar nem se esforçar",
+              ],
+              correctIndex: 1,
+              explanation: "Paulo diz explicitamente 'aprendi' a viver contente — uma disciplina espiritual, não um traço automático de personalidade.",
+            },
+          ],
+          application:
+            "Avalie, com honestidade, se o ritmo atual do seu trabalho tem servido bem à sua família ou tem consumido tempo que deveria ser dedicado a ela. Se necessário, converse com seu cônjuge (ou consigo mesmo, diante de Deus) sobre um ajuste concreto de prioridades esta semana.",
+          prayer:
+            "Senhor, obrigado pelo trabalho como parte do teu bom desenho para minha vida. Ajuda-me a trabalhar com diligência, sustentando minha família com responsabilidade, sem cair na ansiedade que esquece que és tu quem realmente provê. Ensina-me o contentamento que Paulo aprendeu, em fartura ou em escassez. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Escolha um dia específico nesta semana para desligar completamente do trabalho fora do horário combinado e dedicar esse tempo de forma intencional à sua família ou às pessoas que Deus colocou ao seu redor.",
+          reflectionQuestion:
+            "O ritmo atual do seu trabalho reflete confiança em Deus como provedor, ou uma ansiedade silenciosa de que tudo depende só do seu próprio esforço?",
+          xp: 26,
+        },
+      ],
+    },
+    {
+      id: "fc-mod-8",
+      title: "Módulo VIII: O Lar como Igreja Doméstica",
+      lessons: [
+        {
+          id: "fc-8-1",
+          title: "A Família a Serviço da Igreja Local",
+          intro: [
+            "Uma família cristã saudável não vive voltada apenas para dentro de si mesma. Desde o Novo Testamento, casas de crentes eram o próprio lugar onde a igreja se reunia — 'a igreja que se reúne na casa deles' (Rm 16:5; cf. Cl 4:15). O lar cristão sempre foi pensado, desde o início, como extensão da vida da igreja, não como um espaço isolado e autossuficiente.",
+            "Isso significa que decisões familiares — onde morar, como organizar o tempo, como educar os filhos — devem levar em conta, com peso real, o compromisso da família com sua igreja local: participação em cultos, pequenos grupos, uso de dons espirituais e apoio prático à comunhão da igreja. Uma família que nunca considera a igreja em suas decisões práticas está vivendo um discipulado incompleto.",
+            "Hebreus 10:24-25 é claro: os cristãos não devem abandonar 'a nossa congregação, como é costume de alguns', mas se encorajar mutuamente. Uma família cristã forte investe tempo e energia real na vida da igreja local — não apenas comparece esporadicamente, mas se compromete, serve e se deixa conhecer por outros crentes.",
+          ],
+          verses: [
+            {
+              ref: "Romanos 16:3-5",
+              textByVersion: {
+                NVI: "Saúdem Priscila e Áquila... Saúdem também a igreja que se reúne na casa deles.",
+              },
+            },
+            {
+              ref: "Hebreus 10:24-25",
+              textByVersion: {
+                NVI: "Consideremo-nos uns aos outros para nos incentivarmos ao amor e às boas obras. Não deixemos de reunir-nos, como é costume de alguns, mas encorajemo-nos uns aos outros.",
+              },
+              originals: [
+                { word: "ἐπισυναγωγή", translit: "episynagōgē", meaning: "reunião, congregação — o ajuntamento regular dos crentes, descrito como algo que não deve ser abandonado", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "οἶκος", translit: "oikos", meaning: "casa, lar — no Novo Testamento, frequentemente o próprio lugar onde a igreja local se reunia e crescia", lang: "grego" },
+            { word: "παρακαλέω", translit: "parakaleō", meaning: "encorajar, exortar, consolar — o propósito ativo da reunião regular entre cristãos, segundo Hebreus 10:25", lang: "grego" },
+          ],
+          deepDive:
+            "Priscila e Áquila (Rm 16:3-5) formam um dos casais mais ativos do Novo Testamento em ministério — hospedavam a igreja, corrigiram doutrina com Apolo (At 18:26) e acompanharam Paulo em viagens missionárias. Eles ilustram algo importante: um casamento forte não se fecha em si mesmo, ele se torna uma base a partir da qual o casal serve à igreja e ao Reino de Deus juntos. Sobre o quanto de tempo e recursos específicos uma família deve dedicar à vida da igreja local, versus tempo dedicado exclusivamente ao núcleo familiar, a Bíblia não estabelece uma proporção fixa — isso exige sabedoria e temporadas de vida distintas (famílias com bebês pequenos, por exemplo, naturalmente têm menos disponibilidade que outras); o princípio inegociável é que a igreja local nunca deve ser tratada como opcional ou dispensável na vida familiar, mesmo quando a temporada exige ajustes práticos na forma de participação.",
+          theologianQuote: {
+            author: "Josué K. Reichow",
+            text: "Uma família cristã que nunca serve à igreja local está desperdiçando o próprio propósito para o qual Deus a formou: não apenas ser abençoada, mas ser canal de bênção para o corpo de Cristo.",
+          },
+          quizzes: [
+            {
+              question: "O que Romanos 16:3-5 revela sobre a relação entre o lar cristão e a igreja local no Novo Testamento?",
+              options: [
+                "Que as casas dos crentes eram totalmente separadas da vida da igreja",
+                "Que casas de crentes, como a de Priscila e Áquila, eram lugar onde a igreja se reunia",
+                "Que somente prédios religiosos oficiais podiam abrigar reuniões da igreja",
+                "Que Priscila e Áquila não tinham envolvimento com a igreja",
+              ],
+              correctIndex: 1,
+              explanation: "O texto menciona explicitamente 'a igreja que se reúne na casa deles' — o lar como extensão da vida da igreja.",
+            },
+            {
+              question: "Segundo Hebreus 10:24-25, qual é o propósito de os cristãos não abandonarem a congregação?",
+              options: [
+                "Cumprir uma obrigação religiosa vazia",
+                "Encorajar-se mutuamente ao amor e às boas obras",
+                "Demonstrar status social dentro da comunidade",
+                "Evitar julgamento social de outros cristãos",
+              ],
+              correctIndex: 1,
+              explanation: "O texto conecta diretamente a reunião regular ao propósito de encorajamento mútuo e estímulo a boas obras.",
+            },
+          ],
+          application:
+            "Avalie, com sua família (ou consigo mesmo), o nível atual de envolvimento com a igreja local — não apenas presença em cultos, mas participação real em grupos pequenos, uso de dons e serviço prático. Dê um passo concreto de maior envolvimento esta semana.",
+          prayer:
+            "Senhor, obrigado pela igreja local que colocaste em nossa vida. Perdoa-me pelas vezes em que tratei minha família como um núcleo fechado, sem considerar como podemos servir e ser servidos pelo corpo de Cristo. Ajuda-nos a abrir nossa casa e nosso tempo para a comunhão da igreja, como Priscila e Áquila fizeram. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Convide alguém da sua igreja (um irmão solteiro, um casal novo, uma família recém-chegada) para sua casa nesta semana, ou participe ativamente de um grupo pequeno se ainda não o faz.",
+          reflectionQuestion:
+            "Sua família tem vivido de forma isolada da igreja local, ou tem se tornado, como a casa de Priscila e Áquila, um espaço aberto para a comunhão e o crescimento de outros crentes?",
+          xp: 27,
+        },
+        {
+          id: "fc-8-2",
+          title: "Ordenanças e Vida em Comunidade: Batismo e Ceia na Vida da Família",
+          intro: [
+            "Duas práticas centrais marcam a vida da igreja local, e a família cristã participa delas junto com toda a comunidade: o Batismo, que declara publicamente a fé em Cristo e a identificação com sua morte e ressurreição (Rm 6:3-4), e a Ceia do Senhor, que relembra regularmente o sacrifício de Cristo e renova a comunhão do corpo de crentes (1 Co 11:23-26).",
+            "Essas não são práticas privadas de família — são ordenanças da igreja, recebidas e vividas dentro da comunidade de fé, sob a orientação e o cuidado dos pastores e líderes locais. Uma família cristã madura ensina seus filhos, desde cedo, o significado dessas práticas, preparando-os para, no tempo certo e com profissão pessoal e consciente de fé, participar delas plenamente.",
+            "Questões específicas — como a idade apropriada para o batismo de uma criança ou adolescente, os detalhes práticos de preparação, ou a frequência da Ceia do Senhor — variam conforme a orientação de cada igreja local, e é ali, com o pastor e os líderes que conhecem a família, que essas decisões devem ser conversadas e conduzidas com cuidado pastoral.",
+          ],
+          verses: [
+            {
+              ref: "Romanos 6:3-4",
+              textByVersion: {
+                NVI: "Vocês não sabem que todos nós, que fomos batizados em Cristo Jesus, fomos batizados em sua morte?... a fim de vivermos uma vida nova.",
+              },
+            },
+            {
+              ref: "1 Coríntios 11:26",
+              textByVersion: {
+                NVI: "Porquanto, sempre que comerem deste pão e beberem deste cálice, vocês proclamam a morte do Senhor, até que ele venha.",
+              },
+              originals: [
+                { word: "καταγγέλλετε", translit: "katangellete", meaning: "proclamam, anunciam publicamente — a Ceia não é apenas lembrança privada, é declaração comunitária do Evangelho", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "βαπτίζω", translit: "baptizō", meaning: "batizar, imergir — identificação pública e simbólica com a morte, sepultamento e ressurreição de Cristo", lang: "grego" },
+            { word: "κοινωνία", translit: "koinōnia", meaning: "comunhão, participação conjunta — a Ceia do Senhor renova e expressa a comunhão do corpo de crentes", lang: "grego" },
+          ],
+          deepDive:
+            "É importante que a família cristã entenda que Batismo e Ceia do Senhor não são rituais mágicos que produzem salvação por si mesmos, nem meras tradições simbólicas vazias — são ordenanças instituídas por Cristo, cheias de significado espiritual real, que declaram e alimentam a fé de quem já creu genuinamente no Evangelho. Sobre o modo específico do batismo (por imersão, aspersão), quem pode administrá-lo, a frequência da Ceia e outros detalhes práticos, cristãos fiéis de diferentes tradições aplicam de formas distintas, e cada família deve seguir com submissão e confiança a orientação de sua própria igreja local nesses assuntos, buscando sempre entender o porquê bíblico por trás da prática, e não apenas cumprir uma formalidade.",
+          theologianQuote: {
+            author: "Davi Lago",
+            text: "O Batismo e a Ceia não são apenas rituais da igreja para o indivíduo; são momentos em que toda a família de Deus, incluindo cada família natural dentro dela, relembra junta o Evangelho que a uniu.",
+          },
+          quizzes: [
+            {
+              question: "O que Romanos 6:3-4 ensina sobre o significado do Batismo?",
+              options: [
+                "Que é apenas uma tradição cultural, sem significado espiritual",
+                "Que representa identificação com a morte e ressurreição de Cristo, para uma vida nova",
+                "Que garante automaticamente a salvação, independente de fé pessoal",
+                "Que deve ser praticado apenas por adultos que já são casados",
+              ],
+              correctIndex: 1,
+              explanation: "O texto conecta diretamente o batismo à identificação simbólica com a morte e ressurreição de Cristo.",
+            },
+            {
+              question: "Segundo 1 Coríntios 11:26, qual é o propósito comunitário da Ceia do Senhor?",
+              options: [
+                "Uma refeição social sem relação com o Evangelho",
+                "Proclamar publicamente a morte do Senhor até que ele volte",
+                "Substituir a necessidade de pregação da Palavra",
+                "Ser praticada exclusivamente de forma individual e privada",
+              ],
+              correctIndex: 1,
+              explanation: "O texto descreve a Ceia como proclamação pública e comunitária da morte do Senhor, não apenas lembrança privada.",
+            },
+          ],
+          application:
+            "Se você tem filhos que ainda não compreendem plenamente o significado do Batismo e da Ceia, dedique um momento nesta semana para explicar, de forma simples e adequada à idade deles, o que essas práticas significam e por que a igreja as pratica.",
+          prayer:
+            "Senhor, obrigado pelo Batismo e pela Ceia, sinais visíveis do Evangelho que já creio. Ajuda minha família a compreender e valorizar essas práticas, não como rituais vazios, mas como declarações reais de fé e comunhão com o teu corpo, a igreja. Guia-nos, com submissão, à orientação da nossa igreja local sobre esses assuntos. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Converse com seu pastor ou líder de igreja sobre como sua família pode se preparar melhor, ou ensinar melhor seus filhos, a respeito do significado bíblico do Batismo e da Ceia do Senhor.",
+          reflectionQuestion:
+            "Seus filhos (ou pessoas mais jovens que você influencia) entendem o Batismo e a Ceia como rituais automáticos, ou como declarações profundas de um Evangelho que transformou vidas reais?",
+          xp: 26,
+        },
+      ],
+    },
+    {
+      id: "fc-mod-9",
+      title: "Módulo IX: Sofrimento, Crises e Restauração na Família",
+      lessons: [
+        {
+          id: "fc-9-1",
+          title: "Quando a Família Sofre: Fé em Meio à Dor",
+          intro: [
+            "Nenhuma família cristã está imune ao sofrimento — doença, perda, dificuldades financeiras, filhos que se afastam da fé, conflitos profundos. A Bíblia não promete um lar isento de dor; promete algo mais profundo: a presença fiel de Deus dentro da dor. 'Perto está o Senhor dos que têm o coração quebrantado' (Sl 34:18).",
+            "Jó é o exemplo bíblico mais completo de uma família atingida por perda catastrófica — filhos, bens, saúde — em um curto espaço de tempo. O livro não oferece uma explicação simples e completa do porquê do sofrimento, mas oferece algo igualmente valioso: o exemplo de alguém que continuou confiando em Deus mesmo sem entender plenamente seus caminhos (Jó 1:21; 42:1-6).",
+            "Romanos 8:28 é frequentemente citado de forma simplista, mas seu significado é profundo quando entendido corretamente: Deus opera todas as coisas para o bem daqueles que o amam — não que toda dor seja, em si mesma, boa, mas que Deus é soberano o bastante para trazer bem, no seu tempo e à sua maneira, mesmo através das piores circunstâncias familiares.",
+          ],
+          verses: [
+            {
+              ref: "Salmo 34:18",
+              textByVersion: {
+                NVI: "Perto está o Senhor dos que têm o coração quebrantado e salva os de espírito abatido.",
+              },
+            },
+            {
+              ref: "Romanos 8:28",
+              textByVersion: {
+                NVI: "Sabemos que Deus age em todas as coisas para o bem daqueles que o amam, dos que foram chamados de acordo com o seu propósito.",
+              },
+              originals: [
+                { word: "συνεργεῖ", translit: "synergei", meaning: "coopera, trabalha em conjunto — Deus ativamente entrelaça todas as circunstâncias, inclusive dolorosas, em direção a um propósito de bem", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "שָׁבַר", translit: "shabar", meaning: "quebrar, despedaçar — descreve o coração ferido pela dor, ao qual Deus promete estar perto", lang: "hebraico" },
+            { word: "συνεργέω", translit: "synergeō", meaning: "cooperar, trabalhar junto — Deus tece as circunstâncias, mesmo dolorosas, em direção a um bem maior", lang: "grego" },
+          ],
+          deepDive:
+            "Romanos 8:28 não ensina que todo sofrimento seja, em si mesmo, algo bom ou desejável — a dor de uma família enlutada, doente ou fraturada é real e não deve ser minimizada com respostas rápidas e superficiais. O texto ensina algo distinto e mais robusto: que Deus é soberano sobre as circunstâncias, mesmo as mais dolorosas, e capaz de tecer, com o tempo, propósitos de bem a partir delas — algo que muitas vezes só se torna visível em retrospecto, ou até mesmo apenas na eternidade. Sobre o porquê específico de um sofrimento particular (por que esta doença, esta perda, neste momento), a Bíblia geralmente não oferece uma resposta detalhada e individual — o livro de Jó, de fato, termina sem que Deus explique diretamente o motivo do sofrimento dele, mas com Jó adorando a Deus mesmo assim, confiando em seu caráter mesmo sem entender plenamente seus caminhos.",
+          theologianQuote: {
+            author: "Tim Keller",
+            text: "Deus nunca desperdiça dor; ele pode não explicá-la totalmente agora, mas promete estar presente nela e, com o tempo, usá-la para um propósito que, um dia, faremos sentido — mesmo que só na eternidade.",
+          },
+          quizzes: [
+            {
+              question: "O que Salmo 34:18 promete às famílias que atravessam sofrimento e coração quebrantado?",
+              options: [
+                "Que o sofrimento será imediatamente removido",
+                "Que Deus está perto dos que têm o coração quebrantado",
+                "Que a dor é sempre sinal de pecado não confessado",
+                "Que a fé elimina toda possibilidade de tristeza",
+              ],
+              correctIndex: 1,
+              explanation: "O salmo promete proximidade de Deus na dor, não ausência automática da dor.",
+            },
+            {
+              question: "Como Romanos 8:28 deve ser corretamente entendido diante do sofrimento familiar?",
+              options: [
+                "Que toda dor é, em si mesma, boa e deve ser celebrada",
+                "Que Deus é soberano para trazer bem a partir de circunstâncias difíceis, com o tempo",
+                "Que o sofrimento sempre tem uma explicação clara e imediata",
+                "Que apenas cristãos maduros podem confiar nesse versículo",
+              ],
+              correctIndex: 1,
+              explanation: "O texto afirma a soberania de Deus sobre as circunstâncias, tecendo bem a partir delas, não que a dor em si seja boa.",
+            },
+          ],
+          application:
+            "Se sua família está atravessando (ou já atravessou) um período de sofrimento profundo, permita-se lamentar honestamente diante de Deus (os Salmos de lamento são um modelo bíblico legítimo para isso), em vez de apenas reprimir a dor com respostas espirituais superficiais.",
+          prayer:
+            "Senhor, quando a dor bate à porta da minha família, ajuda-me a correr para ti, não para longe de ti. Não peço que me expliques tudo agora, mas peço que te faças perto do meu coração quebrantado, como prometeste. Ensina-me a confiar no teu caráter, mesmo quando não entendo os teus caminhos. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Leia o livro de Jó (ou pelo menos os capítulos 1, 2 e 42) nesta semana, observando como ele lida com a perda sem perder a fé, e anote uma verdade que fale diretamente à sua própria situação familiar atual.",
+          reflectionQuestion:
+            "Nos momentos mais difíceis da sua família, você tem se aproximado de Deus com honestidade e lamento, ou se afastado dele por não entender o porquê da dor?",
+          xp: 28,
+        },
+        {
+          id: "fc-9-2",
+          title: "Quando o Casamento se Rompe: Graça, Limites e Restauração",
+          intro: [
+            "Nenhum tema exige mais cuidado pastoral e humildade teológica do que separação e divórcio. A Bíblia claramente afirma que o desenho original de Deus para o casamento é permanência: 'o que Deus uniu, o homem não separe' (Mt 19:6). O divórcio nunca é o plano A de Deus para nenhum casal, e a Escritura sempre o trata como uma tragédia relacionada à dureza do coração humano (Mt 19:8), não como algo neutro ou desejável.",
+            "Ao mesmo tempo, os textos bíblicos reconhecem situações concretas de quebra profunda da aliança conjugal — como infidelidade sexual continuada e não arrependida (Mt 19:9) — em que a separação ou o divórcio pode se tornar uma realidade permitida, ainda que dolorosa. Sobre os limites exatos, as circunstâncias específicas e a possibilidade de um novo casamento após o divórcio, cristãos fiéis de diferentes tradições interpretam os textos bíblicos de formas distintas, e esse é precisamente o tipo de decisão que nunca deve ser tomada sozinho, mas sempre em diálogo próximo, honesto e contínuo com pastores e líderes espirituais da igreja local.",
+            "Além disso, é essencial afirmar com clareza: em situações de abuso físico, emocional ou de qualquer forma de violência dentro do lar, a Bíblia nunca pede que a vítima permaneça em silêncio ou em perigo em nome de uma suposta 'santidade do casamento'. Buscar segurança, proteção e, quando necessário, separação física imediata, é sabedoria e cuidado bíblico, não desobediência — e deve ser feito com apoio urgente de líderes da igreja e, quando necessário, das autoridades competentes.",
+          ],
+          verses: [
+            {
+              ref: "Mateus 19:6,8-9",
+              textByVersion: {
+                NVI: "Portanto, o que Deus uniu, ninguém separe... Foi por causa da dureza dos seus corações que Moisés lhes permitiu divorciar-se de suas mulheres. Mas não foi assim desde o princípio.",
+              },
+            },
+            {
+              ref: "Malaquias 2:16",
+              textByVersion: {
+                NVI: "'Eu odeio o divórcio', diz o Senhor, o Deus de Israel, 'e odeio a violência contra a esposa', diz o Senhor dos Exércitos.",
+              },
+              originals: [
+                { word: "שָׂנֵא", translit: "sane", meaning: "odiar, detestar — descreve a profunda aversão de Deus tanto ao divórcio quanto à violência conjugal, colocados lado a lado no mesmo versículo", lang: "hebraico" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "σκληροκαρδία", translit: "sklērokardia", meaning: "dureza de coração — a razão bíblica pela qual a permissão para o divórcio existiu, refletindo pecado, não o ideal de Deus", lang: "grego" },
+            { word: "שָׂנֵא", translit: "sane", meaning: "odiar profundamente — usado por Deus tanto para o divórcio quanto para a violência doméstica em Malaquias 2:16", lang: "hebraico" },
+          ],
+          deepDive:
+            "É digno de nota que Malaquias 2:16 coloca o divórcio e a violência contra a esposa lado a lado, ambos descritos como coisas que Deus 'odeia' — o que revela que a preocupação divina com o casamento nunca foi manter a aparência de união a qualquer custo, mas proteger a aliança e as pessoas dentro dela. Este material não pretende, e não deveria pretender, ser suficiente para orientar alguém em meio a uma crise conjugal real e específica — questões como infidelidade, abandono, abuso, ou o processo de restauração após uma separação, envolvem nuances pastorais, legais e emocionais profundas demais para serem resolvidas apenas com um estudo bíblico. Se você, ou alguém que você conhece, está enfrentando uma dessas realidades, o passo mais sábio e mais bíblico é buscar, o quanto antes, o cuidado próximo de um pastor, conselheiro cristão qualificado, e, em situações de risco, também apoio profissional e legal.",
+          theologianQuote: {
+            author: "Larry Crabb",
+            text: "A graça de Deus não ignora a gravidade da quebra de uma aliança conjugal, mas também não abandona ninguém nela; há sempre um caminho de cuidado, verdade e, quando possível, restauração — buscado dentro da comunhão e do acompanhamento da igreja local.",
+          },
+          quizzes: [
+            {
+              question: "Segundo Mateus 19:6-8, qual é o plano original de Deus para o casamento, e por que o divórcio foi permitido no Antigo Testamento?",
+              options: [
+                "Deus planejou o divórcio desde o início como algo neutro",
+                "O plano original é permanência; o divórcio foi permitido por causa da dureza do coração humano",
+                "O casamento nunca teve, bíblicamente, qualquer valor de permanência",
+                "A permissão ao divórcio anula totalmente o ideal original de união",
+              ],
+              correctIndex: 1,
+              explanation: "Jesus afirma claramente que a permissão ao divórcio refletia dureza de coração, não o desenho original de Deus.",
+            },
+            {
+              question: "O que Malaquias 2:16 ensina ao colocar divórcio e violência conjugal lado a lado?",
+              options: [
+                "Que ambos são igualmente irrelevantes espiritualmente",
+                "Que Deus se preocupa tanto com a fidelidade da aliança quanto com a proteção das pessoas dentro dela",
+                "Que a vítima de violência deve permanecer calada para preservar o casamento",
+                "Que apenas o divórcio é condenável, não a violência",
+              ],
+              correctIndex: 1,
+              explanation: "Deus declara odiar ambos, revelando que sua preocupação central é a fidelidade da aliança e a proteção das pessoas nela.",
+            },
+          ],
+          application:
+            "Se você conhece alguém enfrentando uma crise conjugal grave (infidelidade, abuso ou separação), não ofereça respostas rápidas e simplistas — ofereça presença, escute com humildade, e ajude essa pessoa a buscar, com urgência, o acompanhamento de um pastor ou conselheiro cristão qualificado.",
+          prayer:
+            "Senhor, tu odeias o divórcio porque amas a aliança e amas as pessoas dentro dela — inclusive as que sofrem violência ou traição. Onde há casamentos quebrados ou em crise ao meu redor, dá sabedoria aos pastores que os acompanham, e dá-me um coração de graça, sem julgamento fácil, para quem atravessa essa dor. Protege quem está em perigo dentro do próprio lar. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Se você está em crise conjugal ou conhece alguém que está, dê o passo de agendar uma conversa com um pastor ou líder espiritual de confiança nesta semana, em vez de enfrentar isso sozinho(a) ou apenas em silêncio.",
+          reflectionQuestion:
+            "Você tem tratado famílias que enfrentam divórcio ou crises graves com graça e cuidado pastoral, ou com julgamento rápido e distante?",
+          xp: 30,
+        },
+      ],
+    },
+    {
+      id: "fc-mod-10",
+      title: "Módulo X: Família em Missão: Hospitalidade e Testemunho",
+      lessons: [
+        {
+          id: "fc-10-1",
+          title: "Hospitalidade: Abrindo a Casa para o Reino",
+          intro: [
+            "A hospitalidade bíblica é muito mais que receber amigos para uma refeição agradável — é um mandamento explícito para os cristãos: 'pratiquem a hospitalidade' (Rm 12:13), e uma das qualificações listadas para líderes na igreja (1 Tm 3:2; Tt 1:8). A palavra grega para hospitalidade, philoxenia, significa literalmente 'amor ao estrangeiro' — abrir a própria casa não apenas para quem já se conhece bem, mas para quem é diferente, novo, ou até desconhecido.",
+            "Hebreus 13:2 lembra um detalhe surpreendente: 'não se esqueçam da hospitalidade, porque, praticando-a, alguns, sem o saber, hospedaram anjos'. A hospitalidade cristã carrega uma dimensão espiritual maior do que aparenta — é um dos meios comuns pelos quais Deus abençoa tanto quem recebe quanto quem é recebido, e um testemunho poderoso do Evangelho para quem está de fora da fé.",
+            "Uma família que pratica hospitalidade genuína — abrindo a mesa, o tempo e, muitas vezes, a própria vida para vizinhos, novos convertidos, missionários de passagem, ou pessoas em dificuldade — participa ativamente da missão de Deus no mundo, muitas vezes de formas mais simples e mais poderosas do que imagina.",
+          ],
+          verses: [
+            {
+              ref: "Romanos 12:13",
+              textByVersion: {
+                NVI: "Compartilhem o que vocês têm com os santos que estão em necessidade. Pratiquem a hospitalidade.",
+              },
+              originals: [
+                { word: "φιλοξενία", translit: "philoxenia", meaning: "amor ao estrangeiro/hóspede — combinação de 'philos' (amor) e 'xenos' (estranho/forasteiro); acolhimento intencional de quem não pertence naturalmente ao círculo próximo", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Hebreus 13:2",
+              textByVersion: {
+                NVI: "Não se esqueçam da hospitalidade, porque, praticando-a, alguns, sem o saber, hospedaram anjos.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "φιλοξενία", translit: "philoxenia", meaning: "amor ao estrangeiro, hospitalidade — acolhimento ativo e intencional de quem é diferente ou desconhecido", lang: "grego" },
+            { word: "ξένος", translit: "xenos", meaning: "estrangeiro, forasteiro, hóspede — aquele que a hospitalidade bíblica é chamada a acolher, indo além do círculo familiar já conhecido", lang: "grego" },
+          ],
+          deepDive:
+            "É significativo que a hospitalidade seja uma das poucas qualificações práticas e concretas exigidas de líderes da igreja (1 Tm 3:2), ao lado de virtudes de caráter — isso mostra que a Bíblia não a considera um dom opcional de algumas famílias 'mais sociáveis', mas uma expressão esperada do amor cristão maduro. Sobre como praticar hospitalidade de forma sustentável (frequência, formato, tipo de convidados), cada família deve discernir com sabedoria conforme sua realidade, temporada de vida e recursos disponíveis — hospitalidade genuína não exige casas grandes, refeições elaboradas ou perfeição de anfitrião; exige, principalmente, um coração disposto a compartilhar tempo, mesa e vida com quem Deus coloca no caminho, mesmo em meio à simplicidade.",
+          theologianQuote: {
+            author: "Charles Swindoll",
+            text: "A hospitalidade cristã não é sobre impressionar quem entra em nossa casa, é sobre amar quem entra em nossa casa — e, ao fazer isso, muitas vezes recebemos de volta mais do que oferecemos.",
+          },
+          quizzes: [
+            {
+              question: "O que a palavra grega 'philoxenia', usada para hospitalidade em Romanos 12:13, significa literalmente?",
+              options: [
+                "Medo do desconhecido",
+                "Amor ao estrangeiro ou forasteiro",
+                "Preferência por relacionamentos já estabelecidos",
+                "Uma obrigação puramente social, sem carga espiritual",
+              ],
+              correctIndex: 1,
+              explanation: "A palavra combina 'philos' (amor) e 'xenos' (estrangeiro), indicando acolhimento intencional de quem não é do círculo próximo.",
+            },
+            {
+              question: "Por que Hebreus 13:2 destaca a importância de não esquecer a hospitalidade?",
+              options: [
+                "Porque é uma tradição cultural sem relevância espiritual",
+                "Porque, ao praticá-la, alguns hospedaram anjos sem saber",
+                "Porque apenas líderes da igreja precisam praticá-la",
+                "Porque hospitalidade é apenas sobre conforto material do anfitrião",
+              ],
+              correctIndex: 1,
+              explanation: "O texto revela uma dimensão espiritual inesperada na prática simples de acolher outros em casa.",
+            },
+          ],
+          application:
+            "Convide alguém que você ainda não conhece bem — um vizinho, um novo membro da igreja, um estrangeiro na sua cidade — para uma refeição ou momento simples em sua casa nesta semana, com o objetivo de conhecê-lo e, se possível, compartilhar o Evangelho.",
+          prayer:
+            "Senhor, ensina minha família a abrir nossa casa e nosso tempo para quem é diferente ou desconhecido, como um reflexo do teu acolhimento a nós, que também éramos estranhos e distantes de ti. Tira de mim qualquer desculpa de comodismo ou insegurança que me impeça de praticar hospitalidade genuína. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Planeje e execute um momento de hospitalidade concreto nesta semana — mesmo simples — recebendo alguém de fora do seu círculo familiar mais próximo.",
+          reflectionQuestion:
+            "Sua casa tem sido um espaço fechado apenas para quem você já conhece bem, ou um lugar aberto, mesmo que de forma simples, para quem Deus coloca no seu caminho?",
+          xp: 26,
+        },
+        {
+          id: "fc-10-2",
+          title: "Família Missionária: Discipulado e Testemunho no Cotidiano",
+          intro: [
+            "A Grande Comissão não é um chamado apenas para missionários que viajam para terras distantes — é um chamado para toda família cristã, vivido primeiramente dentro de casa e depois estendido a quem está ao redor: vizinhos, colegas de trabalho, escola dos filhos, familiares não convertidos. 'Portanto, vão e façam discípulos de todas as nações' (Mt 28:19) começa, para a maioria das famílias, no próprio quintal.",
+            "Uma família com mentalidade missionária pensa deliberadamente sobre como suas rotinas comuns — a escola dos filhos, o bairro onde mora, o trabalho dos pais — podem se tornar campos de testemunho e serviço, e não apenas obrigações a serem cumpridas. Isso muda perguntas práticas do dia a dia: 'que vizinho podemos conhecer melhor?', 'como podemos orar juntos pelos familiares que ainda não creem?', 'que necessidade ao nosso redor podemos suprir em nome de Cristo?'.",
+            "1 Pedro 3:15 dá um princípio central para esse testemunho cotidiano: estar sempre 'preparados para responder a qualquer pessoa que pedir a razão da esperança que há' em nós — 'e façam isso com mansidão e respeito'. A vida de uma família cristã, vivida com integridade visível diante de quem observa, é frequentemente o primeiro sermão que muitos incrédulos realmente 'ouvem' antes de estarem prontos para ouvir palavras.",
+          ],
+          verses: [
+            {
+              ref: "Mateus 28:19-20",
+              textByVersion: {
+                NVI: "Portanto, vão e façam discípulos de todas as nações, batizando-os em nome do Pai, e do Filho, e do Espírito Santo, ensinando-os a obedecer a tudo o que eu lhes ordenei.",
+              },
+            },
+            {
+              ref: "1 Pedro 3:15",
+              textByVersion: {
+                NVI: "Estejam sempre preparados para responder a qualquer pessoa que lhes pedir a razão da esperança que há em vocês. Contudo, façam isso com mansidão e respeito.",
+              },
+              originals: [
+                { word: "ἀπολογία", translit: "apologia", meaning: "defesa, resposta racional e ordenada — a razão da fé cristã deve poder ser explicada, não apenas sentida", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "μαθητεύω", translit: "mathēteuō", meaning: "fazer discípulo, ensinar — o verbo central da Grande Comissão, aplicável primeiro dentro de casa e depois além dela", lang: "grego" },
+            { word: "ἀπολογία", translit: "apologia", meaning: "defesa ordenada e respeitosa da fé — a prontidão para explicar, com mansidão, a razão da esperança cristã", lang: "grego" },
+          ],
+          deepDive:
+            "É significativo que 1 Pedro 3:15 combine dois elementos que muitas famílias separam, para seu próprio prejuízo missionário: prontidão intelectual ('estejam sempre preparados') e caráter relacional ('mansidão e respeito'). Uma família que conhece bem a fé mas a comunica com arrogância afasta pessoas do Evangelho tanto quanto uma família que ama genuinamente mas não sabe explicar em que crê e por quê. Sobre como equilibrar, na prática, o tempo dedicado ao discipulado dos próprios filhos com o tempo dedicado ao testemunho e serviço a pessoas de fora da família (vizinhos, comunidade), a Bíblia não estabelece uma proporção fixa — mas deixa claro que ambos são chamados legítimos e complementares: a família que só olha para dentro de si mesma esquece a missão; a família que só olha para fora negligencia o próprio chamado primário de discipular os filhos que Deus já confiou a ela.",
+          theologianQuote: {
+            author: "David Bosch",
+            text: "A missão de Deus não é um programa que a família cristã executa de vez em quando, é uma identidade que ela carrega o tempo todo — no lar, na vizinhança, no trabalho, em cada relação cotidiana tocada pelo Evangelho.",
+          },
+          quizzes: [
+            {
+              question: "Segundo Mateus 28:19-20, para quem é dirigido o chamado de fazer discípulos?",
+              options: [
+                "Apenas para missionários profissionais em terras distantes",
+                "Para todos os discípulos de Jesus, aplicável primeiro dentro de casa e depois além dela",
+                "Apenas para pastores e líderes ordenados",
+                "Somente para a geração dos apóstolos originais",
+              ],
+              correctIndex: 1,
+              explanation: "A Grande Comissão é dirigida a todos os discípulos de Jesus, começando naturalmente pela própria família e se estendendo além dela.",
+            },
+            {
+              question: "Quais dois elementos 1 Pedro 3:15 combina para o testemunho cristão eficaz?",
+              options: [
+                "Apenas conhecimento intelectual, sem preocupação com o caráter",
+                "Prontidão para responder e mansidão/respeito no modo de comunicar",
+                "Apenas boas obras, sem qualquer explicação da fé",
+                "Isolamento total de quem não compartilha a mesma fé",
+              ],
+              correctIndex: 1,
+              explanation: "O texto une prontidão para explicar a fé com mansidão e respeito na forma de comunicá-la — conteúdo e caráter juntos.",
+            },
+          ],
+          application:
+            "Escolha, com sua família, uma pessoa ou situação concreta ao redor — um vizinho, um colega de escola dos filhos, um familiar distante da fé — para orar especificamente por ela nesta semana, e busque um passo prático e respeitoso de aproximação e testemunho.",
+          prayer:
+            "Senhor, faz da minha família uma família em missão — não apenas voltada para dentro de si mesma, mas atenta às pessoas que colocaste ao nosso redor. Dá-nos prontidão para explicar a razão da nossa esperança, e mansidão e respeito na forma de fazer isso. Que nossa vida cotidiana seja um testemunho visível do teu Evangelho. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Prepare, em família ou sozinho, uma resposta simples e pessoal (dois ou três minutos) sobre por que você crê em Jesus, para estar pronto(a) caso alguém pergunte esta semana, como orienta 1 Pedro 3:15.",
+          reflectionQuestion:
+            "Se as pessoas mais próximas de você — vizinhos, colegas, familiares distantes da fé — só pudessem observar sua vida familiar, que tipo de esperança elas veriam refletida nela?",
+          xp: 28,
         },
       ],
     },
