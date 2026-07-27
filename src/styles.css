@@ -187,3 +187,14 @@
 @utility animate-slide-up {
   animation: slide-up 0.4s ease-out;
 }
+
+.tts-sentence {
+  transition: background-color 200ms ease, color 200ms ease, box-shadow 200ms ease;
+  border-radius: 4px;
+  padding: 0 2px;
+}
+.tts-sentence.tts-active {
+  background-color: color-mix(in srgb, var(--primary) 22%, transparent);
+  color: var(--foreground);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 30%, transparent);
+}
