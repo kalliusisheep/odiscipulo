@@ -5,6 +5,7 @@ import { useApp } from "@/lib/app-context";
 import { useCelebration } from "@/lib/celebration";
 import { awardXpAndStreak } from "@/lib/progress";
 import { fetchPassage, bibleLabelFor } from "@/lib/bible";
+import { NarrationButton } from "@/components/NarrationButton";
 import type { BibleVersion } from "@/data/content";
 import {
   ArrowLeft,
@@ -289,7 +290,11 @@ function DayDetails({
   version: BibleVersion;
 }) {
   return (
-    <div className="space-y-4 border-t border-border/60 bg-surface/40 p-4">
+    <div className="space-y-4 border-t border-border/60 bg-surface/40 p-4" data-tts-scope="plano-dia">
+      <div className="flex items-center justify-end">
+        <NarrationButton containerSelector='[data-tts-scope="plano-dia"]' />
+      </div>
+
       <Section title="Passagem" icon={<BookOpen className="h-3.5 w-3.5" />}>
         <div className="space-y-3">
           {day.passage_api_refs.map((ref, i) => (
@@ -304,13 +309,13 @@ function DayDetails({
       </Section>
 
       <Section title="Contexto">
-        <p className="text-sm leading-relaxed text-foreground/85">{day.context}</p>
+        <p className="text-sm leading-relaxed text-foreground/85" data-narrate>{day.context}</p>
       </Section>
 
       <Section title="Reflexão devocional">
         <div className="space-y-2">
           {day.reflection.split("\n").filter(Boolean).map((p, i) => (
-            <p key={i} className="text-sm leading-relaxed text-foreground/85">
+            <p key={i} className="text-sm leading-relaxed text-foreground/85" data-narrate>
               {p}
             </p>
           ))}
@@ -318,11 +323,13 @@ function DayDetails({
       </Section>
 
       <Section title="Aplicação prática">
-        <p className="text-sm leading-relaxed text-foreground/85">{day.application}</p>
+        <p className="text-sm leading-relaxed text-foreground/85" data-narrate>{day.application}</p>
       </Section>
 
       <Section title="Oração">
-        <p className="scripture text-base italic leading-relaxed text-foreground/90">{day.prayer}</p>
+        <p className="scripture text-base italic leading-relaxed text-foreground/90" data-narrate>
+          {day.prayer}
+        </p>
       </Section>
 
       {!checked && (
@@ -406,7 +413,7 @@ function PassageBlock({
         </p>
       )}
       {text && (
-        <p className="scripture text-base leading-relaxed text-foreground/90">{text}</p>
+        <p className="scripture text-base leading-relaxed text-foreground/90" data-narrate>{text}</p>
       )}
     </div>
   );
