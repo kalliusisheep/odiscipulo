@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as ApiMentorRouteImport } from './routes/api/mentor'
 import { Route as AuthenticatedRankingDetalhesRouteImport } from './routes/_authenticated/ranking-detalhes'
 import { Route as AuthenticatedRankingRouteImport } from './routes/_authenticated/ranking'
@@ -26,6 +27,7 @@ import { Route as AuthenticatedMensagensIndexRouteImport } from './routes/_authe
 import { Route as AuthenticatedEstudosIndexRouteImport } from './routes/_authenticated/estudos.index'
 import { Route as AuthenticatedPerfilUsernameRouteImport } from './routes/_authenticated/perfil_.$username'
 import { Route as AuthenticatedModuloIdRouteImport } from './routes/_authenticated/modulo.$id'
+import { Route as AuthenticatedMensagensNovoRouteImport } from './routes/_authenticated/mensagens.novo'
 import { Route as AuthenticatedMensagensUsernameRouteImport } from './routes/_authenticated/mensagens.$username'
 import { Route as AuthenticatedLicaoIdRouteImport } from './routes/_authenticated/licao.$id'
 import { Route as AuthenticatedLicaoIdAprofundarRouteImport } from './routes/_authenticated/licao.$id_.aprofundar'
@@ -45,6 +47,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiTtsRoute = ApiTtsRouteImport.update({
+  id: '/api/tts',
+  path: '/api/tts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiMentorRoute = ApiMentorRouteImport.update({
@@ -122,6 +129,12 @@ const AuthenticatedModuloIdRoute = AuthenticatedModuloIdRouteImport.update({
   path: '/modulo/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedMensagensNovoRoute =
+  AuthenticatedMensagensNovoRouteImport.update({
+    id: '/mensagens/novo',
+    path: '/mensagens/novo',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedMensagensUsernameRoute =
   AuthenticatedMensagensUsernameRouteImport.update({
     id: '/mensagens/$username',
@@ -171,8 +184,10 @@ export interface FileRoutesByFullPath {
   '/ranking': typeof AuthenticatedRankingRoute
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
+  '/api/tts': typeof ApiTtsRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
+  '/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
   '/modulo/$id': typeof AuthenticatedModuloIdRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
   '/estudos/': typeof AuthenticatedEstudosIndexRoute
@@ -195,8 +210,10 @@ export interface FileRoutesByTo {
   '/ranking': typeof AuthenticatedRankingRoute
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
+  '/api/tts': typeof ApiTtsRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
+  '/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
   '/modulo/$id': typeof AuthenticatedModuloIdRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
   '/estudos': typeof AuthenticatedEstudosIndexRoute
@@ -221,8 +238,10 @@ export interface FileRoutesById {
   '/_authenticated/ranking': typeof AuthenticatedRankingRoute
   '/_authenticated/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/api/mentor': typeof ApiMentorRoute
+  '/api/tts': typeof ApiTtsRoute
   '/_authenticated/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/_authenticated/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
+  '/_authenticated/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
   '/_authenticated/modulo/$id': typeof AuthenticatedModuloIdRoute
   '/_authenticated/perfil_/$username': typeof AuthenticatedPerfilUsernameRoute
   '/_authenticated/estudos/': typeof AuthenticatedEstudosIndexRoute
@@ -247,8 +266,10 @@ export interface FileRouteTypes {
     | '/ranking'
     | '/ranking-detalhes'
     | '/api/mentor'
+    | '/api/tts'
     | '/licao/$id'
     | '/mensagens/$username'
+    | '/mensagens/novo'
     | '/modulo/$id'
     | '/perfil/$username'
     | '/estudos/'
@@ -271,8 +292,10 @@ export interface FileRouteTypes {
     | '/ranking'
     | '/ranking-detalhes'
     | '/api/mentor'
+    | '/api/tts'
     | '/licao/$id'
     | '/mensagens/$username'
+    | '/mensagens/novo'
     | '/modulo/$id'
     | '/perfil/$username'
     | '/estudos'
@@ -296,8 +319,10 @@ export interface FileRouteTypes {
     | '/_authenticated/ranking'
     | '/_authenticated/ranking-detalhes'
     | '/api/mentor'
+    | '/api/tts'
     | '/_authenticated/licao/$id'
     | '/_authenticated/mensagens/$username'
+    | '/_authenticated/mensagens/novo'
     | '/_authenticated/modulo/$id'
     | '/_authenticated/perfil_/$username'
     | '/_authenticated/estudos/'
@@ -313,6 +338,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ApiMentorRoute: typeof ApiMentorRoute
+  ApiTtsRoute: typeof ApiTtsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -336,6 +362,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/tts': {
+      id: '/api/tts'
+      path: '/api/tts'
+      fullPath: '/api/tts'
+      preLoaderRoute: typeof ApiTtsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/mentor': {
@@ -436,6 +469,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedModuloIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/mensagens/novo': {
+      id: '/_authenticated/mensagens/novo'
+      path: '/mensagens/novo'
+      fullPath: '/mensagens/novo'
+      preLoaderRoute: typeof AuthenticatedMensagensNovoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/mensagens/$username': {
       id: '/_authenticated/mensagens/$username'
       path: '/mensagens/$username'
@@ -493,6 +533,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRankingDetalhesRoute: typeof AuthenticatedRankingDetalhesRoute
   AuthenticatedLicaoIdRoute: typeof AuthenticatedLicaoIdRoute
   AuthenticatedMensagensUsernameRoute: typeof AuthenticatedMensagensUsernameRoute
+  AuthenticatedMensagensNovoRoute: typeof AuthenticatedMensagensNovoRoute
   AuthenticatedModuloIdRoute: typeof AuthenticatedModuloIdRoute
   AuthenticatedPerfilUsernameRoute: typeof AuthenticatedPerfilUsernameRoute
   AuthenticatedEstudosIndexRoute: typeof AuthenticatedEstudosIndexRoute
@@ -515,6 +556,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRankingDetalhesRoute: AuthenticatedRankingDetalhesRoute,
   AuthenticatedLicaoIdRoute: AuthenticatedLicaoIdRoute,
   AuthenticatedMensagensUsernameRoute: AuthenticatedMensagensUsernameRoute,
+  AuthenticatedMensagensNovoRoute: AuthenticatedMensagensNovoRoute,
   AuthenticatedModuloIdRoute: AuthenticatedModuloIdRoute,
   AuthenticatedPerfilUsernameRoute: AuthenticatedPerfilUsernameRoute,
   AuthenticatedEstudosIndexRoute: AuthenticatedEstudosIndexRoute,
@@ -533,6 +575,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ApiMentorRoute: ApiMentorRoute,
+  ApiTtsRoute: ApiTtsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
