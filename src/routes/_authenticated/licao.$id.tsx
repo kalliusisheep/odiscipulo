@@ -174,13 +174,16 @@ function LicaoPage() {
       </div>
 
       {step === "estudo" && (
-        <div style={contentZoomStyle} className="space-y-5">
+        <div style={contentZoomStyle} className="space-y-5" data-tts-scope="estudo">
           <div className="flex items-center justify-between gap-2">
             <div className="flex min-w-0 items-center gap-2">
               <BookOpen className="h-5 w-5 shrink-0 text-primary" />
               <h1 className="truncate text-2xl font-bold">{lesson.title}</h1>
             </div>
-            <FontSizeControls {...fontControlsProps} />
+            <div className="flex items-center gap-2">
+              <NarrationButton containerSelector='[data-tts-scope="estudo"]' />
+              <FontSizeControls {...fontControlsProps} />
+            </div>
           </div>
 
           {/* 1. Introdução (núcleo) */}
@@ -188,7 +191,7 @@ function LicaoPage() {
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Introdução ao tópico</p>
             <div className="mt-2 space-y-3 text-sm leading-relaxed">
               {lesson.intro.map((p, i) => (
-                <p key={i}>{p}</p>
+                <p key={i} data-narrate>{p}</p>
               ))}
             </div>
           </section>
@@ -203,7 +206,7 @@ function LicaoPage() {
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
                   {v.ref} · {bibleVersion}
                 </p>
-                <p className="mt-2 scripture text-lg text-foreground/90">"{verseText(v, bibleVersion)}"</p>
+                <p className="mt-2 scripture text-lg text-foreground/90" data-narrate>{`"${verseText(v, bibleVersion)}"`}</p>
               </div>
             ))}
           </section>
@@ -229,7 +232,7 @@ function LicaoPage() {
           {/* 4. Ensino central (núcleo) */}
           <section className="card-elevated p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Aprofundamento e reflexão</p>
-            <p className="mt-2 text-sm leading-relaxed">{lesson.deepDive}</p>
+            <p className="mt-2 text-sm leading-relaxed" data-narrate>{lesson.deepDive}</p>
           </section>
 
           <blockquote className="card-elevated border-l-4 border-l-ancient p-5">
