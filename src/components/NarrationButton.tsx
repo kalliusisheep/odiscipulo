@@ -26,8 +26,11 @@ function splitSentences(text: string): string[] {
 type SentenceUnit = {
   el: HTMLElement;
   originalHTML: string;
-  spans: HTMLSpanElement[];
   sentences: string[];
+  /** Spans de cada palavra, agrupados por sentença: wordGroups[sentIdx][wordIdx]. */
+  wordGroups: HTMLSpanElement[][];
+  /** Quando true, remove um número inicial (ex.: número de versículo) apenas do áudio enviado à narração — o texto exibido na tela não é alterado. */
+  stripLeadingNumber: boolean;
 };
 
 type Props = {
@@ -46,6 +49,9 @@ export function NarrationButton({ containerSelector, className }: Props) {
   const cacheRef = useRef<Map<number, Promise<string>>>(new Map());
   const abortRef = useRef<AbortController | null>(null);
   const activeRef = useRef(false);
+  // Palavra atualmente destacada — guardada por referência (não por índice)
+  // pra poder limpar o destaque anterior mesmo trocando de sentença.
+  const highlightedWordRef = useRef<HTMLSpanElement | null>(null);
 
   const restoreDOM = useCallback(() => {
     for (const u of unitsRef.current) {
@@ -53,6 +59,7 @@ export function NarrationButton({ containerSelector, className }: Props) {
     }
     unitsRef.current = [];
     queueRef.current = [];
+    highlightedWordRef.current = null;
   }, []);
 
   const cleanup = useCallback(() => {
@@ -60,6 +67,7 @@ export function NarrationButton({ containerSelector, className }: Props) {
     abortRef.current?.abort();
     abortRef.current = null;
     if (audioRef.current) {
+      audioRef.current.ontimeupdate = null;
       audioRef.current.pause();
       audioRef.current.src = "";
       audioRef.current = null;
@@ -80,11 +88,19 @@ export function NarrationButton({ containerSelector, className }: Props) {
     if (cached) return cached;
     const item = queueRef.current[idx];
     if (!item) return Promise.reject(new Error("out of range"));
+    const unit = unitsRef.current[item.unitIdx];
+    // Ex.: "12 No princípio…" -> "No princípio…" só para o áudio (a tela
+    // continua mostrando "12"). Só se aplica a blocos marcados explicitamente.
+    let spokenText = item.text;
+    if (unit?.stripLeadingNumber) {
+      const stripped = item.text.replace(/^\d{1,3}[.\s]+/, "").trim();
+      if (stripped) spokenText = stripped;
+    }
     const p = (async () => {
       const res = await fetch("/api/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: item.text }),
+        body: JSON.stringify({ text: spokenText }),
       });
       if (!res.ok) throw new Error(`TTS ${res.status}`);
       const blob = await res.blob();
@@ -94,16 +110,19 @@ export function NarrationButton({ containerSelector, className }: Props) {
     return p;
   }, []);
 
-  const highlight = useCallback((idx: number) => {
-    // Remove previous
-    for (const u of unitsRef.current) {
-      for (const s of u.spans) s.classList.remove("tts-active");
-    }
+  // Destaca a palavra `wordIdx` da sentença em `idx` (índice na fila).
+  // Idempotente: se já é a palavra destacada, não faz nada (evita
+  // scroll/DOM redundantes a cada "timeupdate").
+  const highlightWordAt = useCallback((idx: number, wordIdx: number) => {
     const item = queueRef.current[idx];
     if (!item) return;
-    const span = unitsRef.current[item.unitIdx]?.spans[item.sentIdx];
-    if (!span) return;
+    const unit = unitsRef.current[item.unitIdx];
+    const words = unit?.wordGroups[item.sentIdx];
+    const span = words?.[wordIdx];
+    if (!span || span === highlightedWordRef.current) return;
+    highlightedWordRef.current?.classList.remove("tts-active");
     span.classList.add("tts-active");
+    highlightedWordRef.current = span;
     span.scrollIntoView({ behavior: "smooth", block: "center" });
   }, []);
 
@@ -134,7 +153,20 @@ export function NarrationButton({ containerSelector, className }: Props) {
           if (!activeRef.current) return;
           void playFrom(idx + 1);
         };
-        highlight(idx);
+        // Sem timestamps reais por palavra vindos da API de voz — estima a
+        // palavra atual pela proporção currentTime/duration do áudio.
+        audio.ontimeupdate = () => {
+          if (!activeRef.current) return;
+          const item = queueRef.current[idx];
+          const words = item ? unitsRef.current[item.unitIdx]?.wordGroups[item.sentIdx] : null;
+          if (!words || words.length === 0) return;
+          const duration = audio.duration;
+          if (!duration || Number.isNaN(duration)) return;
+          const progress = Math.min(Math.max(audio.currentTime / duration, 0), 0.999);
+          const wordIdx = Math.floor(progress * words.length);
+          highlightWordAt(idx, wordIdx);
+        };
+        highlightWordAt(idx, 0);
         await audio.play();
         setStatus("playing");
       } catch (e) {
@@ -142,7 +174,7 @@ export function NarrationButton({ containerSelector, className }: Props) {
         if (activeRef.current) void playFrom(idx + 1);
       }
     },
-    [cleanup, fetchAudio, highlight],
+    [cleanup, fetchAudio, highlightWordAt],
   );
 
   const buildQueue = useCallback((): boolean => {
@@ -158,25 +190,33 @@ export function NarrationButton({ containerSelector, className }: Props) {
     const units: SentenceUnit[] = [];
     const queue: { unitIdx: number; sentIdx: number; text: string }[] = [];
     nodes.forEach((el) => {
-      // Usa data-narrate-text quando presente (versão "limpa" para fala,
-      // ex.: sem números de versículo), mantendo o texto visível original.
-      const text = el.dataset.narrateText ?? el.textContent ?? "";
+      // Usa o texto visível original (mantém números de versículo etc. na
+      // tela e no destaque); a remoção acontece só no áudio, em fetchAudio.
+      const text = el.textContent ?? "";
       const sentences = splitSentences(text);
       if (sentences.length === 0) return;
       const originalHTML = el.innerHTML;
-      // Rebuild innerHTML with sentence spans (text-only, preserves layout classes on parent)
+      // Reconstrói o innerHTML com um <span> por palavra (preserva classes
+      // do elemento pai) — o destaque acontece palavra a palavra.
       el.textContent = "";
-      const spans: HTMLSpanElement[] = [];
+      const wordGroups: HTMLSpanElement[][] = [];
       sentences.forEach((s, i) => {
-        const span = document.createElement("span");
-        span.className = "tts-sentence";
-        span.textContent = s;
-        el.appendChild(span);
+        const words = s.split(/\s+/).filter(Boolean);
+        const wordSpans: HTMLSpanElement[] = [];
+        words.forEach((w, wi) => {
+          const span = document.createElement("span");
+          span.className = "tts-word";
+          span.textContent = w;
+          el.appendChild(span);
+          wordSpans.push(span);
+          if (wi < words.length - 1) el.appendChild(document.createTextNode(" "));
+        });
+        wordGroups.push(wordSpans);
         if (i < sentences.length - 1) el.appendChild(document.createTextNode(" "));
-        spans.push(span);
       });
       const unitIdx = units.length;
-      units.push({ el, originalHTML, spans, sentences });
+      const stripLeadingNumber = el.dataset.narrateStripNumbers === "true";
+      units.push({ el, originalHTML, sentences, wordGroups, stripLeadingNumber });
       sentences.forEach((s, i) => queue.push({ unitIdx, sentIdx: i, text: s }));
     });
     unitsRef.current = units;
