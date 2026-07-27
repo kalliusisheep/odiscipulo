@@ -192,12 +192,20 @@
 
 @keyframes mascot-breathe {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.035); }
+  50% { transform: scale(1.055); }
 }
 
-@keyframes mascot-blink {
-  0%, 92%, 100% { filter: brightness(1); }
-  95% { filter: brightness(0.55); }
+@keyframes mascot-face-loop {
+  0%, 36% { transform: rotate(0deg); filter: brightness(1); }
+  44% { transform: rotate(-8deg); filter: brightness(1); }
+  52% { transform: rotate(-8deg); filter: brightness(1); }
+  60% { transform: rotate(0deg); filter: brightness(1); }
+  68% { transform: rotate(0deg); filter: brightness(1); }
+  69.5% { transform: rotate(0deg); filter: brightness(0.3); }
+  71% { transform: rotate(0deg); filter: brightness(1); }
+  82% { transform: rotate(8deg); filter: brightness(1); }
+  90% { transform: rotate(8deg); filter: brightness(1); }
+  100% { transform: rotate(0deg); filter: brightness(1); }
 }
 
 @keyframes mascot-wave {
@@ -241,7 +249,12 @@
 }
 
 @utility animate-mascot-idle {
-  animation: mascot-breathe 3.6s ease-in-out infinite, mascot-blink 4.4s ease-in-out infinite;
+  animation: mascot-breathe 3.2s ease-in-out infinite;
+}
+
+@utility animate-mascot-face {
+  animation: mascot-face-loop 6s ease-in-out infinite;
+  transform-origin: 50% 62%;
 }
 
 @utility animate-mascot-wave {
