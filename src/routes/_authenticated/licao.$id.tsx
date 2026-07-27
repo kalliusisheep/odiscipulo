@@ -8,7 +8,6 @@ import { awardXpAndStreak } from "@/lib/progress";
 import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
 import { FontSizeControls } from "@/components/font-size-controls";
 import { ArrowLeft, Check, X, Sparkles, Share2, ArrowRight, BookOpen, Brain, Target, ChevronRight, Layers } from "lucide-react";
-import { NarrationButton } from "@/components/NarrationButton";
 
 export const Route = createFileRoute("/_authenticated/licao/$id")({
   component: LicaoPage,
@@ -174,16 +173,13 @@ function LicaoPage() {
       </div>
 
       {step === "estudo" && (
-        <div style={contentZoomStyle} className="space-y-5" data-tts-scope="estudo">
+        <div style={contentZoomStyle} className="space-y-5">
           <div className="flex items-center justify-between gap-2">
             <div className="flex min-w-0 items-center gap-2">
               <BookOpen className="h-5 w-5 shrink-0 text-primary" />
               <h1 className="truncate text-2xl font-bold">{lesson.title}</h1>
             </div>
-            <div className="flex items-center gap-2">
-              <NarrationButton containerSelector='[data-tts-scope="estudo"]' />
-              <FontSizeControls {...fontControlsProps} />
-            </div>
+            <FontSizeControls {...fontControlsProps} />
           </div>
 
           {/* 1. Introdução (núcleo) */}
@@ -191,7 +187,7 @@ function LicaoPage() {
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Introdução ao tópico</p>
             <div className="mt-2 space-y-3 text-sm leading-relaxed">
               {lesson.intro.map((p, i) => (
-                <p key={i} data-narrate>{p}</p>
+                <p key={i}>{p}</p>
               ))}
             </div>
           </section>
@@ -206,7 +202,7 @@ function LicaoPage() {
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
                   {v.ref} · {bibleVersion}
                 </p>
-                <p className="mt-2 scripture text-lg text-foreground/90" data-narrate>{`"${verseText(v, bibleVersion)}"`}</p>
+                <p className="mt-2 scripture text-lg text-foreground/90">"{verseText(v, bibleVersion)}"</p>
               </div>
             ))}
           </section>
@@ -232,7 +228,7 @@ function LicaoPage() {
           {/* 4. Ensino central (núcleo) */}
           <section className="card-elevated p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Aprofundamento e reflexão</p>
-            <p className="mt-2 text-sm leading-relaxed" data-narrate>{lesson.deepDive}</p>
+            <p className="mt-2 text-sm leading-relaxed">{lesson.deepDive}</p>
           </section>
 
           <blockquote className="card-elevated border-l-4 border-l-ancient p-5">
@@ -413,8 +409,8 @@ function DoneScreen({ title, xp, moduleId }: { title: string; xp: number; module
   return (
     <div className="flex flex-col items-center text-center">
       <div className="relative">
-        <div className="h-24 w-24 overflow-hidden rounded-full shadow-2xl shadow-primary/40">
-          <img src="/sheep-party.jpeg" alt="Ovelha comemorando" className="h-full w-full object-cover" />
+        <div className="h-32 w-32 overflow-hidden rounded-full shadow-2xl shadow-primary/40">
+          <img src="/sheep-celebration.gif" alt="Ovelha comemorando" className="h-full w-full object-cover" />
         </div>
         {[...Array(8)].map((_, i) => (
           <span
@@ -422,7 +418,7 @@ function DoneScreen({ title, xp, moduleId }: { title: string; xp: number; module
             className="absolute left-1/2 top-1/2 h-2 w-2 rounded-full bg-ancient"
             style={{
               animation: `confetti-pop 1.2s ease-out ${i * 0.1}s forwards`,
-              transform: `translate(-50%, -50%) rotate(${i * 45}deg) translateY(-50px)`,
+              transform: `translate(-50%, -50%) rotate(${i * 45}deg) translateY(-66px)`,
             }}
           />
         ))}
