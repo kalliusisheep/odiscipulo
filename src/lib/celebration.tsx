@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useRef, useState, type ReactNod
 import confetti from "canvas-confetti";
 import { getLevel, type LevelEntry } from "@/data/levels";
 import { PartyPopper, Sparkles, X } from "lucide-react";
+import { useMascot } from "@/lib/mascot";
 
 type CelebrationCtx = {
   celebrateActivity: (opts: { prevXp: number; newXp: number; xp?: number; level50Unlocked?: boolean }) => void;
@@ -81,6 +82,7 @@ function fireConfetti(intense = false) {
 export function CelebrationProvider({ children }: { children: ReactNode }) {
   const [levelUp, setLevelUp] = useState<LevelEntry | null>(null);
   const busy = useRef(false);
+  const { trigger } = useMascot();
 
   const celebrateActivity = useCallback(
     ({ prevXp, newXp, level50Unlocked }: { prevXp: number; newXp: number; xp?: number; level50Unlocked?: boolean }) => {
@@ -96,12 +98,14 @@ export function CelebrationProvider({ children }: { children: ReactNode }) {
       fireConfetti(leveledUp);
       if (leveledUp) {
         levelUpFanfare();
+        trigger("dance", `Subiu de nível: ${nextLevel.title}! 🎉`, 2800);
         setTimeout(() => setLevelUp(nextLevel), 350);
       } else {
         successChime();
+        trigger("jump", "+XP! ✨", 1500);
       }
     },
-    [],
+    [trigger],
   );
 
   return (
