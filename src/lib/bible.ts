@@ -23,6 +23,15 @@ export function bibleLabelFor(version: BibleVersion): string {
   return version;
 }
 
+/**
+ * Remove os números de versículo embutidos no texto (ex.: "1 No princípio…
+ * 2 A terra…") para uso na narração por voz, sem afetar o texto exibido
+ * na tela (que mantém os números como referência visual).
+ */
+export function stripVerseNumbers(text: string): string {
+  return text.replace(/(^|(?<=[.!?"”'’)\]]\s))\d{1,3}\s+/g, "").trim();
+}
+
 export async function fetchPassage(ref: string, version: BibleVersion = "NVI"): Promise<string> {
   const translation = apiTranslationFor(version);
   const key = `bible:${translation}:${ref}`;
