@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/lib/app-context";
 import { useCelebration } from "@/lib/celebration";
 import { awardXpAndStreak } from "@/lib/progress";
-import { fetchPassage, bibleLabelFor } from "@/lib/bible";
+import { fetchPassage, bibleLabelFor, stripVerseNumbers } from "@/lib/bible";
 import { NarrationButton } from "@/components/NarrationButton";
 import type { BibleVersion } from "@/data/content";
 import {
@@ -413,7 +413,13 @@ function PassageBlock({
         </p>
       )}
       {text && (
-        <p className="scripture text-base leading-relaxed text-foreground/90" data-narrate>{text}</p>
+        <p
+          className="scripture text-base leading-relaxed text-foreground/90"
+          data-narrate
+          data-narrate-text={stripVerseNumbers(text)}
+        >
+          {text}
+        </p>
       )}
     </div>
   );
