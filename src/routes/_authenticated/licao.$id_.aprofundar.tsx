@@ -5,6 +5,7 @@ import { useApp } from "@/lib/app-context";
 import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
 import { FontSizeControls } from "@/components/font-size-controls";
 import { ArrowLeft, Layers } from "lucide-react";
+import { NarrationButton } from "@/components/NarrationButton";
 
 export const Route = createFileRoute("/_authenticated/licao/$id_/aprofundar")({
   component: AprofundarPage,
