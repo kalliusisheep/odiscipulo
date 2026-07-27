@@ -1,12 +1,27 @@
 import { useApp } from "@/lib/app-context";
+import { useMascot, type MascotEvent } from "@/lib/mascot";
 import { Send, X, Loader2 } from "lucide-react";
 import { useState, useRef, useEffect, type PointerEvent as ReactPointerEvent } from "react";
 
 const FAB_SIZE = 56;
 const STORAGE_KEY = "disciple.mentorFabPos";
+const BUBBLE_VISIBLE_MS = 6000;
+const FALLBACK_SRC = "/isheep-img.png";
+
+const EVENT_TO_ANIM_CLASS: Record<Exclude<MascotEvent, null>, string> = {
+  wave: "animate-mascot-wave",
+  jump: "animate-mascot-jump",
+  dance: "animate-mascot-dance",
+  streak: "animate-mascot-dance",
+  sad: "animate-mascot-sad",
+  pet: "animate-mascot-pet",
+};
 
 export function MentorFAB() {
   const { setMentorOpen, mentorOpen } = useApp();
+  const { state } = useMascot();
+  const { event, message, moodEmoji } = state;
+
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
   const dragRef = useRef<{
     startX: number;
@@ -16,6 +31,24 @@ export function MentorFAB() {
     moved: boolean;
     pointerId: number;
   } | null>(null);
+
+  // Balão de fala: some sozinho depois de um tempo, e reaparece quando uma
+  // nova fala contextual chega (saudação, "senti sua falta", subiu de nível…).
+  const [showBubble, setShowBubble] = useState(false);
+  const lastMessageRef = useRef<string | null>(null);
+  const bubbleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (message && message !== lastMessageRef.current) {
+      lastMessageRef.current = message;
+      setShowBubble(true);
+      if (bubbleTimer.current) clearTimeout(bubbleTimer.current);
+      bubbleTimer.current = setTimeout(() => setShowBubble(false), BUBBLE_VISIBLE_MS);
+    }
+    return () => {
+      if (bubbleTimer.current) clearTimeout(bubbleTimer.current);
+    };
+  }, [message]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -87,6 +120,7 @@ export function MentorFAB() {
         window.localStorage.setItem(STORAGE_KEY, JSON.stringify(pos));
       }
     } else {
+      setShowBubble(false);
       setMentorOpen(true);
     }
     try {
@@ -96,18 +130,67 @@ export function MentorFAB() {
     }
   };
 
+  const animClass = event ? EVENT_TO_ANIM_CLASS[event] : "animate-mascot-idle";
+  const showParticles = event === "jump" || event === "dance" || event === "streak" || event === "pet";
+  const particleEmoji = event === "streak" ? "🔥" : event === "dance" ? "⭐" : event === "pet" ? "❤️" : "✨";
+
+  // Se a ovelha estiver muito perto do topo da tela, o balão abre pra baixo
+  // em vez de pra cima, pra nunca ficar cortado fora da viewport.
+  const bubbleBelow = pos.y < 140;
+
   return (
-    <button
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={onPointerUp}
-      onPointerCancel={onPointerUp}
-      aria-label="Abrir Barnabéé, Mentor IA (arraste para mover)"
-      style={{ left: pos.x, top: pos.y, touchAction: "none" }}
-      className="fixed z-40 flex h-14 w-14 cursor-grab items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-glow shadow-2xl shadow-primary/40 transition-transform active:scale-95 active:cursor-grabbing"
-    >
-      <img src="/isheep-img.png" alt="Barnabéé, Mentor IA" className="pointer-events-none h-full w-full object-cover" draggable={false} />
-    </button>
+    <div className="fixed z-40" style={{ left: pos.x, top: pos.y, width: FAB_SIZE, height: FAB_SIZE }}>
+      {showBubble && message && (
+        <div
+          className={`animate-fade-in pointer-events-none absolute max-w-[190px] rounded-2xl px-3 py-1.5 text-center text-[11px] font-medium leading-snug text-foreground shadow-md ring-1 ring-border ${
+            bubbleBelow ? "rounded-tl-sm" : "rounded-bl-sm"
+          }`}
+          style={{
+            left: "50%",
+            transform: "translateX(-50%)",
+            [bubbleBelow ? "top" : "bottom"]: FAB_SIZE + 8,
+            background: "hsl(var(--surface))",
+          }}
+        >
+          {message}
+        </div>
+      )}
+
+      <button
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        aria-label="Abrir Barnabéé, Mentor IA (arraste para mover)"
+        style={{ touchAction: "none" }}
+        className={`relative h-14 w-14 cursor-grab overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-glow shadow-2xl shadow-primary/40 transition-transform active:scale-95 active:cursor-grabbing ${animClass}`}
+      >
+        <img
+          src={FALLBACK_SRC}
+          alt="Barnabéé, Mentor IA"
+          className="pointer-events-none h-full w-full animate-mascot-face object-cover"
+          draggable={false}
+        />
+      </button>
+
+      <span className="pointer-events-none absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-surface text-[11px] shadow ring-1 ring-border">
+        {moodEmoji}
+      </span>
+
+      {showParticles &&
+        [...Array(6)].map((_, i) => (
+          <span
+            key={i}
+            className="pointer-events-none absolute left-1/2 top-1/2 text-sm"
+            style={{
+              animation: `mascot-particle 1s ease-out ${i * 0.08}s forwards`,
+              transform: `translate(-50%, -50%) rotate(${i * 60}deg)`,
+            }}
+          >
+            {particleEmoji}
+          </span>
+        ))}
+    </div>
   );
 }
 
