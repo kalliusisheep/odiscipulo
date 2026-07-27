@@ -30,16 +30,16 @@ export const Route = createFileRoute("/_authenticated")({
 function AuthedLayout() {
   return (
     <AppProvider>
-      <CelebrationProvider>
-        <MascotProvider>
+      <MascotProvider>
+        <CelebrationProvider>
           <div className="min-h-screen bg-background pb-24">
             <Outlet />
             <MentorFAB />
             <MentorChat />
             <BottomNav />
           </div>
-        </MascotProvider>
-      </CelebrationProvider>
+        </CelebrationProvider>
+      </MascotProvider>
     </AppProvider>
   );
 }
