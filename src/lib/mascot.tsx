@@ -7,7 +7,7 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-export type MascotEvent = "wave" | "jump" | "dance" | "streak" | "sad" | null;
+export type MascotEvent = "wave" | "jump" | "dance" | "streak" | "sad" | "pet" | null;
 
 type MascotState = {
   event: MascotEvent;
@@ -21,9 +21,34 @@ type MascotCtx = {
   trigger: (event: Exclude<MascotEvent, null>, message?: string, durationMs?: number) => void;
   /** Atualiza só a mensagem da ovelha, sem mexer na animação atual. */
   say: (message: string) => void;
+  /** Toque de carinho: ela olha, sorri e pula — com uma fala afetuosa. */
+  pet: () => void;
 };
 
 const Ctx = createContext<MascotCtx | null>(null);
+
+// Falas de carinho — ditas quando o usuário toca na ovelha.
+const PET_LINES = [
+  "Adorei o carinho! 🥰",
+  "Isso me deixa feliz!",
+  "Você é muito gentil.",
+  "😊 Obrigada!",
+  "Vamos estudar juntos hoje?",
+];
+
+// Falas contextuais — ditas ocasionalmente, fora de um evento específico,
+// para dar a sensação de companhia viva.
+const CONTEXTUAL_LINES = [
+  "Hoje vamos estudar?",
+  "Estou feliz que você voltou.",
+  "Vamos continuar?",
+  "Que tal revisar sua trilha hoje?",
+  "Estou aqui, no seu tempo.",
+];
+
+function pickRandom(list: string[]): string {
+  return list[Math.floor(Math.random() * list.length)];
+}
 
 function greetingForNow(): { text: string; emoji: string } {
   const now = new Date();
@@ -57,10 +82,19 @@ export function MascotProvider({ children }: { children: ReactNode }) {
     setState((s) => ({ ...s, message }));
   }, []);
 
+  const pet = useCallback(() => {
+    if (clearTimer.current) clearTimeout(clearTimer.current);
+    setState((s) => ({ event: "pet", message: pickRandom(PET_LINES), moodEmoji: "😊" }));
+    clearTimer.current = setTimeout(() => {
+      setState((s) => ({ ...s, event: null }));
+    }, 1400);
+  }, []);
+
   // Ao abrir o app: busca a última atividade real do usuário e decide entre
   // "senti sua falta" (streak quebrado) ou uma saudação normal de boas-vindas.
   useEffect(() => {
     let cancelled = false;
+    const contextualTimer: ReturnType<typeof setTimeout>[] = [];
     void (async () => {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user || cancelled) return;
@@ -89,16 +123,27 @@ export function MascotProvider({ children }: { children: ReactNode }) {
         clearTimer.current = setTimeout(() => {
           if (!cancelled) setState((s) => ({ ...s, event: null }));
         }, 1500);
+
+        // Uma fala contextual solta, de vez em quando, depois que a saudação
+        // inicial já sumiu — só pra ela parecer viva, sem repetir sempre.
+        if (Math.random() < 0.5) {
+          contextualTimer.push(
+            setTimeout(() => {
+              if (!cancelled) say(pickRandom(CONTEXTUAL_LINES));
+            }, 7000 + Math.random() * 4000),
+          );
+        }
       }
     })();
     return () => {
       cancelled = true;
       if (clearTimer.current) clearTimeout(clearTimer.current);
       if (sadTimer.current) clearTimeout(sadTimer.current);
+      contextualTimer.forEach(clearTimeout);
     };
-  }, []);
+  }, [say]);
 
-  return <Ctx.Provider value={{ state, trigger, say }}>{children}</Ctx.Provider>;
+  return <Ctx.Provider value={{ state, trigger, say, pet }}>{children}</Ctx.Provider>;
 }
 
 export function useMascot() {
