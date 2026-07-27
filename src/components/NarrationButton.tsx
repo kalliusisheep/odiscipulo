@@ -29,6 +29,13 @@ type SentenceUnit = {
   sentences: string[];
   /** Spans de cada palavra, agrupados por sentença: wordGroups[sentIdx][wordIdx]. */
   wordGroups: HTMLSpanElement[][];
+  /**
+   * Ponto (0–1, cumulativo) em que cada palavra termina dentro do áudio da
+   * sentença, estimado pelo tamanho da palavra (não pela contagem simples de
+   * palavras) — palavras maiores levam mais tempo pra serem faladas.
+   * wordBoundaries[sentIdx][wordIdx].
+   */
+  wordBoundaries: number[][];
   /** Quando true, remove um número inicial (ex.: número de versículo) apenas do áudio enviado à narração — o texto exibido na tela não é alterado. */
   stripLeadingNumber: boolean;
 };
@@ -154,16 +161,25 @@ export function NarrationButton({ containerSelector, className }: Props) {
           void playFrom(idx + 1);
         };
         // Sem timestamps reais por palavra vindos da API de voz — estima a
-        // palavra atual pela proporção currentTime/duration do áudio.
+        // palavra atual pelas fronteiras ponderadas por tamanho de palavra
+        // (wordBoundaries), com uma pequena antecipação pra compensar o
+        // atraso natural de renderização/scroll e não parecer "atrasado".
+        const LEAD_SECONDS = 0.12;
         audio.ontimeupdate = () => {
           if (!activeRef.current) return;
           const item = queueRef.current[idx];
-          const words = item ? unitsRef.current[item.unitIdx]?.wordGroups[item.sentIdx] : null;
-          if (!words || words.length === 0) return;
+          const unit = item ? unitsRef.current[item.unitIdx] : null;
+          const words = item ? unit?.wordGroups[item.sentIdx] : null;
+          const boundaries = item ? unit?.wordBoundaries[item.sentIdx] : null;
+          if (!words || !boundaries || words.length === 0) return;
           const duration = audio.duration;
           if (!duration || Number.isNaN(duration)) return;
-          const progress = Math.min(Math.max(audio.currentTime / duration, 0), 0.999);
-          const wordIdx = Math.floor(progress * words.length);
+          const progress = Math.min(
+            Math.max((audio.currentTime + LEAD_SECONDS) / duration, 0),
+            0.999,
+          );
+          let wordIdx = boundaries.findIndex((b) => progress <= b);
+          if (wordIdx === -1) wordIdx = boundaries.length - 1;
           highlightWordAt(idx, wordIdx);
         };
         highlightWordAt(idx, 0);
@@ -200,6 +216,7 @@ export function NarrationButton({ containerSelector, className }: Props) {
       // do elemento pai) — o destaque acontece palavra a palavra.
       el.textContent = "";
       const wordGroups: HTMLSpanElement[][] = [];
+      const wordBoundaries: number[][] = [];
       sentences.forEach((s, i) => {
         const words = s.split(/\s+/).filter(Boolean);
         const wordSpans: HTMLSpanElement[] = [];
@@ -212,11 +229,21 @@ export function NarrationButton({ containerSelector, className }: Props) {
           if (wi < words.length - 1) el.appendChild(document.createTextNode(" "));
         });
         wordGroups.push(wordSpans);
+        // Peso de cada palavra = número de caracteres + 1 (aproxima a pausa
+        // entre palavras); palavras maiores "ocupam" mais tempo estimado.
+        const weights = words.map((w) => w.length + 1);
+        const total = weights.reduce((a, b) => a + b, 0) || 1;
+        let acc = 0;
+        const boundaries = weights.map((w) => {
+          acc += w;
+          return acc / total;
+        });
+        wordBoundaries.push(boundaries);
         if (i < sentences.length - 1) el.appendChild(document.createTextNode(" "));
       });
       const unitIdx = units.length;
       const stripLeadingNumber = el.dataset.narrateStripNumbers === "true";
-      units.push({ el, originalHTML, sentences, wordGroups, stripLeadingNumber });
+      units.push({ el, originalHTML, sentences, wordGroups, wordBoundaries, stripLeadingNumber });
       sentences.forEach((s, i) => queue.push({ unitIdx, sentIdx: i, text: s }));
     });
     unitsRef.current = units;
