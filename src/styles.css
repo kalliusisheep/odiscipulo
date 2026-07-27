@@ -279,8 +279,8 @@
   transform-origin: 50% 60%;
 }
 
-/* Narração por voz: destaque da frase sendo lida no momento */
-.tts-sentence {
+/* Narração por voz: destaque da palavra sendo lida no momento */
+.tts-word {
   transition: background-color 0.15s ease, color 0.15s ease;
   border-radius: 0.25rem;
 }
