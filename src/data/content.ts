@@ -1267,13 +1267,14 @@ import { additionalTrails2 } from "./trails-content-2";
 import { additionalTrails3 } from "./trails-content-3";
 import { additionalTrails4 } from "./trails-content-4";
 import { additionalTrails5 } from "./trails-content-5";
+import { additionalTrails6 } from "./trails-content-6";
 
 // Trilhas em preparação — títulos e descrições, sem lições ainda.
 const upcoming: Trail[] = [
   { id: "lideranca", title: "Liderança", description: "Formando líderes servos no Reino.", icon: "Crown", color: "from-purple-600 to-indigo-700", order: 9, modules: [] },
 ];
 
-export const trails: Trail[] = [novoConvertido, ...additionalTrails3, ...additionalTrails, ...additionalTrails2, ...additionalTrails4, ...additionalTrails5, ...upcoming]
+export const trails: Trail[] = [novoConvertido, ...additionalTrails3, ...additionalTrails, ...additionalTrails2, ...additionalTrails4, ...additionalTrails5, ...additionalTrails6, ...upcoming]
   .sort((a, b) => a.order - b.order);
 
 export const trailById = (id: string) => trails.find((t) => t.id === id);
