@@ -3,6 +3,7 @@ import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { AppProvider } from "@/lib/app-context";
 import { CelebrationProvider } from "@/lib/celebration";
+import { MascotProvider } from "@/lib/mascot";
 import { BottomNav } from "@/components/BottomNav";
 import { MentorFAB, MentorChat } from "@/components/Mentor";
 
@@ -30,12 +31,14 @@ function AuthedLayout() {
   return (
     <AppProvider>
       <CelebrationProvider>
-        <div className="min-h-screen bg-background pb-24">
-          <Outlet />
-          <MentorFAB />
-          <MentorChat />
-          <BottomNav />
-        </div>
+        <MascotProvider>
+          <div className="min-h-screen bg-background pb-24">
+            <Outlet />
+            <MentorFAB />
+            <MentorChat />
+            <BottomNav />
+          </div>
+        </MascotProvider>
       </CelebrationProvider>
     </AppProvider>
   );
