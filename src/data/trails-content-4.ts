@@ -1040,6 +1040,26 @@ const familiaCrista: Trail = {
             author: "Tim Keller",
             text: "O casamento não é primariamente sobre encontrar a pessoa certa, mas sobre se tornar, com a ajuda de Deus, o tipo de pessoa que ama como Cristo amou — sacrificialmente, fielmente, até o fim.",
           },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Malaquias 2:14-15",
+                textByVersion: {
+                  NVI: "Vocês perguntam por quê. É porque o Senhor está agindo como testemunha entre você e a mulher da sua mocidade, à qual você foi infiel, embora ela seja sua companheira, sua mulher por aliança... Portanto, tenham cuidado com o seu próprio espírito, e nenhum de vocês seja infiel à mulher da sua mocidade.",
+                },
+              },
+            ],
+            historicalContext:
+              "No Antigo Oriente Próximo, o casamento normalmente envolvia acordos entre famílias, dote e proteção legal da esposa — mas o profeta Malaquias vai além da mera formalidade civil ao chamar Deus de 'testemunha' da aliança conjugal (Ml 2:14). Isso elevava o casamento israelita acima dos padrões meramente contratuais das culturas vizinhas: quebrar a aliança matrimonial não era apenas descumprir um acordo social, era pecar diante de Deus, que selou aquela união como testemunha pessoal.",
+            exegeticalNotes:
+              "A palavra grega 'mystērion' em Efésios 5:32 não significa algo misterioso e incompreensível, mas uma verdade que estava oculta e agora foi plenamente revelada em Cristo. Paulo não está inventando uma alegoria a partir de Gênesis 2:24 — ele está mostrando, com autoridade apostólica, que o padrão de aliança e união estabelecido na criação sempre apontou, na intenção de Deus, para o relacionamento final entre Cristo e sua igreja.",
+            theologicalDebate:
+              "Cristãos evangélicos fiéis interpretam de formas diferentes o que significa o marido ser 'cabeça' da esposa em Efésios 5:23. A posição complementarista entende que há uma diferença de papéis (não de valor) entre marido e mulher, com o marido chamado a um tipo específico de liderança servil, sacrificial. A posição igualitarista entende que 'cabeça' descreve origem ou fonte, e que a ênfase do texto está inteiramente na submissão mútua e no amor sacrificial, sem hierarquia funcional fixa. Ambas as posições afirmam a igualdade plena de valor entre homem e mulher diante de Deus (Gl 3:28) e concordam que o texto exige, de qualquer forma, um amor que se entrega — a diferença está em como aplicar a liderança dentro do lar. Esta é uma questão secundária entre irmãos que compartilham o mesmo Evangelho.",
+            secondQuote: {
+              author: "C.S. Lewis",
+              text: "O amor humano do casamento, quando vivido segundo o desenho de Deus, não é apenas um sentimento — é uma promessa que continua amando mesmo quando o sentimento momentaneamente falha.",
+            },
+          },
           quizzes: [
             {
               question: "Segundo Gênesis 2:24, o que caracteriza a união conjugal desde a criação?",
@@ -1187,6 +1207,26 @@ const familiaCrista: Trail = {
             author: "Charles Swindoll",
             text: "A comunicação no casamento não é sobre vencer o argumento, é sobre entender o coração do outro; quando entendemos primeiro, quase sempre falamos diferente depois.",
           },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Provérbios 15:1",
+                textByVersion: {
+                  NVI: "A resposta calma desvia a fúria, mas a palavra ríspida desperta a ira.",
+                },
+              },
+            ],
+            historicalContext:
+              "Éfeso, no primeiro século, era uma cidade portuária cosmopolita, marcada por códigos domésticos greco-romanos que regulavam rigidamente a autoridade do chefe da casa sobre esposa, filhos e escravos, quase sempre em uma única via. Ao escrever sobre o lar em Efésios 4-6, Paulo usa parte dessa estrutura cultural conhecida, mas a transforma radicalmente ao fundamentar tudo em submissão mútua 'por temor a Cristo' (Ef 5:21) e amor sacrificial — um padrão de reciprocidade estranho para os ouvidos daquela cultura.",
+            exegeticalNotes:
+              "Em Efésios 4:29, a palavra grega 'oikodomē' (edificação, construção) descreve literalmente o ato de erguer um edifício. Paulo pede que cada palavra dita no lar passe por esse teste: ela constrói ou destrói? Já em Efésios 4:26, 'irritai-vos, e não pequeis' reconhece que a raiva em si não é automaticamente pecado — a Escritura distingue entre sentir raiva diante de uma injustiça real e permitir que essa raiva vire amargura, vingança ou pecado não resolvido antes do anoitecer.",
+            theologicalDebate:
+              "Existem diferentes escolas evangélicas de aconselhamento sobre técnicas específicas de comunicação conjugal (métodos estruturados de fala e escuta, terapia de casal cristã, aconselhamento bíblico biblicamente centrado). A Escritura não prescreve uma técnica única e universal para resolver conflitos — ela estabelece princípios claros (verdade, amor, humildade, perdão) que podem ser aplicados por meio de diferentes métodos pastorais responsáveis. Diante de conflitos conjugais persistentes ou dolorosos, buscar aconselhamento de um pastor ou conselheiro cristão qualificado é sabedoria, não fraqueza.",
+            secondQuote: {
+              author: "Larry Crabb",
+              text: "Muitos conflitos no casamento não são, no fundo, sobre o assunto discutido, mas sobre feridas mais profundas do coração que ainda não foram trazidas honestamente diante de Deus e do cônjuge.",
+            },
+          },
           quizzes: [
             {
               question: "Segundo Efésios 4:15, como a verdade deve ser comunicada entre cristãos, especialmente no casamento?",
@@ -1332,6 +1372,26 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Tim Keller",
             text: "O sexo dentro do casamento não é apenas permitido, é celebrado pela Escritura, como uma linguagem de entrega total, corpo e alma, dentro da segurança de uma aliança que promete permanecer.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "1 Coríntios 6:18-20",
+                textByVersion: {
+                  NVI: "Fujam do pecado sexual!... Vocês não sabem que o seu corpo é santuário do Espírito Santo? ... Vocês não são de vocês mesmos; vocês foram comprados por bom preço. Portanto, glorifiquem a Deus com o seu corpo.",
+                },
+              },
+            ],
+            historicalContext:
+              "Corinto, no primeiro século, era famosa em todo o mundo greco-romano por sua permissividade sexual, incluindo prostituição associada a templos pagãos. A igreja em Corinto refletia essa tensão cultural de dois extremos: alguns membros toleravam imoralidade sexual flagrante (1 Co 5), enquanto outros, talvez reagindo contra isso, promoviam um ascetismo exagerado dentro do próprio casamento, evitando a intimidade conjugal como se fosse mais 'espiritual' (1 Co 7:1). Paulo corrige os dois extremos com o mesmo texto.",
+            exegeticalNotes:
+              "Em 1 Coríntios 7:3-5, Paulo usa a palavra grega 'opheilē' (dívida, obrigação devida) para descrever o dever conjugal mútuo — um termo comercial forte, incomum nesse contexto. Ele também afirma que a esposa tem 'exousia' (autoridade) sobre o corpo do marido, e vice-versa — uma reciprocidade radical para os padrões daquela cultura, onde normalmente apenas o homem teria autoridade assumida sobre o corpo da esposa.",
+            theologicalDebate:
+              "Sobre a duração e a forma de abstinência conjugal por motivo de oração (1 Co 7:5), a Bíblia não prescreve um período fixo ou obrigatório — apenas orienta que seja breve, combinada mutuamente, e não usada como forma de controle ou punição. Sobre questões práticas específicas do casal (planejamento familiar, dificuldades de intimidade, feridas de relacionamentos ou experiências passadas), a Escritura estabelece princípios claros de pureza, generosidade e exclusividade, mas a aplicação prática de cada situação particular é melhor conduzida em conversa honesta com um pastor ou conselheiro cristão de confiança.",
+            secondQuote: {
+              author: "David Merkh",
+              text: "A intimidade sexual no casamento cristão não existe apenas para o prazer do casal, mas como selo repetido de uma aliança que Deus testemunhou e que o casal renova, corpo e alma, um ao outro.",
+            },
           },
           quizzes: [
             {
@@ -1480,6 +1540,26 @@ const familiaCrista: Trail = {
             author: "David Merkh",
             text: "Criar filhos segundo o Evangelho não é produzir comportamento perfeito, mas modelar, diariamente, a mesma graça que recebemos de Deus — disciplina com amor, verdade com paciência, correção com esperança.",
           },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Salmo 127:3-5",
+                textByVersion: {
+                  NVI: "Os filhos são herança do Senhor; eles são a recompensa que dele vem. Como flechas nas mãos do guerreiro são os filhos nascidos na juventude de alguém. Como é feliz o homem que enche a sua aljava com flechas como essas!",
+                },
+              },
+            ],
+            historicalContext:
+              "No antigo Israel, não existiam escolas religiosas institucionalizadas como as sinagogas que surgiriam mais tarde — o lar era o principal (e muitas vezes único) centro de formação espiritual das crianças. O Shemá de Deuteronômio 6:4-9 estabelece esse padrão: a fé é ensinada não em um horário isolado de 'aula religiosa', mas entrelaçada no cotidiano inteiro da família, o que Paulo, séculos depois, resume e aplica em Efésios 6:4 dentro do contexto greco-romano de sua própria época.",
+            exegeticalNotes:
+              "Em Efésios 6:4, Paulo usa dois termos gregos complementares: 'paideia' (formação, treinamento, disciplina no sentido amplo e educativo, não apenas punitivo) e 'nouthesia' (admoestação, instrução verbal e correção). Juntos, descrevem uma criação equilibrada entre estrutura formativa e ensino direto — nem permissividade sem limites, nem rigidez sem explicação.",
+            theologicalDebate:
+              "Cristãos fiéis divergem sobre métodos específicos de disciplina infantil, incluindo a interpretação de textos como Provérbios 13:24 e 22:15 (se a 'vara' deve ser lida de forma literal ou como símbolo mais amplo de correção e autoridade paterna). O que é essencial e inegociável, sem exceção, é que toda disciplina cristã deve visar o bem e a formação do caráter da criança, nunca humilhação, raiva descontrolada ou abuso físico ou emocional — qualquer prática que cause dano é incompatível com o Evangelho, independentemente da posição adotada. Pais que enfrentam dificuldades reais de disciplina fazem bem em buscar orientação pastoral e, quando necessário, aconselhamento profissional qualificado.",
+            secondQuote: {
+              author: "Charles Spurgeon",
+              text: "Uma criança educada apenas com regras, sem amor, aprenderá a odiar as regras; uma criança educada apenas com amor, sem verdade, não saberá reconhecer o pecado — o Evangelho ensina os pais a unir as duas coisas.",
+            },
+          },
           quizzes: [
             {
               question: "Segundo Efésios 6:4, qual advertência vem antes do mandamento de disciplinar os filhos?",
@@ -1627,6 +1707,26 @@ const familiaCrista: Trail = {
             author: "Wayne Grudem",
             text: "Honrar os pais é reconhecer, com gratidão, que fomos formados por mãos que Deus usou antes que soubéssemos formar nada por nós mesmos — mesmo quando essas mãos, sendo humanas, também erraram.",
           },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Marcos 7:9-13",
+                textByVersion: {
+                  NVI: "E disse-lhes: 'Habilmente vocês rejeitam o mandamento de Deus, a fim de guardar a sua própria tradição!... vocês anulam a palavra de Deus pela tradição que vocês transmitem uns aos outros.'",
+                },
+              },
+            ],
+            historicalContext:
+              "No mundo antigo, o cuidado dos pais idosos era, na prática, a única 'previdência social' disponível — não havia sistema de aposentadoria ou instituições de longa permanência. Jesus repreende, em Marcos 7, um costume religioso chamado 'corbã', pelo qual algumas pessoas declaravam seus bens 'dedicados a Deus' para se eximir legalmente da obrigação de sustentar os próprios pais — um exemplo claro de como tradição religiosa pode, na prática, contradizer o próprio mandamento de Deus que ela alega honrar.",
+            exegeticalNotes:
+              "O grego usa 'timaō' (honrar, atribuir valor e respeito) em contraste com 'hypakouō' (obedecer, submeter-se à autoridade), aplicado especificamente aos filhos que ainda vivem sob autoridade parental (Ef 6:1). Honra é o mandamento permanente, válido em toda fase da vida; obediência incondicional é limitada à infância e adolescência sob o teto e autoridade dos pais.",
+            theologicalDebate:
+              "Sobre como honrar pais que foram ou são abusivos, ausentes ou que exigem algo contrário à Palavra de Deus, tradições cristãs concordam que a honra bíblica nunca exige submissão a pecado, silêncio diante de abuso ou exposição contínua a dano ('antes é preciso obedecer a Deus do que aos homens', At 5:29). Como isso se traduz na prática (grau de contato, tipo de relacionamento mantido, perdão sem reconciliação de convivência) é uma questão pastoral delicada, que exige sabedoria caso a caso — recomenda-se buscar apoio de um pastor, conselheiro cristão qualificado e, quando necessário, proteção legal apropriada.",
+            secondQuote: {
+              author: "Charles Spurgeon",
+              text: "Aquele que despreza o pai e a mãe que Deus lhe deu dificilmente aprenderá a honrar de coração o Pai celestial que ele ainda não vê.",
+            },
+          },
           quizzes: [
             {
               question: "O que torna o quinto mandamento (Êx 20:12) único entre os Dez Mandamentos, segundo Efésios 6:2-3?",
@@ -1770,6 +1870,26 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "John Stott",
             text: "Jesus Cristo, o homem mais realizado e mais pleno que a história já conheceu, nunca se casou; isso deveria ser suficiente para libertar qualquer cristão solteiro da mentira de que sua vida está incompleta.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Mateus 19:11-12",
+                textByVersion: {
+                  NVI: "Jesus respondeu: 'Nem todos podem aceitar esta palavra, mas somente aqueles a quem é dado... Há também os que renunciaram a casar-se por causa do Reino dos céus. Quem puder aceitar isso, aceite.'",
+                },
+              },
+            ],
+            historicalContext:
+              "1 Coríntios 7 foi escrito num momento de 'aflição presente' (v. 26) — provavelmente instabilidade social ou perseguição iminente enfrentada pela igreja de Corinto. Nesse contexto específico, Paulo destaca vantagens práticas e temporárias da solteirice (menos divisão de cuidados, maior disponibilidade para servir), sem nunca desvalorizar o casamento, que ele mesmo eleva como retrato do Evangelho em outros textos (Ef 5).",
+            exegeticalNotes:
+              "Em 1 Coríntios 7:7, Paulo usa a palavra grega 'charisma' (dom, graça concedida) tanto para o casamento quanto para a solteirice — ambos são dons de Deus, não um sendo o padrão normal e o outro uma falta ou atraso espiritual. Isso corrige diretamente qualquer ideia de que a pessoa solteira esteja 'esperando' uma vida que ainda não começou de verdade.",
+            theologicalDebate:
+              "Cristãos diferem sobre como discernir se a solteirice de alguém é um 'chamado' específico e permanente para servir a Deus de forma undivided (1 Co 7:32-34) ou simplesmente uma circunstância temporária da vida, sem significado vocacional especial. A Escritura não exige que toda pessoa solteira declare publicamente uma vocação de celibato perpétuo — ela apenas ensina que a solteirice, enquanto durar, pode ser vivida com plenitude e propósito no Reino, e não como uma sala de espera.",
+            secondQuote: {
+              author: "Dietrich Bonhoeffer",
+              text: "A comunhão cristã não depende do estado civil de ninguém; o solteiro que vive em comunhão profunda com Cristo e com a igreja já experimenta, de verdade, a família que Deus lhe prometeu.",
+            },
           },
           quizzes: [
             {
@@ -1915,6 +2035,26 @@ const familiaCrista: Trail = {
             author: "Thom Rainer",
             text: "A família que entende que tudo pertence a Deus para de perguntar 'quanto é meu para eu guardar?' e passa a perguntar 'quanto do que Deus me confiou eu posso usar para o Reino, com sabedoria e generosidade?'.",
           },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "2 Coríntios 9:6-7",
+                textByVersion: {
+                  NVI: "Lembrem-se disto: aquele que semeia pouco também colherá pouco, e aquele que semeia com fartura também colherá fartamente. Cada um dê conforme determinou em seu coração, não com pesar ou por obrigação, pois Deus ama quem dá com alegria.",
+                },
+              },
+            ],
+            historicalContext:
+              "No Antigo Testamento, Israel vivia sob um sistema de múltiplos dízimos ligados à aliança mosaica (sustento dos levitas, festas nacionais, cuidado dos pobres), parte da lei civil e cerimonial daquele povo específico. O Novo Testamento não repete esse sistema detalhado para a igreja — em vez disso, ensina princípios de generosidade proporcional, voluntária e alegre (2 Co 8-9), refletindo a nova aliança em Cristo, e não uma taxa fixa exigida por lei.",
+            exegeticalNotes:
+              "A palavra grega 'hilaros' (2 Co 9:7), de onde vem o termo português 'hilário', descreve alguém genuinamente alegre, não alguém que dá por pressão social ou culpa. Paulo contrasta deliberadamente esse tipo de doação com dar 'com pesar' ou 'por obrigação' — a atitude do coração importa tanto quanto o valor entregue.",
+            theologicalDebate:
+              "Cristãos evangélicos fiéis divergem sobre se o dízimo (10%) permanece como padrão mínimo obrigatório para o crente do Novo Testamento ou se foi um princípio da aliança mosaica cumprido e superado pelo chamado neotestamentário à generosidade proporcional e voluntária, sem percentual fixo. Ambas as posições concordam que o crente deve dar de forma planejada, sacrificial e alegre, honrando a Deus com suas finanças — a diferença está apenas no percentual específico exigido, uma questão secundária de aplicação prática.",
+            secondQuote: {
+              author: "Charles Spurgeon",
+              text: "Aquele que dá pouco porque tem pouco não será repreendido; mas aquele que tem muito e retém tudo para si mesmo já colheu, sem saber, a pobreza mais séria de todas: a do próprio coração.",
+            },
+          },
           quizzes: [
             {
               question: "Segundo Mateus 6:21, o que revela onde está o verdadeiro tesouro de uma pessoa ou família?",
@@ -2058,6 +2198,26 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Josué K. Reichow",
             text: "Uma família cristã que nunca serve à igreja local está desperdiçando o próprio propósito para o qual Deus a formou: não apenas ser abençoada, mas ser canal de bênção para o corpo de Cristo.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Atos 18:24-26",
+                textByVersion: {
+                  NVI: "Chegou a Éfeso um judeu chamado Apolo... Ele já tinha sido instruído no caminho do Senhor... Priscila e Áquila o ouviram e o levaram para casa, e lhe explicaram com mais precisão o caminho de Deus.",
+                },
+              },
+            ],
+            historicalContext:
+              "Antes de existirem prédios dedicados a templos cristãos, a igreja do primeiro século se reunia majoritariamente em casas de famílias (Rm 16:5, Cl 4:15). Isso tornava o lar cristão, literalmente, um espaço eclesial — hospedar a igreja, ensinar a Palavra e servir na casa não era um extra opcional, mas parte estrutural de como a igreja primitiva existia e crescia.",
+            exegeticalNotes:
+              "Paulo chama Priscila e Áquila de 'synergos' (colaboradores, companheiros de trabalho) em Romanos 16:3 — o mesmo termo que usa para outros líderes reconhecidos de ministério. O casal aparece consistentemente unido no texto grego (com o nome de Priscila mencionado antes do de Áquila em vários textos, algo incomum para a época), servindo, ensinando e viajando juntos a serviço do Evangelho.",
+            theologicalDebate:
+              "O episódio de Priscila e Áquila instruindo Apolo (At 18:26) é frequentemente citado nos debates evangélicos sobre os papéis apropriados de homens e mulheres no ensino da igreja — alguns veem aqui um modelo de instrução privada e conjunta que não contraria 1 Timóteo 2:12, enquanto outros o veem como precedente mais amplo para o ensino feminino. Essa é uma questão secundária sobre a qual cristãos fiéis divergem; o que o texto claramente ensina, sem controvérsia, é que um casamento forte transborda em serviço conjunto à igreja, e não se fecha sobre si mesmo.",
+            secondQuote: {
+              author: "Michael Goheen",
+              text: "Uma família que vive apenas para si mesma, mesmo sendo tecnicamente cristã, perdeu de vista que foi chamada, como toda a igreja, a participar da missão de Deus no mundo.",
+            },
           },
           quizzes: [
             {
@@ -2203,6 +2363,26 @@ const familiaCrista: Trail = {
             author: "Tim Keller",
             text: "Deus nunca desperdiça dor; ele pode não explicá-la totalmente agora, mas promete estar presente nela e, com o tempo, usá-la para um propósito que, um dia, faremos sentido — mesmo que só na eternidade.",
           },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "2 Coríntios 1:3-4",
+                textByVersion: {
+                  NVI: "Bendito seja o Deus e Pai de nosso Senhor Jesus Cristo, Pai de misericórdia e Deus de toda consolação, que nos consola em todas as nossas tribulações, para que também possamos consolar os que estão passando por qualquer tribulação.",
+                },
+              },
+            ],
+            historicalContext:
+              "O livro de Jó desafia diretamente a teologia da retribuição comum no Antigo Oriente Próximo, segundo a qual sofrimento era sempre sinal direto de pecado ou castigo divino específico. Os amigos de Jó representam justamente essa suposição cultural equivocada — e Deus, ao final do livro, os repreende por falarem de forma imprecisa sobre Ele (Jó 42:7), mesmo defendendo, em aparência, a causa divina.",
+            exegeticalNotes:
+              "A palavra grega 'paraklēsis' (consolação, conforto) em 2 Coríntios 1 compartilha a mesma raiz de 'paráclito', título usado para o Espírito Santo (Jo 14:16). O conforto que o crente recebe de Deus não é apenas sentimental — é a mesma presença consoladora do Espírito, capacitando quem sofreu a se tornar, depois, fonte de consolo genuíno para outros que sofrem.",
+            theologicalDebate:
+              "Cristãos fiéis sustentam diferentes ênfases teológicas ao lidar com o problema do sofrimento (teodiceia): alguns enfatizam mais o livre-arbítrio humano e a queda como origem do sofrimento no mundo; outros enfatizam mais a soberania de Deus tecendo propósitos redentores mesmo através da dor; a maioria reconhece que parte do sofrimento simplesmente permanece um mistério que só será plenamente respondido na eternidade (1 Co 13:12). Diante de uma família enlutada, doente ou em crise real, respostas teológicas apressadas quase sempre machucam mais do que ajudam — presença, oração e acompanhamento pastoral genuíno importam mais do que explicações completas.",
+            secondQuote: {
+              author: "C.S. Lewis",
+              text: "Ninguém me contou que a dor se pareceria tanto com o medo... mas mesmo na dor mais funda, Deus não se ausentou; ele apenas, por um tempo, permitiu que eu sentisse o silêncio antes de falar de novo.",
+            },
+          },
           quizzes: [
             {
               question: "O que Salmo 34:18 promete às famílias que atravessam sofrimento e coração quebrantado?",
@@ -2346,6 +2526,26 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Charles Swindoll",
             text: "A hospitalidade cristã não é sobre impressionar quem entra em nossa casa, é sobre amar quem entra em nossa casa — e, ao fazer isso, muitas vezes recebemos de volta mais do que oferecemos.",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "3 João 1:5-8",
+                textByVersion: {
+                  NVI: "Amado, você é fiel no que faz para os irmãos, mesmo sendo eles estranhos para você... Devemos, pois, receber com hospitalidade irmãos como esses, para sermos cooperadores da verdade.",
+                },
+              },
+            ],
+            historicalContext:
+              "No mundo greco-romano, viajar era arriscado e hospedarias públicas tinham reputação de perigo e imoralidade. Por isso, a hospitalidade doméstica cristã era essencial para o funcionamento prático da igreja primitiva — missionários itinerantes, apóstolos e mestres viajantes dependiam quase inteiramente de lares cristãos dispostos a recebê-los (3 Jo, Rm 16:23).",
+            exegeticalNotes:
+              "A palavra grega 'philoxenia' (Rm 12:13; Hb 13:2), traduzida 'hospitalidade', significa literalmente 'amor ao estranho' — o oposto de 'xenofobia' (medo ou aversão ao estranho). Isso distingue a hospitalidade bíblica de simplesmente receber amigos já conhecidos: seu alvo principal, no Novo Testamento, é o estranho, o visitante, aquele que ainda não faz parte do círculo familiar do anfitrião.",
+            theologicalDebate:
+              "A Escritura não define regras fixas sobre frequência, formato ou limites práticos da hospitalidade cristã (quantas pessoas receber, com que regularidade, que tipos de cuidado de segurança adotar em relação a crianças e à própria família). Ela estabelece o princípio — um coração generoso e disposto a abrir a casa — mas a aplicação prudente e sustentável desse princípio, especialmente equilibrando hospitalidade com descanso familiar e proteção dos mais vulneráveis do lar, é questão de sabedoria pastoral, não de mandamento detalhado.",
+            secondQuote: {
+              author: "Craig Blomberg",
+              text: "Em Lucas, hospitalidade nunca é apenas cortesia social — é um teste concreto de como o Evangelho transformou a relação do discípulo com seus bens, sua mesa e sua casa.",
+            },
           },
           quizzes: [
             {
