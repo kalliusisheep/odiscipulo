@@ -127,7 +127,7 @@ function HomePage() {
 
       <header className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <MascotAvatar src={level.avatar} size={56} />
+         <MascotAvatar size={56} />
           <div>
             <p className="text-xs text-muted-foreground">Saudação</p>
             <h1 className="text-xl font-semibold">A Paz, {firstName}</h1>
