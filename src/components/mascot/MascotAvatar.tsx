@@ -12,6 +12,7 @@ const EVENT_TO_ANIM_CLASS: Record<Exclude<MascotEvent, null>, string> = {
   dance: "animate-mascot-dance",
   streak: "animate-mascot-dance",
   sad: "animate-mascot-sad",
+  pet: "animate-mascot-pet",
 };
 
 type Props = {
@@ -22,12 +23,12 @@ type Props = {
 };
 
 export function MascotAvatar({ src, size = 96, className = "", showMessage = true }: Props) {
-  const { state } = useMascot();
+  const { state, pet } = useMascot();
   const { event, message, moodEmoji } = state;
 
   const animClass = event ? EVENT_TO_ANIM_CLASS[event] : "animate-mascot-idle";
-  const showParticles = event === "jump" || event === "dance" || event === "streak";
-  const particleEmoji = event === "streak" ? "🔥" : event === "dance" ? "⭐" : "✨";
+  const showParticles = event === "jump" || event === "dance" || event === "streak" || event === "pet";
+  const particleEmoji = event === "streak" ? "🔥" : event === "dance" ? "⭐" : event === "pet" ? "❤️" : "✨";
 
   return (
     <div className={`inline-flex flex-col items-center ${className}`}>
@@ -38,9 +39,14 @@ export function MascotAvatar({ src, size = 96, className = "", showMessage = tru
       )}
 
       <div className="relative" style={{ width: size, height: size }}>
-        <div className={`h-full w-full overflow-hidden rounded-full shadow-lg ring-2 ring-primary/30 ${animClass}`}>
+        <button
+          type="button"
+          onClick={() => pet()}
+          aria-label="Fazer carinho na ovelha"
+          className={`h-full w-full overflow-hidden rounded-full shadow-lg ring-2 ring-primary/30 ${animClass}`}
+        >
           <img src={src || FALLBACK_SRC} alt="Mascote" className="h-full w-full object-cover" />
-        </div>
+        </button>
 
         <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-surface text-xs shadow ring-1 ring-border">
           {moodEmoji}
