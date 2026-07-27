@@ -8,6 +8,7 @@ import { awardXpAndStreak } from "@/lib/progress";
 import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
 import { FontSizeControls } from "@/components/font-size-controls";
 import { ArrowLeft, Check, X, Sparkles, Share2, ArrowRight, BookOpen, Brain, Target, ChevronRight, Layers } from "lucide-react";
+import { NarrationButton } from "@/components/NarrationButton";
 
 export const Route = createFileRoute("/_authenticated/licao/$id")({
   component: LicaoPage,
