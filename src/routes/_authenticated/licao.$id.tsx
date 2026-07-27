@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lessonById, verseText } from "@/data/content";
 import { useApp } from "@/lib/app-context";
 import { useCelebration } from "@/lib/celebration";
+import { useMascot, trailCompletionLine } from "@/lib/mascot";
 import { awardXpAndStreak } from "@/lib/progress";
 import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
 import { FontSizeControls } from "@/components/font-size-controls";
@@ -34,8 +35,10 @@ function LicaoPage() {
   const nav = useNavigate();
   const { bibleVersion } = useApp();
   const { celebrateActivity } = useCelebration();
+  const { say } = useMascot();
   const found = useMemo(() => lessonById(id), [id]);
   const [dbModuleId, setDbModuleId] = useState<string | null>(null);
+  const [trailTitle, setTrailTitle] = useState<string | null>(null);
   const [step, setStep] = useState<Step>("estudo");
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [reflection, setReflection] = useState("");
@@ -52,10 +55,13 @@ function LicaoPage() {
     void (async () => {
       const { data } = await supabase
         .from("disciple_trails")
-        .select("module_id")
+        .select("module_id, title")
         .eq("lesson_id", id)
         .maybeSingle();
-      if (!cancelled) setDbModuleId((data?.module_id as string | undefined) ?? null);
+      if (!cancelled) {
+        setDbModuleId((data?.module_id as string | undefined) ?? null);
+        setTrailTitle((data?.title as string | undefined) ?? null);
+      }
     })();
     return () => {
       cancelled = true;
@@ -147,6 +153,9 @@ function LicaoPage() {
       }
       const { prevXp, newXp } = await awardXpAndStreak(u.user.id, xpGained);
       celebrateActivity({ prevXp, newXp, xp: xpGained });
+      if (trailTitle) {
+        setTimeout(() => say(trailCompletionLine(trailTitle)), 4000);
+      }
     }
     setStep("done");
     setSaving(false);
