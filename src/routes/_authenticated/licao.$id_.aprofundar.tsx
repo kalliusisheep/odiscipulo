@@ -59,39 +59,40 @@ function AprofundarPage() {
           </button>
           <div className="flex min-w-0 flex-1 items-center gap-2">
             <Layers className="h-4 w-4 shrink-0 text-ancient" />
-            <h1 className="truncate text-sm font-bold text-ancient">Aprofundar</h1>
+            <h1 className="truncate text-sm font-bold text-ancient" data-narrate>Aprofundar</h1>
           </div>
+          <NarrationButton containerSelector='[data-tts-scope="aprofundar"]' />
           <FontSizeControls scaleIndex={scaleIndex} onIncrease={increase} onDecrease={decrease} />
         </div>
 
-        <div style={contentZoomStyle} className="space-y-4">
-          <p className="px-1 text-[10px] uppercase tracking-wider text-muted-foreground">
+        <div style={contentZoomStyle} className="space-y-4" data-tts-scope="aprofundar">
+          <p className="px-1 text-[10px] uppercase tracking-wider text-muted-foreground" data-narrate>
             {lesson.title} · contexto, exegese e mais
           </p>
 
           <div className="space-y-4 rounded-2xl border border-ancient/30 bg-ancient/5 p-4">
             {deepen.historicalContext && (
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient" data-narrate>
                   Contexto histórico e cultural
                 </p>
-                <p className="mt-1.5 text-sm leading-relaxed">{deepen.historicalContext}</p>
+                <p className="mt-1.5 text-sm leading-relaxed" data-narrate>{deepen.historicalContext}</p>
               </div>
             )}
 
             {deepen.additionalVerses && deepen.additionalVerses.length > 0 && (
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient" data-narrate>
                   Passagens de apoio ({bibleVersion})
                 </p>
                 <div className="mt-1.5 space-y-2">
                   {deepen.additionalVerses.map((v) => (
                     <div key={v.ref} className="rounded-xl bg-background/60 p-3">
-                      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground" data-narrate>
                         {v.ref}
                       </p>
-                      <p className="mt-1 scripture text-base text-foreground/85">
-                        "{verseText(v, bibleVersion)}"
+                      <p className="mt-1 scripture text-base text-foreground/85" data-narrate>
+                        {`"${verseText(v, bibleVersion)}"`}
                       </p>
                     </div>
                   ))}
@@ -101,16 +102,16 @@ function AprofundarPage() {
 
             {deepen.exegeticalNotes && (
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient" data-narrate>
                   Notas de exegese
                 </p>
-                <p className="mt-1.5 text-sm leading-relaxed">{deepen.exegeticalNotes}</p>
+                <p className="mt-1.5 text-sm leading-relaxed" data-narrate>{deepen.exegeticalNotes}</p>
               </div>
             )}
 
             {deepen.additionalKeywords && deepen.additionalKeywords.length > 0 && (
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient" data-narrate>
                   Mais palavras no idioma original
                 </p>
                 <ul className="mt-1.5 space-y-2">
@@ -120,7 +121,7 @@ function AprofundarPage() {
                         <span className="ancient-text text-lg text-ancient">{o.word}</span>
                         <span className="text-xs text-ancient/80">({o.translit}, {o.lang})</span>
                       </div>
-                      <p className="mt-1 text-xs text-foreground/80">{o.meaning}</p>
+                      <p className="mt-1 text-xs text-foreground/80" data-narrate>{o.meaning}</p>
                     </li>
                   ))}
                 </ul>
@@ -129,11 +130,11 @@ function AprofundarPage() {
 
             {deepen.theologicalDebate && (
               <div className="rounded-xl border border-border bg-background/60 p-3">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground" data-narrate>
                   Panorama entre tradições cristãs
                 </p>
-                <p className="mt-1.5 text-sm leading-relaxed">{deepen.theologicalDebate}</p>
-                <p className="mt-2 text-[11px] italic text-muted-foreground">
+                <p className="mt-1.5 text-sm leading-relaxed" data-narrate>{deepen.theologicalDebate}</p>
+                <p className="mt-2 text-[11px] italic text-muted-foreground" data-narrate>
                   Para aprofundar essa questão, converse com seu pastor ou líder de discipulado.
                 </p>
               </div>
@@ -141,10 +142,10 @@ function AprofundarPage() {
 
             {deepen.secondQuote && (
               <blockquote className="border-l-4 border-l-ancient pl-3">
-                <p className="scripture text-base leading-relaxed text-ancient">
-                  "{deepen.secondQuote.text}"
+                <p className="scripture text-base leading-relaxed text-ancient" data-narrate>
+                  {`"${deepen.secondQuote.text}"`}
                 </p>
-                <footer className="mt-1.5 text-xs font-semibold text-ancient/80">
+                <footer className="mt-1.5 text-xs font-semibold text-ancient/80" data-narrate>
                   — {deepen.secondQuote.author}
                 </footer>
               </blockquote>
