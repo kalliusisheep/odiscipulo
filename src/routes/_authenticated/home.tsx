@@ -19,6 +19,7 @@ import {
 } from "@/data/module-visuals";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { MessagesLinkButton } from "@/components/MessagesLinkButton";
+import { MascotAvatar } from "@/components/mascot/MascotAvatar";
 import { useApp } from "@/lib/app-context";
 import { Flame, Check, ChevronRight, Sparkles, BookOpen } from "lucide-react";
 
@@ -124,10 +125,13 @@ function HomePage() {
         }
       `}</style>
 
-      <header className="flex items-center justify-between">
-        <div>
-          <p className="text-xs text-muted-foreground">Saudação</p>
-          <h1 className="text-xl font-semibold">A Paz, {firstName}</h1>
+      <header className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <MascotAvatar src={level.avatar} size={56} />
+          <div>
+            <p className="text-xs text-muted-foreground">Saudação</p>
+            <h1 className="text-xl font-semibold">A Paz, {firstName}</h1>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <MessagesLinkButton />
