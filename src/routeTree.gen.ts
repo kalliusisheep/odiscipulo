@@ -26,6 +26,7 @@ import { Route as AuthenticatedMensagensIndexRouteImport } from './routes/_authe
 import { Route as AuthenticatedEstudosIndexRouteImport } from './routes/_authenticated/estudos.index'
 import { Route as AuthenticatedPerfilUsernameRouteImport } from './routes/_authenticated/perfil_.$username'
 import { Route as AuthenticatedModuloIdRouteImport } from './routes/_authenticated/modulo.$id'
+import { Route as AuthenticatedMensagensNovoRouteImport } from './routes/_authenticated/mensagens.novo'
 import { Route as AuthenticatedMensagensUsernameRouteImport } from './routes/_authenticated/mensagens.$username'
 import { Route as AuthenticatedLicaoIdRouteImport } from './routes/_authenticated/licao.$id'
 import { Route as AuthenticatedLicaoIdAprofundarRouteImport } from './routes/_authenticated/licao.$id_.aprofundar'
@@ -122,6 +123,12 @@ const AuthenticatedModuloIdRoute = AuthenticatedModuloIdRouteImport.update({
   path: '/modulo/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedMensagensNovoRoute =
+  AuthenticatedMensagensNovoRouteImport.update({
+    id: '/mensagens/novo',
+    path: '/mensagens/novo',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedMensagensUsernameRoute =
   AuthenticatedMensagensUsernameRouteImport.update({
     id: '/mensagens/$username',
@@ -173,6 +180,7 @@ export interface FileRoutesByFullPath {
   '/api/mentor': typeof ApiMentorRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
+  '/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
   '/modulo/$id': typeof AuthenticatedModuloIdRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
   '/estudos/': typeof AuthenticatedEstudosIndexRoute
@@ -197,6 +205,7 @@ export interface FileRoutesByTo {
   '/api/mentor': typeof ApiMentorRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
+  '/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
   '/modulo/$id': typeof AuthenticatedModuloIdRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
   '/estudos': typeof AuthenticatedEstudosIndexRoute
@@ -223,6 +232,7 @@ export interface FileRoutesById {
   '/api/mentor': typeof ApiMentorRoute
   '/_authenticated/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/_authenticated/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
+  '/_authenticated/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
   '/_authenticated/modulo/$id': typeof AuthenticatedModuloIdRoute
   '/_authenticated/perfil_/$username': typeof AuthenticatedPerfilUsernameRoute
   '/_authenticated/estudos/': typeof AuthenticatedEstudosIndexRoute
@@ -249,6 +259,7 @@ export interface FileRouteTypes {
     | '/api/mentor'
     | '/licao/$id'
     | '/mensagens/$username'
+    | '/mensagens/novo'
     | '/modulo/$id'
     | '/perfil/$username'
     | '/estudos/'
@@ -273,6 +284,7 @@ export interface FileRouteTypes {
     | '/api/mentor'
     | '/licao/$id'
     | '/mensagens/$username'
+    | '/mensagens/novo'
     | '/modulo/$id'
     | '/perfil/$username'
     | '/estudos'
@@ -298,6 +310,7 @@ export interface FileRouteTypes {
     | '/api/mentor'
     | '/_authenticated/licao/$id'
     | '/_authenticated/mensagens/$username'
+    | '/_authenticated/mensagens/novo'
     | '/_authenticated/modulo/$id'
     | '/_authenticated/perfil_/$username'
     | '/_authenticated/estudos/'
@@ -436,6 +449,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedModuloIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/mensagens/novo': {
+      id: '/_authenticated/mensagens/novo'
+      path: '/mensagens/novo'
+      fullPath: '/mensagens/novo'
+      preLoaderRoute: typeof AuthenticatedMensagensNovoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/mensagens/$username': {
       id: '/_authenticated/mensagens/$username'
       path: '/mensagens/$username'
@@ -493,6 +513,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRankingDetalhesRoute: typeof AuthenticatedRankingDetalhesRoute
   AuthenticatedLicaoIdRoute: typeof AuthenticatedLicaoIdRoute
   AuthenticatedMensagensUsernameRoute: typeof AuthenticatedMensagensUsernameRoute
+  AuthenticatedMensagensNovoRoute: typeof AuthenticatedMensagensNovoRoute
   AuthenticatedModuloIdRoute: typeof AuthenticatedModuloIdRoute
   AuthenticatedPerfilUsernameRoute: typeof AuthenticatedPerfilUsernameRoute
   AuthenticatedEstudosIndexRoute: typeof AuthenticatedEstudosIndexRoute
@@ -515,6 +536,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRankingDetalhesRoute: AuthenticatedRankingDetalhesRoute,
   AuthenticatedLicaoIdRoute: AuthenticatedLicaoIdRoute,
   AuthenticatedMensagensUsernameRoute: AuthenticatedMensagensUsernameRoute,
+  AuthenticatedMensagensNovoRoute: AuthenticatedMensagensNovoRoute,
   AuthenticatedModuloIdRoute: AuthenticatedModuloIdRoute,
   AuthenticatedPerfilUsernameRoute: AuthenticatedPerfilUsernameRoute,
   AuthenticatedEstudosIndexRoute: AuthenticatedEstudosIndexRoute,
@@ -537,3 +559,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
