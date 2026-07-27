@@ -579,6 +579,160 @@ const vidaCrista: Trail = {
         },
       ],
     },
+    {
+      id: "vc-mod-5",
+      title: "Relacionamentos e Perseverança",
+      lessons: [
+        {
+          id: "vc-5-1",
+          title: "Relacionamentos Saudáveis",
+          difficulty: 2,
+          intro: [
+            "Você foi feito para relacionamentos — não é acidente que a Bíblia comece com Deus dizendo 'não é bom que o homem esteja só' (Gênesis 2:18), muito antes do pecado entrar no mundo. Amizade, família, comunidade: tudo isso faz parte do desenho original de Deus para a vida humana, não um extra opcional para quem 'tem tempo sobrando'.",
+            "Mas viver bem no meio de outras pessoas — imperfeitas como nós — exige mais do que boa vontade. Exige um conjunto de hábitos que a Bíblia ensina com clareza: amor sem hipocrisia, palavras que edificam, disposição para honrar o outro. Relacionamentos saudáveis não acontecem por acaso; eles são cultivados.",
+          ],
+          verses: [
+            {
+              ref: "Romanos 12:9-10",
+              textByVersion: {
+                NVI: "O amor deve ser sincero. Odeiem o que é mau; apeguem-se ao que é bom. Amem-se sinceramente uns aos outros com amor fraternal. Prefiram dar honra aos outros mais do que a si próprios.",
+              },
+              originals: [
+                { word: "ἀνυπόκριτος", translit: "anypokritos", meaning: "'sem hipocrisia, sem máscara' — amor que não é representação, mas realidade genuína", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Provérbios 27:17",
+              textByVersion: {
+                NVI: "Assim como o ferro afia o ferro, uma pessoa afia a outra.",
+              },
+            },
+            {
+              ref: "Efésios 4:29",
+              textByVersion: {
+                NVI: "Nenhuma palavra torpe saia da boca de vocês, mas apenas a que for útil para edificar os outros, conforme a necessidade, para que conceda benefício aos que a ouvem.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "ἀνυπόκριτος", translit: "anypokritos", meaning: "'sem hipocrisia'. Descreve um amor que não usa máscara social — o que se mostra por fora é o que realmente existe por dentro.", lang: "grego" },
+          ],
+          deepDive:
+            "Paulo não descreve relacionamento saudável como ausência de atrito, mas como presença de certas qualidades: amor genuíno (sem hipocrisia), honra mútua, palavras que edificam. Provérbios usa a imagem do ferro que afia ferro — um processo que, na prática, envolve fricção. Amizades e relações profundas de verdade quase sempre passam por esse tipo de atrito construtivo: alguém que discorda de você com amor, que aponta um ponto cego, que espera mais de você do que você esperaria de si mesmo. A tentação moderna é cercar-se só de gente que concorda com tudo o que fazemos; a sabedoria bíblica descreve algo mais rico e mais difícil — pessoas que nos aproximam de Cristo mesmo quando isso incomoda um pouco.",
+          theologianQuote: {
+            author: "Larry Crabb",
+            text: "Fomos feitos para nos conectar profundamente uns com os outros; é dentro dessa conexão, e não fora dela, que Deus costuma realizar sua obra mais transformadora em nós. (paráfrase da ênfase central de sua obra sobre conexão e relacionamentos)",
+          },
+          quizzes: [
+            {
+              question: "Segundo Romanos 12:9-10, que tipo de amor deve caracterizar as relações entre cristãos?",
+              options: [
+                "Um amor emocional intenso, mas superficial",
+                "Um amor sem hipocrisia, genuíno, que honra o outro",
+                "Um amor restrito apenas à família",
+                "Um amor condicionado à reciprocidade",
+              ],
+              correctIndex: 1,
+              explanation: "O termo grego 'anypokritos' descreve amor sem máscara — o que se sente é o que se demonstra.",
+            },
+            {
+              question: "O que a imagem de 'ferro que afia ferro' (Provérbios 27:17) ensina sobre amizades saudáveis?",
+              options: [
+                "Que amizades saudáveis evitam qualquer desacordo",
+                "Que o crescimento mútuo muitas vezes envolve atrito construtivo",
+                "Que só se deve ter amigos que pensam exatamente igual",
+                "Que amizade não exige esforço",
+              ],
+              correctIndex: 1,
+              explanation: "O processo de afiar envolve fricção — amizades profundas frequentemente crescem através de correção e desafio mútuo, feitos com amor.",
+            },
+          ],
+          application:
+            "Pense em uma pessoa próxima que costuma 'te afiar' — que te desafia a crescer, mesmo quando isso incomoda. Agradeça a ela essa semana, especificamente, por essa qualidade.",
+          prayer:
+            "Senhor, obrigado pelas pessoas que colocaste ao meu redor. Ensina-me a amar sem hipocrisia, a honrar mais do que buscar ser honrado, e a receber com humildade quando alguém, com amor, me desafia a crescer. Que minhas palavras sejam sempre para edificar, nunca para destruir. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Escolha três pessoas próximas e, a cada dia, escreva ou diga a uma delas uma palavra específica de encorajamento genuíno — não um elogio vago, mas algo verdadeiro que você percebeu nela.",
+          reflectionQuestion:
+            "Quem, no seu círculo mais próximo, tem liberdade para discordar de você com amor — e como você reage quando isso acontece?",
+          xp: 25,
+        },
+        {
+          id: "vc-5-2",
+          title: "Sofrimento e Confiança",
+          difficulty: 2,
+          intro: [
+            "Nenhum discipulado é completo sem enfrentar, de frente, a pergunta mais antiga da fé: por que sofremos, se Deus é bom e poderoso? A Bíblia não evita essa pergunta — ela está em Jó, nos Salmos, em Paulo na prisão. Mas a resposta bíblica não é uma explicação filosófica que resolve tudo; é a promessa de uma presença.",
+            "Tiago chama o cristão a considerar as provações como motivo de alegria — não porque a dor seja boa em si mesma, mas porque Deus usa a provação para produzir algo que dificilmente nasceria de outro caminho: uma fé mais firme e um caráter mais maduro.",
+          ],
+          verses: [
+            {
+              ref: "Tiago 1:2-4",
+              textByVersion: {
+                NVI: "Considerem motivo de grande alegria o fato de passarem por diversas provações, pois vocês sabem que a prova da sua fé produz perseverança. E a perseverança deve ter ação completa, a fim de que vocês sejam maduros e íntegros, sem lhes faltar coisa alguma.",
+              },
+              originals: [
+                { word: "ὑπομονή", translit: "hypomonē", meaning: "'perseverança' — não passividade resignada, mas resistência ativa que permanece firme sob o peso da provação", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Romanos 8:28",
+              textByVersion: {
+                NVI: "Sabemos que Deus age em todas as coisas para o bem daqueles que o amam, dos que foram chamados de acordo com o seu propósito.",
+              },
+            },
+            {
+              ref: "Salmos 34:18",
+              textByVersion: {
+                NVI: "Perto está o Senhor dos que têm o coração quebrantado e salva os de espírito abatido.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "ὑπομονή", translit: "hypomonē", meaning: "'perseverança ativa'. Não é simplesmente suportar a dor passivamente, mas permanecer firme e fiel enquanto ela dura, confiando que Deus está produzindo algo através dela.", lang: "grego" },
+          ],
+          deepDive:
+            "Romanos 8:28 é um dos versículos mais citados — e mais mal-entendidos — da Bíblia. Ele não promete que tudo o que acontece é bom em si mesmo (o sofrimento real, a perda, a doença, continuam sendo males reais, e a Bíblia nunca pede que finjamos o contrário). O que o texto promete é que Deus é soberano e bom o suficiente para tecer até mesmo o mal em algo que serve ao seu propósito de formar o caráter de quem o ama — 'chamados de acordo com o seu propósito' é a chave: essa promessa é para quem confia nele, não uma garantia genérica de que 'tudo dá certo' independentemente da fé. Tiago acrescenta outra peça: a provação, vivida com fé, produz 'hypomonē' — não resignação passiva, mas perseverança ativa que amadurece o caráter. O cristão não é chamado a fingir que a dor não dói, mas a atravessá-la confiando que Deus está perto — como diz o Salmo 34 — especialmente quando o coração está quebrantado.",
+          theologianQuote: {
+            author: "Dietrich Bonhoeffer",
+            text: "Quando Cristo chama alguém, ele o chama a morrer para si mesmo — e o sofrimento, para quem o segue, não é uma exceção trágica ao discipulado, mas parte do caminho. (paráfrase da ênfase central de sua obra sobre o custo do discipulado)",
+          },
+          quizzes: [
+            {
+              question: "Segundo a lição, o que Romanos 8:28 realmente promete?",
+              options: [
+                "Que nada de ruim jamais vai acontecer com o cristão",
+                "Que todo mal que acontece já é bom por si mesmo",
+                "Que Deus, sendo soberano e bom, pode tecer até o mal para o propósito de formar quem o ama",
+                "Que o sofrimento é sempre punição por pecado",
+              ],
+              correctIndex: 2,
+              explanation: "O texto não nega a realidade do mal, mas afirma que Deus o usa dentro de um propósito maior para quem confia nele.",
+            },
+            {
+              question: "O termo grego 'hypomonē' (perseverança), usado em Tiago 1, descreve principalmente:",
+              options: [
+                "Resignação passiva diante da dor",
+                "Resistência ativa e firme que permanece fiel sob o peso da provação",
+                "Ausência total de sofrimento",
+                "Uma emoção passageira de coragem",
+              ],
+              correctIndex: 1,
+              explanation: "Hypomonē não é desistir silenciosamente, mas permanecer ativamente firme e fiel enquanto a provação dura.",
+            },
+          ],
+          application:
+            "Identifique uma provação atual (ou recente) na sua vida. Em vez de perguntar apenas 'por que isso está acontecendo?', pergunte também: 'o que Deus pode estar formando em mim através disso?'. Escreva sua resposta.",
+          prayer:
+            "Senhor, quando a dor é real e não desaparece com uma explicação fácil, ajuda-me a confiar que estás perto dos que têm o coração quebrantado. Não me deixes fingir que o sofrimento não dói, mas também não me deixes esquecer que és soberano e bom, e que nada do que atravesso está fora do teu cuidado. Produz em mim perseverança que amadurece, não amargura que endurece. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Escreva uma carta breve para si mesmo (ou para alguém que está sofrendo) lembrando, com suas próprias palavras, que Deus está perto de quem tem o coração quebrantado — e guarde essa carta para reler numa próxima temporada difícil.",
+          reflectionQuestion:
+            "Existe algum sofrimento no seu passado em que, olhando para trás, você já consegue ver algo que Deus formou em você através dele?",
+          xp: 30,
+        },
+      ],
+    },
   ],
 };
 
