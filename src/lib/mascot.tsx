@@ -57,28 +57,34 @@ const CONTEXTUAL_LINES = [
 
 // Falas que dependem de dados reais do usuário (streak, XP, lições concluídas).
 // São montadas dinamicamente em runtime e somadas ao pool de CONTEXTUAL_LINES.
-function buildProgressLines(opts: { streak: number; xpLeft: number | null; completedLessons: number }): string[] {
+function buildProgressLines(opts: {
+  streak: number;
+  xpLeft: number | null;
+  completedLessons: number;
+  name: string | null;
+}): string[] {
   const lines: string[] = [];
-  const { streak, xpLeft, completedLessons } = opts;
+  const { streak, xpLeft, completedLessons, name } = opts;
+  const who = name ? `, ${name}` : "";
 
   if (streak >= 7) {
-    lines.push(`${streak} dias seguidos! Que sequência linda 🔥`);
+    lines.push(`${streak} dias seguidos${who}! Que sequência linda 🔥`);
   } else if (streak >= 3) {
-    lines.push(`Você está há ${streak} dias seguidos! Não quebra a corrente agora 🔥`);
+    lines.push(`Você está há ${streak} dias seguidos${who}! Não quebra a corrente agora 🔥`);
   } else if (streak === 1) {
-    lines.push("Primeiro dia da sua sequência! Vamos até amanhã?");
+    lines.push(`Primeiro dia da sua sequência${who}! Vamos até amanhã?`);
   }
 
   if (xpLeft !== null && xpLeft <= 30) {
-    lines.push(`Faltam só ${xpLeft} XP pra você subir de nível! 🎉`);
+    lines.push(`Faltam só ${xpLeft} XP pra você subir de nível${who}! 🎉`);
   }
 
   if (completedLessons >= 20) {
-    lines.push(`${completedLessons} lições concluídas! Você está construindo um hábito e tanto.`);
+    lines.push(`${completedLessons} lições concluídas${who}! Você está construindo um hábito e tanto.`);
   } else if (completedLessons >= 5) {
-    lines.push(`Você já concluiu ${completedLessons} lições na sua trilha. Bora continuar?`);
+    lines.push(`Você já concluiu ${completedLessons} lições na sua trilha${who}. Bora continuar?`);
   } else if (completedLessons === 0) {
-    lines.push("Ainda não começou nenhuma lição — que tal a primeira hoje?");
+    lines.push(`Ainda não começou nenhuma lição${who} — que tal a primeira hoje?`);
   }
 
   return lines;
@@ -147,22 +153,27 @@ function pickRandom(list: string[]): string {
   return list[Math.floor(Math.random() * list.length)];
 }
 
-function greetingForNow(): { text: string; emoji: string } {
+function greetingForNow(name: string | null): { text: string; emoji: string } {
   const now = new Date();
   const hour = now.getHours();
   const isSunday = now.getDay() === 0;
+  const who = name ? `, ${name}` : "";
 
-  if (isSunday) return { text: "Hoje é dia de culto? 🙏", emoji: "🙏" };
-  if (hour >= 5 && hour < 12) return { text: "Bom dia! Vamos estudar?", emoji: "☀️" };
-  if (hour >= 12 && hour < 18) return { text: "Boa tarde! Pronto pra continuar?", emoji: "🌤️" };
-  if (hour >= 18 && hour < 23) return { text: "Boa noite!", emoji: "🌙" };
-  return { text: "Já tá tarde… não esquece de descansar.", emoji: "😴" };
+  if (isSunday) return { text: `Hoje é dia de culto${who}? 🙏`, emoji: "🙏" };
+  if (hour >= 5 && hour < 12) return { text: `Bom dia${who}! Vamos estudar?`, emoji: "☀️" };
+  if (hour >= 12 && hour < 18) return { text: `Boa tarde${who}! Pronto pra continuar?`, emoji: "🌤️" };
+  if (hour >= 18 && hour < 23) return { text: `Boa noite${who}!`, emoji: "🌙" };
+  return { text: `Já tá tarde${who}… não esquece de descansar.`, emoji: "😴" };
 }
 
 export function MascotProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<MascotState>({ event: null, message: null, moodEmoji: "😀" });
   const clearTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const sadTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Nome real do usuário (primeiro nome), carregado do perfil assim que
+  // disponível. Fica em ref (não state) pra poder ser lido por `pet()`
+  // sem precisar re-renderizar o provider a cada troca.
+  const nameRef = useRef<string | null>(null);
 
   const trigger = useCallback(
     (event: Exclude<MascotEvent, null>, message?: string, durationMs = 1600) => {
@@ -181,7 +192,9 @@ export function MascotProvider({ children }: { children: ReactNode }) {
 
   const pet = useCallback(() => {
     if (clearTimer.current) clearTimeout(clearTimer.current);
-    setState((s) => ({ event: "pet", message: pickRandom(PET_LINES), moodEmoji: "😊" }));
+    const name = nameRef.current;
+    const lines = name ? [...PET_LINES, `Adorei o carinho, ${name}! 🥰`] : PET_LINES;
+    setState((s) => ({ event: "pet", message: pickRandom(lines), moodEmoji: "😊" }));
     clearTimer.current = setTimeout(() => {
       setState((s) => ({ ...s, event: null }));
     }, 1400);
@@ -198,21 +211,35 @@ export function MascotProvider({ children }: { children: ReactNode }) {
       const [{ data: p }, { count: completedLessons }] = await Promise.all([
         supabase
           .from("profiles")
-          .select("last_activity_date, xp, streak")
+          .select("last_activity_date, xp, streak, first_name, display_name")
           .eq("id", u.user.id)
           .maybeSingle(),
         supabase
           .from("lesson_progress")
           .select("lesson_id", { count: "exact", head: true })
-          .eq("user_id", u.user.id),
+          .eq("user_id", u.user.id)
+          // Dias de "plano de leitura" também gravam em lesson_progress
+          // (lesson_id no formato "plan:<id>:<dia>"). Não são lições de
+          // trilha, então não entram nessa contagem — senão o número que
+          // o mascote fala fica maior do que as lições realmente feitas.
+          .not("lesson_id", "like", "plan:%"),
       ]);
       if (cancelled) return;
+
+      const rawFirst = (p?.first_name as string | null)?.trim();
+      const rawDisplay = (p?.display_name as string | null)?.trim();
+      // "Novo Discípulo" é o valor padrão de display_name pra quem ainda
+      // não escolheu um nome — nesse caso é melhor não usar (não é um nome real).
+      const displayFirstWord =
+        rawDisplay && rawDisplay !== "Novo Discípulo" ? rawDisplay.split(/\s+/)[0] : null;
+      nameRef.current = rawFirst || displayFirstWord || null;
 
       const xpLeft = xpToNextLevel((p?.xp as number | null) ?? 0);
       const progressLines = buildProgressLines({
         streak: (p?.streak as number | null) ?? 0,
         xpLeft,
         completedLessons: completedLessons ?? 0,
+        name: nameRef.current,
       });
       const contextualPool = [...CONTEXTUAL_LINES, ...progressLines];
 
@@ -224,12 +251,13 @@ export function MascotProvider({ children }: { children: ReactNode }) {
       const missedDays = diffDays !== null && diffDays >= 2;
 
       if (missedDays) {
-        setState({ event: "sad", message: "Senti sua falta…", moodEmoji: "😔" });
+        const who = nameRef.current ? `, ${nameRef.current}` : "";
+        setState({ event: "sad", message: `Senti sua falta${who}…`, moodEmoji: "😔" });
         sadTimer.current = setTimeout(() => {
-          if (!cancelled) setState({ event: null, message: "Vamos recomeçar hoje?", moodEmoji: "🙂" });
+          if (!cancelled) setState({ event: null, message: `Vamos recomeçar hoje${who}?`, moodEmoji: "🙂" });
         }, 3200);
       } else {
-        const g = greetingForNow();
+        const g = greetingForNow(nameRef.current);
         setState({ event: "wave", message: g.text, moodEmoji: g.emoji });
         clearTimer.current = setTimeout(() => {
           if (!cancelled) setState((s) => ({ ...s, event: null }));
