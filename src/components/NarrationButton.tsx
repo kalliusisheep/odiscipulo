@@ -158,7 +158,9 @@ export function NarrationButton({ containerSelector, className }: Props) {
     const units: SentenceUnit[] = [];
     const queue: { unitIdx: number; sentIdx: number; text: string }[] = [];
     nodes.forEach((el) => {
-      const text = el.textContent ?? "";
+      // Usa data-narrate-text quando presente (versão "limpa" para fala,
+      // ex.: sem números de versículo), mantendo o texto visível original.
+      const text = el.dataset.narrateText ?? el.textContent ?? "";
       const sentences = splitSentences(text);
       if (sentences.length === 0) return;
       const originalHTML = el.innerHTML;
