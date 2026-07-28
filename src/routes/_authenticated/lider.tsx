@@ -71,6 +71,24 @@ async function fetchTableData(tableName: string) {
 }
 
 /**
+ * Busca um registro específico por ID via API REST
+ */
+async function fetchTableRecordById(tableName: string, id: string) {
+  try {
+    const response = await fetch(`/api/tables/${tableName}/${id}`);
+    if (!response.ok) {
+      if (response.status === 404) return null;
+      throw new Error(`Erro ao buscar ${tableName}/${id}: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`❌ Erro ao buscar ${tableName}/${id}:`, error);
+    return null;
+  }
+}
+
+/**
  * Atualiza um registro em uma tabela via API REST do Lovable
  */
 async function updateTableRecord(tableName: string, id: string, updates: Record<string, any>) {
@@ -156,11 +174,13 @@ function LiderPage() {
 
       // Buscar discípulos
       const discipulosData = await fetchTableData('discipulos');
-      if (discipulosData) {
+      if (discipulosData && discipulosData.length > 0) {
         setDiscipulos(discipulosData);
         console.log(`📋 Carregados ${discipulosData.length} discípulos.`);
+        // Salvar no localStorage para fallback
+        localStorage.setItem('discipulos_reais', JSON.stringify(discipulosData));
       } else {
-        // Fallback: localStorage
+        // Fallback: localStorage ou mock
         const saved = localStorage.getItem('discipulos_reais');
         if (saved) {
           setDiscipulos(JSON.parse(saved));
@@ -179,9 +199,9 @@ function LiderPage() {
 
       // Buscar grupos
       const gruposData = await fetchTableData('grupos');
-      if (gruposData) {
+      if (gruposData && gruposData.length > 0) {
         setGrupos(gruposData);
-        console.log(`📋 Carregados ${gruposData.length} grupos.`);
+        localStorage.setItem('grupos_reais', JSON.stringify(gruposData));
       } else {
         const saved = localStorage.getItem('grupos_reais');
         if (saved) {
@@ -266,46 +286,57 @@ function LiderPage() {
     }
   };
 
-  // 2. ADICIONAR POR ID
+  // 2. ADICIONAR POR ID (CORRIGIDO)
   const handleBuscarPorID = async () => {
-    if (!idBusca.trim()) {
+    const idDigitado = idBusca.trim();
+    if (!idDigitado) {
       showFeedback('Digite um ID válido', 'warning');
       return;
     }
 
     setBuscandoPorID(true);
-    
-    try {
-      // Busca no banco via API (poderia usar fetchTableData com filtro, mas vamos buscar localmente)
-      let encontrado = discipulos.find(d => d.id === idBusca);
+    setDiscipuloEncontrado(null); // Limpa resultado anterior
 
-      // Se não encontrar localmente, tenta buscar via API específica
+    try {
+      // 1º tentativa: buscar na lista local (mais rápido)
+      let encontrado = discipulos.find(d => 
+        d.id.toLowerCase() === idDigitado.toLowerCase() || 
+        d.id === idDigitado
+      );
+
+      // 2º tentativa: se não achou, buscar diretamente na API por ID
       if (!encontrado) {
-        try {
-          const response = await fetch(`/api/tables/discipulos/${idBusca}`);
-          if (response.ok) {
-            const data = await response.json();
-            if (data) {
-              encontrado = data;
-              // Adiciona ao estado local para consistência
-              setDiscipulos(prev => [...prev, data]);
-            }
+        console.log(`🔍 Buscando ID "${idDigitado}" diretamente na API...`);
+        const apiResult = await fetchTableRecordById('discipulos', idDigitado);
+        if (apiResult) {
+          encontrado = apiResult;
+          // Adiciona ao estado local para futuras buscas
+          setDiscipulos(prev => {
+            // Evita duplicados
+            if (prev.some(d => d.id === apiResult.id)) return prev;
+            return [...prev, apiResult];
+          });
+          // Salva no localStorage também
+          const saved = localStorage.getItem('discipulos_reais');
+          const parsed = saved ? JSON.parse(saved) : [];
+          if (!parsed.some((d: any) => d.id === apiResult.id)) {
+            parsed.push(apiResult);
+            localStorage.setItem('discipulos_reais', JSON.stringify(parsed));
           }
-        } catch (apiErr) {
-          console.warn('⚠️ Falha ao buscar por ID via API.');
         }
       }
 
       if (encontrado) {
         setDiscipuloEncontrado(encontrado);
-        showFeedback(`Usuário ${encontrado.name} encontrado!`, 'success');
+        showFeedback(`Usuário "${encontrado.name}" encontrado!`, 'success');
       } else {
         setDiscipuloEncontrado(null);
-        showFeedback('Usuário não encontrado com este ID', 'error');
+        showFeedback(`Nenhum usuário com ID "${idDigitado}" encontrado.`, 'error');
       }
     } catch (err) {
+      console.error('❌ Erro na busca por ID:', err);
       setDiscipuloEncontrado(null);
-      showFeedback('Erro ao buscar usuário', 'error');
+      showFeedback('Erro ao buscar usuário. Tente novamente.', 'error');
     } finally {
       setBuscandoPorID(false);
     }
@@ -313,7 +344,7 @@ function LiderPage() {
 
   const handleConfirmarAdicionarPorID = async () => {
     if (!discipuloEncontrado) {
-      showFeedback('Usuário não encontrado', 'warning');
+      showFeedback('Nenhum usuário selecionado.', 'warning');
       return;
     }
 
@@ -321,6 +352,7 @@ function LiderPage() {
       const dataEntrada = new Date().toISOString().split('T')[0];
       const id = discipuloEncontrado.id;
 
+      // Atualizar via API
       try {
         await updateTableRecord('discipulos', id, {
           status: 'ativo',
@@ -330,6 +362,7 @@ function LiderPage() {
         console.warn('⚠️ Falha ao atualizar via API.');
       }
 
+      // Atualizar estado local
       const discipulosAtualizados = discipulos.map(d => 
         d.id === id ? { ...d, status: 'ativo' as const, data_entrada: dataEntrada } : d
       );
@@ -337,7 +370,7 @@ function LiderPage() {
       setDiscipulos(discipulosAtualizados);
       localStorage.setItem('discipulos_reais', JSON.stringify(discipulosAtualizados));
 
-      showFeedback(`Discípulo ${discipuloEncontrado.name} adicionado com sucesso!`, 'success');
+      showFeedback(`Discípulo "${discipuloEncontrado.name}" adicionado com sucesso!`, 'success');
       setOpenAddPorID(false);
       setDiscipuloEncontrado(null);
       setIdBusca('');
@@ -615,7 +648,7 @@ function LiderPage() {
                 const resultados = searchTerm.trim() ? discipulos.filter(d => 
                   d.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                   d.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                  d.id.includes(searchTerm)
+                  d.id.toLowerCase().includes(searchTerm.toLowerCase())
                 ) : discipulos;
                 
                 if (resultados.length === 0) {
@@ -665,7 +698,7 @@ function LiderPage() {
         </div>
       )}
 
-      {/* 2. ADICIONAR POR ID */}
+      {/* 2. ADICIONAR POR ID (CORRIGIDO) */}
       {openAddPorID && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center">
           <div className="w-full max-w-md rounded-t-2xl bg-background p-6 sm:rounded-2xl">
@@ -679,7 +712,7 @@ function LiderPage() {
             <div className="flex gap-2 mb-4">
               <input
                 type="text"
-                placeholder="Digite o ID do usuário"
+                placeholder="Digite o ID do usuário (ex: 1, 2, ...)"
                 value={idBusca}
                 onChange={(e) => setIdBusca(e.target.value)}
                 className="flex-1 rounded-lg border border-border bg-surface px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
