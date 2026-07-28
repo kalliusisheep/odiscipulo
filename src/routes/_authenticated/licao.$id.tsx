@@ -1,166 +1,152 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useMemo } from "react";
-import { lessonById, verseText } from "@/data/content";
-import { useApp } from "@/lib/app-context";
-import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
-import { FontSizeControls } from "@/components/font-size-controls";
-import { ArrowLeft, Layers } from "lucide-react";
-import { NarrationButton } from "@/components/NarrationButton";
+import type { Lesson, Trail } from "./content";
 
-export const Route = createFileRoute("/_authenticated/licao/$id_/aprofundar")({
-  component: AprofundarPage,
-});
+type LessonSeed = {
+  id: string; title: string; subtitle: string; verse: string; verseText: string;
+  intro: string; emphasis: string; application: string; question: string;
+};
 
-function AprofundarPage() {
-  const { id } = Route.useParams();
-  const nav = useNavigate();
-  const { bibleVersion } = useApp();
-  const found = useMemo(() => lessonById(id), [id]);
-  const { scaleIndex, increase, decrease, contentZoomStyle } = useReadingFontScale();
+const seeds: LessonSeed[] = [
+  { id: "csl-1", title: "O Líder Servo", subtitle: "O modelo cristocêntrico de lavar os pés", verse: "João 13:14-15", verseText: "Pois bem, se eu, sendo Senhor e Mestre de vocês, lavei-lhes os pés, vocês também devem lavar os pés uns dos outros. Eu lhes dei o exemplo, para que vocês façam como lhes fiz.", intro: "Jesus escolheu a toalha antes da cruz. Sua liderança não procurava destaque: aproximava-se das necessidades concretas das pessoas. Liderar como Cristo é usar a responsabilidade recebida para servir, proteger e encorajar.", emphasis: "O serviço do líder não é estratégia para ser admirado; é fruto de reconhecer que Cristo é o Senhor.", application: "Faça nesta semana uma tarefa simples que normalmente seria deixada para outra pessoa e realize-a sem buscar reconhecimento.", question: "Em qual situação tenho esperado ser servido quando Cristo me chama a servir?" },
+  { id: "csl-2", title: "Caráter Aprovado", subtitle: "A exigência bíblica da integridade", verse: "1 Timóteo 3:2", verseText: "É necessário, portanto, que o bispo seja irrepreensível, esposo de uma só mulher, sóbrio, prudente, respeitável, hospitaleiro e apto para ensinar.", intro: "Na Escritura, caráter vem antes de habilidade. Técnicas podem ampliar uma voz, mas não sustentam uma vida. O líder cristão aprende a ser o mesmo em público, em casa e quando ninguém está observando.", emphasis: "Integridade não significa perfeição sem arrependimento; significa uma vida aberta à verdade, correção e transformação.", application: "Peça a uma pessoa madura que aponte, com sinceridade, uma área em que sua vida precisa ser mais coerente.", question: "Minha vida privada confirma ou contradiz aquilo que ensino?" },
+  { id: "csl-3", title: "Vida Devocional", subtitle: "A dependência absoluta de Deus na oração", verse: "Marcos 1:35", verseText: "De madrugada, quando ainda estava escuro, Jesus levantou-se, saiu de casa e foi para um lugar deserto, onde ficou orando.", intro: "Quem lidera carrega pessoas e decisões no coração, mas não foi chamado a carregá-las sozinho. Jesus se retirava para orar: comunhão com o Pai não era intervalo da missão, mas a fonte de sua missão.", emphasis: "A agenda cheia não substitui a presença de Deus; ela torna essa presença ainda mais necessária.", application: "Reserve três períodos breves nesta semana para orar nominalmente pelas pessoas que você acompanha.", question: "O que minha rotina revela sobre de quem espero direção e força?" },
+  { id: "csl-4", title: "Submissão à Palavra", subtitle: "As Escrituras como autoridade inegociável", verse: "2 Timóteo 3:16-17", verseText: "Toda a Escritura é inspirada por Deus e útil para o ensino, para a repreensão, para a correção e para a instrução na justiça.", intro: "Liderança saudável não cria regras a partir de preferências pessoais. Ela se submete à voz de Deus nas Escrituras, permitindo que a Palavra forme convicções, corrija rotas e limite o poder humano.", emphasis: "Autoridade espiritual é autoridade debaixo da Palavra, nunca acima dela.", application: "Antes de uma conversa ou decisão importante, leia um texto bíblico pertinente e anote o princípio que deve orientar sua postura.", question: "Em que ponto tenho tratado minha opinião como se tivesse o peso da Escritura?" },
+  { id: "csl-5", title: "Amor pela Igreja", subtitle: "O compromisso prático com a noiva de Cristo", verse: "Efésios 5:25", verseText: "Cristo amou a igreja e entregou-se a si mesmo por ela.", intro: "A igreja não é um projeto pessoal do líder; é o povo comprado por Cristo. Amar a igreja inclui paciência com suas fraquezas, compromisso com sua unidade e disposição de contribuir sem usá-la como palco.", emphasis: "Cuidar da igreja é aprender a enxergar pessoas como Cristo as enxerga: preciosas, em processo e dignas de amor sacrificial.", application: "Encorage alguém da sua igreja sem pedir nada em troca e ore pela saúde espiritual da comunidade.", question: "Meu modo de falar da igreja demonstra o amor de Cristo por ela?" },
+  { id: "csl-6", title: "Discipulado Intencional", subtitle: "Liderar é caminhar junto e investir em pessoas", verse: "2 Timóteo 2:2", verseText: "E as palavras que me ouviu dizer na presença de muitas testemunhas, confie-as a homens fiéis que sejam também capazes de ensinar outros.", intro: "Discipulado não se reduz a repassar informação. É proximidade com propósito: ouvir, ensinar, corrigir com mansidão e modelar uma caminhada possível. Investir em uma pessoa hoje alcança outras amanhã.", emphasis: "A multiplicação cristã começa quando o líder deixa de centralizar tudo e prepara pessoas fiéis.", application: "Marque uma conversa individual com alguém que você deseja encorajar e pergunte como pode caminhar ao seu lado.", question: "Tenho investido tempo real em pessoas ou apenas distribuído tarefas?" },
+  { id: "csl-7", title: "Gestão de Conflitos", subtitle: "Sabedoria, ética cristã e pacificação", verse: "Mateus 5:9", verseText: "Bem-aventurados os pacificadores, pois serão chamados filhos de Deus.", intro: "Conflitos não são prova automática de fracasso; a maneira de tratá-los revela maturidade. O líder evita fofoca, escuta com justiça, fala a verdade em amor e busca reconciliação antes de vencer uma discussão.", emphasis: "Pacificadores não escondem problemas: enfrentam-nos com verdade, humildade e desejo de restauração.", application: "Identifique uma tensão pendente e dê um primeiro passo respeitoso para conversar diretamente com a pessoa envolvida.", question: "Em um conflito, busco proteger minha imagem ou restaurar a relação?" },
+  { id: "csl-8", title: "Foco na Missão", subtitle: "Liderança alinhada à Grande Comissão", verse: "Mateus 28:19-20", verseText: "Portanto, vão e façam discípulos de todas as nações, batizando-os em nome do Pai e do Filho e do Espírito Santo, ensinando-os a obedecer a tudo o que eu lhes ordenei.", intro: "A igreja tem muitas atividades legítimas, mas a missão de fazer discípulos organiza todas elas. O líder pergunta constantemente se as pessoas estão sendo conduzidas a conhecer, obedecer e anunciar Jesus.", emphasis: "Uma agenda movimentada só é frutífera quando serve à missão que Cristo entregou à igreja.", application: "Revise uma atividade que você lidera e escolha uma mudança simples que a conecte mais claramente à formação de discípulos.", question: "O que em minha liderança precisa ser reorganizado à luz da Grande Comissão?" },
+  { id: "csl-9", title: "Multiplicando Líderes", subtitle: "O dever de preparar a próxima geração", verse: "Efésios 4:11-12", verseText: "E ele designou alguns para apóstolos, outros para profetas, outros para evangelistas, e outros para pastores e mestres, com o fim de preparar os santos para a obra do ministério.", intro: "Uma liderança que só funciona enquanto uma pessoa está presente é frágil. Cristo dá líderes para equipar o povo, não para torná-lo dependente. Preparar outros requer delegar, acompanhar e permitir espaço para crescimento.", emphasis: "Delegar não é abandonar; é confiar responsabilidades com clareza, cuidado e acompanhamento.", application: "Escolha uma responsabilidade que possa compartilhar e convide alguém para aprendê-la ao seu lado.", question: "Que pessoa posso começar a preparar hoje para servir melhor amanhã?" },
+  { id: "csl-10", title: "Tudo para a Glória", subtitle: "O propósito final e a humildade no ministério", verse: "1 Coríntios 10:31", verseText: "Assim, quer vocês comam, bebam ou façam qualquer outra coisa, façam tudo para a glória de Deus.", intro: "O fim da liderança cristã não é construir um nome, controlar resultados ou reunir aprovação. Todo serviço encontra seu lugar quando devolve a glória a Deus e reconhece que os frutos pertencem a ele.", emphasis: "Humildade não diminui o chamado; ela coloca o chamado no lugar certo, debaixo da glória de Deus.", application: "Ao final de cada dia desta semana, agradeça a Deus por um fruto visto e entregue a ele uma frustração não resolvida.", question: "Onde tenho confundido o avanço do ministério com a busca pela minha própria importância?" },
+];
 
-  const goBack = () => {
-    void nav({ to: "/licao/$id", params: { id } });
+const leaderServantLesson: Lesson = {
+  id: "csl-1", title: "O Líder Servo", difficulty: 3,
+  intro: [
+    "No Reino de Deus, liderança não é a capacidade de acumular poder, privilégios ou subordinados. É a disposição radical de descer para servir. O modelo definitivo do líder cristão é Jesus Cristo: ele não veio para ser servido, mas para servir e dar sua vida em resgate por muitos.",
+    "Marcos 10:42-45 confronta o desejo de grandeza que havia alcançado até os apóstolos. Jesus não elimina a autoridade; ele redefine seu propósito. A autoridade recebida deve edificar, proteger e conduzir pessoas a Cristo — nunca promover o conforto, a imagem ou o controle de quem lidera.",
+    "O lava-pés de João 13 torna esse ensino visível. O Senhor e Mestre tomou a posição mais baixa da casa e serviu seus discípulos. A cruz não é apenas a base da salvação; ela é também a medida da vocação de todo líder cristão.",
+  ],
+  verses: [{
+    ref: "Marcos 10:42-45",
+    textByVersion: {
+      NVI: "Jesus os chamou e disse: ‘Vocês sabem que aqueles que são considerados governantes das nações as dominam, e as pessoas importantes exercem poder sobre elas. Não será assim entre vocês. Pelo contrário, quem quiser tornar-se importante entre vocês deverá ser servo; e quem quiser ser o primeiro deverá ser escravo de todos. Pois nem mesmo o Filho do homem veio para ser servido, mas para servir e dar a sua vida em resgate por muitos’. ",
+      NAA: "Jesus, chamando-os para junto de si, disse: ‘Vocês sabem que os que são considerados governadores dos povos os dominam e que os seus maiorais exercem autoridade sobre eles. Mas entre vocês não é assim; pelo contrário, quem quiser tornar-se grande entre vocês será esse o que os sirva; e quem quiser ser o primeiro entre vocês será servo de todos. Pois o próprio Filho do Homem não veio para ser servido, mas para servir e dar a sua vida em resgate por muitos’. ",
+      ACF: "Mas Jesus, chamando-os para junto de si, disse-lhes: Sabeis que os que julgam ser príncipes das gentes, delas se assenhoreiam, e os seus grandes usam de autoridade sobre elas; mas entre vós não será assim; antes, qualquer que entre vós quiser ser grande será vosso serviçal; e qualquer que dentre vós quiser ser o primeiro será servo de todos. Porque o Filho do homem também não veio para ser servido, mas para servir e dar a sua vida em resgate de muitos.",
+      NVT: "Jesus os chamou e disse: ‘Vocês sabem que os governantes deste mundo têm domínio sobre seu povo e que os oficiais exercem autoridade sobre os súditos. Entre vocês, porém, será diferente. Quem quiser ser o líder entre vocês será servo, e quem quiser ser o primeiro entre vocês será escravo de todos. Pois nem mesmo o Filho do Homem veio para ser servido, mas para servir e dar sua vida em resgate por muitos’. ",
+    },
+  }],
+  keywords: [
+    { word: "κατακυριεύω", translit: "katakyrieuō", meaning: "dominar de cima para baixo; exercer senhorio para benefício próprio. É o poder que esmaga.", lang: "grego" },
+    { word: "διάκονος", translit: "diákonos", meaning: "servo que atende necessidades concretas; quem trabalha ativamente para o bem do outro.", lang: "grego" },
+    { word: "δοῦλος", translit: "doûlos", meaning: "escravo; alguém inteiramente submetido ao seu senhor. Para ser o primeiro, Cristo chama o líder a servir a todos.", lang: "grego" },
+  ],
+  deepDive: "A liderança servidora não é passividade, falta de convicção ou ausência de correção. Jesus lavou pés, mas também confrontou o pecado e protegeu a santidade da casa de Deus. O líder servo usa a autoridade com amor: corrige para restaurar, decide para edificar e assume responsabilidades para que outros cresçam. Servir não é estratégia para receber elogios; é fruto de reconhecer que Cristo é o Senhor e que as pessoas sob nossos cuidados pertencem a ele.",
+  theologianQuote: { author: "Tim Keller", source: "A Cruz do Rei", text: "Jesus revoga completamente o conceito de poder: ele é o único rei que sangra e morre por seus súditos." },
+  deepen: {
+    historicalContext: "No primeiro século, a cultura greco-romana era marcada por patronagem, status e poder. A grandeza de alguém era frequentemente medida pelo número de pessoas que lhe deviam favores. Lavar os pés dos convidados era tarefa do escravo gentio de menor posição — um trabalho considerado indigno até para um escravo judeu. Nesse cenário, o gesto de Jesus subverte completamente a pirâmide social e espiritual.",
+    additionalVerses: [
+      { ref: "João 13:14-15", textByVersion: { NVI: "Pois bem, se eu, sendo Senhor e Mestre de vocês, lavei-lhes os pés, vocês também devem lavar os pés uns dos outros. Eu lhes dei o exemplo, para que vocês façam como lhes fiz.", NAA: "Ora, se eu, sendo o Senhor e o Mestre, lavei os pés de vocês, também vocês devem lavar os pés uns dos outros. Porque eu lhes dei o exemplo, para que, como eu fiz, vocês façam também.", ACF: "Ora, se eu, Senhor e Mestre, vos lavei os pés, vós deveis também lavar os pés uns aos outros. Porque eu vos dei o exemplo, para que, como eu vos fiz, façais vós também.", NVT: "E, uma vez que eu, seu Senhor e Mestre, lavei seus pés, vocês devem lavar os pés uns dos outros. Eu lhes dei o exemplo para que façam como eu fiz." } },
+      { ref: "Filipenses 2:5-8", textByVersion: { NVI: "Seja a atitude de vocês a mesma de Cristo Jesus, que, embora sendo Deus, não considerou que o ser igual a Deus era algo a que devia apegar-se; mas esvaziou-se a si mesmo, vindo a ser servo, tornando-se semelhante aos homens. E, sendo encontrado em forma humana, humilhou-se a si mesmo e foi obediente até à morte, e morte de cruz!", NAA: "Tenham entre vocês o mesmo modo de pensar de Cristo Jesus, pois ele, subsistindo em forma de Deus, não julgou como usurpação o ser igual a Deus; pelo contrário, esvaziou a si mesmo, assumindo a forma de servo, tornando-se em semelhança de homens. E, reconhecido em figura humana, a si mesmo se humilhou, tornando-se obediente até a morte, e morte de cruz.", ACF: "De sorte que haja em vós o mesmo sentimento que houve também em Cristo Jesus, que, sendo em forma de Deus, não teve por usurpação ser igual a Deus, mas aniquilou-se a si mesmo, tomando a forma de servo, fazendo-se semelhante aos homens; e, achado na forma de homem, humilhou-se a si mesmo, sendo obediente até à morte e morte de cruz.", NVT: "Tenham a mesma atitude demonstrada por Cristo Jesus. Embora sendo Deus, não considerou que ser igual a Deus fosse algo a que devesse apegar-se. Em vez disso, esvaziou-se a si mesmo; assumiu a posição de escravo e nasceu como ser humano. Quando veio em forma humana, humilhou-se e foi obediente até a morte, e morte de cruz." } },
+    ],
+    exegeticalNotes: "Em Marcos 10, Jesus contrasta katakyrieuō, o exercício opressivo de domínio, com diákonos e doûlos. O primeiro descreve poder usado sobre as pessoas; os outros descrevem serviço prestado em favor delas. A grandeza no Reino não é negada, mas recebe uma nova medida: quem deseja ser grande torna-se servo; quem deseja ser o primeiro torna-se servo de todos.",
+    additionalKeywords: [{ word: "κενόω", translit: "kenóō", meaning: "esvaziar-se. Em Filipenses 2, Cristo não deixa de ser Deus; ele assume voluntariamente a forma de servo e o caminho da humilhação.", lang: "grego" }],
+    theologicalDebate: "A Bíblia reconhece autoridade e chama a igreja a honrar seus líderes (Hebreus 13:17), mas rejeita toda autoridade exercida como domínio pessoal. Tradições cristãs podem organizar a liderança local de formas diferentes; o princípio comum é que toda autoridade deve servir à edificação da igreja e permanecer debaixo de Cristo e de sua Palavra.",
+    secondQuote: { author: "Francis Schaeffer", source: "Não Há Pessoas Pequenas", text: "No Reino de Deus não há pessoas pequenas nem lugares pequenos. O único lugar que importa é aquele onde Deus nos colocou." },
+  },
+  quizzes: [
+    { question: "Segundo Marcos 10:42-45, qual é a diferença entre a liderança do mundo e a liderança no Reino de Deus?", options: ["No Reino, líderes não possuem responsabilidade", "No mundo o poder domina; no Reino a autoridade serve e edifica", "No Reino apenas pessoas sem dons podem liderar", "O líder deve evitar decisões difíceis"], correctIndex: 1, explanation: "Jesus não elimina a autoridade; ele transforma sua finalidade. O líder usa a responsabilidade para o bem dos outros, não para elevar a si mesmo." },
+    { question: "O que diákonos comunica sobre o líder cristão?", options: ["Alguém que busca status religioso", "Alguém que atende ativamente necessidades práticas", "Alguém que nunca corrige o pecado", "Alguém que delega toda responsabilidade"], correctIndex: 1, explanation: "Diákonos descreve serviço concreto: a postura de quem trabalha para suprir a necessidade do próximo." },
+    { question: "Qual atitude contradiz a liderança servidora?", options: ["Corrigir em amor para proteger o rebanho", "Fazer uma tarefa sem buscar reconhecimento", "Usar a linguagem de humildade para receber elogios", "Preparar outras pessoas para servir"], correctIndex: 2, explanation: "A falsa humildade transforma o serviço em palco. O verdadeiro servo não serve para ser admirado." },
+  ],
+  application: "Escolha nesta semana uma necessidade na sua congregação que não ofereça status ou visibilidade. Sirva ali em secreto. Em uma decisão de liderança, pergunte-se: ‘Esta decisão protege minha imagem ou promove o crescimento espiritual dos meus irmãos?’",
+  prayer: "Senhor Jesus, tu escolheste a toalha e a cruz. Livra-me da sede de reconhecimento e ensina-me a usar toda influência que recebo para servir, proteger e edificar pessoas. Amém.",
+  weeklyChallenge: "Realize um ato de serviço oculto na sua igreja local. Depois, ore por seus pastores e líderes e procure ser, nesta semana, o melhor liderado possível.",
+  reflectionQuestion: "Em quais áreas do meu ministério ou vida pessoal ainda ajo como alguém que exige privilégios, em vez de servir? Como o lava-pés de Jesus confronta a maneira como trato as pessoas difíceis?",
+  xp: 50,
+};
+
+const detailedLessons: Record<string, Lesson> = {
+  "csl-1": {
+    ...leaderServantLesson,
+    intro: [
+      "No discipulado pessoal, liderar não significa ter um súdito que obedece às suas ordens. Significa receber a responsabilidade de lavar os pés de um irmão mais novo na fé. Jesus assumiu deliberadamente a posição de escravo para servir seus próprios discípulos.",
+      "O alvo do discipulador é diminuir para que Cristo cresça na vida do discípulo. Marcos 10:42-45 e João 13:12-15 deixam claro que influência espiritual nunca é licença para controlar; é chamado para servir, nutrir e carregar fardos.",
+      "A autoridade do discipulador não nasce da imposição, mas do sacrifício. Antes de exortar, ele aprende a ouvir; antes de exigir, ele se dispõe a servir em amor e aponta o discípulo para Cristo e para a igreja local.",
+    ],
+    deepDive: "O discipulador não é um instrutor distante, mas alguém que investe tempo, paciência e cuidado prático. Ouvir é um dos primeiros serviços da comunhão: antes de oferecer uma correção bíblica, aprenda a ouvir a dor, as dúvidas e o contexto do irmão. O lava-pés acontece quando há paciência com dúvidas primárias, ajuda em necessidades reais e amor que ultrapassa a hora semanal de estudo. A relação, porém, não pode gerar dependência de uma pessoa: sua finalidade é ensinar o discípulo a ouvir e obedecer a Deus.",
+    theologianQuote: { author: "Dietrich Bonhoeffer", source: "Vida em Comunhão", text: "O primeiro serviço que um deve ao outro na comunhão consiste em ouvi-lo." },
+    deepen: {
+      historicalContext: "No ambiente rabínico do primeiro século, os talmidim existiam para servir ao seu mestre. Um discípulo faria quase tudo pelo rabi, exceto lavar-lhe os pés — tarefa tão humilhante que era reservada ao escravo gentio de menor posição. Jesus inverte essa lógica: o próprio Mestre toma a toalha e a bacia. Ele não usa discípulos para engrandecer-se; humilha-se para purificá-los.",
+      additionalVerses: [{ ref: "João 13:12-15", textByVersion: { NVI: "Quando terminou de lavar-lhes os pés, Jesus tornou a vestir sua capa e voltou ao seu lugar. Então lhes perguntou: ‘Vocês entendem o que lhes fiz? Vocês me chamam ‘Mestre’ e ‘Senhor’, e com razão, pois eu o sou. Pois bem, se eu, sendo Senhor e Mestre de vocês, lavei-lhes os pés, vocês também devem lavar os pés uns dos outros. Eu lhes dei o exemplo, para que vocês façam como lhes fiz.’" } }, { ref: "Filipenses 2:5-8", textByVersion: { NVI: "Seja a atitude de vocês a mesma de Cristo Jesus, que, embora sendo Deus, não considerou que o ser igual a Deus era algo a que devia apegar-se; mas esvaziou-se a si mesmo, vindo a ser servo, tornando-se semelhante aos homens. E, sendo encontrado em forma humana, humilhou-se a si mesmo e foi obediente até à morte, e morte de cruz!" } }],
+      exegeticalNotes: "Katakyrieuō descreve senhorio exercido de cima para baixo, usando pessoas para benefício próprio. Diákonos é quem atende ativamente às necessidades; doûlos é aquele que abre mão de privilégios por submissão ao seu Senhor. O discipulado nunca pode ser instrumento de controle: o maior serve para que o outro amadureça em Cristo.",
+      additionalKeywords: [{ word: "διάκονος", translit: "diákonos", meaning: "servo que nutre o discípulo com a Palavra e com amparo prático.", lang: "grego" }, { word: "δοῦλος", translit: "doûlos", meaning: "servo inteiramente submetido ao Senhor; abre mão do privilégio para servir o outro.", lang: "grego" }],
+      theologicalDebate: "O discipulador não toma o lugar do Espírito Santo, dos pastores ou da igreja. Ele não deve microgerenciar casamento, trabalho, compras ou decisões pessoais. Sua tarefa é facilitar uma dependência crescente de Cristo, encorajar a participação na comunidade e buscar ajuda pastoral diante de crises graves, pecado não tratado ou sofrimento profundo.",
+      secondQuote: { author: "Tim Keller", source: "A Cruz do Rei", text: "Jesus revoga completamente o conceito de poder. Ele é o único rei que sangra e morre por seus súditos." },
+    },
+    application: "No próximo encontro, pergunte antes de ensinar: ‘Como eu posso te servir nesta semana? Há algum fardo na sua família, trabalho ou mente que eu possa carregar em oração ou ajudar de forma prática?’ Ouça ativamente antes de falar.",
+    weeklyChallenge: "Ofereça uma ajuda concreta e discreta ao seu discípulo — ou a alguém mais novo na fé — que comunique cuidado além do encontro de estudo.",
+    reflectionQuestion: "Tenho enxergado meu discípulo como um projeto que administro ou como um irmão a quem sirvo? Minha relação gera dependência de mim ou dependência direta de Cristo?",
+  },
+  "csl-2": {
+    id: "csl-2", title: "Caráter Aprovado", difficulty: 3,
+    intro: ["No discipulado pessoal, seu caráter é o principal material didático. Você não reproduz na vida do discípulo apenas aquilo que sabe; reproduz aquilo que é.", "A integridade da vida privada dá autoridade às palavras ditas nos encontros. Paulo pôde chamar Timóteo a ser padrão dos fiéis e convidar cristãos a imitá-lo porque sua vida apontava para Cristo.", "Discipulado é vida na vida: conhecimento bíblico precisa tornar-se visível na forma como você ora, fala, trabalha, trata a família, reage sob pressão e se arrepende."],
+    verses: [{ ref: "1 Timóteo 4:12", textByVersion: { NVI: "Ninguém o despreze pelo fato de você ser jovem, mas seja um exemplo para os fiéis na palavra, no procedimento, no amor, na fé e na pureza." } }, { ref: "1 Coríntios 11:1", textByVersion: { NVI: "Tornem-se meus imitadores, como eu o sou de Cristo." } }],
+    keywords: [{ word: "τύπος", translit: "týpos", meaning: "padrão, molde ou marca deixada por um golpe. O discipulador é um modelo visível para a formação do outro.", lang: "grego" }, { word: "μιμητής", translit: "mimētēs", meaning: "imitador. Paulo chama o discípulo a copiar seus passos somente porque eles seguem Cristo.", lang: "grego" }],
+    deepDive: "Ensino teológico é esvaziado quando a vida do discipulador o contradiz. Falar sobre amor e agir com rispidez, ensinar provisão e negociar desonestamente, defender pureza e cultivar uma vida secreta incoerente forma hipocrisia, não maturidade. Caráter aprovado não significa infalibilidade: uma das lições mais profundas que um discípulo aprende é como você se arrepende, pede perdão e volta para Cristo.",
+    theologianQuote: { author: "Dietrich Bonhoeffer", source: "Discipulado", text: "Somente o que crê é obediente, e somente o obediente crê." },
+    deepen: { historicalContext: "O modelo educacional rabínico e greco-romano não se limitava a uma sala de aula. O discípulo observava como o mestre orava, comia, tratava pessoas e reagia sob pressão. Paulo aplica esse padrão relacional ao discipulado cristão: a doutrina precisa ser encarnada e visível.", additionalVerses: [{ ref: "1 Timóteo 4:16", textByVersion: { NVI: "Atente bem para a sua própria vida e para a doutrina; perseverando nesses pontos, pois agindo assim você salvará tanto a si mesmo quanto aos que o ouvem." } }, { ref: "Tito 2:7-8", textByVersion: { NVI: "Em tudo seja você mesmo um exemplo para eles, fazendo boas obras. Em seu ensino, mostre integridade e seriedade; use linguagem sadia, contra a qual nada se possa dizer." } }], exegeticalNotes: "Týpos era a marca de um golpe ou molde de fundição. A imagem é séria: um molde torto deforma aquilo que produz. Mimētēs comunica imitação concreta, não admiração distante; o discipulador só pode dizer ‘imite-me’ na medida em que imita Cristo.", theologicalDebate: "Vulnerabilidade não é exposição sem sabedoria. O discipulador não precisa narrar todos os detalhes íntimos, mas não deve fabricar uma imagem de super-herói espiritual. Confessar falhas de modo apropriado ensina arrependimento; esconder pecado persistente destrói a confiança e requer cuidado pastoral.", secondQuote: { author: "Richard Baxter", source: "O Pastor Aprovado", text: "Cuidem para que seu exemplo não contradiga sua doutrina." } },
+    quizzes: [{ question: "O que torna o caráter do discipulador seu principal material didático?", options: ["O discípulo reproduz somente técnicas", "A vida visível do mentor modela o que ele ensina", "Caráter substitui o ensino bíblico", "O discipulador precisa parecer perfeito"], correctIndex: 1, explanation: "No discipulado relacional, a vida cotidiana confirma ou contradiz o ensino." }, { question: "Qual é uma resposta saudável ao pecado do discipulador?", options: ["Esconder para manter autoridade", "Culpar o discípulo", "Arrepender-se e, quando sábio, modelar pedido de perdão", "Abandonar toda responsabilidade"], correctIndex: 2, explanation: "Caráter aprovado não é impecabilidade; é coerência, arrependimento e submissão a Cristo." }],
+    application: "Convide seu discípulo para observar uma área ordinária da sua vida: uma refeição em família, uma tarefa prática ou um momento de serviço. Deixe que a fé seja vista, não apenas explicada.", prayer: "Senhor, sonda meu coração e revela toda hipocrisia. Faz minha vida confirmar a tua Palavra e ensina-me a arrepender-me com verdade. Amém.", weeklyChallenge: "Antes do próximo encontro, examine uma área em que sua vida privada contradiz o que ensina. Confesse a Deus e tome um passo concreto de reparação.", reflectionQuestion: "Se meu discípulo passasse 48 horas na minha casa, veria um modelo de Cristo? Em que área meu caráter ainda contradiz minhas lições?", xp: 50,
+  },
+  "csl-3": {
+    id: "csl-3", title: "Vida Devocional", difficulty: 3,
+    intro: ["A vida devocional do discipulador é a fonte de onde jorra o ensino. Você não pode conduzir alguém a uma intimidade com Deus que você mesmo não cultiva.", "Jesus ensinou seus discípulos a orar não apenas com palavras, mas pelo exemplo: retirava-se para comunhão com o Pai, e sua vida despertou neles o pedido ‘Senhor, ensina-nos a orar’.", "O devocional não é preparo técnico para uma aula. É a vida de um discípulo que depende de Deus e, por isso, pode ensinar outro a depender dele."],
+    verses: [{ ref: "Marcos 1:35", textByVersion: { NVI: "De madrugada, quando ainda estava escuro, Jesus levantou-se, saiu de casa e foi para um lugar deserto, onde ficou orando." } }, { ref: "Lucas 11:1", textByVersion: { NVI: "Certo dia Jesus estava orando em determinado lugar. Tendo terminado, um dos seus discípulos lhe disse: ‘Senhor, ensina-nos a orar’." } }],
+    keywords: [{ word: "ἔρημος τόπος", translit: "érēmos tópos", meaning: "lugar solitário, desabitado e longe de distrações. Jesus buscava deliberadamente o silêncio para estar com o Pai.", lang: "grego" }, { word: "προσεύχομαι", translit: "proseúchomai", meaning: "orar voltado para Deus; comunica proximidade relacional, face a face com o Pai.", lang: "grego" }],
+    deepDive: "Você ensina alguém a orar orando com ele. Abra um salmo, leiam juntos e orem o texto com palavras simples. Não modele uma oração performática; modele a reverência e a naturalidade de um filho que fala com o Pai. Oração não é utilitária, usada para conseguir uma boa lição ou sucesso ministerial. É adoração, dependência e comunhão; nela reconhecemos que não podemos produzir vida espiritual em outra pessoa.",
+    theologianQuote: { author: "Tim Keller", source: "Oração: Experimentando Intimidade com Deus", text: "Deixar de orar não é apenas quebrar alguma regra religiosa; é o fracasso de tratar Deus como Deus." },
+    deepen: { historicalContext: "No judaísmo do primeiro século, havia horários fixos e recitações litúrgicas legítimas, mas muitos líderes haviam transformado a oração em espetáculo público. Jesus confronta o exibicionismo de quem ora para ser visto e busca o isolamento. Os discípulos perceberam nessa comunhão uma profundidade diferente da religiosidade mecânica de sua época.", additionalVerses: [{ ref: "Mateus 6:5-6", textByVersion: { NVI: "E quando vocês orarem, não sejam como os hipócritas. Eles gostam de orar em pé nas sinagogas e nas esquinas, a fim de serem vistos pelos outros. [...] Mas quando você orar, vá para seu quarto, feche a porta e ore a seu Pai, que está em secreto." } }, { ref: "João 15:4-5", textByVersion: { NVI: "Permaneçam em mim, e eu permanecerei em vocês. Nenhum ramo pode dar fruto por si mesmo, se não permanecer na videira. Vocês também não podem dar fruto, se não permanecerem em mim." } }], exegeticalNotes: "Érēmos não é fuga irresponsável das pessoas, mas escolha deliberada de afastar distrações. Proseúchomai traz a ideia de voltar-se para Deus; devoção não é atirar palavras ao vento, mas entrar na presença relacional do Pai.", theologicalDebate: "A devoção secreta não anula a vida congregacional; ela a alimenta. O quarto secreto prepara o discípulo para a adoração coletiva. Ensine-o também a participar de reuniões de oração e do culto sob a direção pastoral da igreja local.", secondQuote: { author: "Richard Foster", source: "Celebração da Disciplina", text: "De todas as disciplinas espirituais, a oração é a mais central porque nos introduz na comunhão perpétua com o Pai." } },
+    quizzes: [{ question: "Como o discipulador ensina alguém a orar de modo mais fiel?", options: ["Somente exigindo uma meta diária", "Orando com ele e modelando dependência simples e reverente", "Usando palavras difíceis", "Evitando falar de suas lutas"], correctIndex: 1, explanation: "O discípulo aprende pelo ensino e pelo exemplo de uma comunhão real com Deus." }, { question: "Qual é o erro da oração utilitária?", options: ["Orar por outras pessoas", "Tratar Deus como meio para sucesso ministerial", "Orar com a Bíblia aberta", "Buscar silêncio"], correctIndex: 1, explanation: "O devocional é primeiro comunhão e adoração, não ferramenta para obter resultados." }],
+    application: "No próximo encontro, leiam um salmo em voz alta e orem suas palavras com linguagem simples. Depois, pergunte ao discípulo como ele gostaria de aprender a estruturar seu tempo com Deus.", prayer: "Pai, ensina-me a permanecer em ti. Que minha vida de oração seja verdadeira, humilde e capaz de conduzir outros à tua presença. Amém.", weeklyChallenge: "Envie ao seu discípulo uma mensagem curta compartilhando um texto que leu, uma necessidade pessoal de dependência e uma oração sincera por ele.", reflectionQuestion: "Passo mais tempo estudando sobre Deus do que conversando a sós com ele? Meu discípulo ouve em mim uma voz performática ou a voz de um filho?", xp: 50,
+  },
+  "csl-4": {
+    id: "csl-4", title: "Submissão à Palavra", difficulty: 3,
+    intro: ["O objetivo do discipulado não é transmitir a sabedoria de vida do discipulador, mas conduzir o discípulo à submissão à Palavra de Deus. Mentor e discípulo sentam-se abaixo das Escrituras.", "A Bíblia é suficiente e autoridade final para fé e prática. Quando o conselho humano não pode regenerar um coração, a Palavra viva de Deus ensina, corrige, confronta e conduz.", "Por isso, diante de dilemas financeiros, conjugais ou profissionais, a primeira pergunta não é ‘o que eu acho?’, mas ‘o que a Bíblia diz?’."],
+    verses: [{ ref: "2 Timóteo 3:16-17", textByVersion: { NVI: "Toda a Escritura é inspirada por Deus e útil para o ensino, para a repreensão, para a correção e para a instrução na justiça, para que o homem de Deus seja apto e plenamente preparado para toda boa obra." } }],
+    keywords: [{ word: "θεόπνευστος", translit: "theópneustos", meaning: "soprada por Deus. A Escritura carrega a autoridade do próprio Deus, não mera inspiração poética.", lang: "grego" }, { word: "ζῶν / ἐνεργής", translit: "zōn / energēs", meaning: "viva e eficaz. A Palavra não é letra morta; ela age e julga pensamentos e intenções do coração.", lang: "grego" }],
+    deepDive: "O discipulador não substitui a Escritura por sua experiência, carisma ou intuição. Ele abre a Bíblia, ajuda a ler no contexto e tem humildade para dizer ‘não sei; vamos pesquisar juntos’. A Palavra é suficiente para orientar a fé e a prática, mas nunca deve ser usada como coleção de frases isoladas para justificar uma opinião pessoal. O objetivo é formar discernimento bíblico e dependência de Deus, não dependência do conselho do mentor.",
+    theologianQuote: { author: "Wayne Grudem", source: "Teologia Sistemática", text: "A autoridade da Escritura significa que todas as palavras na Escritura são as palavras de Deus." },
+    deepen: { historicalContext: "Paulo escreve 2 Timóteo preso e próximo da morte, em um cenário de perseguição externa e falsos mestres internos. Diante do caos, ele não ancora Timóteo em intuição ou novidade espiritual, mas nas Escrituras Sagradas, capazes de instruir e corrigir.", additionalVerses: [{ ref: "Hebreus 4:12", textByVersion: { NVI: "Pois a palavra de Deus é viva e eficaz, e mais afiada que qualquer espada de dois gumes; ela penetra ao ponto de dividir alma e espírito, juntas e medulas, e julga os pensamentos e intenções do coração." } }, { ref: "Salmo 119:105", textByVersion: { NVI: "A tua palavra é lâmpada que ilumina os meus passos e luz que clareia o meu caminho." } }], exegeticalNotes: "Theópneustos une theós, Deus, e pnéō, soprar. A imagem é de Escritura procedente do próprio fôlego de Deus. Zōn e energēs afirmam que a Palavra atua no presente, penetrando além da superfície das decisões e motivações.", theologicalDebate: "Toda experiência, sensação e alegação espiritual deve ser julgada pela Escritura. Isso não autoriza um aconselhamento frio ou simplista: textos precisam ser lidos em seus contextos históricos e literários, e questões complexas podem requerer pesquisa, oração e cuidado pastoral.", secondQuote: { author: "Charles Spurgeon", source: "atribuído a Spurgeon", text: "A Palavra de Deus é como um leão. Você não precisa defendê-la; apenas solte-a." } },
+    quizzes: [{ question: "Qual deve ser a primeira postura diante de um dilema no discipulado?", options: ["Dar a opinião mais convincente", "Abrir a Escritura e buscar seu ensino no contexto", "Seguir o sentimento mais forte", "Escolher um versículo isolado"], correctIndex: 1, explanation: "O discipulador serve como instrumento ao lado do discípulo; a Palavra de Deus confronta e guia." }, { question: "O que significa theópneustos?", options: ["Inspirada apenas poeticamente", "Soprada por Deus", "Escrita apenas para líderes", "Uma opinião religiosa antiga"], correctIndex: 1, explanation: "A origem divina da Escritura fundamenta sua autoridade." }],
+    application: "Na próxima conversa difícil, substitua ‘eu acho’ por ‘vamos abrir a Bíblia’. Leiam um texto pertinente e pergunte: ‘Diante do que Deus diz aqui, o que precisa mudar?’", prayer: "Deus, submete meu coração à tua Palavra. Livra-me de usar a Bíblia para confirmar minhas opiniões e forma em mim um amor obediente pelas Escrituras. Amém.", weeklyChallenge: "Ajude seu discípulo a localizar, ler e interpretar um texto bíblico ligado a uma decisão real que ele está enfrentando.", reflectionQuestion: "Meu primeiro instinto é compartilhar experiência ou abrir as Escrituras? Tenho submetido minhas próprias convicções à Palavra que ensino?", xp: 50,
+  },
+  "csl-5": {
+    id: "csl-5", title: "Amor pela Igreja", difficulty: 3,
+    intro: ["É teologicamente impossível amar a Cristo e desprezar sua Noiva. A salvação é pessoal, mas nunca solitária: ao sermos reconciliados com Deus, somos enxertados em uma família.", "O discipulador não forma alguém para consumir um produto religioso, mas para tornar-se membro ativo, sofredor e atuante do Corpo de Cristo na igreja local.", "Discipulado pessoal não é uma igreja paralela. Seu papel é empurrar o discípulo para a comunhão, a adoração, o serviço, o cuidado pastoral e os ‘uns aos outros’ da comunidade."],
+    verses: [{ ref: "Efésios 5:25-27", textByVersion: { NVI: "Maridos, amem suas mulheres, assim como Cristo amou a igreja e entregou-se a si mesmo por ela para santificá-la, tendo-a purificado pelo lavar da água mediante a palavra, e para apresentá-la a si mesmo como igreja gloriosa, sem mancha nem ruga ou coisa semelhante, mas santa e inculpável." } }, { ref: "Hebreus 10:24-25", textByVersion: { NVI: "E consideremos uns aos outros para nos incentivarmos ao amor e às boas obras. Não deixemos de reunir-nos como igreja, segundo o costume de alguns, mas procuremos encorajar-nos uns aos outros." } }],
+    keywords: [{ word: "ἐκκλησία", translit: "ekklēsía", meaning: "assembleia dos chamados. A igreja não é prédio, mas o ajuntamento dos redimidos reunidos por Deus.", lang: "grego" }, { word: "ἀλλήλων", translit: "allēlōn", meaning: "uns aos outros. Os mandamentos recíprocos do Novo Testamento exigem vida comunitária real.", lang: "grego" }],
+    deepDive: "A igreja local é real, imperfeita e em processo de santificação. Amar apenas a comunidade idealizada produz isolamento e destruição; amar a igreja concreta inclui servir, perdoar, suportar, reconciliar-se e participar do cuidado mútuo. Se o discípulo confia somente no mentor, o discipulado falhou. Ele precisa conhecer o Corpo, honrar os pastores, usar seus dons e aprender que batismo, ceia e disciplina pertencem à vida ordenada da congregação.",
+    theologianQuote: { author: "John Stott", source: "A Mensagem de Efésios", text: "A igreja está no próprio centro do propósito eterno de Deus." },
+    deepen: { historicalContext: "No mundo greco-romano, a religião era frequentemente transacional e individualista. O cristianismo chocou essa cultura ao reunir escravos e senhores, judeus e gentios, ricos e pobres na mesma mesa e no mesmo cuidado mútuo. A igreja não era um evento frequentado, mas uma nova humanidade à qual se pertencia.", additionalVerses: [{ ref: "1 Coríntios 12:12-27", textByVersion: { NVI: "Ora, assim como o corpo é uma unidade, embora tenha muitos membros, e todos os membros, mesmo sendo muitos, formam um só corpo, assim também com respeito a Cristo. [...] Vocês são o corpo de Cristo, e cada um de vocês, individualmente, é membro desse corpo." } }, { ref: "Mateus 18:15-17", textByVersion: { NVI: "Se o seu irmão pecar contra você, vá e, a sós com ele, mostre-lhe o erro. Se ele o ouvir, você ganhou seu irmão. Mas, se ele não o ouvir, leve consigo mais um ou dois outros. [...] Se ele se recusar a ouvi-los, diga-o à igreja." } }], exegeticalNotes: "Ekklēsía era termo usado para a assembleia de cidadãos e, no Novo Testamento, identifica o povo chamado por Deus. Allēlōn aparece repetidamente em mandamentos como amar, suportar, perdoar e confessar. Não é possível cumprir esses mandamentos em um cristianismo isolado.", theologicalDebate: "A igreja local não é restaurante espiritual para consumo nem uma comunidade perfeita sem atritos. O discipulador não deve alimentar rebelião ou acobertar pecado contra a liderança pastoral; deve ajudar o discípulo a caminhar em reconciliação, serviço e submissão bíblica. Batismo e ceia não devem ser administrados como iniciativa particular de um pequeno grupo.", secondQuote: { author: "Dietrich Bonhoeffer", source: "Vida em Comunhão", text: "Quem ama mais o seu próprio sonho de comunidade cristã do que a própria comunidade cristã torna-se um destruidor de toda a comunidade cristã." } },
+    quizzes: [{ question: "Qual é a finalidade do discipulado pessoal em relação à igreja?", options: ["Substituir a congregação", "Criar dependência do mentor", "Conectar o discípulo ao Corpo de Cristo e ao cuidado pastoral", "Evitar conflitos comunitários"], correctIndex: 2, explanation: "O mentor forma discípulos para Cristo e para sua igreja, não para si mesmo." }, { question: "O que os mandamentos ‘uns aos outros’ revelam?", options: ["Que fé é apenas privada", "Que vida comunitária real é necessária", "Que o cristão deve isolar-se", "Que serviço é opcional"], correctIndex: 1, explanation: "Amar, suportar, perdoar e confessar exigem participação concreta no Corpo." }],
+    application: "Pergunte ao discípulo: ‘Em qual ministério prático da nossa congregação poderíamos servir juntos no próximo mês?’. Escolham uma tarefa simples e façam dela um ato de adoração.", prayer: "Senhor Jesus, ensina-me a amar a tua Noiva real, com suas fraquezas e necessidades. Faz de mim alguém que edifica, serve, perdoa e conduz outros à comunhão do teu Corpo. Amém.", weeklyChallenge: "Sirva com seu discípulo em uma necessidade prática da igreja local e ore pelos pastores e pela unidade da congregação.", reflectionQuestion: "Minhas palavras promovem honra e amor pela igreja e pelos pastores? Nosso discipulado empurra o discípulo para a comunidade mais ampla ou para dependência da nossa amizade?", xp: 50,
+  },
+};
+
+const makeLesson = (seed: LessonSeed): Lesson => {
+  if (detailedLessons[seed.id]) return detailedLessons[seed.id];
+  return {
+  id: seed.id, title: seed.title, difficulty: 2,
+  intro: [seed.intro, seed.emphasis],
+  verses: [{ ref: seed.verse, textByVersion: { NVI: seed.verseText } }],
+  keywords: [{ word: "διακονία", translit: "diakonia", meaning: "serviço dedicado ao bem do outro; liderança cristã se expressa em cuidado e responsabilidade.", lang: "grego" }],
+  deepDive: `${seed.emphasis} A liderança cristã amadurece quando escolhas concretas são submetidas ao exemplo e ao ensino de Jesus.`,
+  theologianQuote: { author: "Reflexão do módulo", text: "Liderar no Reino é apontar pessoas para Cristo, e não para si mesmo." },
+  quizzes: [{ question: `Qual é a ênfase central de “${seed.title}”?`, options: ["Buscar reconhecimento pessoal", seed.emphasis, "Evitar responsabilidades", "Controlar todas as decisões"], correctIndex: 1 }],
+  application: seed.application, prayer: "Senhor, forma em mim um coração humilde, fiel à tua Palavra e disposto a servir. Guia minhas escolhas para que reflitam Cristo. Amém.", weeklyChallenge: seed.application, reflectionQuestion: seed.question, xp: 30,
   };
+};
 
-  if (!found || !found.lesson.deepen) {
-    return (
-      <div className="mx-auto max-w-lg p-6 text-center">
-        <p>Conteúdo não encontrado.</p>
-        <button type="button" onClick={goBack} className="mt-4 inline-block text-primary underline">
-          Voltar
-        </button>
-      </div>
-    );
-  }
-
-  const { lesson } = found;
-  const deepen = lesson.deepen!;
-
-  return (
-    <div className="mx-auto max-w-lg pb-24 animate-slide-up">
-      <div className="px-4">
-        {/* Banner no topo da tela de Aprofundar (compartilhado por todas as trilhas) */}
-        <div className="mt-3 mb-4 h-28 w-full overflow-hidden rounded-2xl sm:h-36">
-          <img
-            src="/aprofundar-banner.jpg"
-            alt=""
-            className="h-full w-full object-cover object-[center_28%]"
-          />
-        </div>
-
-        <div className="mb-4 flex items-center gap-3">
-          <button
-            type="button"
-            onClick={goBack}
-            className="rounded-full p-2 text-muted-foreground hover:bg-surface"
-            aria-label="Voltar"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </button>
-          <div className="flex min-w-0 flex-1 items-center gap-2">
-            <Layers className="h-4 w-4 shrink-0 text-ancient" />
-            <h1 className="truncate text-sm font-bold text-ancient" data-narrate>Aprofundar</h1>
-          </div>
-          <NarrationButton containerSelector='[data-tts-scope="aprofundar"]' />
-          <FontSizeControls scaleIndex={scaleIndex} onIncrease={increase} onDecrease={decrease} />
-        </div>
-
-        <div style={contentZoomStyle} className="space-y-4" data-tts-scope="aprofundar">
-          <p className="px-1 text-[10px] uppercase tracking-wider text-muted-foreground" data-narrate>
-            {lesson.title} · contexto, exegese e mais
-          </p>
-
-          <div className="space-y-4 rounded-2xl border border-ancient/30 bg-ancient/5 p-4">
-            {deepen.historicalContext && (
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient" data-narrate>
-                  Contexto histórico e cultural
-                </p>
-                <p className="mt-1.5 text-sm leading-relaxed" data-narrate>{deepen.historicalContext}</p>
-              </div>
-            )}
-
-            {deepen.additionalVerses && deepen.additionalVerses.length > 0 && (
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient" data-narrate>
-                  Passagens de apoio ({bibleVersion})
-                </p>
-                <div className="mt-1.5 space-y-2">
-                  {deepen.additionalVerses.map((v) => (
-                    <div key={v.ref} className="rounded-xl bg-background/60 p-3">
-                      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground" data-narrate>
-                        {v.ref}
-                      </p>
-                      <p className="mt-1 scripture text-base text-foreground/85" data-narrate>
-                        {`"${verseText(v, bibleVersion)}"`}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {deepen.exegeticalNotes && (
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient" data-narrate>
-                  Notas de exegese
-                </p>
-                <p className="mt-1.5 text-sm leading-relaxed" data-narrate>{deepen.exegeticalNotes}</p>
-              </div>
-            )}
-
-            {deepen.additionalKeywords && deepen.additionalKeywords.length > 0 && (
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient" data-narrate>
-                  Mais palavras no idioma original
-                </p>
-                <ul className="mt-1.5 space-y-2">
-                  {deepen.additionalKeywords.map((o, i) => (
-                    <li key={i} className="rounded-xl border border-ancient/20 bg-background/60 p-2.5">
-                      <div className="flex items-baseline gap-2">
-                        <span className="ancient-text text-lg text-ancient">{o.word}</span>
-                        <span className="text-xs text-ancient/80">({o.translit}, {o.lang})</span>
-                      </div>
-                      <p className="mt-1 text-xs text-foreground/80" data-narrate>{o.meaning}</p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {deepen.theologicalDebate && (
-              <div className="rounded-xl border border-border bg-background/60 p-3">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground" data-narrate>
-                  Panorama entre tradições cristãs
-                </p>
-                <p className="mt-1.5 text-sm leading-relaxed" data-narrate>{deepen.theologicalDebate}</p>
-                <p className="mt-2 text-[11px] italic text-muted-foreground" data-narrate>
-                  Para aprofundar essa questão, converse com seu pastor ou líder de discipulado.
-                </p>
-              </div>
-            )}
-
-            {deepen.secondQuote && (
-              <blockquote className="border-l-4 border-l-ancient pl-3">
-                <p className="scripture text-base leading-relaxed text-ancient" data-narrate>
-                  {`"${deepen.secondQuote.text}"`}
-                </p>
-                <footer className="mt-1.5 text-xs font-semibold text-ancient/80" data-narrate>
-                  — {deepen.secondQuote.author}
-                </footer>
-              </blockquote>
-            )}
-          </div>
-
-          <button
-            type="button"
-            onClick={goBack}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl border border-border py-4 text-sm font-semibold text-muted-foreground transition-all hover:bg-surface"
-          >
-            <ArrowLeft className="h-4 w-4" /> Voltar à lição
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
+export const comoSerLider: Trail = {
+  id: "como-ser-lider", title: "Como ser um líder", description: "Uma formação inédita para liderar à maneira de Cristo.", icon: "Crown", color: "from-violet-500 to-indigo-500", order: 12,
+  modules: [{ id: "csl-modulo", title: "Como ser um líder", lessons: seeds.map(makeLesson) }],
+};
