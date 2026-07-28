@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ViewModeToggle } from "@/components/ViewModeToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { CHARACTERS, BIBLE_VERSIONS } from "@/data/content";
+import { CHARACTERS, BIBLE_VERSIONS, type BibleVersion } from "@/data/content";
 import { getLevel, xpToNextLevel, MAX_LEVEL } from "@/data/levels";
 import { toast } from "sonner";
 import { isUsernameAvailable, isValidUsername, normalizeUsername } from "@/lib/username";
@@ -14,6 +14,13 @@ import { AtSign, Bell, Church, Copy, Check, LogOut, BookOpen, Flame, Trophy, Clo
 export const Route = createFileRoute("/_authenticated/perfil")({
   component: PerfilPage,
 });
+
+const BIBLE_VERSION_OPTIONS: { code: BibleVersion; name: string; description: string }[] = [
+  { code: "NVI", name: "Nova Versão Internacional", description: "Tradução moderna e de leitura fluida" },
+  { code: "NAA", name: "Nova Almeida Atualizada", description: "Equilíbrio entre fidelidade e clareza" },
+  { code: "ACF", name: "Almeida Corrigida Fiel", description: "Tradução clássica e formal" },
+  { code: "NVT", name: "Nova Versão Transformadora", description: "Linguagem contemporânea e acessível" },
+];
 
 type Profile = {
   id: string;
@@ -263,27 +270,40 @@ function PerfilPage() {
         </div>
       </section>
 
-
-     
-
-      <section className="card-elevated p-4">
+      <section className="card-elevated overflow-hidden p-4">
         <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Versão da Bíblia</p>
-        <div className="grid grid-cols-5 gap-2">
-          {BIBLE_VERSIONS.map((v) => (
-            <button
-              key={v}
-              onClick={() => {
-                setBibleVersion(v);
-                void update({ bible_version: v });
-              }}
-              className={`rounded-xl border py-2 text-xs font-semibold transition-all ${
-                bibleVersion === v ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-muted-foreground"
-              }`}
-            >
-              {v}
-            </button>
-          ))}
-        </div>
+        <ul className="divide-y divide-border rounded-2xl border border-border">
+          {BIBLE_VERSION_OPTIONS.map(({ code, name, description }) => {
+            const selected = bibleVersion === code;
+            return (
+              <li key={code}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setBibleVersion(code);
+                    void update({ bible_version: code });
+                  }}
+                  className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors ${
+                    selected ? "bg-primary/5" : "hover:bg-surface-2"
+                  }`}
+                >
+                  <span
+                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold ${
+                      selected ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground"
+                    }`}
+                  >
+                    {code}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-semibold text-foreground">{name}</span>
+                    <span className="block text-xs text-muted-foreground">{description}</span>
+                  </span>
+                  {selected && <Check className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
         <p className="mt-2 text-[11px] text-muted-foreground">
           Escolha a versão exibida em lições, estudos e mural.
         </p>
