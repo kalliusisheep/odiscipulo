@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      challenges: {
+        Row: {
+          accepted_at: string | null
+          challenged_id: string
+          challenger_id: string
+          completion_bonus_awarded: boolean
+          created_at: string
+          first_finished_at: string | null
+          first_finisher_id: string | null
+          id: string
+          scope_id: string
+          scope_type: string
+          second_finished_at: string | null
+          status: string
+          winner_bonus_awarded: boolean
+        }
+        Insert: {
+          accepted_at?: string | null
+          challenged_id: string
+          challenger_id: string
+          completion_bonus_awarded?: boolean
+          created_at?: string
+          first_finished_at?: string | null
+          first_finisher_id?: string | null
+          id?: string
+          scope_id: string
+          scope_type: string
+          second_finished_at?: string | null
+          status?: string
+          winner_bonus_awarded?: boolean
+        }
+        Update: {
+          accepted_at?: string | null
+          challenged_id?: string
+          challenger_id?: string
+          completion_bonus_awarded?: boolean
+          created_at?: string
+          first_finished_at?: string | null
+          first_finisher_id?: string | null
+          id?: string
+          scope_id?: string
+          scope_type?: string
+          second_finished_at?: string | null
+          status?: string
+          winner_bonus_awarded?: boolean
+        }
+        Relationships: []
+      }
       demo_users: {
         Row: {
           avatar_char: string
@@ -444,6 +492,18 @@ export type Database = {
     Functions: {
       add_friend: { Args: { _target: string }; Returns: undefined }
       are_friends: { Args: { _a: string; _b: string }; Returns: boolean }
+      challenge_lesson_ids: {
+        Args: { _scope_id: string; _scope_type: string }
+        Returns: string[]
+      }
+      challenge_progress: {
+        Args: { _challenge_id: string; _user: string }
+        Returns: number
+      }
+      finish_challenge_step: {
+        Args: { _challenge_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
