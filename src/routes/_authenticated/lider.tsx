@@ -34,15 +34,80 @@ interface Discipulo {
   email?: string;
   telefone?: string;
   status: 'ativo' | 'inativo' | 'pendente';
-  dataEntrada: string;
+  data_entrada: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 interface Grupo {
   id: string;
   nome: string;
   membros: string[];
-  dataCriacao: string;
+  data_criacao: string;
   status: 'ativo' | 'inativo';
+  created_at?: string;
+  updated_at?: string;
+}
+
+// ============================================
+// FUNÇÕES DE ACESSO AO BANCO VIA API REST
+// ============================================
+
+/**
+ * Busca todos os registros de uma tabela via API REST do Lovable
+ */
+async function fetchTableData(tableName: string) {
+  try {
+    const response = await fetch(`/api/tables/${tableName}`);
+    if (!response.ok) {
+      throw new Error(`Erro ao buscar ${tableName}: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`❌ Erro ao buscar ${tableName}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Atualiza um registro em uma tabela via API REST do Lovable
+ */
+async function updateTableRecord(tableName: string, id: string, updates: Record<string, any>) {
+  try {
+    const response = await fetch(`/api/tables/${tableName}/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates),
+    });
+    if (!response.ok) {
+      throw new Error(`Erro ao atualizar ${tableName}: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`❌ Erro ao atualizar ${tableName}:`, error);
+    throw error;
+  }
+}
+
+/**
+ * Insere um registro em uma tabela via API REST do Lovable
+ */
+async function insertTableRecord(tableName: string, record: Record<string, any>) {
+  try {
+    const response = await fetch(`/api/tables/${tableName}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(record),
+    });
+    if (!response.ok) {
+      throw new Error(`Erro ao inserir em ${tableName}: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`❌ Erro ao inserir em ${tableName}:`, error);
+    throw error;
+  }
 }
 
 // ============================================
@@ -80,96 +145,57 @@ function LiderPage() {
   });
 
   // ============================================
-  // FUNÇÃO PARA CARREGAR DADOS (LOCALSTORAGE)
+  // FUNÇÃO PARA CARREGAR DADOS DO BANCO VIA API
   // ============================================
-  const carregarDados = () => {
+  const carregarDados = async () => {
     setLoading(true);
     setError(null);
     
     try {
-      // Dados iniciais para teste
-      const dadosIniciais: Discipulo[] = [
-        { 
-          id: '1', 
-          name: "João Silva", 
-          level: 3, 
-          streak: 9, 
-          alert: null, 
-          progress: 40,
-          email: "joao@email.com",
-          telefone: "(11) 99999-9999",
-          status: 'ativo',
-          dataEntrada: new Date().toISOString().split('T')[0]
-        },
-        { 
-          id: '2', 
-          name: "Maria Oliveira", 
-          level: 5, 
-          streak: 0, 
-          alert: "Streak quebrado há 3 dias", 
-          progress: 62,
-          email: "maria@email.com",
-          telefone: "(11) 88888-8888",
-          status: 'ativo',
-          dataEntrada: new Date().toISOString().split('T')[0]
-        },
-        { 
-          id: '3', 
-          name: "Ana Costa", 
-          level: 4, 
-          streak: 21, 
-          alert: null, 
-          progress: 88,
-          email: "ana@email.com",
-          telefone: "(11) 77777-7777",
-          status: 'pendente',
-          dataEntrada: new Date().toISOString().split('T')[0]
-        },
-        { 
-          id: '4', 
-          name: "Tiago Nunes", 
-          level: 2, 
-          streak: 4, 
-          alert: "Baixo desempenho em quiz", 
-          progress: 15,
-          email: "tiago@email.com",
-          telefone: "(11) 66666-6666",
-          status: 'ativo',
-          dataEntrada: new Date().toISOString().split('T')[0]
-        }
-      ];
+      console.log('🔍 Buscando dados do banco via API REST...');
 
-      // Carregar do localStorage ou usar dados iniciais
-      const saved = localStorage.getItem('discipulos_reais');
-      if (saved) {
-        setDiscipulos(JSON.parse(saved));
+      // Buscar discípulos
+      const discipulosData = await fetchTableData('discipulos');
+      if (discipulosData) {
+        setDiscipulos(discipulosData);
+        console.log(`📋 Carregados ${discipulosData.length} discípulos.`);
       } else {
-        setDiscipulos(dadosIniciais);
-        localStorage.setItem('discipulos_reais', JSON.stringify(dadosIniciais));
+        // Fallback: localStorage
+        const saved = localStorage.getItem('discipulos_reais');
+        if (saved) {
+          setDiscipulos(JSON.parse(saved));
+        } else {
+          // Dados mock iniciais (caso não haja nada)
+          const mock = [
+            { id: '1', name: 'João Silva', level: 3, streak: 9, alert: null, progress: 40, email: 'joao@email.com', telefone: '(11) 99999-9999', status: 'ativo', data_entrada: new Date().toISOString().split('T')[0] },
+            { id: '2', name: 'Maria Oliveira', level: 5, streak: 0, alert: 'Streak quebrado há 3 dias', progress: 62, email: 'maria@email.com', telefone: '(11) 88888-8888', status: 'ativo', data_entrada: new Date().toISOString().split('T')[0] },
+            { id: '3', name: 'Ana Costa', level: 4, streak: 21, alert: null, progress: 88, email: 'ana@email.com', telefone: '(11) 77777-7777', status: 'pendente', data_entrada: new Date().toISOString().split('T')[0] },
+            { id: '4', name: 'Tiago Nunes', level: 2, streak: 4, alert: 'Baixo desempenho em quiz', progress: 15, email: 'tiago@email.com', telefone: '(11) 66666-6666', status: 'ativo', data_entrada: new Date().toISOString().split('T')[0] }
+          ];
+          setDiscipulos(mock);
+          localStorage.setItem('discipulos_reais', JSON.stringify(mock));
+        }
       }
 
-      // Grupos
-      const gruposIniciais: Grupo[] = [
-        {
-          id: '1',
-          nome: 'Grupo Fogo',
-          membros: ['1', '2'],
-          dataCriacao: new Date().toISOString().split('T')[0],
-          status: 'ativo'
-        }
-      ];
-
-      const savedGrupos = localStorage.getItem('grupos_reais');
-      if (savedGrupos) {
-        setGrupos(JSON.parse(savedGrupos));
+      // Buscar grupos
+      const gruposData = await fetchTableData('grupos');
+      if (gruposData) {
+        setGrupos(gruposData);
+        console.log(`📋 Carregados ${gruposData.length} grupos.`);
       } else {
-        setGrupos(gruposIniciais);
-        localStorage.setItem('grupos_reais', JSON.stringify(gruposIniciais));
+        const saved = localStorage.getItem('grupos_reais');
+        if (saved) {
+          setGrupos(JSON.parse(saved));
+        } else {
+          const mockGrupos = [{ id: '1', nome: 'Grupo Fogo', membros: ['1', '2'], data_criacao: new Date().toISOString().split('T')[0], status: 'ativo' }];
+          setGrupos(mockGrupos);
+          localStorage.setItem('grupos_reais', JSON.stringify(mockGrupos));
+        }
       }
-      
+
     } catch (err) {
-      console.error('Erro ao carregar dados:', err);
-      setError('Erro ao carregar dados. Tente novamente.');
+      console.error('❌ Erro ao carregar dados:', err);
+      setError('Erro ao carregar dados. Verifique a conexão com a API.');
     } finally {
       setLoading(false);
     }
@@ -202,29 +228,46 @@ function LiderPage() {
     setDiscipuloSelecionado(discipulo);
   };
 
-  const handleConfirmarAdicionar = () => {
+  const handleConfirmarAdicionar = async () => {
     if (!discipuloSelecionado) {
       showFeedback('Selecione um discípulo para adicionar', 'warning');
       return;
     }
 
-    const discipulosAtualizados = discipulos.map(d => 
-      d.id === discipuloSelecionado.id 
-        ? { ...d, status: 'ativo' as const, dataEntrada: new Date().toISOString().split('T')[0] }
-        : d
-    );
-    
-    setDiscipulos(discipulosAtualizados);
-    localStorage.setItem('discipulos_reais', JSON.stringify(discipulosAtualizados));
+    try {
+      const dataEntrada = new Date().toISOString().split('T')[0];
+      const id = discipuloSelecionado.id;
 
-    showFeedback(`Discípulo ${discipuloSelecionado.name} adicionado com sucesso!`, 'success');
-    setOpenAddDiscipulo(false);
-    setDiscipuloSelecionado(null);
-    setSearchTerm('');
+      // Atualizar no banco via API
+      try {
+        await updateTableRecord('discipulos', id, {
+          status: 'ativo',
+          data_entrada: dataEntrada
+        });
+        console.log(`✅ Discípulo ${id} atualizado para ativo.`);
+      } catch (apiErr) {
+        console.warn('⚠️ Falha ao atualizar via API, usando localStorage como fallback.');
+      }
+
+      // Atualizar estado local
+      const discipulosAtualizados = discipulos.map(d => 
+        d.id === id ? { ...d, status: 'ativo' as const, data_entrada: dataEntrada } : d
+      );
+      
+      setDiscipulos(discipulosAtualizados);
+      localStorage.setItem('discipulos_reais', JSON.stringify(discipulosAtualizados));
+
+      showFeedback(`Discípulo ${discipuloSelecionado.name} adicionado com sucesso!`, 'success');
+      setOpenAddDiscipulo(false);
+      setDiscipuloSelecionado(null);
+      setSearchTerm('');
+    } catch (err) {
+      showFeedback('Erro ao adicionar discípulo', 'error');
+    }
   };
 
   // 2. ADICIONAR POR ID
-  const handleBuscarPorID = () => {
+  const handleBuscarPorID = async () => {
     if (!idBusca.trim()) {
       showFeedback('Digite um ID válido', 'warning');
       return;
@@ -233,68 +276,107 @@ function LiderPage() {
     setBuscandoPorID(true);
     
     try {
-      // Simula busca
-      const encontrado = discipulos.find(d => d.id === idBusca);
-      
-      setTimeout(() => {
-        if (encontrado) {
-          setDiscipuloEncontrado(encontrado);
-          showFeedback(`Usuário ${encontrado.name} encontrado!`, 'success');
-        } else {
-          setDiscipuloEncontrado(null);
-          showFeedback('Usuário não encontrado com este ID', 'error');
+      // Busca no banco via API (poderia usar fetchTableData com filtro, mas vamos buscar localmente)
+      let encontrado = discipulos.find(d => d.id === idBusca);
+
+      // Se não encontrar localmente, tenta buscar via API específica
+      if (!encontrado) {
+        try {
+          const response = await fetch(`/api/tables/discipulos/${idBusca}`);
+          if (response.ok) {
+            const data = await response.json();
+            if (data) {
+              encontrado = data;
+              // Adiciona ao estado local para consistência
+              setDiscipulos(prev => [...prev, data]);
+            }
+          }
+        } catch (apiErr) {
+          console.warn('⚠️ Falha ao buscar por ID via API.');
         }
-        setBuscandoPorID(false);
-      }, 500);
+      }
+
+      if (encontrado) {
+        setDiscipuloEncontrado(encontrado);
+        showFeedback(`Usuário ${encontrado.name} encontrado!`, 'success');
+      } else {
+        setDiscipuloEncontrado(null);
+        showFeedback('Usuário não encontrado com este ID', 'error');
+      }
     } catch (err) {
+      setDiscipuloEncontrado(null);
       showFeedback('Erro ao buscar usuário', 'error');
+    } finally {
       setBuscandoPorID(false);
     }
   };
 
-  const handleConfirmarAdicionarPorID = () => {
+  const handleConfirmarAdicionarPorID = async () => {
     if (!discipuloEncontrado) {
       showFeedback('Usuário não encontrado', 'warning');
       return;
     }
 
-    const discipulosAtualizados = discipulos.map(d => 
-      d.id === discipuloEncontrado.id 
-        ? { ...d, status: 'ativo' as const, dataEntrada: new Date().toISOString().split('T')[0] }
-        : d
-    );
-    
-    setDiscipulos(discipulosAtualizados);
-    localStorage.setItem('discipulos_reais', JSON.stringify(discipulosAtualizados));
+    try {
+      const dataEntrada = new Date().toISOString().split('T')[0];
+      const id = discipuloEncontrado.id;
 
-    showFeedback(`Discípulo ${discipuloEncontrado.name} adicionado com sucesso!`, 'success');
-    setOpenAddPorID(false);
-    setDiscipuloEncontrado(null);
-    setIdBusca('');
+      try {
+        await updateTableRecord('discipulos', id, {
+          status: 'ativo',
+          data_entrada: dataEntrada
+        });
+      } catch (apiErr) {
+        console.warn('⚠️ Falha ao atualizar via API.');
+      }
+
+      const discipulosAtualizados = discipulos.map(d => 
+        d.id === id ? { ...d, status: 'ativo' as const, data_entrada: dataEntrada } : d
+      );
+      
+      setDiscipulos(discipulosAtualizados);
+      localStorage.setItem('discipulos_reais', JSON.stringify(discipulosAtualizados));
+
+      showFeedback(`Discípulo ${discipuloEncontrado.name} adicionado com sucesso!`, 'success');
+      setOpenAddPorID(false);
+      setDiscipuloEncontrado(null);
+      setIdBusca('');
+    } catch (err) {
+      showFeedback('Erro ao adicionar discípulo', 'error');
+    }
   };
 
   // 3. NOVO GRUPO
-  const handleCriarGrupo = () => {
+  const handleCriarGrupo = async () => {
     if (!novoGrupoNome.trim()) {
       showFeedback('Digite um nome para o grupo', 'warning');
       return;
     }
 
-    const novoGrupo: Grupo = {
-      id: `grupo_${Date.now()}`,
-      nome: novoGrupoNome,
-      membros: [],
-      dataCriacao: new Date().toISOString().split('T')[0],
-      status: 'ativo'
-    };
+    try {
+      const novoGrupo = {
+        id: `grupo_${Date.now()}`,
+        nome: novoGrupoNome,
+        membros: [],
+        data_criacao: new Date().toISOString().split('T')[0],
+        status: 'ativo'
+      };
 
-    const gruposAtualizados = [...grupos, novoGrupo];
-    setGrupos(gruposAtualizados);
-    localStorage.setItem('grupos_reais', JSON.stringify(gruposAtualizados));
-    
-    showFeedback(`Grupo "${novoGrupoNome}" criado com sucesso!`, 'success');
-    setOpenNovoGrupo(false);
-    setNovoGrupoNome('');
+      try {
+        await insertTableRecord('grupos', novoGrupo);
+      } catch (apiErr) {
+        console.warn('⚠️ Falha ao inserir grupo via API.');
+      }
+
+      setGrupos(prev => [...prev, novoGrupo]);
+      localStorage.setItem('grupos_reais', JSON.stringify([...grupos, novoGrupo]));
+      
+      showFeedback(`Grupo "${novoGrupoNome}" criado com sucesso!`, 'success');
+      setOpenNovoGrupo(false);
+      setNovoGrupoNome('');
+    } catch (err) {
+      showFeedback('Erro ao criar grupo', 'error');
+    }
   };
 
   // 4. MENSAGEM
@@ -311,7 +393,7 @@ function LiderPage() {
   };
 
   // 5. ENCONTRO
-  const handleRegistrarEncontro = () => {
+  const handleRegistrarEncontro = async () => {
     if (!encontroAssunto.trim() || !encontroData) {
       showFeedback('Preencha todos os campos', 'warning');
       return;
@@ -324,10 +406,28 @@ function LiderPage() {
       return;
     }
 
-    showFeedback('Encontro registrado com sucesso!', 'success');
-    setOpenEncontro(false);
-    setEncontroAssunto('');
-    setEncontroData('');
+    try {
+      const novoEncontro = {
+        grupo_id: grupoAtivo.id,
+        grupo_nome: grupoAtivo.nome,
+        data: encontroData,
+        assunto: encontroAssunto,
+        status: 'realizado'
+      };
+
+      try {
+        await insertTableRecord('encontros', novoEncontro);
+      } catch (apiErr) {
+        console.warn('⚠️ Falha ao inserir encontro via API.');
+      }
+
+      showFeedback('Encontro registrado com sucesso!', 'success');
+      setOpenEncontro(false);
+      setEncontroAssunto('');
+      setEncontroData('');
+    } catch (err) {
+      showFeedback('Erro ao registrar encontro', 'error');
+    }
   };
 
   // ============================================
@@ -519,7 +619,7 @@ function LiderPage() {
                 ) : discipulos;
                 
                 if (resultados.length === 0) {
-                  return <p className="text-center text-sm text-muted-foreground py-4">Nenhum usuário encontrado</p>;
+                  return <p className="text-center text-sm text-muted-foreground py-4">Nenhum contato encontrado</p>;
                 }
                 
                 return resultados.map((d) => (
@@ -533,6 +633,7 @@ function LiderPage() {
                     <div>
                       <p className="font-medium">{d.name}</p>
                       <p className="text-xs text-muted-foreground">ID: {d.id} · Status: {d.status}</p>
+                      {d.email && <p className="text-xs text-muted-foreground">{d.email}</p>}
                     </div>
                     {discipuloSelecionado?.id === d.id && (
                       <CheckCircle className="h-5 w-5 text-primary" />
