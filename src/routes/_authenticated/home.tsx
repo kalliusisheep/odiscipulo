@@ -21,6 +21,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { MessagesLinkButton } from "@/components/MessagesLinkButton";
 import { useApp } from "@/lib/app-context";
 import { Flame, Check, ChevronRight, Sparkles, BookOpen } from "lucide-react";
+import { ChallengePanel } from "@/components/ChallengeProgressBar";
 
 export const Route = createFileRoute("/_authenticated/home")({
   component: HomePage,
