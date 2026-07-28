@@ -53,6 +53,7 @@ const comoEstudarBiblia: Trail = {
           theologianQuote: {
             author: "Luiz Sayão",
             text: "A Bíblia não é um livro para ser estudado como se estuda literatura antiga; é a voz do Deus vivo, e o leitor honesto se dobra diante dela antes de tentar dissecá-la.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Luiz Sayão realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -148,6 +149,7 @@ const comoEstudarBiblia: Trail = {
           theologianQuote: {
             author: "Hernandes Dias Lopes",
             text: "Texto sem contexto vira pretexto para heresia. A humildade do bom intérprete é ouvir o que o autor quis dizer antes de dizer o que ele acha que o texto quer dizer.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Hernandes Dias Lopes realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -251,6 +253,7 @@ const comoEstudarBiblia: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Um homem que só ora e não estuda a Bíblia se torna emocionalmente devoto e teologicamente cego; um homem que só estuda e não ora se torna orgulhoso. Estudar e orar precisam andar de mãos dadas.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -344,7 +347,8 @@ const comoEstudarBiblia: Trail = {
             "Narrativa histórica (Gênesis, Atos) normalmente descreve o que aconteceu — não necessariamente prescreve o que deve acontecer sempre; é preciso checar se o texto ensina explicitamente um princípio ou apenas relata um fato. Poesia (Salmos) usa paralelismo, hipérbole e imagem — 'os meus olhos se consomem de tanto chorar' não é diagnóstico médico, é linguagem de lamento. Lei (Êxodo, Levítico) precisa ser lida dentro da aliança mosaica, discernindo o que é moral permanente e o que é civil/cerimonial cumprido em Cristo. Sabedoria (Provérbios) ensina padrões gerais prováveis, não promessas garantidas. Profecia mistura denúncia do presente e anúncio do futuro. Cartas ensinam doutrina de forma direta, mas endereçada a situações históricas específicas. Ignorar essas diferenças produz interpretações estranhas e, muitas vezes, dolorosas para quem confiou nelas.",
           theologianQuote: {
             author: "Gordon Fee",
-            text: "Um texto não pode significar o que nunca significou. A tarefa da boa exegese é primeiro ouvir o texto no seu próprio gênero, antes de perguntar o que ele exige de nós hoje.",
+            text: "Um texto não pode significar o que nunca poderia ter significado para seus leitores e ouvintes originais.",
+            source: "How to Read the Bible for All Its Worth",
           },
           deepen: {
             additionalVerses: [
@@ -445,6 +449,7 @@ const comoEstudarBiblia: Trail = {
           theologianQuote: {
             author: "C. S. Lewis",
             text: "Se você não ver Cristo no coração das Escrituras, você ainda não as entendeu. A Bíblia inteira é uma tapeçaria, e a figura ao centro tem sempre o rosto do Cordeiro.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se C. S. Lewis realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -542,6 +547,7 @@ const comoEstudarBiblia: Trail = {
           theologianQuote: {
             author: "D. A. Carson",
             text: "A maior parte dos abusos exegéticos nasce não da ignorância das línguas originais, mas do mau uso do pouco que se sabe delas. Humildade lexical é tão necessária quanto conhecimento lexical.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se D. A. Carson realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -645,6 +651,7 @@ const comoEstudarBiblia: Trail = {
           theologianQuote: {
             author: "John Stott",
             text: "A tarefa do intérprete fiel é uma escuta dupla: ouvir com atenção a Palavra antiga, e ouvir com atenção o mundo presente, para então construir a ponte entre os dois sem trair nenhum dos lados.",
+            source: "The Contemporary Christian: An Urgent Plea for Double Listening",
           },
           deepen: {
             additionalVerses: [
@@ -739,6 +746,7 @@ const comoEstudarBiblia: Trail = {
           theologianQuote: {
             author: "G. K. Beale",
             text: "Os símbolos do Apocalipse não nasceram do nada: são um mosaico tecido com as imagens do Antigo Testamento. Quem conhece bem Daniel e Ezequiel já tem metade das chaves para entender o Apocalipse.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se G. K. Beale realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -833,6 +841,7 @@ const comoEstudarBiblia: Trail = {
           theologianQuote: {
             author: "Richard Foster",
             text: "A disciplina espiritual não é sobre intensidade ocasional, mas sobre constância silenciosa. Um pouco de estudo bíblico fiel, repetido por anos, forma mais o caráter do que uma maratona de leitura feita uma única vez.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Richard Foster realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -951,6 +960,7 @@ const oracao: Trail = {
           theologianQuote: {
             author: "John Stott",
             text: "A oração cristã não é um monólogo religioso; é uma conversa trinitária na qual somos convidados a participar — falamos ao Pai, pelo Filho, no Espírito.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Stott realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -1046,7 +1056,8 @@ const oracao: Trail = {
             "A ordem das petições do Pai Nosso ensina uma teologia inteira em poucas linhas. 'Santificado seja o teu nome' e 'venha o teu Reino' vêm antes de 'dá-nos o pão de cada dia' — primeiro Deus, depois nós. Essa sequência inverte a maioria das orações espontâneas, que costumam começar direto pelas necessidades pessoais. E 'Pai nosso', não 'meu Pai', coloca imediatamente o orante dentro de uma família: não existe oração cristã genuinamente individualista, mesmo quando feita a sós no quarto.",
           theologianQuote: {
             author: "John Wesley",
-            text: "Deus não faz nada senão em resposta à oração. É por isso que Ele nos ensinou a orar antes de nos ensinar qualquer outra coisa a respeito da vida cristã.",
+            text: "Deus não faz nada a não ser em resposta à oração.",
+            source: "A Plain Account of Christian Perfection",
           },
           deepen: {
             additionalVerses: [
@@ -1144,6 +1155,7 @@ const oracao: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Orar pequenas orações a um grande Deus é uma espécie de insulto. Peça grandes coisas ao Rei, pois o custo já foi pago pelo sangue de seu Filho.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -1244,6 +1256,7 @@ const oracao: Trail = {
           theologianQuote: {
             author: "Davi Lago",
             text: "Adorar não é uma técnica para conseguir algo de Deus; é a resposta natural de um coração que finalmente enxergou quem Ele é.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Davi Lago realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -1338,6 +1351,7 @@ const oracao: Trail = {
           theologianQuote: {
             author: "Jonas Madureira",
             text: "Confessar não é se afogar em culpa; é subir à superfície da verdade, onde a graça de Deus já está esperando para purificar o que a culpa só sabia esconder.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Jonas Madureira realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -1438,6 +1452,7 @@ const oracao: Trail = {
           theologianQuote: {
             author: "Hernandes Dias Lopes",
             text: "Deus não se cansa dos nossos pedidos; Ele se alegra quando um filho corre para Ele em vez de tentar resolver tudo sozinho.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Hernandes Dias Lopes realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -1535,6 +1550,7 @@ const oracao: Trail = {
           theologianQuote: {
             author: "Dietrich Bonhoeffer",
             text: "Interceder por alguém é levá-lo até a presença de Deus e deixá-lo ali, confiando que Deus fará por ele o que nós mesmos não temos poder para fazer.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Dietrich Bonhoeffer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -1638,6 +1654,7 @@ const oracao: Trail = {
           theologianQuote: {
             author: "Larry Crabb",
             text: "Deus raramente explica o sofrimento da forma como gostaríamos; Ele nos convida, em vez disso, a confiar em seu caráter mesmo quando seus caminhos permanecem incompreensíveis.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Larry Crabb realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -1732,6 +1749,7 @@ const oracao: Trail = {
           theologianQuote: {
             author: "Richard Foster",
             text: "O jejum revela o que está escondido dentro de nós; quando o estômago se cala, muitas vezes descobrimos o quanto dependíamos de outras coisas além de Deus para nos sentirmos seguros.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Richard Foster realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -1830,6 +1848,7 @@ const oracao: Trail = {
           theologianQuote: {
             author: "Richard Foster",
             text: "A disciplina espiritual não existe para tornar Deus mais presente — Ele já está presente. Ela existe para nos tornar mais capazes de perceber e responder a essa presença.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Richard Foster realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
