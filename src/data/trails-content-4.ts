@@ -63,6 +63,7 @@ const igrejaLocal: Trail = {
           theologianQuote: {
             author: "John Stott",
             text: "Não existe cristianismo bíblico sem igreja. A igreja não é um apêndice opcional à salvação; é a família para a qual todo salvo foi adotado.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Stott realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -145,6 +146,7 @@ const igrejaLocal: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Uma igreja sem doutrina sólida é como um corpo sem esqueleto: pode até se mover por algum tempo, mas não tem como ficar em pé quando a tempestade vier.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -222,6 +224,7 @@ const igrejaLocal: Trail = {
           theologianQuote: {
             author: "Thom Rainer",
             text: "Membresia de igreja não é sobre o que a igreja pode fazer por você; é sobre o compromisso mútuo de pertencer, servir e ser servido dentro de uma comunidade específica de fé.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Thom Rainer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -293,6 +296,7 @@ const igrejaLocal: Trail = {
           theologianQuote: {
             author: "Wayne Grudem",
             text: "Deus distribuiu os dons espirituais de tal forma que nenhum crente pode dizer 'não tenho nada a oferecer', e nenhuma igreja pode dizer 'não precisamos mais de ninguém'.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Wayne Grudem realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -386,6 +390,7 @@ const igrejaLocal: Trail = {
           theologianQuote: {
             author: "Alexander Strauch",
             text: "A liderança bíblica nunca é sobre um homem no topo, mas sobre uma pluralidade de pastores servindo juntos, debaixo de Cristo.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Alexander Strauch realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -492,6 +497,7 @@ const igrejaLocal: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "O batismo e a Ceia são os dois braços com que a igreja visível abraça e proclama o Evangelho ao mundo que observa.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -605,6 +611,7 @@ const igrejaLocal: Trail = {
           theologianQuote: {
             author: "Dietrich Bonhoeffer",
             text: "Aquele que não pode estar sozinho deve tomar cuidado com a comunidade; aquele que não está em comunidade deve tomar cuidado com a solidão.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Dietrich Bonhoeffer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -702,6 +709,7 @@ const igrejaLocal: Trail = {
           theologianQuote: {
             author: "Jonathan Leeman",
             text: "A disciplina da igreja não existe para proteger a reputação da igreja, mas para proteger o Evangelho e, com amor, chamar o irmão de volta a ele.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Jonathan Leeman realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -804,6 +812,7 @@ const igrejaLocal: Trail = {
           theologianQuote: {
             author: "Ken Sande",
             text: "Conflito é uma oportunidade — de glorificar a Deus, servir aos outros e crescer para sermos mais como Cristo, não apenas um problema a evitar.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Ken Sande realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -910,7 +919,8 @@ const igrejaLocal: Trail = {
             "É comum reduzir 'apoio a missões' a uma simples contribuição financeira mensal, sem qualquer outro envolvimento. Embora o sustento financeiro seja bíblico e necessário (Fp 4:15-16), o padrão de Antioquia em Atos 13 mostra um envolvimento mais profundo: a igreja orou e jejuou coletivamente antes de enviar, impôs as mãos como ato público de comissionamento, e manteve vínculo com os enviados — Paulo e Barnabé voltaram a Antioquia para relatar 'tudo quanto Deus fizera por meio deles' (At 14:27). Uma igreja que só transfere dinheiro, sem oração constante, comunicação e cuidado pastoral com seus missionários, perdeu a essência corporativa do envio bíblico.",
           theologianQuote: {
             author: "John Piper",
-            text: "Missões existem porque a adoração não existe — mas a igreja que adora de verdade não consegue deixar de enviar.",
+            text: "Missões existem porque a adoração não existe.",
+            source: "Let the Nations Be Glad! The Supremacy of God in Missions",
           },
           deepen: {
             additionalVerses: [
@@ -1039,6 +1049,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Tim Keller",
             text: "O casamento não é primariamente sobre encontrar a pessoa certa, mas sobre se tornar, com a ajuda de Deus, o tipo de pessoa que ama como Cristo amou — sacrificialmente, fielmente, até o fim.",
+            source: "paráfrase de um tema central de The Meaning of Marriage (Tim Keller) — não é citação literal, confirme antes de publicar",
           },
           deepen: {
             additionalVerses: [
@@ -1130,6 +1141,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "John Stott",
             text: "A liderança que Efésios 5 pede ao marido não é a liderança de um chefe sobre empregados, mas a liderança de Cristo sobre a igreja: uma liderança que se derrama, que serve, que morre por quem ama.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Stott realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -1206,6 +1218,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Charles Swindoll",
             text: "A comunicação no casamento não é sobre vencer o argumento, é sobre entender o coração do outro; quando entendemos primeiro, quase sempre falamos diferente depois.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Swindoll realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -1296,6 +1309,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Lucas Gesta",
             text: "Perdoar no casamento não é dizer que a dor não existiu; é escolher, todos os dias, não usar essa dor como arma contra quem já pediu perdão — porque foi assim que Cristo nos tratou.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Lucas Gesta realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -1372,6 +1386,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Tim Keller",
             text: "O sexo dentro do casamento não é apenas permitido, é celebrado pela Escritura, como uma linguagem de entrega total, corpo e alma, dentro da segurança de uma aliança que promete permanecer.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Tim Keller realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -1461,6 +1476,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "John Piper",
             text: "A luta pela pureza sexual não vence apenas dizendo não a um pecado; vence quando o coração descobre um prazer maior em Cristo do que qualquer coisa que o pecado promete e nunca cumpre.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Piper realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -1539,6 +1555,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "David Merkh",
             text: "Criar filhos segundo o Evangelho não é produzir comportamento perfeito, mas modelar, diariamente, a mesma graça que recebemos de Deus — disciplina com amor, verdade com paciência, correção com esperança.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se David Merkh realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -1630,6 +1647,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Uma casa sem oração é uma casa sem telhado, exposta a todas as tempestades; que cada lar cristão tenha, ao menos, um pequeno altar onde a família se ajoelha e ergue os olhos para Deus.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -1706,6 +1724,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Wayne Grudem",
             text: "Honrar os pais é reconhecer, com gratidão, que fomos formados por mãos que Deus usou antes que soubéssemos formar nada por nós mesmos — mesmo quando essas mãos, sendo humanas, também erraram.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Wayne Grudem realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -1795,6 +1814,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Um homem que teme a Deus e caminha corretamente deixa atrás de si mais do que riqueza; deixa um caminho pisado, por onde seus filhos e netos podem, se quiserem, encontrar o mesmo Deus que ele encontrou.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -1870,6 +1890,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "John Stott",
             text: "Jesus Cristo, o homem mais realizado e mais pleno que a história já conheceu, nunca se casou; isso deveria ser suficiente para libertar qualquer cristão solteiro da mentira de que sua vida está incompleta.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Stott realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -1959,6 +1980,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "John Mark Comer",
             text: "Um namoro que glorifica a Deus não é definido pela ausência total de atração, mas pela presença de honra: tratar a pessoa amada como filho ou filha de Deus, nunca como objeto de satisfação própria.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Mark Comer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -2034,6 +2056,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Thom Rainer",
             text: "A família que entende que tudo pertence a Deus para de perguntar 'quanto é meu para eu guardar?' e passa a perguntar 'quanto do que Deus me confiou eu posso usar para o Reino, com sabedoria e generosidade?'.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Thom Rainer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -2123,6 +2146,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Hernandes Dias Lopes",
             text: "Deus não chama o cristão a ser ansioso provedor de si mesmo, mas a ser trabalhador fiel e confiante — trabalhando com diligência como se tudo dependesse dele, e descansando como se tudo dependesse de Deus, porque, no fim, realmente depende.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Hernandes Dias Lopes realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -2198,6 +2222,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Josué K. Reichow",
             text: "Uma família cristã que nunca serve à igreja local está desperdiçando o próprio propósito para o qual Deus a formou: não apenas ser abençoada, mas ser canal de bênção para o corpo de Cristo.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Josué K. Reichow realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -2287,6 +2312,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Davi Lago",
             text: "O Batismo e a Ceia não são apenas rituais da igreja para o indivíduo; são momentos em que toda a família de Deus, incluindo cada família natural dentro dela, relembra junta o Evangelho que a uniu.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Davi Lago realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -2362,6 +2388,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Tim Keller",
             text: "Deus nunca desperdiça dor; ele pode não explicá-la totalmente agora, mas promete estar presente nela e, com o tempo, usá-la para um propósito que, um dia, faremos sentido — mesmo que só na eternidade.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Tim Keller realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -2451,6 +2478,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Larry Crabb",
             text: "A graça de Deus não ignora a gravidade da quebra de uma aliança conjugal, mas também não abandona ninguém nela; há sempre um caminho de cuidado, verdade e, quando possível, restauração — buscado dentro da comunhão e do acompanhamento da igreja local.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Larry Crabb realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -2526,6 +2554,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Charles Swindoll",
             text: "A hospitalidade cristã não é sobre impressionar quem entra em nossa casa, é sobre amar quem entra em nossa casa — e, ao fazer isso, muitas vezes recebemos de volta mais do que oferecemos.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Swindoll realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -2615,6 +2644,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "David Bosch",
             text: "A missão de Deus não é um programa que a família cristã executa de vez em quando, é uma identidade que ela carrega o tempo todo — no lar, na vizinhança, no trabalho, em cada relação cotidiana tocada pelo Evangelho.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se David Bosch realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -2706,6 +2736,7 @@ const missoes: Trail = {
           theologianQuote: {
             author: "David Bosch",
             text: "A missão não é primariamente uma atividade da igreja, mas um atributo de Deus. Deus é um Deus missionário, e a igreja existe porque há missão, e não o contrário.",
+            source: "Transforming Mission: Paradigm Shifts in Theology of Mission, p. 389-390",
           },
           quizzes: [
             {
@@ -2792,6 +2823,7 @@ const missoes: Trail = {
           theologianQuote: {
             author: "John Stott",
             text: "A Grande Comissão não é uma opção para cristãos entusiasmados, mas o mandamento de Cristo para toda a sua igreja; a única pergunta legítima não é se participaremos, mas como e onde.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Stott realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -2883,6 +2915,7 @@ const missoes: Trail = {
           theologianQuote: {
             author: "Hernandes Dias Lopes",
             text: "Nem todo cristão precisa deixar sua terra para ser missionário, mas todo cristão precisa deixar sua zona de conforto para ser testemunha, ali onde Deus o colocou.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Hernandes Dias Lopes realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -2954,6 +2987,7 @@ const missoes: Trail = {
           theologianQuote: {
             author: "Vishal Mangalwadi",
             text: "Toda igreja que ora fielmente, dá com generosidade e mantém-se conectada aos que enviou está, tanto quanto o missionário no campo, participando ativamente da obra de Deus entre as nações.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Vishal Mangalwadi realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
