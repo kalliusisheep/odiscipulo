@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { toast } from "sonner";
 import { normalizeUsername } from "@/lib/username";
 import { Flame, Users, UserPlus, Share2, Copy, Search, Link2, Check, Crown, AtSign } from "lucide-react";
+import { getMyChallengePartnerIds } from "@/lib/challenges";
 
 export const Route = createFileRoute("/_authenticated/ranking")({
   component: RankingPage,
@@ -28,6 +29,7 @@ type Row = {
 
 function RankingPage() {
   const [rows, setRows] = useState<Row[]>([]);
+  const [challengePartners, setChallengePartners] = useState<Set<string>>(new Set());
   const [myUsername, setMyUsername] = useState<string | null>(null);
   const [addOpen, setAddOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
@@ -71,6 +73,7 @@ function RankingPage() {
       ...(me ? [{ ...me, isMe: true } as Row] : []),
     ].sort((a, b) => b.xp - a.xp);
     setRows(merged);
+    if (myId) setChallengePartners(await getMyChallengePartnerIds(myId));
   };
 
   useEffect(() => {
@@ -201,9 +204,9 @@ function RankingPage() {
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-b from-transparent to-background" />
           </div>
          <div className="relative z-10 -mt-48 flex items-end justify-center gap-3 px-4 pb-4">
-            {second && <PodiumSpot row={second} place={2} />}
-            {first && <PodiumSpot row={first} place={1} />}
-            {third && <PodiumSpot row={third} place={3} />}
+            {second && <PodiumSpot row={second} place={2} flame={challengePartners.has(second.id)} />}
+            {first && <PodiumSpot row={first} place={1} flame={challengePartners.has(first.id)} />}
+            {third && <PodiumSpot row={third} place={3} flame={challengePartners.has(third.id)} />}
           </div>
         </section>
       )}
@@ -248,7 +251,7 @@ function RankingPage() {
                 {i + 1}
               </span>
               <div className="relative h-11 w-11 shrink-0">
-                <div className={`h-11 w-11 overflow-hidden rounded-full bg-surface ${row.isMe ? "ring-2 ring-primary" : "ring-1 ring-border"}`}>
+                <div className={`h-11 w-11 overflow-hidden rounded-full bg-surface ${row.isMe ? "ring-2 ring-primary" : "ring-1 ring-border"} ${challengePartners.has(row.id) ? "avatar-ring-flame" : ""}`}>
                   {row.avatar_url ? (
                     <img src={row.avatar_url} alt="" className="h-full w-full object-cover" />
                   ) : level.avatar ? (
@@ -381,7 +384,7 @@ function RankingPage() {
   );
 }
 
-function PodiumSpot({ row, place }: { row: Row; place: 1 | 2 | 3 }) {
+function PodiumSpot({ row, place, flame }: { row: Row; place: 1 | 2 | 3; flame?: boolean }) {
   const level = getLevel(row.xp);
   const isFirst = place === 1;
   const size = isFirst ? "h-24 w-24" : "h-20 w-20";
@@ -407,7 +410,7 @@ function PodiumSpot({ row, place }: { row: Row; place: 1 | 2 | 3 }) {
         </div>
       )}
       <div className={`relative ${size}`}>
-        <div className={`h-full w-full overflow-hidden rounded-full bg-surface ${ring} ${row.isMe ? "outline outline-4 outline-primary/60" : ""}`}>
+        <div className={`h-full w-full overflow-hidden rounded-full bg-surface ${ring} ${row.isMe ? "outline outline-4 outline-primary/60" : ""} ${flame ? "avatar-ring-flame" : ""}`}>
           {row.avatar_url ? (
             <img src={row.avatar_url} alt="" className="h-full w-full object-cover" />
           ) : level.avatar ? (

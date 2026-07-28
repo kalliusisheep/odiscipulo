@@ -81,7 +81,7 @@ export function verseText(v: Verse, version: BibleVersion): string {
     v.textByVersion.NVI ??
     v.textByVersion.NAA ??
     v.textByVersion.ACF ??
-    v.textByVersion.KJV ??
+    
     v.textByVersion.NVT ??
     ""
   );

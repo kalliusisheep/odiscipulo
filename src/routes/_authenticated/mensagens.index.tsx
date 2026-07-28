@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, MessageCircle, Plus } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { getMyChallengePartnerIds } from "@/lib/challenges";
 
 export const Route = createFileRoute("/_authenticated/mensagens/")({
   component: MensagensListPage,
@@ -23,6 +24,7 @@ function lastReadKey(myId: string, peerId: string) {
 
 function MensagensListPage() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [flames, setFlames] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,6 +33,7 @@ function MensagensListPage() {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user) return;
       const myId = u.user.id;
+      setFlames(await getMyChallengePartnerIds(myId));
       const load = async () => {
         const { data: msgs } = await supabase
           .from("messages")
@@ -138,7 +141,7 @@ function MensagensListPage() {
               params={{ username: c.peer.username }}
               className="flex items-center gap-3 rounded-2xl border border-border bg-surface-2 p-3 transition-colors hover:border-primary/40"
             >
-              <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-surface">
+              <div className={`h-11 w-11 shrink-0 overflow-hidden rounded-full bg-surface ${flames.has(c.peer.id) ? "avatar-ring-flame" : ""}`}>
                 {c.peer.avatar_url && (
                   <img src={c.peer.avatar_url} alt="" className="h-full w-full object-cover" />
                 )}

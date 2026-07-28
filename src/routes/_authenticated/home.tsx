@@ -21,6 +21,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { MessagesLinkButton } from "@/components/MessagesLinkButton";
 import { useApp } from "@/lib/app-context";
 import { Flame, Check, ChevronRight, Sparkles, BookOpen } from "lucide-react";
+import { ChallengePanel } from "@/components/ChallengeProgressBar";
 
 export const Route = createFileRoute("/_authenticated/home")({
   component: HomePage,
@@ -54,6 +55,7 @@ function HomePage() {
   const { viewMode } = useApp();
   const nav = useNavigate();
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [progressIds, setProgressIds] = useState<Set<string>>(new Set());
   const [modules, setModules] = useState<ModuleRow[]>([]);
   const [trails, setTrails] = useState<TrailRow[]>([]);
@@ -62,6 +64,7 @@ function HomePage() {
     void (async () => {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user) return;
+      setUserId(u.user.id);
       const [{ data: p }, { data: lp }, { data: mods }, { data: trs }] = await Promise.all([
         supabase
           .from("profiles")
@@ -199,6 +202,10 @@ function HomePage() {
           </Link>
         </div>
       </section>
+
+      {userId && <ChallengePanel myId={userId} />}
+
+
 
       <section className="space-y-3">
         <h2 className="text-sm font-semibold text-muted-foreground">Módulos de Discipulado</h2>

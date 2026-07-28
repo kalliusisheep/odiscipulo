@@ -86,7 +86,7 @@ function MessagesPage() {
   return (
     <div className="mx-auto flex h-[100dvh] max-w-lg flex-col">
       <header className="flex items-center gap-3 border-b border-border bg-background px-4 py-3">
-        <Link to="/perfil/$username" params={{ username }} className="text-muted-foreground hover:text-primary">
+        <Link to="/mensagens" className="text-muted-foreground hover:text-primary">
           <ArrowLeft className="h-5 w-5" />
         </Link>
         {peer && (

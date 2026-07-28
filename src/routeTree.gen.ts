@@ -9,65 +9,74 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiTtsRouteImport } from './routes/api/tts'
-import { Route as ApiMentorRouteImport } from './routes/api/mentor'
-import { Route as AuthenticatedRankingDetalhesRouteImport } from './routes/_authenticated/ranking-detalhes'
-import { Route as AuthenticatedRankingRouteImport } from './routes/_authenticated/ranking'
-import { Route as AuthenticatedPreview_niveisRouteImport } from './routes/_authenticated/preview_niveis'
-import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
-import { Route as AuthenticatedNiveisRouteImport } from './routes/_authenticated/niveis'
-import { Route as AuthenticatedMuralRouteImport } from './routes/_authenticated/mural'
-import { Route as AuthenticatedLiderRouteImport } from './routes/_authenticated/lider'
-import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedBemVindoRouteImport } from './routes/_authenticated/bem-vindo'
-import { Route as AuthenticatedMensagensIndexRouteImport } from './routes/_authenticated/mensagens.index'
+import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
+import { Route as AuthenticatedLiderRouteImport } from './routes/_authenticated/lider'
+import { Route as AuthenticatedMuralRouteImport } from './routes/_authenticated/mural'
+import { Route as AuthenticatedNiveisRouteImport } from './routes/_authenticated/niveis'
+import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
+import { Route as AuthenticatedPreview_niveisRouteImport } from './routes/_authenticated/preview_niveis'
+import { Route as AuthenticatedRankingRouteImport } from './routes/_authenticated/ranking'
+import { Route as AuthenticatedRankingDetalhesRouteImport } from './routes/_authenticated/ranking-detalhes'
+import { Route as ApiMentorRouteImport } from './routes/api/mentor'
+import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as AuthenticatedEstudosIndexRouteImport } from './routes/_authenticated/estudos.index'
-import { Route as AuthenticatedPerfilUsernameRouteImport } from './routes/_authenticated/perfil_.$username'
-import { Route as AuthenticatedModuloIdRouteImport } from './routes/_authenticated/modulo.$id'
-import { Route as AuthenticatedMensagensNovoRouteImport } from './routes/_authenticated/mensagens.novo'
-import { Route as AuthenticatedMensagensUsernameRouteImport } from './routes/_authenticated/mensagens.$username'
 import { Route as AuthenticatedLicaoIdRouteImport } from './routes/_authenticated/licao.$id'
-import { Route as AuthenticatedLicaoIdAprofundarRouteImport } from './routes/_authenticated/licao.$id_.aprofundar'
-import { Route as AuthenticatedEstudosPlanoIdRouteImport } from './routes/_authenticated/estudos.plano.$id'
-import { Route as AuthenticatedEstudosMeditacaoIdRouteImport } from './routes/_authenticated/estudos.meditacao.$id'
+import { Route as AuthenticatedMensagensIndexRouteImport } from './routes/_authenticated/mensagens.index'
+import { Route as AuthenticatedMensagensUsernameRouteImport } from './routes/_authenticated/mensagens.$username'
+import { Route as AuthenticatedMensagensNovoRouteImport } from './routes/_authenticated/mensagens.novo'
+import { Route as AuthenticatedModuloIdRouteImport } from './routes/_authenticated/modulo.$id'
+import { Route as AuthenticatedPerfilUsernameRouteImport } from './routes/_authenticated/perfil_.$username'
 import { Route as AuthenticatedEstudosBiblicoIdRouteImport } from './routes/_authenticated/estudos.biblico.$id'
+import { Route as AuthenticatedEstudosMeditacaoIdRouteImport } from './routes/_authenticated/estudos.meditacao.$id'
+import { Route as AuthenticatedEstudosPlanoIdRouteImport } from './routes/_authenticated/estudos.plano.$id'
+import { Route as AuthenticatedLicaoIdAprofundarRouteImport } from './routes/_authenticated/licao.$id_.aprofundar'
 
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiTtsRoute = ApiTtsRouteImport.update({
-  id: '/api/tts',
-  path: '/api/tts',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedBemVindoRoute = AuthenticatedBemVindoRouteImport.update({
+  id: '/bem-vindo',
+  path: '/bem-vindo',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const ApiMentorRoute = ApiMentorRouteImport.update({
-  id: '/api/mentor',
-  path: '/api/mentor',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedRankingDetalhesRoute =
-  AuthenticatedRankingDetalhesRouteImport.update({
-    id: '/ranking-detalhes',
-    path: '/ranking-detalhes',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedRankingRoute = AuthenticatedRankingRouteImport.update({
-  id: '/ranking',
-  path: '/ranking',
+const AuthenticatedLiderRoute = AuthenticatedLiderRouteImport.update({
+  id: '/lider',
+  path: '/lider',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMuralRoute = AuthenticatedMuralRouteImport.update({
+  id: '/mural',
+  path: '/mural',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedNiveisRoute = AuthenticatedNiveisRouteImport.update({
+  id: '/niveis',
+  path: '/niveis',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPerfilRoute = AuthenticatedPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedPreview_niveisRoute =
@@ -76,34 +85,36 @@ const AuthenticatedPreview_niveisRoute =
     path: '/preview_niveis',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedPerfilRoute = AuthenticatedPerfilRouteImport.update({
-  id: '/perfil',
-  path: '/perfil',
+const AuthenticatedRankingRoute = AuthenticatedRankingRouteImport.update({
+  id: '/ranking',
+  path: '/ranking',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedNiveisRoute = AuthenticatedNiveisRouteImport.update({
-  id: '/niveis',
-  path: '/niveis',
-  getParentRoute: () => AuthenticatedRouteRoute,
+const AuthenticatedRankingDetalhesRoute =
+  AuthenticatedRankingDetalhesRouteImport.update({
+    id: '/ranking-detalhes',
+    path: '/ranking-detalhes',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const ApiMentorRoute = ApiMentorRouteImport.update({
+  id: '/api/mentor',
+  path: '/api/mentor',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedMuralRoute = AuthenticatedMuralRouteImport.update({
-  id: '/mural',
-  path: '/mural',
-  getParentRoute: () => AuthenticatedRouteRoute,
+const ApiTtsRoute = ApiTtsRouteImport.update({
+  id: '/api/tts',
+  path: '/api/tts',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedLiderRoute = AuthenticatedLiderRouteImport.update({
-  id: '/lider',
-  path: '/lider',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
-  id: '/home',
-  path: '/home',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedBemVindoRoute = AuthenticatedBemVindoRouteImport.update({
-  id: '/bem-vindo',
-  path: '/bem-vindo',
+const AuthenticatedEstudosIndexRoute =
+  AuthenticatedEstudosIndexRouteImport.update({
+    id: '/estudos/',
+    path: '/estudos/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedLicaoIdRoute = AuthenticatedLicaoIdRouteImport.update({
+  id: '/licao/$id',
+  path: '/licao/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedMensagensIndexRoute =
@@ -112,16 +123,16 @@ const AuthenticatedMensagensIndexRoute =
     path: '/mensagens/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedEstudosIndexRoute =
-  AuthenticatedEstudosIndexRouteImport.update({
-    id: '/estudos/',
-    path: '/estudos/',
+const AuthenticatedMensagensUsernameRoute =
+  AuthenticatedMensagensUsernameRouteImport.update({
+    id: '/mensagens/$username',
+    path: '/mensagens/$username',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedPerfilUsernameRoute =
-  AuthenticatedPerfilUsernameRouteImport.update({
-    id: '/perfil_/$username',
-    path: '/perfil/$username',
+const AuthenticatedMensagensNovoRoute =
+  AuthenticatedMensagensNovoRouteImport.update({
+    id: '/mensagens/novo',
+    path: '/mensagens/novo',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedModuloIdRoute = AuthenticatedModuloIdRouteImport.update({
@@ -129,33 +140,16 @@ const AuthenticatedModuloIdRoute = AuthenticatedModuloIdRouteImport.update({
   path: '/modulo/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedMensagensNovoRoute =
-  AuthenticatedMensagensNovoRouteImport.update({
-    id: '/mensagens/novo',
-    path: '/mensagens/novo',
+const AuthenticatedPerfilUsernameRoute =
+  AuthenticatedPerfilUsernameRouteImport.update({
+    id: '/perfil_/$username',
+    path: '/perfil/$username',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedMensagensUsernameRoute =
-  AuthenticatedMensagensUsernameRouteImport.update({
-    id: '/mensagens/$username',
-    path: '/mensagens/$username',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedLicaoIdRoute = AuthenticatedLicaoIdRouteImport.update({
-  id: '/licao/$id',
-  path: '/licao/$id',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedLicaoIdAprofundarRoute =
-  AuthenticatedLicaoIdAprofundarRouteImport.update({
-    id: '/licao/$id_/aprofundar',
-    path: '/licao/$id/aprofundar',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedEstudosPlanoIdRoute =
-  AuthenticatedEstudosPlanoIdRouteImport.update({
-    id: '/estudos/plano/$id',
-    path: '/estudos/plano/$id',
+const AuthenticatedEstudosBiblicoIdRoute =
+  AuthenticatedEstudosBiblicoIdRouteImport.update({
+    id: '/estudos/biblico/$id',
+    path: '/estudos/biblico/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedEstudosMeditacaoIdRoute =
@@ -164,10 +158,16 @@ const AuthenticatedEstudosMeditacaoIdRoute =
     path: '/estudos/meditacao/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedEstudosBiblicoIdRoute =
-  AuthenticatedEstudosBiblicoIdRouteImport.update({
-    id: '/estudos/biblico/$id',
-    path: '/estudos/biblico/$id',
+const AuthenticatedEstudosPlanoIdRoute =
+  AuthenticatedEstudosPlanoIdRouteImport.update({
+    id: '/estudos/plano/$id',
+    path: '/estudos/plano/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedLicaoIdAprofundarRoute =
+  AuthenticatedLicaoIdAprofundarRouteImport.update({
+    id: '/licao/$id_/aprofundar',
+    path: '/licao/$id/aprofundar',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
@@ -343,11 +343,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -357,74 +357,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/tts': {
-      id: '/api/tts'
-      path: '/api/tts'
-      fullPath: '/api/tts'
-      preLoaderRoute: typeof ApiTtsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/mentor': {
-      id: '/api/mentor'
-      path: '/api/mentor'
-      fullPath: '/api/mentor'
-      preLoaderRoute: typeof ApiMentorRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/ranking-detalhes': {
-      id: '/_authenticated/ranking-detalhes'
-      path: '/ranking-detalhes'
-      fullPath: '/ranking-detalhes'
-      preLoaderRoute: typeof AuthenticatedRankingDetalhesRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/ranking': {
-      id: '/_authenticated/ranking'
-      path: '/ranking'
-      fullPath: '/ranking'
-      preLoaderRoute: typeof AuthenticatedRankingRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/preview_niveis': {
-      id: '/_authenticated/preview_niveis'
-      path: '/preview_niveis'
-      fullPath: '/preview_niveis'
-      preLoaderRoute: typeof AuthenticatedPreview_niveisRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/perfil': {
-      id: '/_authenticated/perfil'
-      path: '/perfil'
-      fullPath: '/perfil'
-      preLoaderRoute: typeof AuthenticatedPerfilRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/niveis': {
-      id: '/_authenticated/niveis'
-      path: '/niveis'
-      fullPath: '/niveis'
-      preLoaderRoute: typeof AuthenticatedNiveisRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/mural': {
-      id: '/_authenticated/mural'
-      path: '/mural'
-      fullPath: '/mural'
-      preLoaderRoute: typeof AuthenticatedMuralRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/lider': {
-      id: '/_authenticated/lider'
-      path: '/lider'
-      fullPath: '/lider'
-      preLoaderRoute: typeof AuthenticatedLiderRouteImport
+    '/_authenticated/bem-vindo': {
+      id: '/_authenticated/bem-vindo'
+      path: '/bem-vindo'
+      fullPath: '/bem-vindo'
+      preLoaderRoute: typeof AuthenticatedBemVindoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/home': {
@@ -434,53 +378,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHomeRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/bem-vindo': {
-      id: '/_authenticated/bem-vindo'
-      path: '/bem-vindo'
-      fullPath: '/bem-vindo'
-      preLoaderRoute: typeof AuthenticatedBemVindoRouteImport
+    '/_authenticated/lider': {
+      id: '/_authenticated/lider'
+      path: '/lider'
+      fullPath: '/lider'
+      preLoaderRoute: typeof AuthenticatedLiderRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/mensagens/': {
-      id: '/_authenticated/mensagens/'
-      path: '/mensagens'
-      fullPath: '/mensagens/'
-      preLoaderRoute: typeof AuthenticatedMensagensIndexRouteImport
+    '/_authenticated/mural': {
+      id: '/_authenticated/mural'
+      path: '/mural'
+      fullPath: '/mural'
+      preLoaderRoute: typeof AuthenticatedMuralRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/niveis': {
+      id: '/_authenticated/niveis'
+      path: '/niveis'
+      fullPath: '/niveis'
+      preLoaderRoute: typeof AuthenticatedNiveisRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/perfil': {
+      id: '/_authenticated/perfil'
+      path: '/perfil'
+      fullPath: '/perfil'
+      preLoaderRoute: typeof AuthenticatedPerfilRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/preview_niveis': {
+      id: '/_authenticated/preview_niveis'
+      path: '/preview_niveis'
+      fullPath: '/preview_niveis'
+      preLoaderRoute: typeof AuthenticatedPreview_niveisRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ranking': {
+      id: '/_authenticated/ranking'
+      path: '/ranking'
+      fullPath: '/ranking'
+      preLoaderRoute: typeof AuthenticatedRankingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/ranking-detalhes': {
+      id: '/_authenticated/ranking-detalhes'
+      path: '/ranking-detalhes'
+      fullPath: '/ranking-detalhes'
+      preLoaderRoute: typeof AuthenticatedRankingDetalhesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/mentor': {
+      id: '/api/mentor'
+      path: '/api/mentor'
+      fullPath: '/api/mentor'
+      preLoaderRoute: typeof ApiMentorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/tts': {
+      id: '/api/tts'
+      path: '/api/tts'
+      fullPath: '/api/tts'
+      preLoaderRoute: typeof ApiTtsRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/estudos/': {
       id: '/_authenticated/estudos/'
       path: '/estudos'
       fullPath: '/estudos/'
       preLoaderRoute: typeof AuthenticatedEstudosIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/perfil_/$username': {
-      id: '/_authenticated/perfil_/$username'
-      path: '/perfil/$username'
-      fullPath: '/perfil/$username'
-      preLoaderRoute: typeof AuthenticatedPerfilUsernameRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/modulo/$id': {
-      id: '/_authenticated/modulo/$id'
-      path: '/modulo/$id'
-      fullPath: '/modulo/$id'
-      preLoaderRoute: typeof AuthenticatedModuloIdRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/mensagens/novo': {
-      id: '/_authenticated/mensagens/novo'
-      path: '/mensagens/novo'
-      fullPath: '/mensagens/novo'
-      preLoaderRoute: typeof AuthenticatedMensagensNovoRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/mensagens/$username': {
-      id: '/_authenticated/mensagens/$username'
-      path: '/mensagens/$username'
-      fullPath: '/mensagens/$username'
-      preLoaderRoute: typeof AuthenticatedMensagensUsernameRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/licao/$id': {
@@ -490,18 +455,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLicaoIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/licao/$id_/aprofundar': {
-      id: '/_authenticated/licao/$id_/aprofundar'
-      path: '/licao/$id/aprofundar'
-      fullPath: '/licao/$id/aprofundar'
-      preLoaderRoute: typeof AuthenticatedLicaoIdAprofundarRouteImport
+    '/_authenticated/mensagens/': {
+      id: '/_authenticated/mensagens/'
+      path: '/mensagens'
+      fullPath: '/mensagens/'
+      preLoaderRoute: typeof AuthenticatedMensagensIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/estudos/plano/$id': {
-      id: '/_authenticated/estudos/plano/$id'
-      path: '/estudos/plano/$id'
-      fullPath: '/estudos/plano/$id'
-      preLoaderRoute: typeof AuthenticatedEstudosPlanoIdRouteImport
+    '/_authenticated/mensagens/$username': {
+      id: '/_authenticated/mensagens/$username'
+      path: '/mensagens/$username'
+      fullPath: '/mensagens/$username'
+      preLoaderRoute: typeof AuthenticatedMensagensUsernameRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/mensagens/novo': {
+      id: '/_authenticated/mensagens/novo'
+      path: '/mensagens/novo'
+      fullPath: '/mensagens/novo'
+      preLoaderRoute: typeof AuthenticatedMensagensNovoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/modulo/$id': {
+      id: '/_authenticated/modulo/$id'
+      path: '/modulo/$id'
+      fullPath: '/modulo/$id'
+      preLoaderRoute: typeof AuthenticatedModuloIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/perfil_/$username': {
+      id: '/_authenticated/perfil_/$username'
+      path: '/perfil/$username'
+      fullPath: '/perfil/$username'
+      preLoaderRoute: typeof AuthenticatedPerfilUsernameRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/estudos/biblico/$id': {
+      id: '/_authenticated/estudos/biblico/$id'
+      path: '/estudos/biblico/$id'
+      fullPath: '/estudos/biblico/$id'
+      preLoaderRoute: typeof AuthenticatedEstudosBiblicoIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/estudos/meditacao/$id': {
@@ -511,11 +504,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEstudosMeditacaoIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/estudos/biblico/$id': {
-      id: '/_authenticated/estudos/biblico/$id'
-      path: '/estudos/biblico/$id'
-      fullPath: '/estudos/biblico/$id'
-      preLoaderRoute: typeof AuthenticatedEstudosBiblicoIdRouteImport
+    '/_authenticated/estudos/plano/$id': {
+      id: '/_authenticated/estudos/plano/$id'
+      path: '/estudos/plano/$id'
+      fullPath: '/estudos/plano/$id'
+      preLoaderRoute: typeof AuthenticatedEstudosPlanoIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/licao/$id_/aprofundar': {
+      id: '/_authenticated/licao/$id_/aprofundar'
+      path: '/licao/$id/aprofundar'
+      fullPath: '/licao/$id/aprofundar'
+      preLoaderRoute: typeof AuthenticatedLicaoIdAprofundarRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
   }

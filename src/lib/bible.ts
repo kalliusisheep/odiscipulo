@@ -12,7 +12,6 @@ const VERSION_TO_API: Record<BibleVersion, string> = {
   NAA: "almeida",
   ACF: "almeida",
   NVT: "almeida",
-  KJV: "kjv",
 };
 
 export function apiTranslationFor(version: BibleVersion): string {

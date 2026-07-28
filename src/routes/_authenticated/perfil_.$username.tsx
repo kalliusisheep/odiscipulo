@@ -5,6 +5,7 @@ import { getLevel, MAX_LEVEL } from "@/data/levels";
 import { CHARACTERS } from "@/data/content";
 import { toast } from "sonner";
 import { ArrowLeft, MessageCircle, Flame, Trophy, BookOpen, Clock, UserPlus, Check, Copy } from "lucide-react";
+import { ChallengeButton } from "@/components/ChallengeButton";
 
 export const Route = createFileRoute("/_authenticated/perfil_/$username")({
   component: PublicProfilePage,
@@ -164,6 +165,10 @@ function PublicProfilePage() {
             </button>
           )}
         </div>
+      )}
+
+      {!isSelf && (
+        <ChallengeButton targetId={profile.id} targetName={profile.display_name} />
       )}
 
       <section className="card-elevated p-4">
