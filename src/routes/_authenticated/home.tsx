@@ -23,6 +23,7 @@ import { PushNotifications } from "@/components/PushNotifications";
 import { useApp } from "@/lib/app-context";
 import { Flame, Check, ChevronRight, Sparkles, BookOpen } from "lucide-react";
 import { ChallengePanel } from "@/components/ChallengeProgressBar";
+import { LeaderResources } from "@/components/LeaderResources";
 
 export const Route = createFileRoute("/_authenticated/home")({
   component: HomePage,
@@ -317,13 +318,16 @@ function LiderInline() {
         <p className="text-sm text-muted-foreground">
           Acompanhe seus discípulos, crie grupos e envie mensagens.
         </p>
+        <div className="mt-4 flex justify-center">
         <Link
           to="/lider"
-          className="mt-4 inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+          className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
         >
           Abrir painel <ChevronRight className="h-4 w-4" />
         </Link>
+        </div>
       </div>
+      <LeaderResources />
     </div>
   );
 }
