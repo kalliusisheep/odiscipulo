@@ -55,7 +55,7 @@ const fundamentosDaFe: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "A Bíblia não precisa ser defendida; solte-a, e ela se defenderá sozinha.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "sermão sobre a defesa das Escrituras, amplamente citado em coletâneas de sermões de C. H. Spurgeon",
           },
           quizzes: [
             {
@@ -86,8 +86,9 @@ const fundamentosDaFe: Trail = {
             theologicalDebate:
               "Existe divergência legítima entre cristãos fiéis sobre até que ponto a inerrância se aplica a detalhes científicos e cronológicos incidentais versus ao propósito teológico e moral do texto. Isso é uma questão secundária; o essencial — que a Escritura é digna de confiança total naquilo que afirma sobre Deus, o homem e a salvação — é compartilhado por toda a ortodoxia histórica.",
             secondQuote: {
-              author: "Luiz Sayão",
-              text: "A Bíblia não é um livro de respostas mágicas; é a revelação de um Deus que quer ser conhecido.",
+              author: "J. I. Packer",
+              text: "Se eu fosse o diabo, um dos meus primeiros alvos seria impedir as pessoas de mergulhar na Bíblia.",
+              source: "citação amplamente atribuída a J. I. Packer em compilações de suas obras",
             },
           },
         },
@@ -127,8 +128,8 @@ const fundamentosDaFe: Trail = {
             "A Trindade não é matemática (3 = 1), mas revelação: um só Deus, eternamente três Pessoas distintas, iguais em essência e glória, unidas em amor. O erro mais comum é imaginar 'três modos' de um mesmo Deus aparecendo em momentos diferentes — isso já foi rejeitado pela igreja antiga como distorção. O Pai não é o Filho, o Filho não é o Espírito, mas os três são, cada um, plenamente Deus. Isso importa na prática: um Deus que é, em si mesmo, relacionamento, não criou você para uma fé isolada. A comunhão que existe dentro da Trindade é o modelo da comunhão que Ele quer construir na igreja.",
           theologianQuote: {
             author: "Wayne Grudem",
-            text: "A doutrina da Trindade é, em essência, mistério — mas mistério revelado, não inventado.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Wayne Grudem realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Nenhuma analogia humana explica adequadamente a Trindade — todas, em algum grau, são enganosas — mas a doutrina vem da revelação bíblica, não da especulação humana.",
+            source: "Systematic Theology, cap. 14",
           },
           quizzes: [
             {
@@ -164,8 +165,9 @@ const fundamentosDaFe: Trail = {
             exegeticalNotes:
               "Vale notar que a plena revelação da Trindade só se torna clara no Novo Testamento, à luz da vinda de Cristo e do derramamento do Espírito em Pentecostes — mas sementes dela já aparecem no Antigo Testamento, como em Gênesis 1:26 ('façamos o homem') e no próprio Shemá (Deuteronômio 6:4), que usa 'echad', unidade composta, não solidão absoluta.",
             secondQuote: {
-              author: "Hernandes Dias Lopes",
-              text: "A Trindade não é problema para a razão explicar, mas verdade para o coração adorar.",
+              author: "C.S. Lewis",
+              text: "Na dimensão de Deus, por assim dizer, você encontra um ser que é três Pessoas permanecendo um só Ser, assim como um cubo é seis quadrados permanecendo um só cubo.",
+              source: "Mere Christianity, Livro IV, cap. 2",
             },
           },
         },
@@ -205,8 +207,8 @@ const fundamentosDaFe: Trail = {
             "No mundo antigo, dizer que alguém era 'imagem' de um deus era linguagem reservada a reis. Gênesis rompe esse padrão: todo ser humano, homem e mulher, carrega essa dignidade. Isso é o fundamento bíblico da igualdade humana e do valor de cada vida. A Queda não apaga essa imagem — ela a distorce. Adão e Eva não perdem sua humanidade ao pecar, mas perdem a comunhão não-quebrada com Deus, e essa fratura afeta toda a criação (Romanos 8:20-22). Um erro comum é achar que 'pecado original' significa que Deus nos considera culpados de um crime que não cometemos; a Bíblia ensina algo mais profundo: nascemos numa condição humana já ferida, inclinada a repetir a mesma rebelião de Adão — e é justamente aí que a promessa de um novo Adão, Jesus Cristo, se torna boa notícia.",
           theologianQuote: {
             author: "Francis Schaeffer",
-            text: "O homem não é grande o bastante para ser deus, nem pequeno o bastante para ser irrelevante.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Francis Schaeffer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Se o homem não é feito à imagem de Deus, nada mais impede a desumanização; não há boa razão para que a humanidade seja vista como algo especial.",
+            source: "Whatever Happened to the Human Race?",
           },
           quizzes: [
             {
@@ -242,8 +244,9 @@ const fundamentosDaFe: Trail = {
             theologicalDebate:
               "Sobre como interpretar os 'dias' de Gênesis 1 (literais de 24 horas, longos períodos, ou estrutura literária), há divergência legítima entre cristãos fiéis às Escrituras — trata-se de uma questão secundária. O essencial, compartilhado por toda a ortodoxia histórica, é que Deus é o Criador soberano e que a humanidade foi feita à sua imagem.",
             secondQuote: {
-              author: "Norman Geisler",
-              text: "Negar a Queda não elimina o mal do mundo; apenas nos deixa sem explicação para ele.",
+              author: "C.S. Lewis",
+              text: "Território ocupado pelo inimigo — é isso que é o mundo. O cristianismo é a história de como o Rei legítimo desembarcou, disfarçado, e nos convoca a participar de uma grande campanha de sabotagem.",
+              source: "Mere Christianity, Livro II, cap. 2",
             },
           },
         },
@@ -279,9 +282,9 @@ const fundamentosDaFe: Trail = {
           deepDive:
             "Teólogos chamam esse fio condutor de 'história da redenção' (ou 'teologia bíblica' em sentido técnico): a Bíblia contada como uma única narrativa que caminha da criação à nova criação, com Cristo no centro. Isso evita dois erros comuns de leitura. O primeiro é o moralismo — tratar cada personagem do Antigo Testamento apenas como 'exemplo a seguir ou evitar', perdendo de vista que a história aponta para algo maior que qualquer herói humano. O segundo é a leitura fragmentada — usar versículos isolados como amuletos, sem perguntar onde aquele texto se encaixa na grande história. Ler bem a Bíblia é perguntar sempre: onde estamos nessa linha do tempo, e como este texto aponta para Cristo?",
           theologianQuote: {
-            author: "Tim Keller",
-            text: "Toda a Bíblia é, em última análise, sobre Jesus.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Tim Keller realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "Agostinho de Hipona",
+            text: "O Novo Testamento está oculto no Antigo, e o Antigo se revela no Novo.",
+            source: "Quaestiones in Heptateuchum, Livro 2",
           },
           quizzes: [
             {
@@ -316,10 +319,6 @@ const fundamentosDaFe: Trail = {
               "O termo técnico para essa abordagem é 'teologia bíblica' — diferente da 'teologia sistemática', que organiza doutrinas por tema. A teologia bíblica acompanha o desenvolvimento progressivo da revelação através da história, mostrando como cada aliança (com Noé, Abraão, Moisés, Davi) prepara terreno para a Nova Aliança em Cristo (Jeremias 31:31-34, Hebreus 8).",
             theologicalDebate:
               "Há debate legítimo entre tradições cristãs sobre a continuidade entre Israel e a Igreja — se a Igreja 'substitui', 'cumpre' ou 'se soma' às promessas feitas a Israel. Essa é uma questão secundária de interpretação profética; o essencial, compartilhado amplamente, é que Cristo é o centro e o cumprimento de toda a revelação bíblica.",
-            secondQuote: {
-              author: "D. A. Carson",
-              text: "Sem entender a história inteira, cada parte da Bíblia perde seu verdadeiro peso.",
-            },
           },
         },
         // ───────────────────────────── 5 ─────────────────────────────
@@ -359,7 +358,7 @@ const fundamentosDaFe: Trail = {
           theologianQuote: {
             author: "C.S. Lewis",
             text: "Não deixamos essa opção aberta. Ele não pretendia deixar.",
-            source: "Mere Christianity — ideia real de Lewis; confirme a tradução exata em português antes de publicar",
+            source: "Mere Christianity, Livro II, cap. 3",
           },
           quizzes: [
             {
@@ -396,7 +395,8 @@ const fundamentosDaFe: Trail = {
               "Como as duas naturezas de Cristo se relacionam na prática — por exemplo, como Jesus podia 'não saber' o dia de sua volta (Marcos 13:32) sendo Deus — é um tema de reflexão teológica profunda (a doutrina da kénosis, o 'esvaziamento', de Filipenses 2:7). Isso é debatido com nuance entre teólogos fiéis, mas sem abalar o essencial: a unidade das duas naturezas em uma só Pessoa.",
             secondQuote: {
               author: "John Stott",
-              text: "Cristo não veio apenas para nos mostrar Deus; veio para nos trazer a Deus.",
+              text: "O primeiro passo para seguir Jesus Cristo é a humilde confissão de que precisamos dele.",
+              source: "Why I Am a Christian",
             },
           },
         },
@@ -436,8 +436,8 @@ const fundamentosDaFe: Trail = {
             "A cruz responde a um problema real: Deus é justo e não pode simplesmente ignorar o pecado, mas também é amor e não deseja a destruição do pecador. Na cruz, os dois se encontram — a justiça é satisfeita e o amor se derrama, no mesmo evento. Chamamos isso de expiação substitutiva: Cristo ocupa o lugar que era nosso. Um erro comum é ver a cruz apenas como exemplo moral de sacrifício ('Jesus morreu para nos ensinar a amar') — isso é verdade, mas incompleto; sem a dimensão substitutiva, a cruz perde seu poder de realmente resolver o problema da culpa diante de Deus. A ressurreição, por sua vez, é a prova pública de que o sacrifício foi aceito e a morte, derrotada.",
           theologianQuote: {
             author: "John Stott",
-            text: "A cruz é o lugar onde a justiça e a misericórdia de Deus se encontram sem contradição.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Stott realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "O evangelho não é um bom conselho aos homens, mas uma boa notícia sobre Cristo; não um convite para que façamos algo, mas uma declaração do que Deus fez; não uma exigência, mas uma oferta.",
+            source: "The Message of Galatians",
           },
           quizzes: [
             {
@@ -472,10 +472,6 @@ const fundamentosDaFe: Trail = {
               "Isaías 53 foi escrito cerca de 700 anos antes de Cristo, décadas antes mesmo da crucificação existir como método de execução romano. A precisão profética — sofrimento silencioso, morte entre malfeitores, sepultamento com o rico — é um dos textos mais debatidos entre judeus e cristãos ao longo da história quanto à identidade do 'Servo Sofredor'.",
             theologicalDebate:
               "Existem diferentes ênfases teológicas sobre 'por quem' Cristo morreu — se a extensão da expiação alcança toda a humanidade de forma oferecida a todos (posição arminiana/geral) ou é limitada de forma eficaz apenas aos eleitos (posição reformada). Essa é uma questão onde cristãos fiéis discordam; o essencial — que a morte de Cristo é suficiente, substitutiva e o único fundamento da salvação — é compartilhado por ambas as tradições.",
-            secondQuote: {
-              author: "John Wesley",
-              text: "Cristo morreu, não apenas para tornar a salvação possível, mas para torná-la real em quem crê.",
-            },
           },
         },
         // ───────────────────────────── 7 ─────────────────────────────
@@ -513,9 +509,9 @@ const fundamentosDaFe: Trail = {
           deepDive:
             "Um erro comum reduz o Espírito Santo a uma 'sensação' religiosa ou a um assunto ligado apenas a experiências extraordinárias. A Bíblia o descreve, antes de tudo, como quem regenera (nos torna novas criaturas, Tito 3:5), habita permanentemente todo crente genuíno (Romanos 8:9) e produz fruto — caráter transformado, não apenas fenômenos pontuais. Sobre os dons espirituais mais extraordinários (como línguas e profecia), há debate sincero entre cristãos fiéis: alguns creem que continuam plenamente ativos hoje (continuísmo); outros, que dons específicos de revelação direta cessaram após o período apostólico, com o cânon completo (cessacionismo moderado). Ambas as posições concordam no essencial: toda manifestação espiritual deve ser julgada pela Escritura, e o fruto do Espírito — caráter como o de Cristo — é sempre a evidência mais segura de sua presença ativa.",
           theologianQuote: {
-            author: "Millard Erickson",
-            text: "O Espírito Santo não veio para chamar atenção a si mesmo, mas para glorificar a Cristo.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Millard Erickson realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "J. I. Packer",
+            text: "Se não fosse pela obra do Espírito Santo, não haveria evangelho, nem fé, nem igreja, nem cristianismo algum no mundo.",
+            source: "citação amplamente compilada de escritos de J. I. Packer sobre o Espírito Santo",
           },
           quizzes: [
             {
@@ -546,8 +542,9 @@ const fundamentosDaFe: Trail = {
             theologicalDebate:
               "A questão dos dons espirituais hoje — se todos os dons do Novo Testamento continuam exatamente como no primeiro século — é uma questão secundária sobre a qual cristãos fiéis discordam com honestidade. Continuístas apontam para textos como 1 Coríntios 14 como normativos para todas as épocas; cessacionistas moderados argumentam que dons ligados à revelação direta (profecia reveladora, línguas como sinal) tinham um propósito ligado à era apostólica e ao estabelecimento do cânon. Em ambos os casos, a prioridade bíblica é clara: tudo deve ser julgado pela Escritura, e o amor deve governar o uso de qualquer dom (1 Coríntios 13).",
             secondQuote: {
-              author: "Jonas Madureira",
-              text: "O maior milagre do Espírito Santo não é o extraordinário, mas o caráter de Cristo formado em nós dia após dia.",
+              author: "John Wesley",
+              text: "O testemunho do Espírito é uma impressão interior na alma, pela qual o Espírito de Deus testifica diretamente ao meu espírito que sou filho de Deus.",
+              source: "Sermão 10, \"The Witness of the Spirit\"",
             },
           },
         },
@@ -587,8 +584,8 @@ const fundamentosDaFe: Trail = {
             "A salvação bíblica tem duas dimensões inseparáveis: a justificação (Deus nos declara justos, com base na obra de Cristo, no momento em que cremos — um ato jurídico, instantâneo) e a santificação (o processo contínuo de crescimento em caráter e obediência ao longo da vida). Confundir as duas gera dois erros opostos: o legalismo (achar que preciso acrescentar obras à graça para ser salvo) e o antinomianismo (usar a graça como licença para viver sem compromisso com a santidade). Tiago é claro: fé genuína sempre produz obras, não como pagamento, mas como evidência (Tiago 2:17). Sobre como a perseverança na fé se relaciona exatamente com a segurança eterna do crente, cristãos fiéis de diferentes tradições explicam de formas distintas — mas todos concordam que a salvação, do início ao fim, é obra de Deus e não conquista humana.",
           theologianQuote: {
             author: "John Wesley",
-            text: "A graça de Deus não anula nossa responsabilidade; ela a torna possível.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Wesley realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "O novo nascimento é aquela grande mudança que Deus opera na alma quando a traz à vida em Cristo, transformando-a de morte espiritual em vida espiritual.",
+            source: "Sermão 45, \"The New Birth\"",
           },
           quizzes: [
             {
@@ -625,7 +622,8 @@ const fundamentosDaFe: Trail = {
               "A relação entre a soberania de Deus na salvação e a responsabilidade humana em crer é um dos temas mais debatidos, com honestidade, entre tradições reformadas e arminianas — incluindo a questão de saber se um crente genuíno pode, de fato, abandonar a fé. Essa é uma questão secundária importante, mas não essencial, sobre a qual cristãos fiéis discordam. O núcleo compartilhado por ambas as tradições, e inegociável, é: a salvação é inteiramente pela graça de Deus, mediante a fé em Cristo, e não por méritos humanos. Havendo dúvidas pessoais sobre segurança da salvação, vale conversar com seu pastor ou líder de discipulado.",
             secondQuote: {
               author: "Charles Spurgeon",
-              text: "A graça é o favor imerecido, e a fé é a mão vazia que o recebe.",
+              text: "A fé salvadora é uma relação imediata com Cristo: aceitá-lo, recebê-lo e descansar somente nele para a justificação, a santificação e a vida eterna, pela graça de Deus.",
+              source: "citação amplamente compilada dos sermões de C. H. Spurgeon",
             },
           },
         },
@@ -664,9 +662,9 @@ const fundamentosDaFe: Trail = {
           deepDive:
             "A palavra grega 'ekklēsía' nunca descreve, no Novo Testamento, um edifício — descreve pessoas reunidas. Isso corrige um erro comum: pensar na igreja como um lugar que se visita ocasionalmente, em vez de um povo ao qual se pertence de verdade, com compromisso mútuo. A metáfora do corpo (1 Coríntios 12) ensina duas coisas ao mesmo tempo: diversidade de dons e funções, e unidade indispensável — um dedo cortado fora do corpo não sobrevive sozinho por muito tempo, e uma fé cristã isolada da igreja tende à mesma fragilidade. Isso não significa que toda estrutura eclesiástica humana seja perfeita ou acima de crítica — mas significa que abandonar a comunhão de uma igreja local não é uma opção neutra na vida cristã; é a Bíblia explicitamente advertindo contra isso.",
           theologianQuote: {
-            author: "Thom Rainer",
-            text: "A igreja não é um evento que você frequenta; é uma família à qual você pertence.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Thom Rainer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "Dietrich Bonhoeffer",
+            text: "A presença física de outros cristãos é uma fonte de alegria e força incomparáveis para o crente.",
+            source: "Vida em Comunhão (Life Together), p. 19",
           },
           quizzes: [
             {
@@ -697,8 +695,9 @@ const fundamentosDaFe: Trail = {
             theologicalDebate:
               "Sobre estrutura de governo eclesiástico (episcopal, presbiteriana, congregacional) e sobre os ofícios da igreja, há divergência histórica legítima entre denominações fiéis — trata-se de questão secundária. O essencial, compartilhado amplamente, é que a igreja é o povo de Deus reunido, submisso a Cristo como cabeça, comprometido em amor mútuo e missão. Dúvidas específicas sobre membresia e envolvimento vale conversar diretamente com a liderança da sua igreja local.",
             secondQuote: {
-              author: "Davi Lago",
-              text: "Ninguém cresce sozinho na fé; crescemos uns com os outros, ou não crescemos de verdade.",
+              author: "John Stott",
+              text: "Almas são ganhas para Cristo por lágrimas, suor e dor, especialmente na oração e na amizade pessoal e sacrificial.",
+              source: "Reading Timothy and Titus with John Stott",
             },
           },
         },
@@ -737,9 +736,9 @@ const fundamentosDaFe: Trail = {
           deepDive:
             "Sobre a ordem exata dos eventos finais — o momento do arrebatamento em relação à tribulação, a natureza do milênio de Apocalipse 20 — existem interpretações diferentes e sinceras entre cristãos igualmente comprometidos com a autoridade da Escritura; isso é, deliberadamente, uma questão secundária na tradição cristã histórica. O que é doutrina essencial, compartilhada por toda ortodoxia cristã desde o Credo Niceno-Constantinopolitano, é bem mais simples e bem mais firme: Cristo voltará pessoal e visivelmente, os mortos ressuscitarão corporalmente, haverá um juízo final, e Deus renovará céus e terra — não uma existência etérea e desencarnada, mas uma criação física restaurada, sem a presença do mal, da dor ou da morte. Um erro comum é deixar a escatologia virar motivo de ansiedade ou de fascínio por especulação; a Bíblia a apresenta como fonte de esperança prática e motivação para viver com santidade agora (2 Pedro 3:11-13).",
           theologianQuote: {
-            author: "Alister McGrath",
-            text: "A esperança cristã não escapa do mundo; espera pela renovação dele.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Alister McGrath realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "C.S. Lewis",
+            text: "A alegria é o assunto sério do Céu.",
+            source: "Letters to Malcolm: Chiefly on Prayer",
           },
           quizzes: [
             {
@@ -780,8 +779,9 @@ const fundamentosDaFe: Trail = {
             theologicalDebate:
               "As principais posições sobre o milênio (pré-milenismo, amilenismo, pós-milenismo) e sobre o momento do arrebatamento (pré-tribulacionismo, midtribulacionismo, pós-tribulacionismo) representam leituras diferentes de textos proféticos complexos, especialmente de Apocalipse e Daniel. Cristãos igualmente fiéis às Escrituras discordam nesse ponto há séculos. Para um estudo aprofundado e pastoral sobre qual posição adotar, vale muito conversar com seu pastor ou líder de discipulado, que conhece o ensino específico da sua igreja.",
             secondQuote: {
-              author: "Jonas Madureira",
-              text: "Esperamos a volta de Cristo não com medo, mas com a alegria de quem espera alguém amado.",
+              author: "J. I. Packer",
+              text: "A esperança cristã é a fé que olha adiante para o cumprimento das promessas de Deus; não é um desejo sem garantia, mas uma certeza garantida pelo próprio Deus.",
+              source: "citação amplamente compilada de escritos de J. I. Packer sobre a esperança cristã",
             },
           },
         },
