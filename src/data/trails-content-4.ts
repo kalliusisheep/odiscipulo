@@ -3025,6 +3025,181 @@ const missoes: Trail = {
         },
       ],
     },
+    {
+      id: "ms-mod-3",
+      title: "Módulo III: Missões e Culturas",
+      lessons: [
+        {
+          id: "ms-3-1",
+          title: "Missões e Culturas",
+          intro: [
+            "Um dos maiores riscos na história das missões cristãs não foi a falta de zelo, mas a confusão entre o Evangelho e a cultura de quem o levava. Missionários sinceros, por vezes, exportaram junto com as boas-novas de Cristo hábitos, roupas, músicas e costumes de sua própria terra, como se fossem parte inseparável da fé — e, sem perceber, pediram aos povos que recebiam o Evangelho para deixarem de ser quem eram, culturalmente, a fim de seguir a Jesus.",
+            "A Bíblia corrige esse impulso já na sua primeira grande crise intercultural. Em Atos 15, alguns insistiam que os gentios convertidos precisavam se tornar culturalmente judeus — circuncidados e observantes da Lei mosaica — para serem plenamente aceitos por Deus. Reunida em concílio, a igreja primitiva decidiu o oposto: 'não devemos importunar os gentios que estão se convertendo a Deus' (At 15:19). A salvação é pela graça, mediante a fé em Cristo, e não depende de adotar os costumes de nenhum povo específico — nem do povo que primeiro recebeu a revelação, nem do povo que depois a leva adiante.",
+            "Isso não significa que o Evangelho seja neutro em relação às culturas — ele julga e purifica o que em cada cultura se opõe a Deus, seja no Ocidente, seja no Oriente, seja em qualquer lugar. Mas o Evangelho também dignifica e redime aquilo que, em cada cultura, pode ser usado para glorificar a Cristo. Ele não pede que ninguém deixe de ser brasileiro, indígena, africano ou asiático para se tornar cristão; pede que cada povo, com sua língua e seus costumes próprios, se torne cristão sendo plenamente quem é.",
+            "A visão final da redenção, em Apocalipse 7:9, não mostra a humanidade reduzida a uma única cultura uniforme diante do trono, mas uma multidão 'de toda tribo, língua, povo e nação', cada qual adorando ao Cordeiro com sua própria voz. A diversidade cultural não é um obstáculo à missão de Deus — ela é parte do quadro final que a missão de Deus está produzindo.",
+          ],
+          verses: [
+            {
+              ref: "Atos 15:19-20",
+              textByVersion: {
+                NVI: "Portanto, julgo que não devemos dificultar a vida dos gentios que estão se convertendo a Deus... mas escrevamos, dizendo-lhes que se abstenham da contaminação dos ídolos, da imoralidade sexual, e do sangue.",
+                ACF: "Pelo que julgo que não se deve perturbar aqueles, dentre os gentios, que se convertem a Deus.",
+              },
+              originals: [
+                { word: "παρενοχλεῖν", translit: "parenochlein", meaning: "importunar, sobrecarregar desnecessariamente — o concílio recusa impor aos gentios fardos culturais que não pertencem ao núcleo do Evangelho", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Apocalipse 7:9",
+              textByVersion: {
+                NVI: "Diante do trono e do Cordeiro havia uma multidão que ninguém podia contar, de toda nação, tribo, povo e língua.",
+              },
+              originals: [
+                { word: "φυλή", translit: "phylē", meaning: "tribo, clã — junto com 'ethnos', 'laos' e 'glossa', descreve a permanência da diversidade de povos na adoração eterna", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "παρενοχλέω", translit: "parenochleō", meaning: "importunar, colocar fardo desnecessário — usado no Concílio de Jerusalém para recusar exigir dos gentios costumes que não pertencem ao Evangelho", lang: "grego" },
+            { word: "ἔθνος", translit: "ethnos", meaning: "nação, povo — a missão bíblica sempre respeitou a existência de povos distintos, sem exigir sua dissolução cultural", lang: "grego" },
+          ],
+          deepDive:
+            "O Concílio de Jerusalém (Atos 15) é o texto-chave para pensar a relação entre Evangelho e cultura: ele distingue, de forma definitiva, entre o núcleo inegociável da fé (a salvação pela graça, mediante a fé em Cristo) e as formas culturais que podem variar legitimamente de povo para povo. Esse princípio protege contra dois erros simétricos. O primeiro é o etnocentrismo missionário: confundir a própria cultura com o Evangelho, como se seguir a Cristo exigisse adotar hábitos, estilo musical, vestimenta ou costumes de quem primeiro anunciou a mensagem — um erro cometido, em graus diferentes, por movimentos missionários ao longo da história, inclusive em terras brasileiras, quando se supôs que 'ser cristão' e 'abandonar a própria cultura' eram a mesma coisa. O segundo erro, oposto, é o relativismo sincretista: tratar toda prática cultural como igualmente compatível com o Evangelho, sem discernimento, misturando elementos incompatíveis com a fé cristã sob o pretexto de 'respeito cultural'. A resposta bíblica exige discernimento contínuo: o Evangelho sempre confronta o que em qualquer cultura se opõe a Deus, e sempre redime e usa o que em qualquer cultura pode servir à sua glória.",
+          theologianQuote: {
+            author: "Leslie Newbigin",
+            text: "O Evangelho nunca chega a nenhum povo desencarnado de alguma cultura, mas também nunca pode ser absorvido, sem resíduo, por nenhuma cultura.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app a partir de temas centrais da obra de Newbigin sobre Evangelho e cultura; confirme a formulação exata antes de publicar como citação literal",
+          },
+          quizzes: [
+            {
+              question: "Qual foi a principal questão discutida no Concílio de Jerusalém (Atos 15)?",
+              options: [
+                "Se os gentios convertidos precisavam adotar costumes judaicos para serem salvos",
+                "Se os apóstolos deveriam parar de pregar aos gentios",
+                "Se a Lei de Moisés deveria ser abolida para todos, incluindo judeus",
+                "Se os gentios poderiam liderar a igreja de Jerusalém",
+              ],
+              correctIndex: 0,
+              explanation: "O concílio decidiu que os gentios não precisavam se tornar culturalmente judeus para serem plenamente aceitos por Deus em Cristo.",
+            },
+            {
+              question: "Segundo a lição, o que a Bíblia ensina sobre Evangelho e cultura?",
+              options: [
+                "Que todas as culturas são igualmente aceitáveis, sem qualquer distinção",
+                "Que o Evangelho exige abandonar completamente a própria cultura",
+                "Que o Evangelho confronta o que se opõe a Deus em cada cultura, mas dignifica o que pode servir à sua glória",
+                "Que apenas uma cultura específica é compatível com a fé cristã",
+              ],
+              correctIndex: 2,
+              explanation: "O Evangelho nem endossa nem rejeita culturas inteiras — ele as julga e as redime, discernindo o que se opõe a Deus e o que pode glorificá-lo.",
+            },
+            {
+              question: "O que Apocalipse 7:9 revela sobre a diversidade cultural na eternidade?",
+              options: [
+                "Que ela será eliminada, restando apenas uma cultura única",
+                "Que uma multidão de toda tribo, língua, povo e nação adorará ao Cordeiro",
+                "Que apenas um idioma será usado na adoração celestial",
+                "Que a diversidade de povos é irrelevante para a redenção",
+              ],
+              correctIndex: 1,
+              explanation: "A cena final da redenção preserva, e não elimina, a diversidade de povos, línguas e culturas diante do trono de Deus.",
+            },
+          ],
+          application:
+            "Reflita sobre alguma tradição ou costume da sua própria cultura (regional, familiar ou nacional) que pode ser usado para honrar a Cristo, e sobre algum outro que precisa ser confrontado pelo Evangelho. Ore pedindo discernimento para não confundir preferência cultural com fidelidade bíblica.",
+          prayer:
+            "Senhor, tu amas todos os povos e todas as culturas que criaste, e teu Evangelho não pede que ninguém deixe de ser quem é para te seguir. Dá-me discernimento para reconhecer o que, na minha própria cultura, se opõe a ti, e coragem para abandonar isso; e dá-me sabedoria para reconhecer o que pode ser usado para tua glória. Livra-me tanto do orgulho cultural quanto do relativismo sem discernimento. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Converse com alguém de uma cultura, região ou origem diferente da sua sobre como o Evangelho tem se expressado de forma diferente (e igualmente legítima) na experiência de fé dessa pessoa.",
+          reflectionQuestion:
+            "Você já confundiu, alguma vez, uma preferência cultural pessoal com uma exigência bíblica ao avaliar a fé de outra pessoa ou de outro povo?",
+          xp: 30,
+        },
+        {
+          id: "ms-3-2",
+          title: "Contextualização",
+          intro: [
+            "Se o Evangelho não pertence exclusivamente a nenhuma cultura, como ele deve ser anunciado a cada povo, de forma compreensível e ao mesmo tempo fiel? Essa é a pergunta que a teologia missionária chama de contextualização: comunicar a verdade imutável do Evangelho de maneira culturalmente inteligível, sem alterar seu conteúdo.",
+            "O exemplo clássico está em Atos 17, quando Paulo se dirige aos filósofos gregos no Areópago de Atenas. Ele não começa citando o Antigo Testamento, texto estranho àquela audiência; começa observando um altar local 'Ao Deus Desconhecido' e citando poetas gregos que os próprios ouvintes conheciam ('nele vivemos, nos movemos e existimos', At 17:28). Paulo constrói uma ponte a partir daquilo que seus ouvintes já sabiam — e, a partir dessa ponte, anuncia o Deus criador, o juízo vindouro e a ressurreição de Cristo, sem suavizar nenhuma dessas verdades para agradar a audiência culta e cética.",
+            "Esse é o padrão da contextualização bíblica: usar linguagem, ilustrações, formas de comunicação e pontos de contato próprios de cada cultura, mas jamais alterar o conteúdo do Evangelho para torná-lo mais palatável. Paulo se fez 'tudo para todos' (1 Co 9:22) na forma de comunicar — mas nunca mudou a mensagem que comunicava.",
+            "Há dois desvios possíveis, e igualmente perigosos. O primeiro é a contextualização insuficiente: pregar o Evangelho em linguagem, categorias e referências estranhas ao ouvinte, tornando-o desnecessariamente incompreensível ou distante — como se a fidelidade bíblica exigisse ignorar a cultura de quem ouve. O segundo, mais grave, é a contextualização excessiva, também chamada de sincretismo: adaptar de tal forma a mensagem que seu conteúdo essencial é alterado ou diluído para se encaixar em categorias culturais ou religiosas incompatíveis com o Evangelho. A tarefa fiel do discípulo é encontrar, com sabedoria e oração, o caminho estreito entre esses dois erros.",
+          ],
+          verses: [
+            {
+              ref: "Atos 17:22-23",
+              textByVersion: {
+                NVI: "Paulo, então, levantando-se no meio do Areópago, disse: 'Atenienses, vejo que em todos os sentidos vocês são muito religiosos... encontrei também um altar com esta inscrição: A UM DEUS DESCONHECIDO. Pois bem, o que vocês adoram sem conhecer, isso mesmo eu anuncio a vocês.'",
+              },
+              originals: [
+                { word: "ἄγνωστος", translit: "agnōstos", meaning: "desconhecido — Paulo usa uma referência religiosa local, já familiar aos ouvintes, como ponto de partida para anunciar o Deus verdadeiro", lang: "grego" },
+              ],
+            },
+            {
+              ref: "1 Coríntios 9:22-23",
+              textByVersion: {
+                NVI: "Fiz-me tudo para todos, para, por todos os meios possíveis, salvar alguns. Tudo isso faço por causa do evangelho, para ter parte nas suas bênçãos.",
+                ACF: "Fiz-me tudo para todos, para de todos os modos chegar a salvar alguns.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "ἄγνωστος", translit: "agnōstos", meaning: "desconhecido — termo do altar ateniense que Paulo usa como ponte cultural, sem adotar a religiosidade politeísta local", lang: "grego" },
+            { word: "γίνομαι", translit: "ginomai", meaning: "tornar-se, fazer-se — em 1 Coríntios 9, descreve a flexibilidade de forma de Paulo, nunca de conteúdo, ao se adaptar a diferentes ouvintes", lang: "grego" },
+          ],
+          deepDive:
+            "A pregação de Paulo no Areópago (Atos 17:22-31) é um estudo de caso completo em contextualização fiel: ele começa por um ponto de contato genuíno na cultura local (o altar 'ao Deus desconhecido'), usa linguagem e citações que a audiência reconhece (poetas como Epimênides e Arato), mas conduz o discurso, sem desviar, até o cerne inegociável do Evangelho — um Deus criador que não habita em templos feitos por mãos humanas, um chamado universal ao arrependimento, e a garantia desse chamado na ressurreição de Cristo, o ponto em que parte da audiência escarnece e se retira (At 17:32). Isso demonstra que contextualização bem-feita não garante aceitação — ela garante compreensão e fidelidade simultâneas. É crucial notar a diferença entre forma e conteúdo: a forma (língua, ilustrações, pontos de partida culturais, formas musicais ou artísticas) pode e deve variar legitimamente entre culturas; o conteúdo (quem é Deus, a gravidade do pecado, a pessoa e obra de Cristo, a necessidade de arrependimento e fé, a ressurreição corporal) é fixo e não negociável em nenhuma cultura. Confundir essas duas categorias — exigir uniformidade de forma ou permitir variação de conteúdo — é o erro raiz por trás tanto do etnocentrismo missionário quanto do sincretismo.",
+          theologianQuote: {
+            author: "Michael Goheen",
+            text: "A igreja fiel traduz o Evangelho para a língua e a vida de cada cultura, sem jamais traduzi-lo para fora de sua própria verdade.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app a partir de temas centrais da teologia missional de Goheen; confirme a formulação exata antes de publicar como citação literal",
+          },
+          quizzes: [
+            {
+              question: "O que Paulo fez, em Atos 17, ao pregar aos filósofos gregos no Areópago?",
+              options: [
+                "Ignorou completamente a cultura local e citou apenas o Antigo Testamento",
+                "Partiu de um ponto de contato cultural conhecido (o altar 'ao Deus desconhecido') para anunciar o Evangelho",
+                "Alterou o conteúdo da mensagem para evitar qualquer rejeição",
+                "Evitou mencionar a ressurreição de Cristo para não ofender a audiência",
+              ],
+              correctIndex: 1,
+              explanation: "Paulo usou uma referência religiosa e cultural conhecida dos atenienses como ponte para anunciar o Deus verdadeiro, sem alterar o conteúdo do Evangelho.",
+            },
+            {
+              question: "Qual é a diferença essencial entre contextualização fiel e sincretismo?",
+              options: [
+                "Não há diferença real entre os dois conceitos",
+                "A contextualização adapta apenas a forma de comunicação; o sincretismo altera o próprio conteúdo do Evangelho",
+                "O sincretismo é sempre preferível, por respeitar mais a cultura local",
+                "A contextualização é sempre pecaminosa e deve ser evitada",
+              ],
+              correctIndex: 1,
+              explanation: "Contextualização legítima varia a forma (língua, ilustrações, pontos de contato); sincretismo compromete o conteúdo essencial da fé.",
+            },
+            {
+              question: "Segundo 1 Coríntios 9:22-23, por que Paulo se fazia 'tudo para todos'?",
+              options: [
+                "Para agradar a todos e evitar qualquer tipo de conflito",
+                "Para, por todos os meios possíveis, ver algumas pessoas salvas",
+                "Porque não tinha convicções firmes sobre o Evangelho",
+                "Para se adaptar culturalmente a ponto de mudar sua mensagem",
+              ],
+              correctIndex: 1,
+              explanation: "A flexibilidade de Paulo era estratégica e missionária — na forma de se relacionar e comunicar —, nunca um compromisso do conteúdo do Evangelho.",
+            },
+          ],
+          application:
+            "Pense em uma pessoa próxima cuja cultura, geração ou formação seja diferente da sua. Reflita sobre qual 'altar ao Deus desconhecido' — uma pergunta, um anseio ou uma busca já presente na vida dessa pessoa — poderia servir de ponte honesta para uma conversa sobre o Evangelho.",
+          prayer:
+            "Senhor, dá-me sabedoria para anunciar o teu Evangelho de forma compreensível a cada pessoa que colocas em meu caminho, sem jamais alterar ou diluir a verdade que tu revelaste. Ajuda-me a construir pontes genuínas, como Paulo fez em Atenas, sem nunca abrir mão do conteúdo da cruz e da ressurreição de Cristo. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Leia Atos 17:16-34 por completo esta semana e anote pelo menos três estratégias de comunicação que Paulo usou, avaliando como elas poderiam inspirar uma conversa sua com alguém de fora da fé cristã.",
+          reflectionQuestion:
+            "Você tende mais a errar pelo lado de comunicar o Evangelho de forma distante e incompreensível, ou pelo lado de suavizar demais a mensagem para evitar desconforto?",
+          xp: 30,
+        },
+      ],
+    },
   ],
 };
 
