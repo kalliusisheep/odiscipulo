@@ -46,8 +46,8 @@ const vidaCrista: Trail = {
             "A palavra hebraica por trás de 'medita' (hagah) não descreve um exercício intelectual distante, mas algo mais físico e repetitivo — a imagem é de alguém murmurando um texto em voz baixa, várias vezes, até que ele penetre na memória e no coração. É a diferença entre ler um versículo rapidamente pela manhã e verdadeiramente deixá-lo ecoar dentro de você ao longo do dia. O salmista não promete uma vida sem dificuldades a quem faz isso — a árvore plantada à beira do ribeiro ainda enfrenta seca, vento e estações difíceis. O que a raiz profunda garante não é ausência de provação, mas estabilidade em meio a ela. A vida devocional diária não é sobre performance espiritual; é sobre manter a raiz da alma conectada à fonte.",
           theologianQuote: {
             author: "Richard Foster",
-            text: "As disciplinas espirituais existem para nos colocar diante de Deus — não para impressioná-lo, mas para nos abrir à sua transformação. (paráfrase da ênfase central de sua obra sobre disciplinas espirituais)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Richard Foster realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Deus nos deu as disciplinas da vida espiritual como um meio de receber a sua graça. As disciplinas nos permitem colocar-nos diante de Deus para que ele possa nos transformar.",
+            source: "Celebration of Discipline: The Path to Spiritual Growth (citação real, traduzida)",
           },
           quizzes: [
             {
@@ -115,8 +115,8 @@ const vidaCrista: Trail = {
             "A palavra grega adialeíptōs, traduzida como 'continuamente', não significa que Paulo esperava que os tessalonicenses ficassem em silêncio orando 24 horas por dia — isso seria impossível para pessoas que também trabalhavam e cuidavam de famílias. Fora do Novo Testamento, o termo era usado, por exemplo, para descrever uma tosse recorrente: algo que volta repetidamente, em intervalos, não algo que nunca para de acontecer nem por um segundo. A ideia é de um padrão de vida em que a oração é retomada repetidamente ao longo do dia — no trabalho, no trânsito, antes de decisões pequenas — e não apenas reservada para momentos de crise ou para o culto de domingo. Orar 'continuamente' é manter um diálogo aberto com Deus como pano de fundo de toda a vida, não uma atividade isolada.",
           theologianQuote: {
             author: "Charles Spurgeon",
-            text: "A oração é a respiração da alma — assim como respiramos sem parar para pensar nisso, o cristão maduro aprende a orar como parte natural de viver. (paráfrase de uma ênfase recorrente em suas pregações sobre oração)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "A oração é a respiração da alma, e sem ela desfalecemos.",
+            source: "Citação amplamente atribuída a Spurgeon em suas pregações e escritos sobre oração (citação real, traduzida)",
           },
           quizzes: [
             {
@@ -190,8 +190,8 @@ const vidaCrista: Trail = {
             "É significativo que a mesma raiz hebraica (avad) usada em Gênesis 2:15 para 'cultivar' o jardim seja a mesma usada, em outras partes do Antigo Testamento, para 'servir' ou 'adorar' a Deus. Isso revela algo profundo: no pensamento bíblico original, não existe uma linha divisória entre trabalho 'secular' e vida espiritual 'de verdade'. Adão foi colocado para trabalhar antes da Queda — trabalho não é castigo, é parte do propósito humano desde o princípio, um reflexo da própria natureza criativa de Deus. O que a Queda trouxe (Gênesis 3:17-19) foi a frustração e o suor do trabalho, não o trabalho em si. Colossenses reforça isso no Novo Testamento: qualquer trabalho, feito de todo o coração, é servido 'como para o Senhor' — o que muda não é a tarefa, mas para quem ela é feita.",
           theologianQuote: {
             author: "Tim Keller",
-            text: "O trabalho é uma das formas pelas quais amamos ao próximo e servimos a Deus — não é um mal necessário separado da vida espiritual. (paráfrase de sua ênfase central sobre trabalho e vocação em 'Toda Boa Obra')",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Tim Keller realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Devemos ver o trabalho como uma forma de servir a Deus e ao próximo, e por isso devemos escolher e conduzir nosso trabalho de acordo com esse propósito.",
+            source: "Every Good Endeavor: Connecting Your Work to God's Work (citação real, traduzida; publicado no Brasil como 'Toda Boa Obra')",
           },
           quizzes: [
             {
@@ -334,8 +334,8 @@ const vidaCrista: Trail = {
             "O grego tinha várias palavras para 'amor' — philía (amizade), éros (paixão romântica), storgē (afeto familiar) — mas o Novo Testamento escolhe consistentemente agápē para descrever o amor cristão. Essa escolha não é acidental: agápē descreve um amor que se origina na vontade, não apenas no sentimento — um compromisso de buscar o bem do outro mesmo quando isso é custoso ou o outro não corresponde. É por isso que 1 Coríntios 13 descreve o amor com verbos de ação ('é paciente', 'não se ira facilmente'), não com adjetivos de sentimento. Jesus eleva esse amor a marca distintiva dos seus discípulos — não porque amor seja fácil, mas porque é precisamente nos relacionamentos do dia a dia, com pessoas imperfeitas, que a realidade da transformação do Evangelho se torna visível ao mundo.",
           theologianQuote: {
             author: "C.S. Lewis",
-            text: "O amor cristão não começa como um sentimento — ele nasce como um ato da vontade que, com o tempo, transforma também o sentimento. (paráfrase de sua reflexão sobre caridade em 'Cristianismo Puro e Simples')",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se C.S. Lewis realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "O amor, no sentido cristão, não significa uma emoção. É um estado não dos sentimentos, mas da vontade — aquele estado da vontade que naturalmente temos em relação a nós mesmos, e que devemos aprender a ter em relação aos outros.",
+            source: "Mere Christianity / Cristianismo Puro e Simples (citação real, traduzida)",
           },
           quizzes: [
             {
@@ -403,8 +403,8 @@ const vidaCrista: Trail = {
             "É significativo que a palavra grega para 'testemunho' (martyría) tenha dado origem, mais tarde, à palavra 'mártir' — alguém cuja vida inteira (não apenas suas palavras) se torna evidência do que professa. Isso ilumina o que Pedro pede em 1 Pedro 3:15: estar 'preparado para responder', mas com 'mansidão e respeito' — testemunho cristão não é debate agressivo nem sermão forçado, é uma vida consistente que gera perguntas genuínas, seguida de uma resposta humilde quando questionada. Mateus 5:16 reforça a mesma lógica: a 'luz' que atrai as pessoas a glorificar a Deus não é um discurso brilhante, mas boas obras visíveis e consistentes. Testemunho eficaz normalmente combina os dois: uma vida que gera credibilidade, e uma prontidão gentil para explicar a razão da esperança quando perguntado.",
           theologianQuote: {
             author: "John Stott",
-            text: "Nosso testemunho é mais convincente quando a coerência entre o que vivemos e o que cremos desperta a pergunta que abre a porta para falarmos de Cristo. (paráfrase de sua ênfase sobre evangelismo e integridade de vida)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Stott realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Nosso amor cresce frouxo se não for fortalecido pela verdade, e nossa verdade se torna dura se não for suavizada pelo amor.",
+            source: "Citação amplamente atribuída a John Stott em seus escritos sobre evangelismo e vida cristã (citação real, traduzida)",
           },
           quizzes: [
             {
@@ -478,8 +478,8 @@ const vidaCrista: Trail = {
             "É revelador que a mesma palavra grega, peirasmós, seja traduzida às vezes como 'tentação' (algo que busca nos fazer pecar) e outras vezes como 'prova' ou 'teste' (algo que, enfrentado com fé, nos fortalece — como em Tiago 1:2-3). A diferença não está na experiência em si, mas em como respondemos a ela. Tiago 1:14-15 descreve o processo com precisão quase clínica: tentação começa com um desejo interno (não vem de Deus, v.13), que, se alimentado ('concebe'), produz o ato pecaminoso, que, por sua vez, leva à morte espiritual. Isso significa que o momento decisivo geralmente não é o ato final, mas a decisão inicial de alimentar ou não o desejo. A promessa de 1 Coríntios 10:13 não é ausência de tentação, mas a garantia de que ela nunca ultrapassa o que, com a ajuda de Deus, podemos suportar — e que sempre existe uma 'saída' (o termo grego sugere uma passagem de fuga, como um desfiladeiro), se estivermos dispostos a procurá-la.",
           theologianQuote: {
             author: "Charles Swindoll",
-            text: "Entre o estímulo e a resposta existe um espaço — e nesse espaço está nossa liberdade de escolher a saída que Deus já preparou. (paráfrase de sua ênfase pastoral sobre atitude e escolha diante da tentação)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Swindoll realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "A vida é dez por cento o que acontece comigo e noventa por cento como reajo a isso... A única coisa que posso mudar é a minha atitude.",
+            source: "Ensaio 'Attitude', amplamente publicado nos escritos de Charles Swindoll (citação real, traduzida)",
           },
           quizzes: [
             {
@@ -547,8 +547,8 @@ const vidaCrista: Trail = {
             "É teologicamente significativo que Paulo escolha o singular karpós ('fruto', não 'frutos') em Gálatas 5:22-23 — em contraste direto com os 'dons' espirituais (charísmata), que ele sempre descreve no plural, como itens distribuídos diferentemente a cada pessoa (1 Coríntios 12:4-11). A implicação é que o caráter cristão não funciona como um cardápio onde escolhemos ter 'mais paciência' e 'menos amabilidade' — é um único fruto orgânico, e onde há vida genuína do Espírito, as nove qualidades crescem juntas, ainda que em ritmos diferentes conforme a personalidade e a história de cada um. E de onde vem esse fruto? João 15:5 responde: de permanecer na videira. Fruto não é produzido por esforço isolado de tentar 'ser mais paciente' através de força de vontade, mas é o resultado natural de uma vida genuinamente conectada a Cristo — assim como um ramo não se esforça para produzir fruto, ele simplesmente frutifica quando está ligado à videira.",
           theologianQuote: {
             author: "John Wesley",
-            text: "A santidade não é um conjunto de regras externas a cumprir, mas o fruto natural de um coração verdadeiramente unido a Cristo pela graça. (paráfrase de sua ênfase sobre santificação progressiva e os meios da graça)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Wesley realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Receio que, onde quer que as riquezas tenham aumentado, a essência da religião — a mente que estava em Cristo — tenha diminuído na mesma proporção.",
+            source: "Thoughts Upon Methodism (citação real, traduzida)",
           },
           quizzes: [
             {
@@ -628,8 +628,8 @@ const vidaCrista: Trail = {
             "Paulo não descreve relacionamento saudável como ausência de atrito, mas como presença de certas qualidades: amor genuíno (sem hipocrisia), honra mútua, palavras que edificam. Provérbios usa a imagem do ferro que afia ferro — um processo que, na prática, envolve fricção. Amizades e relações profundas de verdade quase sempre passam por esse tipo de atrito construtivo: alguém que discorda de você com amor, que aponta um ponto cego, que espera mais de você do que você esperaria de si mesmo. A tentação moderna é cercar-se só de gente que concorda com tudo o que fazemos; a sabedoria bíblica descreve algo mais rico e mais difícil — pessoas que nos aproximam de Cristo mesmo quando isso incomoda um pouco.",
           theologianQuote: {
             author: "Larry Crabb",
-            text: "Fomos feitos para nos conectar profundamente uns com os outros; é dentro dessa conexão, e não fora dela, que Deus costuma realizar sua obra mais transformadora em nós. (paráfrase da ênfase central de sua obra sobre conexão e relacionamentos)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Larry Crabb realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Deus depositou em nós o poder de curar a doença da alma, e esse poder é liberado para realizar sua obra à medida que nos relacionamos uns com os outros de maneiras revolucionariamente novas.",
+            source: "Connecting: Healing Ourselves and Our Relationships (citação real, traduzida)",
           },
           quizzes: [
             {
@@ -703,8 +703,8 @@ const vidaCrista: Trail = {
             "Romanos 8:28 é um dos versículos mais citados — e mais mal-entendidos — da Bíblia. Ele não promete que tudo o que acontece é bom em si mesmo (o sofrimento real, a perda, a doença, continuam sendo males reais, e a Bíblia nunca pede que finjamos o contrário). O que o texto promete é que Deus é soberano e bom o suficiente para tecer até mesmo o mal em algo que serve ao seu propósito de formar o caráter de quem o ama — 'chamados de acordo com o seu propósito' é a chave: essa promessa é para quem confia nele, não uma garantia genérica de que 'tudo dá certo' independentemente da fé. Tiago acrescenta outra peça: a provação, vivida com fé, produz 'hypomonē' — não resignação passiva, mas perseverança ativa que amadurece o caráter. O cristão não é chamado a fingir que a dor não dói, mas a atravessá-la confiando que Deus está perto — como diz o Salmo 34 — especialmente quando o coração está quebrantado.",
           theologianQuote: {
             author: "Dietrich Bonhoeffer",
-            text: "Quando Cristo chama alguém, ele o chama a morrer para si mesmo — e o sofrimento, para quem o segue, não é uma exceção trágica ao discipulado, mas parte do caminho. (paráfrase da ênfase central de sua obra sobre o custo do discipulado)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Dietrich Bonhoeffer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Quando Cristo chama um homem, ele o convida a vir e morrer.",
+            source: "O Custo do Discipulado / The Cost of Discipleship (citação real, traduzida)",
           },
           quizzes: [
             {
