@@ -7,6 +7,7 @@ import {
   Calendar,
   Check,
   ChevronRight,
+  Crown,
   Loader2,
   MessageCircle,
   Plus,
@@ -30,6 +31,7 @@ const TEMAS = [
   "Dificuldade financeira", "Vida devocional", "Perdão", "Empatia", "Serviço (Mordomia)",
   "Preparo para liderar", "Batismo",
 ];
+const LEADER_LESSON_IDS = ["csl-1", "csl-2", "csl-3", "csl-4", "csl-5", "csl-6", "csl-7", "csl-8", "csl-9", "csl-10"];
 
 type Person = { id: string; display_name: string; username: string | null; avatar_url: string | null; xp: number; streak: number };
 type Group = { id: string; name: string; topic: string; created_at: string; members: number };
@@ -42,6 +44,7 @@ function LiderPage() {
   const [contacts, setContacts] = useState<Person[]>([]);
   const [groups, setGroups] = useState<Group[]>([]);
   const [meetings, setMeetings] = useState<Meeting[]>([]);
+  const [leaderLessonsDone, setLeaderLessonsDone] = useState(0);
   const [loading, setLoading] = useState(true);
   const [dialog, setDialog] = useState<"disciple" | "group" | "meeting" | null>(null);
   const [saving, setSaving] = useState(false);
@@ -55,11 +58,12 @@ function LiderPage() {
   const [meetingLocation, setMeetingLocation] = useState("");
 
   const load = async (leaderId: string) => {
-    const [linksResponse, contactsResponse, groupsResponse, meetingsResponse] = await Promise.all([
+    const [linksResponse, contactsResponse, groupsResponse, meetingsResponse, progressResponse] = await Promise.all([
       db.from("leader_disciples").select("disciple_id").eq("leader_id", leaderId),
       db.from("friendships").select("friend_id").eq("user_id", leaderId),
       db.from("groups").select("id, name, topic, created_at").eq("leader_id", leaderId).order("created_at", { ascending: false }),
       db.from("leader_meetings").select("id, title, scheduled_at, location").eq("leader_id", leaderId).gte("scheduled_at", new Date().toISOString()).order("scheduled_at").limit(3),
+      db.from("lesson_progress").select("lesson_id").eq("user_id", leaderId).in("lesson_id", LEADER_LESSON_IDS),
     ]);
 
     const discipleIds = (linksResponse.data ?? []).map((row: { disciple_id: string }) => row.disciple_id);
@@ -81,6 +85,7 @@ function LiderPage() {
     (memberResponse.data ?? []).forEach((member: { group_id: string }) => totals.set(member.group_id, (totals.get(member.group_id) ?? 0) + 1));
     setGroups(rawGroups.map((group: Omit<Group, "members">) => ({ ...group, members: totals.get(group.id) ?? 0 })));
     setMeetings((meetingsResponse.data ?? []) as Meeting[]);
+    setLeaderLessonsDone((progressResponse.data ?? []).length);
   };
 
   useEffect(() => {
@@ -219,6 +224,27 @@ function LiderPage() {
         <ActionBtn icon={MessageCircle} label="Mensagem" onClick={() => void navigate({ to: "/mensagens" })} />
         <ActionBtn icon={Calendar} label="Encontro" onClick={() => setDialog("meeting")} />
       </div>
+
+      <section className="space-y-2">
+        <h2 className="px-1 text-sm font-semibold text-muted-foreground">Formação de liderança</h2>
+        <Link
+          to="/modulo/$id"
+          params={{ id: "como-ser-lider" }}
+          className="group relative block overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-900 p-4 transition-all duration-300 hover:scale-[1.01]"
+        >
+          <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-violet-400/20 blur-3xl" />
+          <div className="relative flex items-center gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/10"><Crown className="h-5 w-5 text-white/90" /></div>
+            <div className="min-w-0 flex-1">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-white/70">Módulo de liderança</span>
+              <p className="mt-0.5 truncate font-semibold text-white/95">Como ser um líder</p>
+              <p className="truncate text-xs text-white/60">10 trilhas para liderar à maneira de Cristo</p>
+              <div className="mt-2.5 flex items-center gap-3"><div className="h-2 flex-1 overflow-hidden rounded-full bg-white/10 p-[2px]"><div className="h-full rounded-full bg-gradient-to-r from-violet-300 to-indigo-200" style={{ width: `${leaderLessonsDone * 10}%` }} /></div><span className="text-[10px] font-bold text-white/70">{leaderLessonsDone}/10</span></div>
+            </div>
+            <ChevronRight className="h-4 w-4 text-white/60" />
+          </div>
+        </Link>
+      </section>
 
       <section className="space-y-2">
         <h2 className="px-1 text-sm font-semibold text-muted-foreground">Grupos de Discipulado</h2>
