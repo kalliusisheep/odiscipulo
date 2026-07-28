@@ -157,7 +157,7 @@ const novoConvertido: Trail = {
           theologianQuote: {
             author: "C.S. Lewis",
             text: "Um homem que fosse meramente humano e dissesse as coisas que Jesus disse não seria um grande mestre moral. Ele seria um lunático — no mesmo nível do homem que diz ser um ovo pochê — ou então seria o Diabo do inferno. Você precisa fazer sua escolha.",
-            source: "Cristianismo Puro e Simples (Mere Christianity)",
+            source: "Mere Christianity (Cristianismo Puro e Simples), Livro II, cap. 3",
           },
           deepen: {
             additionalVerses: [
@@ -186,7 +186,8 @@ const novoConvertido: Trail = {
               "A doutrina da encarnação — Jesus plenamente Deus e plenamente homem numa só pessoa — é uma doutrina essencial da fé cristã histórica, confessada por praticamente toda a Igreja ortodoxa ao longo dos séculos, e não é um tema de divergência legítima entre cristãos fiéis, diferente de outros temas tratados nesta trilha. Ainda assim, é importante saber que grupos que negam a plena divindade de Cristo (como as Testemunhas de Jeová, historicamente) ou sua plena humanidade se afastam, neste ponto, da ortodoxia cristã histórica. Se você tiver dúvidas específicas sobre esse tema ao conversar com pessoas de outras tradições religiosas, procure seu pastor ou líder de discipulado para aprofundar com cuidado pastoral.",
             secondQuote: {
               author: "John Stott",
-              text: "Jesus Cristo não é apenas um bom exemplo a seguir; ele é o próprio Deus que se fez homem para nos alcançar onde estávamos.",
+              text: "O primeiro passo para seguir Jesus Cristo é a humilde confissão de que precisamos dele.",
+              source: "Why I Am a Christian",
             },
           },
           quizzes: [
@@ -277,9 +278,9 @@ const novoConvertido: Trail = {
           deepDive:
             "Quando Jesus fala do novo nascimento a Nicodemos, ele não está descrevendo um esforço religioso melhor — está descrevendo uma recriação. A palavra 'anōthen' carrega intencionalmente dois sentidos: 'de novo' e 'do alto'. Ambos importam. É uma origem nova, e essa origem vem de Deus. Paulo confirma o mesmo mistério em outra palavra: 'kainē ktisis' — não uma versão melhorada da criatura antiga, mas uma criação qualitativamente diferente. O verbo por trás é o mesmo de Gênesis 1: Deus cria. Isso é o que aconteceu com você. Não foi você que decidiu mudar; foi Deus que começou uma obra nova, e agora sua parte é aprender a viver à altura dessa nova identidade.",
           theologianQuote: {
-            author: "Paul Washer",
-            text: "A evidência da conversão não é um cartão de decisão preenchido; é uma vida sendo vivida.",
-            source: "citação amplamente atribuída a Washer em suas pregações sobre conversão verdadeira",
+            author: "Charles Spurgeon",
+            text: "Minha fé não descansa no que eu sou, ou serei, ou sinto, ou sei, mas no que Cristo é, no que ele fez e no que está fazendo por mim.",
+            source: "citação amplamente compilada dos sermões e escritos de C. H. Spurgeon",
           },
           deepen: {
             additionalVerses: [
@@ -396,8 +397,8 @@ const novoConvertido: Trail = {
             "João escreve para que você 'saiba' — não sinta apenas, mas saiba. A segurança tem duas testemunhas: a Palavra escrita (você creu no nome do Filho, e a promessa é firme) e o Espírito (que 'symmartyrei' — testifica junto). Sentimentos oscilam; essas duas testemunhas não. Quando a dúvida bate, o caminho não é buscar mais emoção, mas voltar às testemunhas: o que Deus disse na Palavra, e o que o Espírito confirma no íntimo — um desejo por Deus, uma tristeza pelo pecado, uma inclinação para as coisas do alto que antes não existia. Essas marcas, ainda que pequenas, são obra do Espírito e não podem ser forjadas pela carne.",
           theologianQuote: {
             author: "Charles Spurgeon",
-            text: "Não há nada tão enganoso quanto os sentimentos. O cristão não pode viver de sentimentos.",
-            source: "atribuído a pregações de Spurgeon sobre fé e sentimentos — verificar edição de sermão antes de publicar",
+            text: "A fé salvadora é uma relação imediata com Cristo: aceitá-lo, recebê-lo e descansar somente nele para a justificação, a santificação e a vida eterna, pela graça de Deus.",
+            source: "citação amplamente compilada dos sermões de C. H. Spurgeon",
           },
           deepen: {
             additionalVerses: [
@@ -508,8 +509,9 @@ const novoConvertido: Trail = {
           deepDive:
             "O salmista não diz que a Palavra é um holofote que ilumina o horizonte inteiro — ela é 'nēr', a lâmpada de óleo que ilumina o próximo passo. Deus raramente mostra o mapa completo; Ele mostra o próximo passo. Por isso a leitura diária: você precisa da luz de hoje, não da luz do ano que vem. E Jesus, ao ser tentado no deserto, revela que a Palavra é alimento tão essencial quanto o pão. Sem ela, o homem interior enfraquece — mesmo que o exterior pareça forte. A disciplina da leitura diária não é para ganhar aprovação de Deus, mas para receber a luz e o pão que Ele já disse que você precisa hoje.",
           theologianQuote: {
-            author: "Hernandes Dias Lopes",
-            text: "NÃO VERIFICADO — não encontrei essa frase em nenhuma obra publicada de Hernandes Dias Lopes. Substitua por uma citação real dele ou remova a atribuição antes de publicar.",
+            author: "J. I. Packer",
+            text: "Se eu fosse o diabo, um dos meus primeiros alvos seria impedir as pessoas de mergulhar na Bíblia.",
+            source: "citação amplamente atribuída a J. I. Packer em compilações de suas obras",
           },
           deepen: {
             additionalVerses: [
@@ -537,7 +539,8 @@ const novoConvertido: Trail = {
               "Um tema prático, e não propriamente doutrinário, é a escolha da versão bíblica para leitura diária. Traduções de equivalência dinâmica (como NVI e NVT) priorizam clareza e fluência na leitura; traduções de equivalência formal (como ACF e a tradição da KJV) priorizam proximidade literal com o texto original, sendo úteis para estudo mais detido. Nenhuma escolha é errada — muitos leitores se beneficiam de usar uma versão de leitura fluente no dia a dia e consultar uma mais literal ao estudar com mais profundidade.",
             secondQuote: {
               author: "Charles Spurgeon",
-              text: "Uma Bíblia que se desfaz pelo uso normalmente pertence a alguém que não se desfaz.",
+              text: "A Escritura, em sua própria esfera, é como Deus no universo: absolutamente suficiente.",
+              source: "The Greatest Fight (A Grande Batalha)",
             },
           },
           quizzes: [
@@ -615,7 +618,8 @@ const novoConvertido: Trail = {
             "Jesus começa a oração modelo com 'Páter' — a palavra que uma criança usava para chamar seu pai em casa. Não é performance. Deus não é impressionado com vocabulário difícil; Ele é comovido por corações filiais. E quando você não souber orar (todos nós passamos por isso), Paulo garante: o Espírito ora por você. O verbo 'synantilambánetai' descreve alguém que pega o outro lado da carga junto contigo. Você não ora sozinho. Comece pequeno. Fale com o Pai como um filho — e confie que, mesmo quando as palavras falharem, o Espírito continua traduzindo o coração para Deus.",
           theologianQuote: {
             author: "C.S. Lewis",
-            text: "CUIDADO — 'A oração não muda Deus, ela muda a mim' costuma circular como frase de C.S. Lewis, mas na verdade vem da peça 'Shadowlands', de William Nicholson (personagem inspirado em Lewis, não uma citação real dele). Troque por uma citação genuína de Lewis sobre oração (ex.: 'Cartas a Malcolm') ou remova a atribuição.",
+            text: "Devemos apresentar diante dEle o que há em nós — não o que deveria haver em nós.",
+            source: "Letters to Malcolm: Chiefly on Prayer (Cartas a Malcolm), carta 4",
           },
           deepen: {
             additionalVerses: [
@@ -643,7 +647,8 @@ const novoConvertido: Trail = {
               "Cristãos de tradições continuístas entendem os 'gemidos inexprimíveis' de Romanos 8:26, ou expressões semelhantes, como relacionados à oração em línguas como prática contínua na igreja hoje. Esta trilha segue uma perspectiva cessacionista moderada, entendendo que os dons de línguas descritos no Novo Testamento eram idiomas humanos reais (como em Atos 2) com um propósito específico de sinal para aquela fase da história da redenção, e que o texto de Romanos 8:26 descreve a intercessão do próprio Espírito, distinta de qualquer fala humana. Cristãos fiéis discordam legitimamente sobre esse tema — é uma questão secundária, e vale conversar com sua liderança espiritual sobre como sua igreja local o compreende.",
             secondQuote: {
               author: "Charles Spurgeon",
-              text: "A oração é o respirar da alma nova, o clamor natural do coração que Deus regenerou.",
+              text: "A oração é o respirar, a palavra de ordem, o consolo, a força e a honra do cristão.",
+              source: "Morning and Evening (Manhã e Tarde), 1º de janeiro",
             },
           },
           quizzes: [
