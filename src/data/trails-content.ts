@@ -907,6 +907,202 @@ const comoEstudarBiblia: Trail = {
         },
       ],
     },
+    {
+      id: "ceb-mod-5",
+      title: "Módulo V: A Grande História e Como Interrogar o Texto",
+      lessons: [
+        {
+          id: "ceb-5-1",
+          title: "A Metanarrativa Bíblica: Uma História, Um Herói",
+          intro: [
+            "A Bíblia não é uma coletânea de sessenta e seis livros soltos, nem um manual de frases de efeito para os dias difíceis. É uma única história, contada ao longo de mais de mil anos por dezenas de autores diferentes, que caminha do jardim do Éden até a cidade celestial — e que tem um único herói do início ao fim: Jesus Cristo.",
+            "Quando lemos a Bíblia sem enxergar essa história maior, corremos o risco de transformar cada personagem em um exemplo moral isolado (Davi ensina coragem, Rute ensina lealdade) e perder o que realmente está em jogo: como Deus, através de toda a história, está resgatando para si um povo e restaurando o que o pecado destruiu.",
+            "Os próprios discípulos de Emaús só entenderam as Escrituras quando Jesus lhes mostrou como toda ela apontava para ele. Ler a Bíblia como metanarrativa não é uma técnica acadêmica — é aprender a ler do jeito que o próprio Senhor ensinou.",
+          ],
+          verses: [
+            {
+              ref: "Lucas 24:27",
+              textByVersion: {
+                NVI: "E, começando por Moisés e todos os Profetas, explicou-lhes o que constava a respeito dele em todas as Escrituras.",
+              },
+            },
+            {
+              ref: "Gênesis 3:15",
+              textByVersion: {
+                NVI: "Porei inimizade entre você e a mulher, e entre a sua descendência e o descendente dela; este lhe ferirá a cabeça, e você lhe ferirá o calcanhar.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "תּוֹלְדוֹת", translit: "toledot", meaning: "'gerações, relato de origem'. Palavra usada repetidamente em Gênesis para marcar as divisões da história — um sinal de que o livro já foi escrito como narrativa estruturada, não como fragmentos soltos.", lang: "hebraico" },
+            { word: "οἰκονομία", translit: "oikonomia", meaning: "'administração, plano, economia'. Termo usado por Paulo para descrever o plano de Deus se desdobrando através das eras da história.", lang: "grego" },
+          ],
+          deepDive:
+            "A Bíblia pode ser lida como um drama em quatro atos. Criação: Deus faz um mundo bom e coloca o ser humano nele à sua imagem, para refletir sua glória e cuidar do que ele criou. Queda: Adão e Eva desobedecem, o pecado entra no mundo, e a comunhão perfeita entre Deus e a humanidade é quebrada — mas, já em Gênesis 3:15, Deus promete um descendente que esmagará a cabeça da serpente. Redenção: o restante do Antigo Testamento é a longa preparação para esse descendente — através de Abraão, Israel, os reis e os profetas — até que, na plenitude do tempo, Jesus Cristo vem, vive a vida perfeita que ninguém viveu, morre a morte que os pecadores deviam morrer e ressuscita, inaugurando o novo povo de Deus. Restauração: a igreja vive agora entre a primeira e a segunda vinda de Cristo, anunciando as boas-novas até que ele volte para fazer novos os céus e a nova terra, onde Deus habitará para sempre com o seu povo. Cada texto da Bíblia ocupa um lugar nesse mapa maior — e perguntar 'em que ato dessa história este texto está?' evita tanto o moralismo raso quanto a alegorização sem controle.",
+          theologianQuote: {
+            author: "Vaughan Roberts",
+            text: "A Bíblia conta a história de como Deus está reunindo para si um povo, para viver debaixo do seu governo, em seu lugar, para sua própria glória.",
+            source: "Uma Visão Panorâmica da Bíblia",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Efésios 1:9-10",
+                textByVersion: {
+                  NVI: "Ele nos revelou o mistério da sua vontade [...], que ele propôs em Cristo, com o fim de fazer convergir nele, quando os tempos se cumprissem, todas as coisas, tanto as do céu como as da terra.",
+                },
+              },
+              {
+                ref: "Apocalipse 21:3",
+                textByVersion: {
+                  NVI: "Ouvi uma forte voz que vinha do trono e dizia: 'Agora o tabernáculo de Deus está entre os homens, com os quais ele viverá. Eles serão povos dele; o próprio Deus estará com eles e será o seu Deus.'",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "ἀνακεφαλαίωσις", translit: "anakephalaiōsis", meaning: "'recapitulação, reunião de tudo sob uma só cabeça'. Palavra rara usada em Efésios 1:10 para descrever o objetivo final da história: tudo reunido em Cristo.", lang: "grego" },
+              { word: "בְּרִית", translit: "berit", meaning: "'aliança, pacto'. A espinha dorsal que conecta as diferentes eras da história bíblica — com Noé, Abraão, Israel, Davi e, por fim, a Nova Aliança em Cristo.", lang: "hebraico" },
+            ],
+            historicalContext:
+              "No século XX, teólogos como Geerhardus Vos e, mais tarde, Graeme Goldsworthy ajudaram a recuperar, no meio evangélico, o hábito de ler a Bíblia como uma história progressiva de revelação centrada em Cristo — em reação a um estudo bíblico que havia se tornado excessivamente fragmentado, tratando cada capítulo como uma unidade moral independente, desconectada do restante da Escritura.",
+            exegeticalNotes:
+              "As alianças bíblicas funcionam como os capítulos dessa história: a aliança noaica preserva a criação; a abraâmica promete descendência, terra e bênção para todas as nações; a mosaica constitui Israel como povo de Deus sob a Lei; a davídica promete um rei eterno; e a Nova Aliança, anunciada por Jeremias e inaugurada por Cristo, cumpre e transcende todas as anteriores. Rastrear essas alianças é uma das formas mais seguras de acompanhar o enredo bíblico sem se perder.",
+            theologicalDebate:
+              "Cristãos evangélicos fiéis divergem sobre o grau de continuidade entre Israel e a Igreja dentro dessa metanarrativa — teologia do pacto e dispensacionalismo oferecem mapas um pouco diferentes para a mesma história. Essa é uma questão secundária de interpretação profética, não uma doutrina essencial da fé; o essencial — que a história inteira caminha para Cristo e culmina nele — é compartilhado por ambas as tradições.",
+            secondQuote: {
+              author: "Graeme Goldsworthy",
+              text: "O evangelho de Jesus Cristo é o centro a partir do qual toda a Escritura deve ser entendida.",
+            },
+          },
+          quizzes: [
+            {
+              question: "Quais são os quatro grandes atos da metanarrativa bíblica?",
+              options: [
+                "Criação, Queda, Redenção e Restauração",
+                "Lei, Profetas, Evangelhos e Cartas",
+                "Israel, Babilônia, Roma e Igreja",
+                "Gênesis, Êxodo, Levítico e Números",
+              ],
+              correctIndex: 0,
+            },
+            {
+              question: "Segundo Lucas 24:27, o que Jesus mostrou aos discípulos de Emaús a respeito das Escrituras?",
+              options: [
+                "Que a Lei de Moisés já não tinha mais valor",
+                "Que todas as Escrituras falavam a respeito dele",
+                "Que os profetas haviam se enganado sobre o Messias",
+                "Que era melhor ler cada livro de forma isolada",
+              ],
+              correctIndex: 1,
+            },
+          ],
+          application:
+            "Escolha uma passagem bíblica que você conhece bem e escreva, em poucas frases, em qual dos quatro atos da história (Criação, Queda, Redenção, Restauração) ela se encaixa e como ela aponta para Cristo.",
+          prayer:
+            "Senhor, obrigado por não me deixares perdido em fragmentos, mas por me dares uma história inteira, com começo, meio e um final glorioso em Cristo. Ensina-me a ler cada página da tua Palavra enxergando para onde ela aponta. Amém.",
+          weeklyChallenge:
+            "Leia Gênesis 1–3 e Apocalipse 21–22 na mesma semana. Anote pelo menos três paralelos ou contrastes entre o início e o fim da história bíblica (jardim e cidade, árvore da vida, presença de Deus, etc.).",
+          reflectionQuestion:
+            "Como a minha própria história de fé se encaixa nessa história maior de Deus resgatando um povo para si?",
+          xp: 30,
+        },
+        {
+          id: "ceb-5-2",
+          title: "Perguntas ao Texto: Aprendendo a Interrogar as Escrituras",
+          intro: [
+            "Bons leitores da Bíblia não são, antes de tudo, pessoas com muitas respostas — são pessoas que aprenderam a fazer boas perguntas ao texto. Quando Filipe encontrou o oficial etíope lendo o profeta Isaías, sua primeira pergunta não foi teológica: foi simplesmente 'Você entende o que está lendo?'.",
+            "Uma leitura apressada tende a pular direto para 'o que isso significa para mim?'. Mas antes dessa pergunta existem outras, mais silenciosas e mais importantes, que preparam o terreno para uma aplicação honesta em vez de uma aplicação inventada.",
+            "Este estudo apresenta quatro famílias de perguntas — observação, contexto, teologia e aplicação — que você pode levar para qualquer texto da Bíblia, do Gênesis ao Apocalipse, e sair com um entendimento mais firme do que Deus realmente está dizendo.",
+          ],
+          verses: [
+            {
+              ref: "Atos 8:30-31",
+              textByVersion: {
+                NVI: "Filipe correu para o carro e ouviu o homem lendo o profeta Isaías. Filipe lhe perguntou: 'Você entende o que está lendo?' Ele respondeu: 'Como poderei entender se alguém não me ajudar?'",
+              },
+            },
+            {
+              ref: "Neemias 8:8",
+              textByVersion: {
+                NVI: "Eles liam claramente o livro da Lei de Deus, interpretando-o e explicando o sentido para que o povo pudesse entender o que estava sendo lido.",
+              },
+            },
+          ],
+          keywords: [
+            { word: "בִּין", translit: "bin", meaning: "'discernir, dar entendimento'. Verbo usado em Neemias 8:8 para o trabalho dos levitas de tornar clara a leitura pública da Lei.", lang: "hebraico" },
+            { word: "γινώσκω", translit: "ginōskō", meaning: "'conhecer, compreender'. Verbo por trás da pergunta de Filipe ao etíope em Atos 8:30 — entender não é automático; é algo que se busca.", lang: "grego" },
+          ],
+          deepDive:
+            "A primeira família de perguntas é de observação: o que o texto realmente diz? Quem fala, para quem, o quê, quando, onde — sem pular para conclusões. A segunda é de contexto: quem escreveu este livro, para qual comunidade original, em qual momento da história, e o que vem imediatamente antes e depois desse trecho? Um versículo lido fora do parágrafo costuma dizer algo que o autor nunca quis dizer. A terceira família é teológica e cristológica: o que este texto revela sobre o caráter de Deus — sua santidade, seu amor, sua justiça, sua fidelidade — e como ele se conecta com a obra de Cristo? A quarta é de aplicação, e propositalmente vem por último: à luz de tudo isso, o que este texto exige de mim, da minha igreja, da minha semana? Fazer essas perguntas nessa ordem — observação, contexto, teologia, aplicação — é o que separa um estudo sério de uma leitura em que o leitor apenas projeta seus próprios sentimentos no texto e chama isso de 'o que Deus está falando comigo'.",
+          theologianQuote: {
+            author: "Howard Hendricks",
+            text: "Você nunca pode aplicar o que não entendeu, e nunca vai entender de verdade o que não observou com cuidado.",
+            source: "Vivendo por Livro",
+          },
+          deepen: {
+            additionalVerses: [
+              {
+                ref: "Salmos 119:18",
+                textByVersion: {
+                  NVI: "Abre os meus olhos para que eu veja as maravilhas da tua lei.",
+                },
+              },
+              {
+                ref: "Mateus 13:10-11",
+                textByVersion: {
+                  NVI: "Os discípulos aproximaram-se dele e perguntaram: 'Por que o senhor fala ao povo por parábolas?' Ele respondeu: 'A vocês foi dado o conhecimento dos mistérios do Reino dos céus, mas a eles não foi dado.'",
+                },
+              },
+            ],
+            additionalKeywords: [
+              { word: "גָּלָה", translit: "galah", meaning: "'revelar, descobrir, abrir'. Verbo por trás do pedido do salmista em 119:18 — entender a Escritura é, em parte, um dom que se pede a Deus, não apenas uma técnica.", lang: "hebraico" },
+              { word: "ἐρωτάω", translit: "erōtaō", meaning: "'perguntar, interrogar com o propósito de aprender'. O mesmo impulso dos discípulos em Mateus 13, que não tiveram vergonha de admitir que não entendiam.", lang: "grego" },
+            ],
+            historicalContext:
+              "A prática de interrogar o texto tem raízes antigas: os judeus de Bereia 'examinavam as Escrituras todos os dias' (Atos 17:11), e a tradição rabínica de estudo em duplas (chavruta) se baseava justamente em perguntar e responder em voz alta diante do texto, em vez de apenas recebê-lo passivamente de um mestre.",
+            exegeticalNotes:
+              "Uma disciplina útil é escrever as perguntas na margem da Bíblia ou de um caderno antes de consultar qualquer comentário bíblico. Isso força o leitor a lutar primeiro com o texto, e só depois comparar suas próprias observações com o que estudiosos mais experientes já escreveram — o comentário vira uma checagem, não uma muleta.",
+            theologicalDebate:
+              "Existe um debate saudável sobre até que ponto as perguntas do leitor moderno (sua cultura, suas circunstâncias) devem moldar a leitura do texto, versus a prioridade da intenção original do autor. A posição mais segura, adotada neste estudo, é perguntar primeiro 'o que o autor quis dizer aos seus leitores originais?' e só depois 'o que isso significa para mim, hoje?' — nessa ordem, e não ao contrário.",
+            secondQuote: {
+              author: "Kay Arthur",
+              text: "A Palavra de Deus responde a quem tem a humildade de perguntar antes de concluir.",
+            },
+          },
+          quizzes: [
+            {
+              question: "Qual é a ordem recomendada das quatro famílias de perguntas ao interrogar um texto bíblico?",
+              options: [
+                "Aplicação, teologia, contexto, observação",
+                "Observação, contexto, teologia, aplicação",
+                "Teologia, aplicação, observação, contexto",
+                "Não existe uma ordem — todas podem vir juntas",
+              ],
+              correctIndex: 1,
+            },
+            {
+              question: "Na história de Atos 8, qual foi a primeira pergunta de Filipe ao etíope?",
+              options: [
+                "Se ele já havia sido batizado",
+                "Se ele entendia o que estava lendo",
+                "Se ele conhecia Jesus",
+                "Se ele era judeu ou gentio",
+              ],
+              correctIndex: 1,
+            },
+          ],
+          application:
+            "Escolha um capítulo da Bíblia que você ainda não estudou este mês e escreva, por escrito, pelo menos duas perguntas de cada família (observação, contexto, teologia, aplicação) antes de consultar qualquer comentário ou explicação pronta.",
+          prayer:
+            "Senhor, dá-me a humildade do eunuco etíope, que admitiu não entender sozinho, e o cuidado de Filipe, que ensinou com paciência. Abre os meus olhos para as maravilhas da tua lei. Amém.",
+          weeklyChallenge:
+            "Mantenha um 'caderno de perguntas' durante a semana: a cada leitura bíblica diária, anote pelo menos uma pergunta que o texto levantou, mesmo sem resposta imediata. No fim da semana, revise tudo o que anotou.",
+          reflectionQuestion:
+            "O que mais me impede de fazer perguntas sinceras ao texto bíblico — pressa, medo de não ter resposta, ou o orgulho de achar que já entendo?",
+          xp: 25,
+        },
+      ],
+    },
   ],
 };
 
