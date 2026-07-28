@@ -166,7 +166,6 @@ export const bibleStudies: BibleStudy[] = [
               NVI: "Bem-aventurados os pobres em espírito, pois deles é o Reino dos céus.",
               NAA: "Bem-aventurados os pobres de espírito, porque deles é o Reino dos céus.",
               ACF: "Bem-aventurados os pobres de espírito, porque deles é o reino dos céus.",
-              KJV: "Bem-aventurados os pobres de espírito, porque deles é o reino dos céus.",
               NVT: "Deus abençoa os que reconhecem sua pobreza espiritual, pois o Reino dos Céus lhes pertence.",
             },
             originals: [
@@ -189,7 +188,6 @@ export const bibleStudies: BibleStudy[] = [
               NVI: "Bem-aventurados os que têm fome e sede de justiça, pois serão saciados.",
               NAA: "Bem-aventurados os que têm fome e sede de justiça, porque serão fartos.",
               ACF: "Bem-aventurados os que têm fome e sede de justiça, porque eles serão fartos.",
-              KJV: "Bem-aventurados os que têm fome e sede de justiça, porque eles serão fartos.",
               NVT: "Deus abençoa os que têm fome e sede de justiça, pois serão saciados.",
             },
             originals: [
@@ -268,7 +266,6 @@ export const bibleStudies: BibleStudy[] = [
               NVI: "O Senhor é o meu pastor; nada me faltará.",
               NAA: "O Senhor é o meu pastor; de nada terei falta.",
               ACF: "O Senhor é o meu pastor, nada me faltará.",
-              KJV: "O Senhor é o meu pastor, nada me faltará.",
               NVT: "O Senhor é o meu pastor; tenho tudo de que preciso.",
             },
             originals: [
@@ -290,7 +287,6 @@ export const bibleStudies: BibleStudy[] = [
               NVI: "Mesmo quando eu andar por um vale de trevas e morte, não temerei perigo algum, pois tu estás comigo; a tua vara e o teu cajado me protegem.",
               NAA: "Ainda que eu ande pelo vale da sombra da morte, não temerei mal algum, porque tu estás comigo.",
               ACF: "Ainda que eu andasse pelo vale da sombra da morte, não temeria mal algum, porque tu estás comigo.",
-              KJV: "Ainda que eu andasse pelo vale da sombra da morte, não temeria mal algum, porque tu estás comigo.",
               NVT: "Mesmo quando eu andar pelo vale mais escuro, não temerei, pois tu estás ao meu lado.",
             },
             originals: [
@@ -354,7 +350,6 @@ export const bibleStudies: BibleStudy[] = [
               NVI: "Ainda que eu fale as línguas dos homens e dos anjos, se não tiver amor, serei como o bronze que soa ou como o címbalo que retine.",
               NAA: "Ainda que eu fale as línguas dos homens e dos anjos, se não tiver amor, serei como o bronze que soa ou como o címbalo que retine.",
               ACF: "Ainda que eu falasse as línguas dos homens e dos anjos, e não tivesse amor, seria como o metal que soa ou como o sino que tine.",
-              KJV: "Ainda que eu falasse as línguas dos homens e dos anjos, e não tivesse amor, seria como o metal que soa ou como o sino que tine.",
               NVT: "Se eu falasse todas as línguas humanas e angelicais, mas não tivesse amor, seria apenas um gongo barulhento ou um címbalo estridente.",
             },
             originals: [
@@ -424,7 +419,6 @@ export const bibleStudies: BibleStudy[] = [
               NVI: "Mas o que foi semeado em boa terra é aquele que ouve a palavra e a entende, e dá uma colheita de cem, sessenta e trinta por um.",
               NAA: "Mas o que foi semeado em boa terra é o que ouve a palavra e a entende; este frutifica e produz a cem, a sessenta e a trinta por um.",
               ACF: "Mas o que foi semeado em boa terra é o que ouve e compreende a palavra; e dá fruto, e um produz cem, outro sessenta e outro trinta.",
-              KJV: "Mas o que foi semeado em boa terra, este é o que ouve a palavra, e a compreende, e dá fruto, e produz a cem, a sessenta e a trinta por um.",
               NVT: "A semente que caiu em solo fértil representa aqueles que verdadeiramente ouvem e entendem a palavra de Deus, produzindo uma colheita trinta, sessenta e até cem vezes maior.",
             },
           },
