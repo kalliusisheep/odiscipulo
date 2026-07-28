@@ -77,6 +77,7 @@ const evangelismo: Trail = {
           theologianQuote: {
             author: "John Stott",
             text: "O Evangelho não é um bom conselho sobre o que fazer, mas uma boa notícia sobre o que Deus fez.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Stott realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -191,6 +192,7 @@ const evangelismo: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Aquele que ganha almas deve, primeiro, ter uma alma cheia de amor por Cristo e por aqueles que Cristo veio salvar.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -313,6 +315,7 @@ const evangelismo: Trail = {
           theologianQuote: {
             author: "Josué K. Reichow",
             text: "Ninguém pode discutir sua experiência pessoal com Cristo — mas todo testemunho fiel aponta para além de si mesmo, para a obra objetiva do Evangelho.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Josué K. Reichow realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             historicalContext:
@@ -418,6 +421,7 @@ const evangelismo: Trail = {
           theologianQuote: {
             author: "Charles Swindoll",
             text: "As pessoas raramente são convencidas por um argumento perfeito; elas são atraídas por uma vida que reflete, de forma consistente, aquilo que é anunciado.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Swindoll realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             historicalContext:
@@ -526,6 +530,7 @@ const evangelismo: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Um cristão tímido demais para falar de Cristo em terra provavelmente ficará também calado demais para cantar seus louvores no céu — não porque não ame, mas porque nunca aprendeu a vencer o medo pela graça.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             historicalContext:
@@ -627,6 +632,7 @@ const evangelismo: Trail = {
           theologianQuote: {
             author: "William Lane Craig",
             text: "A boa apologética não tenta substituir a fé por prova; ela remove obstáculos intelectuais para que a fé, gerada pelo Espírito, encontre um caminho mais livre até o coração.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se William Lane Craig realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             historicalContext:
@@ -735,6 +741,7 @@ const evangelismo: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Se Deus escolheu quem será salvo, essa mesma eleição inclui os meios: e um desses meios é a nossa boca aberta, anunciando o Evangelho a toda criatura.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             historicalContext:
@@ -834,6 +841,7 @@ const evangelismo: Trail = {
           theologianQuote: {
             author: "John Mark Comer",
             text: "As ferramentas digitais amplificam quem já somos — se nossa vida interior é apressada e reativa, a internet vai apenas expor isso mais rápido e para mais gente.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Mark Comer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             historicalContext:
@@ -934,6 +942,7 @@ const evangelismo: Trail = {
           theologianQuote: {
             author: "Thom Rainer",
             text: "Ganhar alguém para Cristo e depois abandoná-lo sem cuidado nas primeiras semanas é como trazer um recém-nascido ao mundo e depois deixá-lo sozinho para se alimentar.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Thom Rainer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             historicalContext:
@@ -1035,6 +1044,7 @@ const evangelismo: Trail = {
           theologianQuote: {
             author: "Josué K. Reichow",
             text: "Um discípulo que nunca aprende a discipular outros interrompeu, sem perceber, a corrente que deveria continuar fluindo depois dele.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Josué K. Reichow realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             historicalContext:
