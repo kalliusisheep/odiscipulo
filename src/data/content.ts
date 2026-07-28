@@ -1,7 +1,12 @@
 // Conteúdo semente: trilhas, módulos e lições do Disciple.
 // Estrutura fixa em código — o progresso do usuário fica no banco.
 
-export const BIBLE_VERSIONS = ["NVI", "NAA", "ACF", "KJV", "NVT"] as const;
+export const BIBLE_VERSIONS = ["NVI", "NAA", "ACF", "NVT"] as const;
+// Nota: "KJV" foi removido em 2026-07 — os campos que existiam com esse rótulo
+// continham texto em português (cópia do ACF), não a King James Version real
+// (que é em inglês). Se quiser oferecer uma versão adicional, use uma tradução
+// em português real que ainda não esteja na lista (ex.: ARC) e preencha o texto
+// correto verso a verso — não reative "KJV" sem o texto em inglês genuíno.
 export type BibleVersion = typeof BIBLE_VERSIONS[number];
 
 export type Original = {
@@ -111,7 +116,6 @@ const novoConvertido: Trail = {
                 NVI: "No princípio era aquele que é a Palavra. Ele estava com Deus, e era Deus... Aquele que é a Palavra tornou-se carne e viveu entre nós. Vimos a sua glória, glória como do Unigênito vindo do Pai, cheio de graça e de verdade.",
                 NAA: "No princípio era o Verbo, e o Verbo estava com Deus, e o Verbo era Deus... E o Verbo se fez carne e habitou entre nós, cheio de graça e de verdade; e vimos a sua glória, glória como do unigênito do Pai.",
                 ACF: "No princípio era o Verbo, e o Verbo estava com Deus, e o Verbo era Deus... E o Verbo se fez carne, e habitou entre nós, e vimos a sua glória, como a glória do unigênito do Pai, cheio de graça e de verdade.",
-                KJV: "No princípio era o Verbo, e o Verbo estava com Deus, e o Verbo era Deus... E o Verbo se fez carne, e habitou entre nós, e vimos a sua glória, como a glória do unigênito do Pai, cheio de graça e de verdade.",
                 NVT: "No princípio, antes de todas as coisas começarem, a Palavra já existia. A Palavra estava com Deus e era Deus... Assim, a Palavra tornou-se homem e viveu aqui na terra entre nós. Ele estava cheio de amor inabalável e fidelidade. E nós vimos a sua glória, a glória do único Filho do Pai.",
               },
               originals: [
@@ -152,7 +156,8 @@ const novoConvertido: Trail = {
             "João abre seu Evangelho ecoando deliberadamente Gênesis 1:1 — 'no princípio' — para dizer que Jesus, o 'lógos', já estava lá antes de qualquer coisa existir, e que esse Lógos 'era Deus'. Não uma força impessoal, não um anjo superior, não uma criatura exaltada: Deus mesmo. E então vem a afirmação mais chocante do cristianismo: esse Deus eterno 'se fez carne' — tornou-se plenamente humano, sem deixar de ser plenamente divino. Paulo, em Colossenses, acrescenta outra peça: Jesus é a 'eikōn' do Deus invisível — não uma pintura aproximada, mas a representação exata e visível daquilo que ninguém jamais viu. E tudo isso desemboca na pergunta pessoal que Jesus faz a Pedro: não 'o que as pessoas pensam de mim', mas 'quem vocês dizem que eu sou'. A resposta de Pedro — 'o Cristo, o Filho do Deus vivo' — é a confissão que sustenta toda a Igreja cristã através dos séculos. Conhecer fatos sobre Jesus não é o mesmo que confessá-lo como Senhor; a fé cristã nasce quando essa verdade deixa de ser informação e se torna confissão pessoal.",
           theologianQuote: {
             author: "C.S. Lewis",
-            text: "Um homem que fosse meramente humano e dissesse as coisas que Jesus disse não seria um grande mestre moral. Ou ele é o Filho de Deus, ou é um louco, ou algo pior. Você precisa escolher.",
+            text: "Um homem que fosse meramente humano e dissesse as coisas que Jesus disse não seria um grande mestre moral. Ele seria um lunático — no mesmo nível do homem que diz ser um ovo pochê — ou então seria o Diabo do inferno. Você precisa fazer sua escolha.",
+            source: "Cristianismo Puro e Simples (Mere Christianity)",
           },
           deepen: {
             additionalVerses: [
@@ -245,7 +250,6 @@ const novoConvertido: Trail = {
                 NVI: "Jesus respondeu: 'Digo-lhe a verdade: ninguém pode ver o Reino de Deus, se não nascer de novo'.",
                 NAA: "Jesus lhe respondeu: — Em verdade, em verdade lhe digo que, se alguém não nascer de novo, não pode ver o Reino de Deus.",
                 ACF: "Jesus respondeu, e disse-lhe: Na verdade, na verdade te digo que aquele que não nascer de novo, não pode ver o reino de Deus.",
-                KJV: "Jesus respondeu-lhe: Em verdade, em verdade te digo que, se um homem não nascer de novo, não pode ver o reino de Deus.",
                 NVT: "Jesus respondeu: 'Digo-lhe a verdade: ninguém pode ver o Reino de Deus, a menos que nasça de novo'.",
               },
               originals: [
@@ -258,7 +262,6 @@ const novoConvertido: Trail = {
                 NVI: "Portanto, se alguém está em Cristo, é nova criação. As coisas antigas já passaram; eis que surgiram coisas novas!",
                 NAA: "Assim, se alguém está em Cristo, é nova criação. As coisas antigas já passaram; eis que surgiram coisas novas!",
                 ACF: "Assim que, se alguém está em Cristo, nova criatura é: as coisas velhas já passaram; eis que tudo se fez novo.",
-                KJV: "Portanto, se alguém está em Cristo, é nova criatura: as coisas velhas passaram; eis que tudo se fez novo.",
                 NVT: "Isso significa que todo aquele que pertence a Cristo tornou-se uma nova pessoa. A velha vida se foi; uma nova vida começou!",
               },
               originals: [
@@ -275,7 +278,8 @@ const novoConvertido: Trail = {
             "Quando Jesus fala do novo nascimento a Nicodemos, ele não está descrevendo um esforço religioso melhor — está descrevendo uma recriação. A palavra 'anōthen' carrega intencionalmente dois sentidos: 'de novo' e 'do alto'. Ambos importam. É uma origem nova, e essa origem vem de Deus. Paulo confirma o mesmo mistério em outra palavra: 'kainē ktisis' — não uma versão melhorada da criatura antiga, mas uma criação qualitativamente diferente. O verbo por trás é o mesmo de Gênesis 1: Deus cria. Isso é o que aconteceu com você. Não foi você que decidiu mudar; foi Deus que começou uma obra nova, e agora sua parte é aprender a viver à altura dessa nova identidade.",
           theologianQuote: {
             author: "Paul Washer",
-            text: "A conversão verdadeira não é uma decisão que você toma. É uma obra que Deus faz — e ela deixa marcas.",
+            text: "A evidência da conversão não é um cartão de decisão preenchido; é uma vida sendo vivida.",
+            source: "citação amplamente atribuída a Washer em suas pregações sobre conversão verdadeira",
           },
           deepen: {
             additionalVerses: [
@@ -367,7 +371,6 @@ const novoConvertido: Trail = {
                 NVI: "Escrevi-lhes estas coisas, a vocês que crêem no nome do Filho de Deus, para que saibam que têm a vida eterna.",
                 NAA: "Estas coisas eu lhes escrevi, a vocês que creem no nome do Filho de Deus, para que saibam que têm a vida eterna.",
                 ACF: "Estas coisas vos escrevi, a vós que credes no nome do Filho de Deus, para que saibais que tendes a vida eterna.",
-                KJV: "Estas coisas vos escrevi, a vós que credes no nome do Filho de Deus, para que saibais que tendes a vida eterna.",
                 NVT: "Escrevi estas coisas a vocês, que creem no nome do Filho de Deus, para que saibam que têm vida eterna.",
               },
             },
@@ -377,7 +380,6 @@ const novoConvertido: Trail = {
                 NVI: "O próprio Espírito testemunha ao nosso espírito que somos filhos de Deus.",
                 NAA: "O próprio Espírito testifica com o nosso espírito que somos filhos de Deus.",
                 ACF: "O mesmo Espírito testifica com o nosso espírito que somos filhos de Deus.",
-                KJV: "O mesmo Espírito testifica com o nosso espírito que somos filhos de Deus.",
                 NVT: "O próprio Espírito Santo se une ao nosso espírito para afirmar que somos filhos de Deus.",
               },
               originals: [
@@ -394,7 +396,8 @@ const novoConvertido: Trail = {
             "João escreve para que você 'saiba' — não sinta apenas, mas saiba. A segurança tem duas testemunhas: a Palavra escrita (você creu no nome do Filho, e a promessa é firme) e o Espírito (que 'symmartyrei' — testifica junto). Sentimentos oscilam; essas duas testemunhas não. Quando a dúvida bate, o caminho não é buscar mais emoção, mas voltar às testemunhas: o que Deus disse na Palavra, e o que o Espírito confirma no íntimo — um desejo por Deus, uma tristeza pelo pecado, uma inclinação para as coisas do alto que antes não existia. Essas marcas, ainda que pequenas, são obra do Espírito e não podem ser forjadas pela carne.",
           theologianQuote: {
             author: "Charles Spurgeon",
-            text: "A fé não é maior por ter sentimentos fortes, e não é menor por não os ter. A fé se apoia em Cristo, não em si mesma.",
+            text: "Não há nada tão enganoso quanto os sentimentos. O cristão não pode viver de sentimentos.",
+            source: "atribuído a pregações de Spurgeon sobre fé e sentimentos — verificar edição de sermão antes de publicar",
           },
           deepen: {
             additionalVerses: [
@@ -481,7 +484,6 @@ const novoConvertido: Trail = {
                 NVI: "Jesus respondeu: 'Está escrito: Nem só de pão viverá o homem, mas de toda palavra que procede da boca de Deus'.",
                 NAA: "Jesus, porém, respondeu: — Está escrito: 'Nem só de pão viverá o homem, mas de toda palavra que procede da boca de Deus'.",
                 ACF: "Ele, porém, respondendo, disse: Está escrito: Nem só de pão viverá o homem, mas de toda a palavra que sai da boca de Deus.",
-                KJV: "Ele porém, respondendo, disse: Está escrito: Nem só de pão viverá o homem, mas de toda a palavra que sai da boca de Deus.",
                 NVT: "Mas Jesus lhe disse: 'As Escrituras dizem: Nem só de pão viverá o homem, mas de toda palavra que procede da boca de Deus'.",
               },
             },
@@ -491,7 +493,6 @@ const novoConvertido: Trail = {
                 NVI: "A tua palavra é lâmpada que ilumina os meus passos e luz que clareia o meu caminho.",
                 NAA: "Lâmpada para os meus pés é a tua palavra e luz para o meu caminho.",
                 ACF: "Lâmpada para os meus pés é a tua palavra, e luz para o meu caminho.",
-                KJV: "Lâmpada para os meus pés é a tua palavra, e luz para o meu caminho.",
                 NVT: "A tua palavra é lâmpada que ilumina meus passos e luz que clareia meu caminho.",
               },
               originals: [
@@ -508,7 +509,7 @@ const novoConvertido: Trail = {
             "O salmista não diz que a Palavra é um holofote que ilumina o horizonte inteiro — ela é 'nēr', a lâmpada de óleo que ilumina o próximo passo. Deus raramente mostra o mapa completo; Ele mostra o próximo passo. Por isso a leitura diária: você precisa da luz de hoje, não da luz do ano que vem. E Jesus, ao ser tentado no deserto, revela que a Palavra é alimento tão essencial quanto o pão. Sem ela, o homem interior enfraquece — mesmo que o exterior pareça forte. A disciplina da leitura diária não é para ganhar aprovação de Deus, mas para receber a luz e o pão que Ele já disse que você precisa hoje.",
           theologianQuote: {
             author: "Hernandes Dias Lopes",
-            text: "A Bíblia não é um livro que lemos apenas; é um livro que nos lê. Ela nos revela quem somos diante de Deus.",
+            text: "NÃO VERIFICADO — não encontrei essa frase em nenhuma obra publicada de Hernandes Dias Lopes. Substitua por uma citação real dele ou remova a atribuição antes de publicar.",
           },
           deepen: {
             additionalVerses: [
@@ -589,7 +590,6 @@ const novoConvertido: Trail = {
                 NVI: "Vocês, orem assim: 'Pai nosso, que estás nos céus! Santificado seja o teu nome.",
                 NAA: "Portanto, orem vocês assim: 'Pai nosso, que estás nos céus, santificado seja o teu nome.",
                 ACF: "Portanto, vós orareis assim: Pai nosso, que estás nos céus, santificado seja o teu nome.",
-                KJV: "Portanto, vós orareis assim: Pai nosso, que estás nos céus, santificado seja o teu nome.",
                 NVT: "Vocês devem orar assim: 'Pai nosso, que estás no céu, santificado seja o teu nome.",
               },
               originals: [
@@ -602,7 +602,6 @@ const novoConvertido: Trail = {
                 NVI: "Da mesma forma, o Espírito nos ajuda em nossa fraqueza, pois não sabemos como orar, mas o próprio Espírito intercede por nós com gemidos inexprimíveis.",
                 NAA: "Também o Espírito, semelhantemente, nos ajuda na nossa fraqueza; porque não sabemos orar como convém, mas o próprio Espírito intercede por nós com gemidos inexprimíveis.",
                 ACF: "E da mesma maneira também o Espírito ajuda as nossas fraquezas; porque não sabemos o que havemos de pedir como convém, mas o mesmo Espírito intercede por nós com gemidos inexprimíveis.",
-                KJV: "E da mesma maneira também o Espírito ajuda as nossas fraquezas; porque não sabemos o que havemos de pedir como convém, mas o mesmo Espírito intercede por nós com gemidos inexprimíveis.",
                 NVT: "E o Espírito Santo nos ajuda em nossa fraqueza. Por exemplo, nós não sabemos o que Deus quer que peçamos em oração, mas o Espírito Santo ora por nós com gemidos que não podem ser expressos em palavras.",
               },
             },
@@ -616,7 +615,7 @@ const novoConvertido: Trail = {
             "Jesus começa a oração modelo com 'Páter' — a palavra que uma criança usava para chamar seu pai em casa. Não é performance. Deus não é impressionado com vocabulário difícil; Ele é comovido por corações filiais. E quando você não souber orar (todos nós passamos por isso), Paulo garante: o Espírito ora por você. O verbo 'synantilambánetai' descreve alguém que pega o outro lado da carga junto contigo. Você não ora sozinho. Comece pequeno. Fale com o Pai como um filho — e confie que, mesmo quando as palavras falharem, o Espírito continua traduzindo o coração para Deus.",
           theologianQuote: {
             author: "C.S. Lewis",
-            text: "Oramos não porque Deus precise ser informado, mas porque nós precisamos ser transformados no processo.",
+            text: "CUIDADO — 'A oração não muda Deus, ela muda a mim' costuma circular como frase de C.S. Lewis, mas na verdade vem da peça 'Shadowlands', de William Nicholson (personagem inspirado em Lewis, não uma citação real dele). Troque por uma citação genuína de Lewis sobre oração (ex.: 'Cartas a Malcolm') ou remova a atribuição.",
           },
           deepen: {
             additionalVerses: [
@@ -743,7 +742,8 @@ const novoConvertido: Trail = {
             "John Stott dizia que o Evangelho tem três tempos verbais: passado, presente e futuro. No passado, Cristo morreu e ressuscitou por nós — é fato histórico consumado. No presente, esse mesmo Evangelho continua sendo 'dýnamis' de Deus para salvação — não é apenas o portal por onde entramos na fé, mas o poder que nos sustenta nela. No futuro, esse Evangelho aponta para o Reino que virá em plenitude quando Cristo voltar. Muitos cristãos tratam o Evangelho como algo apenas para não-convertidos — uma espécie de porta de entrada. Mas o Novo Testamento apresenta o Evangelho como o próprio ar que respiramos. Paulo escreve aos cristãos de Roma, gente já convertida, dizendo que quer pregar o Evangelho a eles (Romanos 1:15). Nós nunca deixamos de precisar dele. Toda vez que a culpa acusa, voltamos ao Evangelho. Toda vez que o orgulho infla, voltamos ao Evangelho. Toda vez que o cansaço bate, voltamos ao Evangelho. Ele não é o ABC da fé — ele é a fé inteira, do primeiro dia ao último.",
           theologianQuote: {
             author: "John Stott",
-            text: "O Evangelho não é um bom conselho a ser seguido; é uma boa notícia a ser crida. Antes de ser algo que fazemos, é algo que Deus fez.",
+            text: "O evangelho não é um bom conselho aos homens, mas uma boa notícia sobre Cristo; não um convite para que façamos algo, mas uma declaração do que Deus fez; não uma exigência, mas uma oferta.",
+            source: "The Message of Galatians (A Mensagem de Gálatas)",
           },
           deepen: {
             additionalVerses: [
@@ -876,7 +876,8 @@ const novoConvertido: Trail = {
             "A graça abre caminho para a adoção, e a adoção é onde a graça alcança seu ápice. Paulo escolhe a palavra 'huiothesía' com precisão jurídica: no mundo romano, o filho adotivo assumia um novo nome, entrava numa nova linhagem, herdava plenamente e não podia ser deserdado. Aplicado à salvação, isso significa que Deus não te deu apenas um perdão — Ele te deu um sobrenome. Você chama-se, agora, filho. E, mais impressionante ainda, o Espírito Santo põe nos seus lábios a mesma palavra que Jesus usou no Getsêmani: 'Abbá' (Marcos 14:36). É o vocabulário familiar da Trindade sendo emprestado a você. J. I. Packer disse que se você quer avaliar o quanto entendeu o cristianismo, pergunte-se se você pensa em Deus, e se dirige a Deus, como Pai. Se sim, você entendeu o Evangelho. Se essa palavra ainda soa estranha, distante, aterrorizante — o problema não é teológico, é filial. A boa notícia é que o próprio Espírito ensina o coração adotado a soletrar 'Abbá'. Não com esforço religioso, mas com descanso confiante. Você não precisa merecer ser filho; você já é. O que resta é aprender a viver como um.",
           theologianQuote: {
             author: "J. I. Packer",
-            text: "A adoção é o mais alto privilégio que o Evangelho oferece: mais alto que a própria justificação. A justificação nos dá um veredito favorável; a adoção nos dá um Pai.",
+            text: "A adoção é o mais alto privilégio que o Evangelho oferece: mais alto até que a justificação. Ser considerado justo diante de Deus, o Juiz, já é grandioso; mas ser amado e cuidado por Deus, o Pai, é maior ainda.",
+            source: "Knowing God (Conhecendo a Deus)",
           },
           deepen: {
             additionalVerses: [
@@ -998,6 +999,7 @@ const novoConvertido: Trail = {
           theologianQuote: {
             author: "Dietrich Bonhoeffer",
             text: "A presença física de outros cristãos é uma fonte de alegria e força incomparáveis para o crente.",
+            source: "Vida em Comunhão (Life Together)",
           },
           deepen: {
             historicalContext:
@@ -1090,6 +1092,7 @@ const novoConvertido: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "A simplicidade e a aparente inutilidade da ordenança devem levar o crente a dizer: 'Faço isso porque se torna, para mim, o melhor teste da minha obediência ao meu Mestre.'",
+            source: "sermão 'Baptismal Regeneration' (nº 573)",
           },
           deepen: {
             additionalVerses: [
@@ -1195,6 +1198,7 @@ const novoConvertido: Trail = {
           theologianQuote: {
             author: "John Stott",
             text: "Almas são ganhas para Cristo por lágrimas, suor e dor, especialmente na oração e na amizade pessoal e sacrificial.",
+            source: "Reading Timothy and Titus with John Stott",
           },
           deepen: {
             additionalVerses: [
