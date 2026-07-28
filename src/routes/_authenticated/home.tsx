@@ -19,6 +19,7 @@ import {
 } from "@/data/module-visuals";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { MessagesLinkButton } from "@/components/MessagesLinkButton";
+import { PushNotifications } from "@/components/PushNotifications";
 import { useApp } from "@/lib/app-context";
 import { Flame, Check, ChevronRight, Sparkles, BookOpen } from "lucide-react";
 import { ChallengePanel } from "@/components/ChallengeProgressBar";
@@ -135,6 +136,7 @@ function HomePage() {
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <PushNotifications />
           <MessagesLinkButton />
           <ThemeToggle />
         </div>
