@@ -1278,11 +1278,12 @@ import { additionalTrails4 } from "./trails-content-4";
 import { additionalTrails5 } from "./trails-content-5";
 import { additionalTrails6 } from "./trails-content-6";
 import { additionalTrails7 } from "./trails-content-7";
+import { comoSerLider } from "./como-ser-lider";
 
 // Trilhas em preparação — títulos e descrições, sem lições ainda.
 const upcoming: Trail[] = [];
 
-export const trails: Trail[] = [novoConvertido, ...additionalTrails3, ...additionalTrails, ...additionalTrails2, ...additionalTrails4, ...additionalTrails5, ...additionalTrails6, ...additionalTrails7, ...upcoming]
+export const trails: Trail[] = [novoConvertido, ...additionalTrails3, ...additionalTrails, ...additionalTrails2, ...additionalTrails4, ...additionalTrails5, ...additionalTrails6, ...additionalTrails7, comoSerLider, ...upcoming]
   .sort((a, b) => a.order - b.order);
 
 export const trailById = (id: string) => trails.find((t) => t.id === id);
