@@ -18,6 +18,10 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
+// 🔥 IMPORTA O SUPABASE (SE ESTIVER USANDO)
+// Se não tiver, comente esta linha e use o localStorage
+import { supabase } from "@/lib/supabase"; // Ajuste o caminho conforme seu projeto
+
 export const Route = createFileRoute("/_authenticated/lider")({
   component: LiderPage,
 });
@@ -60,6 +64,7 @@ function LiderPage() {
 
   // Estados para diálogos
   const [openAddDiscipulo, setOpenAddDiscipulo] = useState(false);
+  const [openAddPorID, setOpenAddPorID] = useState(false);
   const [openNovoGrupo, setOpenNovoGrupo] = useState(false);
   const [openMensagem, setOpenMensagem] = useState(false);
   const [openEncontro, setOpenEncontro] = useState(false);
@@ -81,16 +86,14 @@ function LiderPage() {
   });
 
   // ============================================
-  // CARREGAR DADOS DO BANCO
+  // FUNÇÃO PARA CARREGAR DADOS DO BANCO
   // ============================================
-
   const carregarDados = async () => {
     setLoading(true);
     setError(null);
     
     try {
-      // 🔥 SUBSTITUA ESTA PARTE PELA CHAMADA REAL AO SEU BANCO
-      // Exemplo com Supabase (se você estiver usando):
+      // 🔥 OPÇÃO 1: Se estiver usando Supabase (descomente)
       /*
       const { data: discipulosData, error: discipulosError } = await supabase
         .from('discipulos')
@@ -110,15 +113,14 @@ function LiderPage() {
       setGrupos(gruposData || []);
       */
 
-      // ⚠️ MOCK TEMPORÁRIO - SUBSTITUA PELO CÓDIGO ACIMA
+      // 🔥 OPÇÃO 2: Usando localStorage (para teste sem banco)
+      // REMOVA ESTE BLOCO QUANDO CONECTAR AO BANCO
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      // Busca dados do localStorage (simulação)
       const savedDiscipulos = localStorage.getItem('discipulos_reais');
       if (savedDiscipulos) {
         setDiscipulos(JSON.parse(savedDiscipulos));
       } else {
-        // Dados iniciais
         const dadosIniciais: Discipulo[] = [
           { 
             id: '1', 
@@ -149,7 +151,6 @@ function LiderPage() {
         localStorage.setItem('discipulos_reais', JSON.stringify(dadosIniciais));
       }
 
-      // Grupos mock
       const gruposSalvos = localStorage.getItem('grupos_reais');
       if (gruposSalvos) {
         setGrupos(JSON.parse(gruposSalvos));
@@ -175,29 +176,21 @@ function LiderPage() {
     }
   };
 
+  // ============================================
+  // CARREGAR DADOS AO ABRIR A PÁGINA
+  // ============================================
   useEffect(() => {
     carregarDados();
   }, []);
 
   // ============================================
-  // FUNÇÕES - ADICIONAR DISCÍPULO
+  // FUNÇÕES DOS BOTÕES
   // ============================================
 
   const handleAdicionarDiscipulo = () => {
     setOpenAddDiscipulo(true);
     setSearchTerm('');
     setDiscipuloSelecionado(null);
-  };
-
-  // Busca TODOS os usuários do sistema (não apenas discípulos)
-  const handleBuscarUsuarios = async () => {
-    if (!searchTerm.trim()) return discipulos;
-    
-    return discipulos.filter(d => 
-      d.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      d.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      d.id.includes(searchTerm)
-    );
   };
 
   const handleSelecionarDiscipulo = (discipulo: Discipulo) => {
@@ -210,7 +203,6 @@ function LiderPage() {
       return;
     }
 
-    // Atualiza o status do discípulo
     const discipulosAtualizados = discipulos.map(d => 
       d.id === discipuloSelecionado.id 
         ? { ...d, status: 'ativo' as const, dataEntrada: new Date().toISOString().split('T')[0] }
@@ -226,10 +218,6 @@ function LiderPage() {
     setSearchTerm('');
   };
 
-  // ============================================
-  // FUNÇÕES - ADICIONAR POR ID
-  // ============================================
-
   const handleBuscarPorID = async () => {
     if (!idBusca.trim()) {
       showFeedback('Digite um ID válido', 'warning');
@@ -239,14 +227,7 @@ function LiderPage() {
     setBuscandoPorID(true);
     
     try {
-      // 🔥 SUBSTITUA PELA CHAMADA REAL AO BANCO
-      // Exemplo: 
-      // const { data, error } = await supabase.from('users').select('*').eq('id', idBusca).single();
-      
-      // Simulação
       await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // Busca em todos os discípulos (incluindo inativos/pendentes)
       const encontrado = discipulos.find(d => d.id === idBusca);
       
       if (encontrado) {
@@ -284,10 +265,6 @@ function LiderPage() {
     setIdBusca('');
   };
 
-  // ============================================
-  // FUNÇÕES - NOVO GRUPO
-  // ============================================
-
   const handleCriarGrupo = () => {
     if (!novoGrupoNome.trim()) {
       showFeedback('Digite um nome para o grupo', 'warning');
@@ -311,10 +288,6 @@ function LiderPage() {
     setNovoGrupoNome('');
   };
 
-  // ============================================
-  // FUNÇÕES - MENSAGEM
-  // ============================================
-
   const handleEnviarMensagem = () => {
     if (!mensagemTexto.trim()) {
       showFeedback('Digite uma mensagem', 'warning');
@@ -322,16 +295,10 @@ function LiderPage() {
     }
 
     const discipulosAtivos = discipulos.filter(d => d.status === 'ativo');
-    
-    // 🔥 SUBSTITUA PELA CHAMADA REAL AO BANCO
     showFeedback(`Mensagem enviada para ${discipulosAtivos.length} discípulos!`, 'success');
     setOpenMensagem(false);
     setMensagemTexto('');
   };
-
-  // ============================================
-  // FUNÇÕES - ENCONTRO
-  // ============================================
 
   const handleRegistrarEncontro = () => {
     if (!encontroAssunto.trim() || !encontroData) {
@@ -346,16 +313,11 @@ function LiderPage() {
       return;
     }
 
-    // 🔥 SUBSTITUA PELA CHAMADA REAL AO BANCO
     showFeedback('Encontro registrado com sucesso!', 'success');
     setOpenEncontro(false);
     setEncontroAssunto('');
     setEncontroData('');
   };
-
-  // ============================================
-  // FUNÇÕES AUXILIARES
-  // ============================================
 
   const showFeedback = (message: string, type: 'success' | 'error' | 'warning') => {
     setFeedback({ show: true, message, type });
@@ -363,7 +325,7 @@ function LiderPage() {
   };
 
   // ============================================
-  // RENDER
+  // RENDERIZAÇÃO
   // ============================================
 
   if (loading) {
@@ -517,10 +479,10 @@ function LiderPage() {
       </section>
 
       {/* ============================================ */}
-      {/* DIÁLOGOS */}
+      {/* DIÁLOGOS (MODAIS) */}
       {/* ============================================ */}
 
-      {/* 1. DIÁLOGO: ADICIONAR DISCÍPULO */}
+      {/* 1. ADICIONAR DISCÍPULO */}
       {openAddDiscipulo && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center">
           <div className="w-full max-w-md rounded-t-2xl bg-background p-6 sm:rounded-2xl">
@@ -596,7 +558,7 @@ function LiderPage() {
         </div>
       )}
 
-      {/* 1.1 DIÁLOGO: ADICIONAR POR ID */}
+      {/* 2. ADICIONAR POR ID */}
       {openAddPorID && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center">
           <div className="w-full max-w-md rounded-t-2xl bg-background p-6 sm:rounded-2xl">
@@ -647,7 +609,7 @@ function LiderPage() {
         </div>
       )}
 
-      {/* 2. DIÁLOGO: NOVO GRUPO */}
+      {/* 3. NOVO GRUPO */}
       {openNovoGrupo && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center">
           <div className="w-full max-w-md rounded-t-2xl bg-background p-6 sm:rounded-2xl">
@@ -677,7 +639,7 @@ function LiderPage() {
         </div>
       )}
 
-      {/* 3. DIÁLOGO: MENSAGEM */}
+      {/* 4. MENSAGEM */}
       {openMensagem && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center">
           <div className="w-full max-w-md rounded-t-2xl bg-background p-6 sm:rounded-2xl">
@@ -711,7 +673,7 @@ function LiderPage() {
         </div>
       )}
 
-      {/* 4. DIÁLOGO: ENCONTRO */}
+      {/* 5. ENCONTRO */}
       {openEncontro && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center">
           <div className="w-full max-w-md rounded-t-2xl bg-background p-6 sm:rounded-2xl">
@@ -780,6 +742,3 @@ function ActionBtn({
     </button>
   );
 }
-
-// 🔥 ESTADO ADICIONAL PARA O DIÁLOGO DE ID
-const [openAddPorID, setOpenAddPorID] = useState(false);
