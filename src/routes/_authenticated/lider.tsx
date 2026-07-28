@@ -5,8 +5,6 @@ import {
   TrendingUp, 
   AlertTriangle, 
   Users, 
-  Plus, 
-  Send, 
   Calendar, 
   Building2,
   Search,
@@ -18,9 +16,8 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
-// 🔥 IMPORTA O SUPABASE (SE ESTIVER USANDO)
-// Se não tiver, comente esta linha e use o localStorage
-import { supabase } from "@/lib/supabase"; // Ajuste o caminho conforme seu projeto
+// 🔥 IMPORTA O SUPABASE
+import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/_authenticated/lider")({
   component: LiderPage,
@@ -56,7 +53,9 @@ interface Grupo {
 // ============================================
 
 function LiderPage() {
-  // ESTADOS
+  // ============================================
+  // ESTADOS - TODOS DENTRO DO COMPONENTE
+  // ============================================
   const [discipulos, setDiscipulos] = useState<Discipulo[]>([]);
   const [grupos, setGrupos] = useState<Grupo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -86,15 +85,14 @@ function LiderPage() {
   });
 
   // ============================================
-  // FUNÇÃO PARA CARREGAR DADOS DO BANCO
+  // FUNÇÃO PARA CARREGAR DADOS DO SUPABASE
   // ============================================
   const carregarDados = async () => {
     setLoading(true);
     setError(null);
     
     try {
-      // 🔥 OPÇÃO 1: Se estiver usando Supabase (descomente)
-      /*
+      // Buscar todos os discípulos
       const { data: discipulosData, error: discipulosError } = await supabase
         .from('discipulos')
         .select('*')
@@ -102,6 +100,7 @@ function LiderPage() {
       
       if (discipulosError) throw discipulosError;
       
+      // Buscar todos os grupos
       const { data: gruposData, error: gruposError } = await supabase
         .from('grupos')
         .select('*')
@@ -111,66 +110,10 @@ function LiderPage() {
       
       setDiscipulos(discipulosData || []);
       setGrupos(gruposData || []);
-      */
-
-      // 🔥 OPÇÃO 2: Usando localStorage (para teste sem banco)
-      // REMOVA ESTE BLOCO QUANDO CONECTAR AO BANCO
-      await new Promise(resolve => setTimeout(resolve, 500));
       
-      const savedDiscipulos = localStorage.getItem('discipulos_reais');
-      if (savedDiscipulos) {
-        setDiscipulos(JSON.parse(savedDiscipulos));
-      } else {
-        const dadosIniciais: Discipulo[] = [
-          { 
-            id: '1', 
-            name: "João Silva", 
-            level: 3, 
-            streak: 9, 
-            alert: null, 
-            progress: 40,
-            email: "joao@email.com",
-            telefone: "(11) 99999-9999",
-            status: 'ativo',
-            dataEntrada: new Date().toISOString().split('T')[0]
-          },
-          { 
-            id: '2', 
-            name: "Maria Oliveira", 
-            level: 5, 
-            streak: 0, 
-            alert: "Streak quebrado há 3 dias", 
-            progress: 62,
-            email: "maria@email.com",
-            telefone: "(11) 88888-8888",
-            status: 'ativo',
-            dataEntrada: new Date().toISOString().split('T')[0]
-          }
-        ];
-        setDiscipulos(dadosIniciais);
-        localStorage.setItem('discipulos_reais', JSON.stringify(dadosIniciais));
-      }
-
-      const gruposSalvos = localStorage.getItem('grupos_reais');
-      if (gruposSalvos) {
-        setGrupos(JSON.parse(gruposSalvos));
-      } else {
-        const gruposIniciais: Grupo[] = [
-          {
-            id: '1',
-            nome: 'Grupo Fogo',
-            membros: ['1', '2'],
-            dataCriacao: new Date().toISOString().split('T')[0],
-            status: 'ativo'
-          }
-        ];
-        setGrupos(gruposIniciais);
-        localStorage.setItem('grupos_reais', JSON.stringify(gruposIniciais));
-      }
-
     } catch (err) {
       console.error('Erro ao carregar dados:', err);
-      setError('Erro ao carregar dados. Tente novamente.');
+      setError('Erro ao carregar dados. Verifique sua conexão com o banco.');
     } finally {
       setLoading(false);
     }
@@ -187,6 +130,12 @@ function LiderPage() {
   // FUNÇÕES DOS BOTÕES
   // ============================================
 
+  const showFeedback = (message: string, type: 'success' | 'error' | 'warning') => {
+    setFeedback({ show: true, message, type });
+    setTimeout(() => setFeedback({ ...feedback, show: false }), 3000);
+  };
+
+  // 1. ADICIONAR DISCÍPULO
   const handleAdicionarDiscipulo = () => {
     setOpenAddDiscipulo(true);
     setSearchTerm('');
@@ -197,27 +146,40 @@ function LiderPage() {
     setDiscipuloSelecionado(discipulo);
   };
 
-  const handleConfirmarAdicionar = () => {
+  const handleConfirmarAdicionar = async () => {
     if (!discipuloSelecionado) {
       showFeedback('Selecione um discípulo para adicionar', 'warning');
       return;
     }
 
-    const discipulosAtualizados = discipulos.map(d => 
-      d.id === discipuloSelecionado.id 
-        ? { ...d, status: 'ativo' as const, dataEntrada: new Date().toISOString().split('T')[0] }
-        : d
-    );
-    
-    setDiscipulos(discipulosAtualizados);
-    localStorage.setItem('discipulos_reais', JSON.stringify(discipulosAtualizados));
+    try {
+      const { error } = await supabase
+        .from('discipulos')
+        .update({ 
+          status: 'ativo',
+          data_entrada: new Date().toISOString().split('T')[0]
+        })
+        .eq('id', discipuloSelecionado.id);
+      
+      if (error) throw error;
 
-    showFeedback(`Discípulo ${discipuloSelecionado.name} adicionado com sucesso!`, 'success');
-    setOpenAddDiscipulo(false);
-    setDiscipuloSelecionado(null);
-    setSearchTerm('');
+      const discipulosAtualizados = discipulos.map(d => 
+        d.id === discipuloSelecionado.id 
+          ? { ...d, status: 'ativo' as const, dataEntrada: new Date().toISOString().split('T')[0] }
+          : d
+      );
+      
+      setDiscipulos(discipulosAtualizados);
+      showFeedback(`Discípulo ${discipuloSelecionado.name} adicionado com sucesso!`, 'success');
+      setOpenAddDiscipulo(false);
+      setDiscipuloSelecionado(null);
+      setSearchTerm('');
+    } catch (err) {
+      showFeedback('Erro ao adicionar discípulo', 'error');
+    }
   };
 
+  // 2. ADICIONAR POR ID
   const handleBuscarPorID = async () => {
     if (!idBusca.trim()) {
       showFeedback('Digite um ID válido', 'warning');
@@ -227,80 +189,136 @@ function LiderPage() {
     setBuscandoPorID(true);
     
     try {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      const encontrado = discipulos.find(d => d.id === idBusca);
+      const { data, error } = await supabase
+        .from('discipulos')
+        .select('*')
+        .eq('id', idBusca)
+        .single();
       
-      if (encontrado) {
-        setDiscipuloEncontrado(encontrado);
-        showFeedback(`Usuário ${encontrado.name} encontrado!`, 'success');
+      if (error) throw error;
+      
+      if (data) {
+        setDiscipuloEncontrado(data);
+        showFeedback(`Usuário ${data.name} encontrado!`, 'success');
       } else {
         setDiscipuloEncontrado(null);
         showFeedback('Usuário não encontrado com este ID', 'error');
       }
     } catch (err) {
-      showFeedback('Erro ao buscar usuário', 'error');
+      setDiscipuloEncontrado(null);
+      showFeedback('Usuário não encontrado', 'error');
     } finally {
       setBuscandoPorID(false);
     }
   };
 
-  const handleConfirmarAdicionarPorID = () => {
+  const handleConfirmarAdicionarPorID = async () => {
     if (!discipuloEncontrado) {
       showFeedback('Usuário não encontrado', 'warning');
       return;
     }
 
-    const discipulosAtualizados = discipulos.map(d => 
-      d.id === discipuloEncontrado.id 
-        ? { ...d, status: 'ativo' as const, dataEntrada: new Date().toISOString().split('T')[0] }
-        : d
-    );
-    
-    setDiscipulos(discipulosAtualizados);
-    localStorage.setItem('discipulos_reais', JSON.stringify(discipulosAtualizados));
+    try {
+      const { error } = await supabase
+        .from('discipulos')
+        .update({ 
+          status: 'ativo',
+          data_entrada: new Date().toISOString().split('T')[0]
+        })
+        .eq('id', discipuloEncontrado.id);
+      
+      if (error) throw error;
 
-    showFeedback(`Discípulo ${discipuloEncontrado.name} adicionado com sucesso!`, 'success');
-    setOpenAddPorID(false);
-    setDiscipuloEncontrado(null);
-    setIdBusca('');
+      const discipulosAtualizados = discipulos.map(d => 
+        d.id === discipuloEncontrado.id 
+          ? { ...d, status: 'ativo' as const, dataEntrada: new Date().toISOString().split('T')[0] }
+          : d
+      );
+      
+      setDiscipulos(discipulosAtualizados);
+      showFeedback(`Discípulo ${discipuloEncontrado.name} adicionado com sucesso!`, 'success');
+      setOpenAddPorID(false);
+      setDiscipuloEncontrado(null);
+      setIdBusca('');
+    } catch (err) {
+      showFeedback('Erro ao adicionar discípulo', 'error');
+    }
   };
 
-  const handleCriarGrupo = () => {
+  // 3. NOVO GRUPO
+  const handleCriarGrupo = async () => {
     if (!novoGrupoNome.trim()) {
       showFeedback('Digite um nome para o grupo', 'warning');
       return;
     }
 
-    const novoGrupo: Grupo = {
-      id: `grupo_${Date.now()}`,
-      nome: novoGrupoNome,
-      membros: [],
-      dataCriacao: new Date().toISOString().split('T')[0],
-      status: 'ativo'
-    };
+    try {
+      const novoGrupo = {
+        nome: novoGrupoNome,
+        membros: [],
+        status: 'ativo',
+        data_criacao: new Date().toISOString().split('T')[0]
+      };
 
-    const gruposAtualizados = [...grupos, novoGrupo];
-    setGrupos(gruposAtualizados);
-    localStorage.setItem('grupos_reais', JSON.stringify(gruposAtualizados));
-    
-    showFeedback(`Grupo "${novoGrupoNome}" criado com sucesso!`, 'success');
-    setOpenNovoGrupo(false);
-    setNovoGrupoNome('');
+      const { data, error } = await supabase
+        .from('grupos')
+        .insert([novoGrupo])
+        .select();
+      
+      if (error) throw error;
+
+      if (data && data.length > 0) {
+        const grupoCriado: Grupo = {
+          id: data[0].id,
+          nome: data[0].nome,
+          membros: data[0].membros || [],
+          dataCriacao: data[0].data_criacao,
+          status: data[0].status
+        };
+        
+        setGrupos(prev => [...prev, grupoCriado]);
+        showFeedback(`Grupo "${novoGrupoNome}" criado com sucesso!`, 'success');
+        setOpenNovoGrupo(false);
+        setNovoGrupoNome('');
+      }
+    } catch (err) {
+      showFeedback('Erro ao criar grupo', 'error');
+    }
   };
 
-  const handleEnviarMensagem = () => {
+  // 4. MENSAGEM
+  const handleEnviarMensagem = async () => {
     if (!mensagemTexto.trim()) {
       showFeedback('Digite uma mensagem', 'warning');
       return;
     }
 
-    const discipulosAtivos = discipulos.filter(d => d.status === 'ativo');
-    showFeedback(`Mensagem enviada para ${discipulosAtivos.length} discípulos!`, 'success');
-    setOpenMensagem(false);
-    setMensagemTexto('');
+    try {
+      const discipulosAtivos = discipulos.filter(d => d.status === 'ativo');
+      
+      const mensagensParaInserir = discipulosAtivos.map(d => ({
+        destinatario_id: d.id,
+        destinatario_nome: d.name,
+        conteudo: mensagemTexto,
+        lida: false
+      }));
+
+      const { error } = await supabase
+        .from('mensagens')
+        .insert(mensagensParaInserir);
+      
+      if (error) throw error;
+
+      showFeedback(`Mensagem enviada para ${discipulosAtivos.length} discípulos!`, 'success');
+      setOpenMensagem(false);
+      setMensagemTexto('');
+    } catch (err) {
+      showFeedback('Erro ao enviar mensagem', 'error');
+    }
   };
 
-  const handleRegistrarEncontro = () => {
+  // 5. ENCONTRO
+  const handleRegistrarEncontro = async () => {
     if (!encontroAssunto.trim() || !encontroData) {
       showFeedback('Preencha todos os campos', 'warning');
       return;
@@ -313,15 +331,28 @@ function LiderPage() {
       return;
     }
 
-    showFeedback('Encontro registrado com sucesso!', 'success');
-    setOpenEncontro(false);
-    setEncontroAssunto('');
-    setEncontroData('');
-  };
+    try {
+      const novoEncontro = {
+        grupo_id: grupoAtivo.id,
+        grupo_nome: grupoAtivo.nome,
+        data: encontroData,
+        assunto: encontroAssunto,
+        status: 'realizado'
+      };
 
-  const showFeedback = (message: string, type: 'success' | 'error' | 'warning') => {
-    setFeedback({ show: true, message, type });
-    setTimeout(() => setFeedback({ ...feedback, show: false }), 3000);
+      const { error } = await supabase
+        .from('encontros')
+        .insert([novoEncontro]);
+      
+      if (error) throw error;
+
+      showFeedback('Encontro registrado com sucesso!', 'success');
+      setOpenEncontro(false);
+      setEncontroAssunto('');
+      setEncontroData('');
+    } catch (err) {
+      showFeedback('Erro ao registrar encontro', 'error');
+    }
   };
 
   // ============================================
