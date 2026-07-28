@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { toast } from "sonner";
 import { normalizeUsername } from "@/lib/username";
 import { Flame, Users, UserPlus, Share2, Copy, Search, Link2, Check, Crown, AtSign } from "lucide-react";
+import { getMyChallengePartnerIds } from "@/lib/challenges";
 
 export const Route = createFileRoute("/_authenticated/ranking")({
   component: RankingPage,
@@ -28,6 +29,7 @@ type Row = {
 
 function RankingPage() {
   const [rows, setRows] = useState<Row[]>([]);
+  const [challengePartners, setChallengePartners] = useState<Set<string>>(new Set());
   const [myUsername, setMyUsername] = useState<string | null>(null);
   const [addOpen, setAddOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
@@ -71,6 +73,7 @@ function RankingPage() {
       ...(me ? [{ ...me, isMe: true } as Row] : []),
     ].sort((a, b) => b.xp - a.xp);
     setRows(merged);
+    if (myId) setChallengePartners(await getMyChallengePartnerIds(myId));
   };
 
   useEffect(() => {
