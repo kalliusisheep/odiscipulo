@@ -47,6 +47,7 @@ const vidaCrista: Trail = {
           theologianQuote: {
             author: "Richard Foster",
             text: "As disciplinas espirituais existem para nos colocar diante de Deus — não para impressioná-lo, mas para nos abrir à sua transformação. (paráfrase da ênfase central de sua obra sobre disciplinas espirituais)",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Richard Foster realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -115,6 +116,7 @@ const vidaCrista: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "A oração é a respiração da alma — assim como respiramos sem parar para pensar nisso, o cristão maduro aprende a orar como parte natural de viver. (paráfrase de uma ênfase recorrente em suas pregações sobre oração)",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -189,6 +191,7 @@ const vidaCrista: Trail = {
           theologianQuote: {
             author: "Tim Keller",
             text: "O trabalho é uma das formas pelas quais amamos ao próximo e servimos a Deus — não é um mal necessário separado da vida espiritual. (paráfrase de sua ênfase central sobre trabalho e vocação em 'Toda Boa Obra')",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Tim Keller realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -332,6 +335,7 @@ const vidaCrista: Trail = {
           theologianQuote: {
             author: "C.S. Lewis",
             text: "O amor cristão não começa como um sentimento — ele nasce como um ato da vontade que, com o tempo, transforma também o sentimento. (paráfrase de sua reflexão sobre caridade em 'Cristianismo Puro e Simples')",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se C.S. Lewis realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -400,6 +404,7 @@ const vidaCrista: Trail = {
           theologianQuote: {
             author: "John Stott",
             text: "Nosso testemunho é mais convincente quando a coerência entre o que vivemos e o que cremos desperta a pergunta que abre a porta para falarmos de Cristo. (paráfrase de sua ênfase sobre evangelismo e integridade de vida)",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Stott realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -474,6 +479,7 @@ const vidaCrista: Trail = {
           theologianQuote: {
             author: "Charles Swindoll",
             text: "Entre o estímulo e a resposta existe um espaço — e nesse espaço está nossa liberdade de escolher a saída que Deus já preparou. (paráfrase de sua ênfase pastoral sobre atitude e escolha diante da tentação)",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Swindoll realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -542,6 +548,7 @@ const vidaCrista: Trail = {
           theologianQuote: {
             author: "John Wesley",
             text: "A santidade não é um conjunto de regras externas a cumprir, mas o fruto natural de um coração verdadeiramente unido a Cristo pela graça. (paráfrase de sua ênfase sobre santificação progressiva e os meios da graça)",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Wesley realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -622,6 +629,7 @@ const vidaCrista: Trail = {
           theologianQuote: {
             author: "Larry Crabb",
             text: "Fomos feitos para nos conectar profundamente uns com os outros; é dentro dessa conexão, e não fora dela, que Deus costuma realizar sua obra mais transformadora em nós. (paráfrase da ênfase central de sua obra sobre conexão e relacionamentos)",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Larry Crabb realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -696,6 +704,7 @@ const vidaCrista: Trail = {
           theologianQuote: {
             author: "Dietrich Bonhoeffer",
             text: "Quando Cristo chama alguém, ele o chama a morrer para si mesmo — e o sofrimento, para quem o segue, não é uma exceção trágica ao discipulado, mas parte do caminho. (paráfrase da ênfase central de sua obra sobre o custo do discipulado)",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Dietrich Bonhoeffer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
