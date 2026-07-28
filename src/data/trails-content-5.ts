@@ -76,8 +76,8 @@ const evangelismo: Trail = {
             "Se você precisasse resumir o Evangelho para alguém em trinta segundos, o que diria? Um jeito simples e fiel de organizar essa mensagem segue quatro movimentos da própria narrativa bíblica: Deus (criou tudo bom, e é santo e justo), Homem (pecou, se rebelou, está separado de Deus e sob julgamento), Cristo (o Filho de Deus se encarnou, viveu sem pecado, morreu como substituto na cruz e ressuscitou fisicamente), Resposta (arrependimento e fé pessoal em Cristo, não obras, é o que recebe essa salvação). Esse esqueleto de quatro pontos aparece, com variações de linguagem, em praticamente todo resumo evangelístico fiel já usado pela Igreja — porque não é uma fórmula inventada, é a estrutura da própria mensagem apostólica. O erro mais comum ao evangelizar é pular direto para 'Cristo' e 'Resposta' sem primeiro estabelecer quem é Deus e qual é o problema real do pecado — o resultado é um Evangelho que soa como solução para um problema que a pessoa ainda não sabe que tem.",
           theologianQuote: {
             author: "John Stott",
-            text: "O Evangelho não é um bom conselho sobre o que fazer, mas uma boa notícia sobre o que Deus fez.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Stott realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "O Evangelho não é um bom conselho aos homens, mas uma boa notícia sobre Cristo; não um convite para fazermos algo, mas uma declaração do que Deus fez; não uma exigência, mas uma oferta.",
+            source: "John Stott, The Message of Galatians (tradução livre)",
           },
           deepen: {
             additionalVerses: [
@@ -191,8 +191,8 @@ const evangelismo: Trail = {
             "É importante distinguir, com honestidade pastoral, entre dois chamados diferentes descritos no Novo Testamento: o chamado geral de todo crente a ser testemunha de Cristo (Atos 1:8, 1 Pedro 3:15) e o dom espiritual específico de evangelista, mencionado em Efésios 4:11 junto a apóstolos, profetas, pastores e mestres. Nem todo cristão tem o dom de evangelista — a capacitação especial e o chamado vocacional para pregar publicamente o Evangelho, muitas vezes de forma itinerante ou pública. Mas todo cristão, sem exceção, é chamado a testemunhar: a compartilhar, no espaço relacional em que já vive, a história de o que Cristo fez por ele. Confundir essas duas coisas produz dois erros opostos: ou a igreja terceiriza todo o evangelismo para 'os dons', deixando de testemunhar no cotidiano, ou impõe a todo crente uma pressão de pregação pública para a qual ele não foi dotado. O equilíbrio bíblico é: todos testemunham; nem todos pregam publicamente como vocação.",
           theologianQuote: {
             author: "Charles Spurgeon",
-            text: "Aquele que ganha almas deve, primeiro, ter uma alma cheia de amor por Cristo e por aqueles que Cristo veio salvar.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Ganhar almas é o principal negócio do ministro cristão; deveria, aliás, ser a busca central de todo verdadeiro crente.",
+            source: "Charles H. Spurgeon, The Soul Winner (1895), p. 5 (tradução livre)",
           },
           deepen: {
             additionalVerses: [
@@ -313,9 +313,9 @@ const evangelismo: Trail = {
           deepDive:
             "Um testemunho claro e útil geralmente segue três movimentos simples. Primeiro, 'antes': como era sua vida, seus valores e sua relação (ou ausência de relação) com Deus antes de conhecer a Cristo — sem exagero nem dramatização artificial; testemunhos de conversões graduais e discretas são tão válidos quanto os dramáticos. Segundo, 'encontro': o que especificamente aconteceu — um momento, um período, uma pessoa, um versículo que Deus usou. Terceiro, 'depois': o que mudou de fato, com exemplos concretos, não apenas sentimentos vagos ('mudou minha vida' diz pouco; 'aprendi a perdoar meu pai' diz muito). O erro mais comum é gastar 90% do tempo no 'antes' (contando a própria história de forma sensacionalista) e quase nada explicando quem é Cristo e o que Ele fez — invertendo o centro da narrativa, que deve sempre ser Ele, não nós.",
           theologianQuote: {
-            author: "Josué K. Reichow",
-            text: "Ninguém pode discutir sua experiência pessoal com Cristo — mas todo testemunho fiel aponta para além de si mesmo, para a obra objetiva do Evangelho.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Josué K. Reichow realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "Lesslie Newbigin",
+            text: "Só conheço uma pista para essa pergunta, uma única hermenêutica do Evangelho: uma comunidade de homens e mulheres que creem nele e vivem por ele.",
+            source: "Lesslie Newbigin, The Gospel in a Pluralist Society (1989), p. 227 (tradução livre) — no original, Newbigin fala da igreja/comunidade; aplicamos o princípio também ao testemunho pessoal de cada discípulo dentro dessa comunidade",
           },
           deepen: {
             historicalContext:
@@ -420,8 +420,8 @@ const evangelismo: Trail = {
             "João 4 revela um padrão evangelístico rico em detalhes práticos: Jesus atravessa uma barreira cultural e religiosa (judeus normalmente evitavam a Samaria), inicia com um pedido simples e vulnerável ('me dá de beber'), faz perguntas genuínas em vez de acusações, reconhece com honestidade a situação de vida da mulher sem minimizar nem exagerar seu pecado, e só depois de estabelecida a confiança revela verdades mais profundas sobre si mesmo. O resultado é uma conversa que a própria mulher leva de volta à sua cidade, gerando um pequeno avivamento local (João 4:39-42). Esse padrão sugere que evangelismo eficaz raramente é um evento isolado e forçado — é, na maior parte das vezes, o fruto de relações reais, tempo investido, perguntas genuínas e disposição de cruzar barreiras sociais para se aproximar de quem é diferente de nós.",
           theologianQuote: {
             author: "Charles Swindoll",
-            text: "As pessoas raramente são convencidas por um argumento perfeito; elas são atraídas por uma vida que reflete, de forma consistente, aquilo que é anunciado.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Swindoll realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Nada fala mais alto, nem com mais força, do que uma vida de integridade.",
+            source: "Charles R. Swindoll (citação amplamente documentada em suas obras e pregações) (tradução livre)",
           },
           deepen: {
             historicalContext:
@@ -529,8 +529,8 @@ const evangelismo: Trail = {
             "É importante notar que a ousadia bíblica nunca é apresentada como ausência de sabedoria ou de tato. O mesmo Novo Testamento que pede ousadia (Atos 4:29, Efésios 6:19) também pede mansidão e respeito (1 Pedro 3:15) e sabedoria no procedimento com os de fora (Colossenses 4:5). Ousadia sem mansidão vira agressividade, que afasta em vez de atrair; mansidão sem ousadia vira silêncio covarde disfarçado de educação. O equilíbrio bíblico é falar com clareza e coragem sobre Cristo, sem, no entanto, tratar quem discorda com desprezo, impaciência ou hostilidade. Vale lembrar ainda que, em contextos onde o evangelismo é legalmente restrito ou perigoso, a aplicação prática da ousadia bíblica exige também sabedoria situacional e prudência — a Escritura nunca pede imprudência temerária, mas fidelidade corajosa dentro da sabedoria disponível a cada contexto.",
           theologianQuote: {
             author: "Charles Spurgeon",
-            text: "Um cristão tímido demais para falar de Cristo em terra provavelmente ficará também calado demais para cantar seus louvores no céu — não porque não ame, mas porque nunca aprendeu a vencer o medo pela graça.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Aquele que tem vergonha de falar a verdade de Deus precisa, ele mesmo, ter vergonha de si!",
+            source: "Charles H. Spurgeon, sermão \"The Very Bold Prophecy\" (tradução livre)",
           },
           deepen: {
             historicalContext:
@@ -631,8 +631,8 @@ const evangelismo: Trail = {
             "Sem pretender esgotar o assunto (que merece estudo contínuo ao longo da vida), três objeções aparecem com frequência em conversas cotidianas, e vale ter ao menos um ponto de partida simples e honesto para cada uma: (1) O problema do sofrimento — a Bíblia nunca minimiza o sofrimento real, mas ensina que Deus entrou nele pessoalmente em Cristo (que sofreu e morreu), e promete restauração final (Apocalipse 21:4); a existência do mal, paradoxalmente, pressupõe um padrão real de bem, o que é mais difícil de explicar sem Deus do que com Ele. (2) A exclusividade de Cristo diante de outras religiões — Jesus mesmo afirmou ser 'o caminho, a verdade e a vida' (João 14:6); isso soa estreito à cultura contemporânea, mas é coerente: se Cristo realmente ressuscitou dos mortos (um fato histórico investigável, não apenas uma opinião religiosa entre outras), essa afirmação exclusiva se torna razoável, não arrogante. (3) A confiabilidade da Bíblia — o Novo Testamento tem, de longe, mais manuscritos antigos e mais próximos dos eventos originais do que qualquer outro documento da Antiguidade, um fato reconhecido mesmo por historiadores seculares. Em todos os casos, o objetivo não é 'vencer' a pessoa num debate, mas remover obstáculos honestos que impedem alguém de considerar Cristo com seriedade.",
           theologianQuote: {
             author: "William Lane Craig",
-            text: "A boa apologética não tenta substituir a fé por prova; ela remove obstáculos intelectuais para que a fé, gerada pelo Espírito, encontre um caminho mais livre até o coração.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se William Lane Craig realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Mais frequentemente, é o que você é, e não o que você diz, que trará um descrente a Cristo. Esta é, portanto, a apologética suprema: sua vida.",
+            source: "William Lane Craig, Reasonable Faith (Crossway, 1994), pp. 301–302 (tradução livre)",
           },
           deepen: {
             historicalContext:
@@ -740,8 +740,8 @@ const evangelismo: Trail = {
             "É útil pensar nessa relação com uma analogia simples: Deus decretou soberanamente que uma plantação cresça — mas também decretou que ela cresça através de sementes plantadas, terra regada e sol brilhando, não por mágica desconectada de causas reais. Ninguém pergunta 'se Deus decidiu a colheita, por que plantar sementes?' — a soberania divina sobre o resultado não anula, mas *inclui*, os meios ordinários pelos quais esse resultado acontece. O mesmo vale para a evangelização: a soberania de Deus na salvação nunca é usada, na Escritura, como desculpa para a passividade humana — pelo contrário, é precisamente o fundamento da confiança com que evangelizamos, sabendo que nosso esforço não depende, no fim, apenas do nosso próprio talento ou eloquência, mas da obra segura de Deus através dele.",
           theologianQuote: {
             author: "Charles Spurgeon",
-            text: "Se Deus escolheu quem será salvo, essa mesma eleição inclui os meios: e um desses meios é a nossa boca aberta, anunciando o Evangelho a toda criatura.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Não podemos fazer os homens virem; essa é a obra do Espírito Santo — mas podemos persuadi-los pelo amor de Jesus.",
+            source: "Charles H. Spurgeon, The Sword and Trowel (1883), pp. 207–208 (tradução livre)",
           },
           deepen: {
             historicalContext:
@@ -840,8 +840,8 @@ const evangelismo: Trail = {
             "Três princípios práticos ajudam a aplicar a sabedoria bíblica ao ambiente digital: primeiro, lembre-se de que por trás de cada comentário há uma pessoa real, criada à imagem de Deus — o anonimato relativo das telas facilita esquecer isso, e é justamente aí que a mansidão bíblica (1 Pedro 3:15) precisa ser mais deliberadamente praticada. Segundo, nem toda discussão pede resposta pública imediata — Tiago 1:19 ('tardio para falar, tardio para se irar') é sabedoria especialmente relevante num ambiente desenhado para reações rápidas; às vezes, uma conversa privada, mais lenta e pessoal, comunica mais amor do que um comentário público defendendo um ponto. Terceiro, seu perfil e sua conduta digital consistente ao longo do tempo — o que você compartilha, como reage, como trata quem discorda — comunicam tanto quanto qualquer postagem isolada e explicitamente evangelística; a coerência entre vida online e offline é, ela mesma, um testemunho silencioso poderoso.",
           theologianQuote: {
             author: "John Mark Comer",
-            text: "As ferramentas digitais amplificam quem já somos — se nossa vida interior é apressada e reativa, a internet vai apenas expor isso mais rápido e para mais gente.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Mark Comer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Aquilo a que você dá atenção é a pessoa em que você se torna.",
+            source: "John Mark Comer (citação amplamente documentada em suas obras sobre atenção e vida digital) (tradução livre)",
           },
           deepen: {
             historicalContext:
@@ -941,8 +941,8 @@ const evangelismo: Trail = {
             "Cuidar bem de um recém-convertido nas primeiras semanas costuma incluir passos simples, mas decisivos: ajudá-lo a começar um hábito realista de leitura bíblica (mesmo que pequeno no início — cinco minutos são melhores do que uma meta ambiciosa e abandonada em uma semana), introduzi-lo pessoalmente a uma igreja local e, idealmente, apresentá-lo você mesmo a algumas pessoas ali (assim como Barnabé apresentou Paulo aos apóstolos, reduzindo o medo natural de chegar sozinho a um lugar novo), conversar abertamente sobre o batismo como próximo passo público de obediência, e estar disponível para dúvidas simples nas primeiras semanas, sem pressa de que a pessoa 'já saiba tudo'. O erro mais comum é acompanhar intensamente até a decisão de fé, e depois desaparecer — deixando a pessoa sozinha justamente na fase mais frágil e vulnerável do seu crescimento espiritual.",
           theologianQuote: {
             author: "Thom Rainer",
-            text: "Ganhar alguém para Cristo e depois abandoná-lo sem cuidado nas primeiras semanas é como trazer um recém-nascido ao mundo e depois deixá-lo sozinho para se alimentar.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Thom Rainer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "O discipulado de novos crentes não acontece sozinho — ele precisa ser intencional.",
+            source: "Thom S. Rainer (com Eric Geiger), Simple Church (tradução livre)",
           },
           deepen: {
             historicalContext:
@@ -1042,9 +1042,9 @@ const evangelismo: Trail = {
           deepDive:
             "Vale notar, em 2 Timóteo 2:2, que a única qualificação explicitamente exigida por Paulo para receber esse 'depósito' e repassá-lo adiante é ser 'fiel' (pistós) — não brilhante, não eloquente, não formado teologicamente, apenas fiel e capaz de ensinar. Isso é uma boa notícia prática: multiplicar discípulos não exige que você seja um especialista teológico antes de começar — exige fidelidade em compartilhar o que você já genuinamente aprendeu e vive, com disposição de investir tempo pessoal em outra pessoa específica, assim como alguém provavelmente investiu tempo em você. Áquila e Priscila, em Atos 18, ilustram isso bem: um casal comum, sem cargo formal de ensino público, que investiu tempo pessoal explicando 'com mais precisão' o caminho de Deus a Apolo, um pregador já talentoso — multiplicação acontece tanto em conversas informais quanto em discipulados formalmente estruturados.",
           theologianQuote: {
-            author: "Josué K. Reichow",
-            text: "Um discípulo que nunca aprende a discipular outros interrompeu, sem perceber, a corrente que deveria continuar fluindo depois dele.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Josué K. Reichow realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "David Bosch",
+            text: "Existe igreja porque existe missão, e não o contrário.",
+            source: "David J. Bosch, Transforming Mission (1991), p. 390 (tradução livre)",
           },
           deepen: {
             historicalContext:
