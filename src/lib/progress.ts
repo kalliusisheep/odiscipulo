@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { checkFinishChallenges } from "@/lib/challenges";
 
 const STREAK_BONUS_XP = 10;
 
@@ -35,5 +36,11 @@ export async function awardXpAndStreak(userId: string, xp: number) {
       last_activity_date: today,
     })
     .eq("id", userId);
+  // Fire-and-forget: verifica e credita bônus de qualquer desafio ativo.
+  try {
+    await checkFinishChallenges(userId);
+  } catch {
+    /* silencioso — não deve bloquear a UX de conclusão */
+  }
   return { prevStreak, newStreak, prevXp, newXp, streakBonus: bonus };
 }
