@@ -1,11 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { 
-  ArrowLeft, 
-  TrendingUp, 
-  AlertTriangle, 
-  Users, 
-  Calendar, 
+import {
+  ArrowLeft,
+  TrendingUp,
+  AlertTriangle,
+  Users,
+  Calendar,
   Building2,
   Search,
   X,
@@ -15,6 +15,9 @@ import {
   Loader2
 } from "lucide-react";
 import { useState, useEffect } from "react";
+
+// 🔥 IMPORTA O SUPABASE
+import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/_authenticated/lider")({
   component: LiderPage,
@@ -34,106 +37,43 @@ interface Discipulo {
   email?: string;
   telefone?: string;
   status: 'ativo' | 'inativo' | 'pendente';
-  data_entrada: string;
-  created_at?: string;
-  updated_at?: string;
+  dataEntrada?: string;
 }
 
 interface Grupo {
   id: string;
   nome: string;
   membros: string[];
-  data_criacao: string;
+  dataCriacao: string;
   status: 'ativo' | 'inativo';
-  created_at?: string;
-  updated_at?: string;
+  temas?: string[];
 }
 
-// ============================================
-// FUNÇÕES DE ACESSO AO BANCO VIA API REST
-// ============================================
-
-/**
- * Busca todos os registros de uma tabela via API REST do Lovable
- */
-async function fetchTableData(tableName: string) {
-  try {
-    const response = await fetch(`/api/tables/${tableName}`);
-    if (!response.ok) {
-      throw new Error(`Erro ao buscar ${tableName}: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(`❌ Erro ao buscar ${tableName}:`, error);
-    return null;
-  }
-}
-
-/**
- * Busca um registro específico por ID via API REST
- */
-async function fetchTableRecordById(tableName: string, id: string) {
-  try {
-    const response = await fetch(`/api/tables/${tableName}/${id}`);
-    if (!response.ok) {
-      if (response.status === 404) return null;
-      throw new Error(`Erro ao buscar ${tableName}/${id}: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(`❌ Erro ao buscar ${tableName}/${id}:`, error);
-    return null;
-  }
-}
-
-/**
- * Atualiza um registro em uma tabela via API REST do Lovable
- */
-async function updateTableRecord(tableName: string, id: string, updates: Record<string, any>) {
-  try {
-    const response = await fetch(`/api/tables/${tableName}/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updates),
-    });
-    if (!response.ok) {
-      throw new Error(`Erro ao atualizar ${tableName}: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error(`❌ Erro ao atualizar ${tableName}:`, error);
-    throw error;
-  }
-}
-
-/**
- * Insere um registro em uma tabela via API REST do Lovable
- */
-async function insertTableRecord(tableName: string, record: Record<string, any>) {
-  try {
-    const response = await fetch(`/api/tables/${tableName}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(record),
-    });
-    if (!response.ok) {
-      throw new Error(`Erro ao inserir em ${tableName}: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error(`❌ Erro ao inserir em ${tableName}:`, error);
-    throw error;
-  }
-}
+// Temas possíveis para grupos
+const GROUP_THEMES = [
+  "Orgulho",
+  "Pecado",
+  "Casamento",
+  "Namoro",
+  "Pornografia",
+  "Vícios (álcool/drogas)",
+  "Dificuldade financeira",
+  "Vida devocional",
+  "Perdão",
+  "Empatia",
+  "Serviço (Mordomia)",
+  "Preparo para liderar",
+  "Batismo",
+];
 
 // ============================================
 // COMPONENTE PRINCIPAL
 // ============================================
 
 function LiderPage() {
-  // ESTADOS
+  // ============================================
+  // ESTADOS - TODOS DENTRO DO COMPONENTE
+  // ============================================
   const [discipulos, setDiscipulos] = useState<Discipulo[]>([]);
   const [grupos, setGrupos] = useState<Grupo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -162,60 +102,39 @@ function LiderPage() {
     type: 'success'
   });
 
+  // Novos estados para criação de grupo
+  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
+  const [selectedThemes, setSelectedThemes] = useState<string[]>([]);
+
   // ============================================
-  // FUNÇÃO PARA CARREGAR DADOS DO BANCO VIA API
+  // FUNÇÃO PARA CARREGAR DADOS DO SUPABASE
   // ============================================
   const carregarDados = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
-      console.log('🔍 Buscando dados do banco via API REST...');
+      // Buscar todos os discípulos
+      const { data: discipulosData, error: discipulosError } = await supabase
+        .from('discipulos')
+        .select('*')
+        .order('name');
 
-      // Buscar discípulos
-      const discipulosData = await fetchTableData('discipulos');
-      if (discipulosData && discipulosData.length > 0) {
-        setDiscipulos(discipulosData);
-        console.log(`📋 Carregados ${discipulosData.length} discípulos.`);
-        // Salvar no localStorage para fallback
-        localStorage.setItem('discipulos_reais', JSON.stringify(discipulosData));
-      } else {
-        // Fallback: localStorage ou mock
-        const saved = localStorage.getItem('discipulos_reais');
-        if (saved) {
-          setDiscipulos(JSON.parse(saved));
-        } else {
-          // Dados mock iniciais (caso não haja nada)
-          const mock = [
-            { id: '1', name: 'João Silva', level: 3, streak: 9, alert: null, progress: 40, email: 'joao@email.com', telefone: '(11) 99999-9999', status: 'ativo', data_entrada: new Date().toISOString().split('T')[0] },
-            { id: '2', name: 'Maria Oliveira', level: 5, streak: 0, alert: 'Streak quebrado há 3 dias', progress: 62, email: 'maria@email.com', telefone: '(11) 88888-8888', status: 'ativo', data_entrada: new Date().toISOString().split('T')[0] },
-            { id: '3', name: 'Ana Costa', level: 4, streak: 21, alert: null, progress: 88, email: 'ana@email.com', telefone: '(11) 77777-7777', status: 'pendente', data_entrada: new Date().toISOString().split('T')[0] },
-            { id: '4', name: 'Tiago Nunes', level: 2, streak: 4, alert: 'Baixo desempenho em quiz', progress: 15, email: 'tiago@email.com', telefone: '(11) 66666-6666', status: 'ativo', data_entrada: new Date().toISOString().split('T')[0] }
-          ];
-          setDiscipulos(mock);
-          localStorage.setItem('discipulos_reais', JSON.stringify(mock));
-        }
-      }
+      if (discipulosError) throw discipulosError;
 
-      // Buscar grupos
-      const gruposData = await fetchTableData('grupos');
-      if (gruposData && gruposData.length > 0) {
-        setGrupos(gruposData);
-        localStorage.setItem('grupos_reais', JSON.stringify(gruposData));
-      } else {
-        const saved = localStorage.getItem('grupos_reais');
-        if (saved) {
-          setGrupos(JSON.parse(saved));
-        } else {
-          const mockGrupos = [{ id: '1', nome: 'Grupo Fogo', membros: ['1', '2'], data_criacao: new Date().toISOString().split('T')[0], status: 'ativo' }];
-          setGrupos(mockGrupos);
-          localStorage.setItem('grupos_reais', JSON.stringify(mockGrupos));
-        }
-      }
+      // Buscar todos os grupos
+      const { data: gruposData, error: gruposError } = await supabase
+        .from('grupos')
+        .select('*')
+        .order('nome');
 
+      if (gruposError) throw gruposError;
+
+      setDiscipulos(discipulosData || []);
+      setGrupos(gruposData || []);
     } catch (err) {
-      console.error('❌ Erro ao carregar dados:', err);
-      setError('Erro ao carregar dados. Verifique a conexão com a API.');
+      console.error('Erro ao carregar dados:', err);
+      setError('Erro ao carregar dados. Verifique sua conexão com o banco.');
     } finally {
       setLoading(false);
     }
@@ -234,7 +153,7 @@ function LiderPage() {
 
   const showFeedback = (message: string, type: 'success' | 'error' | 'warning') => {
     setFeedback({ show: true, message, type });
-    setTimeout(() => setFeedback({ ...feedback, show: false }), 3000);
+    setTimeout(() => setFeedback(prev => ({ ...prev, show: false })), 3000);
   };
 
   // 1. ADICIONAR DISCÍPULO
@@ -254,89 +173,68 @@ function LiderPage() {
       return;
     }
 
+    if (discipuloSelecionado.status === 'ativo') {
+      showFeedback('Este discípulo já está ativo', 'warning');
+      setOpenAddDiscipulo(false);
+      return;
+    }
+
     try {
-      const dataEntrada = new Date().toISOString().split('T')[0];
-      const id = discipuloSelecionado.id;
-
-      // Atualizar no banco via API
-      try {
-        await updateTableRecord('discipulos', id, {
+      const { error } = await supabase
+        .from('discipulos')
+        .update({
           status: 'ativo',
-          data_entrada: dataEntrada
-        });
-        console.log(`✅ Discípulo ${id} atualizado para ativo.`);
-      } catch (apiErr) {
-        console.warn('⚠️ Falha ao atualizar via API, usando localStorage como fallback.');
-      }
+          data_entrada: new Date().toISOString().split('T')[0]
+        })
+        .eq('id', discipuloSelecionado.id);
 
-      // Atualizar estado local
-      const discipulosAtualizados = discipulos.map(d => 
-        d.id === id ? { ...d, status: 'ativo' as const, data_entrada: dataEntrada } : d
+      if (error) throw error;
+
+      const discipulosAtualizados = discipulos.map(d =>
+        d.id === discipuloSelecionado.id
+          ? { ...d, status: 'ativo' as const, dataEntrada: new Date().toISOString().split('T')[0] }
+          : d
       );
-      
-      setDiscipulos(discipulosAtualizados);
-      localStorage.setItem('discipulos_reais', JSON.stringify(discipulosAtualizados));
 
+      setDiscipulos(discipulosAtualizados);
       showFeedback(`Discípulo ${discipuloSelecionado.name} adicionado com sucesso!`, 'success');
       setOpenAddDiscipulo(false);
       setDiscipuloSelecionado(null);
       setSearchTerm('');
     } catch (err) {
+      console.error(err);
       showFeedback('Erro ao adicionar discípulo', 'error');
     }
   };
 
-  // 2. ADICIONAR POR ID (CORRIGIDO)
+  // 2. ADICIONAR POR ID
   const handleBuscarPorID = async () => {
-    const idDigitado = idBusca.trim();
-    if (!idDigitado) {
+    if (!idBusca.trim()) {
       showFeedback('Digite um ID válido', 'warning');
       return;
     }
 
     setBuscandoPorID(true);
-    setDiscipuloEncontrado(null); // Limpa resultado anterior
 
     try {
-      // 1º tentativa: buscar na lista local (mais rápido)
-      let encontrado = discipulos.find(d => 
-        d.id.toLowerCase() === idDigitado.toLowerCase() || 
-        d.id === idDigitado
-      );
+      const { data, error } = await supabase
+        .from('discipulos')
+        .select('*')
+        .eq('id', idBusca)
+        .single();
 
-      // 2º tentativa: se não achou, buscar diretamente na API por ID
-      if (!encontrado) {
-        console.log(`🔍 Buscando ID "${idDigitado}" diretamente na API...`);
-        const apiResult = await fetchTableRecordById('discipulos', idDigitado);
-        if (apiResult) {
-          encontrado = apiResult;
-          // Adiciona ao estado local para futuras buscas
-          setDiscipulos(prev => {
-            // Evita duplicados
-            if (prev.some(d => d.id === apiResult.id)) return prev;
-            return [...prev, apiResult];
-          });
-          // Salva no localStorage também
-          const saved = localStorage.getItem('discipulos_reais');
-          const parsed = saved ? JSON.parse(saved) : [];
-          if (!parsed.some((d: any) => d.id === apiResult.id)) {
-            parsed.push(apiResult);
-            localStorage.setItem('discipulos_reais', JSON.stringify(parsed));
-          }
-        }
-      }
+      if (error) throw error;
 
-      if (encontrado) {
-        setDiscipuloEncontrado(encontrado);
-        showFeedback(`Usuário "${encontrado.name}" encontrado!`, 'success');
+      if (data) {
+        setDiscipuloEncontrado(data);
+        showFeedback(`Usuário ${data.name} encontrado!`, 'success');
       } else {
         setDiscipuloEncontrado(null);
-        showFeedback(`Nenhum usuário com ID "${idDigitado}" encontrado.`, 'error');
+        showFeedback('Usuário não encontrado com este ID', 'error');
       }
     } catch (err) {
-      console.error('❌ Erro na busca por ID:', err);
       setDiscipuloEncontrado(null);
-      showFeedback('Erro ao buscar usuário. Tente novamente.', 'error');
+      showFeedback('Usuário não encontrado', 'error');
     } finally {
       setBuscandoPorID(false);
     }
@@ -344,85 +242,134 @@ function LiderPage() {
 
   const handleConfirmarAdicionarPorID = async () => {
     if (!discipuloEncontrado) {
-      showFeedback('Nenhum usuário selecionado.', 'warning');
+      showFeedback('Usuário não encontrado', 'warning');
+      return;
+    }
+
+    if (discipuloEncontrado.status === 'ativo') {
+      showFeedback('Este discípulo já está ativo', 'warning');
+      setOpenAddPorID(false);
       return;
     }
 
     try {
-      const dataEntrada = new Date().toISOString().split('T')[0];
-      const id = discipuloEncontrado.id;
-
-      // Atualizar via API
-      try {
-        await updateTableRecord('discipulos', id, {
+      const { error } = await supabase
+        .from('discipulos')
+        .update({
           status: 'ativo',
-          data_entrada: dataEntrada
-        });
-      } catch (apiErr) {
-        console.warn('⚠️ Falha ao atualizar via API.');
-      }
+          data_entrada: new Date().toISOString().split('T')[0]
+        })
+        .eq('id', discipuloEncontrado.id);
 
-      // Atualizar estado local
-      const discipulosAtualizados = discipulos.map(d => 
-        d.id === id ? { ...d, status: 'ativo' as const, data_entrada: dataEntrada } : d
+      if (error) throw error;
+
+      const discipulosAtualizados = discipulos.map(d =>
+        d.id === discipuloEncontrado.id
+          ? { ...d, status: 'ativo' as const, dataEntrada: new Date().toISOString().split('T')[0] }
+          : d
       );
-      
-      setDiscipulos(discipulosAtualizados);
-      localStorage.setItem('discipulos_reais', JSON.stringify(discipulosAtualizados));
 
-      showFeedback(`Discípulo "${discipuloEncontrado.name}" adicionado com sucesso!`, 'success');
+      setDiscipulos(discipulosAtualizados);
+      showFeedback(`Discípulo ${discipuloEncontrado.name} adicionado com sucesso!`, 'success');
       setOpenAddPorID(false);
       setDiscipuloEncontrado(null);
       setIdBusca('');
     } catch (err) {
+      console.error(err);
       showFeedback('Erro ao adicionar discípulo', 'error');
     }
   };
 
-  // 3. NOVO GRUPO
+  // 3. NOVO GRUPO (agora com seleção de membros e temas)
   const handleCriarGrupo = async () => {
     if (!novoGrupoNome.trim()) {
       showFeedback('Digite um nome para o grupo', 'warning');
       return;
     }
 
+    if (selectedMembers.length === 0) {
+      showFeedback('Selecione pelo menos um membro para o grupo', 'warning');
+      return;
+    }
+
     try {
       const novoGrupo = {
-        id: `grupo_${Date.now()}`,
         nome: novoGrupoNome,
-        membros: [],
-        data_criacao: new Date().toISOString().split('T')[0],
-        status: 'ativo'
+        membros: selectedMembers,
+        temas: selectedThemes,
+        status: 'ativo',
+        data_criacao: new Date().toISOString().split('T')[0]
       };
 
-      try {
-        await insertTableRecord('grupos', novoGrupo);
-      } catch (apiErr) {
-        console.warn('⚠️ Falha ao inserir grupo via API.');
-      }
+      const { data, error } = await supabase
+        .from('grupos')
+        .insert([novoGrupo])
+        .select();
 
-      setGrupos(prev => [...prev, novoGrupo]);
-      localStorage.setItem('grupos_reais', JSON.stringify([...grupos, novoGrupo]));
-      
-      showFeedback(`Grupo "${novoGrupoNome}" criado com sucesso!`, 'success');
-      setOpenNovoGrupo(false);
-      setNovoGrupoNome('');
+      if (error) throw error;
+
+      if (data && data.length > 0) {
+        const grupoCriado: Grupo = {
+          id: data[0].id,
+          nome: data[0].nome,
+          membros: data[0].membros || [],
+          dataCriacao: data[0].data_criacao,
+          status: data[0].status,
+          temas: data[0].temas || []
+        };
+
+        setGrupos(prev => [...prev, grupoCriado]);
+        showFeedback(`Grupo "${novoGrupoNome}" criado com sucesso!`, 'success');
+        setOpenNovoGrupo(false);
+        setNovoGrupoNome('');
+        setSelectedMembers([]);
+        setSelectedThemes([]);
+      }
     } catch (err) {
+      console.error(err);
       showFeedback('Erro ao criar grupo', 'error');
     }
   };
 
+  // Helpers para seleção de membros/temas
+  const toggleMember = (id: string) => {
+    setSelectedMembers(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  };
+
+  const toggleTheme = (theme: string) => {
+    setSelectedThemes(prev => prev.includes(theme) ? prev.filter(x => x !== theme) : [...prev, theme]);
+  };
+
   // 4. MENSAGEM
-  const handleEnviarMensagem = () => {
+  const handleEnviarMensagem = async () => {
     if (!mensagemTexto.trim()) {
       showFeedback('Digite uma mensagem', 'warning');
       return;
     }
 
-    const discipulosAtivos = discipulos.filter(d => d.status === 'ativo');
-    showFeedback(`Mensagem enviada para ${discipulosAtivos.length} discípulos!`, 'success');
-    setOpenMensagem(false);
-    setMensagemTexto('');
+    try {
+      const discipulosAtivos = discipulos.filter(d => d.status === 'ativo');
+
+      const mensagensParaInserir = discipulosAtivos.map(d => ({
+        destinatario_id: d.id,
+        destinatario_nome: d.name,
+        conteudo: mensagemTexto,
+        lida: false
+      }));
+
+      const { error } = await supabase
+        .from('mensagens')
+        .insert(mensagensParaInserir);
+
+      if (error) throw error;
+
+      showFeedback(`Mensagem enviada para ${discipulosAtivos.length} discípulos!`, 'success');
+      setOpenMensagem(false);
+      setMensagemTexto('');
+    } catch (err) {
+      console.error(err);
+      showFeedback('Erro ao enviar mensagem', 'error');
+    }
   };
 
   // 5. ENCONTRO
@@ -432,8 +379,9 @@ function LiderPage() {
       return;
     }
 
+    // Se houver grupos, permitir escolher um ativo; atualmente pega o primeiro grupo ativo
     const grupoAtivo = grupos.find(g => g.status === 'ativo');
-    
+
     if (!grupoAtivo) {
       showFeedback('Nenhum grupo ativo encontrado', 'warning');
       return;
@@ -448,17 +396,18 @@ function LiderPage() {
         status: 'realizado'
       };
 
-      try {
-        await insertTableRecord('encontros', novoEncontro);
-      } catch (apiErr) {
-        console.warn('⚠️ Falha ao inserir encontro via API.');
-      }
+      const { error } = await supabase
+        .from('encontros')
+        .insert([novoEncontro]);
+
+      if (error) throw error;
 
       showFeedback('Encontro registrado com sucesso!', 'success');
       setOpenEncontro(false);
       setEncontroAssunto('');
       setEncontroData('');
     } catch (err) {
+      console.error(err);
       showFeedback('Erro ao registrar encontro', 'error');
     }
   };
@@ -480,7 +429,7 @@ function LiderPage() {
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
         <AlertTriangle className="h-12 w-12 text-red-500 mb-4" />
         <p className="text-center text-red-500">{error}</p>
-        <button 
+        <button
           onClick={carregarDados}
           className="mt-4 rounded-lg bg-primary px-4 py-2 text-white hover:bg-primary/90"
         >
@@ -531,27 +480,32 @@ function LiderPage() {
         </p>
       </section>
 
-      {/* AÇÕES RÁPIDAS */}
+      {/* AÇÕES RÁPIDAS (reordenadas: Adicionar, Novo grupo, Mensagem, Encontro) */}
       <div className="grid grid-cols-4 gap-2">
-        <ActionBtn 
-          icon={UserPlus} 
-          label="Adicionar" 
+        <ActionBtn
+          icon={UserPlus}
+          label="Adicionar"
           onClick={handleAdicionarDiscipulo}
           className="bg-primary/10 hover:bg-primary/20"
         />
-        <ActionBtn 
-          icon={Users} 
-          label="Novo grupo" 
-          onClick={() => setOpenNovoGrupo(true)}
+        <ActionBtn
+          icon={Users}
+          label="Novo grupo"
+          onClick={() => {
+            setOpenNovoGrupo(true);
+            // preparar seleção vazia
+            setSelectedMembers([]);
+            setSelectedThemes([]);
+          }}
         />
-        <ActionBtn 
-          icon={MessageSquare} 
-          label="Mensagem" 
+        <ActionBtn
+          icon={MessageSquare}
+          label="Mensagem"
           onClick={() => setOpenMensagem(true)}
         />
-        <ActionBtn 
-          icon={Calendar} 
-          label="Encontro" 
+        <ActionBtn
+          icon={Calendar}
+          label="Encontro"
           onClick={() => setOpenEncontro(true)}
           className="bg-success/10 hover:bg-success/20"
         />
@@ -579,7 +533,7 @@ function LiderPage() {
         {discipulos.filter(d => d.status === 'ativo' || d.status === 'pendente').length === 0 ? (
           <div className="card-elevated p-8 text-center">
             <p className="text-sm text-muted-foreground">Nenhum discípulo adicionado ainda</p>
-            <button 
+            <button
               onClick={handleAdicionarDiscipulo}
               className="mt-2 text-sm text-primary hover:underline"
             >
@@ -617,6 +571,47 @@ function LiderPage() {
         )}
       </section>
 
+      {/* GRUPOS DE DISCIPULADO */}
+      <section className="space-y-2">
+        <div className="flex items-center justify-between px-1">
+          <h2 className="text-sm font-semibold text-muted-foreground">Grupos de Discipulado</h2>
+          <span className="text-xs text-muted-foreground">{grupos.length} grupos</span>
+        </div>
+
+        {grupos.length === 0 ? (
+          <div className="card-elevated p-4 text-center text-sm text-muted-foreground">
+            Nenhum grupo criado ainda.
+            <div>
+              <button
+                onClick={() => setOpenNovoGrupo(true)}
+                className="mt-2 text-sm text-primary hover:underline"
+              >
+                Criar novo grupo
+              </button>
+            </div>
+          </div>
+        ) : (
+          grupos.map(g => (
+            <div key={g.id} className="card-elevated p-4">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="font-semibold">{g.nome}</p>
+                  <p className="text-xs text-muted-foreground">
+                    Membros: {g.membros?.length ?? 0} · Criado: {g.dataCriacao}
+                  </p>
+                  {g.temas && g.temas.length > 0 && (
+                    <p className="text-xs mt-2">
+                      <span className="font-medium">Temas: </span>{g.temas.join(', ')}
+                    </p>
+                  )}
+                </div>
+                <Users className="h-5 w-5 text-primary" />
+              </div>
+            </div>
+          ))
+        )}
+      </section>
+
       {/* ============================================ */}
       {/* DIÁLOGOS (MODAIS) */}
       {/* ============================================ */}
@@ -631,7 +626,7 @@ function LiderPage() {
                 <X className="h-5 w-5" />
               </button>
             </div>
-            
+
             <div className="relative mb-4">
               <input
                 type="text"
@@ -645,16 +640,17 @@ function LiderPage() {
 
             <div className="max-h-60 overflow-y-auto space-y-2 mb-4">
               {(() => {
-                const resultados = searchTerm.trim() ? discipulos.filter(d => 
+                // Mostrar contatos já cadastrados (todos) — mas destacar inativos/pendentes para adicionar
+                const resultados = searchTerm.trim() ? discipulos.filter(d =>
                   d.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                   d.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                  d.id.toLowerCase().includes(searchTerm.toLowerCase())
+                  d.id.includes(searchTerm)
                 ) : discipulos;
-                
+
                 if (resultados.length === 0) {
-                  return <p className="text-center text-sm text-muted-foreground py-4">Nenhum contato encontrado</p>;
+                  return <p className="text-center text-sm text-muted-foreground py-4">Nenhum usuário encontrado</p>;
                 }
-                
+
                 return resultados.map((d) => (
                   <div
                     key={d.id}
@@ -666,7 +662,6 @@ function LiderPage() {
                     <div>
                       <p className="font-medium">{d.name}</p>
                       <p className="text-xs text-muted-foreground">ID: {d.id} · Status: {d.status}</p>
-                      {d.email && <p className="text-xs text-muted-foreground">{d.email}</p>}
                     </div>
                     {discipuloSelecionado?.id === d.id && (
                       <CheckCircle className="h-5 w-5 text-primary" />
@@ -698,7 +693,7 @@ function LiderPage() {
         </div>
       )}
 
-      {/* 2. ADICIONAR POR ID (CORRIGIDO) */}
+      {/* 2. ADICIONAR POR ID */}
       {openAddPorID && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center">
           <div className="w-full max-w-md rounded-t-2xl bg-background p-6 sm:rounded-2xl">
@@ -708,11 +703,11 @@ function LiderPage() {
                 <X className="h-5 w-5" />
               </button>
             </div>
-            
+
             <div className="flex gap-2 mb-4">
               <input
                 type="text"
-                placeholder="Digite o ID do usuário (ex: 1, 2, ...)"
+                placeholder="Digite o ID do usuário"
                 value={idBusca}
                 onChange={(e) => setIdBusca(e.target.value)}
                 className="flex-1 rounded-lg border border-border bg-surface px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
@@ -752,14 +747,14 @@ function LiderPage() {
       {/* 3. NOVO GRUPO */}
       {openNovoGrupo && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center">
-          <div className="w-full max-w-md rounded-t-2xl bg-background p-6 sm:rounded-2xl">
+          <div className="w-full max-w-lg rounded-t-2xl bg-background p-6 sm:rounded-2xl">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold">Criar Novo Grupo</h2>
               <button onClick={() => setOpenNovoGrupo(false)} className="p-1 hover:bg-surface rounded-full">
                 <X className="h-5 w-5" />
               </button>
             </div>
-            
+
             <input
               type="text"
               placeholder="Nome do grupo"
@@ -768,13 +763,67 @@ function LiderPage() {
               className="w-full rounded-lg border border-border bg-surface px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary mb-4"
             />
 
-            <button
-              onClick={handleCriarGrupo}
-              disabled={!novoGrupoNome.trim()}
-              className="w-full rounded-lg bg-primary py-2 text-sm font-medium text-white hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Criar Grupo
-            </button>
+            <div className="mb-4">
+              <p className="text-sm font-medium mb-2">Temas</p>
+              <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
+                {GROUP_THEMES.map(t => (
+                  <label key={t} className="inline-flex items-center gap-2 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={selectedThemes.includes(t)}
+                      onChange={() => toggleTheme(t)}
+                      className="h-4 w-4"
+                    />
+                    <span>{t}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <p className="text-sm font-medium mb-2">Selecionar membros</p>
+              <div className="max-h-48 overflow-y-auto space-y-2 border border-border rounded-md p-2">
+                {discipulos.length === 0 ? (
+                  <p className="text-xs text-muted-foreground">Nenhum discípulo disponível</p>
+                ) : (
+                  discipulos.map(d => (
+                    <label key={d.id} className="flex items-center justify-between gap-2 rounded px-2 py-1 hover:bg-surface">
+                      <div>
+                        <p className="text-sm">{d.name}</p>
+                        <p className="text-xs text-muted-foreground">ID: {d.id} · {d.status}</p>
+                      </div>
+                      <input
+                        type="checkbox"
+                        checked={selectedMembers.includes(d.id)}
+                        onChange={() => toggleMember(d.id)}
+                        className="h-4 w-4"
+                      />
+                    </label>
+                  ))
+                )}
+              </div>
+            </div>
+
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  setOpenNovoGrupo(false);
+                  setNovoGrupoNome('');
+                  setSelectedMembers([]);
+                  setSelectedThemes([]);
+                }}
+                className="flex-1 rounded-lg border border-border py-2 text-sm font-medium hover:bg-surface"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleCriarGrupo}
+                disabled={!novoGrupoNome.trim() || selectedMembers.length === 0}
+                className="flex-1 rounded-lg bg-primary py-2 text-sm font-medium text-white hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Criar Grupo
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -789,11 +838,11 @@ function LiderPage() {
                 <X className="h-5 w-5" />
               </button>
             </div>
-            
+
             <p className="text-xs text-muted-foreground mb-3">
               Enviar para {discipulos.filter(d => d.status === 'ativo').length} discípulos ativos
             </p>
-            
+
             <textarea
               placeholder="Digite sua mensagem..."
               value={mensagemTexto}
@@ -823,7 +872,7 @@ function LiderPage() {
                 <X className="h-5 w-5" />
               </button>
             </div>
-            
+
             <input
               type="text"
               placeholder="Assunto do encontro"
@@ -831,7 +880,7 @@ function LiderPage() {
               onChange={(e) => setEncontroAssunto(e.target.value)}
               className="w-full rounded-lg border border-border bg-surface px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary mb-3"
             />
-            
+
             <input
               type="date"
               value={encontroData}
@@ -861,24 +910,26 @@ function LiderPage() {
 // COMPONENTE ACTION BUTTON
 // ============================================
 
-function ActionBtn({ 
-  icon: Icon, 
-  label, 
+function ActionBtn({
+  icon: Icon,
+  label,
   onClick,
   className = ''
-}: { 
-  icon: React.ElementType; 
-  label: string; 
+}: {
+  icon: React.ElementType;
+  label: string;
   onClick: () => void;
   className?: string;
 }) {
   return (
-    <button 
+    <button
       onClick={onClick}
       className={`card-elevated flex flex-col items-center justify-center gap-1 p-3 text-xs font-medium transition-all hover:border-primary/50 ${className}`}
     >
-      <Icon className="h-5 w-5 text-primary" /> 
+      <Icon className="h-5 w-5 text-primary" />
       <span>{label}</span>
     </button>
   );
 }
+
+export default LiderPage;
