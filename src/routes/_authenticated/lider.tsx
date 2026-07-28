@@ -242,7 +242,7 @@ function LiderPage() {
         <ActionBtn icon={Calendar} label="Encontro" onClick={() => setDialog("meeting")} />
       </div>
 
-      <section className="space-y-2">
+      {false && <section className="space-y-2">
         <h2 className="px-1 text-sm font-semibold text-muted-foreground">Formação de liderança</h2>
         <Link
           to="/modulo/$id"
@@ -261,15 +261,15 @@ function LiderPage() {
             <ChevronRight className="h-4 w-4 text-white/60" />
           </div>
         </Link>
-      </section>
+      </section>}
 
-      <section className="space-y-2">
+      {false && <section className="space-y-2">
         <h2 className="px-1 text-sm font-semibold text-muted-foreground">Apoio ao discipulado</h2>
         <button onClick={() => { setSelectedContent(null); setDialog("contents"); }} className="group relative block w-full overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-br from-black via-zinc-900 to-black p-4 text-left transition-all hover:scale-[1.01]">
           <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-white/10 blur-3xl" />
           <div className="relative flex items-center gap-4"><div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-white/10"><BookOpen className="h-5 w-5 text-white" /></div><div className="min-w-0 flex-1"><span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Biblioteca pastoral</span><p className="mt-0.5 font-semibold text-white">Conteúdos para discípulos</p><p className="truncate text-xs text-white/60">13 temas para conversas e acompanhamento</p></div><ChevronRight className="h-4 w-4 text-white/60" /></div>
         </button>
-      </section>
+      </section>}
 
       <section className="space-y-2">
         <h2 className="px-1 text-sm font-semibold text-muted-foreground">Grupos de Discipulado</h2>
