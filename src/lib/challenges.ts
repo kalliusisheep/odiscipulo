@@ -79,6 +79,20 @@ export async function respondChallenge(id: string, accept: boolean) {
   if (error) throw error;
 }
 
+/** Cancela somente um convite ainda pendente enviado pelo usuário atual. */
+export async function cancelChallenge(id: string) {
+  const { data: u } = await supabase.auth.getUser();
+  if (!u.user) throw new Error("Não autenticado");
+
+  const { error } = await supabase
+    .from("challenges")
+    .update({ status: "canceled" })
+    .eq("id", id)
+    .eq("challenger_id", u.user.id)
+    .eq("status", "pending");
+  if (error) throw error;
+}
+
 export async function getChallengeProgressPct(challengeId: string, userId: string) {
   const { data } = await supabase.rpc("challenge_progress", {
     _user: userId,
