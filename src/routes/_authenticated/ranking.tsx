@@ -251,7 +251,7 @@ function RankingPage() {
                 {i + 1}
               </span>
               <div className="relative h-11 w-11 shrink-0">
-                <div className={`h-11 w-11 overflow-hidden rounded-full bg-surface ${row.isMe ? "ring-2 ring-primary" : "ring-1 ring-border"}`}>
+                <div className={`h-11 w-11 overflow-hidden rounded-full bg-surface ${row.isMe ? "ring-2 ring-primary" : "ring-1 ring-border"} ${challengePartners.has(row.id) ? "avatar-ring-flame" : ""}`}>
                   {row.avatar_url ? (
                     <img src={row.avatar_url} alt="" className="h-full w-full object-cover" />
                   ) : level.avatar ? (
