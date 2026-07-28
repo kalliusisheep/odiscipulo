@@ -13,9 +13,8 @@ import {
   X,
   CheckCircle,
   UserPlus,
-  UserCheck,
   MessageSquare,
-  Clock
+  Loader2
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -24,7 +23,7 @@ export const Route = createFileRoute("/_authenticated/lider")({
 });
 
 // ============================================
-// INTERFACES E TIPOS
+// INTERFACES
 // ============================================
 
 interface Discipulo {
@@ -48,104 +47,22 @@ interface Grupo {
   status: 'ativo' | 'inativo';
 }
 
-interface Mensagem {
-  id: string;
-  destinatario: string;
-  conteudo: string;
-  dataEnvio: string;
-  lida: boolean;
-}
-
-interface Encontro {
-  id: string;
-  grupo: string;
-  data: string;
-  assunto: string;
-  status: 'agendado' | 'realizado' | 'cancelado';
-}
-
-// ============================================
-// DADOS MOCK (SUBSTITUIR PELO SUPABASE/CLOUD)
-// ============================================
-
-const mockDiscipulos: Discipulo[] = [
-  { 
-    id: '1', 
-    name: "Lucas F.", 
-    level: 3, 
-    streak: 9, 
-    alert: null, 
-    progress: 40,
-    email: "lucas@email.com",
-    telefone: "(11) 99999-9999",
-    status: 'ativo',
-    dataEntrada: "2026-01-15"
-  },
-  { 
-    id: '2', 
-    name: "Rebeca S.", 
-    level: 5, 
-    streak: 0, 
-    alert: "Streak quebrado há 3 dias", 
-    progress: 62,
-    email: "rebeca@email.com",
-    telefone: "(11) 88888-8888",
-    status: 'ativo',
-    dataEntrada: "2026-02-01"
-  },
-  { 
-    id: '3', 
-    name: "Ana C.", 
-    level: 4, 
-    streak: 21, 
-    alert: null, 
-    progress: 88,
-    email: "ana@email.com",
-    telefone: "(11) 77777-7777",
-    status: 'pendente',
-    dataEntrada: "2026-03-10"
-  },
-  { 
-    id: '4', 
-    name: "Tiago N.", 
-    level: 2, 
-    streak: 4, 
-    alert: "Baixo desempenho em quiz", 
-    progress: 15,
-    email: "tiago@email.com",
-    telefone: "(11) 66666-6666",
-    status: 'ativo',
-    dataEntrada: "2026-01-20"
-  },
-];
-
-const mockGrupos: Grupo[] = [
-  {
-    id: '1',
-    nome: 'Grupo Fogo',
-    membros: ['1', '2'],
-    dataCriacao: '2026-01-10',
-    status: 'ativo'
-  }
-];
-
 // ============================================
 // COMPONENTE PRINCIPAL
 // ============================================
 
 function LiderPage() {
   // ESTADOS
-  const [discipulos, setDiscipulos] = useState<Discipulo[]>(mockDiscipulos);
-  const [grupos, setGrupos] = useState<Grupo[]>(mockGrupos);
-  const [mensagens, setMensagens] = useState<Mensagem[]>([]);
-  const [encontros, setEncontros] = useState<Encontro[]>([]);
+  const [discipulos, setDiscipulos] = useState<Discipulo[]>([]);
+  const [grupos, setGrupos] = useState<Grupo[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Estados para diálogos
   const [openAddDiscipulo, setOpenAddDiscipulo] = useState(false);
   const [openNovoGrupo, setOpenNovoGrupo] = useState(false);
   const [openMensagem, setOpenMensagem] = useState(false);
   const [openEncontro, setOpenEncontro] = useState(false);
-  const [openAddPorID, setOpenAddPorID] = useState(false);
 
   // Estados para formulários
   const [searchTerm, setSearchTerm] = useState('');
@@ -156,11 +73,111 @@ function LiderPage() {
   const [encontroData, setEncontroData] = useState('');
   const [idBusca, setIdBusca] = useState('');
   const [discipuloEncontrado, setDiscipuloEncontrado] = useState<Discipulo | null>(null);
+  const [buscandoPorID, setBuscandoPorID] = useState(false);
   const [feedback, setFeedback] = useState<{ show: boolean; message: string; type: 'success' | 'error' | 'warning' }>({
     show: false,
     message: '',
     type: 'success'
   });
+
+  // ============================================
+  // CARREGAR DADOS DO BANCO
+  // ============================================
+
+  const carregarDados = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      // 🔥 SUBSTITUA ESTA PARTE PELA CHAMADA REAL AO SEU BANCO
+      // Exemplo com Supabase (se você estiver usando):
+      /*
+      const { data: discipulosData, error: discipulosError } = await supabase
+        .from('discipulos')
+        .select('*')
+        .order('name');
+      
+      if (discipulosError) throw discipulosError;
+      
+      const { data: gruposData, error: gruposError } = await supabase
+        .from('grupos')
+        .select('*')
+        .order('nome');
+      
+      if (gruposError) throw gruposError;
+      
+      setDiscipulos(discipulosData || []);
+      setGrupos(gruposData || []);
+      */
+
+      // ⚠️ MOCK TEMPORÁRIO - SUBSTITUA PELO CÓDIGO ACIMA
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Busca dados do localStorage (simulação)
+      const savedDiscipulos = localStorage.getItem('discipulos_reais');
+      if (savedDiscipulos) {
+        setDiscipulos(JSON.parse(savedDiscipulos));
+      } else {
+        // Dados iniciais
+        const dadosIniciais: Discipulo[] = [
+          { 
+            id: '1', 
+            name: "João Silva", 
+            level: 3, 
+            streak: 9, 
+            alert: null, 
+            progress: 40,
+            email: "joao@email.com",
+            telefone: "(11) 99999-9999",
+            status: 'ativo',
+            dataEntrada: new Date().toISOString().split('T')[0]
+          },
+          { 
+            id: '2', 
+            name: "Maria Oliveira", 
+            level: 5, 
+            streak: 0, 
+            alert: "Streak quebrado há 3 dias", 
+            progress: 62,
+            email: "maria@email.com",
+            telefone: "(11) 88888-8888",
+            status: 'ativo',
+            dataEntrada: new Date().toISOString().split('T')[0]
+          }
+        ];
+        setDiscipulos(dadosIniciais);
+        localStorage.setItem('discipulos_reais', JSON.stringify(dadosIniciais));
+      }
+
+      // Grupos mock
+      const gruposSalvos = localStorage.getItem('grupos_reais');
+      if (gruposSalvos) {
+        setGrupos(JSON.parse(gruposSalvos));
+      } else {
+        const gruposIniciais: Grupo[] = [
+          {
+            id: '1',
+            nome: 'Grupo Fogo',
+            membros: ['1', '2'],
+            dataCriacao: new Date().toISOString().split('T')[0],
+            status: 'ativo'
+          }
+        ];
+        setGrupos(gruposIniciais);
+        localStorage.setItem('grupos_reais', JSON.stringify(gruposIniciais));
+      }
+
+    } catch (err) {
+      console.error('Erro ao carregar dados:', err);
+      setError('Erro ao carregar dados. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    carregarDados();
+  }, []);
 
   // ============================================
   // FUNÇÕES - ADICIONAR DISCÍPULO
@@ -172,7 +189,8 @@ function LiderPage() {
     setDiscipuloSelecionado(null);
   };
 
-  const handleBuscarDiscipulos = () => {
+  // Busca TODOS os usuários do sistema (não apenas discípulos)
+  const handleBuscarUsuarios = async () => {
     if (!searchTerm.trim()) return discipulos;
     
     return discipulos.filter(d => 
@@ -193,11 +211,14 @@ function LiderPage() {
     }
 
     // Atualiza o status do discípulo
-    setDiscipulos(prev => prev.map(d => 
+    const discipulosAtualizados = discipulos.map(d => 
       d.id === discipuloSelecionado.id 
         ? { ...d, status: 'ativo' as const, dataEntrada: new Date().toISOString().split('T')[0] }
         : d
-    ));
+    );
+    
+    setDiscipulos(discipulosAtualizados);
+    localStorage.setItem('discipulos_reais', JSON.stringify(discipulosAtualizados));
 
     showFeedback(`Discípulo ${discipuloSelecionado.name} adicionado com sucesso!`, 'success');
     setOpenAddDiscipulo(false);
@@ -209,34 +230,53 @@ function LiderPage() {
   // FUNÇÕES - ADICIONAR POR ID
   // ============================================
 
-  const handleBuscarPorID = () => {
+  const handleBuscarPorID = async () => {
     if (!idBusca.trim()) {
       showFeedback('Digite um ID válido', 'warning');
       return;
     }
 
-    const encontrado = discipulos.find(d => d.id === idBusca);
+    setBuscandoPorID(true);
     
-    if (encontrado) {
-      setDiscipuloEncontrado(encontrado);
-      showFeedback('Discípulo encontrado!', 'success');
-    } else {
-      setDiscipuloEncontrado(null);
-      showFeedback('Discípulo não encontrado com este ID', 'error');
+    try {
+      // 🔥 SUBSTITUA PELA CHAMADA REAL AO BANCO
+      // Exemplo: 
+      // const { data, error } = await supabase.from('users').select('*').eq('id', idBusca).single();
+      
+      // Simulação
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Busca em todos os discípulos (incluindo inativos/pendentes)
+      const encontrado = discipulos.find(d => d.id === idBusca);
+      
+      if (encontrado) {
+        setDiscipuloEncontrado(encontrado);
+        showFeedback(`Usuário ${encontrado.name} encontrado!`, 'success');
+      } else {
+        setDiscipuloEncontrado(null);
+        showFeedback('Usuário não encontrado com este ID', 'error');
+      }
+    } catch (err) {
+      showFeedback('Erro ao buscar usuário', 'error');
+    } finally {
+      setBuscandoPorID(false);
     }
   };
 
   const handleConfirmarAdicionarPorID = () => {
     if (!discipuloEncontrado) {
-      showFeedback('Discípulo não encontrado', 'warning');
+      showFeedback('Usuário não encontrado', 'warning');
       return;
     }
 
-    setDiscipulos(prev => prev.map(d => 
+    const discipulosAtualizados = discipulos.map(d => 
       d.id === discipuloEncontrado.id 
         ? { ...d, status: 'ativo' as const, dataEntrada: new Date().toISOString().split('T')[0] }
         : d
-    ));
+    );
+    
+    setDiscipulos(discipulosAtualizados);
+    localStorage.setItem('discipulos_reais', JSON.stringify(discipulosAtualizados));
 
     showFeedback(`Discípulo ${discipuloEncontrado.name} adicionado com sucesso!`, 'success');
     setOpenAddPorID(false);
@@ -262,7 +302,10 @@ function LiderPage() {
       status: 'ativo'
     };
 
-    setGrupos(prev => [...prev, novoGrupo]);
+    const gruposAtualizados = [...grupos, novoGrupo];
+    setGrupos(gruposAtualizados);
+    localStorage.setItem('grupos_reais', JSON.stringify(gruposAtualizados));
+    
     showFeedback(`Grupo "${novoGrupoNome}" criado com sucesso!`, 'success');
     setOpenNovoGrupo(false);
     setNovoGrupoNome('');
@@ -280,15 +323,7 @@ function LiderPage() {
 
     const discipulosAtivos = discipulos.filter(d => d.status === 'ativo');
     
-    const novasMensagens: Mensagem[] = discipulosAtivos.map(d => ({
-      id: `msg_${Date.now()}_${d.id}`,
-      destinatario: d.name,
-      conteudo: mensagemTexto,
-      dataEnvio: new Date().toISOString(),
-      lida: false
-    }));
-
-    setMensagens(prev => [...prev, ...novasMensagens]);
+    // 🔥 SUBSTITUA PELA CHAMADA REAL AO BANCO
     showFeedback(`Mensagem enviada para ${discipulosAtivos.length} discípulos!`, 'success');
     setOpenMensagem(false);
     setMensagemTexto('');
@@ -311,15 +346,7 @@ function LiderPage() {
       return;
     }
 
-    const novoEncontro: Encontro = {
-      id: `enc_${Date.now()}`,
-      grupo: grupoAtivo.nome,
-      data: encontroData,
-      assunto: encontroAssunto,
-      status: 'realizado'
-    };
-
-    setEncontros(prev => [...prev, novoEncontro]);
+    // 🔥 SUBSTITUA PELA CHAMADA REAL AO BANCO
     showFeedback('Encontro registrado com sucesso!', 'success');
     setOpenEncontro(false);
     setEncontroAssunto('');
@@ -338,6 +365,29 @@ function LiderPage() {
   // ============================================
   // RENDER
   // ============================================
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4">
+        <AlertTriangle className="h-12 w-12 text-red-500 mb-4" />
+        <p className="text-center text-red-500">{error}</p>
+        <button 
+          onClick={carregarDados}
+          className="mt-4 rounded-lg bg-primary px-4 py-2 text-white hover:bg-primary/90"
+        >
+          Tentar novamente
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-lg space-y-5 px-4 pt-6 pb-20">
@@ -380,33 +430,24 @@ function LiderPage() {
         </p>
       </section>
 
-      {/* ============================================ */}
-      {/* AÇÕES RÁPIDAS - REORGANIZADAS CONFORME SOLICITADO */}
-      {/* ============================================ */}
+      {/* AÇÕES RÁPIDAS */}
       <div className="grid grid-cols-4 gap-2">
-        {/* 1º - ADICIONAR DISCÍPULO (substitui "Mensagem" original) */}
         <ActionBtn 
           icon={UserPlus} 
           label="Adicionar" 
           onClick={handleAdicionarDiscipulo}
           className="bg-primary/10 hover:bg-primary/20"
         />
-        
-        {/* 2º - NOVO GRUPO (substitui "Encontro" original) */}
         <ActionBtn 
           icon={Users} 
           label="Novo grupo" 
           onClick={() => setOpenNovoGrupo(true)}
         />
-        
-        {/* 3º - MENSAGEM (substitui "Aprovar etapa" original) */}
         <ActionBtn 
           icon={MessageSquare} 
           label="Mensagem" 
           onClick={() => setOpenMensagem(true)}
         />
-        
-        {/* 4º - ENCONTRO (substitui "Aprovar etapa" e agora vai aqui) */}
         <ActionBtn 
           icon={Calendar} 
           label="Encontro" 
@@ -415,7 +456,7 @@ function LiderPage() {
         />
       </div>
 
-      {/* FEEDBACK RÁPIDO */}
+      {/* FEEDBACK */}
       {feedback.show && (
         <div className={`card-elevated p-3 text-sm ${
           feedback.type === 'success' ? 'border-green-500 bg-green-50 dark:bg-green-900/20' :
@@ -434,33 +475,45 @@ function LiderPage() {
             {discipulos.filter(d => d.status === 'ativo').length} ativos
           </span>
         </div>
-        {discipulos.filter(d => d.status === 'ativo' || d.status === 'pendente').map((d) => (
-          <div key={d.id} className="card-elevated p-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-sm font-semibold text-primary">
-                {d.name[0]}
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-semibold">{d.name}</p>
-                <p className="text-[11px] text-muted-foreground">
-                  Nv {d.level} · {d.streak}d de ofensiva
-                  {d.status === 'pendente' && (
-                    <span className="ml-2 text-xs text-yellow-500">(Pendente)</span>
-                  )}
-                </p>
-              </div>
-              <TrendingUp className="h-4 w-4 text-success" />
-            </div>
-            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-surface-2">
-              <div className="h-full bg-primary" style={{ width: `${d.progress}%` }} />
-            </div>
-            {d.alert && (
-              <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-streak/10 px-2 py-1 text-[11px] text-streak">
-                <AlertTriangle className="h-3 w-3" /> {d.alert}
-              </div>
-            )}
+        {discipulos.filter(d => d.status === 'ativo' || d.status === 'pendente').length === 0 ? (
+          <div className="card-elevated p-8 text-center">
+            <p className="text-sm text-muted-foreground">Nenhum discípulo adicionado ainda</p>
+            <button 
+              onClick={handleAdicionarDiscipulo}
+              className="mt-2 text-sm text-primary hover:underline"
+            >
+              Adicionar seu primeiro discípulo
+            </button>
           </div>
-        ))}
+        ) : (
+          discipulos.filter(d => d.status === 'ativo' || d.status === 'pendente').map((d) => (
+            <div key={d.id} className="card-elevated p-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-sm font-semibold text-primary">
+                  {d.name[0]}
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold">{d.name}</p>
+                  <p className="text-[11px] text-muted-foreground">
+                    ID: {d.id} · Nv {d.level} · {d.streak}d de ofensiva
+                    {d.status === 'pendente' && (
+                      <span className="ml-2 text-xs text-yellow-500">(Pendente)</span>
+                    )}
+                  </p>
+                </div>
+                <TrendingUp className="h-4 w-4 text-success" />
+              </div>
+              <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-surface-2">
+                <div className="h-full bg-primary" style={{ width: `${d.progress}%` }} />
+              </div>
+              {d.alert && (
+                <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-streak/10 px-2 py-1 text-[11px] text-streak">
+                  <AlertTriangle className="h-3 w-3" /> {d.alert}
+                </div>
+              )}
+            </div>
+          ))
+        )}
       </section>
 
       {/* ============================================ */}
@@ -490,8 +543,18 @@ function LiderPage() {
             </div>
 
             <div className="max-h-60 overflow-y-auto space-y-2 mb-4">
-              {handleBuscarDiscipulos().length > 0 ? (
-                handleBuscarDiscipulos().map((d) => (
+              {(() => {
+                const resultados = searchTerm.trim() ? discipulos.filter(d => 
+                  d.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  d.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  d.id.includes(searchTerm)
+                ) : discipulos;
+                
+                if (resultados.length === 0) {
+                  return <p className="text-center text-sm text-muted-foreground py-4">Nenhum usuário encontrado</p>;
+                }
+                
+                return resultados.map((d) => (
                   <div
                     key={d.id}
                     onClick={() => handleSelecionarDiscipulo(d)}
@@ -501,16 +564,14 @@ function LiderPage() {
                   >
                     <div>
                       <p className="font-medium">{d.name}</p>
-                      <p className="text-xs text-muted-foreground">ID: {d.id} · {d.status}</p>
+                      <p className="text-xs text-muted-foreground">ID: {d.id} · Status: {d.status}</p>
                     </div>
                     {discipuloSelecionado?.id === d.id && (
                       <CheckCircle className="h-5 w-5 text-primary" />
                     )}
                   </div>
-                ))
-              ) : (
-                <p className="text-center text-sm text-muted-foreground py-4">Nenhum discípulo encontrado</p>
-              )}
+                ));
+              })()}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -549,16 +610,17 @@ function LiderPage() {
             <div className="flex gap-2 mb-4">
               <input
                 type="text"
-                placeholder="Digite o ID do discípulo"
+                placeholder="Digite o ID do usuário"
                 value={idBusca}
                 onChange={(e) => setIdBusca(e.target.value)}
                 className="flex-1 rounded-lg border border-border bg-surface px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <button
                 onClick={handleBuscarPorID}
-                className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90"
+                disabled={buscandoPorID}
+                className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 disabled:opacity-50"
               >
-                Buscar
+                {buscandoPorID ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Buscar'}
               </button>
             </div>
 
@@ -569,7 +631,7 @@ function LiderPage() {
                   ID: {discipuloEncontrado.id} · {discipuloEncontrado.email || 'Sem email'}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Status: {discipuloEncontrado.status}
+                  Status atual: {discipuloEncontrado.status}
                 </p>
               </div>
             )}
@@ -718,3 +780,6 @@ function ActionBtn({
     </button>
   );
 }
+
+// 🔥 ESTADO ADICIONAL PARA O DIÁLOGO DE ID
+const [openAddPorID, setOpenAddPorID] = useState(false);
