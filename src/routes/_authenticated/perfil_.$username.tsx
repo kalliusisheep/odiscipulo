@@ -167,6 +167,10 @@ function PublicProfilePage() {
         </div>
       )}
 
+      {!isSelf && (
+        <ChallengeButton targetId={profile.id} targetName={profile.display_name} />
+      )}
+
       <section className="card-elevated p-4">
         <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Estatísticas</p>
         <div className="grid grid-cols-2 gap-2 text-center">
