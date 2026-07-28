@@ -7,9 +7,10 @@ import { CHARACTERS, BIBLE_VERSIONS, type BibleVersion } from "@/data/content";
 import { getLevel, xpToNextLevel, MAX_LEVEL } from "@/data/levels";
 import { toast } from "sonner";
 import { isUsernameAvailable, isValidUsername, normalizeUsername } from "@/lib/username";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 import { useApp } from "@/lib/app-context";
-import { AtSign, Bell, Church, Copy, Check, LogOut, BookOpen, Flame, Trophy, Clock, Camera, Loader2, Pencil, X } from "lucide-react";
+import { AtSign, Bell, Church, Copy, Check, LogOut, BookOpen, Flame, Trophy, Clock, Camera, Loader2, Pencil, X, ChevronDown } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/perfil")({
   component: PerfilPage,
@@ -46,6 +47,7 @@ function PerfilPage() {
   const [editingUsername, setEditingUsername] = useState(false);
   const [usernameDraft, setUsernameDraft] = useState("");
   const [savingUsername, setSavingUsername] = useState(false);
+  const [versionOpen, setVersionOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const { bibleVersion, setBibleVersion } = useApp();
   const nav = useNavigate();
@@ -270,44 +272,19 @@ function PerfilPage() {
         </div>
       </section>
 
-      <section className="card-elevated overflow-hidden p-4">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Versão da Bíblia</p>
-        <ul className="divide-y divide-border rounded-2xl border border-border">
-          {BIBLE_VERSION_OPTIONS.map(({ code, name, description }) => {
-            const selected = bibleVersion === code;
-            return (
-              <li key={code}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setBibleVersion(code);
-                    void update({ bible_version: code });
-                  }}
-                  className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors ${
-                    selected ? "bg-primary/5" : "hover:bg-surface-2"
-                  }`}
-                >
-                  <span
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold ${
-                      selected ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground"
-                    }`}
-                  >
-                    {code}
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-semibold text-foreground">{name}</span>
-                    <span className="block text-xs text-muted-foreground">{description}</span>
-                  </span>
-                  {selected && <Check className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-        <p className="mt-2 text-[11px] text-muted-foreground">
-          Escolha a versão exibida em lições, estudos e mural.
-        </p>
-      </section>
+
+     
+
+      <BibleVersionSelector
+        value={bibleVersion}
+        open={versionOpen}
+        onOpenChange={setVersionOpen}
+        onSelect={(code) => {
+          setBibleVersion(code);
+          void update({ bible_version: code });
+          setVersionOpen(false);
+        }}
+      />
 
       <section className="card-elevated p-4">
         <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Estatísticas</p>
@@ -377,6 +354,11 @@ function PerfilPage() {
       </button>
     </div>
   );
+}
+
+function BibleVersionSelector({ value, open, onOpenChange, onSelect }: { value: BibleVersion; open: boolean; onOpenChange: (open: boolean) => void; onSelect: (code: BibleVersion) => void }) {
+  const current = BIBLE_VERSION_OPTIONS.find((option) => option.code === value) ?? BIBLE_VERSION_OPTIONS[0];
+  return <><section className="card-elevated p-4"><p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Versão da Bíblia</p><button type="button" onClick={() => onOpenChange(true)} className="flex w-full items-center gap-3 rounded-2xl border border-border px-4 py-3 text-left transition-colors hover:border-primary/50"><span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-xs font-bold text-primary-foreground">{current.code}</span><span className="min-w-0 flex-1"><span className="block text-sm font-semibold">{current.name}</span><span className="block truncate text-xs text-muted-foreground">{current.description}</span></span><ChevronDown className="h-5 w-5 text-muted-foreground" /></button><p className="mt-2 text-[11px] text-muted-foreground">Toque para escolher outra versão.</p></section><Dialog open={open} onOpenChange={onOpenChange}><DialogContent><DialogHeader><DialogTitle>Versão da Bíblia</DialogTitle><DialogDescription>Escolha a versão exibida em lições, estudos e mural.</DialogDescription></DialogHeader><div className="divide-y divide-border overflow-hidden rounded-2xl border border-border">{BIBLE_VERSION_OPTIONS.map((option) => { const selected = value === option.code; return <button key={option.code} type="button" onClick={() => onSelect(option.code)} className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors ${selected ? "bg-primary/5" : "hover:bg-surface-2"}`}><span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold ${selected ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground"}`}>{option.code}</span><span className="min-w-0 flex-1"><span className="block text-sm font-semibold">{option.name}</span><span className="block text-xs text-muted-foreground">{option.description}</span></span>{selected && <Check className="h-5 w-5 shrink-0 text-primary" />}</button>; })}</div></DialogContent></Dialog></>;
 }
 
 function Stat({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) {
