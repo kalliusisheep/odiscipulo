@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_authenticated/mensagens/$username")({
   component: MessagesPage,
 });
 
-type Msg = { id: string; sender_id: string; recipient_id: string; body: string; created_at: string };
+type Msg = { id: string; sender_id: string; recipient_id: string; body: string; created_at: string; read_at: string | null };
 type Peer = { id: string; display_name: string; username: string; avatar_url: string | null };
 
 function MessagesPage() {
@@ -63,9 +63,18 @@ function MessagesPage() {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    if (myId && peer && typeof window !== "undefined") {
-      window.localStorage.setItem(`disciple.lastRead.${myId}.${peer.id}`, new Date().toISOString());
-    }
+    if (!myId || !peer) return;
+    void (async () => {
+      const { error } = await supabase
+        .from("messages")
+        .update({ read_at: new Date().toISOString() })
+        .eq("recipient_id", myId)
+        .eq("sender_id", peer.id)
+        .is("read_at", null);
+      if (!error && typeof window !== "undefined") {
+        window.dispatchEvent(new Event("disciple:messages-read"));
+      }
+    })();
   }, [messages, myId, peer]);
 
   const send = async () => {
