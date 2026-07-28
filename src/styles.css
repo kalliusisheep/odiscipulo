@@ -330,3 +330,26 @@
   z-index: 1;
   pointer-events: none;
 }
+
+/* Botão "Desafiar" — efeito pegando fogo */
+@keyframes fire-btn-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 10px 2px rgba(249,115,22,0.55),
+      0 0 24px 6px rgba(239,68,68,0.35),
+      0 4px 14px -4px rgba(239,68,68,0.55);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow:
+      0 0 18px 5px rgba(249,115,22,0.9),
+      0 0 36px 10px rgba(239,68,68,0.6),
+      0 6px 20px -4px rgba(239,68,68,0.75);
+    transform: scale(1.035);
+  }
+}
+.challenge-fire-btn {
+  background: linear-gradient(90deg, #fbbf24, #f97316, #ef4444, #f97316, #fbbf24);
+  background-size: 200% 100%;
+  animation: flame-shimmer 2.2s linear infinite, fire-btn-pulse 1.4s ease-in-out infinite;
+}
