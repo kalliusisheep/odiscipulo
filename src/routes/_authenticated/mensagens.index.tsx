@@ -18,10 +18,6 @@ type Conversation = {
   unread: boolean;
 };
 
-function lastReadKey(myId: string, peerId: string) {
-  return `disciple.lastRead.${myId}.${peerId}`;
-}
-
 function MensagensListPage() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [flames, setFlames] = useState<Set<string>>(new Set());
@@ -37,14 +33,19 @@ function MensagensListPage() {
       const load = async () => {
         const { data: msgs } = await supabase
           .from("messages")
-          .select("id, sender_id, recipient_id, body, created_at")
+          .select("id, sender_id, recipient_id, body, created_at, read_at")
           .or(`sender_id.eq.${myId},recipient_id.eq.${myId}`)
           .order("created_at", { ascending: false });
-        const byPeer = new Map<string, { body: string; at: string; fromMe: boolean }>();
+        const byPeer = new Map<string, { body: string; at: string; fromMe: boolean; unread: boolean }>();
         for (const m of msgs ?? []) {
           const peerId = m.sender_id === myId ? m.recipient_id : m.sender_id;
           if (!byPeer.has(peerId)) {
-            byPeer.set(peerId, { body: m.body, at: m.created_at, fromMe: m.sender_id === myId });
+            byPeer.set(peerId, {
+              body: m.body,
+              at: m.created_at,
+              fromMe: m.sender_id === myId,
+              unread: m.recipient_id === myId && !m.read_at,
+            });
           }
         }
         if (byPeer.size === 0) {
@@ -59,14 +60,12 @@ function MensagensListPage() {
         const list: Conversation[] = (peers ?? [])
           .map((p) => {
             const last = byPeer.get(p.id)!;
-            const lastRead = typeof window !== "undefined" ? window.localStorage.getItem(lastReadKey(myId, p.id)) : null;
-            const unread = !last.fromMe && (!lastRead || new Date(last.at) > new Date(lastRead));
             return {
               peer: { id: p.id, display_name: p.display_name, username: p.username ?? "", avatar_url: p.avatar_url },
               lastBody: last.body,
               lastAt: last.at,
               lastFromMe: last.fromMe,
-              unread,
+              unread: last.unread,
             };
           })
           .filter((c) => c.peer.username)
