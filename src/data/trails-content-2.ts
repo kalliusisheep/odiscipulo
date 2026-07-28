@@ -57,6 +57,7 @@ const santificacao: Trail = {
           theologianQuote: {
             author: "John Wesley",
             text: "A graça de Deus não anula nossa responsabilidade; ela a possibilita. Somos salvos pela graça, e é a mesma graça que nos capacita a buscar, com todo o empenho, a santidade sem a qual ninguém verá o Senhor.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Wesley realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -171,6 +172,7 @@ const santificacao: Trail = {
           theologianQuote: {
             author: "Charles Swindoll",
             text: "A vitória sobre a carne não é uma experiência única e mágica, mas uma caminhada diária de escolhas — escolher, a cada momento, andar pelo Espírito em vez de ceder ao impulso antigo.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Swindoll realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -274,6 +276,7 @@ const santificacao: Trail = {
           theologianQuote: {
             author: "Richard Foster",
             text: "As disciplinas espirituais não produzem o fruto do Espírito por si mesmas — elas nos colocam no lugar onde Deus pode agir. Somos responsáveis por plantar e regar; a Deus pertence dar o crescimento.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Richard Foster realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -371,6 +374,7 @@ const santificacao: Trail = {
           theologianQuote: {
             author: "Dallas Willard (citado por Richard Foster)",
             text: "As disciplinas espirituais não são um fim em si mesmas; são um meio pelo qual nos colocamos diante de Deus, treinando a alma para a piedade, do mesmo modo que um atleta treina o corpo para a competição.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Dallas Willard (citado por Richard Foster) realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -478,6 +482,7 @@ const santificacao: Trail = {
           theologianQuote: {
             author: "John Wesley",
             text: "A santidade não é a ausência de tentação, mas a recusa deliberada, sustentada pela graça, de alimentar aquilo que nos afasta de Deus.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Wesley realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -574,6 +579,7 @@ const santificacao: Trail = {
           theologianQuote: {
             author: "James W. Sire",
             text: "Toda cosmovisão molda silenciosamente o que consideramos óbvio. Por isso a renovação da mente não é um evento único, mas uma reeducação constante à luz da Palavra de Deus.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se James W. Sire realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -678,6 +684,7 @@ const santificacao: Trail = {
           theologianQuote: {
             author: "Dietrich Bonhoeffer",
             text: "Aquele que está sozinho com sua fé está sozinho com o pecado, com a tentação e com a acusação. A comunidade cristã não é um luxo — é o lugar onde recebemos e oferecemos o socorro que só o corpo de Cristo pode dar.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Dietrich Bonhoeffer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -775,6 +782,7 @@ const santificacao: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Se Deus começou a boa obra, é porque decidiu terminá-la; ele não é homem, para começar edifícios que não tem meios ou vontade de concluir.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -892,6 +900,7 @@ const santificacao: Trail = {
           theologianQuote: {
             author: "J.I. Packer",
             text: "O Espírito Santo não nos deixa lutar sozinhos contra o pecado; ele mesmo entra na batalha, do lado de dentro, tornando possível o que, por nós mesmos, jamais conseguiríamos.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se J.I. Packer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
@@ -990,6 +999,7 @@ const santificacao: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Deus poda a videira, não porque a odeia, mas porque quer que ela dê mais fruto; toda tesoura na mão do Pai serve à mesma videira que ele ama.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           deepen: {
             additionalVerses: [
