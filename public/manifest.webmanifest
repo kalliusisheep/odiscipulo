@@ -1,0 +1,9 @@
+{
+  "name": "O Discípulo",
+  "short_name": "O Discípulo",
+  "start_url": "/home",
+  "display": "standalone",
+  "background_color": "#1c1830",
+  "theme_color": "#1c1830",
+  "icons": [{ "src": "/isheep-img.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }]
+}
