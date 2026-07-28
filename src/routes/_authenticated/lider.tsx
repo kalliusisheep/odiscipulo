@@ -16,9 +16,6 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
-// 🔥 IMPORTA O BANCO DO LOVABLE
-import { db } from "@lovable.dev/cloud-db";
-
 export const Route = createFileRoute("/_authenticated/lider")({
   component: LiderPage,
 });
@@ -53,9 +50,7 @@ interface Grupo {
 // ============================================
 
 function LiderPage() {
-  // ============================================
   // ESTADOS
-  // ============================================
   const [discipulos, setDiscipulos] = useState<Discipulo[]>([]);
   const [grupos, setGrupos] = useState<Grupo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -85,29 +80,96 @@ function LiderPage() {
   });
 
   // ============================================
-  // FUNÇÃO PARA CARREGAR DADOS DO BANCO LOVABLE
+  // FUNÇÃO PARA CARREGAR DADOS (LOCALSTORAGE)
   // ============================================
-  const carregarDados = async () => {
+  const carregarDados = () => {
     setLoading(true);
     setError(null);
     
     try {
-      console.log('🔍 Carregando dados do Lovable Cloud...');
-      
-      // Buscar todos os discípulos
-      const discipulosResult = await db.query('SELECT * FROM discipulos ORDER BY name');
-      console.log('📋 Discípulos carregados:', discipulosResult.length);
-      
-      // Buscar todos os grupos
-      const gruposResult = await db.query('SELECT * FROM grupos ORDER BY nome');
-      console.log('📋 Grupos carregados:', gruposResult.length);
-      
-      setDiscipulos(discipulosResult || []);
-      setGrupos(gruposResult || []);
+      // Dados iniciais para teste
+      const dadosIniciais: Discipulo[] = [
+        { 
+          id: '1', 
+          name: "João Silva", 
+          level: 3, 
+          streak: 9, 
+          alert: null, 
+          progress: 40,
+          email: "joao@email.com",
+          telefone: "(11) 99999-9999",
+          status: 'ativo',
+          dataEntrada: new Date().toISOString().split('T')[0]
+        },
+        { 
+          id: '2', 
+          name: "Maria Oliveira", 
+          level: 5, 
+          streak: 0, 
+          alert: "Streak quebrado há 3 dias", 
+          progress: 62,
+          email: "maria@email.com",
+          telefone: "(11) 88888-8888",
+          status: 'ativo',
+          dataEntrada: new Date().toISOString().split('T')[0]
+        },
+        { 
+          id: '3', 
+          name: "Ana Costa", 
+          level: 4, 
+          streak: 21, 
+          alert: null, 
+          progress: 88,
+          email: "ana@email.com",
+          telefone: "(11) 77777-7777",
+          status: 'pendente',
+          dataEntrada: new Date().toISOString().split('T')[0]
+        },
+        { 
+          id: '4', 
+          name: "Tiago Nunes", 
+          level: 2, 
+          streak: 4, 
+          alert: "Baixo desempenho em quiz", 
+          progress: 15,
+          email: "tiago@email.com",
+          telefone: "(11) 66666-6666",
+          status: 'ativo',
+          dataEntrada: new Date().toISOString().split('T')[0]
+        }
+      ];
+
+      // Carregar do localStorage ou usar dados iniciais
+      const saved = localStorage.getItem('discipulos_reais');
+      if (saved) {
+        setDiscipulos(JSON.parse(saved));
+      } else {
+        setDiscipulos(dadosIniciais);
+        localStorage.setItem('discipulos_reais', JSON.stringify(dadosIniciais));
+      }
+
+      // Grupos
+      const gruposIniciais: Grupo[] = [
+        {
+          id: '1',
+          nome: 'Grupo Fogo',
+          membros: ['1', '2'],
+          dataCriacao: new Date().toISOString().split('T')[0],
+          status: 'ativo'
+        }
+      ];
+
+      const savedGrupos = localStorage.getItem('grupos_reais');
+      if (savedGrupos) {
+        setGrupos(JSON.parse(savedGrupos));
+      } else {
+        setGrupos(gruposIniciais);
+        localStorage.setItem('grupos_reais', JSON.stringify(gruposIniciais));
+      }
       
     } catch (err) {
-      console.error('❌ Erro ao carregar dados:', err);
-      setError(`Erro ao carregar dados: ${err.message || 'Verifique sua conexão'}`);
+      console.error('Erro ao carregar dados:', err);
+      setError('Erro ao carregar dados. Tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -140,36 +202,29 @@ function LiderPage() {
     setDiscipuloSelecionado(discipulo);
   };
 
-  const handleConfirmarAdicionar = async () => {
+  const handleConfirmarAdicionar = () => {
     if (!discipuloSelecionado) {
       showFeedback('Selecione um discípulo para adicionar', 'warning');
       return;
     }
 
-    try {
-      await db.query(
-        'UPDATE discipulos SET status = $1, data_entrada = $2 WHERE id = $3',
-        ['ativo', new Date().toISOString().split('T')[0], discipuloSelecionado.id]
-      );
+    const discipulosAtualizados = discipulos.map(d => 
+      d.id === discipuloSelecionado.id 
+        ? { ...d, status: 'ativo' as const, dataEntrada: new Date().toISOString().split('T')[0] }
+        : d
+    );
+    
+    setDiscipulos(discipulosAtualizados);
+    localStorage.setItem('discipulos_reais', JSON.stringify(discipulosAtualizados));
 
-      const discipulosAtualizados = discipulos.map(d => 
-        d.id === discipuloSelecionado.id 
-          ? { ...d, status: 'ativo' as const, dataEntrada: new Date().toISOString().split('T')[0] }
-          : d
-      );
-      
-      setDiscipulos(discipulosAtualizados);
-      showFeedback(`Discípulo ${discipuloSelecionado.name} adicionado com sucesso!`, 'success');
-      setOpenAddDiscipulo(false);
-      setDiscipuloSelecionado(null);
-      setSearchTerm('');
-    } catch (err) {
-      showFeedback('Erro ao adicionar discípulo', 'error');
-    }
+    showFeedback(`Discípulo ${discipuloSelecionado.name} adicionado com sucesso!`, 'success');
+    setOpenAddDiscipulo(false);
+    setDiscipuloSelecionado(null);
+    setSearchTerm('');
   };
 
   // 2. ADICIONAR POR ID
-  const handleBuscarPorID = async () => {
+  const handleBuscarPorID = () => {
     if (!idBusca.trim()) {
       showFeedback('Digite um ID válido', 'warning');
       return;
@@ -178,110 +233,85 @@ function LiderPage() {
     setBuscandoPorID(true);
     
     try {
-      const result = await db.query('SELECT * FROM discipulos WHERE id = $1', [idBusca]);
+      // Simula busca
+      const encontrado = discipulos.find(d => d.id === idBusca);
       
-      if (result && result.length > 0) {
-        setDiscipuloEncontrado(result[0]);
-        showFeedback(`Usuário ${result[0].name} encontrado!`, 'success');
-      } else {
-        setDiscipuloEncontrado(null);
-        showFeedback('Usuário não encontrado com este ID', 'error');
-      }
+      setTimeout(() => {
+        if (encontrado) {
+          setDiscipuloEncontrado(encontrado);
+          showFeedback(`Usuário ${encontrado.name} encontrado!`, 'success');
+        } else {
+          setDiscipuloEncontrado(null);
+          showFeedback('Usuário não encontrado com este ID', 'error');
+        }
+        setBuscandoPorID(false);
+      }, 500);
     } catch (err) {
-      setDiscipuloEncontrado(null);
       showFeedback('Erro ao buscar usuário', 'error');
-    } finally {
       setBuscandoPorID(false);
     }
   };
 
-  const handleConfirmarAdicionarPorID = async () => {
+  const handleConfirmarAdicionarPorID = () => {
     if (!discipuloEncontrado) {
       showFeedback('Usuário não encontrado', 'warning');
       return;
     }
 
-    try {
-      await db.query(
-        'UPDATE discipulos SET status = $1, data_entrada = $2 WHERE id = $3',
-        ['ativo', new Date().toISOString().split('T')[0], discipuloEncontrado.id]
-      );
+    const discipulosAtualizados = discipulos.map(d => 
+      d.id === discipuloEncontrado.id 
+        ? { ...d, status: 'ativo' as const, dataEntrada: new Date().toISOString().split('T')[0] }
+        : d
+    );
+    
+    setDiscipulos(discipulosAtualizados);
+    localStorage.setItem('discipulos_reais', JSON.stringify(discipulosAtualizados));
 
-      const discipulosAtualizados = discipulos.map(d => 
-        d.id === discipuloEncontrado.id 
-          ? { ...d, status: 'ativo' as const, dataEntrada: new Date().toISOString().split('T')[0] }
-          : d
-      );
-      
-      setDiscipulos(discipulosAtualizados);
-      showFeedback(`Discípulo ${discipuloEncontrado.name} adicionado com sucesso!`, 'success');
-      setOpenAddPorID(false);
-      setDiscipuloEncontrado(null);
-      setIdBusca('');
-    } catch (err) {
-      showFeedback('Erro ao adicionar discípulo', 'error');
-    }
+    showFeedback(`Discípulo ${discipuloEncontrado.name} adicionado com sucesso!`, 'success');
+    setOpenAddPorID(false);
+    setDiscipuloEncontrado(null);
+    setIdBusca('');
   };
 
   // 3. NOVO GRUPO
-  const handleCriarGrupo = async () => {
+  const handleCriarGrupo = () => {
     if (!novoGrupoNome.trim()) {
       showFeedback('Digite um nome para o grupo', 'warning');
       return;
     }
 
-    try {
-      const result = await db.query(
-        'INSERT INTO grupos (nome, membros, status, data_criacao) VALUES ($1, $2, $3, $4) RETURNING *',
-        [novoGrupoNome, [], 'ativo', new Date().toISOString().split('T')[0]]
-      );
+    const novoGrupo: Grupo = {
+      id: `grupo_${Date.now()}`,
+      nome: novoGrupoNome,
+      membros: [],
+      dataCriacao: new Date().toISOString().split('T')[0],
+      status: 'ativo'
+    };
 
-      if (result && result.length > 0) {
-        const grupoCriado: Grupo = {
-          id: result[0].id,
-          nome: result[0].nome,
-          membros: result[0].membros || [],
-          dataCriacao: result[0].data_criacao,
-          status: result[0].status
-        };
-        
-        setGrupos(prev => [...prev, grupoCriado]);
-        showFeedback(`Grupo "${novoGrupoNome}" criado com sucesso!`, 'success');
-        setOpenNovoGrupo(false);
-        setNovoGrupoNome('');
-      }
-    } catch (err) {
-      showFeedback('Erro ao criar grupo', 'error');
-    }
+    const gruposAtualizados = [...grupos, novoGrupo];
+    setGrupos(gruposAtualizados);
+    localStorage.setItem('grupos_reais', JSON.stringify(gruposAtualizados));
+    
+    showFeedback(`Grupo "${novoGrupoNome}" criado com sucesso!`, 'success');
+    setOpenNovoGrupo(false);
+    setNovoGrupoNome('');
   };
 
   // 4. MENSAGEM
-  const handleEnviarMensagem = async () => {
+  const handleEnviarMensagem = () => {
     if (!mensagemTexto.trim()) {
       showFeedback('Digite uma mensagem', 'warning');
       return;
     }
 
-    try {
-      const discipulosAtivos = discipulos.filter(d => d.status === 'ativo');
-      
-      for (const d of discipulosAtivos) {
-        await db.query(
-          'INSERT INTO mensagens (destinatario_id, destinatario_nome, conteudo, lida) VALUES ($1, $2, $3, $4)',
-          [d.id, d.name, mensagemTexto, false]
-        );
-      }
-
-      showFeedback(`Mensagem enviada para ${discipulosAtivos.length} discípulos!`, 'success');
-      setOpenMensagem(false);
-      setMensagemTexto('');
-    } catch (err) {
-      showFeedback('Erro ao enviar mensagem', 'error');
-    }
+    const discipulosAtivos = discipulos.filter(d => d.status === 'ativo');
+    showFeedback(`Mensagem enviada para ${discipulosAtivos.length} discípulos!`, 'success');
+    setOpenMensagem(false);
+    setMensagemTexto('');
   };
 
   // 5. ENCONTRO
-  const handleRegistrarEncontro = async () => {
+  const handleRegistrarEncontro = () => {
     if (!encontroAssunto.trim() || !encontroData) {
       showFeedback('Preencha todos os campos', 'warning');
       return;
@@ -294,19 +324,10 @@ function LiderPage() {
       return;
     }
 
-    try {
-      await db.query(
-        'INSERT INTO encontros (grupo_id, grupo_nome, data, assunto, status) VALUES ($1, $2, $3, $4, $5)',
-        [grupoAtivo.id, grupoAtivo.nome, encontroData, encontroAssunto, 'realizado']
-      );
-
-      showFeedback('Encontro registrado com sucesso!', 'success');
-      setOpenEncontro(false);
-      setEncontroAssunto('');
-      setEncontroData('');
-    } catch (err) {
-      showFeedback('Erro ao registrar encontro', 'error');
-    }
+    showFeedback('Encontro registrado com sucesso!', 'success');
+    setOpenEncontro(false);
+    setEncontroAssunto('');
+    setEncontroData('');
   };
 
   // ============================================
