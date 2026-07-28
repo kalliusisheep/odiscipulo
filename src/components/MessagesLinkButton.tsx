@@ -8,40 +8,33 @@ export function MessagesLinkButton() {
 
   useEffect(() => {
     let channel: ReturnType<typeof supabase.channel> | null = null;
+    let compute: () => Promise<void> = async () => {};
     void (async () => {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user) return;
       const myId = u.user.id;
-      const compute = async () => {
-        const { data: msgs } = await supabase
+      compute = async () => {
+        const { count } = await supabase
           .from("messages")
-          .select("sender_id, recipient_id, created_at")
+          .select("id", { count: "exact", head: true })
           .eq("recipient_id", myId)
-          .order("created_at", { ascending: false });
-        if (typeof window === "undefined") return;
-        const latest = new Map<string, string>();
-        for (const m of msgs ?? []) {
-          if (!latest.has(m.sender_id)) latest.set(m.sender_id, m.created_at);
-        }
-        let count = 0;
-        latest.forEach((at, peerId) => {
-          const lr = window.localStorage.getItem(`disciple.lastRead.${myId}.${peerId}`);
-          if (!lr || new Date(at) > new Date(lr)) count += 1;
-        });
-        setUnread(count);
+          .is("read_at", null);
+        setUnread(count ?? 0);
       };
       await compute();
       channel = supabase
         .channel(`msg-badge-${myId}`)
         .on(
           "postgres_changes",
-          { event: "INSERT", schema: "public", table: "messages", filter: `recipient_id=eq.${myId}` },
+          { event: "*", schema: "public", table: "messages", filter: `recipient_id=eq.${myId}` },
           () => void compute(),
         )
         .subscribe();
+      window.addEventListener("disciple:messages-read", compute);
     })();
     return () => {
       if (channel) void supabase.removeChannel(channel);
+      window.removeEventListener("disciple:messages-read", compute);
     };
   }, []);
 
