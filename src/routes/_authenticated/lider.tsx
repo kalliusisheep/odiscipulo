@@ -1,424 +1,255 @@
-// name=src/routes/_authenticated/lider.tsx
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 import {
   ArrowLeft,
-  TrendingUp,
-  AlertTriangle,
-  Users,
-  Calendar,
   Building2,
+  Calendar,
+  Check,
+  ChevronRight,
+  Loader2,
+  MessageCircle,
+  Plus,
   Search,
-  X,
-  CheckCircle,
-  UserPlus,
-  MessageSquare,
-  Loader2
+  Users,
 } from "lucide-react";
-import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { supabase } from "@/integrations/supabase/client";
+import { normalizeUsername } from "@/lib/username";
 
 export const Route = createFileRoute("/_authenticated/lider")({
   component: LiderPage,
 });
 
-/**
- * NOTE (diagnóstico): este arquivo foi ajustado para mostrar a mensagem
- * de erro retornada pelo banco e para incluir um botão "Rodar diagnóstico"
- * que faz duas consultas simples (discipulos e grupos). Use isso para
- * descobrir o erro real (ex.: tabela não existe, coluna faltando, chave inválida).
- */
+const db = supabase as any;
 
-interface Discipulo {
-  id: string;
-  name: string;
-  level?: number;
-  streak?: number;
-  alert?: string | null;
-  progress?: number;
-  email?: string;
-  telefone?: string;
-  status?: 'ativo' | 'inativo' | 'pendente';
-  dataEntrada?: string | null;
-}
+const TEMAS = [
+  "Orgulho", "Pecado", "Casamento", "Namoro", "Pornografia", "Vícios (álcool/drogas)",
+  "Dificuldade financeira", "Vida devocional", "Perdão", "Empatia", "Serviço (Mordomia)",
+  "Preparo para liderar", "Batismo",
+];
 
-interface Grupo {
-  id: string;
-  nome: string;
-  membros?: string[];
-  dataCriacao?: string | null;
-  status?: 'ativo' | 'inativo';
-  temas?: string[];
-}
+type Person = { id: string; display_name: string; username: string | null; avatar_url: string | null; xp: number; streak: number };
+type Group = { id: string; name: string; topic: string; created_at: string; members: number };
+type Meeting = { id: string; title: string; scheduled_at: string; location: string | null };
 
 function LiderPage() {
-  const [discipulos, setDiscipulos] = useState<Discipulo[]>([]);
-  const [grupos, setGrupos] = useState<Grupo[]>([]);
+  const navigate = useNavigate();
+  const [myId, setMyId] = useState<string | null>(null);
+  const [discipulos, setDiscipulos] = useState<Person[]>([]);
+  const [contacts, setContacts] = useState<Person[]>([]);
+  const [groups, setGroups] = useState<Group[]>([]);
+  const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [loading, setLoading] = useState(true);
-  // error agora guarda a mensagem real do erro (string) e opcionalmente o objeto
-  const [error, setError] = useState<{ message: string; details?: any } | null>(null);
+  const [dialog, setDialog] = useState<"disciple" | "group" | "meeting" | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [search, setSearch] = useState("");
+  const [results, setResults] = useState<Person[]>([]);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [groupName, setGroupName] = useState("");
+  const [groupTopic, setGroupTopic] = useState("");
+  const [meetingTitle, setMeetingTitle] = useState("");
+  const [meetingDate, setMeetingDate] = useState("");
+  const [meetingLocation, setMeetingLocation] = useState("");
 
-  // diagnostico
-  const [diagnostics, setDiagnostics] = useState<string | null>(null);
-  const [runningDiag, setRunningDiag] = useState(false);
+  const load = async (leaderId: string) => {
+    const [linksResponse, contactsResponse, groupsResponse, meetingsResponse] = await Promise.all([
+      db.from("leader_disciples").select("disciple_id").eq("leader_id", leaderId),
+      db.from("friendships").select("friend_id").eq("user_id", leaderId),
+      db.from("groups").select("id, name, topic, created_at").eq("leader_id", leaderId).order("created_at", { ascending: false }),
+      db.from("leader_meetings").select("id, title, scheduled_at, location").eq("leader_id", leaderId).gte("scheduled_at", new Date().toISOString()).order("scheduled_at").limit(3),
+    ]);
 
-  // estados UI (os modais etc. mantidos simples)
-  const [openAddDiscipulo, setOpenAddDiscipulo] = useState(false);
-  const [openAddPorID, setOpenAddPorID] = useState(false);
-  const [openNovoGrupo, setOpenNovoGrupo] = useState(false);
-  const [openMensagem, setOpenMensagem] = useState(false);
-  const [openEncontro, setOpenEncontro] = useState(false);
+    const discipleIds = (linksResponse.data ?? []).map((row: { disciple_id: string }) => row.disciple_id);
+    const contactIds = (contactsResponse.data ?? []).map((row: { friend_id: string }) => row.friend_id);
+    const allIds = [...new Set([...discipleIds, ...contactIds])];
+    const profilesResponse = allIds.length
+      ? await db.from("profiles").select("id, display_name, username, avatar_url, xp, streak").in("id", allIds)
+      : { data: [] };
+    const people = (profilesResponse.data ?? []) as Person[];
+    setDiscipulos(people.filter((person) => discipleIds.includes(person.id)));
+    setContacts(people.filter((person) => contactIds.includes(person.id)));
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [discipuloSelecionado, setDiscipuloSelecionado] = useState<Discipulo | null>(null);
-  const [novoGrupoNome, setNovoGrupoNome] = useState('');
-  const [mensagemTexto, setMensagemTexto] = useState('');
-  const [encontroAssunto, setEncontroAssunto] = useState('');
-  const [encontroData, setEncontroData] = useState('');
-  const [idBusca, setIdBusca] = useState('');
-  const [discipuloEncontrado, setDiscipuloEncontrado] = useState<Discipulo | null>(null);
-  const [buscandoPorID, setBuscandoPorID] = useState(false);
-  const [feedback, setFeedback] = useState<{ show: boolean; message: string; type: 'success' | 'error' | 'warning' }>({ show: false, message: '', type: 'success' });
-
-  // diagnostico: executa queries simples para verificar conectividade e existência de tabelas
-  const runDiagnostics = async () => {
-    setDiagnostics(null);
-    setRunningDiag(true);
-    try {
-      // testa conexão / existência de tabelas com consultas simples
-      const [{ data: dData, error: dErr }, { data: gData, error: gErr }] = await Promise.all([
-        supabase.from('discipulos').select('id,name,status').limit(5),
-        supabase.from('grupos').select('id,nome,membros,temas').limit(5),
-      ]);
-
-      const result = {
-        discipulos: { error: dErr ? (dErr.message || dErr) : null, rows: dData ?? [] },
-        grupos: { error: gErr ? (gErr.message || gErr) : null, rows: gData ?? [] },
-      };
-
-      setDiagnostics(JSON.stringify(result, null, 2));
-
-      // if there was an error, reflect it in the main error UI as well
-      if (dErr || gErr) {
-        setError({ message: 'Falha no diagnóstico - ver detalhes', details: result });
-      } else {
-        setError(null);
-      }
-    } catch (err: any) {
-      setDiagnostics(String(err));
-      setError({ message: err?.message ?? String(err), details: err });
-    } finally {
-      setRunningDiag(false);
-    }
-  };
-
-  // carregarDados com captura detalhada do erro
-  const carregarDados = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const { data: discipulosData, error: discipulosError } = await supabase
-        .from('discipulos')
-        .select('*')
-        .order('name');
-
-      if (discipulosError) throw discipulosError;
-
-      const { data: gruposData, error: gruposError } = await supabase
-        .from('grupos')
-        .select('*')
-        .order('nome');
-
-      if (gruposError) throw gruposError;
-
-      setDiscipulos(discipulosData || []);
-      setGrupos(gruposData || []);
-    } catch (err: any) {
-      // registra no console e mostra mensagem mais detalhada na UI
-      console.error('Erro ao carregar dados (lider):', err);
-      const message = err?.message ?? String(err);
-      setError({ message, details: err });
-    } finally {
-      setLoading(false);
-    }
+    const rawGroups = groupsResponse.data ?? [];
+    const groupIds = rawGroups.map((group: { id: string }) => group.id);
+    const memberResponse = groupIds.length
+      ? await db.from("group_members").select("group_id").in("group_id", groupIds)
+      : { data: [] };
+    const totals = new Map<string, number>();
+    (memberResponse.data ?? []).forEach((member: { group_id: string }) => totals.set(member.group_id, (totals.get(member.group_id) ?? 0) + 1));
+    setGroups(rawGroups.map((group: Omit<Group, "members">) => ({ ...group, members: totals.get(group.id) ?? 0 })));
+    setMeetings((meetingsResponse.data ?? []) as Meeting[]);
   };
 
   useEffect(() => {
-    carregarDados();
+    void (async () => {
+      const { data } = await supabase.auth.getUser();
+      if (data.user) {
+        setMyId(data.user.id);
+        await load(data.user.id);
+      }
+      setLoading(false);
+    })();
   }, []);
 
-  // helpers de feedback
-  const showFeedback = (message: string, type: 'success' | 'error' | 'warning') => {
-    setFeedback({ show: true, message, type });
-    setTimeout(() => setFeedback(prev => ({ ...prev, show: false })), 3000);
+  useEffect(() => {
+    const query = normalizeUsername(search);
+    if (!myId || query.length < 2) {
+      setResults([]);
+      return;
+    }
+    const timer = window.setTimeout(async () => {
+      const { data } = await db
+        .from("profiles")
+        .select("id, display_name, username, avatar_url, xp, streak")
+        .ilike("username", `%${query}%`)
+        .neq("id", myId)
+        .limit(8);
+      setResults((data ?? []) as Person[]);
+    }, 300);
+    return () => window.clearTimeout(timer);
+  }, [search, myId]);
+
+  const availablePeople = useMemo(() => {
+    const byId = new Map<string, Person>();
+    [...contacts, ...discipulos].forEach((person) => byId.set(person.id, person));
+    return [...byId.values()].sort((a, b) => a.display_name.localeCompare(b.display_name));
+  }, [contacts, discipulos]);
+
+  const addDisciple = async (person: Person) => {
+    if (!myId) return;
+    setSaving(true);
+    const { error } = await db.from("leader_disciples").insert({ leader_id: myId, disciple_id: person.id });
+    setSaving(false);
+    if (error && error.code !== "23505") {
+      toast.error("Não foi possível adicionar este discípulo.");
+      return;
+    }
+    toast.success(`${person.display_name} foi adicionado(a) aos seus discípulos.`);
+    setSearch("");
+    await load(myId);
   };
 
-  // -- as demais funções (adicionar, criar grupo, mensagem, encontro) --
-  const handleAdicionarDiscipulo = () => { setOpenAddDiscipulo(true); setSearchTerm(''); setDiscipuloSelecionado(null); };
-  const handleSelecionarDiscipulo = (d: Discipulo) => setDiscipuloSelecionado(d);
-  const handleConfirmarAdicionar = async () => {
-    if (!discipuloSelecionado) { showFeedback('Selecione um discípulo para adicionar', 'warning'); return; }
-    try {
-      const { error } = await supabase.from('discipulos').update({ status: 'ativo', data_entrada: new Date().toISOString().split('T')[0] }).eq('id', discipuloSelecionado.id);
-      if (error) throw error;
-      setDiscipulos(prev => prev.map(p => p.id === discipuloSelecionado.id ? ({ ...p, status: 'ativo', dataEntrada: new Date().toISOString().split('T')[0] } as Discipulo) : p));
-      showFeedback(`Discípulo ${discipuloSelecionado.name} adicionado`, 'success');
-      setOpenAddDiscipulo(false);
-    } catch (err: any) {
-      console.error(err);
-      showFeedback('Erro ao adicionar discípulo: ' + (err?.message ?? String(err)), 'error');
+  const createGroup = async () => {
+    if (!myId || !groupName.trim() || !groupTopic || selectedIds.size === 0) {
+      toast.error("Informe nome, tema e ao menos um membro.");
+      return;
+    }
+    setSaving(true);
+    const { data: group, error } = await db
+      .from("groups")
+      .insert({ name: groupName.trim(), topic: groupTopic, leader_id: myId })
+      .select("id")
+      .single();
+    if (!error && group) {
+      const { error: membersError } = await db
+        .from("group_members")
+        .insert([...selectedIds].map((disciple_id) => ({ group_id: group.id, disciple_id })));
+      if (membersError) {
+        toast.error("O grupo foi criado, mas não foi possível incluir todos os membros.");
+      } else {
+        toast.success("Grupo de discipulado criado com sucesso.");
+      }
+    } else {
+      toast.error("Não foi possível criar o grupo.");
+    }
+    setSaving(false);
+    if (!error) {
+      setDialog(null);
+      setGroupName("");
+      setGroupTopic("");
+      setSelectedIds(new Set());
+      await load(myId);
     }
   };
 
-  const handleBuscarPorID = async () => {
-    if (!idBusca.trim()) { showFeedback('Digite um ID válido', 'warning'); return; }
-    setBuscandoPorID(true);
-    try {
-      const { data, error } = await supabase.from('discipulos').select('*').eq('id', idBusca).single();
-      if (error) throw error;
-      setDiscipuloEncontrado(data);
-      showFeedback(`Usuário ${data.name} encontrado`, 'success');
-    } catch (err: any) {
-      console.error(err);
-      setDiscipuloEncontrado(null);
-      showFeedback('Usuário não encontrado: ' + (err?.message ?? String(err)), 'error');
-    } finally {
-      setBuscandoPorID(false);
+  const createMeeting = async () => {
+    if (!myId || !meetingTitle.trim() || !meetingDate) {
+      toast.error("Informe o título e a data do encontro.");
+      return;
     }
+    setSaving(true);
+    const { error } = await db.from("leader_meetings").insert({
+      leader_id: myId,
+      title: meetingTitle.trim(),
+      scheduled_at: new Date(meetingDate).toISOString(),
+      location: meetingLocation.trim() || null,
+    });
+    setSaving(false);
+    if (error) {
+      toast.error("Não foi possível agendar o encontro.");
+      return;
+    }
+    toast.success("Encontro agendado.");
+    setDialog(null);
+    setMeetingTitle(""); setMeetingDate(""); setMeetingLocation("");
+    await load(myId);
   };
 
-  const handleConfirmarAdicionarPorID = async () => {
-    if (!discipuloEncontrado) { showFeedback('Usuário não encontrado', 'warning'); return; }
-    try {
-      const { error } = await supabase.from('discipulos').update({ status: 'ativo', data_entrada: new Date().toISOString().split('T')[0] }).eq('id', discipuloEncontrado.id);
-      if (error) throw error;
-      setDiscipulos(prev => prev.map(p => p.id === discipuloEncontrado.id ? ({ ...p, status: 'ativo', dataEntrada: new Date().toISOString().split('T')[0] } as Discipulo) : p));
-      showFeedback(`Discípulo ${discipuloEncontrado.name} adicionado`, 'success');
-      setOpenAddPorID(false);
-    } catch (err: any) {
-      console.error(err);
-      showFeedback('Erro ao adicionar discípulo: ' + (err?.message ?? String(err)), 'error');
-    }
-  };
-
-  // funções de grupo/mensagem/encontro simplificadas (mantive comportamentos do original)
-  const handleCriarGrupo = async () => {
-    if (!novoGrupoNome.trim()) { showFeedback('Digite um nome para o grupo', 'warning'); return; }
-    try {
-      const payload = { nome: novoGrupoNome, membros: [], temas: [], status: 'ativo', data_criacao: new Date().toISOString().split('T')[0] };
-      const { data, error } = await supabase.from('grupos').insert([payload]).select();
-      if (error) throw error;
-      if (data && data[0]) setGrupos(prev => [...prev, data[0]]);
-      showFeedback('Grupo criado', 'success');
-      setOpenNovoGrupo(false);
-      setNovoGrupoNome('');
-    } catch (err: any) {
-      console.error(err);
-      showFeedback('Erro ao criar grupo: ' + (err?.message ?? String(err)), 'error');
-    }
-  };
-
-  const handleEnviarMensagem = async () => {
-    if (!mensagemTexto.trim()) { showFeedback('Digite uma mensagem', 'warning'); return; }
-    try {
-      const discipulosAtivos = discipulos.filter(d => d.status === 'ativo');
-      const mensagens = discipulosAtivos.map(d => ({ destinatario_id: d.id, destinatario_nome: d.name, conteudo: mensagemTexto, lida: false }));
-      const { error } = await supabase.from('mensagens').insert(mensagens);
-      if (error) throw error;
-      showFeedback(`Mensagem enviada para ${discipulosAtivos.length}`, 'success');
-      setOpenMensagem(false);
-      setMensagemTexto('');
-    } catch (err: any) {
-      console.error(err);
-      showFeedback('Erro ao enviar mensagem: ' + (err?.message ?? String(err)), 'error');
-    }
-  };
-
-  const handleRegistrarEncontro = async () => {
-    if (!encontroAssunto.trim() || !encontroData) { showFeedback('Preencha todos os campos', 'warning'); return; }
-    const grupoAtivo = grupos.find(g => g.status === 'ativo');
-    if (!grupoAtivo) { showFeedback('Nenhum grupo ativo encontrado', 'warning'); return; }
-    try {
-      const payload = { grupo_id: grupoAtivo.id, grupo_nome: grupoAtivo.nome, data: encontroData, assunto: encontroAssunto, status: 'agendado' };
-      const { error } = await supabase.from('encontros').insert([payload]);
-      if (error) throw error;
-      showFeedback('Encontro registrado', 'success');
-      setOpenEncontro(false);
-      setEncontroAssunto('');
-      setEncontroData('');
-    } catch (err: any) {
-      console.error(err);
-      showFeedback('Erro ao registrar encontro: ' + (err?.message ?? String(err)), 'error');
-    }
-  };
-
-  // RENDER
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (error) {
-    // Render com detalhes do erro + botão de diagnóstico
-    return (
-      <div className="flex flex-col items-start gap-4 min-h-screen p-6">
-        <div className="flex items-center gap-3">
-          <AlertTriangle className="h-8 w-8 text-red-500" />
-          <div>
-            <p className="text-lg font-semibold">Erro ao carregar dados</p>
-            <p className="text-sm text-muted-foreground">Mensagem: {error.message}</p>
-          </div>
-        </div>
-
-        <div className="w-full">
-          <button
-            onClick={carregarDados}
-            className="rounded-lg bg-primary px-4 py-2 text-white hover:bg-primary/90 mr-2"
-          >
-            Tentar novamente
-          </button>
-
-          <button
-            onClick={runDiagnostics}
-            disabled={runningDiag}
-            className="rounded-lg border px-4 py-2 ml-2"
-          >
-            {runningDiag ? 'Executando diagnóstico...' : 'Rodar diagnóstico (discipulos/grupos)'}
-          </button>
-        </div>
-
-        <div className="w-full">
-          <h3 className="font-medium">Detalhes do erro (console também tem stack):</h3>
-          <pre className="whitespace-pre-wrap bg-surface p-3 rounded mt-2 text-sm">
-            {JSON.stringify(error.details ?? {}, null, 2)}
-          </pre>
-        </div>
-
-        <div className="w-full">
-          <h3 className="font-medium">Resultado do diagnóstico (se executado):</h3>
-          <pre className="whitespace-pre-wrap bg-surface p-3 rounded mt-2 text-sm">{diagnostics ?? 'Ainda não executado'}</pre>
-        </div>
-
-        <div className="text-xs text-muted-foreground">
-          Dica: abra o Console do navegador (F12 → Console) para ver a mensagem completa de erro e possíveis detalhes (CORS, 401, 403, timeout).
-        </div>
-      </div>
-    );
-  }
+  const toggleMember = (id: string) => setSelectedIds((current) => {
+    const next = new Set(current);
+    next.has(id) ? next.delete(id) : next.add(id);
+    return next;
+  });
 
   return (
-    <div className="mx-auto max-w-lg space-y-5 px-4 pt-6 pb-20">
-      {/* HEADER */}
+    <div className="mx-auto max-w-lg space-y-5 px-4 pb-24 pt-6">
       <header className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <Link to="/home" className="rounded-full p-2 hover:bg-surface">
-            <ArrowLeft className="h-5 w-5" />
-          </Link>
-          <div>
-            <p className="text-xs text-muted-foreground">Painel</p>
-            <h1 className="text-xl font-semibold">Modo Líder</h1>
-          </div>
+          <Link to="/home" className="rounded-full p-2 hover:bg-surface"><ArrowLeft className="h-5 w-5" /></Link>
+          <div><p className="text-xs text-muted-foreground">Painel</p><h1 className="text-xl font-semibold">Modo Líder</h1></div>
         </div>
         <ThemeToggle />
       </header>
 
-      {/* PAINEL IGREJA */}
       <section className="card-elevated overflow-hidden">
-        <div className="flex items-center gap-2 border-b border-border px-5 py-3">
-          <Building2 className="h-4 w-4 text-primary" />
-          <h2 className="text-sm font-semibold">Painel da Igreja</h2>
-        </div>
+        <div className="flex items-center gap-2 border-b border-border px-5 py-3"><Building2 className="h-4 w-4 text-primary" /><h2 className="text-sm font-semibold">Painel da Igreja</h2></div>
         <div className="grid grid-cols-3 divide-x divide-border">
-          <div className="p-4 text-center">
-            <p className="text-2xl font-bold text-primary">{discipulos.filter(d => d.status === 'ativo').length}</p>
-            <p className="text-[10px] uppercase text-muted-foreground">Ativos</p>
-          </div>
-          <div className="p-4 text-center">
-            <p className="text-2xl font-bold text-success">—</p>
-            <p className="text-[10px] uppercase text-muted-foreground">Novos convertidos</p>
-          </div>
-          <div className="p-4 text-center">
-            <p className="text-2xl font-bold text-ancient">—</p>
-            <p className="text-[10px] uppercase text-muted-foreground">Engajamento</p>
-          </div>
+          <Metric value={loading ? "—" : discipulos.length} label="Discípulos" />
+          <Metric value={loading ? "—" : groups.length} label="Grupos" color="text-success" />
+          <Metric value={loading ? "—" : meetings.length} label="Encontros" color="text-ancient" />
         </div>
       </section>
 
-      {/* AÇÕES RÁPIDAS */}
-      <div className="grid grid-cols-4 gap-2">
-        <ActionBtn icon={UserPlus} label="Adicionar" onClick={handleAdicionarDiscipulo} className="bg-primary/10 hover:bg-primary/20" />
-        <ActionBtn icon={Users} label="Novo grupo" onClick={() => setOpenNovoGrupo(true)} />
-        <ActionBtn icon={MessageSquare} label="Mensagem" onClick={() => setOpenMensagem(true)} />
-        <ActionBtn icon={Calendar} label="Encontro" onClick={() => setOpenEncontro(true)} className="bg-success/10 hover:bg-success/20" />
+      <div className="grid grid-cols-2 gap-2">
+        <ActionBtn icon={Plus} label="Adicionar Discípulo" onClick={() => setDialog("disciple")} />
+        <ActionBtn icon={Users} label="Novo grupo" onClick={() => setDialog("group")} />
+        <ActionBtn icon={MessageCircle} label="Mensagem" onClick={() => void navigate({ to: "/mensagens" })} />
+        <ActionBtn icon={Calendar} label="Encontro" onClick={() => setDialog("meeting")} />
       </div>
 
-      {/* FEEDBACK */}
-      {feedback.show && (
-        <div className={`card-elevated p-3 text-sm ${
-          feedback.type === 'success' ? 'border-green-500 bg-green-50 dark:bg-green-900/20' :
-          feedback.type === 'error' ? 'border-red-500 bg-red-50 dark:bg-red-900/20' :
-          'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20'
-        }`}>
-          <p className="font-medium">{feedback.message}</p>
-        </div>
-      )}
-
-      {/* Conteúdo (discipulos / grupos) */}
       <section className="space-y-2">
-        <div className="flex items-center justify-between px-1">
-          <h2 className="text-sm font-semibold text-muted-foreground">Seus discípulos</h2>
-          <span className="text-xs text-muted-foreground">{discipulos.filter(d => d.status === 'ativo').length} ativos</span>
-        </div>
-
-        {discipulos.map(d => (
-          <div key={d.id} className="card-elevated p-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-sm font-semibold text-primary">{d.name?.[0]}</div>
-              <div className="flex-1">
-                <p className="text-sm font-semibold">{d.name}</p>
-                <p className="text-[11px] text-muted-foreground">ID: {d.id} · Status: {d.status}</p>
-              </div>
-              <TrendingUp className="h-4 w-4 text-success" />
-            </div>
+        <h2 className="px-1 text-sm font-semibold text-muted-foreground">Grupos de Discipulado</h2>
+        {groups.length === 0 ? <Empty text="Nenhum grupo criado ainda." /> : groups.map((group) => (
+          <div key={group.id} className="card-elevated flex items-center gap-3 p-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/15 text-primary"><Users className="h-5 w-5" /></div>
+            <div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold">{group.name}</p><p className="text-xs text-muted-foreground">{group.topic} · {group.members} membro{group.members === 1 ? "" : "s"}</p></div>
           </div>
         ))}
       </section>
 
       <section className="space-y-2">
-        <div className="flex items-center justify-between px-1">
-          <h2 className="text-sm font-semibold text-muted-foreground">Grupos de Discipulado</h2>
-          <span className="text-xs text-muted-foreground">{grupos.length} grupos</span>
-        </div>
-
-        {grupos.map(g => (
-          <div key={g.id} className="card-elevated p-4">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="font-semibold">{g.nome}</p>
-                <p className="text-xs text-muted-foreground">Membros: {g.membros?.length ?? 0}</p>
-                {g.temas && g.temas.length > 0 && <p className="text-xs mt-2">Temas: {g.temas.join(', ')}</p>}
-              </div>
-              <Users className="h-5 w-5 text-primary" />
-            </div>
-          </div>
-        ))}
+        <h2 className="px-1 text-sm font-semibold text-muted-foreground">Seus discípulos</h2>
+        {!loading && discipulos.length === 0 ? <Empty text="Adicione seu primeiro discípulo para começar." /> : discipulos.map((person) => <PersonCard key={person.id} person={person} />)}
       </section>
 
-      {/* Modais básicos omitidos para brevidade (podem ser reativados conforme precisar) */}
+      {meetings.length > 0 && <section className="space-y-2"><h2 className="px-1 text-sm font-semibold text-muted-foreground">Próximos encontros</h2>{meetings.map((meeting) => <div key={meeting.id} className="card-elevated p-4"><p className="text-sm font-semibold">{meeting.title}</p><p className="mt-1 text-xs text-muted-foreground">{new Intl.DateTimeFormat("pt-BR", { dateStyle: "medium", timeStyle: "short" }).format(new Date(meeting.scheduled_at))}{meeting.location ? ` · ${meeting.location}` : ""}</p></div>)}</section>}
+
+      <Dialog open={dialog === "disciple"} onOpenChange={(open) => !open && setDialog(null)}><DialogContent className="max-h-[85vh] overflow-y-auto"><DialogHeader><DialogTitle>Adicionar Discípulo</DialogTitle><DialogDescription>Escolha um contato já adicionado ou procure pelo ID real do usuário.</DialogDescription></DialogHeader><SearchInput value={search} onChange={setSearch} placeholder="Buscar por ID (ex.: joao.silva)" />{search.trim().length >= 2 ? <PersonList people={results} existingIds={new Set(discipulos.map((person) => person.id))} onChoose={addDisciple} saving={saving} /> : <PersonList people={contacts} existingIds={new Set(discipulos.map((person) => person.id))} onChoose={addDisciple} saving={saving} empty="Você ainda não possui contatos adicionados." />}</DialogContent></Dialog>
+
+      <Dialog open={dialog === "group"} onOpenChange={(open) => !open && setDialog(null)}><DialogContent className="max-h-[85vh] overflow-y-auto"><DialogHeader><DialogTitle>Novo grupo</DialogTitle><DialogDescription>Dê um nome, selecione o tema e marque os discípulos participantes.</DialogDescription></DialogHeader><label className="space-y-1 text-sm font-medium">Nome do grupo<input value={groupName} onChange={(e) => setGroupName(e.target.value)} placeholder="Ex.: Homens firmes na fé" className="w-full rounded-lg border border-border bg-input px-3 py-2 text-sm font-normal outline-none focus:border-primary" /></label><label className="space-y-1 text-sm font-medium">Tema<select value={groupTopic} onChange={(e) => setGroupTopic(e.target.value)} className="w-full rounded-lg border border-border bg-input px-3 py-2 text-sm font-normal outline-none focus:border-primary"><option value="">Selecione um tema</option>{TEMAS.map((tema) => <option key={tema}>{tema}</option>)}</select></label><div className="space-y-2"><p className="text-sm font-medium">Membros ({selectedIds.size})</p>{discipulos.length === 0 ? <Empty text="Adicione discípulos antes de criar um grupo." /> : discipulos.map((person) => <label key={person.id} className="flex cursor-pointer items-center gap-3 rounded-lg border border-border p-3"><Checkbox checked={selectedIds.has(person.id)} onCheckedChange={() => toggleMember(person.id)} /><Avatar person={person} /><span className="flex-1 text-sm font-medium">{person.display_name}</span></label>)}</div><button onClick={() => void createGroup()} disabled={saving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground disabled:opacity-60">{saving && <Loader2 className="h-4 w-4 animate-spin" />}Criar grupo</button></DialogContent></Dialog>
+
+      <Dialog open={dialog === "meeting"} onOpenChange={(open) => !open && setDialog(null)}><DialogContent><DialogHeader><DialogTitle>Agendar encontro</DialogTitle><DialogDescription>Registre o próximo encontro do seu discipulado.</DialogDescription></DialogHeader><label className="space-y-1 text-sm font-medium">Título<input value={meetingTitle} onChange={(e) => setMeetingTitle(e.target.value)} placeholder="Ex.: Encontro semanal" className="w-full rounded-lg border border-border bg-input px-3 py-2 text-sm font-normal outline-none focus:border-primary" /></label><label className="space-y-1 text-sm font-medium">Data e hora<input type="datetime-local" value={meetingDate} onChange={(e) => setMeetingDate(e.target.value)} className="w-full rounded-lg border border-border bg-input px-3 py-2 text-sm font-normal outline-none focus:border-primary" /></label><label className="space-y-1 text-sm font-medium">Local (opcional)<input value={meetingLocation} onChange={(e) => setMeetingLocation(e.target.value)} placeholder="Ex.: Sala 3" className="w-full rounded-lg border border-border bg-input px-3 py-2 text-sm font-normal outline-none focus:border-primary" /></label><button onClick={() => void createMeeting()} disabled={saving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground disabled:opacity-60">{saving && <Loader2 className="h-4 w-4 animate-spin" />}Agendar encontro</button></DialogContent></Dialog>
     </div>
   );
 }
 
-function ActionBtn({ icon: Icon, label, onClick, className = '' }: { icon: React.ElementType; label: string; onClick: () => void; className?: string; }) {
-  return (
-    <button onClick={onClick} className={`card-elevated flex flex-col items-center justify-center gap-1 p-3 text-xs font-medium transition-all hover:border-primary/50 ${className}`}>
-      <Icon className="h-5 w-5 text-primary" />
-      <span>{label}</span>
-    </button>
-  );
-}
-
-export default LiderPage;
+function Metric({ value, label, color = "text-primary" }: { value: string | number; label: string; color?: string }) { return <div className="p-4 text-center"><p className={`text-2xl font-bold ${color}`}>{value}</p><p className="text-[10px] uppercase text-muted-foreground">{label}</p></div>; }
+function ActionBtn({ icon: Icon, label, onClick }: { icon: React.ElementType; label: string; onClick: () => void }) { return <button onClick={onClick} className="card-elevated flex items-center gap-2 p-3 text-left text-sm font-medium transition-all hover:border-primary/50"><Icon className="h-4 w-4 text-primary" />{label}</button>; }
+function Empty({ text }: { text: string }) { return <p className="card-elevated p-4 text-center text-xs text-muted-foreground">{text}</p>; }
+function Avatar({ person }: { person: Person }) { return <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/15 text-sm font-semibold text-primary">{person.avatar_url ? <img src={person.avatar_url} alt="" className="h-full w-full object-cover" /> : person.display_name[0]}</div>; }
+function PersonCard({ person }: { person: Person }) { return <div className="card-elevated flex items-center gap-3 p-4"><Avatar person={person} /><div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold">{person.display_name}</p><p className="text-[11px] text-muted-foreground">@{person.username ?? "sem ID"} · {person.streak ?? 0} dias de ofensiva</p></div><ChevronRight className="h-4 w-4 text-muted-foreground" /></div>; }
+function SearchInput({ value, onChange, placeholder }: { value: string; onChange: (value: string) => void; placeholder: string }) { return <div className="relative"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className="w-full rounded-lg border border-border bg-input py-2 pl-9 pr-3 text-sm outline-none focus:border-primary" /></div>; }
+function PersonList({ people, existingIds, onChoose, saving, empty = "Nenhum usuário encontrado com este ID." }: { people: Person[]; existingIds: Set<string>; onChoose: (person: Person) => Promise<void>; saving: boolean; empty?: string }) { if (!people.length) return <Empty text={empty} />; return <div className="space-y-2">{people.map((person) => { const exists = existingIds.has(person.id); return <div key={person.id} className="flex items-center gap-3 rounded-lg border border-border p-3"><Avatar person={person} /><div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold">{person.display_name}</p><p className="truncate text-xs text-muted-foreground">@{person.username ?? "sem ID"}</p></div>{exists ? <span className="flex items-center gap-1 text-xs font-medium text-success"><Check className="h-4 w-4" /> Adicionado</span> : <button disabled={saving} onClick={() => void onChoose(person)} className="rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground disabled:opacity-60">Adicionar</button>}</div>; })}</div>; }
