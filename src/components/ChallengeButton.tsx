@@ -59,12 +59,14 @@ export function ChallengeButton({ targetId, targetName }: { targetId: string; ta
 
   return (
     <>
-      <button
-        onClick={() => setOpen(true)}
-        className="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 via-red-500 to-rose-500 px-4 py-3 text-sm font-bold uppercase tracking-wider text-white shadow-lg shadow-red-500/30 transition-transform active:scale-95"
-      >
-        <Swords className="h-4 w-4" /> Desafiar
-      </button>
+      <div className="flex justify-center">
+        <button
+          onClick={() => setOpen(true)}
+          className="challenge-fire-btn inline-flex items-center justify-center gap-2 rounded-2xl px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-transform active:scale-95"
+        >
+          <Swords className="h-4 w-4" /> Desafiar
+        </button>
+      </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-md">
