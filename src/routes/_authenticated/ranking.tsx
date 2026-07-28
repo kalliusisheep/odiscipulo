@@ -384,7 +384,7 @@ function RankingPage() {
   );
 }
 
-function PodiumSpot({ row, place }: { row: Row; place: 1 | 2 | 3 }) {
+function PodiumSpot({ row, place, flame }: { row: Row; place: 1 | 2 | 3; flame?: boolean }) {
   const level = getLevel(row.xp);
   const isFirst = place === 1;
   const size = isFirst ? "h-24 w-24" : "h-20 w-20";
@@ -410,7 +410,7 @@ function PodiumSpot({ row, place }: { row: Row; place: 1 | 2 | 3 }) {
         </div>
       )}
       <div className={`relative ${size}`}>
-        <div className={`h-full w-full overflow-hidden rounded-full bg-surface ${ring} ${row.isMe ? "outline outline-4 outline-primary/60" : ""}`}>
+        <div className={`h-full w-full overflow-hidden rounded-full bg-surface ${ring} ${row.isMe ? "outline outline-4 outline-primary/60" : ""} ${flame ? "avatar-ring-flame" : ""}`}>
           {row.avatar_url ? (
             <img src={row.avatar_url} alt="" className="h-full w-full object-cover" />
           ) : level.avatar ? (
