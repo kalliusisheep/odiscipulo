@@ -55,6 +55,7 @@ const fundamentosDaFe: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "A Bíblia não precisa ser defendida; solte-a, e ela se defenderá sozinha.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -127,6 +128,7 @@ const fundamentosDaFe: Trail = {
           theologianQuote: {
             author: "Wayne Grudem",
             text: "A doutrina da Trindade é, em essência, mistério — mas mistério revelado, não inventado.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Wayne Grudem realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -204,6 +206,7 @@ const fundamentosDaFe: Trail = {
           theologianQuote: {
             author: "Francis Schaeffer",
             text: "O homem não é grande o bastante para ser deus, nem pequeno o bastante para ser irrelevante.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Francis Schaeffer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -278,6 +281,7 @@ const fundamentosDaFe: Trail = {
           theologianQuote: {
             author: "Tim Keller",
             text: "Toda a Bíblia é, em última análise, sobre Jesus.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Tim Keller realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -355,6 +359,7 @@ const fundamentosDaFe: Trail = {
           theologianQuote: {
             author: "C.S. Lewis",
             text: "Não deixamos essa opção aberta. Ele não pretendia deixar.",
+            source: "Mere Christianity — ideia real de Lewis; confirme a tradução exata em português antes de publicar",
           },
           quizzes: [
             {
@@ -432,6 +437,7 @@ const fundamentosDaFe: Trail = {
           theologianQuote: {
             author: "John Stott",
             text: "A cruz é o lugar onde a justiça e a misericórdia de Deus se encontram sem contradição.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Stott realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -509,6 +515,7 @@ const fundamentosDaFe: Trail = {
           theologianQuote: {
             author: "Millard Erickson",
             text: "O Espírito Santo não veio para chamar atenção a si mesmo, mas para glorificar a Cristo.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Millard Erickson realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -581,6 +588,7 @@ const fundamentosDaFe: Trail = {
           theologianQuote: {
             author: "John Wesley",
             text: "A graça de Deus não anula nossa responsabilidade; ela a torna possível.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Wesley realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -658,6 +666,7 @@ const fundamentosDaFe: Trail = {
           theologianQuote: {
             author: "Thom Rainer",
             text: "A igreja não é um evento que você frequenta; é uma família à qual você pertence.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Thom Rainer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
@@ -730,6 +739,7 @@ const fundamentosDaFe: Trail = {
           theologianQuote: {
             author: "Alister McGrath",
             text: "A esperança cristã não escapa do mundo; espera pela renovação dele.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Alister McGrath realmente escreveu/disse algo equivalente antes de publicar como citação literal",
           },
           quizzes: [
             {
