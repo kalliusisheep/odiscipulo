@@ -55,6 +55,7 @@ function HomePage() {
   const { viewMode } = useApp();
   const nav = useNavigate();
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [progressIds, setProgressIds] = useState<Set<string>>(new Set());
   const [modules, setModules] = useState<ModuleRow[]>([]);
   const [trails, setTrails] = useState<TrailRow[]>([]);
@@ -63,6 +64,7 @@ function HomePage() {
     void (async () => {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user) return;
+      setUserId(u.user.id);
       const [{ data: p }, { data: lp }, { data: mods }, { data: trs }] = await Promise.all([
         supabase
           .from("profiles")
