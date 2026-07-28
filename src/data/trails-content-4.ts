@@ -3200,6 +3200,456 @@ const missoes: Trail = {
         },
       ],
     },
+    {
+      id: "ms-mod-4",
+      title: "Módulo IV: Quem Fica e a Missão Integral",
+      lessons: [
+        {
+          id: "ms-4-1",
+          title: "O Papel de Quem Fica",
+          intro: [
+            "Quando se fala em missões, é comum imaginar apenas quem viaja: o missionário que deixa sua terra, aprende outra língua e vive entre um povo diferente. Mas a Bíblia mostra uma missão com pelo menos dois papéis igualmente necessários — quem vai e quem envia. Nenhum dos dois é secundário; ambos são parte do mesmo corpo cumprindo a mesma missão.",
+            "Paulo pergunta, em Romanos 10:14-15, uma sequência de perguntas que revelam essa lógica: 'como crerão naquele de quem não ouviram falar? E como ouvirão, se não há quem pregue? E como pregarão, se não forem enviados?' Note a ordem: antes de haver pregador, é preciso haver quem envie. O envio não é um detalhe logístico — é parte da própria obra missionária, tão espiritual quanto a pregação em si.",
+            "O modelo bíblico mais claro disso está em Atos 13:1-3: a igreja de Antioquia, reunida em jejum e oração, é instruída pelo Espírito Santo a separar Barnabé e Saulo para a obra. A igreja impõe as mãos sobre eles e os envia — mas a igreja continua existindo em Antioquia, sustentando esse envio com oração, apoio e, mais tarde, recebendo o relatório de tudo o que Deus havia feito (At 14:26-27). Quem ficou também participou da missão: orando, sustentando e acompanhando.",
+            "Isso muda a pergunta que todo cristão deveria se fazer. Não é apenas 'Deus está me chamando para ir?', mas também: 'Como posso, onde estou, ser um enviador fiel — pela oração, pelo sustento e pelo acompanhamento de quem Deus está enviando?' Ficar não é conformismo; pode ser, também, um chamado específico para sustentar a missão de outros.",
+          ],
+          verses: [
+            {
+              ref: "Romanos 10:14-15",
+              textByVersion: {
+                NVI: "Como, pois, invocarão aquele em quem não creram? E como crerão naquele de quem não ouviram falar? E como ouvirão, se não há quem pregue? E como pregarão, se não forem enviados?",
+                ACF: "Como, pois, invocarão aquele em quem não creram? e como crerão naquele de quem não ouviram? e como ouvirão, não havendo quem pregue? E como pregarão, se não forem enviados?",
+                NAA: "Como, pois, invocarão aquele em quem não creram? E como crerão naquele de quem não ouviram falar? E como ouvirão, se não há quem pregue? E como pregarão, se não forem enviados?",
+              },
+              originals: [
+                { word: "ἀποστέλλω", translit: "apostellō", meaning: "enviar oficialmente com uma missão — raiz da palavra 'apóstolo'; a pregação pressupõe um envio anterior", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Atos 13:2-3",
+              textByVersion: {
+                NVI: "Enquanto adoravam ao Senhor e jejuavam, disse o Espírito Santo: 'Separem para mim Barnabé e Saulo, para o trabalho ao qual os chamei'. Assim, depois de jejuarem, orarem e lhes imporem as mãos, eles os enviaram.",
+              },
+              originals: [
+                { word: "συνεργός", translit: "synergos", meaning: "cooperador, colaborador — termo usado em outras cartas de Paulo para quem sustenta a obra sem estar no campo missionário diretamente", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "ἀποστέλλω", translit: "apostellō", meaning: "enviar com autoridade e propósito — o envio é parte espiritual da missão, não apenas um detalhe prático", lang: "grego" },
+            { word: "συνεργός", translit: "synergos", meaning: "cooperador — quem trabalha junto na obra do evangelho, mesmo sustentando de longe", lang: "grego" },
+          ],
+          deepDive:
+            "A terceira carta de João ilustra bem esse papel de quem fica: João elogia Gaio por ter recebido e sustentado irmãos itinerantes que saíram 'por amor do Nome, sem nada aceitar dos pagãos' (3 Jo 1:7), e conclui: 'portanto, devemos acolher com hospitalidade a irmãos como esses, para que sejamos cooperadores da verdade' (3 Jo 1:8). O verbo grego usado ali, synergos, é o mesmo que Paulo usa para descrever colegas de ministério lado a lado no evangelho — mostrando que sustentar hospitaleiramente quem vai é uma forma real, e não apenas simbólica, de cooperação na obra. A igreja de Antioquia em Atos 13 segue o mesmo padrão: ora, jejua, comissiona publicamente e depois recebe o relatório do que Deus fez (At 14:27) — um ciclo completo de envio e acompanhamento, não apenas uma despedida.",
+          theologianQuote: {
+            author: "John Stott",
+            text: "Cada cristão é chamado a ser missionário em algum sentido — indo, enviando ou sustentando; a igreja que só ora por missões sem enviar ninguém, e a igreja que só envia sem sustentar quem foi, falham igualmente no seu chamado.",
+            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme a citação original antes de publicar como texto literal atribuído",
+          },
+          quizzes: [
+            {
+              question: "Segundo Romanos 10:14-15, o que precisa acontecer antes de haver pregação eficaz?",
+              options: [
+                "Nada — a pregação pode ocorrer de forma totalmente independente e espontânea",
+                "É preciso que haja quem envie o pregador",
+                "É necessário primeiro que o ouvinte já tenha algum conhecimento prévio da Bíblia",
+                "A pregação depende exclusivamente do talento pessoal do pregador",
+              ],
+              correctIndex: 1,
+              explanation: "Paulo encadeia as perguntas mostrando que o envio é pré-requisito espiritual e lógico para a pregação acontecer.",
+            },
+            {
+              question: "Em Atos 13:1-3, o que a igreja de Antioquia faz antes de enviar Barnabé e Saulo?",
+              options: [
+                "Apenas os deixa partir sem qualquer cerimônia ou acompanhamento",
+                "Adora, jejua, ora e impõe as mãos sobre eles antes do envio",
+                "Vota em assembleia para aprovar o destino da viagem missionária",
+                "Espera que eles retornem para só então reconhecer o chamado",
+              ],
+              correctIndex: 1,
+              explanation: "O envio em Antioquia é cercado de adoração, jejum, oração e um ato público de comissionamento.",
+            },
+            {
+              question: "O que 3 João 1:8 ensina sobre quem hospeda e sustenta obreiros itinerantes?",
+              options: [
+                "Que esse apoio é opcional e sem relevância espiritual",
+                "Que, ao fazer isso, a pessoa se torna 'cooperadora da verdade'",
+                "Que apenas quem vai ao campo tem participação real na missão",
+                "Que hospedar obreiros é uma prática exclusiva do primeiro século, sem aplicação hoje",
+              ],
+              correctIndex: 1,
+              explanation: "João descreve o sustento e a hospitalidade a obreiros como uma forma genuína de cooperação na obra do evangelho.",
+            },
+          ],
+          application:
+            "Identifique um missionário, plantador de igrejas ou obreiro que sua igreja apoia (ou poderia apoiar) e dê um passo concreto de sustento esta semana: uma mensagem de encorajamento, uma oração específica registrada em sua agenda, ou uma contribuição financeira, ainda que pequena.",
+          prayer:
+            "Senhor, obrigado por me mostrar que a missão não pertence só a quem viaja, mas a todo o teu povo. Perdoa-me pelas vezes em que pensei que, por não ser enviado a um campo distante, minha participação na missão era irrelevante. Ensina-me a ser um enviador fiel — em oração, em sustento e em acompanhamento — de quem tu chamaste para ir. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Escreva o nome de uma pessoa ou família que sua igreja apoia em missões e comprometa-se a orar especificamente por ela, por nome, todos os dias desta semana.",
+          reflectionQuestion:
+            "Se Deus está te chamando, neste momento da sua vida, a ser mais enviador do que enviado, o que mudaria concretamente na forma como você usa seu tempo, suas orações e seus recursos?",
+          xp: 30,
+        },
+        {
+          id: "ms-4-2",
+          title: "Missão Integral",
+          intro: [
+            "Ao longo da história, a igreja já cometeu dois erros opostos ao pensar sobre missões. De um lado, reduzir a missão apenas a palavras — pregar o Evangelho sem nenhuma preocupação com a fome, a injustiça ou o sofrimento concreto das pessoas ouvintes. De outro lado, reduzir a missão apenas a boas obras — ajudar socialmente sem jamais anunciar quem é Jesus e o que ele fez na cruz. A Bíblia recusa as duas reduções: ela ensina uma missão integral, em que anúncio e ação de misericórdia caminham juntos.",
+            "Quando Jesus define publicamente sua própria missão, em Lucas 4:18-19, ele une explicitamente essas duas dimensões: 'o Espírito do Senhor está sobre mim, porque ele me ungiu para pregar boas novas aos pobres... para proclamar libertação aos presos... para libertar os oprimidos'. Jesus não escolhe entre anunciar e libertar — ele faz as duas coisas, porque o Evangelho toca a pessoa inteira, não apenas sua alma em abstrato.",
+            "Tiago é direto sobre isso: 'que proveito há, meus irmãos, em dizer alguém que tem fé, se não tem obras?... a fé, se não tiver obras, é morta em si mesma' (Tg 2:14-17). A fé genuína sempre produz fruto visível de compaixão. Mas é crucial notar a ordem: as obras não substituem a proclamação do Evangelho, elas a acompanham e a validam diante do mundo. Jesus alimentou multidões (Jo 6), mas nunca deixou de anunciar quem ele era; ele curou o corpo, mas insistiu em falar sobre o perdão dos pecados (Mc 2:1-12).",
+            "Missão integral, portanto, não é escolher entre evangelismo e ação social como se fossem rivais — é reconhecer que o Evangelho, quando genuinamente recebido, transborda em amor prático ao próximo, sem que esse amor jamais substitua a necessidade urgente de anunciar a Cristo como único Salvador.",
+          ],
+          verses: [
+            {
+              ref: "Lucas 4:18-19",
+              textByVersion: {
+                NVI: "O Espírito do Senhor está sobre mim, porque ele me ungiu para pregar boas novas aos pobres. Ele me enviou para proclamar libertação aos presos e recuperação da vista aos cegos, para libertar os oprimidos e proclamar o ano da graça do Senhor.",
+                ACF: "O Espírito do Senhor é sobre mim, pelo que me ungiu para evangelizar os pobres, enviou-me a curar os quebrantados de coração, a apregoar liberdade aos cativos, e restauração da vista aos cegos, a pôr em liberdade os oprimidos.",
+              },
+              originals: [
+                { word: "πτωχός", translit: "ptōchos", meaning: "pobre, necessitado — as boas novas de Jesus alcançam explicitamente os mais vulneráveis social e economicamente", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Tiago 2:15-17",
+              textByVersion: {
+                NVI: "Se um irmão ou irmã estiver necessitado de roupa e do alimento diário, e um de vocês lhe disser: 'Vá em paz, aqueça-se e alimente-se', sem, contudo, dar-lhe o necessário para o corpo, de que vale isso? Assim também a fé, por si só, se não for acompanhada de obras, está morta.",
+              },
+              originals: [
+                { word: "ἔργον", translit: "ergon", meaning: "obra, ação concreta — a fé bíblica sempre se traduz em atos visíveis de amor, não apenas em afirmações verbais", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "πτωχός", translit: "ptōchos", meaning: "pobre — Jesus define sua própria missão como boas novas dirigidas explicitamente aos necessitados", lang: "grego" },
+            { word: "ἔργον", translit: "ergon", meaning: "obra — a evidência prática e visível de uma fé genuína", lang: "grego" },
+          ],
+          deepDive:
+            "É importante distinguir, com cuidado, entre prioridade e exclusividade. Dizer que a proclamação do Evangelho tem prioridade lógica — porque sem ela ninguém conhece o caminho da salvação em Cristo — não significa que a ação de misericórdia seja opcional ou secundária na prática diária do discípulo. Mateus 25:31-46 é solene nesse ponto: Jesus identifica-se com quem tem fome, sede, é estrangeiro, está nu, doente ou preso, e trata o cuidado prático com essas pessoas como evidência real (não decorativa) de uma vida que lhe pertence. Ao mesmo tempo, reduzir a missão cristã só a projetos sociais, sem jamais anunciar Cristo como Salvador e Senhor, esvazia o Evangelho de seu conteúdo mais essencial — o perdão dos pecados pela cruz e a ressurreição. Missão integral mantém as duas verdades presas: o anúncio explícito do Evangelho é insubstituível, e o amor prático ao próximo é sua confirmação inevitável, não um apêndice opcional.",
+          theologianQuote: {
+            author: "René Padilla",
+            text: "Não há Evangelho sem preocupação social nem preocupação social sem Evangelho, pois o próprio Evangelho é a Boa Nova de que Deus, pela morte e ressurreição de Jesus Cristo, fez provisão para a redenção do homem todo e de todos os homens.",
+            source: "NÃO VERIFICADO — paráfrase de tema recorrente na obra do autor; confirme a fonte exata antes de publicar como citação literal",
+          },
+          quizzes: [
+            {
+              question: "Segundo Lucas 4:18-19, como Jesus descreve o alcance da sua própria missão?",
+              options: [
+                "Como algo restrito apenas ao ensino religioso, sem qualquer dimensão prática",
+                "Como boas novas aos pobres, libertação aos presos e restauração aos oprimidos",
+                "Como uma missão dirigida exclusivamente às elites religiosas de sua época",
+                "Como algo sem qualquer relação com as necessidades concretas das pessoas",
+              ],
+              correctIndex: 1,
+              explanation: "Jesus une explicitamente o anúncio das boas novas a ações concretas de libertação e restauração.",
+            },
+            {
+              question: "O que Tiago 2:14-17 ensina sobre a relação entre fé e obras?",
+              options: [
+                "Que as obras substituem a necessidade da fé em Cristo",
+                "Que a fé genuína sempre se manifesta em obras concretas de amor",
+                "Que fé e obras são temas completamente desconectados na Bíblia",
+                "Que apenas líderes religiosos precisam demonstrar obras de fé",
+              ],
+              correctIndex: 1,
+              explanation: "Tiago afirma que uma fé sem nenhuma obra correspondente está morta — a fé genuína produz fruto visível.",
+            },
+            {
+              question: "Qual é o equilíbrio bíblico que a 'missão integral' busca preservar?",
+              options: [
+                "Que ação social pode substituir totalmente o anúncio do Evangelho",
+                "Que o anúncio do Evangelho tem prioridade, e o amor prático ao próximo o confirma e acompanha",
+                "Que evangelismo e cuidado com o próximo são temas rivais e incompatíveis",
+                "Que apenas o anúncio verbal importa, sem nenhuma consequência prática esperada",
+              ],
+              correctIndex: 1,
+              explanation: "Missão integral mantém unidas a prioridade da proclamação do Evangelho e a inevitável expressão prática do amor cristão.",
+            },
+          ],
+          application:
+            "Identifique uma necessidade concreta — física, material ou emocional — de alguém próximo a você (vizinho, colega, familiar) e ofereça ajuda prática esta semana, buscando uma oportunidade natural de também falar sobre o que Cristo fez por você.",
+          prayer:
+            "Senhor, tu és um Deus que se importa com o corpo e com a alma, com o presente e com a eternidade. Perdoa-me pelas vezes em que separei essas duas coisas — anunciando palavras sem amor prático, ou ajudando pessoas sem jamais falar do teu nome. Ensina-me a viver um Evangelho integral, que ama o próximo de corpo inteiro e aponta sempre para Cristo. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Escolha uma necessidade prática ao seu redor (um vizinho idoso, uma família em dificuldade, uma campanha de doação da sua igreja) e participe ativamente dela nesta semana, orando para que essa ação abra uma porta natural de conversa sobre o Evangelho.",
+          reflectionQuestion:
+            "Você tende mais a reduzir sua fé apenas a palavras sem ação prática, ou a reduzi-la apenas a boas ações sem jamais falar de Cristo? O que isso revela sobre onde você precisa crescer?",
+          xp: 30,
+        },
+      ],
+    },
+    {
+      id: "ms-mod-5",
+      title: "Módulo V: Fronteiras e Fidelidade até o Fim",
+      lessons: [
+        {
+          id: "ms-5-1",
+          title: "Missões e Fronteiras",
+          intro: [
+            "Existe uma diferença importante entre lugares onde o Evangelho já circula livremente — ainda que muitos o rejeitem — e lugares onde praticamente ninguém jamais ouviu o nome de Jesus com clareza. Missiólogos chamam esses últimos de povos 'não alcançados': grupos étnicos ou linguísticos sem uma igreja local minimamente estabelecida capaz de evangelizar seu próprio povo sem ajuda externa. Pensar em 'fronteiras' missionárias é reconhecer que, apesar de dois mil anos de história cristã, ainda existem bolsões inteiros da humanidade sem acesso real às boas novas.",
+            "Paulo tinha uma ambição declarada, expressa em Romanos 15:20-21: 'fiz questão de pregar o evangelho onde Cristo não era conhecido, para não edificar sobre fundamento colocado por outro... aqueles a quem não foi anunciado a respeito dele verão, e os que não ouviram entenderão'. Ele cita Isaías 52:15 para fundamentar essa prioridade: havia um chamado profético específico para levar a mensagem a quem simplesmente nunca teve acesso a ela.",
+            "Isso não diminui a importância de evangelizar onde o Evangelho já é conhecido — muitas pessoas ao nosso redor já ouviram falar de Jesus e ainda assim precisam se converter. Mas revela uma prioridade estratégica adicional: há lugares onde ninguém jamais ouviu, e esses lugares merecem atenção deliberada, e não apenas o acaso de quem por ali passar.",
+            "Jesus liga essa tarefa ao fim da história: 'e este evangelho do Reino será pregado em todo o mundo, como testemunho a todas as nações, e então virá o fim' (Mt 24:14). Isso significa que orar e trabalhar por povos ainda não alcançados não é um projeto especializado de poucos entusiastas — é parte do relógio profético da história, aguardando ser cumprido antes da volta de Cristo.",
+          ],
+          verses: [
+            {
+              ref: "Romanos 15:20-21",
+              textByVersion: {
+                NVI: "Meu objetivo tem sido pregar as boas-novas onde Cristo ainda não era conhecido... antes, como está escrito: 'Aqueles a quem não foi anunciado a respeito dele, verão; e os que não ouviram falar dele entenderão'.",
+                ACF: "E desta maneira me esforcei por anunciar o evangelho, não onde Cristo tinha sido conhecido, para não edificar sobre fundamento alheio... mas, como está escrito: Aqueles a quem não foi anunciado a seu respeito o verão, e os que dele não ouviram falar o entenderão.",
+              },
+              originals: [
+                { word: "ὀνομάζω", translit: "onomazō", meaning: "nomear, dar nome a — Paulo busca lugares onde o nome de Cristo ainda não havia sido sequer mencionado", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Mateus 24:14",
+              textByVersion: {
+                NVI: "E este evangelho do Reino será pregado em todo o mundo como testemunho a todas as nações, e então virá o fim.",
+              },
+              originals: [
+                { word: "μαρτύριον", translit: "martyrion", meaning: "testemunho — o evangelho alcançando todas as nações funciona como um testemunho formal diante da história, antes da consumação final", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "ὀνομάζω", translit: "onomazō", meaning: "nomear — Paulo tinha como prioridade ir a lugares onde o nome de Cristo jamais havia sido pronunciado", lang: "grego" },
+            { word: "μαρτύριον", translit: "martyrion", meaning: "testemunho — o alcance do evangelho a todas as nações está ligado profeticamente ao fim dos tempos", lang: "grego" },
+          ],
+          deepDive:
+            "A citação que Paulo faz de Isaías 52:15 em Romanos 15:21 mostra que sua estratégia missionária não era fruto de preferência pessoal, mas de convicção bíblica: havia um padrão profético a cumprir, priorizando quem nunca tinha ouvido sobre quem já tinha alguma exposição ao Evangelho. Isso gerou, na história da igreja, o conceito de 'missões de fronteira' — o esforço deliberado de alcançar grupos étnicos e linguísticos sem presença cristã estabelecida, em contraste com o trabalho (igualmente necessário) de evangelismo e discipulado em lugares onde já existem igrejas locais. Pensar estrategicamente sobre fronteiras não é elitismo missionário, mas responsabilidade diante de uma tarefa profeticamente inacabada — Mateus 24:14 liga esse alcance total às próprias nações ao clímax da história redentora.",
+          theologianQuote: {
+            author: "Ralph Winter",
+            text: "A tarefa restante não é simplesmente evangelizar mais pessoas, mas alcançar grupos de pessoas inteiros que ainda não têm nenhuma igreja capaz de evangelizá-los a partir de dentro de sua própria cultura.",
+            source: "NÃO VERIFICADO — paráfrase de conceito amplamente associado ao autor; confirme a citação original antes de publicar como texto literal",
+          },
+          quizzes: [
+            {
+              question: "O que caracteriza, segundo a lição, um povo considerado 'não alcançado'?",
+              options: [
+                "Um povo que já possui uma igreja local minimamente estabelecida",
+                "Um grupo étnico ou linguístico sem uma igreja capaz de evangelizar seu próprio povo",
+                "Qualquer nação que ainda não tenha 100% de sua população convertida",
+                "Um povo que rejeitou ativamente o Evangelho após ouvi-lo claramente",
+              ],
+              correctIndex: 1,
+              explanation: "O critério central é a ausência de uma igreja local capaz de alcançar seu próprio grupo sem ajuda externa.",
+            },
+            {
+              question: "Qual era a ambição declarada de Paulo em Romanos 15:20-21?",
+              options: [
+                "Evangelizar apenas onde já havia igrejas estabelecidas por outros",
+                "Pregar onde Cristo ainda não era conhecido, para não edificar sobre fundamento alheio",
+                "Concentrar seu ministério exclusivamente em Jerusalém",
+                "Evitar qualquer contato com povos de cultura diferente da sua",
+              ],
+              correctIndex: 1,
+              explanation: "Paulo priorizava estrategicamente lugares onde o nome de Cristo ainda não havia sido anunciado.",
+            },
+            {
+              question: "Segundo Mateus 24:14, o que precede o fim, conforme as palavras de Jesus?",
+              options: [
+                "A conversão de toda a humanidade sem exceção",
+                "A pregação do evangelho do Reino a todas as nações como testemunho",
+                "A eliminação completa do sofrimento no mundo",
+                "Um sinal visível independente da pregação do evangelho",
+              ],
+              correctIndex: 1,
+              explanation: "Jesus liga o alcance do evangelho a todas as nações, como testemunho, ao momento em que virá o fim.",
+            },
+          ],
+          application:
+            "Pesquise sobre um povo ou região com pouco ou nenhum acesso ao Evangelho (organizações missionárias costumam disponibilizar esse tipo de informação) e comece, esta semana, a orar especificamente por esse povo, anotando o nome em um lugar visível como lembrete diário.",
+          prayer:
+            "Senhor, tu não te esqueceste de nenhum povo sobre a face da terra. Perdoa-me pela minha visão tantas vezes pequena, limitada ao meu próprio círculo. Dá-me um coração que se importa com os povos ainda sem acesso ao evangelho, e mostra-me como orar e agir por eles com fidelidade e constância. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Converse com um líder da sua igreja sobre quais povos ou campos missionários de fronteira sua igreja já apoia ou poderia apoiar, e considere se há algum passo prático que você pode dar para se envolver.",
+          reflectionQuestion:
+            "Que lugar as 'fronteiras missionárias' — povos que nunca ouviram o nome de Jesus — têm ocupado nas suas orações e prioridades até agora?",
+          xp: 30,
+        },
+        {
+          id: "ms-5-2",
+          title: "Teologia do Martírio",
+          intro: [
+            "Ao longo de toda a história da igreja, a expansão do Evangelho tem custado, para muitos, a própria vida. Desde Estêvão, o primeiro mártir cristão (At 7), até incontáveis obreiros e crentes comuns em diferentes séculos e continentes, o testemunho fiel a Cristo às vezes encontrou resistência violenta. Falar sobre isso não é buscar tragédia ou espetáculo — é reconhecer, com honestidade bíblica, que seguir a Cristo sempre teve um custo real, e que esse custo faz parte da teologia bíblica do discipulado e da missão.",
+            "Paulo escreve, na prisão, algo que resume essa visão: 'para mim, o viver é Cristo e o morrer é lucro' (Fp 1:21). Ele não idealiza o sofrimento nem o busca de forma imprudente, mas também não teme a morte, porque sua identidade e esperança estão inteiramente ancoradas em Cristo, não na preservação da própria vida a qualquer custo. Essa é a base de toda teologia cristã do martírio: a morte não tem a palavra final sobre quem está unido a Cristo pela fé.",
+            "Apocalipse 12:11 descreve os que 'venceram' o acusador 'por causa do sangue do Cordeiro e da palavra do testemunho que deram; e não amaram a própria vida a ponto de recuar diante da morte'. A vitória descrita ali não é escapar do sofrimento, mas permanecer fiel a Cristo mesmo quando isso custa tudo — um padrão que atravessa toda a história da igreja perseguida, incluindo hoje, em diversas regiões do mundo.",
+            "É importante manter equilíbrio bíblico aqui: a Bíblia não ensina a buscar o sofrimento como um fim em si mesmo, nem transforma o martírio em mérito espiritual superior. O que ela ensina é que, quando a fidelidade a Cristo exige esse preço, o crente pode enfrentá-lo com esperança — porque, como Estêvão em Atos 7:55-60, sua confiança está fixada não na preservação da vida terrena, mas na presença e na glória de Cristo além dela.",
+          ],
+          verses: [
+            {
+              ref: "Filipenses 1:20-21",
+              textByVersion: {
+                NVI: "Segundo a minha ardente expectativa e esperança... Cristo será engrandecido em meu corpo, quer pela vida quer pela morte. Porque para mim o viver é Cristo e o morrer é lucro.",
+                ACF: "Segundo a minha intensa expectação e esperança... Cristo será engrandecido no meu corpo, seja pela vida, seja pela morte. Porque, para mim, o viver é Cristo, e o morrer é ganho.",
+              },
+              originals: [
+                { word: "κέρδος", translit: "kerdos", meaning: "lucro, ganho — termo comercial usado para descrever a morte como algo que não representa perda alguma para quem está em Cristo", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Apocalipse 12:11",
+              textByVersion: {
+                NVI: "Eles o venceram pelo sangue do Cordeiro e pela palavra do testemunho que deram; e não amaram a própria vida a ponto de recuarem diante da morte.",
+              },
+              originals: [
+                { word: "νικάω", translit: "nikaō", meaning: "vencer, triunfar — a vitória bíblica aqui não é escapar da morte, mas permanecer fiel a Cristo até o fim", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "κέρδος", translit: "kerdos", meaning: "lucro — a morte, para quem está em Cristo, não representa derrota, mas ganho", lang: "grego" },
+            { word: "νικάω", translit: "nikaō", meaning: "vencer — a fidelidade até o fim, e não a fuga do sofrimento, é a vitória descrita em Apocalipse", lang: "grego" },
+          ],
+          deepDive:
+            "Vale notar a diferença entre o testemunho de Estêvão em Atos 7 e qualquer busca voluntária pelo sofrimento: Estêvão não provoca sua própria morte — ele simplesmente se recusa a negar a verdade sobre Cristo diante de uma multidão hostil, e enfrenta as consequências com uma serenidade que só se explica por sua visão da glória de Deus (At 7:55-56). Esse é o padrão bíblico consistente: a fidelidade ao testemunho de Cristo vem primeiro; o sofrimento, quando surge, é recebido, não fabricado. 2 Timóteo 3:12 generaliza esse princípio: 'todos os que querem viver piedosamente em Cristo Jesus serão perseguidos' — não como promessa de que todo cristão enfrentará martírio literal, mas como aviso realista de que a fidelidade genuína a Cristo, em algum grau, sempre encontra resistência do mundo.",
+          theologianQuote: {
+            author: "Tertuliano",
+            text: "O sangue dos mártires é semente da igreja.",
+            source: "Apologeticum, cap. 50 — frase amplamente atribuída a Tertuliano; verifique a tradução exata antes de citar como texto literal",
+          },
+          quizzes: [
+            {
+              question: "Segundo Filipenses 1:21, como Paulo descreve sua relação com a morte?",
+              options: [
+                "Como algo a ser temido e evitado a todo custo",
+                "Como algo neutro, sem qualquer significado espiritual",
+                "Como 'lucro', porque para ele viver é Cristo",
+                "Como um castigo divino pelos seus pecados passados",
+              ],
+              correctIndex: 2,
+              explanation: "Paulo via a morte como ganho, não como perda, precisamente porque sua vida estava centrada em Cristo.",
+            },
+            {
+              question: "O que Apocalipse 12:11 identifica como a base da vitória dos que venceram?",
+              options: [
+                "A capacidade de escapar de toda perseguição",
+                "O sangue do Cordeiro e a fidelidade ao testemunho, mesmo diante da morte",
+                "Uma estratégia política bem-sucedida contra seus perseguidores",
+                "A ausência total de qualquer sofrimento em suas vidas",
+              ],
+              correctIndex: 1,
+              explanation: "A vitória bíblica descrita ali está ligada à fidelidade ao testemunho de Cristo, não à ausência de sofrimento.",
+            },
+            {
+              question: "Qual é o equilíbrio bíblico correto sobre o sofrimento e o martírio, segundo a lição?",
+              options: [
+                "Que o cristão deve buscar ativamente o sofrimento como mérito espiritual",
+                "Que a fidelidade a Cristo vem primeiro, e o sofrimento, quando surge por causa dela, é recebido com esperança",
+                "Que o sofrimento é sempre castigo por pecados pessoais",
+                "Que apenas os apóstolos do primeiro século enfrentaram esse tipo de custo",
+              ],
+              correctIndex: 1,
+              explanation: "A Bíblia não incentiva buscar o sofrimento, mas ensina a enfrentá-lo com fé quando ele é consequência da fidelidade a Cristo.",
+            },
+          ],
+          application:
+            "Pesquise brevemente sobre a realidade de cristãos perseguidos hoje em alguma região do mundo (organizações que acompanham a liberdade religiosa costumam publicar relatórios confiáveis) e dedique um momento de oração específica por esses irmãos e irmãs nesta semana.",
+          prayer:
+            "Senhor, tu conheces cada um dos teus filhos que hoje sofrem por causa do teu nome. Ensina-me a não amar minha própria conveniência a ponto de recuar diante do custo de te seguir fielmente. Fortalece os perseguidos ao redor do mundo, e dá-me um coração agradecido pela liberdade que muitas vezes tenho para adorar sem medo. Em nome de Jesus, amém.",
+          weeklyChallenge:
+            "Escolha um país ou região onde cristãos enfrentam perseguição significativa e ore por ele diariamente nesta semana, buscando também formas legítimas de apoiar irmãos perseguidos através da sua igreja ou de organizações confiáveis.",
+          reflectionQuestion:
+            "Vivendo em um contexto de relativa liberdade religiosa, o que você pode aprender com a fé de irmãos que, em outros lugares, pagam um preço muito mais alto para seguir a Cristo?",
+          xp: 30,
+        },
+      ],
+    },
+    {
+      id: "ms-mod-6",
+      title: "Módulo VI: A Esperança da Volta de Cristo",
+      lessons: [
+        {
+          id: "ms-6-1",
+          title: "Maranata",
+          intro: [
+            "A carta de Paulo aos coríntios termina com uma palavra estranha aos ouvidos modernos, mas cheia de significado para a igreja primitiva: 'Maranata' (1 Co 16:22). É uma expressão aramaica que significa 'Nosso Senhor, vem!' — uma oração breve, quase um grito de esperança, que resume toda a expectativa cristã em relação ao retorno de Jesus Cristo.",
+            "Essa palavra aparece logo depois de Paulo tratar, ao longo de toda a carta, de problemas concretos e dolorosos da igreja de Corinto: divisões, imoralidade, desordem na Ceia, confusão sobre dons espirituais. E, ainda assim, ele termina olhando para frente, para a volta de Cristo, como o horizonte que dá sentido a tudo o mais. A esperança escatológica não é fuga da realidade presente — é o que sustenta a igreja em meio às suas próprias imperfeições e lutas.",
+            "Essa mesma esperança fecha toda a Bíblia. As últimas palavras de Jesus registradas em Apocalipse são: 'Certamente venho sem demora' — e a igreja responde: 'Amém! Vem, Senhor Jesus!' (Ap 22:20). Do início ao fim das Escrituras, a missão de Deus caminha para um alvo certo: a volta de Cristo, quando ele consumará tudo o que começou.",
+            "E há uma conexão direta entre essa esperança e a tarefa missionária: Jesus disse que 'este evangelho do Reino será pregado em todo o mundo, como testemunho a todas as nações, e então virá o fim' (Mt 24:14). Isso significa que a missão da igreja não é um projeto sem fim definido — ela caminha, com propósito, para o dia em que o próprio Rei voltará. Viver com esperança escatológica é o que dá à missão sua urgência mais profunda e, ao mesmo tempo, sua paz mais firme: o resultado final já está garantido em Cristo.",
+          ],
+          verses: [
+            {
+              ref: "1 Coríntios 16:22",
+              textByVersion: {
+                NVI: "Se alguém não ama o Senhor, seja amaldiçoado. Vem, Senhor! [Maranata]",
+                ACF: "Se alguém não ama ao Senhor Jesus Cristo, seja anátema! Maranata.",
+              },
+              originals: [
+                { word: "μαράνα θά", translit: "marana tha", meaning: "expressão aramaica preservada em meio ao texto grego, 'Nosso Senhor, vem!' — uma das orações mais antigas registradas da igreja cristã", lang: "grego" },
+              ],
+            },
+            {
+              ref: "Apocalipse 22:20",
+              textByVersion: {
+                NVI: "Aquele que dá testemunho destas coisas diz: 'Sim, venho em breve!' Amém! Vem, Senhor Jesus!",
+                ACF: "Aquele que testifica estas coisas diz: Certamente, cedo venho. Amém! Ora vem, Senhor Jesus!",
+              },
+              originals: [
+                { word: "ἔρχου", translit: "erchou", meaning: "vem! — imperativo usado pela igreja como resposta de anseio à promessa de Cristo de que voltará", lang: "grego" },
+              ],
+            },
+          ],
+          keywords: [
+            { word: "μαράνα θά", translit: "marana tha", meaning: "'Nosso Senhor, vem!' — oração aramaica preservada no Novo Testamento grego, expressando a esperança viva da igreja primitiva", lang: "grego" },
+            { word: "ἔρχου", translit: "erchou", meaning: "vem — o clamor final da igreja diante da promessa do retorno de Cristo", lang: "grego" },
+          ],
+          deepDive:
+            "O fato de Paulo preservar uma expressão aramaica — Maranata — em uma carta escrita em grego para uma igreja majoritariamente grega mostra como essa oração já era, desde muito cedo, uma marca distintiva e amplamente reconhecida da fé cristã, provavelmente usada em contextos de adoração desde os primeiros anos da igreja em Jerusalém. Ao encerrar 1 Coríntios com ela, Paulo lembra à igreja dividida e imperfeita de Corinto que sua identidade final não está em resolver todos os seus problemas agora, mas em pertencer a um Senhor que voltará. É significativo que Mateus 24:14 amarre o alcance do evangelho a todas as nações ao próprio tempo do fim: a tarefa missionária, então, não é apenas uma atividade ética recomendável, mas parte do plano profético que precede e prepara a volta de Cristo — o que dá à missão uma urgência que nenhuma outra motivação humana consegue produzir.",
+          theologianQuote: {
+            author: "N.T. Wright",
+            text: "A esperança cristã não é escapar do mundo para o céu, mas a vinda do próprio Deus para renovar toda a criação; e é justamente essa esperança que torna toda obra feita hoje, em nome de Cristo, algo que permanece para sempre.",
+            source: "NÃO VERIFICADO — paráfrase de tema recorrente na obra do autor; confirme a citação original antes de publicar como texto literal",
+          },
+          quizzes: [
+            {
+              question: "O que significa a expressão aramaica 'Maranata', preservada em 1 Coríntios 16:22?",
+              options: [
+                "'Que a paz esteja convosco'",
+                "'Nosso Senhor, vem!'",
+                "'Bendito seja o nome do Senhor'",
+                "'Aleluia, o Senhor reina'",
+              ],
+              correctIndex: 1,
+              explanation: "Maranata é uma expressão aramaica de anseio pela volta do Senhor, preservada tal como era usada pela igreja primitiva.",
+            },
+            {
+              question: "Como a carta de 1 Coríntios, cheia de problemas e correções, termina em seu capítulo final?",
+              options: [
+                "Com uma lista adicional de acusações contra a igreja",
+                "Com a esperança escatológica expressa em 'Maranata'",
+                "Sem qualquer menção ao futuro ou à volta de Cristo",
+                "Com instruções apenas sobre finanças da igreja",
+              ],
+              correctIndex: 1,
+              explanation: "Mesmo após tratar de tantos problemas concretos, Paulo encerra a carta olhando para a esperança da volta do Senhor.",
+            },
+            {
+              question: "Segundo Mateus 24:14, que relação existe entre a pregação do evangelho a todas as nações e o fim dos tempos?",
+              options: [
+                "Não há nenhuma relação entre essas duas coisas",
+                "A pregação do evangelho a todas as nações precede e está ligada à vinda do fim",
+                "O fim virá independentemente de qualquer atividade missionária",
+                "A pregação do evangelho substitui a necessidade da volta de Cristo",
+              ],
+              correctIndex: 1,
+              explanation: "Jesus liga diretamente o alcance do evangelho a todas as nações ao momento em que virá o fim.",
+            },
+          ],
+          application:
+            "Escreva, em poucas linhas, o que mudaria na sua forma de viver hoje — em relacionamentos, prioridades e uso do tempo — se você vivesse com a expectativa real e presente de que Cristo pode voltar a qualquer momento.",
+          prayer:
+            "Senhor Jesus, nós te esperamos. Ensina-nos a viver com os olhos fixos na tua volta, sem nos acomodarmos neste mundo passageiro, mas também sem fugir das responsabilidades que nos deste aqui e agora. Usa-nos, até o dia em que voltares, para levar as boas novas a todas as nações. Maranata — vem, Senhor Jesus! Amém.",
+          weeklyChallenge:
+            "Releia Apocalipse 21 e 22 esta semana e anote três características da nova criação que mais alimentam sua esperança e motivação para viver e servir fielmente hoje.",
+          reflectionQuestion:
+            "Depois de estudar toda esta trilha sobre missões, que passo concreto — pequeno ou grande — você sente que Deus está te chamando a dar, à luz da esperança de que ele voltará e completará sua missão entre as nações?",
+          xp: 32,
+        },
+      ],
+    },
   ],
 };
 
