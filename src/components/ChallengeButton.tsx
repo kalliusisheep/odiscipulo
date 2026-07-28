@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Swords, ChevronDown, Check } from "lucide-react";
-import { createChallenge, listPeerChallenges, type Challenge } from "@/lib/challenges";
+import { Swords, ChevronDown, Check, X } from "lucide-react";
+import { cancelChallenge, createChallenge, listPeerChallenges, type Challenge } from "@/lib/challenges";
 
 type ModuleRow = { id: string; ord: number; title: string };
 type TrailRow = { id: string; module_id: string; ord: number; title: string; lesson_id: string | null };
@@ -18,6 +18,27 @@ export function ChallengeButton({ targetId, targetName }: { targetId: string; ta
   const [sending, setSending] = useState(false);
   const [existing, setExisting] = useState<Challenge[]>([]);
 
+  const refreshChallenges = async () => {
+    const { data: u } = await supabase.auth.getUser();
+    if (u.user) setExisting(await listPeerChallenges(u.user.id, targetId));
+  };
+
+  useEffect(() => {
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    void (async () => {
+      const { data: u } = await supabase.auth.getUser();
+      if (!u.user) return;
+      await refreshChallenges();
+      channel = supabase
+        .channel(`challenge-button-${u.user.id}-${targetId}`)
+        .on("postgres_changes", { event: "*", schema: "public", table: "challenges" }, () => void refreshChallenges())
+        .subscribe();
+    })();
+    return () => {
+      if (channel) void supabase.removeChannel(channel);
+    };
+  }, [targetId]);
+
   useEffect(() => {
     if (!open) return;
     void (async () => {
@@ -27,10 +48,9 @@ export function ChallengeButton({ targetId, targetName }: { targetId: string; ta
       ]);
       setModules((mods ?? []) as ModuleRow[]);
       setTrails((trs ?? []) as TrailRow[]);
-      const { data: u } = await supabase.auth.getUser();
-      if (u.user) setExisting(await listPeerChallenges(u.user.id, targetId));
+      await refreshChallenges();
     })();
-  }, [open, targetId]);
+  }, [open]);
 
   const send = async () => {
     if (!selection) return;
@@ -40,12 +60,28 @@ export function ChallengeButton({ targetId, targetName }: { targetId: string; ta
       toast.success(`Desafio enviado a ${targetName}!`);
       setOpen(false);
       setSelection(null);
+      await refreshChallenges();
     } catch (e) {
       toast.error("Não foi possível enviar. Tente novamente.");
     } finally {
       setSending(false);
     }
   };
+
+  const cancel = async (challenge: Challenge) => {
+    setSending(true);
+    try {
+      await cancelChallenge(challenge.id);
+      toast.success("Convite de desafio cancelado.");
+      await refreshChallenges();
+    } catch {
+      toast.error("Não foi possível cancelar o desafio. Tente novamente.");
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const pendingSent = existing.find((challenge) => challenge.status === "pending" && challenge.challenger_id !== targetId);
 
   const trailsByModule = new Map<string, TrailRow[]>();
   for (const t of trails) {
@@ -61,10 +97,12 @@ export function ChallengeButton({ targetId, targetName }: { targetId: string; ta
     <>
       <div className="flex justify-center">
         <button
-          onClick={() => setOpen(true)}
-          className="challenge-fire-btn inline-flex items-center justify-center gap-2 rounded-2xl px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-transform active:scale-95"
+          onClick={() => (pendingSent ? void cancel(pendingSent) : setOpen(true))}
+          disabled={sending}
+          className="challenge-fire-btn inline-flex items-center justify-center gap-2 rounded-2xl px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-transform active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          <Swords className="h-4 w-4" /> Desafiar
+          {pendingSent ? <X className="h-4 w-4" /> : <Swords className="h-4 w-4" />}
+          {pendingSent ? "Cancelar desafio" : "Desafiar"}
         </button>
       </div>
 
