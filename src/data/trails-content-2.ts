@@ -56,8 +56,8 @@ const santificacao: Trail = {
             "Note a ordem em Filipenses 2:12-13: primeiro 'operai' (katergazesthe — trabalho contínuo, esforçado, real), depois a razão: 'porque é Deus quem opera em vós'. A gramática já ensina teologia: o crente tem um papel ativo e responsável na sua santificação — não é espectador passivo de um processo automático. Ao mesmo tempo, esse esforço não é a causa da nossa transformação, mas a resposta cooperativa a uma graça que Deus oferece e sustém livremente a todo aquele que crê. Você não se santifica para permanecer salvo por mérito próprio, mas porque a graça de Deus, recebida pela fé e sustentada por uma comunhão viva com Ele, capacita e convida você a responder com obediência voluntária. A luta contra o pecado não é sinal de fé fraca — é sinal de vida espiritual real, e o convite bíblico é sempre para que você, com toda a força que o Espírito concede, persevere na busca ativa da santidade, sem a qual, diz o autor de Hebreus, ninguém verá o Senhor (Hb 12:14).",
           theologianQuote: {
             author: "John Wesley",
-            text: "A graça de Deus não anula nossa responsabilidade; ela a possibilita. Somos salvos pela graça, e é a mesma graça que nos capacita a buscar, com todo o empenho, a santidade sem a qual ninguém verá o Senhor.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Wesley realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Pela justificação somos salvos da culpa do pecado e restaurados ao favor de Deus; pela santificação somos salvos do poder e da raiz do pecado, e restaurados à imagem de Deus.",
+            source: "John Wesley, Sermão 85 — \"On Working Out Our Own Salvation\" (tradução livre)",
           },
           deepen: {
             additionalVerses: [
@@ -171,8 +171,8 @@ const santificacao: Trail = {
             "A palavra 'antikeitai' descreve uma oposição contínua, não um round único vencido de uma vez por todas. A vida cristã normal inclui essa tensão — e Paulo não manda o crente se sentir condenado por senti-la, mas o chama à ação: 'andai no Espírito' é um verbo no imperativo presente, indicando um caminhar contínuo e deliberado, dia após dia. Da mesma forma, 'fazer morrer os feitos do corpo' (Rm 8:13) não é experiência passiva — é responsabilidade ativa do crente, exercida pelo poder do Espírito que já habita nele. Aqui vale destacar, com humildade e respeito às diferentes tradições cristãs: o poder para essa vitória vem do Espírito Santo, e a vida cristã madura envolve o exercício de disciplinas espirituais — oração, Palavra, comunhão, jejum — como meios pelos quais o crente coopera ativamente com a graça que já recebeu, e não apenas espera passivamente por uma experiência espiritual. Toda manifestação espiritual, seja ela qual for, deve ser sempre julgada e submetida à autoridade final das Escrituras, e não substituir a disciplina bíblica de andar diariamente pelo Espírito.",
           theologianQuote: {
             author: "Charles Swindoll",
-            text: "A vitória sobre a carne não é uma experiência única e mágica, mas uma caminhada diária de escolhas — escolher, a cada momento, andar pelo Espírito em vez de ceder ao impulso antigo.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Swindoll realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "É como uma guerra na alma — uma batalha sem sangue que não desaparece.",
+            source: "Charles R. Swindoll, Flying Closer to the Flame (1993) (tradução livre)",
           },
           deepen: {
             additionalVerses: [
@@ -275,8 +275,8 @@ const santificacao: Trail = {
             "A escolha do singular 'karpos' (fruto, não frutos) revela que amor, alegria, paz, paciência e as demais virtudes não são adquiridas isoladamente uma por uma — elas crescem juntas, como expressões de uma única vida transformada pelo Espírito. Jesus explica a condição para isso em João 15: 'permanecer' (menō) — um verbo que indica permanência contínua e ativa, não uma visita ocasional. O crente que negligencia a oração, a Palavra e a comunhão da igreja local não deve se surpreender ao ver o fruto minguar; e o crente que persevera nessas disciplinas, mesmo sem sentir resultados imediatos, está criando exatamente as condições onde o Espírito Santo produz, com o tempo, um caráter cada vez mais parecido com o de Cristo. Vale notar que esse crescimento não é fatalista nem automático: o crente mantém a responsabilidade e a liberdade de permanecer ou de se afastar — e é chamado, a cada dia, a escolher permanecer.",
           theologianQuote: {
             author: "Richard Foster",
-            text: "As disciplinas espirituais não produzem o fruto do Espírito por si mesmas — elas nos colocam no lugar onde Deus pode agir. Somos responsáveis por plantar e regar; a Deus pertence dar o crescimento.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Richard Foster realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "As disciplinas espirituais são o meio da graça de Deus para a formação genuína do caráter — do coração, da mente e do espírito.",
+            source: "Richard J. Foster, Celebration of Discipline (edição revisada, 1988) (tradução livre)",
           },
           deepen: {
             additionalVerses: [
@@ -372,9 +372,9 @@ const santificacao: Trail = {
           deepDive:
             "O verbo 'gymnaze' (exercita-te) é o mesmo usado para o treinamento físico dos atletas gregos — disciplina, repetição, esforço direcionado a um objetivo. Paulo não hesita em aplicar essa mesma linguagem à vida espiritual: a piedade não acontece por acidente, mas é 'treinada'. Isso é coerente com toda a Escritura — o salmista descreve o homem bem-aventurado como aquele que medita 'de dia e de noite' na Palavra, não ocasionalmente. É importante distinguir claramente entre disciplinas espirituais bíblicas (oração, leitura da Palavra, jejum, comunhão, adoração, generosidade) — que são meios ordinários de graça, claramente ensinados nas Escrituras — e experiências ou práticas contemporâneas que alegam revelação direta ou fenômenos extraordinários. Toda prática ou experiência espiritual, por mais legítima que pareça, deve ser examinada e submetida à autoridade final e suficiente da Palavra de Deus (2 Tm 3:16-17), e questões mais específicas sobre dons espirituais e experiências místicas merecem ser conversadas com sua liderança espiritual local.",
           theologianQuote: {
-            author: "Dallas Willard (citado por Richard Foster)",
-            text: "As disciplinas espirituais não são um fim em si mesmas; são um meio pelo qual nos colocamos diante de Deus, treinando a alma para a piedade, do mesmo modo que um atleta treina o corpo para a competição.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Dallas Willard (citado por Richard Foster) realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "John Mark Comer",
+            text: "Sem solidão, é praticamente impossível viver uma vida espiritual.",
+            source: "John Mark Comer, Practicing the Way (WaterBrook, 2024), p. 58 (tradução livre)",
           },
           deepen: {
             additionalVerses: [
@@ -480,9 +480,9 @@ const santificacao: Trail = {
           deepDive:
             "Tiago descreve o nascimento do pecado como uma gestação: primeiro um desejo é atraído e seduzido, depois esse desejo é 'concebido' e, por fim, 'dá à luz' o pecado. A imagem ensina algo prático e libertador: o pecado quase nunca nasce de um acidente repentino — ele é gestado em desejos que escolhemos alimentar, silenciosamente, muito antes do ato visível. Por isso, Colossenses 3 não manda apenas 'parar de pecar', mas 'fazer morrer' (nekrōsate) — tratar a raiz, não apenas o fruto visível. Isso significa identificar os pensamentos, ambientes e hábitos que alimentam o desejo antes que ele se torne ato, e cortá-los com decisão, pela dependência do Espírito. É importante notar que essa mortificação não é ascetismo — não se trata de odiar o corpo ou o prazer em si, que Deus criou bons —, mas de recusar, com seriedade espiritual, tudo o que se opõe à santidade à qual fomos chamados. Quando a luta envolver padrões profundos de pecado que se repetem apesar do esforço sincero, é sábio e bíblico buscar também o acompanhamento e a oração de líderes espirituais maduros da igreja local, que Deus estabeleceu como parte do processo de cura e crescimento.",
           theologianQuote: {
-            author: "John Wesley",
-            text: "A santidade não é a ausência de tentação, mas a recusa deliberada, sustentada pela graça, de alimentar aquilo que nos afasta de Deus.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Wesley realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "Charles Spurgeon",
+            text: "Olhe para a cruz e odeie o seu pecado, pois foi o pecado que pregou o Bem-Amado na árvore; olhando para a cruz, você matará o pecado.",
+            source: "Charles H. Spurgeon, em Spurgeon at His Best (Baker Publishing Group, 1988) (tradução livre)",
           },
           deepen: {
             additionalVerses: [
@@ -578,8 +578,8 @@ const santificacao: Trail = {
             "O contraste grego entre 'syschēmatizesthe' e 'metamorphousthe' é rico: o primeiro verbo descreve algo que se amolda por fora, como uma máscara ou um figurino temporário, ajustado à pressão externa do ambiente; o segundo descreve uma mudança de essência, de dentro para fora, como uma lagarta que se torna borboleta — não uma reforma cosmética, mas uma nova natureza se manifestando. Paulo ensina que essa transformação acontece pela 'renovação da mente' — um processo contínuo (o verbo está no presente, indicando ação repetida), não um evento único. Isso acontece, na prática, pela exposição regular e deliberada à Palavra de Deus, que reeduca o que consideramos desejável, certo e valioso, desafiando os padrões que a cultura nos ensinou a aceitar sem questionar. Efésios 4 usa imagem semelhante de vestuário: despir o velho homem, revestir o novo — uma escolha ativa e diária, não apenas um sentimento passivo de mudança. É importante lembrar, com humildade, que discernir onde a cultura contradiz a Palavra exige sabedoria e comunhão com outros crentes — ninguém faz essa leitura sozinho, sem o corpo de Cristo ao redor.",
           theologianQuote: {
             author: "James W. Sire",
-            text: "Toda cosmovisão molda silenciosamente o que consideramos óbvio. Por isso a renovação da mente não é um evento único, mas uma reeducação constante à luz da Palavra de Deus.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se James W. Sire realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Pensar bem é servir bem a Deus.",
+            source: "James W. Sire, Habits of the Mind: Intellectual Life as a Christian Calling (2000) (tradução livre)",
           },
           deepen: {
             additionalVerses: [
@@ -683,8 +683,8 @@ const santificacao: Trail = {
             "O autor de Hebreus escreve para uma comunidade tentada a se afastar da fé sob pressão e perseguição — e o remédio que ele prescreve não é apenas doutrina individual mais sólida, mas comunhão mais fiel. 'Consideremo-nos uns aos outros' (katanoōmen) é um verbo de atenção intencional: não basta estar fisicamente perto de outros crentes; é preciso observá-los com propósito, notando onde precisam de encorajamento, correção ou apoio prático. O resultado desse olhar atento é o 'paroxysmos' — um estímulo ativo, quase uma provocação boa, para o amor e as boas obras. Isso mostra que a igreja local não é um acessório opcional da vida cristã, nem apenas um lugar de consumo espiritual passivo (ouvir uma pregação e ir embora), mas o ambiente que Deus escolheu para que crentes ativamente cuidem uns dos outros. Questões sobre como viver essa comunhão de forma saudável — lidar com conflitos, mágoas ou dificuldades dentro da igreja local — são, por natureza, delicadas e pessoais, e merecem ser conversadas diretamente com seu pastor ou líder espiritual, que conhece sua realidade concreta.",
           theologianQuote: {
             author: "Dietrich Bonhoeffer",
-            text: "Aquele que está sozinho com sua fé está sozinho com o pecado, com a tentação e com a acusação. A comunidade cristã não é um luxo — é o lugar onde recebemos e oferecemos o socorro que só o corpo de Cristo pode dar.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Dietrich Bonhoeffer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "A comunidade cristã é como a santificação do cristão: é um dom de Deus que não podemos reivindicar para nós mesmos.",
+            source: "Dietrich Bonhoeffer, Life Together: Prayerbook of the Bible (Fortress Press, 1996) (tradução livre)",
           },
           deepen: {
             additionalVerses: [
@@ -780,9 +780,9 @@ const santificacao: Trail = {
           deepDive:
             "A confiança de Paulo em Filipenses 1:6 não é ingênua — ele conhecia bem as fraquezas reais daquela igreja. Mas sua certeza não repousa no desempenho deles, e sim no caráter de Deus, que 'começou' e promete 'completar' (epitelesei, verbo no futuro, sem condicionais escondidos). Isso é motivo de descanso genuíno para o crente que luta com recaídas: a perseverança final na fé depende, em última instância, da fidelidade de Deus, e não apenas da força de vontade humana. Ao mesmo tempo, Hebreus 12 chama o crente a correr com 'hypomonē' — uma palavra que descreve resistência ativa, o atleta que continua correndo mesmo cansado, não alguém deitado esperando passivamente o fim da corrida. As duas verdades não competem: precisamos correr, e a certeza de que Deus sustenta a corrida é exatamente o que nos dá coragem para continuar correndo depois de tropeçar. Sobre como essa segurança se relaciona, em detalhes, com situações específicas de dúvida, recaída ou desânimo espiritual profundo, é sempre sábio buscar a Palavra em oração e conversar com seu pastor ou discipulador, que pode acompanhar sua caminhada de perto.",
           theologianQuote: {
-            author: "Charles Spurgeon",
-            text: "Se Deus começou a boa obra, é porque decidiu terminá-la; ele não é homem, para começar edifícios que não tem meios ou vontade de concluir.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "Wayne Grudem",
+            text: "Todos os que verdadeiramente nasceram de novo serão guardados pelo poder de Deus e perseverarão como cristãos até o fim de suas vidas.",
+            source: "Wayne Grudem, Systematic Theology, cap. 40 — \"The Perseverance of the Saints\" (tradução livre)",
           },
           deepen: {
             additionalVerses: [
@@ -898,9 +898,9 @@ const santificacao: Trail = {
           deepDive:
             "Há uma diferença importante, muitas vezes esquecida, entre a habitação do Espírito e o enchimento do Espírito. A habitação (o Espírito vivendo permanentemente em cada crente genuíno) acontece uma única vez, no momento da conversão, e nunca é retirada — é selo e garantia da salvação (Ef 1:13-14). Já o enchimento é repetido, condicional à submissão do crente, e descreve o quanto, no dia a dia, uma pessoa está de fato rendida ao controle do Espírito, em vez de andar segundo seus próprios impulsos. Por isso Paulo pode, na mesma carta, afirmar que todo crente tem o Espírito (Ef 1:13) e, ainda assim, ordenar que os efésios 'sejam cheios' dele (Ef 5:18) — a presença é garantida pela graça; o enchimento prático depende de uma entrega diária e renovada. Romanos 8 amplia esse quadro: é 'pelo Espírito' que o crente mata as obras da carne (v.13), é o Espírito quem 'guia' os filhos de Deus (v.14), e é o mesmo Espírito quem intercede por nós 'com gemidos inexprimíveis' quando nem sabemos como orar diante de uma dor (v.26). A santificação, portanto, nunca é uma tarefa solitária de força de vontade — é cooperação real e diária entre o esforço do crente e a obra ativa, presente e pessoal do Espírito Santo dentro dele.",
           theologianQuote: {
-            author: "J.I. Packer",
-            text: "O Espírito Santo não nos deixa lutar sozinhos contra o pecado; ele mesmo entra na batalha, do lado de dentro, tornando possível o que, por nós mesmos, jamais conseguiríamos.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se J.I. Packer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "Millard Erickson",
+            text: "A santificação é a obra contínua de Deus na vida do crente, tornando-o de fato santo.",
+            source: "Millard J. Erickson, Christian Theology (tradução livre)",
           },
           deepen: {
             additionalVerses: [
@@ -997,9 +997,9 @@ const santificacao: Trail = {
           deepDive:
             "É importante notar a ordem cuidadosa da cadeia lógica em Romanos 5:3-5: tribulação produz perseverança (hypomonē); perseverança produz caráter aprovado (a qualidade de quem foi testado e passou no teste); e caráter aprovado produz esperança mais firme, porque já viu, na prática, a fidelidade de Deus sustentando através da dor. Nenhum desses elos aparece automaticamente — a mesma tribulação pode produzir amargura em vez de perseverança, se recebida com descrença em vez de fé. Por isso Tiago 1:2-4 conecta a mesma ideia à sabedoria: 'se algum de vocês tem falta de sabedoria, peça-a a Deus'. Já Hebreus 12 usa a metáfora da disciplina paterna e do treino atlético (paideia, gymnazō) — o sofrimento permitido por Deus na vida do crente não é sinal de abandono, mas evidência de que ele nos trata como filhos legítimos, investindo em nosso caráter a longo prazo. Isso é radicalmente diferente da ideia, comum em algumas correntes religiosas, de que todo sofrimento é resultado direto de um pecado específico ou de falta de fé — o livro de Jó existe justamente para desmontar essa equação simplista. O propósito de Deus no sofrimento não é sempre visível ou explicável no momento, mas sua promessa em Romanos 8:28-29 permanece: ele opera todas as coisas para o bem daqueles que o amam, conformando-os à imagem de Cristo. Diante de dor profunda ou perda significativa, essa verdade nunca deve ser usada como resposta apressada ou insensível para outra pessoa que sofre — ela é, antes, um alicerce para a própria fé se firmar, e um cuidado pastoral atento, junto com a igreja local, é essencial para caminhar com quem sofre.",
           theologianQuote: {
-            author: "Charles Spurgeon",
-            text: "Deus poda a videira, não porque a odeia, mas porque quer que ela dê mais fruto; toda tesoura na mão do Pai serve à mesma videira que ele ama.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "C.S. Lewis",
+            text: "A dor é o megafone de Deus para despertar um mundo surdo.",
+            source: "C.S. Lewis, The Problem of Pain (1940), cap. 6 (tradução livre)",
           },
           deepen: {
             additionalVerses: [
