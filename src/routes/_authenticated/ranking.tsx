@@ -204,9 +204,9 @@ function RankingPage() {
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-b from-transparent to-background" />
           </div>
          <div className="relative z-10 -mt-48 flex items-end justify-center gap-3 px-4 pb-4">
-            {second && <PodiumSpot row={second} place={2} />}
-            {first && <PodiumSpot row={first} place={1} />}
-            {third && <PodiumSpot row={third} place={3} />}
+            {second && <PodiumSpot row={second} place={2} flame={challengePartners.has(second.id)} />}
+            {first && <PodiumSpot row={first} place={1} flame={challengePartners.has(first.id)} />}
+            {third && <PodiumSpot row={third} place={3} flame={challengePartners.has(third.id)} />}
           </div>
         </section>
       )}
