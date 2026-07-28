@@ -203,6 +203,10 @@ function HomePage() {
         </div>
       </section>
 
+      {userId && <ChallengePanel myId={userId} />}
+
+
+
       <section className="space-y-3">
         <h2 className="text-sm font-semibold text-muted-foreground">Módulos de Discipulado</h2>
         {modules.map((m) => {
