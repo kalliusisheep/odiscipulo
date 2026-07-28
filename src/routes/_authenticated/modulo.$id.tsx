@@ -8,6 +8,7 @@ import {
   DEFAULT_MODULE_GRADIENT,
   DEFAULT_MODULE_RGB,
 } from "@/data/module-visuals";
+import { comoSerLider } from "@/data/como-ser-lider";
 import {
   ArrowLeft,
   Check,
@@ -38,6 +39,7 @@ type TrailRow = {
 
 function ModulePage() {
   const { id } = Route.useParams();
+  const isLeadershipModule = id === "como-ser-lider";
   const nav = useNavigate();
   const [mod, setMod] = useState<ModuleRow | null>(null);
   const [trails, setTrails] = useState<TrailRow[]>([]);
@@ -66,8 +68,22 @@ function ModulePage() {
               .eq("user_id", u.user.id)
           : Promise.resolve({ data: [] as { lesson_id: string }[] }),
       ]);
-      setMod((m ?? null) as ModuleRow | null);
-      setTrails((ts ?? []) as TrailRow[]);
+      const leadershipTrails: TrailRow[] = comoSerLider.modules[0].lessons.map((lesson, index) => ({
+        id: lesson.id,
+        ord: index + 1,
+        title: lesson.title,
+        lesson_id: lesson.id,
+      }));
+      const leadershipFallback: ModuleRow = {
+        id: "como-ser-lider",
+        ord: 12,
+        title: "Como ser um líder",
+        description: "Uma formação inédita para liderar à maneira de Cristo.",
+        color: null,
+      };
+
+      setMod((m ?? (isLeadershipModule ? leadershipFallback : null)) as ModuleRow | null);
+      setTrails(((ts?.length ? ts : isLeadershipModule ? leadershipTrails : []) ?? []) as TrailRow[]);
       const rows = (lpRes.data ?? []) as { lesson_id: string }[];
       setProgressIds(new Set(rows.map((r) => r.lesson_id)));
       setLoading(false);
@@ -223,6 +239,7 @@ function TrailRow({
       <Link
         to="/licao/$id"
         params={{ id: lessonId }}
+        resetScroll
         className={`${base} border-success/30 bg-success/5 hover:border-success/60`}
       >
         <TrailNumber index={index} tone="muted" />
@@ -242,6 +259,7 @@ function TrailRow({
       <Link
         to="/licao/$id"
         params={{ id: lessonId }}
+        resetScroll
         className={`${base} border-primary bg-primary/10 hover:bg-primary/15`}
       >
         <TrailNumber index={index} tone="primary" />
