@@ -51,9 +51,9 @@ const comoEstudarBiblia: Trail = {
           deepDive:
             "Dizer que a Bíblia é 'inspirada' não significa que ela é inspiradora (como um poema pode ser). Significa que ela foi soprada por Deus — theopneustos. Por isso ela tem autoridade sobre a igreja e sobre você. Nenhum comentário, tradição, sentimento ou experiência pode se sobrepor ao texto sagrado. Isso protege o cristão de dois extremos: do racionalismo, que só aceita o que a mente aprova, e do misticismo, que só busca experiências e ignora o texto. Ler a Bíblia é sentar-se aos pés de Deus.",
           theologianQuote: {
-            author: "Luiz Sayão",
-            text: "A Bíblia não é um livro para ser estudado como se estuda literatura antiga; é a voz do Deus vivo, e o leitor honesto se dobra diante dela antes de tentar dissecá-la.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Luiz Sayão realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "B. B. Warfield",
+            text: "A Bíblia é a Palavra de Deus de tal forma que, quando a Bíblia fala, Deus fala.",
+            source: "citação amplamente documentada de B. B. Warfield sobre a doutrina da inspiração das Escrituras",
           },
           deepen: {
             additionalVerses: [
@@ -81,8 +81,9 @@ const comoEstudarBiblia: Trail = {
             theologicalDebate:
               "A doutrina da inspiração verbal e plenária (de que as próprias palavras da Escritura, e não apenas as ideias gerais, foram inspiradas por Deus) é a posição histórica evangélica e constitui doutrina essencial da fé cristã. Já a formulação precisa da inerrância — como ela lida, por exemplo, com números arredondados, citações livres do Antigo Testamento no Novo, ou linguagem fenomenológica ('o sol nasceu') — é uma questão importante onde cristãos fiéis e comprometidos com a autoridade da Escritura usam formulações um pouco diferentes, sem que isso comprometa o compromisso comum com a Palavra de Deus como verdadeira e confiável em tudo o que afirma.",
             secondQuote: {
-              author: "Wayne Grudem",
-              text: "A Escritura é a única regra suprema pela qual toda controvérsia religiosa deve ser resolvida, e todo julgamento humano, por mais respeitável que seja, deve se curvar diante dela.",
+              author: "Howard Hendricks",
+              text: "A marca da maturidade espiritual não é o quanto você entende, mas o quanto você usa. No campo espiritual, o oposto da ignorância não é o conhecimento, mas a obediência.",
+              source: "Living by the Book: The Art and Science of Reading the Bible",
             },
           },
           quizzes: [
@@ -147,9 +148,9 @@ const comoEstudarBiblia: Trail = {
           deepDive:
             "Um texto sem contexto vira pretexto. Se você lê 'tudo posso' (Fp 4:13) sem enxergar o versículo anterior, 'aprendi a viver contente em qualquer situação', converte um texto sobre contentamento em fórmula mágica para conquistas pessoais. A Bíblia é uma biblioteca de 66 livros, escritos em três línguas, ao longo de 1.500 anos, em gêneros diferentes. Ler poesia como manual técnico, ou parábola como reportagem, produz teologia deformada. Antes de perguntar 'o que isso significa para mim?', pergunte 'o que isso significou para eles?'",
           theologianQuote: {
-            author: "Hernandes Dias Lopes",
-            text: "Texto sem contexto vira pretexto para heresia. A humildade do bom intérprete é ouvir o que o autor quis dizer antes de dizer o que ele acha que o texto quer dizer.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Hernandes Dias Lopes realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "D. A. Carson",
+            text: "Um texto sem contexto é um pretexto para um texto de prova.",
+            source: "frase amplamente associada a D. A. Carson (que a atribuía a seu pai, Tom Carson)",
           },
           deepen: {
             additionalVerses: [
@@ -177,8 +178,9 @@ const comoEstudarBiblia: Trail = {
             theologicalDebate:
               "Existe uma diferença de ênfase, não de contradição, entre a leitura histórico-gramatical (que fixa o olhar no significado original de cada texto, no seu contexto imediato) e a leitura da teologia bíblica ou 'história da redenção' (que busca ver como cada texto se encaixa no grande enredo da Bíblia, do Éden à Nova Jerusalém). As duas abordagens são complementares e amplamente aceitas entre evangélicos fiéis: a primeira evita que a interpretação flutue livre do texto; a segunda evita que o estudo fique fragmentado, sem ver o todo. É uma questão de método, não de doutrina essencial.",
             secondQuote: {
-              author: "D. A. Carson",
-              text: "O contexto é rei. Um versículo arrancado do seu contexto se torna, na maioria das vezes, um pretexto para dizer qualquer coisa que o intérprete já queria dizer.",
+              author: "John Stott",
+              text: "A tarefa do intérprete fiel é uma escuta dupla: ouvir com atenção tanto a Palavra antiga quanto o mundo moderno.",
+              source: "The Contemporary Christian: An Urgent Plea for Double Listening",
             },
           },
           quizzes: [
@@ -251,9 +253,9 @@ const comoEstudarBiblia: Trail = {
           deepDive:
             "Observar é lentidão: notar repetições, conectores ('portanto', 'porém', 'mas'), contrastes, listas, mudanças de tempo verbal. Interpretar é conectar: cruzar com outros textos, considerar o gênero, checar a intenção do autor. Aplicar é obedecer: descobrir o que Deus está pedindo e responder com a vida — não apenas com um 'amém'. O método é uma disciplina de humildade: ele te obriga a ficar diante do texto até que o texto fale.",
           theologianQuote: {
-            author: "Charles Spurgeon",
-            text: "Um homem que só ora e não estuda a Bíblia se torna emocionalmente devoto e teologicamente cego; um homem que só estuda e não ora se torna orgulhoso. Estudar e orar precisam andar de mãos dadas.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "Howard Hendricks",
+            text: "A marca da maturidade espiritual não é o quanto você entende, mas o quanto você usa. No campo espiritual, o oposto da ignorância não é o conhecimento, mas a obediência.",
+            source: "Living by the Book: The Art and Science of Reading the Bible",
           },
           deepen: {
             additionalVerses: [
@@ -281,8 +283,9 @@ const comoEstudarBiblia: Trail = {
             theologicalDebate:
               "Não há divergência doutrinária relevante aqui — é uma questão de método de estudo, não de doutrina. O único cuidado pastoral importante é evitar dois extremos: transformar o estudo indutivo em exercício puramente acadêmico e frio, esquecendo a oração e a dependência do Espírito Santo para iluminar o entendimento; ou, no extremo oposto, rejeitar qualquer disciplina de estudo em nome de uma suposta espontaneidade espiritual. As duas coisas — estudo cuidadoso e dependência do Espírito — devem coexistir.",
             secondQuote: {
-              author: "Charles Swindoll",
-              text: "Não existe atalho para o conhecimento profundo das Escrituras. É o tempo investido, versículo por versículo, que forma no crente a mente de Cristo.",
+              author: "Gordon Fee",
+              text: "Um texto não pode significar o que nunca poderia ter significado para seus leitores e ouvintes originais.",
+              source: "How to Read the Bible for All Its Worth",
             },
           },
           quizzes: [
@@ -376,8 +379,9 @@ const comoEstudarBiblia: Trail = {
             theologicalDebate:
               "O gênero literário de Gênesis 1-11 é um tema onde cristãos evangélicos fiéis, todos comprometidos com a inspiração e autoridade da Escritura, sustentam posições diferentes — alguns leem os capítulos iniciais com ênfase mais literal-cronológica, outros reconhecem elementos literários e teológicos mais acentuados na narrativa sem negar a historicidade dos eventos centrais (a criação por Deus, a queda, o dilúvio). Essa é uma questão secundária, e não uma doutrina essencial; o núcleo inegociável — que Deus é o Criador soberano e que o pecado entrou no mundo pela desobediência humana — é compartilhado por todas essas posições. Vale a pena estudar o tema com seu pastor com calma.",
             secondQuote: {
-              author: "John Goldingay",
-              text: "Ler o Antigo Testamento exige ouvir suas muitas vozes — lei, narrativa, poesia, profecia — cada uma com seu próprio jeito de comunicar a verdade de Deus.",
+              author: "C. S. Lewis",
+              text: "Não louvamos as coisas apenas para expressá-las, mas para completar o nosso prazer nelas; é o seu propósito final.",
+              source: "Reflections on the Psalms",
             },
           },
           quizzes: [
@@ -447,9 +451,9 @@ const comoEstudarBiblia: Trail = {
           deepDive:
             "Uma leitura da Bíblia sem Cristo produz duas doenças: moralismo (a Bíblia como manual de bom comportamento) e legalismo (a Bíblia como código de regras para conquistar Deus). A leitura cristocêntrica cura ambas: entendemos que a Lei aponta para nossa incapacidade e nos leva a Cristo, e que a Graça em Cristo nos dá poder para viver a vida que a Lei descrevia. Cada personagem, cada instituição, cada sombra do Antigo Testamento encontra sentido pleno em Jesus.",
           theologianQuote: {
-            author: "C. S. Lewis",
-            text: "Se você não ver Cristo no coração das Escrituras, você ainda não as entendeu. A Bíblia inteira é uma tapeçaria, e a figura ao centro tem sempre o rosto do Cordeiro.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se C. S. Lewis realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "Vaughan Roberts",
+            text: "Deus, o seu povo, no seu lugar, debaixo do seu governo e da sua bênção.",
+            source: "God's Big Picture — Uma Visão Panorâmica da Bíblia",
           },
           deepen: {
             additionalVerses: [
@@ -477,8 +481,9 @@ const comoEstudarBiblia: Trail = {
             theologicalDebate:
               "Existe divergência legítima entre cristãos fiéis sobre até onde a tipologia deve ser estendida: alguns intérpretes preferem uma abordagem mais restrita, reconhecendo como 'tipo' apenas o que o próprio Novo Testamento identifica explicitamente; outros adotam uma abordagem um pouco mais ampla, buscando padrões cristológicos consistentes ao longo da narrativa bíblica mesmo sem citação direta do Novo Testamento. Ambas as abordagens honram a autoridade da Escritura; a diferença é de método interpretativo, uma questão secundária. Na dúvida diante de um texto difícil, é sempre sábio conversar com seu pastor ou líder de estudo.",
             secondQuote: {
-              author: "Tim Keller",
-              text: "Toda a Bíblia é, em última análise, sobre Jesus. Se você prega qualquer texto sem chegar a Cristo, pregou apenas moralismo — não o Evangelho.",
+              author: "A. W. Tozer",
+              text: "O que vem à nossa mente quando pensamos em Deus é a coisa mais importante a nosso respeito.",
+              source: "The Knowledge of the Holy — O Conhecimento do Santo",
             },
           },
           quizzes: [
@@ -545,9 +550,9 @@ const comoEstudarBiblia: Trail = {
           deepDive:
             "Um exemplo clássico é João 21, onde Jesus pergunta a Pedro 'você me ama?' usando ora agapaō, ora phileō. Alguns pregadores constroem sermões inteiros sobre uma suposta diferença dramática entre os dois verbos ali. O estudo cuidadoso do vocabulário de João, porém, mostra que o evangelista costuma alternar sinônimos livremente em outras passagens sem intenção de contraste (como faz com 'ovelhas' e 'cordeiros' no mesmo capítulo). Isso não anula o valor de estudar palavras originais — anula apenas o abuso de tirar conclusões grandes de detalhes pequenos sem checar o uso do autor em outros lugares. A regra é: o significado de uma palavra é controlado pelo contexto em que ela aparece, não por todos os sentidos que ela poderia ter em outros lugares da Bíblia.",
           theologianQuote: {
-            author: "D. A. Carson",
-            text: "A maior parte dos abusos exegéticos nasce não da ignorância das línguas originais, mas do mau uso do pouco que se sabe delas. Humildade lexical é tão necessária quanto conhecimento lexical.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se D. A. Carson realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "John Stott",
+            text: "A tarefa do intérprete fiel é uma escuta dupla: ouvir com atenção tanto a Palavra antiga quanto o mundo moderno.",
+            source: "The Contemporary Christian: An Urgent Plea for Double Listening",
           },
           deepen: {
             additionalVerses: [
@@ -575,8 +580,9 @@ const comoEstudarBiblia: Trail = {
             theologicalDebate:
               "Não há aqui uma questão doutrinária, mas sim metodológica: alguns professores de Bíblia preferem enfatizar fortemente o estudo de palavras originais em cada lição; outros preferem manter o foco quase todo no argumento e no contexto do texto em português, recorrendo às línguas originais apenas quando estritamente necessário. Ambas as ênfases são legítimas — o essencial é que o estudo de palavras nunca substitua a atenção ao contexto e à intenção do autor.",
             secondQuote: {
-              author: "Craig Blomberg",
-              text: "As ferramentas linguísticas devem servir à mensagem do texto, nunca dominá-la. Um estudo de palavra que ignora a frase ao redor já perdeu o rumo antes de começar.",
+              author: "D. A. Carson",
+              text: "Um texto sem contexto é um pretexto para um texto de prova.",
+              source: "frase amplamente associada a D. A. Carson (que a atribuía a seu pai, Tom Carson)",
             },
           },
           quizzes: [
@@ -650,7 +656,7 @@ const comoEstudarBiblia: Trail = {
             "Pense na aplicação como uma ponte com duas margens. De um lado está o mundo antigo do texto (com sua cultura, língua e costumes); do outro, o seu mundo hoje. A ponte só é segura quando primeiro identificamos o princípio teológico que atravessa as duas margens — algo que não muda com a cultura — e só depois formulamos como obedecer esse princípio no seu contexto específico. Um mandamento cultural (como o ósculo santo, ou o uso de véu em Corinto) carrega um princípio permanente (saudação afetuosa e pura entre irmãos; ordem e respeito no culto) que pode se expressar de formas diferentes hoje. Ignorar essa distinção produz tanto legalismo cultural quanto relativismo doutrinário.",
           theologianQuote: {
             author: "John Stott",
-            text: "A tarefa do intérprete fiel é uma escuta dupla: ouvir com atenção a Palavra antiga, e ouvir com atenção o mundo presente, para então construir a ponte entre os dois sem trair nenhum dos lados.",
+            text: "A tarefa do intérprete fiel é uma escuta dupla: ouvir com atenção tanto a Palavra antiga quanto o mundo moderno.",
             source: "The Contemporary Christian: An Urgent Plea for Double Listening",
           },
           deepen: {
@@ -679,8 +685,9 @@ const comoEstudarBiblia: Trail = {
             theologicalDebate:
               "Esta é uma área onde existe divergência legítima e histórica entre cristãos evangélicos fiéis — por exemplo, em debates sobre o uso de véu (1 Coríntios 11), os papéis de homens e mulheres na igreja e no lar, ou práticas específicas de adoração. Cristãos comprometidos com a mesma autoridade da Escritura chegam a conclusões diferentes sobre onde termina o princípio permanente e onde começa a expressão cultural. Este material não pretende resolver essas divergências, mas apresentar o processo interpretativo com honestidade; para essas questões específicas, busque orientação da liderança da sua igreja local.",
             secondQuote: {
-              author: "Kevin Vanhoozer",
-              text: "Interpretar bem a Escritura é um ato de discipulado, não apenas de análise: exige que sejamos formados pelo texto enquanto tentamos compreendê-lo.",
+              author: "Howard Hendricks",
+              text: "A marca da maturidade espiritual não é o quanto você entende, mas o quanto você usa. No campo espiritual, o oposto da ignorância não é o conhecimento, mas a obediência.",
+              source: "Living by the Book: The Art and Science of Reading the Bible",
             },
           },
           quizzes: [
@@ -744,9 +751,9 @@ const comoEstudarBiblia: Trail = {
           deepDive:
             "Historicamente, alguns intérpretes da igreja antiga levaram a alegorização a extremos, encontrando significados ocultos em quase cada palavra do texto — uma prática bem-intencionada, mas que abriu espaço para interpretações desconectadas do que o autor original quis comunicar. A correção saudável, redescoberta com força a partir da Reforma, foi voltar a perguntar: qual é o ponto que esta parábola, no seu contexto original de pregação, estava fazendo? Da mesma forma, os símbolos apocalípticos (bestas, chifres, números) quase sempre ecoam imagens já usadas em Daniel, Ezequiel ou Isaías — a Bíblia costuma interpretar a si mesma, e esse é o primeiro lugar onde buscar resposta antes de recorrer à especulação.",
           theologianQuote: {
-            author: "G. K. Beale",
-            text: "Os símbolos do Apocalipse não nasceram do nada: são um mosaico tecido com as imagens do Antigo Testamento. Quem conhece bem Daniel e Ezequiel já tem metade das chaves para entender o Apocalipse.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se G. K. Beale realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "A. W. Tozer",
+            text: "O que vem à nossa mente quando pensamos em Deus é a coisa mais importante a nosso respeito.",
+            source: "The Knowledge of the Holy — O Conhecimento do Santo",
           },
           deepen: {
             additionalVerses: [
@@ -774,8 +781,9 @@ const comoEstudarBiblia: Trail = {
             theologicalDebate:
               "A interpretação de símbolos apocalípticos frequentemente se conecta a diferentes visões escatológicas sobre o milênio e a volta de Cristo (pré-milenismo, amilenismo, pós-milenismo). Essas posições são sustentadas por cristãos evangélicos fiéis e comprometidos com a autoridade da Escritura, e constituem uma questão secundária — importante para o estudo profético, mas não essencial para a salvação ou para a comunhão entre irmãos. Vale a pena estudar essas visões com calma, preferencialmente ao lado de um pastor ou líder que possa apresentar os textos e os argumentos de cada posição.",
             secondQuote: {
-              author: "Grant Osborne",
-              text: "Uma parábola normalmente tem um ponto central que a história inteira serve para comunicar; os detalhes ao redor são cenário, não um código separado à espera de decifração.",
+              author: "Vaughan Roberts",
+              text: "Deus, o seu povo, no seu lugar, debaixo do seu governo e da sua bênção.",
+              source: "God's Big Picture — Uma Visão Panorâmica da Bíblia",
             },
           },
           quizzes: [
@@ -839,9 +847,9 @@ const comoEstudarBiblia: Trail = {
           deepDive:
             "A palavra hebraica por trás de 'meditar' no Salmo 1 evoca a imagem de um animal ruminando o alimento — mastigando devagar, repetidas vezes, até extrair todo o proveito. Esse é o retrato de um estudo bíblico saudável: não é consumo rápido de informação, é rumina lenta da verdade até que ela alimente a alma inteira. Ao mesmo tempo, a sabedoria bíblica nunca elogia o estudo solitário e desconectado da comunidade: 'a vitória depende dos muitos conselheiros'. Um plano de estudo pessoal maduro sempre deságua de volta na igreja local — nas perguntas feitas ao pastor, nas trocas no pequeno grupo, na correção fraterna que impede que uma leitura equivocada vire convicção isolada e perigosa.",
           theologianQuote: {
-            author: "Richard Foster",
-            text: "A disciplina espiritual não é sobre intensidade ocasional, mas sobre constância silenciosa. Um pouco de estudo bíblico fiel, repetido por anos, forma mais o caráter do que uma maratona de leitura feita uma única vez.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Richard Foster realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "Gordon Fee",
+            text: "Um texto não pode significar o que nunca poderia ter significado para seus leitores e ouvintes originais.",
+            source: "How to Read the Bible for All Its Worth",
           },
           deepen: {
             additionalVerses: [
@@ -869,8 +877,9 @@ const comoEstudarBiblia: Trail = {
             theologicalDebate:
               "Não há aqui uma questão doutrinária, mas de sabedoria prática: métodos específicos de 'tempo devocional' (horário, formato de anotações, uso de aplicativos ou cadernos) são convenções úteis desenvolvidas pela tradição evangélica, não mandamentos bíblicos explícitos. O que a Escritura de fato exige é constância, atenção e disposição para obedecer — a forma exata de organizar isso é uma questão de opinião teológica prática, que cada crente pode ajustar à sua própria realidade e fase de vida.",
             secondQuote: {
-              author: "John Mark Comer",
-              text: "Um ritmo de vida com Deus não nasce de motivação passageira, mas de práticas simples repetidas com fidelidade, até que se tornem o solo onde a alma cresce.",
+              author: "John Stott",
+              text: "A tarefa do intérprete fiel é uma escuta dupla: ouvir com atenção tanto a Palavra antiga quanto o mundo moderno.",
+              source: "The Contemporary Christian: An Urgent Plea for Double Listening",
             },
           },
           quizzes: [
@@ -941,8 +950,8 @@ const comoEstudarBiblia: Trail = {
             "A Bíblia pode ser lida como um drama em quatro atos. Criação: Deus faz um mundo bom e coloca o ser humano nele à sua imagem, para refletir sua glória e cuidar do que ele criou. Queda: Adão e Eva desobedecem, o pecado entra no mundo, e a comunhão perfeita entre Deus e a humanidade é quebrada — mas, já em Gênesis 3:15, Deus promete um descendente que esmagará a cabeça da serpente. Redenção: o restante do Antigo Testamento é a longa preparação para esse descendente — através de Abraão, Israel, os reis e os profetas — até que, na plenitude do tempo, Jesus Cristo vem, vive a vida perfeita que ninguém viveu, morre a morte que os pecadores deviam morrer e ressuscita, inaugurando o novo povo de Deus. Restauração: a igreja vive agora entre a primeira e a segunda vinda de Cristo, anunciando as boas-novas até que ele volte para fazer novos os céus e a nova terra, onde Deus habitará para sempre com o seu povo. Cada texto da Bíblia ocupa um lugar nesse mapa maior — e perguntar 'em que ato dessa história este texto está?' evita tanto o moralismo raso quanto a alegorização sem controle.",
           theologianQuote: {
             author: "Vaughan Roberts",
-            text: "A Bíblia conta a história de como Deus está reunindo para si um povo, para viver debaixo do seu governo, em seu lugar, para sua própria glória.",
-            source: "Uma Visão Panorâmica da Bíblia",
+            text: "Deus, o seu povo, no seu lugar, debaixo do seu governo e da sua bênção.",
+            source: "God's Big Picture — Uma Visão Panorâmica da Bíblia",
           },
           deepen: {
             additionalVerses: [
@@ -970,8 +979,9 @@ const comoEstudarBiblia: Trail = {
             theologicalDebate:
               "Cristãos evangélicos fiéis divergem sobre o grau de continuidade entre Israel e a Igreja dentro dessa metanarrativa — teologia do pacto e dispensacionalismo oferecem mapas um pouco diferentes para a mesma história. Essa é uma questão secundária de interpretação profética, não uma doutrina essencial da fé; o essencial — que a história inteira caminha para Cristo e culmina nele — é compartilhado por ambas as tradições.",
             secondQuote: {
-              author: "Graeme Goldsworthy",
-              text: "O evangelho de Jesus Cristo é o centro a partir do qual toda a Escritura deve ser entendida.",
+              author: "Agostinho de Hipona",
+              text: "Tu nos fizeste para ti, e o nosso coração está inquieto enquanto não repousa em ti.",
+              source: "Confissões",
             },
           },
           quizzes: [
@@ -1036,8 +1046,8 @@ const comoEstudarBiblia: Trail = {
             "A primeira família de perguntas é de observação: o que o texto realmente diz? Quem fala, para quem, o quê, quando, onde — sem pular para conclusões. A segunda é de contexto: quem escreveu este livro, para qual comunidade original, em qual momento da história, e o que vem imediatamente antes e depois desse trecho? Um versículo lido fora do parágrafo costuma dizer algo que o autor nunca quis dizer. A terceira família é teológica e cristológica: o que este texto revela sobre o caráter de Deus — sua santidade, seu amor, sua justiça, sua fidelidade — e como ele se conecta com a obra de Cristo? A quarta é de aplicação, e propositalmente vem por último: à luz de tudo isso, o que este texto exige de mim, da minha igreja, da minha semana? Fazer essas perguntas nessa ordem — observação, contexto, teologia, aplicação — é o que separa um estudo sério de uma leitura em que o leitor apenas projeta seus próprios sentimentos no texto e chama isso de 'o que Deus está falando comigo'.",
           theologianQuote: {
             author: "Howard Hendricks",
-            text: "Você nunca pode aplicar o que não entendeu, e nunca vai entender de verdade o que não observou com cuidado.",
-            source: "Vivendo por Livro",
+            text: "A marca da maturidade espiritual não é o quanto você entende, mas o quanto você usa. No campo espiritual, o oposto da ignorância não é o conhecimento, mas a obediência.",
+            source: "Living by the Book: The Art and Science of Reading the Bible",
           },
           deepen: {
             additionalVerses: [
@@ -1065,8 +1075,9 @@ const comoEstudarBiblia: Trail = {
             theologicalDebate:
               "Existe um debate saudável sobre até que ponto as perguntas do leitor moderno (sua cultura, suas circunstâncias) devem moldar a leitura do texto, versus a prioridade da intenção original do autor. A posição mais segura, adotada neste estudo, é perguntar primeiro 'o que o autor quis dizer aos seus leitores originais?' e só depois 'o que isso significa para mim, hoje?' — nessa ordem, e não ao contrário.",
             secondQuote: {
-              author: "Kay Arthur",
-              text: "A Palavra de Deus responde a quem tem a humildade de perguntar antes de concluir.",
+              author: "D. A. Carson",
+              text: "Um texto sem contexto é um pretexto para um texto de prova.",
+              source: "frase amplamente associada a D. A. Carson (que a atribuía a seu pai, Tom Carson)",
             },
           },
           quizzes: [
@@ -1154,9 +1165,9 @@ const oracao: Trail = {
           deepDive:
             "A oração cristã tem uma arquitetura trinitária, e essa não é uma nota de rodapé: é a estrutura real de toda oração genuína. Oramos ao Pai — é a Ele que nos dirigimos. Oramos por meio do Filho — é Ele quem nos dá 'prosagōgē', acesso formal, como alguém apresentado à corte de um rei, e que agora intercede por nós à direita do Pai (Rm 8:34). Oramos no poder do Espírito — é Ele quem nos ajuda quando não sabemos as palavras certas, gemendo por nós de um jeito que nenhuma linguagem humana alcançaria. Isso significa que mesmo uma oração simples, desajeitada, feita por um cristão cansado ao final de um dia difícil, participa de algo sustentado pela própria Trindade. Esquecer isso reduz a oração a técnica de persuasão; lembrar disso a devolve ao lugar de relacionamento filial.",
           theologianQuote: {
-            author: "John Stott",
-            text: "A oração cristã não é um monólogo religioso; é uma conversa trinitária na qual somos convidados a participar — falamos ao Pai, pelo Filho, no Espírito.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Stott realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "A. W. Tozer",
+            text: "O que vem à nossa mente quando pensamos em Deus é a coisa mais importante a nosso respeito.",
+            source: "The Knowledge of the Holy — O Conhecimento do Santo",
           },
           deepen: {
             additionalVerses: [
@@ -1184,8 +1195,9 @@ const oracao: Trail = {
             theologicalDebate:
               "A maior parte das orações no Novo Testamento é dirigida ao Pai, por meio do Filho, no Espírito — esse é o padrão normativo ensinado por Jesus. Ainda assim, há registros bíblicos de oração dirigida diretamente ao Filho (como Estêvão em Atos 7:59) ou de invocação do Espírito em contextos de adoração. Isso não contradiz o padrão trinitário; mostra que ele comporta variações legítimas de expressão devocional, sem que isso seja uma questão de doutrina essencial — é mais uma questão de prática e ênfase espiritual.",
             secondQuote: {
-              author: "Millard Erickson",
-              text: "A doutrina da Trindade não é um quebra-cabeça abstrato para teólogos; ela molda a própria experiência devocional do crente, dando forma e sentido a cada oração que fazemos.",
+              author: "Agostinho de Hipona",
+              text: "Tu nos fizeste para ti, e o nosso coração está inquieto enquanto não repousa em ti.",
+              source: "Confissões",
             },
           },
           quizzes: [
@@ -1281,8 +1293,9 @@ const oracao: Trail = {
             theologicalDebate:
               "Tradições cristãs diferem quanto ao uso litúrgico do Pai Nosso: algumas o recitam palavra por palavra em todo culto público, como oração fixa da comunidade; outras o tratam principalmente como padrão flexível, um guia para estruturar orações espontâneas com as próprias palavras. Ambas as práticas honram a intenção de Jesus; a diferença é de ênfase litúrgica, uma questão secundária de prática de adoração, não de doutrina essencial.",
             secondQuote: {
-              author: "Philip Ryken",
-              text: "O Pai Nosso não é apenas uma oração para recitar; é uma escola inteira de espiritualidade, ensinando o que adorar, o que pedir e em quem confiar.",
+              author: "A. W. Tozer",
+              text: "O que vem à nossa mente quando pensamos em Deus é a coisa mais importante a nosso respeito.",
+              source: "The Knowledge of the Holy — O Conhecimento do Santo",
             },
           },
           quizzes: [
@@ -1349,9 +1362,9 @@ const oracao: Trail = {
           deepDive:
             "A ousadia cristã na oração não repousa em nenhuma performance espiritual — se assim fosse, seria arrogância disfarçada de fé. Ela repousa inteiramente no sangue de Cristo. Ele é nosso Sumo Sacerdote (Hb 4:14), e é o mérito dele, não o nosso, que abre a porta. Por isso oramos 'em nome de Jesus': não como fórmula mágica de encerramento, mas como confissão de que só entramos na presença de Deus por causa dele. E é justamente por isso que a oração cristã não hesita em pedir coisas grandes: pedimos apoiados em um mérito grande, que já foi pago.",
           theologianQuote: {
-            author: "Charles Spurgeon",
-            text: "Orar pequenas orações a um grande Deus é uma espécie de insulto. Peça grandes coisas ao Rei, pois o custo já foi pago pelo sangue de seu Filho.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "Agostinho de Hipona",
+            text: "Tu nos fizeste para ti, e o nosso coração está inquieto enquanto não repousa em ti.",
+            source: "Confissões",
           },
           deepen: {
             additionalVerses: [
@@ -1379,8 +1392,9 @@ const oracao: Trail = {
             theologicalDebate:
               "É importante distinguir a ousadia bíblica na oração de distorções da chamada 'teologia da prosperidade', que tratam a confiança ao orar como uma fórmula que garante automaticamente qualquer pedido específico feito com fé suficiente. A ousadia bíblica é sobre a certeza de sermos ouvidos e recebidos por Deus — não uma garantia de que todo pedido será concedido exatamente como pedido (1 João 5:14 já condiciona isso a 'de acordo com a sua vontade'). Se você encontrar ensino nesse sentido, vale a pena conversar com seu pastor.",
             secondQuote: {
-              author: "F. F. Bruce",
-              text: "O rasgar do véu não foi apenas um evento dramático no templo; foi a declaração visível de que, em Cristo, o caminho até Deus estava, de uma vez por todas, aberto.",
+              author: "Richard Foster",
+              text: "A superficialidade é a maldição da nossa era. A doutrina da satisfação instantânea é um problema espiritual primário.",
+              source: "Celebration of Discipline (Celebração da Disciplina), p.1",
             },
           },
           quizzes: [
@@ -1450,9 +1464,9 @@ const oracao: Trail = {
           deepDive:
             "A ordem importa: 'entrem por suas portas com ações de graças' vem antes de qualquer pedido no Salmo 100. Isso não é regra rígida de etiqueta espiritual, mas sabedoria psicológica e teológica profunda — começar reconhecendo quem Deus é e o que Ele já fez recalibra a perspectiva antes de apresentarmos qualquer necessidade. Paulo, em Filipenses 4:6, escrito de dentro de uma prisão, ainda assim instrui a igreja a misturar toda súplica com ação de graças. Gratidão em meio à dificuldade não é ingenuidade — é fé que já sabe como a história termina.",
           theologianQuote: {
-            author: "Davi Lago",
-            text: "Adorar não é uma técnica para conseguir algo de Deus; é a resposta natural de um coração que finalmente enxergou quem Ele é.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Davi Lago realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "C. S. Lewis",
+            text: "Não louvamos as coisas apenas para expressá-las, mas para completar o nosso prazer nelas; é o seu propósito final.",
+            source: "Reflections on the Psalms",
           },
           deepen: {
             additionalVerses: [
@@ -1480,8 +1494,9 @@ const oracao: Trail = {
             theologicalDebate:
               "Diferenças de estilo entre adoração mais contemplativa e silenciosa e adoração mais expressiva e cantada em voz alta refletem tradições e temperamentos distintos dentro do cristianismo evangélico — não uma questão de doutrina essencial, mas de preferência legítima de expressão cultural e comunitária. O que a Escritura exige não é um estilo específico, mas um coração genuinamente grato e voltado a Deus.",
             secondQuote: {
-              author: "C. S. Lewis",
-              text: "Não louvamos as coisas apenas para expressar, mas para completar nosso prazer nelas; o louvor é o modo natural de a alegria transbordar.",
+              author: "A. W. Tozer",
+              text: "O que vem à nossa mente quando pensamos em Deus é a coisa mais importante a nosso respeito.",
+              source: "The Knowledge of the Holy — O Conhecimento do Santo",
             },
           },
           quizzes: [
@@ -1545,9 +1560,9 @@ const oracao: Trail = {
           deepDive:
             "Confessar, no grego original, é 'homologeō' — literalmente, dizer a mesma coisa que Deus diz. Isso significa que a confissão genuína não é apenas admitir um erro, mas concordar plenamente com o diagnóstico de Deus sobre esse pecado, sem tentar suavizá-lo. Davi, no Salmo 51, não culpa Bate-Seba, nem as circunstâncias, nem a pressão do poder — ele diz 'meu pecado está sempre diante de mim'. Esse tipo de confissão sem desculpas é o que abre espaço para a restauração genuína. A promessa de 1 João 1:9 é notável: Deus é 'fiel e justo' para perdoar — fiel à sua promessa, justo porque o preço do pecado já foi pago integralmente na cruz.",
           theologianQuote: {
-            author: "Jonas Madureira",
-            text: "Confessar não é se afogar em culpa; é subir à superfície da verdade, onde a graça de Deus já está esperando para purificar o que a culpa só sabia esconder.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Jonas Madureira realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "Agostinho de Hipona",
+            text: "Tu nos fizeste para ti, e o nosso coração está inquieto enquanto não repousa em ti.",
+            source: "Confissões",
           },
           deepen: {
             additionalVerses: [
@@ -1575,8 +1590,9 @@ const oracao: Trail = {
             theologicalDebate:
               "A prática de confessar pecados a um sacerdote como parte de um sacramento formal de penitência é uma tradição histórica de outras famílias cristãs, diferente da prática evangélica de confissão direta a Deus, com apoio fraterno opcional entre crentes de confiança. Essa é uma diferença histórica legítima entre tradições cristãs, que merece ser tratada com respeito, sem ridicularizar nenhum lado; a posição evangélica se apoia em textos como 1 Timóteo 2:5, que afirma um único Mediador entre Deus e os homens.",
             secondQuote: {
-              author: "Charles Finney",
-              text: "O arrependimento genuíno não termina na tristeza pelo pecado; ele termina na mudança de direção. Onde não há mudança de vida, ainda não houve arrependimento completo.",
+              author: "Dietrich Bonhoeffer",
+              text: "Interceder não significa nada além de levar o nosso irmão à presença de Deus, vendo-o sob a cruz de Jesus como um pobre ser humano e pecador que precisa de graça.",
+              source: "Vida em Comunhão (Life Together)",
             },
           },
           quizzes: [
@@ -1646,9 +1662,9 @@ const oracao: Trail = {
           deepDive:
             "A promessa de Mateus 7:7-8 não é um cheque em branco emocional — o próprio contexto do Sermão do Monte já ensinou que os pedidos devem estar alinhados com o caráter do Pai que 'sabe dar boas dádivas aos seus filhos' (Mt 7:11). Suplicar bem é, portanto, um exercício de fé e humildade ao mesmo tempo: fé para acreditar que Deus ouve e se importa, humildade para reconhecer que Ele, e não nós, define o que é realmente bom. O resultado da súplica entregue com confiança, segundo Paulo, não é necessariamente a resposta exata que pedimos, mas 'a paz de Deus, que excede todo o entendimento' — uma tranquilidade que vem antes mesmo da resposta chegar.",
           theologianQuote: {
-            author: "Hernandes Dias Lopes",
-            text: "Deus não se cansa dos nossos pedidos; Ele se alegra quando um filho corre para Ele em vez de tentar resolver tudo sozinho.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Hernandes Dias Lopes realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "John Wesley",
+            text: "Deus não faz nada a não ser em resposta à oração.",
+            source: "A Plain Account of Christian Perfection",
           },
           deepen: {
             additionalVerses: [
@@ -1676,8 +1692,9 @@ const oracao: Trail = {
             theologicalDebate:
               "Existe uma tensão pastoral legítima entre incentivar a súplica ousada e confiante (Mt 7:7) e alertar contra pedidos motivados por egoísmo (Tg 4:3) — cristãos fiéis às vezes hesitam entre ênfases diferentes aqui, alguns priorizando a confiança da criança que pede sem medo, outros priorizando o exame de consciência antes de pedir. As duas ênfases são bíblicas e se complementam; não são posições concorrentes, mas faces da mesma moeda da maturidade na oração.",
             secondQuote: {
-              author: "Craig Keener",
-              text: "A súplica bíblica nunca é indigna de um Deus soberano; pelo contrário, é o próprio convite que Ele estende aos seus filhos para participarem ativamente de seus propósitos no mundo.",
+              author: "A. W. Tozer",
+              text: "O que vem à nossa mente quando pensamos em Deus é a coisa mais importante a nosso respeito.",
+              source: "The Knowledge of the Holy — O Conhecimento do Santo",
             },
           },
           quizzes: [
@@ -1745,8 +1762,8 @@ const oracao: Trail = {
             "A intercessão tem raízes profundas na Bíblia: Abraão intercede por Sodoma (Gn 18), Moisés intercede por Israel depois do bezerro de ouro (Êx 32), Jesus intercede pelos discípulos em João 17 — e continua intercedendo por nós agora, segundo Hebreus 7:25. Quando você intercede por alguém, participa do próprio ministério celestial de Cristo, que 'vive sempre para interceder'. Isso muda o peso das nossas orações intercessórias: não estamos falando sozinhos com Deus a respeito de alguém — estamos nos juntando à voz de Jesus, que já ora por essa mesma pessoa.",
           theologianQuote: {
             author: "Dietrich Bonhoeffer",
-            text: "Interceder por alguém é levá-lo até a presença de Deus e deixá-lo ali, confiando que Deus fará por ele o que nós mesmos não temos poder para fazer.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Dietrich Bonhoeffer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Interceder não significa nada além de levar o nosso irmão à presença de Deus, vendo-o sob a cruz de Jesus como um pobre ser humano e pecador que precisa de graça.",
+            source: "Vida em Comunhão (Life Together)",
           },
           deepen: {
             additionalVerses: [
@@ -1848,9 +1865,9 @@ const oracao: Trail = {
           deepDive:
             "O 'não' de Deus a Paulo em 2 Coríntios 12 não é rejeição — é redirecionamento. Deus não removeu o espinho, mas concedeu algo mais profundo: a compreensão de que sua graça basta, e que o poder divino se manifesta com mais clareza justamente na fraqueza humana, não apesar dela. Isso não significa que toda dor tem uma explicação clara e imediata que possamos identificar — muitas vezes não tem, e forçar uma explicação onde a Escritura não a dá (como fizeram os amigos de Jó) só acrescenta sofrimento ao sofrimento. O que a Bíblia oferece, em vez de uma explicação garantida para cada silêncio, é a certeza do caráter de Deus: bom, sábio e presente, mesmo quando as respostas demoram.",
           theologianQuote: {
-            author: "Larry Crabb",
-            text: "Deus raramente explica o sofrimento da forma como gostaríamos; Ele nos convida, em vez disso, a confiar em seu caráter mesmo quando seus caminhos permanecem incompreensíveis.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Larry Crabb realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "Agostinho de Hipona",
+            text: "Tu nos fizeste para ti, e o nosso coração está inquieto enquanto não repousa em ti.",
+            source: "Confissões",
           },
           deepen: {
             additionalVerses: [
@@ -1878,8 +1895,9 @@ const oracao: Trail = {
             theologicalDebate:
               "Existe uma diferença legítima de ênfase pastoral entre cristãos que buscam ativamente identificar 'lições' específicas por trás de cada período de silêncio de Deus, e outros que preferem reconhecer, com mais humildade, que 'as coisas ocultas pertencem ao Senhor, nosso Deus' (Dt 29:29), sem insistir em uma explicação plenamente satisfatória para cada sofrimento. Ambas as posturas têm base bíblica; o cuidado pastoral necessário é evitar o erro dos amigos de Jó, que presumiram conhecer a causa exata do sofrimento alheio. Em situações pessoais difíceis, é sempre sábio buscar acompanhamento do seu pastor ou líder espiritual.",
             secondQuote: {
-              author: "Alister McGrath",
-              text: "A fé cristã nunca prometeu respostas completas para o mistério do sofrimento; prometeu, isso sim, um Deus que sofreu conosco na cruz e que permanece fiel mesmo no silêncio.",
+              author: "A. W. Tozer",
+              text: "O que vem à nossa mente quando pensamos em Deus é a coisa mais importante a nosso respeito.",
+              source: "The Knowledge of the Holy — O Conhecimento do Santo",
             },
           },
           quizzes: [
@@ -1944,8 +1962,8 @@ const oracao: Trail = {
             "O jejum bíblico nunca aparece isolado — ele sempre acompanha a oração, humilhando o corpo para focar o espírito. Em Atos 13, é durante um período de jejum e adoração que a igreja de Antioquia recebe clareza sobre o chamado missionário de Barnabé e Saulo — um lembrete de que o jejum não força respostas de Deus, mas cria espaço de escuta mais atenta. Ao mesmo tempo, Jesus e os profetas denunciam com força o jejum vazio: ritual sem coração, performance sem transformação de vida. O jejum genuíno é medido não pela duração ou pela dificuldade, mas pela sinceridade e pela mudança de vida que produz.",
           theologianQuote: {
             author: "Richard Foster",
-            text: "O jejum revela o que está escondido dentro de nós; quando o estômago se cala, muitas vezes descobrimos o quanto dependíamos de outras coisas além de Deus para nos sentirmos seguros.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Richard Foster realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Mais do que qualquer outra disciplina, o jejum revela o que há em nós que nos controla.",
+            source: "Celebration of Discipline (Celebração da Disciplina), p.55",
           },
           deepen: {
             additionalVerses: [
@@ -1973,8 +1991,9 @@ const oracao: Trail = {
             theologicalDebate:
               "Tradições evangélicas variam quanto à frequência e ao formato recomendado de jejum — algumas praticam jejuns corporativos regulares como igreja, outras deixam inteiramente à convicção pessoal de cada crente. A Escritura não prescreve uma frequência obrigatória de jejum para o cristão do Novo Testamento (diferente da Lei mosaica para Israel), tornando essa uma questão de prática pessoal, não de doutrina essencial. É importante lembrar que o jejum envolve o corpo, e pessoas com condições de saúde específicas devem buscar orientação médica e conversar com seu pastor antes de praticá-lo, ajustando a forma de buscar a Deus com sinceridade sem colocar sua saúde em risco.",
             secondQuote: {
-              author: "Thom Rainer",
-              text: "Igrejas e cristãos que reservam tempos de jejum e oração diante de decisões importantes frequentemente relatam maior clareza de discernimento — não porque o jejum manipule Deus, mas porque aquieta o coração para ouvi-lo melhor.",
+              author: "Richard Foster",
+              text: "A superficialidade é a maldição da nossa era. A doutrina da satisfação instantânea é um problema espiritual primário.",
+              source: "Celebration of Discipline (Celebração da Disciplina), p.1",
             },
           },
           quizzes: [
@@ -2043,8 +2062,8 @@ const oracao: Trail = {
             "É significativo que Marcos registre o horário do encontro de Jesus com o Pai: 'de madrugada, quando ainda estava escuro'. Não foi um acidente de agenda — foi escolha deliberada, feita antes que qualquer pedido, cura ou multidão pudesse disputar sua atenção. O Salmo 5:3 usa duas ideias que parecem simples, mas revelam maturidade: 'apresento' (ação ativa e intencional) e 'fico esperando' (postura de expectativa, não de checklist cumprido). Vida devocional sustentável nasce dessa combinação: disciplina que separa o tempo, e expectativa que transforma esse tempo em encontro real, não em tarefa religiosa marcada e esquecida.",
           theologianQuote: {
             author: "Richard Foster",
-            text: "A disciplina espiritual não existe para tornar Deus mais presente — Ele já está presente. Ela existe para nos tornar mais capazes de perceber e responder a essa presença.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Richard Foster realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "A superficialidade é a maldição da nossa era. A doutrina da satisfação instantânea é um problema espiritual primário.",
+            source: "Celebration of Discipline (Celebração da Disciplina), p.1",
           },
           deepen: {
             additionalVerses: [
@@ -2072,8 +2091,9 @@ const oracao: Trail = {
             theologicalDebate:
               "Cristãos fiéis divergem legitimamente sobre o formato ideal do tempo devocional: alguns preferem um horário fixo pela manhã (seguindo o padrão de Jesus em Mc 1:35 e do Salmo 5:3), outros encontram mais frutífero um tempo à noite, ou dividido ao longo do dia. A Escritura não prescreve um horário universal obrigatório — o padrão consistente é a intencionalidade e a regularidade, não um relógio específico. É uma questão de prática pessoal, não de doutrina essencial, e vale a pena buscar orientação do seu discipulador ou líder de célula para encontrar o ritmo que melhor se sustenta na sua rotina real.",
             secondQuote: {
-              author: "John Mark Comer",
-              text: "Um ritmo de vida com Deus não é sobre encaixar mais uma tarefa religiosa num dia já cheio; é sobre reorganizar o dia inteiro em torno da presença dele.",
+              author: "Howard Hendricks",
+              text: "A marca da maturidade espiritual não é o quanto você entende, mas o quanto você usa. No campo espiritual, o oposto da ignorância não é o conhecimento, mas a obediência.",
+              source: "Living by the Book: The Art and Science of Reading the Bible",
             },
           },
           quizzes: [
