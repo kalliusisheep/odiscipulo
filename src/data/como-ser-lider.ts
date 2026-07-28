@@ -18,7 +18,55 @@ const seeds: LessonSeed[] = [
   { id: "csl-10", title: "Tudo para a Glória", subtitle: "O propósito final e a humildade no ministério", verse: "1 Coríntios 10:31", verseText: "Assim, quer vocês comam, bebam ou façam qualquer outra coisa, façam tudo para a glória de Deus.", intro: "O fim da liderança cristã não é construir um nome, controlar resultados ou reunir aprovação. Todo serviço encontra seu lugar quando devolve a glória a Deus e reconhece que os frutos pertencem a ele.", emphasis: "Humildade não diminui o chamado; ela coloca o chamado no lugar certo, debaixo da glória de Deus.", application: "Ao final de cada dia desta semana, agradeça a Deus por um fruto visto e entregue a ele uma frustração não resolvida.", question: "Onde tenho confundido o avanço do ministério com a busca pela minha própria importância?" },
 ];
 
-const makeLesson = (seed: LessonSeed): Lesson => ({
+const leaderServantLesson: Lesson = {
+  id: "csl-1", title: "O Líder Servo", difficulty: 3,
+  intro: [
+    "No Reino de Deus, liderança não é a capacidade de acumular poder, privilégios ou subordinados. É a disposição radical de descer para servir. O modelo definitivo do líder cristão é Jesus Cristo: ele não veio para ser servido, mas para servir e dar sua vida em resgate por muitos.",
+    "Marcos 10:42-45 confronta o desejo de grandeza que havia alcançado até os apóstolos. Jesus não elimina a autoridade; ele redefine seu propósito. A autoridade recebida deve edificar, proteger e conduzir pessoas a Cristo — nunca promover o conforto, a imagem ou o controle de quem lidera.",
+    "O lava-pés de João 13 torna esse ensino visível. O Senhor e Mestre tomou a posição mais baixa da casa e serviu seus discípulos. A cruz não é apenas a base da salvação; ela é também a medida da vocação de todo líder cristão.",
+  ],
+  verses: [{
+    ref: "Marcos 10:42-45",
+    textByVersion: {
+      NVI: "Jesus os chamou e disse: ‘Vocês sabem que aqueles que são considerados governantes das nações as dominam, e as pessoas importantes exercem poder sobre elas. Não será assim entre vocês. Pelo contrário, quem quiser tornar-se importante entre vocês deverá ser servo; e quem quiser ser o primeiro deverá ser escravo de todos. Pois nem mesmo o Filho do homem veio para ser servido, mas para servir e dar a sua vida em resgate por muitos’. ",
+      NAA: "Jesus, chamando-os para junto de si, disse: ‘Vocês sabem que os que são considerados governadores dos povos os dominam e que os seus maiorais exercem autoridade sobre eles. Mas entre vocês não é assim; pelo contrário, quem quiser tornar-se grande entre vocês será esse o que os sirva; e quem quiser ser o primeiro entre vocês será servo de todos. Pois o próprio Filho do Homem não veio para ser servido, mas para servir e dar a sua vida em resgate por muitos’. ",
+      ACF: "Mas Jesus, chamando-os para junto de si, disse-lhes: Sabeis que os que julgam ser príncipes das gentes, delas se assenhoreiam, e os seus grandes usam de autoridade sobre elas; mas entre vós não será assim; antes, qualquer que entre vós quiser ser grande será vosso serviçal; e qualquer que dentre vós quiser ser o primeiro será servo de todos. Porque o Filho do homem também não veio para ser servido, mas para servir e dar a sua vida em resgate de muitos.",
+      NVT: "Jesus os chamou e disse: ‘Vocês sabem que os governantes deste mundo têm domínio sobre seu povo e que os oficiais exercem autoridade sobre os súditos. Entre vocês, porém, será diferente. Quem quiser ser o líder entre vocês será servo, e quem quiser ser o primeiro entre vocês será escravo de todos. Pois nem mesmo o Filho do Homem veio para ser servido, mas para servir e dar sua vida em resgate por muitos’. ",
+    },
+  }],
+  keywords: [
+    { word: "κατακυριεύω", translit: "katakyrieuō", meaning: "dominar de cima para baixo; exercer senhorio para benefício próprio. É o poder que esmaga.", lang: "grego" },
+    { word: "διάκονος", translit: "diákonos", meaning: "servo que atende necessidades concretas; quem trabalha ativamente para o bem do outro.", lang: "grego" },
+    { word: "δοῦλος", translit: "doûlos", meaning: "escravo; alguém inteiramente submetido ao seu senhor. Para ser o primeiro, Cristo chama o líder a servir a todos.", lang: "grego" },
+  ],
+  deepDive: "A liderança servidora não é passividade, falta de convicção ou ausência de correção. Jesus lavou pés, mas também confrontou o pecado e protegeu a santidade da casa de Deus. O líder servo usa a autoridade com amor: corrige para restaurar, decide para edificar e assume responsabilidades para que outros cresçam. Servir não é estratégia para receber elogios; é fruto de reconhecer que Cristo é o Senhor e que as pessoas sob nossos cuidados pertencem a ele.",
+  theologianQuote: { author: "Tim Keller", source: "A Cruz do Rei", text: "Jesus revoga completamente o conceito de poder: ele é o único rei que sangra e morre por seus súditos." },
+  deepen: {
+    historicalContext: "No primeiro século, a cultura greco-romana era marcada por patronagem, status e poder. A grandeza de alguém era frequentemente medida pelo número de pessoas que lhe deviam favores. Lavar os pés dos convidados era tarefa do escravo gentio de menor posição — um trabalho considerado indigno até para um escravo judeu. Nesse cenário, o gesto de Jesus subverte completamente a pirâmide social e espiritual.",
+    additionalVerses: [
+      { ref: "João 13:14-15", textByVersion: { NVI: "Pois bem, se eu, sendo Senhor e Mestre de vocês, lavei-lhes os pés, vocês também devem lavar os pés uns dos outros. Eu lhes dei o exemplo, para que vocês façam como lhes fiz.", NAA: "Ora, se eu, sendo o Senhor e o Mestre, lavei os pés de vocês, também vocês devem lavar os pés uns dos outros. Porque eu lhes dei o exemplo, para que, como eu fiz, vocês façam também.", ACF: "Ora, se eu, Senhor e Mestre, vos lavei os pés, vós deveis também lavar os pés uns aos outros. Porque eu vos dei o exemplo, para que, como eu vos fiz, façais vós também.", NVT: "E, uma vez que eu, seu Senhor e Mestre, lavei seus pés, vocês devem lavar os pés uns dos outros. Eu lhes dei o exemplo para que façam como eu fiz." } },
+      { ref: "Filipenses 2:5-8", textByVersion: { NVI: "Seja a atitude de vocês a mesma de Cristo Jesus, que, embora sendo Deus, não considerou que o ser igual a Deus era algo a que devia apegar-se; mas esvaziou-se a si mesmo, vindo a ser servo, tornando-se semelhante aos homens. E, sendo encontrado em forma humana, humilhou-se a si mesmo e foi obediente até à morte, e morte de cruz!", NAA: "Tenham entre vocês o mesmo modo de pensar de Cristo Jesus, pois ele, subsistindo em forma de Deus, não julgou como usurpação o ser igual a Deus; pelo contrário, esvaziou a si mesmo, assumindo a forma de servo, tornando-se em semelhança de homens. E, reconhecido em figura humana, a si mesmo se humilhou, tornando-se obediente até a morte, e morte de cruz.", ACF: "De sorte que haja em vós o mesmo sentimento que houve também em Cristo Jesus, que, sendo em forma de Deus, não teve por usurpação ser igual a Deus, mas aniquilou-se a si mesmo, tomando a forma de servo, fazendo-se semelhante aos homens; e, achado na forma de homem, humilhou-se a si mesmo, sendo obediente até à morte e morte de cruz.", NVT: "Tenham a mesma atitude demonstrada por Cristo Jesus. Embora sendo Deus, não considerou que ser igual a Deus fosse algo a que devesse apegar-se. Em vez disso, esvaziou-se a si mesmo; assumiu a posição de escravo e nasceu como ser humano. Quando veio em forma humana, humilhou-se e foi obediente até a morte, e morte de cruz." } },
+    ],
+    exegeticalNotes: "Em Marcos 10, Jesus contrasta katakyrieuō, o exercício opressivo de domínio, com diákonos e doûlos. O primeiro descreve poder usado sobre as pessoas; os outros descrevem serviço prestado em favor delas. A grandeza no Reino não é negada, mas recebe uma nova medida: quem deseja ser grande torna-se servo; quem deseja ser o primeiro torna-se servo de todos.",
+    additionalKeywords: [{ word: "κενόω", translit: "kenóō", meaning: "esvaziar-se. Em Filipenses 2, Cristo não deixa de ser Deus; ele assume voluntariamente a forma de servo e o caminho da humilhação.", lang: "grego" }],
+    theologicalDebate: "A Bíblia reconhece autoridade e chama a igreja a honrar seus líderes (Hebreus 13:17), mas rejeita toda autoridade exercida como domínio pessoal. Tradições cristãs podem organizar a liderança local de formas diferentes; o princípio comum é que toda autoridade deve servir à edificação da igreja e permanecer debaixo de Cristo e de sua Palavra.",
+    secondQuote: { author: "Francis Schaeffer", source: "Não Há Pessoas Pequenas", text: "No Reino de Deus não há pessoas pequenas nem lugares pequenos. O único lugar que importa é aquele onde Deus nos colocou." },
+  },
+  quizzes: [
+    { question: "Segundo Marcos 10:42-45, qual é a diferença entre a liderança do mundo e a liderança no Reino de Deus?", options: ["No Reino, líderes não possuem responsabilidade", "No mundo o poder domina; no Reino a autoridade serve e edifica", "No Reino apenas pessoas sem dons podem liderar", "O líder deve evitar decisões difíceis"], correctIndex: 1, explanation: "Jesus não elimina a autoridade; ele transforma sua finalidade. O líder usa a responsabilidade para o bem dos outros, não para elevar a si mesmo." },
+    { question: "O que diákonos comunica sobre o líder cristão?", options: ["Alguém que busca status religioso", "Alguém que atende ativamente necessidades práticas", "Alguém que nunca corrige o pecado", "Alguém que delega toda responsabilidade"], correctIndex: 1, explanation: "Diákonos descreve serviço concreto: a postura de quem trabalha para suprir a necessidade do próximo." },
+    { question: "Qual atitude contradiz a liderança servidora?", options: ["Corrigir em amor para proteger o rebanho", "Fazer uma tarefa sem buscar reconhecimento", "Usar a linguagem de humildade para receber elogios", "Preparar outras pessoas para servir"], correctIndex: 2, explanation: "A falsa humildade transforma o serviço em palco. O verdadeiro servo não serve para ser admirado." },
+  ],
+  application: "Escolha nesta semana uma necessidade na sua congregação que não ofereça status ou visibilidade. Sirva ali em secreto. Em uma decisão de liderança, pergunte-se: ‘Esta decisão protege minha imagem ou promove o crescimento espiritual dos meus irmãos?’",
+  prayer: "Senhor Jesus, tu escolheste a toalha e a cruz. Livra-me da sede de reconhecimento e ensina-me a usar toda influência que recebo para servir, proteger e edificar pessoas. Amém.",
+  weeklyChallenge: "Realize um ato de serviço oculto na sua igreja local. Depois, ore por seus pastores e líderes e procure ser, nesta semana, o melhor liderado possível.",
+  reflectionQuestion: "Em quais áreas do meu ministério ou vida pessoal ainda ajo como alguém que exige privilégios, em vez de servir? Como o lava-pés de Jesus confronta a maneira como trato as pessoas difíceis?",
+  xp: 50,
+};
+
+const makeLesson = (seed: LessonSeed): Lesson => {
+  if (seed.id === "csl-1") return leaderServantLesson;
+  return {
   id: seed.id, title: seed.title, difficulty: 2,
   intro: [seed.intro, seed.emphasis],
   verses: [{ ref: seed.verse, textByVersion: { NVI: seed.verseText } }],
@@ -27,7 +75,8 @@ const makeLesson = (seed: LessonSeed): Lesson => ({
   theologianQuote: { author: "Reflexão do módulo", text: "Liderar no Reino é apontar pessoas para Cristo, e não para si mesmo." },
   quizzes: [{ question: `Qual é a ênfase central de “${seed.title}”?`, options: ["Buscar reconhecimento pessoal", seed.emphasis, "Evitar responsabilidades", "Controlar todas as decisões"], correctIndex: 1 }],
   application: seed.application, prayer: "Senhor, forma em mim um coração humilde, fiel à tua Palavra e disposto a servir. Guia minhas escolhas para que reflitam Cristo. Amém.", weeklyChallenge: seed.application, reflectionQuestion: seed.question, xp: 30,
-});
+  };
+};
 
 export const comoSerLider: Trail = {
   id: "como-ser-lider", title: "Como ser um líder", description: "Uma formação inédita para liderar à maneira de Cristo.", icon: "Crown", color: "from-violet-500 to-indigo-500", order: 12,
