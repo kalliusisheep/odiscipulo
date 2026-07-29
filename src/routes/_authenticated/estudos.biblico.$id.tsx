@@ -8,6 +8,7 @@ import { useCelebration } from "@/lib/celebration";
 import { awardXpAndStreak } from "@/lib/progress";
 import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
 import { FontSizeControls } from "@/components/font-size-controls";
+import { ShareLessonButton } from "@/components/ShareLessonButton";
 import {
   ArrowLeft,
   ArrowRight,
@@ -15,7 +16,6 @@ import {
   Brain,
   Check,
   PartyPopper,
-  Share2,
   Sparkles,
   Target,
   X,
@@ -42,6 +42,21 @@ function EstudoBiblicoPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [step]);
+
+  const shareContext = useMemo(() => {
+    if (!study) return "";
+    return [
+      study.sections.flatMap((sec) => sec.body).join(" "),
+      study.sections
+        .flatMap((sec) => sec.verses ?? [])
+        .map((v) => `${v.ref}: ${verseText(v, bibleVersion)}`)
+        .join(" "),
+      study.application,
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .slice(0, 2000);
+  }, [study, bibleVersion]);
 
   if (!study) {
     return (
@@ -307,9 +322,7 @@ function EstudoBiblicoPage() {
             <p className="mt-3 text-center text-[10px] uppercase tracking-[0.3em] text-slate-400">The Disciple</p>
           </div>
           <div className="mt-6 flex w-full flex-col gap-2">
-            <button className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary py-3 text-sm font-semibold text-primary-foreground">
-              <Share2 className="h-4 w-4" /> Compartilhar
-            </button>
+            <ShareLessonButton lessonId={lessonId} title={study.title} shareContext={shareContext} />
             <Link to="/estudos" className="rounded-2xl border border-border py-3 text-sm font-medium text-muted-foreground">
               Voltar aos estudos
             </Link>
