@@ -76,7 +76,7 @@ function AprofundarPage() {
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient" data-narrate>
                   Contexto histórico e cultural
                 </p>
-                <p className="mt-1.5 text-sm leading-relaxed" data-narrate>{deepen.historicalContext}</p>
+                <p className="mt-1.5 text-base leading-relaxed" data-narrate>{deepen.historicalContext}</p>
               </div>
             )}
 
@@ -91,7 +91,7 @@ function AprofundarPage() {
                       <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground" data-narrate>
                         {v.ref}
                       </p>
-                      <p className="mt-1 scripture text-sm text-foreground/85" data-narrate>
+                      <p className="mt-1 scripture text-base text-foreground/85" data-narrate>
                         {`"${verseText(v, bibleVersion)}"`}
                       </p>
                     </div>
@@ -105,7 +105,7 @@ function AprofundarPage() {
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient" data-narrate>
                   Notas de exegese
                 </p>
-                <p className="mt-1.5 text-sm leading-relaxed" data-narrate>{deepen.exegeticalNotes}</p>
+                <p className="mt-1.5 text-base leading-relaxed" data-narrate>{deepen.exegeticalNotes}</p>
               </div>
             )}
 
@@ -133,7 +133,7 @@ function AprofundarPage() {
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground" data-narrate>
                   Panorama entre tradições cristãs
                 </p>
-                <p className="mt-1.5 text-sm leading-relaxed" data-narrate>{deepen.theologicalDebate}</p>
+                <p className="mt-1.5 text-base leading-relaxed" data-narrate>{deepen.theologicalDebate}</p>
                 <p className="mt-2 text-[11px] italic text-muted-foreground" data-narrate>
                   Para aprofundar essa questão, converse com seu pastor ou líder de discipulado.
                 </p>
@@ -142,7 +142,7 @@ function AprofundarPage() {
 
             {deepen.secondQuote && (
               <blockquote className="border-l-4 border-l-ancient pl-3">
-                <p className="scripture text-sm leading-relaxed text-ancient" data-narrate>
+                <p className="scripture text-base leading-relaxed text-ancient" data-narrate>
                   {`"${deepen.secondQuote.text}"`}
                 </p>
                 <footer className="mt-1.5 text-xs font-semibold text-ancient/80" data-narrate>
