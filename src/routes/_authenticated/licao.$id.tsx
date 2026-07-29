@@ -69,7 +69,9 @@ function LicaoPage() {
 
   const { lesson } = found;
   const total = lesson.quizzes.length;
-  const correctCount = Object.entries(answers).filter(([i, v]) => v === lesson.quizzes[Number(i)].correctIndex).length;
+  const correctCount = Object.entries(answers).filter(
+    ([i, v]) => v === lesson.quizzes[Number(i)].correctIndex,
+  ).length;
   const canAdvance = Object.keys(answers).length === total && correctCount === total;
   const pct = step === "estudo" ? 33 : step === "fixar" ? 66 : 100;
 
@@ -78,12 +80,10 @@ function LicaoPage() {
     setSaving(true);
     const { data: u } = await supabase.auth.getUser();
     if (u.user) {
-      await supabase
-        .from("lesson_progress")
-        .upsert(
-          { user_id: u.user.id, lesson_id: lesson.id, xp_gained: lesson.xp },
-          { onConflict: "user_id,lesson_id" },
-        );
+      await supabase.from("lesson_progress").upsert(
+        { user_id: u.user.id, lesson_id: lesson.id, xp_gained: lesson.xp },
+        { onConflict: "user_id,lesson_id" },
+      );
       if (reflection.trim()) {
         await supabase.from("diary_entries").insert({
           user_id: u.user.id,
@@ -164,10 +164,7 @@ function LicaoPage() {
                   {v.originals.map((o, oi) => (
                     <div key={oi} className="text-xs">
                       <span className="ancient-text text-ancient">{o.word}</span>
-                      <span className="text-muted-foreground">
-                        {" "}
-                        ({o.translit}, {o.lang}) —{" "}
-                      </span>
+                      <span className="text-muted-foreground"> ({o.translit}, {o.lang}) — </span>
                       <span className="text-foreground/80">{o.meaning}</span>
                     </div>
                   ))}
@@ -185,10 +182,7 @@ function LicaoPage() {
                 {lesson.keywords.map((o, oi) => (
                   <div key={oi} className="text-xs">
                     <span className="ancient-text text-sm text-ancient">{o.word}</span>
-                    <span className="text-muted-foreground">
-                      {" "}
-                      ({o.translit}, {o.lang}) —{" "}
-                    </span>
+                    <span className="text-muted-foreground"> ({o.translit}, {o.lang}) — </span>
                     <span className="text-foreground/80">{o.meaning}</span>
                   </div>
                 ))}
@@ -305,9 +299,7 @@ function LicaoPage() {
             Continuar para Aplicar <ArrowRight className="h-4 w-4" />
           </button>
           {!canAdvance && (
-            <p className="text-center text-[11px] text-muted-foreground">
-              Responda todas corretamente para prosseguir.
-            </p>
+            <p className="text-center text-[11px] text-muted-foreground">Responda todas corretamente para prosseguir.</p>
           )}
         </div>
       )}
@@ -378,10 +370,7 @@ function LicaoPage() {
             <button className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary py-3 text-sm font-semibold text-primary-foreground">
               <Share2 className="h-4 w-4" /> Compartilhar
             </button>
-            <Link
-              to="/home"
-              className="rounded-2xl border border-border py-3 text-sm font-medium text-muted-foreground"
-            >
+            <Link to="/home" className="rounded-2xl border border-border py-3 text-sm font-medium text-muted-foreground">
               Voltar à Inicial
             </Link>
           </div>
