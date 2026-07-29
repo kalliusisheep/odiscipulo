@@ -154,22 +154,6 @@ function LicaoPage() {
                 <p className="mt-2 scripture text-base leading-relaxed" data-narrate>
                   "{verseText(v, bibleVersion)}"
                 </p>
-                {v.originals && v.originals.length > 0 && (
-                  <div className="mt-3 space-y-1.5 border-t border-ancient/20 pt-3">
-                    {v.originals.map((o, oi) => (
-                      <div key={oi} className="text-xs">
-                        <span className="ancient-text text-ancient">{o.word}</span>
-                        <span className="text-muted-foreground">
-                          {" "}
-                          ({o.translit}, {o.lang}) —{" "}
-                        </span>
-                        <span className="text-foreground/80" data-narrate>
-                          {o.meaning}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
             ))}
 
