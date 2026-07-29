@@ -328,28 +328,6 @@ function LiderInline() {
         </div>
       </div>
 
-      <section className="space-y-2">
-        <h2 className="px-1 text-sm font-semibold text-muted-foreground">Módulo 12 · Formação de liderança</h2>
-        <Link
-          to="/modulo/$id"
-          params={{ id: "como-ser-lider" }}
-          className="group relative block overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-900 p-4 transition-all duration-300 hover:scale-[1.01]"
-        >
-          <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-violet-400/20 blur-3xl" />
-          <div className="relative flex items-center gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/10">
-              <Sparkles className="h-5 w-5 text-violet-200" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-white/70">Exclusivo do modo líder</span>
-              <p className="mt-0.5 truncate font-semibold text-white/95">Como ser um líder</p>
-              <p className="truncate text-xs text-white/60">10 trilhas para liderar à maneira de Cristo</p>
-            </div>
-            <ChevronRight className="h-4 w-4 text-white/60" />
-          </div>
-        </Link>
-      </section>
-
       <LeaderResources />
     </div>
   );
