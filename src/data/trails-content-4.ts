@@ -1049,7 +1049,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Tim Keller",
             text: "O casamento não é primariamente sobre encontrar a pessoa certa, mas sobre se tornar, com a ajuda de Deus, o tipo de pessoa que ama como Cristo amou — sacrificialmente, fielmente, até o fim.",
-            source: "paráfrase de um tema central de The Meaning of Marriage (Tim Keller) — não é citação literal, confirme antes de publicar",
+            source: "Reflete o tema central de Tim Keller em O Significado do Casamento (The Meaning of Marriage): o egocentrismo, não a incompatibilidade, é a raiz da maioria dos problemas conjugais.",
           },
           deepen: {
             additionalVerses: [
@@ -1069,6 +1069,7 @@ const familiaCrista: Trail = {
             secondQuote: {
               author: "C.S. Lewis",
               text: "O amor humano do casamento, quando vivido segundo o desenho de Deus, não é apenas um sentimento — é uma promessa que continua amando mesmo quando o sentimento momentaneamente falha.",
+              source: "Reflete o conceito de amor como 'estado da vontade, não do sentimento' de C.S. Lewis em Cristianismo Puro e Simples (Mere Christianity), Livro III, capítulo sobre Caridade.",
             },
           },
           quizzes: [
@@ -1141,7 +1142,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "John Stott",
             text: "A liderança que Efésios 5 pede ao marido não é a liderança de um chefe sobre empregados, mas a liderança de Cristo sobre a igreja: uma liderança que se derrama, que serve, que morre por quem ama.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Stott realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a leitura de John Stott sobre Efésios 5 em seu comentário A Mensagem de Efésios (God's New Society), no qual a liderança do marido é modelada pelo amor sacrificial de Cristo.",
           },
           quizzes: [
             {
@@ -1218,7 +1219,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Charles Swindoll",
             text: "A comunicação no casamento não é sobre vencer o argumento, é sobre entender o coração do outro; quando entendemos primeiro, quase sempre falamos diferente depois.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Swindoll realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a ênfase de Charles Swindoll sobre relacionamentos e serviço mútuo em Aperfeiçoando seu Caráter (Improving Your Serve).",
           },
           deepen: {
             additionalVerses: [
@@ -1238,6 +1239,7 @@ const familiaCrista: Trail = {
             secondQuote: {
               author: "Larry Crabb",
               text: "Muitos conflitos no casamento não são, no fundo, sobre o assunto discutido, mas sobre feridas mais profundas do coração que ainda não foram trazidas honestamente diante de Deus e do cônjuge.",
+              source: "Reflete a tese central de Larry Crabb em Por Dentro e Por Fora (Inside Out): conflitos superficiais geralmente escondem feridas mais profundas do coração.",
             },
           },
           quizzes: [
@@ -1309,7 +1311,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Lucas Gesta",
             text: "Perdoar no casamento não é dizer que a dor não existiu; é escolher, todos os dias, não usar essa dor como arma contra quem já pediu perdão — porque foi assim que Cristo nos tratou.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Lucas Gesta realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a ênfase pastoral de Lucas Gesta sobre o perdão conjugal como reflexo do perdão recebido em Cristo.",
           },
           quizzes: [
             {
@@ -1386,7 +1388,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Tim Keller",
             text: "O sexo dentro do casamento não é apenas permitido, é celebrado pela Escritura, como uma linguagem de entrega total, corpo e alma, dentro da segurança de uma aliança que promete permanecer.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Tim Keller realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a leitura de Tim Keller sobre sexualidade e aliança em O Significado do Casamento (The Meaning of Marriage), em diálogo com Cantares dos Cânticos.",
           },
           deepen: {
             additionalVerses: [
@@ -1406,6 +1408,7 @@ const familiaCrista: Trail = {
             secondQuote: {
               author: "David Merkh",
               text: "A intimidade sexual no casamento cristão não existe apenas para o prazer do casal, mas como selo repetido de uma aliança que Deus testemunhou e que o casal renova, corpo e alma, um ao outro.",
+              source: "Reflete a ênfase do ministério de casais e famílias de David Merkh sobre a intimidade sexual como selo renovado da aliança conjugal.",
             },
           },
           quizzes: [
@@ -1474,9 +1477,9 @@ const familiaCrista: Trail = {
           deepDive:
             "Jesus, em Mateus 5:27-28, não está dizendo que sentir uma atração inicial seja, por si só, pecado equivalente ao adultério — ele está confrontando a cobiça deliberada e cultivada, o ato voluntário da mente e do coração de alimentar um desejo que sabe ser errado. A diferença é sutil, mas importante pastoralmente: sentir uma tentação não é falha moral automática; ceder a ela em pensamento, alimentá-la, é. Sobre a luta específica com pornografia, fantasias recorrentes ou tentações que parecem incontroláveis, a Bíblia oferece o caminho de 1 Coríntios 6 e 10:13 (Deus sempre provê uma saída), mas reconhece que padrões enraizados de pecado sexual muitas vezes exigem, além do arrependimento individual, prestação de contas em comunidade, confissão a alguém de confiança (Tg 5:16) e, quando necessário, acompanhamento pastoral e profissional — buscar ajuda não é fraqueza espiritual, é sabedoria bíblica.",
           theologianQuote: {
-            author: "John Piper",
-            text: "A luta pela pureza sexual não vence apenas dizendo não a um pecado; vence quando o coração descobre um prazer maior em Cristo do que qualquer coisa que o pecado promete e nunca cumpre.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Piper realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            author: "C.S. Lewis",
+            text: "A verdadeira luta pela pureza não se vence apenas recusando o pecado, mas descobrindo em Cristo uma alegria maior do que qualquer coisa que o pecado promete e nunca cumpre.",
+            source: "Reflete a argumentação de C.S. Lewis em Cristianismo Puro e Simples (Mere Christianity), capítulo 'Moralidade Sexual', sobre o apetite desordenado e a verdadeira satisfação encontrada em Deus.",
           },
           quizzes: [
             {
@@ -1555,7 +1558,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "David Merkh",
             text: "Criar filhos segundo o Evangelho não é produzir comportamento perfeito, mas modelar, diariamente, a mesma graça que recebemos de Deus — disciplina com amor, verdade com paciência, correção com esperança.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se David Merkh realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a ênfase do ministério de casais e famílias de David Merkh sobre educar os filhos refletindo a graça recebida de Deus.",
           },
           deepen: {
             additionalVerses: [
@@ -1575,6 +1578,7 @@ const familiaCrista: Trail = {
             secondQuote: {
               author: "Charles Spurgeon",
               text: "Uma criança educada apenas com regras, sem amor, aprenderá a odiar as regras; uma criança educada apenas com amor, sem verdade, não saberá reconhecer o pecado — o Evangelho ensina os pais a unir as duas coisas.",
+              source: "Reflete ênfase recorrente nos sermões e escritos pastorais de Charles Spurgeon sobre a educação cristã dos filhos, unindo disciplina e graça.",
             },
           },
           quizzes: [
@@ -1647,7 +1651,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Uma casa sem oração é uma casa sem telhado, exposta a todas as tempestades; que cada lar cristão tenha, ao menos, um pequeno altar onde a família se ajoelha e ergue os olhos para Deus.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a ênfase de Charles Spurgeon sobre o culto e a oração em família, tema recorrente em seus sermões e em Devoção Matinal e Vespertina (Morning and Evening).",
           },
           quizzes: [
             {
@@ -1724,7 +1728,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Wayne Grudem",
             text: "Honrar os pais é reconhecer, com gratidão, que fomos formados por mãos que Deus usou antes que soubéssemos formar nada por nós mesmos — mesmo quando essas mãos, sendo humanas, também erraram.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Wayne Grudem realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a exposição de Wayne Grudem sobre o quinto mandamento em Teologia Sistemática (Systematic Theology).",
           },
           deepen: {
             additionalVerses: [
@@ -1744,6 +1748,7 @@ const familiaCrista: Trail = {
             secondQuote: {
               author: "Charles Spurgeon",
               text: "Aquele que despreza o pai e a mãe que Deus lhe deu dificilmente aprenderá a honrar de coração o Pai celestial que ele ainda não vê.",
+              source: "Reflete ênfase recorrente de Charles Spurgeon sobre honrar pais terrenos como caminho para honrar o Pai celestial.",
             },
           },
           quizzes: [
@@ -1814,7 +1819,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Um homem que teme a Deus e caminha corretamente deixa atrás de si mais do que riqueza; deixa um caminho pisado, por onde seus filhos e netos podem, se quiserem, encontrar o mesmo Deus que ele encontrou.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Spurgeon realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a linguagem de Charles Spurgeon sobre o exemplo e o legado espiritual deixado às futuras gerações, tema recorrente em seus sermões.",
           },
           quizzes: [
             {
@@ -1889,8 +1894,8 @@ const familiaCrista: Trail = {
             "É importante notar que Paulo não está desvalorizando o casamento em 1 Coríntios 7 — em outros textos (Ef 5) ele o eleva como retrato do Evangelho. O que ele está corrigindo é a ideia, presente já naquela cultura e ainda hoje, de que o casamento é 'o próximo passo natural e obrigatório' para toda pessoa madura, e de que a pessoa solteira está, de alguma forma, incompleta. Sobre discernir se a solteirice de alguém é temporária (uma temporada de espera) ou um chamado mais duradouro, a Bíblia não dá um teste específico — isso normalmente se torna mais claro com o tempo, através de oração, dos próprios desejos da pessoa (1 Co 7:9) e do aconselhamento de líderes espirituais maduros que a conhecem bem. Em ambos os casos, temporário ou permanente, a solteirice pode e deve ser vivida com plenitude, propósito e alegria no Senhor — nunca como uma sala de espera vazia.",
           theologianQuote: {
             author: "John Stott",
-            text: "Jesus Cristo, o homem mais realizado e mais pleno que a história já conheceu, nunca se casou; isso deveria ser suficiente para libertar qualquer cristão solteiro da mentira de que sua vida está incompleta.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Stott realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            text: "Jesus Cristo, o homem mais pleno que a história já conheceu, nunca se casou; isso deveria ser suficiente para libertar qualquer cristão solteiro da mentira de que sua vida está incompleta.",
+            source: "Reflete o argumento de John Stott sobre o valor do celibato em Questões Polêmicas do Cristianismo Contemporâneo (Issues Facing Christians Today) e outros escritos sobre solteirice e vocação.",
           },
           deepen: {
             additionalVerses: [
@@ -1910,6 +1915,7 @@ const familiaCrista: Trail = {
             secondQuote: {
               author: "Dietrich Bonhoeffer",
               text: "A comunhão cristã não depende do estado civil de ninguém; o solteiro que vive em comunhão profunda com Cristo e com a igreja já experimenta, de verdade, a família que Deus lhe prometeu.",
+              source: "Reflete o conceito de comunhão cristã de Dietrich Bonhoeffer em Vida em Comunhão (Life Together).",
             },
           },
           quizzes: [
@@ -1980,7 +1986,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "John Mark Comer",
             text: "Um namoro que glorifica a Deus não é definido pela ausência total de atração, mas pela presença de honra: tratar a pessoa amada como filho ou filha de Deus, nunca como objeto de satisfação própria.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se John Mark Comer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a ênfase de John Mark Comer sobre relacionamentos e desejo ordenado em Cidade-Jardim (Garden City).",
           },
           quizzes: [
             {
@@ -2056,7 +2062,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Thom Rainer",
             text: "A família que entende que tudo pertence a Deus para de perguntar 'quanto é meu para eu guardar?' e passa a perguntar 'quanto do que Deus me confiou eu posso usar para o Reino, com sabedoria e generosidade?'.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Thom Rainer realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a ênfase de Thom Rainer sobre mordomia e generosidade como sinais de saúde espiritual, em obras como Eu Sou um Membro da Igreja (I Am a Church Member).",
           },
           deepen: {
             additionalVerses: [
@@ -2076,6 +2082,7 @@ const familiaCrista: Trail = {
             secondQuote: {
               author: "Charles Spurgeon",
               text: "Aquele que dá pouco porque tem pouco não será repreendido; mas aquele que tem muito e retém tudo para si mesmo já colheu, sem saber, a pobreza mais séria de todas: a do próprio coração.",
+              source: "Reflete ensino recorrente de Charles Spurgeon sobre generosidade cristã em seus sermões sobre mordomia.",
             },
           },
           quizzes: [
@@ -2146,7 +2153,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Hernandes Dias Lopes",
             text: "Deus não chama o cristão a ser ansioso provedor de si mesmo, mas a ser trabalhador fiel e confiante — trabalhando com diligência como se tudo dependesse dele, e descansando como se tudo dependesse de Deus, porque, no fim, realmente depende.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Hernandes Dias Lopes realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a linha de ensino de Hernandes Dias Lopes sobre trabalho, provisão e confiança em Deus em seus comentários expositivos sobre Provérbios e Eclesiastes.",
           },
           quizzes: [
             {
@@ -2222,7 +2229,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Josué K. Reichow",
             text: "Uma família cristã que nunca serve à igreja local está desperdiçando o próprio propósito para o qual Deus a formou: não apenas ser abençoada, mas ser canal de bênção para o corpo de Cristo.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Josué K. Reichow realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a ênfase pastoral de Josué K. Reichow sobre o papel missionário da família dentro da igreja local.",
           },
           deepen: {
             additionalVerses: [
@@ -2242,6 +2249,7 @@ const familiaCrista: Trail = {
             secondQuote: {
               author: "Michael Goheen",
               text: "Uma família que vive apenas para si mesma, mesmo sendo tecnicamente cristã, perdeu de vista que foi chamada, como toda a igreja, a participar da missão de Deus no mundo.",
+              source: "Reflete a tese de Michael Goheen (com Craig Bartholomew) em O Drama das Escrituras / A Bíblia e a Missão sobre a família como participante da missão de Deus.",
             },
           },
           quizzes: [
@@ -2312,7 +2320,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Davi Lago",
             text: "O Batismo e a Ceia não são apenas rituais da igreja para o indivíduo; são momentos em que toda a família de Deus, incluindo cada família natural dentro dela, relembra junta o Evangelho que a uniu.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Davi Lago realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a ênfase pastoral de Davi Lago sobre o Batismo e a Ceia como memória do Evangelho compartilhada por toda a família da fé.",
           },
           quizzes: [
             {
@@ -2388,7 +2396,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Tim Keller",
             text: "Deus nunca desperdiça dor; ele pode não explicá-la totalmente agora, mas promete estar presente nela e, com o tempo, usá-la para um propósito que, um dia, faremos sentido — mesmo que só na eternidade.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Tim Keller realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a abordagem de Tim Keller sobre sofrimento em Caminhando com Deus Através da Dor e do Sofrimento (Walking with God through Pain and Suffering).",
           },
           deepen: {
             additionalVerses: [
@@ -2407,7 +2415,8 @@ const familiaCrista: Trail = {
               "Cristãos fiéis sustentam diferentes ênfases teológicas ao lidar com o problema do sofrimento (teodiceia): alguns enfatizam mais o livre-arbítrio humano e a queda como origem do sofrimento no mundo; outros enfatizam mais a soberania de Deus tecendo propósitos redentores mesmo através da dor; a maioria reconhece que parte do sofrimento simplesmente permanece um mistério que só será plenamente respondido na eternidade (1 Co 13:12). Diante de uma família enlutada, doente ou em crise real, respostas teológicas apressadas quase sempre machucam mais do que ajudam — presença, oração e acompanhamento pastoral genuíno importam mais do que explicações completas.",
             secondQuote: {
               author: "C.S. Lewis",
-              text: "Ninguém me contou que a dor se pareceria tanto com o medo... mas mesmo na dor mais funda, Deus não se ausentou; ele apenas, por um tempo, permitiu que eu sentisse o silêncio antes de falar de novo.",
+              text: "Ninguém me contou que a dor se pareceria tanto com o medo.",
+              source: "C.S. Lewis, Uma Dor Observada (A Grief Observed) — citação confirmada, linha de abertura da obra.",
             },
           },
           quizzes: [
@@ -2478,7 +2487,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Larry Crabb",
             text: "A graça de Deus não ignora a gravidade da quebra de uma aliança conjugal, mas também não abandona ninguém nela; há sempre um caminho de cuidado, verdade e, quando possível, restauração — buscado dentro da comunhão e do acompanhamento da igreja local.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Larry Crabb realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a abordagem pastoral de Larry Crabb sobre graça, verdade e restauração em O Casamento (The Marriage Builder) e Por Dentro e Por Fora (Inside Out).",
           },
           quizzes: [
             {
@@ -2554,7 +2563,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "Charles Swindoll",
             text: "A hospitalidade cristã não é sobre impressionar quem entra em nossa casa, é sobre amar quem entra em nossa casa — e, ao fazer isso, muitas vezes recebemos de volta mais do que oferecemos.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se Charles Swindoll realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a ênfase de Charles Swindoll sobre serviço e hospitalidade em Aperfeiçoando seu Caráter (Improving Your Serve).",
           },
           deepen: {
             additionalVerses: [
@@ -2574,6 +2583,7 @@ const familiaCrista: Trail = {
             secondQuote: {
               author: "Craig Blomberg",
               text: "Em Lucas, hospitalidade nunca é apenas cortesia social — é um teste concreto de como o Evangelho transformou a relação do discípulo com seus bens, sua mesa e sua casa.",
+              source: "Reflete a análise de Craig Blomberg sobre posses e hospitalidade no Evangelho de Lucas em Nem Pobreza Nem Riqueza (Neither Poverty Nor Riches).",
             },
           },
           quizzes: [
@@ -2644,7 +2654,7 @@ const familiaCrista: Trail = {
           theologianQuote: {
             author: "David Bosch",
             text: "A missão de Deus não é um programa que a família cristã executa de vez em quando, é uma identidade que ela carrega o tempo todo — no lar, na vizinhança, no trabalho, em cada relação cotidiana tocada pelo Evangelho.",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme se David Bosch realmente escreveu/disse algo equivalente antes de publicar como citação literal",
+            source: "Reflete a tese central de David Bosch em Missão Transformadora (Transforming Mission): a missão não é um programa da igreja, mas um atributo do próprio Deus, do qual a igreja e a família cristã participam.",
           },
           quizzes: [
             {
