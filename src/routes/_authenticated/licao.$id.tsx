@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lessonById, verseText } from "@/data/content";
@@ -30,7 +30,6 @@ type Step = "estudo" | "fixar" | "aplicar" | "done";
 
 function LicaoPage() {
   const { id } = Route.useParams();
-  const nav = useNavigate();
   const { bibleVersion } = useApp();
   const { celebrateActivity } = useCelebration();
   const found = useMemo(() => lessonById(id), [id]);
@@ -55,7 +54,7 @@ function LicaoPage() {
     );
   }
 
-  const { lesson, module: mod } = found;
+  const { lesson } = found;
   const total = lesson.quizzes.length;
   const correctCount = Object.entries(answers).filter(
     ([i, v]) => v === lesson.quizzes[Number(i)].correctIndex,
@@ -63,7 +62,13 @@ function LicaoPage() {
   const canAdvance = Object.keys(answers).length === total && correctCount === total;
   const pct = step === "estudo" ? 33 : step === "fixar" ? 66 : 100;
 
-  const goBack = () => void nav({ to: "/modulo/$id", params: { id: mod.id } });
+  // Não navegamos para "/modulo/$id" reconstruindo o id aqui: o id do módulo
+  // no conteúdo (ex.: "nc-mod-1") não é o mesmo id usado na tabela
+  // disciple_modules do Supabase (ex.: "m1"), então isso levaria a "Módulo
+  // não encontrado". Como o usuário sempre chega aqui a partir da própria
+  // página do módulo, voltar no histórico do navegador retorna para a URL
+  // correta (com o id certo) sem precisar conhecê-lo aqui.
+  const goBack = () => window.history.back();
 
   const finish = async () => {
     if (saving) return;
@@ -358,13 +363,13 @@ function LicaoPage() {
             <button className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary py-3 text-sm font-semibold text-primary-foreground">
               <Share2 className="h-4 w-4" /> Compartilhar
             </button>
-            <Link
-              to="/modulo/$id"
-              params={{ id: mod.id }}
+            <button
+              type="button"
+              onClick={goBack}
               className="rounded-2xl border border-border py-3 text-sm font-medium text-muted-foreground"
             >
               Voltar ao módulo
-            </Link>
+            </button>
           </div>
         </div>
       )}
