@@ -7,6 +7,7 @@ import { useCelebration } from "@/lib/celebration";
 import { awardXpAndStreak } from "@/lib/progress";
 import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
 import { FontSizeControls } from "@/components/font-size-controls";
+import { NarrationButton } from "@/components/NarrationButton";
 import {
   ArrowLeft,
   ArrowRight,
@@ -125,75 +126,92 @@ function LicaoPage() {
             <div className="mt-2 flex items-center justify-between gap-2">
               <div className="flex min-w-0 items-center gap-2">
                 <BookOpen className="h-5 w-5 shrink-0 text-primary" />
-                <h1 className="truncate text-2xl font-bold">{lesson.title}</h1>
+                <h1 className="truncate text-2xl font-bold" data-narrate>
+                  {lesson.title}
+                </h1>
               </div>
-              <FontSizeControls scaleIndex={scaleIndex} onIncrease={increase} onDecrease={decrease} />
+              <div className="flex shrink-0 items-center gap-1">
+                <NarrationButton containerSelector='[data-tts-scope="licao-estudo"]' />
+                <FontSizeControls scaleIndex={scaleIndex} onIncrease={increase} onDecrease={decrease} />
+              </div>
             </div>
           </div>
 
-          <section className="card-elevated space-y-3 p-5">
-            {lesson.intro.map((p, i) => (
-              <p key={i} className="text-sm leading-relaxed text-foreground/90">
-                {p}
-              </p>
-            ))}
-          </section>
+          <div className="space-y-5" data-tts-scope="licao-estudo">
+            <section className="card-elevated space-y-3 p-5">
+              {lesson.intro.map((p, i) => (
+                <p key={i} className="text-sm leading-relaxed text-foreground/90" data-narrate>
+                  {p}
+                </p>
+              ))}
+            </section>
 
-          {lesson.verses.map((v) => (
-            <div key={v.ref} className="rounded-2xl border border-ancient/30 bg-ancient/5 p-4">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
-                {v.ref} · {bibleVersion}
-              </p>
-              <p className="mt-2 scripture text-base leading-relaxed">"{verseText(v, bibleVersion)}"</p>
-              {v.originals && v.originals.length > 0 && (
-                <div className="mt-3 space-y-1.5 border-t border-ancient/20 pt-3">
-                  {v.originals.map((o, oi) => (
+            {lesson.verses.map((v) => (
+              <div key={v.ref} className="rounded-2xl border border-ancient/30 bg-ancient/5 p-4">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
+                  {v.ref} · {bibleVersion}
+                </p>
+                <p className="mt-2 scripture text-base leading-relaxed" data-narrate>
+                  "{verseText(v, bibleVersion)}"
+                </p>
+                {v.originals && v.originals.length > 0 && (
+                  <div className="mt-3 space-y-1.5 border-t border-ancient/20 pt-3">
+                    {v.originals.map((o, oi) => (
+                      <div key={oi} className="text-xs">
+                        <span className="ancient-text text-ancient">{o.word}</span>
+                        <span className="text-muted-foreground">
+                          {" "}
+                          ({o.translit}, {o.lang}) —{" "}
+                        </span>
+                        <span className="text-foreground/80" data-narrate>
+                          {o.meaning}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {lesson.keywords.length > 0 && (
+              <div className="rounded-2xl border border-ancient/30 bg-ancient/5 p-4">
+                <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-ancient">
+                  Palavras no idioma original
+                </p>
+                <div className="space-y-2">
+                  {lesson.keywords.map((o, oi) => (
                     <div key={oi} className="text-xs">
-                      <span className="ancient-text text-ancient">{o.word}</span>
+                      <span className="ancient-text text-sm text-ancient">{o.word}</span>
                       <span className="text-muted-foreground">
                         {" "}
                         ({o.translit}, {o.lang}) —{" "}
                       </span>
-                      <span className="text-foreground/80">{o.meaning}</span>
+                      <span className="text-foreground/80" data-narrate>
+                        {o.meaning}
+                      </span>
                     </div>
                   ))}
                 </div>
-              )}
-            </div>
-          ))}
-
-          {lesson.keywords.length > 0 && (
-            <div className="rounded-2xl border border-ancient/30 bg-ancient/5 p-4">
-              <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-ancient">
-                Palavras no idioma original
-              </p>
-              <div className="space-y-2">
-                {lesson.keywords.map((o, oi) => (
-                  <div key={oi} className="text-xs">
-                    <span className="ancient-text text-sm text-ancient">{o.word}</span>
-                    <span className="text-muted-foreground">
-                      {" "}
-                      ({o.translit}, {o.lang}) —{" "}
-                    </span>
-                    <span className="text-foreground/80">{o.meaning}</span>
-                  </div>
-                ))}
               </div>
+            )}
+
+            <section className="card-elevated space-y-2 p-5">
+              <h2 className="text-base font-semibold">Aprofundando</h2>
+              <p className="text-sm leading-relaxed text-foreground/90" data-narrate>
+                {lesson.deepDive}
+              </p>
+            </section>
+
+            <div className="card-elevated space-y-2 border-l-4 border-l-ancient p-5">
+              <Quote className="h-4 w-4 text-ancient" />
+              <p className="scripture text-sm leading-relaxed" data-narrate>
+                "{lesson.theologianQuote.text}"
+              </p>
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                — {lesson.theologianQuote.author}
+                {lesson.theologianQuote.source ? `, ${lesson.theologianQuote.source}` : ""}
+              </p>
             </div>
-          )}
-
-          <section className="card-elevated space-y-2 p-5">
-            <h2 className="text-base font-semibold">Aprofundando</h2>
-            <p className="text-sm leading-relaxed text-foreground/90">{lesson.deepDive}</p>
-          </section>
-
-          <div className="card-elevated space-y-2 border-l-4 border-l-ancient p-5">
-            <Quote className="h-4 w-4 text-ancient" />
-            <p className="scripture text-sm leading-relaxed">"{lesson.theologianQuote.text}"</p>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-              — {lesson.theologianQuote.author}
-              {lesson.theologianQuote.source ? `, ${lesson.theologianQuote.source}` : ""}
-            </p>
           </div>
 
           {lesson.deepen && (
