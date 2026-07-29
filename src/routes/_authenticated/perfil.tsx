@@ -4,13 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { ViewModeToggle } from "@/components/ViewModeToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { CHARACTERS, BIBLE_VERSIONS, type BibleVersion } from "@/data/content";
-import { getLevel, xpToNextLevel, MAX_LEVEL } from "@/data/levels";
+import { getLevel, getNextLevel, xpToNextLevel, levelProgressPct, MAX_LEVEL } from "@/data/levels";
 import { toast } from "sonner";
 import { isUsernameAvailable, isValidUsername, normalizeUsername } from "@/lib/username";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 import { useApp } from "@/lib/app-context";
-import { AtSign, Bell, Church, Copy, Check, LogOut, BookOpen, Flame, Trophy, Clock, Camera, Loader2, Pencil, X, ChevronDown } from "lucide-react";
+import { AtSign, Bell, Church, Copy, Check, LogOut, BookOpen, Flame, Trophy, Clock, Camera, Loader2, Pencil, X, ChevronDown, ChevronRight, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/perfil")({
   component: PerfilPage,
@@ -144,37 +144,44 @@ function PerfilPage() {
     toast.success("ID atualizado!");
   };
 
-  if (!profile) return <div className="p-6 text-sm text-muted-foreground">Carregando…</div>;
+  if (!profile) {
+    return (
+      <div className="mx-auto max-w-lg space-y-4 px-4 pt-6">
+        <div className="h-40 animate-pulse rounded-3xl bg-surface-2" />
+        <div className="h-24 animate-pulse rounded-3xl bg-surface-2" />
+        <div className="h-24 animate-pulse rounded-3xl bg-surface-2" />
+      </div>
+    );
+  }
 
   const level = getLevel(profile.xp);
+  const nextLevel = getNextLevel(profile.xp);
   const ch = CHARACTERS.find((c) => c.id === profile.avatar_char) ?? CHARACTERS[0];
   const toNext = xpToNextLevel(profile.xp);
+  const levelPct = levelProgressPct(profile.xp);
 
   return (
-    <div className="mx-auto max-w-lg space-y-4 px-4 pt-6">
-      <header className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Perfil</h1>
+    <div className="mx-auto max-w-lg space-y-5 px-4 pt-6 pb-4">
+      <header className="flex items-center justify-between gap-3">
+        <div>
+          <p className="text-xs text-muted-foreground">Sua conta</p>
+          <h1 className="text-xl font-semibold">Perfil</h1>
+        </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <ViewModeToggle />
         </div>
       </header>
 
+      {/* Hero: avatar, identidade e progresso de nível */}
       <section className="card-elevated overflow-hidden">
-        <div
-          className="relative overflow-hidden p-5 text-center"
-          style={{
-            backgroundImage: "url(/sheep-profile.jpeg)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          {/* overlay escuro para manter texto e botões legíveis */}
-          <div className="absolute inset-0 bg-black/50" />
+        <div className="relative overflow-hidden bg-gradient-to-br from-primary/25 via-primary-glow/15 to-transparent p-6 text-center">
+          <div className="pointer-events-none absolute -top-14 -right-14 h-40 w-40 rounded-full bg-primary/20 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-14 -left-14 h-40 w-40 rounded-full bg-primary-glow/15 blur-3xl" />
 
           <div className="relative z-10">
             <div className="relative mx-auto h-28 w-28">
-              <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-3xl bg-surface-2 ring-2 ring-primary/40 text-6xl">
+              <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-3xl bg-surface-2 text-6xl shadow-lg ring-4 ring-primary/30">
                 {profile.avatar_url ? (
                   <img src={profile.avatar_url} alt="Foto de perfil" className="h-full w-full object-cover" />
                 ) : level.avatar ? (
@@ -186,14 +193,16 @@ function PerfilPage() {
               <button
                 onClick={onPickFile}
                 disabled={uploading}
-                className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-2 ring-background disabled:opacity-60"
+                className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-2 ring-background transition-transform hover:scale-105 disabled:opacity-60"
                 aria-label="Enviar foto"
               >
                 {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
               </button>
               <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onFileChange} />
             </div>
-            <h2 className="mt-3 text-lg font-bold text-white">{profile.display_name}</h2>
+
+            <h2 className="mt-3 text-lg font-bold text-foreground">{profile.display_name}</h2>
+
             <div className="mt-1 flex items-center justify-center gap-1.5">
               {editingUsername ? (
                 <div className="flex items-center gap-1.5">
@@ -224,14 +233,14 @@ function PerfilPage() {
                   </button>
                 </div>
               ) : (
-                <>
-                  <span className="text-xs font-medium text-white/80">
+                <div className="flex items-center gap-1 rounded-full bg-surface-2/80 px-2.5 py-1">
+                  <span className="text-xs font-medium text-muted-foreground">
                     @{profile.username ?? "sem-id"}
                   </span>
                   {profile.username && (
                     <button
                       onClick={() => void copyUsername()}
-                      className="rounded-full p-1 text-white/80 transition-colors hover:bg-white/10 hover:text-primary"
+                      className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
                       aria-label="Copiar ID"
                     >
                       {copied ? <Check className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
@@ -239,31 +248,58 @@ function PerfilPage() {
                   )}
                   <button
                     onClick={startEditUsername}
-                    className="rounded-full p-1 text-white/80 transition-colors hover:bg-white/10 hover:text-primary"
+                    className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
                     aria-label="Editar ID"
                   >
                     <Pencil className="h-3 w-3" />
                   </button>
-                </>
+                </div>
               )}
             </div>
-            <p className="mt-2 text-xs text-white/80">Sua Patente:</p>
-            <p className="text-base font-semibold text-primary">Nível {level.level} / {MAX_LEVEL}: {level.title}</p>
-            <p className="mt-1 text-[11px] text-white/70">
-              {toNext === null ? "Nível máximo alcançado 🔥" : `Faltam ${toNext} XP para subir de nível`}
-            </p>
+
+            {/* Barra de progresso de nível, no mesmo padrão visual da Home */}
+            <div className="mt-4 text-left">
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Sua patente</p>
+                  <p className="mt-0.5 truncate text-sm font-bold text-primary">Nível {level.level} / {MAX_LEVEL} · {level.title}</p>
+                </div>
+                <div className="flex shrink-0 items-center gap-1 rounded-full bg-streak/20 px-2.5 py-1">
+                  <Flame className="h-3.5 w-3.5 text-streak" />
+                  <span className="text-xs font-bold text-streak">{profile.streak}</span>
+                  <span className="text-[9px] text-muted-foreground">dias</span>
+                </div>
+              </div>
+
+              <div className="mt-2">
+                <div className="mb-1 flex justify-end">
+                  <span className="text-[10px] font-semibold text-muted-foreground">{Math.round(levelPct)}%</span>
+                </div>
+                <div className="h-2.5 overflow-hidden rounded-full bg-surface-2">
+                  <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${levelPct}%` }} />
+                </div>
+                <div className="mt-1 flex justify-end">
+                  <span className="whitespace-nowrap text-[10px] font-medium text-primary">
+                    {toNext === null ? "🔥 Nível máximo alcançado" : `Faltam ${toNext} XP · próx: ${nextLevel?.title ?? ""}`}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="border-t border-border p-4">
-          <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Bio</label>
+        <div className="border-t border-border/60 p-4">
+          <div className="mb-2 flex items-center gap-2">
+            <Pencil className="h-3.5 w-3.5 text-primary" />
+            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Bio</label>
+          </div>
           <textarea
             value={bioDraft}
             onChange={(e) => setBioDraft(e.target.value.slice(0, 240))}
             onBlur={() => void saveBio()}
             placeholder="Conte um pouco sobre sua caminhada com Cristo…"
             rows={3}
-            className="w-full resize-none rounded-2xl border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
+            className="w-full resize-none rounded-2xl border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:border-primary focus:outline-none"
           />
           <div className="mt-1 flex justify-between text-[10px] text-muted-foreground">
             <span>Sua bio aparece no ranking e no perfil.</span>
@@ -272,8 +308,18 @@ function PerfilPage() {
         </div>
       </section>
 
-
-     
+      {/* Estatísticas */}
+      <section className="card-elevated p-4">
+        <p className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <Sparkles className="h-3.5 w-3.5 text-primary" /> Estatísticas
+        </p>
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+          <Stat icon={Trophy} label="Nível" value={String(level.level)} accent="primary" />
+          <Stat icon={Flame} label="Ofensiva" value={`${profile.streak}d`} accent="streak" />
+          <Stat icon={BookOpen} label="Lições" value={String(lessonsCount)} accent="success" />
+          <Stat icon={Clock} label="Estudo" value={`${lessonsCount * 8}m`} accent="ancient" />
+        </div>
+      </section>
 
       <BibleVersionSelector
         value={bibleVersion}
@@ -286,69 +332,71 @@ function PerfilPage() {
         }}
       />
 
-      <section className="card-elevated p-4">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Estatísticas</p>
-        <div className="grid grid-cols-2 gap-2 text-center">
-          <Stat icon={Trophy} label="Nível" value={String(level.level)} />
-          <Stat icon={Flame} label="Ofensiva 🔥" value={`${profile.streak}d`} />
-          <Stat icon={BookOpen} label="Lições" value={String(lessonsCount)} />
-          <Stat icon={Clock} label="Estudo" value={`${lessonsCount * 8}m`} />
-        </div>
-      </section>
-
+      {/* Comunidade */}
       <section className="card-elevated p-4">
         <div className="flex items-center gap-3">
-          <Church className="h-5 w-5 text-primary" />
-          <div className="flex-1">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary/10">
+            <Church className="h-5 w-5 text-primary" />
+          </div>
+          <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold">Comunidade</p>
-            <p className="text-xs text-muted-foreground">{profile.church_name ?? "Não vinculado a uma igreja"}</p>
+            <p className="truncate text-xs text-muted-foreground">{profile.church_name ?? "Não vinculado a uma igreja"}</p>
           </div>
           <button
             onClick={() => {
               const v = window.prompt("Nome da igreja:", profile.church_name ?? "");
               if (v !== null) void update({ church_name: v });
             }}
-            className="rounded-full border border-border px-3 py-1 text-xs font-medium"
+            className="shrink-0 rounded-full border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:border-primary/50 hover:text-primary"
           >
             Vincular
           </button>
         </div>
       </section>
 
+      {/* Notificações */}
       <section className="card-elevated p-4">
         <div className="flex items-center gap-3">
-          <Bell className="h-5 w-5 text-primary" />
-          <div className="flex-1">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary/10">
+            <Bell className="h-5 w-5 text-primary" />
+          </div>
+          <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold">Lembrete de Devocional</p>
             <p className="text-xs text-muted-foreground">Mantém sua ofensiva ativa.</p>
           </div>
           <button
             onClick={() => void update({ notify_devocional: !profile.notify_devocional })}
-            className={`h-6 w-11 rounded-full transition-all ${profile.notify_devocional ? "bg-primary" : "bg-muted"}`}
+            className={`h-6 w-11 shrink-0 rounded-full transition-all ${profile.notify_devocional ? "bg-primary" : "bg-muted"}`}
+            aria-label="Alternar lembrete de devocional"
           >
-            <div className={`h-5 w-5 rounded-full bg-white transition-all ${profile.notify_devocional ? "translate-x-5" : "translate-x-0.5"}`} />
+            <div className={`h-5 w-5 rounded-full bg-white shadow transition-all ${profile.notify_devocional ? "translate-x-5" : "translate-x-0.5"}`} />
           </button>
         </div>
       </section>
 
+      {/* Modo Líder */}
       <section className="card-elevated p-4">
-        <div className="flex items-center justify-between">
-          <div>
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary/10">
+            <Trophy className="h-5 w-5 text-primary" />
+          </div>
+          <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold">Sou líder / discipulador</p>
             <p className="text-xs text-muted-foreground">Habilita o Modo Líder.</p>
           </div>
           <button
             onClick={() => void update({ is_leader: !profile.is_leader })}
-            className={`h-6 w-11 rounded-full transition-all ${profile.is_leader ? "bg-primary" : "bg-muted"}`}
+            className={`h-6 w-11 shrink-0 rounded-full transition-all ${profile.is_leader ? "bg-primary" : "bg-muted"}`}
+            aria-label="Alternar modo líder"
           >
-            <div className={`h-5 w-5 rounded-full bg-white transition-all ${profile.is_leader ? "translate-x-5" : "translate-x-0.5"}`} />
+            <div className={`h-5 w-5 rounded-full bg-white shadow transition-all ${profile.is_leader ? "translate-x-5" : "translate-x-0.5"}`} />
           </button>
         </div>
       </section>
 
       <button
         onClick={() => void signOut()}
-        className="flex w-full items-center justify-center gap-2 rounded-2xl border border-border bg-surface py-3 text-sm font-medium text-muted-foreground transition-all hover:text-destructive"
+        className="flex w-full items-center justify-center gap-2 rounded-2xl border border-border bg-surface py-3 text-sm font-medium text-muted-foreground transition-all hover:border-destructive/40 hover:text-destructive"
       >
         <LogOut className="h-4 w-4" /> Sair
       </button>
@@ -358,14 +406,74 @@ function PerfilPage() {
 
 function BibleVersionSelector({ value, open, onOpenChange, onSelect }: { value: BibleVersion; open: boolean; onOpenChange: (open: boolean) => void; onSelect: (code: BibleVersion) => void }) {
   const current = BIBLE_VERSION_OPTIONS.find((option) => option.code === value) ?? BIBLE_VERSION_OPTIONS[0];
-  return <><section className="card-elevated p-4"><p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Versão da Bíblia</p><button type="button" onClick={() => onOpenChange(true)} className="flex w-full items-center gap-3 rounded-2xl border border-border px-4 py-3 text-left transition-colors hover:border-primary/50"><span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-xs font-bold text-primary-foreground">{current.code}</span><span className="min-w-0 flex-1"><span className="block text-sm font-semibold">{current.name}</span><span className="block truncate text-xs text-muted-foreground">{current.description}</span></span><ChevronDown className="h-5 w-5 text-muted-foreground" /></button><p className="mt-2 text-[11px] text-muted-foreground">Toque para escolher outra versão.</p></section><Dialog open={open} onOpenChange={onOpenChange}><DialogContent><DialogHeader><DialogTitle>Versão da Bíblia</DialogTitle><DialogDescription>Escolha a versão exibida em lições, estudos e mural.</DialogDescription></DialogHeader><div className="divide-y divide-border overflow-hidden rounded-2xl border border-border">{BIBLE_VERSION_OPTIONS.map((option) => { const selected = value === option.code; return <button key={option.code} type="button" onClick={() => onSelect(option.code)} className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors ${selected ? "bg-primary/5" : "hover:bg-surface-2"}`}><span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold ${selected ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground"}`}>{option.code}</span><span className="min-w-0 flex-1"><span className="block text-sm font-semibold">{option.name}</span><span className="block text-xs text-muted-foreground">{option.description}</span></span>{selected && <Check className="h-5 w-5 shrink-0 text-primary" />}</button>; })}</div></DialogContent></Dialog></>;
+  return (
+    <>
+      <section className="card-elevated p-4">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Versão da Bíblia</p>
+        <button
+          type="button"
+          onClick={() => onOpenChange(true)}
+          className="flex w-full items-center gap-3 rounded-2xl border border-border px-4 py-3 text-left transition-colors hover:border-primary/50 hover:bg-primary/5"
+        >
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-xs font-bold text-primary-foreground">
+            {current.code}
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-semibold">{current.name}</span>
+            <span className="block truncate text-xs text-muted-foreground">{current.description}</span>
+          </span>
+          <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground" />
+        </button>
+        <p className="mt-2 text-[11px] text-muted-foreground">Toque para escolher outra versão.</p>
+      </section>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Versão da Bíblia</DialogTitle>
+            <DialogDescription>Escolha a versão exibida em lições, estudos e mural.</DialogDescription>
+          </DialogHeader>
+          <div className="divide-y divide-border overflow-hidden rounded-2xl border border-border">
+            {BIBLE_VERSION_OPTIONS.map((option) => {
+              const selected = value === option.code;
+              return (
+                <button
+                  key={option.code}
+                  type="button"
+                  onClick={() => onSelect(option.code)}
+                  className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors ${selected ? "bg-primary/5" : "hover:bg-surface-2"}`}
+                >
+                  <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold ${selected ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground"}`}>
+                    {option.code}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-semibold">{option.name}</span>
+                    <span className="block text-xs text-muted-foreground">{option.description}</span>
+                  </span>
+                  {selected && <Check className="h-5 w-5 shrink-0 text-primary" />}
+                </button>
+              );
+            })}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
 }
 
-function Stat({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) {
+const STAT_ACCENTS = {
+  primary: "bg-primary/10 text-primary",
+  streak: "bg-streak/15 text-streak",
+  success: "bg-success/15 text-success",
+  ancient: "bg-ancient/15 text-ancient",
+} as const;
+
+function Stat({ icon: Icon, label, value, accent = "primary" }: { icon: React.ElementType; label: string; value: string; accent?: keyof typeof STAT_ACCENTS }) {
   return (
-    <div className="rounded-2xl bg-surface-2 p-3">
-      <Icon className="mx-auto h-4 w-4 text-primary" />
-      <p className="mt-1 text-lg font-bold">{value}</p>
+    <div className="rounded-2xl bg-surface-2 p-3 text-center transition-transform hover:scale-[1.02]">
+      <div className={`mx-auto flex h-8 w-8 items-center justify-center rounded-xl ${STAT_ACCENTS[accent]}`}>
+        <Icon className="h-4 w-4" />
+      </div>
+      <p className="mt-1.5 text-lg font-bold">{value}</p>
       <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</p>
     </div>
   );
