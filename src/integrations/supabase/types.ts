@@ -187,6 +187,149 @@ export type Database = {
           },
         ]
       }
+      discipulos: {
+        Row: {
+          alert: string | null
+          created_at: string | null
+          data_entrada: string | null
+          email: string | null
+          id: string
+          level: number | null
+          name: string
+          progress: number | null
+          status: string | null
+          streak: number | null
+          telefone: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          alert?: string | null
+          created_at?: string | null
+          data_entrada?: string | null
+          email?: string | null
+          id?: string
+          level?: number | null
+          name: string
+          progress?: number | null
+          status?: string | null
+          streak?: number | null
+          telefone?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          alert?: string | null
+          created_at?: string | null
+          data_entrada?: string | null
+          email?: string | null
+          id?: string
+          level?: number | null
+          name?: string
+          progress?: number | null
+          status?: string | null
+          streak?: number | null
+          telefone?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      encontro_presenca: {
+        Row: {
+          created_at: string | null
+          discipulo_id: string
+          encontro_id: string
+          id: string
+          presente: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          discipulo_id: string
+          encontro_id: string
+          id?: string
+          presente?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          discipulo_id?: string
+          encontro_id?: string
+          id?: string
+          presente?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "encontro_presenca_encontro_id_fkey"
+            columns: ["encontro_id"]
+            isOneToOne: false
+            referencedRelation: "encontros"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      encontros: {
+        Row: {
+          assunto: string
+          created_at: string | null
+          data: string
+          grupo_id: string | null
+          grupo_nome: string
+          id: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          assunto: string
+          created_at?: string | null
+          data: string
+          grupo_id?: string | null
+          grupo_nome: string
+          id?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          assunto?: string
+          created_at?: string | null
+          data?: string
+          grupo_id?: string | null
+          grupo_nome?: string
+          id?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      etapas: {
+        Row: {
+          created_at: string | null
+          data_conclusao: string | null
+          data_inicio: string | null
+          discipulo_id: string
+          etapa: number
+          id: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          data_conclusao?: string | null
+          data_inicio?: string | null
+          discipulo_id: string
+          etapa: number
+          id?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          data_conclusao?: string | null
+          data_inicio?: string | null
+          discipulo_id?: string
+          etapa?: number
+          id?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       friendships: {
         Row: {
           created_at: string
@@ -205,24 +348,131 @@ export type Database = {
         }
         Relationships: []
       }
+      group_members: {
+        Row: {
+          created_at: string
+          disciple_id: string
+          group_id: string
+        }
+        Insert: {
+          created_at?: string
+          disciple_id: string
+          group_id: string
+        }
+        Update: {
+          created_at?: string
+          disciple_id?: string
+          group_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_members_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       groups: {
         Row: {
           created_at: string
           id: string
           leader_id: string
           name: string
+          topic: string | null
         }
         Insert: {
           created_at?: string
           id?: string
           leader_id: string
           name: string
+          topic?: string | null
         }
         Update: {
           created_at?: string
           id?: string
           leader_id?: string
           name?: string
+          topic?: string | null
+        }
+        Relationships: []
+      }
+      grupos: {
+        Row: {
+          created_at: string | null
+          data_criacao: string | null
+          id: string
+          lider_id: string | null
+          membros: string[] | null
+          nome: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          data_criacao?: string | null
+          id?: string
+          lider_id?: string | null
+          membros?: string[] | null
+          nome: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          data_criacao?: string | null
+          id?: string
+          lider_id?: string | null
+          membros?: string[] | null
+          nome?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      leader_disciples: {
+        Row: {
+          created_at: string
+          disciple_id: string
+          leader_id: string
+        }
+        Insert: {
+          created_at?: string
+          disciple_id: string
+          leader_id: string
+        }
+        Update: {
+          created_at?: string
+          disciple_id?: string
+          leader_id?: string
+        }
+        Relationships: []
+      }
+      leader_meetings: {
+        Row: {
+          created_at: string
+          id: string
+          leader_id: string
+          location: string | null
+          scheduled_at: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          leader_id: string
+          location?: string | null
+          scheduled_at: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          leader_id?: string
+          location?: string | null
+          scheduled_at?: string
+          title?: string
         }
         Relationships: []
       }
@@ -250,11 +500,48 @@ export type Database = {
         }
         Relationships: []
       }
+      mensagens: {
+        Row: {
+          conteudo: string
+          created_at: string | null
+          data_envio: string | null
+          destinatario: string | null
+          destinatario_id: string | null
+          destinatario_nome: string | null
+          id: string
+          lida: boolean | null
+          remetente_id: string | null
+        }
+        Insert: {
+          conteudo: string
+          created_at?: string | null
+          data_envio?: string | null
+          destinatario?: string | null
+          destinatario_id?: string | null
+          destinatario_nome?: string | null
+          id?: string
+          lida?: boolean | null
+          remetente_id?: string | null
+        }
+        Update: {
+          conteudo?: string
+          created_at?: string | null
+          data_envio?: string | null
+          destinatario?: string | null
+          destinatario_id?: string | null
+          destinatario_nome?: string | null
+          id?: string
+          lida?: boolean | null
+          remetente_id?: string | null
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           body: string
           created_at: string
           id: string
+          read_at: string | null
           recipient_id: string
           sender_id: string
         }
@@ -262,6 +549,7 @@ export type Database = {
           body: string
           created_at?: string
           id?: string
+          read_at?: string | null
           recipient_id: string
           sender_id: string
         }
@@ -269,6 +557,7 @@ export type Database = {
           body?: string
           created_at?: string
           id?: string
+          read_at?: string | null
           recipient_id?: string
           sender_id?: string
         }
@@ -390,6 +679,36 @@ export type Database = {
           updated_at?: string
           username?: string | null
           xp?: number
+        }
+        Relationships: []
+      }
+      push_subscriptions: {
+        Row: {
+          auth: string
+          created_at: string
+          endpoint: string
+          id: string
+          p256dh: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          auth: string
+          created_at?: string
+          endpoint: string
+          id?: string
+          p256dh: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          auth?: string
+          created_at?: string
+          endpoint?: string
+          id?: string
+          p256dh?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }

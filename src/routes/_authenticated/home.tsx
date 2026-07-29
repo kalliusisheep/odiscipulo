@@ -212,7 +212,7 @@ function HomePage() {
 
       <section className="space-y-3">
         <h2 className="text-sm font-semibold text-muted-foreground">Módulos de Discipulado</h2>
-        {modules.map((m) => {
+        {modules.filter((m) => m.id !== "como-ser-lider").map((m) => {
           const mtrails = trailsByModule.get(m.id) ?? [];
           const withLesson = mtrails.filter((t) => t.lesson_id);
           const doneCount = withLesson.filter((t) => t.lesson_id && progressIds.has(t.lesson_id)).length;
@@ -309,7 +309,7 @@ function HomePage() {
 
 function LiderInline() {
   return (
-    <div className="mx-auto max-w-lg space-y-5 px-4 pt-6">
+    <div className="mx-auto max-w-lg space-y-5 px-4 pt-6 pb-24">
       <header className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Modo Líder</h1>
         <ThemeToggle />
@@ -319,14 +319,37 @@ function LiderInline() {
           Acompanhe seus discípulos, crie grupos e envie mensagens.
         </p>
         <div className="mt-4 flex justify-center">
-        <Link
-          to="/lider"
-          className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
-        >
-          Abrir painel <ChevronRight className="h-4 w-4" />
-        </Link>
+          <Link
+            to="/lider"
+            className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+          >
+            Abrir painel <ChevronRight className="h-4 w-4" />
+          </Link>
         </div>
       </div>
+
+      <section className="space-y-2">
+        <h2 className="px-1 text-sm font-semibold text-muted-foreground">Módulo 12 · Formação de liderança</h2>
+        <Link
+          to="/modulo/$id"
+          params={{ id: "como-ser-lider" }}
+          className="group relative block overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-900 p-4 transition-all duration-300 hover:scale-[1.01]"
+        >
+          <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-violet-400/20 blur-3xl" />
+          <div className="relative flex items-center gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/10">
+              <Sparkles className="h-5 w-5 text-violet-200" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-white/70">Exclusivo do modo líder</span>
+              <p className="mt-0.5 truncate font-semibold text-white/95">Como ser um líder</p>
+              <p className="truncate text-xs text-white/60">10 trilhas para liderar à maneira de Cristo</p>
+            </div>
+            <ChevronRight className="h-4 w-4 text-white/60" />
+          </div>
+        </Link>
+      </section>
+
       <LeaderResources />
     </div>
   );

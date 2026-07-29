@@ -99,15 +99,26 @@ function MessagesPage() {
           <ArrowLeft className="h-5 w-5" />
         </Link>
         {peer && (
-          <>
-            <div className="h-9 w-9 overflow-hidden rounded-full bg-surface-2">
-              {peer.avatar_url && <img src={peer.avatar_url} alt="" className="h-full w-full object-cover" />}
+          <Link
+            to="/perfil/$username"
+            params={{ username: peer.username }}
+            className="flex min-w-0 flex-1 items-center gap-3 rounded-xl px-1 py-1 transition-colors hover:bg-surface-2"
+            aria-label={`Ver perfil de ${peer.display_name}`}
+          >
+            <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full bg-surface-2 ring-2 ring-border">
+              {peer.avatar_url ? (
+                <img src={peer.avatar_url} alt="" className="h-full w-full object-cover" />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-xs font-bold text-muted-foreground">
+                  {peer.display_name[0]?.toUpperCase() ?? "?"}
+                </div>
+              )}
             </div>
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold">{peer.display_name}</p>
-              <p className="truncate text-[11px] text-muted-foreground">@{peer.username}</p>
+              <p className="truncate text-[11px] text-muted-foreground">Toque para ver o perfil</p>
             </div>
-          </>
+          </Link>
         )}
       </header>
 
