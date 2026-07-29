@@ -91,7 +91,7 @@ function AprofundarPage() {
                       <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground" data-narrate>
                         {v.ref}
                       </p>
-                      <p className="mt-1 scripture text-base text-foreground/85" data-narrate>
+                      <p className="mt-1 scripture text-sm text-foreground/85" data-narrate>
                         {`"${verseText(v, bibleVersion)}"`}
                       </p>
                     </div>
@@ -142,7 +142,7 @@ function AprofundarPage() {
 
             {deepen.secondQuote && (
               <blockquote className="border-l-4 border-l-ancient pl-3">
-                <p className="scripture text-base leading-relaxed text-ancient" data-narrate>
+                <p className="scripture text-sm leading-relaxed text-ancient" data-narrate>
                   {`"${deepen.secondQuote.text}"`}
                 </p>
                 <footer className="mt-1.5 text-xs font-semibold text-ancient/80" data-narrate>
