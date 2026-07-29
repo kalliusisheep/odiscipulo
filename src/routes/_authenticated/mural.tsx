@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useMascot, muralPostLines } from "@/lib/mascot";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -68,6 +69,7 @@ function Clamores() {
   const [text, setText] = useState("");
   const [me, setMe] = useState<{ id: string; name: string } | null>(null);
   const [posting, setPosting] = useState(false);
+  const { say } = useMascot();
 
   useEffect(() => {
     let channel: ReturnType<typeof supabase.channel> | null = null;
@@ -122,6 +124,8 @@ function Clamores() {
     if (!error) {
       setText("");
       await refresh(me.id);
+      const lines = muralPostLines();
+      say(lines[Math.floor(Math.random() * lines.length)]);
     }
   };
 
