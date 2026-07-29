@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Swords, Check, X, Clock, ChevronRight } from "lucide-react";
+import { Swords, Sword, Check, X, Clock } from "lucide-react";
 import {
   listMyChallenges,
   getChallengeProgressPct,
@@ -16,8 +16,7 @@ function playVictoryTrumpet() {
   if (typeof window === "undefined") return;
   try {
     const AudioCtx =
-      window.AudioContext ??
-      (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
     if (!AudioCtx) return;
     const ctx = new AudioCtx();
     if (ctx.state === "suspended") void ctx.resume();
@@ -41,6 +40,94 @@ function playVictoryTrumpet() {
   } catch {
     /* silencioso — áudio é opcional */
   }
+}
+
+// Som do choque de espadas (duelo) — mesmo padrão de síntese via WebAudio.
+function playSwordClash() {
+  if (typeof window === "undefined") return;
+  try {
+    const AudioCtx =
+      window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    if (ctx.state === "suspended") void ctx.resume();
+
+    const clang = (start: number, freq: number, volume: number) => {
+      // Timbre metálico agudo com decaimento rápido.
+      const osc = ctx.createOscillator();
+      const oscGain = ctx.createGain();
+      osc.type = "square";
+      osc.frequency.setValueAtTime(freq, start);
+      osc.frequency.exponentialRampToValueAtTime(freq * 0.55, start + 0.22);
+      oscGain.gain.setValueAtTime(0.0001, start);
+      oscGain.gain.exponentialRampToValueAtTime(volume, start + 0.008);
+      oscGain.gain.exponentialRampToValueAtTime(0.0001, start + 0.28);
+      osc.connect(oscGain).connect(ctx.destination);
+      osc.start(start);
+      osc.stop(start + 0.3);
+
+      // Ruído filtrado simulando o impacto das lâminas.
+      const bufferSize = Math.floor(ctx.sampleRate * 0.14);
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+      const bandpass = ctx.createBiquadFilter();
+      bandpass.type = "bandpass";
+      bandpass.frequency.value = freq * 1.4;
+      bandpass.Q.value = 5;
+      const noiseGain = ctx.createGain();
+      noiseGain.gain.setValueAtTime(volume * 1.1, start);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, start + 0.14);
+      noise.connect(bandpass).connect(noiseGain).connect(ctx.destination);
+      noise.start(start);
+    };
+
+    const now = ctx.currentTime;
+    clang(now + 0.05, 950, 0.14); // primeiro roçar das lâminas
+    clang(now + 0.75, 1500, 0.24); // choque principal, sincronizado com o clarão
+
+    setTimeout(() => void ctx.close(), 1700);
+  } catch {
+    /* silencioso — áudio é opcional */
+  }
+}
+
+/** Overlay do duelo de espadas — toca ao aceitar um desafio, por ~1.5s. */
+function SwordDuelOverlay({ peerName, onDone }: { peerName: string | null; onDone: () => void }) {
+  useEffect(() => {
+    playSwordClash();
+    const t = setTimeout(onDone, 1500);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <div className="fixed inset-0 z-[130] flex flex-col items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-150">
+      <div className="relative h-40 w-40">
+        <Sword
+          className="sword-left absolute left-1/2 top-1/2 h-16 w-16 text-slate-100"
+          style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.65))" }}
+        />
+        <Sword
+          className="sword-right absolute left-1/2 top-1/2 h-16 w-16 text-slate-100"
+          style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.65))" }}
+        />
+        <div
+          className="clash-flash absolute left-1/2 top-1/2 h-28 w-28 rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(255,241,199,0.95) 0%, rgba(249,115,22,0.85) 45%, transparent 75%)",
+          }}
+        />
+        <div className="sword-sparks absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full" />
+      </div>
+      <p className="mt-4 text-sm font-bold uppercase tracking-wider text-white/90">
+        Desafio aceito{peerName ? ` — você vs. ${peerName}` : ""}!
+      </p>
+    </div>
+  );
 }
 
 /** Avatar redondo simples usado nos cartões de desafio. */
@@ -135,12 +222,6 @@ type PeerProfile = {
 
 type ScopeInfo = { title: string };
 
-/** Destino de navegação ao tocar na barra do desafio. */
-type ChallengeTarget =
-  | { kind: "lesson"; lessonId: string }
-  | { kind: "module"; moduleId: string }
-  | null;
-
 type EnrichedChallenge = {
   challenge: Challenge;
   peer: PeerProfile;
@@ -149,12 +230,10 @@ type EnrichedChallenge = {
   peerPct: number;
   isInvite: boolean; // recebido, ainda pendente, aguardando minha resposta
   isWaiting: boolean; // enviado por mim, ainda pendente
-  target: ChallengeTarget;
 };
 
 /** Painel de desafios ativos exibido na home. */
 export function ChallengePanel({ myId }: { myId: string }) {
-  const nav = useNavigate();
   const [items, setItems] = useState<EnrichedChallenge[]>([]);
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -164,12 +243,17 @@ export function ChallengePanel({ myId }: { myId: string }) {
     peerName: string | null;
   } | null>(null);
   const [meAvatarUrl, setMeAvatarUrl] = useState<string | null>(null);
+  const [duelInfo, setDuelInfo] = useState<{ peerName: string | null } | null>(null);
+  const prevStatusRef = useRef<Map<string, Challenge["status"]>>(new Map());
+  const firstLoadRef = useRef(true);
 
   const load = async () => {
     const all = await listMyChallenges(myId);
     const relevant = all.filter((c) => c.status === "pending" || c.status === "accepted");
 
     if (relevant.length === 0) {
+      prevStatusRef.current = new Map();
+      firstLoadRef.current = false;
       setItems([]);
       setLoading(false);
       return;
@@ -183,15 +267,14 @@ export function ChallengePanel({ myId }: { myId: string }) {
       supabase.from("profiles").select("avatar_url").eq("id", myId).maybeSingle(),
       supabase.from("profiles").select("id, display_name, username, avatar_url").in("id", peerIds),
       supabase.from("disciple_modules").select("id, title"),
-      supabase.from("disciple_trails").select("id, title, lesson_id, module_id"),
+      supabase.from("disciple_trails").select("id, title"),
     ]);
 
     setMeAvatarUrl(me?.avatar_url ?? null);
 
     const peerById = new Map((peers ?? []).map((p) => [p.id, p as PeerProfile]));
     const moduleTitleById = new Map((modules ?? []).map((m) => [m.id, m.title as string]));
-    type TrailRow = { id: string; title: string; lesson_id: string | null; module_id: string | null };
-    const trailById = new Map((trails ?? []).map((t) => [t.id, t as TrailRow]));
+    const trailTitleById = new Map((trails ?? []).map((t) => [t.id, t.title as string]));
 
     const enriched = await Promise.all(
       relevant.map(async (c) => {
@@ -202,29 +285,14 @@ export function ChallengePanel({ myId }: { myId: string }) {
           username: null,
           avatar_url: null,
         };
-        const trail = c.scope_type === "trail" ? trailById.get(c.scope_id) : undefined;
         const scopeTitle =
           c.scope_type === "module"
-            ? moduleTitleById.get(c.scope_id) ?? "Módulo"
-            : trail?.title ?? "Trilha";
-
-        // Destino ao tocar na barra: uma lição específica (trilha com conteúdo)
-        // ou a tela do módulo (desafio no nível do módulo, ou trilha sem lição vinculada ainda).
-        let target: ChallengeTarget = null;
-        if (c.scope_type === "module") {
-          target = { kind: "module", moduleId: c.scope_id };
-        } else if (trail?.lesson_id) {
-          target = { kind: "lesson", lessonId: trail.lesson_id };
-        } else if (trail?.module_id) {
-          target = { kind: "module", moduleId: trail.module_id };
-        }
+            ? (moduleTitleById.get(c.scope_id) ?? "Módulo")
+            : (trailTitleById.get(c.scope_id) ?? "Trilha");
 
         const isAccepted = c.status === "accepted";
         const [myPct, peerPct] = isAccepted
-          ? await Promise.all([
-              getChallengeProgressPct(c.id, myId),
-              getChallengeProgressPct(c.id, peerId),
-            ])
+          ? await Promise.all([getChallengeProgressPct(c.id, myId), getChallengeProgressPct(c.id, peerId)])
           : [0, 0];
 
         return {
@@ -235,7 +303,6 @@ export function ChallengePanel({ myId }: { myId: string }) {
           peerPct,
           isInvite: c.status === "pending" && c.challenged_id === myId,
           isWaiting: c.status === "pending" && c.challenger_id === myId,
-          target,
         } as EnrichedChallenge;
       }),
     );
@@ -244,6 +311,18 @@ export function ChallengePanel({ myId }: { myId: string }) {
       const rank = (e: EnrichedChallenge) => (e.isInvite ? 0 : e.isWaiting ? 2 : 1);
       return rank(a) - rank(b);
     });
+
+    // Duelo de espadas: dispara quando um desafio que estava "pending" vira "accepted"
+    // (seja porque eu aceitei, seja porque o outro participante acabou de aceitar).
+    if (!firstLoadRef.current) {
+      const justAccepted = enriched.find((it) => {
+        const prevStatus = prevStatusRef.current.get(it.challenge.id);
+        return prevStatus && prevStatus !== "accepted" && it.challenge.status === "accepted";
+      });
+      if (justAccepted) setDuelInfo({ peerName: justAccepted.peer.display_name });
+    }
+    prevStatusRef.current = new Map(enriched.map((it) => [it.challenge.id, it.challenge.status]));
+    firstLoadRef.current = false;
 
     setItems(enriched);
     setLoading(false);
@@ -302,19 +381,8 @@ export function ChallengePanel({ myId }: { myId: string }) {
     }
   };
 
-  const goToChallenge = (target: EnrichedChallenge["target"]) => {
-    if (!target) return;
-    if (target.kind === "lesson") {
-      void nav({ to: "/licao/$id", params: { id: target.lessonId } });
-    } else {
-      void nav({ to: "/modulo/$id", params: { id: target.moduleId } });
-    }
-  };
-
   useEffect(() => {
-    const alreadyCompleted = items.find(
-      (i) => i.challenge.status === "accepted" && i.myPct >= 100 && i.peerPct >= 100,
-    );
+    const alreadyCompleted = items.find((i) => i.challenge.status === "accepted" && i.myPct >= 100 && i.peerPct >= 100);
     if (alreadyCompleted) {
       setCompletedModal({
         meAvatarUrl,
@@ -385,55 +453,31 @@ export function ChallengePanel({ myId }: { myId: string }) {
 
               {item.challenge.status === "accepted" && (
                 <>
-                  <div
-                    role={item.target ? "button" : undefined}
-                    tabIndex={item.target ? 0 : undefined}
-                    onClick={() => goToChallenge(item.target)}
-                    onKeyDown={(e) => {
-                      if (item.target && (e.key === "Enter" || e.key === " ")) {
-                        e.preventDefault();
-                        goToChallenge(item.target);
-                      }
-                    }}
-                    className={`flex items-center gap-2 rounded-xl ${
-                      item.target
-                        ? "-m-1 cursor-pointer p-1 transition-colors hover:bg-surface-2/70 active:bg-surface-2"
-                        : ""
-                    }`}
-                    aria-label={item.target ? `Ir para o desafio: ${item.scope.title}` : undefined}
-                  >
-                    <div className="flex-1 space-y-1.5">
-                      <div className="flex items-center justify-between text-[10px] font-semibold text-muted-foreground">
-                        <span>Você</span>
-                        <span>{Math.round(item.myPct)}%</span>
-                      </div>
-                      <div className="h-2 overflow-hidden rounded-full bg-surface-2">
-                        <div
-                          className="challenge-flame-bar h-full rounded-full"
-                          style={{ width: `${Math.max(3, Math.min(100, item.myPct))}%` }}
-                        />
-                      </div>
-                      <div className="flex items-center justify-between text-[10px] font-semibold text-muted-foreground">
-                        <span>{item.peer.display_name}</span>
-                        <span>{Math.round(item.peerPct)}%</span>
-                      </div>
-                      <div className="h-2 overflow-hidden rounded-full bg-surface-2">
-                        <div
-                          className="h-full rounded-full bg-indigo-400/70 transition-all"
-                          style={{ width: `${Math.max(3, Math.min(100, item.peerPct))}%` }}
-                        />
-                      </div>
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between text-[10px] font-semibold text-muted-foreground">
+                      <span>Você</span>
+                      <span>{Math.round(item.myPct)}%</span>
                     </div>
-                    {item.target && (
-                      <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
-                    )}
+                    <div className="h-2 overflow-hidden rounded-full bg-surface-2">
+                      <div
+                        className="challenge-flame-bar h-full rounded-full"
+                        style={{ width: `${Math.max(3, Math.min(100, item.myPct))}%` }}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between text-[10px] font-semibold text-muted-foreground">
+                      <span>{item.peer.display_name}</span>
+                      <span>{Math.round(item.peerPct)}%</span>
+                    </div>
+                    <div className="h-2 overflow-hidden rounded-full bg-surface-2">
+                      <div
+                        className="h-full rounded-full bg-indigo-400/70 transition-all"
+                        style={{ width: `${Math.max(3, Math.min(100, item.peerPct))}%` }}
+                      />
+                    </div>
                   </div>
 
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      void cancelActive(item);
-                    }}
+                    onClick={() => void cancelActive(item)}
                     disabled={isBusy}
                     className="self-end text-[10px] font-semibold uppercase tracking-wider text-muted-foreground hover:text-destructive disabled:opacity-60"
                   >
@@ -445,6 +489,8 @@ export function ChallengePanel({ myId }: { myId: string }) {
           );
         })}
       </div>
+
+      {duelInfo && <SwordDuelOverlay peerName={duelInfo.peerName} onDone={() => setDuelInfo(null)} />}
 
       {completedModal && (
         <ChallengeCompletedModal
