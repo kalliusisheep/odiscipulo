@@ -8,6 +8,7 @@ import { awardXpAndStreak } from "@/lib/progress";
 import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
 import { FontSizeControls } from "@/components/font-size-controls";
 import { NarrationButton } from "@/components/NarrationButton";
+import { ShareLessonButton } from "@/components/ShareLessonButton";
 import {
   ArrowLeft,
   ArrowRight,
@@ -16,7 +17,6 @@ import {
   Check,
   Layers,
   Quote,
-  Share2,
   Sparkles,
   Target,
   X,
@@ -55,6 +55,20 @@ function LicaoPage() {
       void nav({ to: "/home" });
     }
   };
+
+  const shareContext = useMemo(() => {
+    if (!found) return "";
+    const { lesson } = found;
+    return [
+      lesson.intro.join(" "),
+      lesson.verses.map((v) => `${v.ref}: ${verseText(v, bibleVersion)}`).join(" "),
+      lesson.deepDive,
+      lesson.application,
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .slice(0, 2000);
+  }, [found, bibleVersion]);
 
   if (!found) {
     return (
@@ -367,9 +381,7 @@ function LicaoPage() {
             <p className="mt-3 text-center text-[10px] uppercase tracking-[0.3em] text-slate-400">The Disciple</p>
           </div>
           <div className="mt-6 flex w-full flex-col gap-2">
-            <button className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary py-3 text-sm font-semibold text-primary-foreground">
-              <Share2 className="h-4 w-4" /> Compartilhar
-            </button>
+            <ShareLessonButton lessonId={lesson.id} title={lesson.title} shareContext={shareContext} />
             <Link to="/home" className="rounded-2xl border border-border py-3 text-sm font-medium text-muted-foreground">
               Voltar à Inicial
             </Link>
