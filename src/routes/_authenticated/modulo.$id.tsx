@@ -9,14 +9,7 @@ import {
   DEFAULT_MODULE_RGB,
 } from "@/data/module-visuals";
 import { comoSerLider } from "@/data/como-ser-lider";
-import {
-  ArrowLeft,
-  Check,
-  ChevronRight,
-  Play,
-  Sparkles,
-  Sprout,
-} from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, Play, Sparkles, Sprout } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/modulo/$id")({
   component: ModulePage,
@@ -51,21 +44,10 @@ function ModulePage() {
       setLoading(true);
       const { data: u } = await supabase.auth.getUser();
       const [{ data: m }, { data: ts }, lpRes] = await Promise.all([
-        supabase
-          .from("disciple_modules")
-          .select("id, ord, title, description, color")
-          .eq("id", id)
-          .maybeSingle(),
-        supabase
-          .from("disciple_trails")
-          .select("id, ord, title, lesson_id")
-          .eq("module_id", id)
-          .order("ord"),
+        supabase.from("disciple_modules").select("id, ord, title, description, color").eq("id", id).maybeSingle(),
+        supabase.from("disciple_trails").select("id, ord, title, lesson_id").eq("module_id", id).order("ord"),
         u.user
-          ? supabase
-              .from("lesson_progress")
-              .select("lesson_id")
-              .eq("user_id", u.user.id)
+          ? supabase.from("lesson_progress").select("lesson_id").eq("user_id", u.user.id)
           : Promise.resolve({ data: [] as { lesson_id: string }[] }),
       ]);
       const leadershipTrails: TrailRow[] = comoSerLider.modules[0].lessons.map((lesson, index) => ({
@@ -91,11 +73,7 @@ function ModulePage() {
   }, [id]);
 
   if (loading) {
-    return (
-      <div className="mx-auto max-w-lg px-4 pt-6 text-sm text-muted-foreground">
-        Carregando módulo...
-      </div>
-    );
+    return <div className="mx-auto max-w-lg px-4 pt-6 text-sm text-muted-foreground">Carregando módulo...</div>;
   }
 
   if (!mod) {
@@ -162,9 +140,7 @@ function ModulePage() {
             <Icon className="h-5 w-5 text-white/90" />
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-white/70">
-              Módulo {mod.ord}
-            </span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-white/70">Módulo {mod.ord}</span>
             <span className="inline-flex items-center gap-1 rounded-full border border-[var(--accent-border)] bg-[var(--accent-badge)] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">
               Nível {mod.ord}
             </span>
@@ -172,15 +148,11 @@ function ModulePage() {
         </div>
 
         <h1 className="relative mt-3 text-2xl font-bold text-white">{mod.title}</h1>
-        {mod.description && (
-          <p className="relative mt-1 text-sm text-white/85">{mod.description}</p>
-        )}
+        {mod.description && <p className="relative mt-1 text-sm text-white/85">{mod.description}</p>}
       </section>
 
       <section className="space-y-2">
-        <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-          {total} Trilhas
-        </h2>
+        <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">{total} Trilhas</h2>
         {rendered.map(({ trail, state }, i) => (
           <TrailRow
             key={trail.id}
@@ -188,6 +160,7 @@ function ModulePage() {
             title={trail.title}
             lessonId={trail.lesson_id}
             state={state}
+            moduleId={mod.id}
           />
         ))}
       </section>
@@ -198,9 +171,7 @@ function ModulePage() {
 function TrailNumber({ index, tone }: { index: number; tone: "muted" | "primary" }) {
   return (
     <span
-      className={`w-6 shrink-0 text-sm font-bold ${
-        tone === "primary" ? "text-primary" : "text-muted-foreground/60"
-      }`}
+      className={`w-6 shrink-0 text-sm font-bold ${tone === "primary" ? "text-primary" : "text-muted-foreground/60"}`}
     >
       {String(index).padStart(2, "0")}
     </span>
@@ -212,11 +183,13 @@ function TrailRow({
   title,
   lessonId,
   state,
+  moduleId,
 }: {
   index: number;
   title: string;
   lessonId: string | null;
   state: "done" | "active" | "coming-soon";
+  moduleId: string;
 }) {
   const base = "flex items-center gap-3 rounded-2xl border p-3.5 transition-all";
 
@@ -233,12 +206,12 @@ function TrailRow({
     );
   }
 
-
   if (state === "done" && lessonId) {
     return (
       <Link
         to="/licao/$id"
         params={{ id: lessonId }}
+        search={{ modulo: moduleId }}
         resetScroll
         className={`${base} border-success/30 bg-success/5 hover:border-success/60`}
       >
@@ -259,6 +232,7 @@ function TrailRow({
       <Link
         to="/licao/$id"
         params={{ id: lessonId }}
+        search={{ modulo: moduleId }}
         resetScroll
         className={`${base} border-primary bg-primary/10 hover:bg-primary/15`}
       >
