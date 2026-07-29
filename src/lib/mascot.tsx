@@ -28,6 +28,10 @@ type MascotCtx = {
 
 const Ctx = createContext<MascotCtx | null>(null);
 
+function pickRandom(list: string[]): string {
+  return list[Math.floor(Math.random() * list.length)];
+}
+
 // Falas de carinho — ditas quando o usuário toca na ovelha.
 const PET_LINES = [
   "Adorei o carinho! 🥰",
@@ -102,7 +106,7 @@ const TRAIL_COMMENTS: Record<string, string> = {
   "A Palavra": "A Palavra é viva! Continue voltando a ela todo dia.",
   "A Oração": "Conversar com Deus fica mais natural a cada dia.",
   "Igreja e Comunhão": "Fé também se vive em comunidade. Já pensou em quem chamar pra caminhar junto?",
-  "Batismo": "Um símbolo tão forte da sua nova vida. Já pensou nesse passo?",
+  Batismo: "Um símbolo tão forte da sua nova vida. Já pensou nesse passo?",
   "Primeiros Tropeços": "Todo mundo tropeça — o que importa é levantar e seguir.",
   "Missão Inicial": "Primeira trilha de missão concluída! Pronto(a) pra mais.",
   // Módulo 2 — Fundamentos da Fé
@@ -149,8 +153,63 @@ export function trailCompletionLine(trailTitle: string): string {
   return TRAIL_COMMENTS[trailTitle] ?? `Você concluiu "${trailTitle}"! Mais um passo na sua caminhada 🐑`;
 }
 
-function pickRandom(list: string[]): string {
-  return list[Math.floor(Math.random() * list.length)];
+// Falas ditas quando chega uma mensagem nova de outro usuário. Variadas de
+// propósito — sempre citam quem escreveu, mas nunca repetem a mesma frase.
+function messageReceivedLines(senderName: string): string[] {
+  return [
+    `${senderName} te mandou uma mensagem! Que tal responder com uma palavra de ânimo?`,
+    `Nova mensagem de ${senderName} — comunhão também acontece assim 💌`,
+    `${senderName} lembrou de você! Vai dar uma olhada.`,
+    `Mensagem de ${senderName} chegando. A caminhada fica mais leve com irmãos por perto.`,
+    `${senderName} quer falar com você!`,
+    `Psst… ${senderName} te escreveu algo.`,
+    `Toda mensagem de um irmão(ã) é uma chance de encorajar. ${senderName} te escreveu!`,
+    `${senderName} te mandou uma palavra — vale a pena ler.`,
+  ];
+}
+
+// Falas ditas ao concluir uma lição — comentam o conteúdo real estudado
+// (título da lição e, quando existe, a referência do primeiro versículo),
+// nunca uma frase genérica de "+XP". Variedade proposital.
+export function lessonCompletionLine(lessonTitle: string, verseRef?: string): string {
+  const withVerse: string[] = verseRef
+    ? [
+        `"${lessonTitle}" e ${verseRef} lado a lado — que combinação rica.`,
+        `Guarda ${verseRef} no coração. Foi o centro de "${lessonTitle}".`,
+        `${verseRef} diz muito sobre "${lessonTitle}", né? Vale reler depois.`,
+      ]
+    : [];
+  const generic = [
+    `Terminou "${lessonTitle}"! O que mais te marcou nessa lição?`,
+    `"${lessonTitle}" concluída. Um passo a mais na sua caminhada 🐑`,
+    `Gostei de estudar "${lessonTitle}" com você. Bora pra próxima?`,
+    `"${lessonTitle}" fica marcada. Deixa essa reflexão render nos próximos dias.`,
+  ];
+  return pickRandom([...withVerse, ...generic]);
+}
+
+// Falas ditas quando o usuário posta um clamor no Mural — reforçam que
+// coragem de compartilhar já é meio caminho andado.
+export function muralPostLines(): string[] {
+  return [
+    "Que bom que você compartilhou isso com a comunidade.",
+    "Coragem de colocar isso no mural. Alguém vai orar junto com você.",
+    "Compartilhar um clamor já é um ato de fé.",
+    "Vulnerabilidade assim edifica a comunidade toda.",
+    "Colocado no mural — agora é orar e esperar em Deus.",
+  ];
+}
+
+// Falas ditas quando alguém dá "Amém" num post do próprio usuário no Mural —
+// sempre citam quem deu o Amém, nunca repetem a mesma frase.
+export function muralAmenLines(senderName: string): string[] {
+  return [
+    `${senderName} deu um Amém no seu clamor! Você não está sozinho(a) nessa.`,
+    `${senderName} orou junto com você. Que comunhão bonita.`,
+    `Mais um Amém — de ${senderName} — no seu post do mural.`,
+    `${senderName} viu seu clamor e concordou em oração.`,
+    `Olha só, ${senderName} te acompanhou com um Amém!`,
+  ];
 }
 
 function greetingForNow(name: string | null): { text: string; emoji: string } {
@@ -175,16 +234,13 @@ export function MascotProvider({ children }: { children: ReactNode }) {
   // sem precisar re-renderizar o provider a cada troca.
   const nameRef = useRef<string | null>(null);
 
-  const trigger = useCallback(
-    (event: Exclude<MascotEvent, null>, message?: string, durationMs = 1600) => {
-      if (clearTimer.current) clearTimeout(clearTimer.current);
-      setState((s) => ({ event, message: message ?? s.message, moodEmoji: s.moodEmoji }));
-      clearTimer.current = setTimeout(() => {
-        setState((s) => ({ ...s, event: null }));
-      }, durationMs);
-    },
-    [],
-  );
+  const trigger = useCallback((event: Exclude<MascotEvent, null>, message?: string, durationMs = 1600) => {
+    if (clearTimer.current) clearTimeout(clearTimer.current);
+    setState((s) => ({ event, message: message ?? s.message, moodEmoji: s.moodEmoji }));
+    clearTimer.current = setTimeout(() => {
+      setState((s) => ({ ...s, event: null }));
+    }, durationMs);
+  }, []);
 
   const say = useCallback((message: string) => {
     setState((s) => ({ ...s, message }));
@@ -230,8 +286,7 @@ export function MascotProvider({ children }: { children: ReactNode }) {
       const rawDisplay = (p?.display_name as string | null)?.trim();
       // "Novo Discípulo" é o valor padrão de display_name pra quem ainda
       // não escolheu um nome — nesse caso é melhor não usar (não é um nome real).
-      const displayFirstWord =
-        rawDisplay && rawDisplay !== "Novo Discípulo" ? rawDisplay.split(/\s+/)[0] : null;
+      const displayFirstWord = rawDisplay && rawDisplay !== "Novo Discípulo" ? rawDisplay.split(/\s+/)[0] : null;
       nameRef.current = rawFirst || displayFirstWord || null;
 
       const xpLeft = xpToNextLevel((p?.xp as number | null) ?? 0);
@@ -245,9 +300,7 @@ export function MascotProvider({ children }: { children: ReactNode }) {
 
       const todayStr = new Date().toISOString().slice(0, 10);
       const last = (p?.last_activity_date as string | null) ?? null;
-      const diffDays = last
-        ? Math.floor((new Date(todayStr).getTime() - new Date(last).getTime()) / 86400000)
-        : null;
+      const diffDays = last ? Math.floor((new Date(todayStr).getTime() - new Date(last).getTime()) / 86400000) : null;
       const missedDays = diffDays !== null && diffDays >= 2;
 
       if (missedDays) {
@@ -269,11 +322,14 @@ export function MascotProvider({ children }: { children: ReactNode }) {
         // nível, lições concluídas), elas têm prioridade sobre as genéricas.
         if (Math.random() < 0.5) {
           contextualTimer.push(
-            setTimeout(() => {
-              if (cancelled) return;
-              const pool = progressLines.length > 0 && Math.random() < 0.7 ? progressLines : contextualPool;
-              say(pickRandom(pool));
-            }, 7000 + Math.random() * 4000),
+            setTimeout(
+              () => {
+                if (cancelled) return;
+                const pool = progressLines.length > 0 && Math.random() < 0.7 ? progressLines : contextualPool;
+                say(pickRandom(pool));
+              },
+              7000 + Math.random() * 4000,
+            ),
           );
         }
       }
@@ -285,6 +341,73 @@ export function MascotProvider({ children }: { children: ReactNode }) {
       contextualTimer.forEach(clearTimeout);
     };
   }, [say]);
+
+  // Mascote reage quando chega uma mensagem nova de outro usuário — mesmo
+  // padrão de canal usado em mensagens/desafios, mas escutando aqui pra
+  // acionar a fala do Barnabéé em vez de recarregar uma lista.
+  useEffect(() => {
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    void (async () => {
+      const { data: u } = await supabase.auth.getUser();
+      if (!u.user) return;
+      channel = supabase
+        .channel(`mascot-messages-${u.user.id}`)
+        .on(
+          "postgres_changes",
+          { event: "INSERT", schema: "public", table: "messages", filter: `recipient_id=eq.${u.user.id}` },
+          (payload) => {
+            const senderId = (payload.new as { sender_id: string }).sender_id;
+            void (async () => {
+              const { data: sender } = await supabase
+                .from("profiles")
+                .select("display_name")
+                .eq("id", senderId)
+                .maybeSingle();
+              const senderName = sender?.display_name?.trim() || "Um irmão(ã)";
+              trigger("jump", pickRandom(messageReceivedLines(senderName)), 1600);
+            })();
+          },
+        )
+        .subscribe();
+    })();
+    return () => {
+      if (channel) void supabase.removeChannel(channel);
+    };
+  }, [trigger]);
+
+  // Mascote comenta quando alguém dá "Amém" num post do próprio usuário no
+  // Mural. Como o payload de INSERT em mural_amens só traz post_id/user_id,
+  // confirmamos o dono do post antes de reagir (e ignoramos o próprio
+  // usuário tocando "Amém" no post de outra pessoa).
+  useEffect(() => {
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    void (async () => {
+      const { data: u } = await supabase.auth.getUser();
+      if (!u.user) return;
+      const myId = u.user.id;
+      channel = supabase
+        .channel(`mascot-mural-amens-${myId}`)
+        .on("postgres_changes", { event: "INSERT", schema: "public", table: "mural_amens" }, (payload) => {
+          const { post_id, user_id: amenUserId } = payload.new as { post_id: string; user_id: string };
+          if (amenUserId === myId) return; // não reage ao próprio toque
+          void (async () => {
+            const { data: post } = await supabase.from("mural_posts").select("user_id").eq("id", post_id).maybeSingle();
+            if (post?.user_id !== myId) return; // só reage a Amém no próprio post
+            const { data: fan } = await supabase
+              .from("profiles")
+              .select("display_name")
+              .eq("id", amenUserId)
+              .maybeSingle();
+            const fanName = fan?.display_name?.trim() || "Um irmão(ã)";
+            trigger("jump", pickRandom(muralAmenLines(fanName)), 1600);
+          })();
+        })
+        .subscribe();
+    })();
+    return () => {
+      if (channel) void supabase.removeChannel(channel);
+    };
+  }, [trigger]);
 
   return <Ctx.Provider value={{ state, trigger, say, pet }}>{children}</Ctx.Provider>;
 }
