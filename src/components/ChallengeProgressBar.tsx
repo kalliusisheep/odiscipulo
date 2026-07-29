@@ -178,31 +178,53 @@ export function ChallengePanel({ myId }: { myId: string }) {
     <>
       {clash && <SwordsClashOverlay onDone={() => setClash(false)} />}
       <section className="space-y-3">
+        <div className="flex items-center gap-2 px-0.5">
+          <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-red-500 shadow-[0_0_10px_rgba(239,68,68,0.4)]">
+            <Swords className="h-3.5 w-3.5 text-white" />
+          </div>
+          <h2 className="text-sm font-semibold text-muted-foreground">Duelos de Discipulado</h2>
+        </div>
+
         {pendingIncoming.map((c) => {
           const peer = peers[c.challenger_id];
           const title = c.scope_type === "module" ? scopes.modules[c.scope_id] : scopes.trails[c.scope_id];
           return (
-            <div key={c.id} className="card-elevated overflow-hidden border-2 border-red-500/40">
-              <div className="bg-gradient-to-r from-orange-500/20 via-red-500/15 to-rose-500/10 p-4">
-                <p className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-red-500 dark:text-red-400">
-                  <Swords className="h-3.5 w-3.5" /> Novo desafio
-                </p>
-                <p className="mt-1 text-sm">
-                  <span className="font-bold">{peer?.display_name ?? "Um irmão"}</span> te desafiou:{" "}
-                  <span className="font-semibold">
+            <div
+              key={c.id}
+              className="card-elevated relative overflow-hidden rounded-3xl border border-red-500/30 shadow-[0_0_0_1px_rgba(239,68,68,0.08)]"
+            >
+              <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-red-500/20 blur-3xl" />
+              <div className="relative bg-gradient-to-br from-orange-500/15 via-red-500/10 to-transparent p-4">
+                <div className="flex items-center gap-3">
+                  <Avatar url={peer?.avatar_url ?? null} name={peer?.display_name} ring="ring-red-400/60" />
+                  <div className="min-w-0 flex-1">
+                    <p className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-red-500 dark:text-red-400">
+                      <Swords className="h-3 w-3" /> Novo desafio
+                    </p>
+                    <p className="mt-0.5 truncate text-sm">
+                      <span className="font-bold text-foreground">{peer?.display_name ?? "Um irmão"}</span>{" "}
+                      <span className="text-muted-foreground">te desafiou</span>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-3 flex items-center gap-2 rounded-xl border border-border/60 bg-surface-2/60 px-3 py-2">
+                  <ScopeIcon type={c.scope_type} className="h-3.5 w-3.5 shrink-0 text-primary" />
+                  <p className="min-w-0 truncate text-xs font-semibold text-foreground">
                     {c.scope_type === "module" ? "Módulo" : "Trilha"} · {title ?? c.scope_id}
-                  </span>
-                </p>
+                  </p>
+                </div>
+
                 <div className="mt-3 flex gap-2">
                   <button
                     onClick={() => void respond(c.id, true)}
-                    className="flex flex-1 items-center justify-center gap-1 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 px-3 py-2 text-xs font-bold uppercase text-white"
+                    className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 px-3 py-2.5 text-xs font-bold uppercase tracking-wide text-white shadow-[0_4px_14px_rgba(239,68,68,0.35)] transition-transform active:scale-95"
                   >
                     <Check className="h-3.5 w-3.5" /> Aceitar
                   </button>
                   <button
                     onClick={() => void respond(c.id, false)}
-                    className="flex items-center justify-center gap-1 rounded-xl border border-border bg-surface-2 px-3 py-2 text-xs font-semibold"
+                    className="flex items-center justify-center gap-1.5 rounded-xl border border-border bg-surface-2 px-3.5 py-2.5 text-xs font-semibold text-muted-foreground transition-colors hover:bg-surface active:scale-95"
                   >
                     <X className="h-3.5 w-3.5" /> Recusar
                   </button>
@@ -216,9 +238,24 @@ export function ChallengePanel({ myId }: { myId: string }) {
           const peer = peers[c.challenged_id];
           const title = c.scope_type === "module" ? scopes.modules[c.scope_id] : scopes.trails[c.scope_id];
           return (
-            <div key={c.id} className="rounded-2xl border border-dashed border-amber-500/50 bg-amber-500/5 p-3 text-xs text-muted-foreground">
-              Aguardando <span className="font-semibold text-foreground">{peer?.display_name ?? "irmão"}</span>{" "}
-              aceitar seu desafio ({title ?? c.scope_id}).
+            <div
+              key={c.id}
+              className="flex items-center gap-3 rounded-2xl border border-dashed border-amber-500/40 bg-amber-500/[0.06] px-3.5 py-3"
+            >
+              <Avatar url={peer?.avatar_url ?? null} name={peer?.display_name} size="h-8 w-8" ring="ring-amber-400/50" />
+              <div className="min-w-0 flex-1 text-xs">
+                <p className="truncate text-muted-foreground">
+                  Aguardando <span className="font-semibold text-foreground">{peer?.display_name ?? "irmão"}</span>{" "}
+                  aceitar
+                </p>
+                <p className="truncate text-[11px] font-medium text-amber-600 dark:text-amber-400">
+                  {c.scope_type === "module" ? "Módulo" : "Trilha"} · {title ?? c.scope_id}
+                </p>
+              </div>
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-500" />
+              </span>
             </div>
           );
         })}
@@ -233,32 +270,64 @@ export function ChallengePanel({ myId }: { myId: string }) {
           const leading: "left" | "right" | null =
             p.mine === p.peer ? null : p.mine > p.peer ? "left" : "right";
           return (
-            <div key={c.id} className="card-elevated relative overflow-hidden">
-              <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-orange-500/25 via-red-500/10 to-transparent" />
+            <div key={c.id} className="card-elevated relative overflow-hidden rounded-3xl">
+              <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-orange-500/20 via-red-500/[0.06] to-transparent" />
               <div className="relative p-4">
-                <div className="flex items-center justify-between gap-2">
-                  <p className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-red-500 dark:text-red-400">
+                {finished ? (
+                  <div className="mb-3 flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-ancient/25 via-ancient/15 to-ancient/25 py-1.5 text-[11px] font-bold uppercase tracking-wider text-ancient">
+                    <Trophy className="h-3.5 w-3.5" />
+                    {iWon ? "Você venceu!" : `${peer?.display_name?.split(" ")[0] ?? "Rival"} venceu`}
+                  </div>
+                ) : (
+                  <p className="mb-3 flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-red-500 dark:text-red-400">
                     <Swords className="h-3.5 w-3.5" /> Desafio em andamento
                   </p>
-                  {finished && (
-                    <span className="flex items-center gap-1 rounded-full bg-ancient/20 px-2 py-0.5 text-[10px] font-bold text-ancient">
-                      <Trophy className="h-3 w-3" /> {iWon ? "Você venceu!" : `${peer?.display_name?.split(" ")[0] ?? "Rival"} venceu`}
+                )}
+
+                {/* Confronto: avatares nas pontas, VS no centro */}
+                <div className="flex items-center justify-center gap-3">
+                  <div className="flex flex-col items-center gap-1">
+                    <Avatar
+                      url={null}
+                      name="Você"
+                      size="h-11 w-11"
+                      ring={leading === "left" ? "ring-orange-400" : "ring-border"}
+                      glow={leading === "left"}
+                    />
+                    <span className="text-[10px] font-bold text-foreground">Você</span>
+                  </div>
+
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-surface-2 text-[9px] font-black text-muted-foreground">
+                    VS
+                  </div>
+
+                  <div className="flex flex-col items-center gap-1">
+                    <Avatar
+                      url={peer?.avatar_url ?? null}
+                      name={peer?.display_name}
+                      size="h-11 w-11"
+                      ring={leading === "right" ? "ring-indigo-400" : "ring-border"}
+                      glow={leading === "right"}
+                    />
+                    <span className="max-w-[72px] truncate text-[10px] font-bold text-foreground">
+                      {peer?.display_name?.split(" ")[0] ?? "Rival"}
                     </span>
-                  )}
+                  </div>
                 </div>
-                <p className="mt-1 text-sm font-semibold">
-                  {c.scope_type === "module" ? "Módulo" : "Trilha"}: {title ?? c.scope_id}
-                </p>
-                <p className="text-[11px] text-muted-foreground">vs {peer?.display_name ?? "…"}</p>
+
+                <div className="mt-3 flex items-center justify-center gap-1.5 rounded-xl border border-border/60 bg-surface-2/60 px-3 py-1.5">
+                  <ScopeIcon type={c.scope_type} className="h-3.5 w-3.5 shrink-0 text-primary" />
+                  <p className="min-w-0 truncate text-xs font-semibold text-foreground">
+                    {c.scope_type === "module" ? "Módulo" : "Trilha"} · {title ?? c.scope_id}
+                  </p>
+                </div>
 
                 {/* Duelo visual — cada barra reflete o percentual real, lado a lado */}
                 <div className="mt-4">
                   <DuelBars
-                    myAvatar={null}
                     myPct={p.mine}
                     myLeading={leading === "left"}
                     peerLabel={peer?.display_name?.split(" ")[0] ?? "Rival"}
-                    peerAvatar={peer?.avatar_url ?? null}
                     peerPct={p.peer}
                     peerLeading={leading === "right"}
                   />
@@ -272,15 +341,52 @@ export function ChallengePanel({ myId }: { myId: string }) {
   );
 }
 
+function Avatar({
+  url,
+  name,
+  size = "h-9 w-9",
+  ring = "ring-border",
+  glow = false,
+}: {
+  url: string | null | undefined;
+  name: string | null | undefined;
+  size?: string;
+  ring?: string;
+  glow?: boolean;
+}) {
+  const initial = name?.trim()?.[0]?.toUpperCase() ?? "?";
+  return (
+    <div
+      className={`${size} shrink-0 overflow-hidden rounded-full bg-surface-2 ring-2 ${ring} transition-shadow ${
+        glow ? "shadow-[0_0_14px_rgba(249,115,22,0.5)]" : ""
+      }`}
+    >
+      {url ? (
+        <img src={url} alt="" className="h-full w-full object-cover" />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center text-xs font-bold text-muted-foreground">
+          {initial}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ScopeIcon({ type, className }: { type: "module" | "trail"; className?: string }) {
+  return type === "module" ? (
+    <Trophy className={className} />
+  ) : (
+    <Flame className={className} />
+  );
+}
+
 function DuelRow({
   label,
-  avatar,
   pct,
   leading,
   align,
 }: {
   label: string;
-  avatar: string | null;
   pct: number;
   leading: boolean;
   align: "mine" | "peer";
@@ -290,19 +396,6 @@ function DuelRow({
   return (
     <div>
       <div className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold">
-        {avatar ? (
-          <img
-            src={avatar}
-            alt=""
-            className={`h-4 w-4 rounded-full object-cover ring-1 ${isMine ? "ring-orange-400" : "ring-indigo-400"}`}
-          />
-        ) : (
-          <div
-            className={`h-4 w-4 rounded-full ring-1 ${
-              isMine ? "bg-orange-500/25 ring-orange-400/60" : "bg-indigo-500/25 ring-indigo-400/60"
-            }`}
-          />
-        )}
         <span className={leading ? "text-orange-500" : "text-foreground"}>{label}</span>
         {leading && <Flame className="h-3 w-3 text-orange-500" />}
         <span className="ml-auto text-[11px] font-bold tabular-nums text-foreground">{Math.round(clamp(pct))}%</span>
@@ -328,26 +421,22 @@ function DuelRow({
  * progresso preenchia só a metade da barra).
  */
 function DuelBars({
-  myAvatar,
   myPct,
   myLeading,
   peerLabel,
-  peerAvatar,
   peerPct,
   peerLeading,
 }: {
-  myAvatar: string | null;
   myPct: number;
   myLeading: boolean;
   peerLabel: string;
-  peerAvatar: string | null;
   peerPct: number;
   peerLeading: boolean;
 }) {
   return (
     <div className="space-y-3">
-      <DuelRow label="Você" avatar={myAvatar} pct={myPct} leading={myLeading} align="mine" />
-      <DuelRow label={peerLabel} avatar={peerAvatar} pct={peerPct} leading={peerLeading} align="peer" />
+      <DuelRow label="Você" pct={myPct} leading={myLeading} align="mine" />
+      <DuelRow label={peerLabel} pct={peerPct} leading={peerLeading} align="peer" />
     </div>
   );
 }
