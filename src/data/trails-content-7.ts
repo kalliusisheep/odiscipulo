@@ -66,9 +66,9 @@ const lideranca: Trail = {
           deepDive:
             "É importante notar o contraste que Jesus constrói em Mateus 20:25-28: de um lado, o modelo dos 'governantes das nações', que 'dominam' e 'exercem poder' (verbos que carregam a ideia de subjugar, impor-se de cima para baixo); do outro, o modelo do Reino, expresso em duas palavras que soam quase como um erro de tradução para ouvidos antigos — 'servo' (diákonos) e 'escravo' (doûlos) associadas a 'grandeza' e a 'ser o primeiro'. Jesus não está romantizando fraqueza ou passividade; Ele está redefinindo poder como algo que se exerce *a favor* de outros, e não *sobre* outros. E Ele não apenas ensina isso — Ele vive isso até a cruz, o ato supremo de poder usado em benefício alheio. Isso não anula a existência de autoridade estruturada na igreja (Hebreus 13:17 é claro sobre isso), mas define a *forma* que essa autoridade deve tomar: liderar servindo, não servir-se da posição de líder.",
           theologianQuote: {
-            author: "Wayne Grudem",
-            text: "Autoridade espiritual verdadeira nunca existe para benefício de quem a exerce, mas para o bem daqueles que estão sob seu cuidado — esse é o padrão que distingue liderança bíblica de mero exercício de poder. (paráfrase de uma ênfase central de sua Teologia Sistemática sobre governo eclesiástico)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme a formulação exata em Grudem antes de publicar como citação literal",
+            author: "John Stott",
+            text: "A autoridade pela qual o líder cristão lidera não é o poder, mas o amor; não a força, mas o exemplo; não a coerção, mas a persuasão fundamentada na razão. Líderes têm poder, mas o poder só é seguro nas mãos daqueles que se humilham para servir.",
+            source: "Issues Facing Christians Today, 4ª ed. (Zondervan, 2011)",
           },
           deepen: {
             historicalContext:
@@ -79,8 +79,8 @@ const lideranca: Trail = {
               "Cristãos fiéis divergem sobre estruturas específicas de governo eclesiástico (quantos líderes, como são escolhidos, quais os limites exatos de sua autoridade). Esta é uma questão importante, mas secundária: o que este material apresenta como inegociável é apenas o princípio de que toda autoridade cristã — qualquer que seja sua estrutura formal — deve ser exercida à maneira de Cristo, como serviço, e nunca como domínio pessoal. Para entender a estrutura específica de liderança da sua igreja local, converse com seu pastor ou líder de discipulado.",
             secondQuote: {
               author: "John Stott",
-              text: "O líder cristão não é aquele que subiu mais alto, mas aquele que se abaixou mais fundo para servir — o caminho para cima, no Reino de Deus, sempre passa primeiro por baixo. (paráfrase de uma ênfase recorrente em seus escritos sobre liderança cristã)",
-              source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme a formulação exata antes de publicar como citação literal",
+              text: "A negação de si mesmo não é privar-se de pequenos luxos; é, na verdade, negar ou desconhecer a si mesmo, renunciando ao suposto direito de seguir o próprio caminho.",
+              source: "The Cross of Christ (IVP, 1986), p. 278",
             },
           },
           quizzes: [
@@ -148,9 +148,9 @@ const lideranca: Trail = {
           deepDive:
             "O hino de Filipenses 2:5-11 é considerado por muitos estudiosos um dos textos cristológicos mais antigos do Novo Testamento, possivelmente já cantado nas igrejas antes mesmo de Paulo escrever a carta. Ele descreve um movimento em duas direções: descida (esvaziamento, humilhação, morte de cruz) seguida de exaltação (Deus o exaltou soberanamente, todo joelho se dobrará). A ordem importa: a exaltação vem *depois* da humilhação voluntária, nunca a substitui. Isso desmonta qualquer versão de liderança servidora que seja apenas uma tática para, no fim, ser exaltado por si mesmo. A humildade de Cristo não era um meio para um fim egoísta — era a expressão genuína de quem Ele era. Líderes cristãos que servem esperando reconhecimento imediato ainda não entenderam o padrão: o serviço genuíno pode, sim, ser seguido de honra dada por Deus, mas nunca é praticado *para* obtê-la.",
           theologianQuote: {
-            author: "John Stott",
-            text: "A cruz não é apenas o que Cristo fez por nós; é também o padrão de como devemos viver diante dos outros — renunciando a nós mesmos pelo bem alheio, como Ele renunciou por nós. (paráfrase de uma ênfase recorrente em seus escritos sobre a cruz e o discipulado)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme a formulação exata antes de publicar como citação literal",
+            author: "Dietrich Bonhoeffer",
+            text: "Quando Cristo chama um homem, Ele o chama para vir e morrer.",
+            source: "The Cost of Discipleship (Nachfolge, 1937)",
           },
           quizzes: [
             {
@@ -224,8 +224,8 @@ const lideranca: Trail = {
             "É importante notar o que as listas de 1 Timóteo 3 e Tito 1 *não* incluem: nenhum item exige carisma excepcional, dons extraordinários, oratória impressionante ou resultados numéricos visíveis. A ênfase recai quase inteiramente sobre estabilidade de caráter em áreas ordinárias da vida — casamento, domínio próprio, hospitalidade, relação com dinheiro, temperamento. Isso ensina algo contracultural: a igreja não deve confiar liderança a alguém simplesmente porque é talentoso ou carismático, mas porque sua vida, examinada de perto, sustenta o peso da confiança que lhe é dada. 'Irrepreensível' (anepílēmptos) não exige perfeição — todo líder, como qualquer cristão, ainda luta contra o pecado —, mas exige que não haja um padrão sustentado de conduta que desqualifique sua credibilidade diante da igreja e do mundo.",
           theologianQuote: {
             author: "John Wesley",
-            text: "Não basta que um líder tenha dons; é preciso que tenha graça — pois dons sem santidade de vida constroem apenas uma casa que desaba sobre quem a habita. (paráfrase de uma ênfase recorrente em seus escritos sobre liderança e santidade pessoal)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme a formulação exata antes de publicar como citação literal",
+            text: "Mas há uma consideração mais elevada do que essa; mais elevada do que quaisquer dons, naturais ou adquiridos, somados: pois o que são todos os outros dons comparados à graça de Deus?",
+            source: "An Address to the Clergy (1756)",
           },
           deepen: {
             additionalVerses: [
@@ -244,8 +244,8 @@ const lideranca: Trail = {
               "Tradições cristãs divergem sobre detalhes específicos de aplicação dessas qualificações (por exemplo, sobre quem pode ocupar cada ofício de liderança na igreja). Esta é uma questão importante para a vida da igreja local, mas o princípio central apresentado aqui — caráter como prioridade sobre talento — é amplamente compartilhado entre tradições fiéis. Para questões específicas sobre ofícios e qualificações na sua igreja, converse com seu pastor ou líder de discipulado.",
             secondQuote: {
               author: "Charles Spurgeon",
-              text: "Um homem pode pregar como um anjo e viver como um demônio; é o caráter, não a eloquência, que sustenta um ministério ao longo dos anos. (paráfrase de uma ênfase recorrente em suas instruções a futuros pastores)",
-              source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme a formulação exata antes de publicar como citação literal",
+              text: "Assim como as ações falam mais alto que as palavras, uma vida ímpia afogará com eficácia a voz do ministério mais eloquente. Nossa verdadeira edificação deve ser feita com as próprias mãos; nosso caráter deve ser mais persuasivo que nosso discurso.",
+              source: "Lectures to My Students, Lecture I ('The Minister's Self-Watch')",
             },
           },
           quizzes: [
@@ -314,8 +314,8 @@ const lideranca: Trail = {
             "A repetição do verbo ménō ('permanecer') em João 15 — dez vezes em poucos versículos — não é estilo literário casual; é ênfase deliberada. Jesus está descrevendo uma relação de dependência contínua, não uma visita espiritual ocasional antes de uma grande tarefa. Isso é especialmente relevante para quem exerce alguma forma de liderança: existe uma tentação constante de tratar o tempo com Deus como preparação técnica para o próximo evento ou decisão, em vez de tratá-lo como a fonte da própria vida espiritual do líder. Marcos 1:35 mostra Jesus buscando solidão para orar logo após um dia de intenso ministério (Marcos 1:32-34) e imediatamente antes de decisões importantes (Marcos 1:38) — o padrão é claro: a vitalidade espiritual do líder não é um luxo opcional quando sobra tempo, mas a raiz sem a qual toda liderança eventualmente seca.",
           theologianQuote: {
             author: "Richard Foster",
-            text: "Nenhuma liderança espiritual sobrevive por muito tempo à ausência de uma vida devocional real — o serviço que não nasce da comunhão com Deus, cedo ou tarde, esvazia-se por dentro. (paráfrase de uma ênfase central de sua obra sobre disciplinas espirituais)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme a formulação exata antes de publicar como citação literal",
+            text: "A superficialidade é a maldição da nossa era. A doutrina da satisfação instantânea é um problema espiritual primário. A necessidade urgente hoje não é de mais pessoas inteligentes ou talentosas, mas de pessoas profundas.",
+            source: "Celebration of Discipline (HarperCollins), p. 1",
           },
           quizzes: [
             {
@@ -389,8 +389,8 @@ const lideranca: Trail = {
             "É significativo o que Salomão *não* pede: nem riqueza, nem longa vida, nem vitória militar sobre seus inimigos (1 Reis 3:11) — pedidos absolutamente razoáveis para um rei jovem e inseguro. Ele pede, em vez disso, um 'coração que ouve' (lev shomea), expressão que no pensamento hebraico une duas ideias que costumamos separar: capacidade intelectual de compreender e disposição moral de obedecer. Discernimento bíblico nunca é neutro — não é apenas 'saber a coisa certa a fazer' no sentido abstrato, mas ter um coração disposto a se submeter ao que Deus revela como certo, mesmo quando isso é custoso ou impopular. Tiago 1:5 confirma que essa sabedoria não é reservada a poucos privilegiados; é oferecida livremente a quem a pede com sinceridade — mas o contexto de Tiago 1:6-8 também adverte que ela deve ser pedida 'com fé, sem duvidar', ou seja, com disposição real de agir segundo o que Deus mostrar, não apenas como consulta teórica.",
           theologianQuote: {
             author: "D.A. Carson",
-            text: "Sabedoria bíblica nunca é mera esperteza estratégica; é a capacidade, dada por Deus, de aplicar a verdade revelada às circunstâncias concretas e complexas da vida real. (paráfrase de uma ênfase recorrente em seus comentários sobre literatura sapiencial)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme a formulação exata antes de publicar como citação literal",
+            text: "As pessoas não se movem à deriva rumo à santidade. Sem um esforço movido pela graça, ninguém caminha naturalmente para a piedade, a oração, a obediência às Escrituras, a fé e o prazer no Senhor.",
+            source: "For the Love of God, Vol. 2",
           },
           deepen: {
             additionalVerses: [
@@ -408,9 +408,9 @@ const lideranca: Trail = {
             theologicalDebate:
               "Cristãos de diferentes tradições divergem sobre como Deus comunica sabedoria e direção hoje (por exemplo, sobre a natureza de impressões pessoais, 'paz interior' como confirmação, ou conselho profético). Esta é uma questão secundária importante; o núcleo comum e inegociável entre tradições fiéis é que toda busca de discernimento deve estar ancorada e submetida à Palavra de Deus já revelada, nunca contradizendo-a. Para decisões pessoais complexas, busque também o conselho do seu pastor ou líder espiritual.",
             secondQuote: {
-              author: "Norman Geisler",
-              text: "Discernimento cristão maduro exige tanto conhecimento bíblico sólido quanto humildade prática — conhecer a verdade sem saber aplicá-la à vida real ainda não é sabedoria completa. (paráfrase de uma ênfase recorrente em seus escritos sobre ética cristã aplicada)",
-              source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme a formulação exata antes de publicar como citação literal",
+              author: "Tim Keller",
+              text: "Sabedoria não é ter uma técnica que ajuda a tomar as decisões certas; é ter um caráter de mente e coração que capacita a pessoa a tomar as decisões certas.",
+              source: "sermão 'The Wellspring of Wisdom', série sobre Provérbios, Redeemer Presbyterian Church (26 de setembro de 2004)",
             },
           },
           quizzes: [
@@ -476,8 +476,8 @@ const lideranca: Trail = {
             "É fácil ler Êxodo 18 e Atos 6 apenas como conselhos práticos de organização, mas ambos os textos revelam algo teológico mais profundo: nem mesmo Moisés — o maior líder do Antigo Testamento — nem os apóstolos — os fundadores da igreja primitiva — foram projetados por Deus para fazer tudo sozinhos. A tentação de delegar mal geralmente nasce de duas fontes: orgulho ('ninguém faz tão bem quanto eu') ou insegurança ('se eu não fizer, talvez eu pareça dispensável'). Jetro não sugere que Moisés abandone completamente seu papel — ele reserva para Moisés 'os casos mais difíceis' (Êxodo 18:22) — mas insiste que a maior parte da carga seja compartilhada com pessoas qualificadas e confiáveis. Da mesma forma, os apóstolos não deixam de se importar com a distribuição de alimentos às viúvas; eles reconhecem que sua função primária (oração e ensino da Palavra) seria comprometida se continuassem acumulando tudo. Delegar bem exige humildade para reconhecer limites e confiança genuína em outros — ambas, virtudes de liderança madura.",
           theologianQuote: {
             author: "Thom Rainer",
-            text: "Líderes que insistem em fazer tudo sozinhos não estão sendo mais dedicados; estão, sem perceber, limitando o crescimento e a saúde de tudo o que lideram. (paráfrase de uma ênfase recorrente em seus escritos sobre saúde e crescimento de igrejas)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme a formulação exata antes de publicar como citação literal",
+            text: "Ignoramos a imagem do Corpo de Cristo em 1 Coríntios 12. Negamos essa imagem quando escolhemos desempenhar o papel de cada parte do Corpo — seja fazendo tudo nós mesmos, seja 'limpando a bagunça' do que outros fizeram.",
+            source: "'A Quiz for Those of Us who Don't Delegate Well', ThomRainer.com / Church Answers (25 de setembro de 2025)",
           },
           quizzes: [
             {
@@ -551,8 +551,8 @@ const lideranca: Trail = {
             "O jogo de palavras de Paulo em 2 Coríntios 4:8-9 (no grego original, cada par usa a mesma raiz com e sem prefixo negativo intensificado) é deliberado: ele não afirma que líderes cristãos estão imunes à pressão, à confusão ou à perseguição — ele afirma honestamente que sentem tudo isso ('perplexos') sem serem consumidos por isso ('mas não desesperados', literalmente 'sem-saída-total'). Isso é importante porque muitos líderes cristãos sentem que precisam projetar uma fachada de confiança inabalável o tempo todo, como se admitir pressão fosse falta de fé. Neemias e Paulo modelam algo diferente: honestidade real sobre a dificuldade, combinada com uma confiança que não depende da ausência de problemas, mas da presença fiel de Deus em meio a eles. A resposta prática de Neemias — orar *e* organizar uma guarda armada — mostra que confiança em Deus nunca substitui sabedoria e ação responsável; ela as acompanha.",
           theologianQuote: {
             author: "Charles Swindoll",
-            text: "Neemias não removeu a oposição orando; ele continuou construindo enquanto orava — e essa combinação de fé ativa e trabalho perseverante é o retrato de liderança sob pressão que a Bíblia nos oferece. (paráfrase de uma ênfase central de seus escritos sobre a vida de Neemias)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme a formulação exata antes de publicar como citação literal",
+            text: "Críticos desmoralizam. Líderes encorajam. Quando os críticos falaram, os trabalhadores os ouviram e ficaram desmoralizados. Mas quando o líder capaz se levantou e disse: 'Vamos olhar isso à maneira de Deus, permaneçam na obra', a equipe voltou ao trabalho.",
+            source: "Hand Me Another Brick: A Study of Nehemiah",
           },
           deepen: {
             historicalContext:
@@ -563,8 +563,8 @@ const lideranca: Trail = {
               "Existe discussão legítima entre cristãos sobre até que ponto líderes devem confrontar oposição diretamente (como Neemias fez, organizando defesa armada) versus responder com não-resistência em certas situações. O contexto de Neemias é de liderança civil/nacional com responsabilidade de proteção física do povo — diferente, por exemplo, do chamado de Jesus e dos apóstolos a sofrer perseguição sem retaliação pessoal por causa do Evangelho. Para discernir como aplicar esses princípios em situações específicas de conflito ou oposição, busque o conselho do seu pastor ou líder espiritual.",
               secondQuote: {
                 author: "Hernandes Dias Lopes",
-                text: "A pressão externa nunca é motivo bíblico para abandonar a obra que Deus confiou; é, antes, o cenário em que a fidelidade do líder é mais claramente revelada. (paráfrase de uma ênfase recorrente em seus estudos sobre Neemias)",
-                source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme a formulação exata antes de publicar como citação literal",
+                text: "Realmente, Neemias é um grande exemplo de liderança, pois mesmo a realidade dizendo que não era possível a reconstrução, ele permaneceu confiando naquele que o havia chamado.",
+                source: "'Neemias, um líder que mudou a história de uma nação', hernandesdiaslopes.com.br",
               },
           },
           quizzes: [
@@ -633,8 +633,8 @@ const lideranca: Trail = {
             "A diferença que Jesus estabelece entre o 'bom pastor' e o 'mercenário' (João 10:11-13) não está na tarefa realizada — ambos, à primeira vista, cuidam do rebanho —, mas na motivação e no compromisso por trás dela. O mercenário faz o trabalho enquanto é conveniente e foge diante do perigo real, porque as ovelhas não são realmente suas; o pastor permanece porque as ovelhas são dele, e ele as conhece pessoalmente. Isso desafia diretamente qualquer modelo de liderança cristã que trate pessoas como números, projetos ou tarefas a gerenciar. 1 Pedro 5:2-3 acrescenta três contrastes práticos para quem lidera pastoralmente: motivação (espontânea, não forçada), interesse (serviço genuíno, não ganância pessoal) e método (exemplo vivido, não dominação). Cuidado pastoral genuíno exige proximidade suficiente para conhecer as dores reais das pessoas — o que é mais custoso, e também mais fiel ao modelo de Cristo, do que liderar de forma distante e apenas funcional.",
           theologianQuote: {
             author: "Charles Spurgeon",
-            text: "O verdadeiro pastor sente no próprio coração a dor de cada ovelha ferida sob seu cuidado; sem esse amor genuíno, todo o conhecimento teológico do mundo não faz de ninguém um bom pastor. (paráfrase de uma ênfase recorrente em suas instruções a futuros pastores)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme a formulação exata antes de publicar como citação literal",
+            text: "Você não pode cuidar do povo de Deus, e zelar por ele em todos os seus pecados, tentações, provações e dificuldades, a menos que o ame; você se cansará e se fatigará da obra pastoral se não houver uma fonte constante de amor brotando em seu coração por eles.",
+            source: "sermão 'Feed My Sheep', Pastor's College Conference (13 de abril de 1877)",
           },
           quizzes: [
             {
@@ -708,8 +708,8 @@ const lideranca: Trail = {
             "A troca de verbos entre 'agapáō' e 'philéō' em João 21:15-17 é um dos detalhes mais discutidos do quarto Evangelho — e mesmo que estudiosos divirjam sobre o quanto essa distinção era ainda percebida como forte no grego koiné da época, o padrão literário permanece significativo: Pedro, que outrora prometera lealdade absoluta e falhou publicamente, agora responde com uma palavra mais modesta, de afeto pessoal, em vez de reivindicar o compromisso pleno que já demonstrara não conseguir sustentar sozinho. Jesus não o repreende por isso; Ele o encontra exatamente onde ele está, e por três vezes — espelhando deliberadamente as três negações — o restaura publicamente à sua missão: 'apascenta as minhas ovelhas'. O fracasso de Pedro não foi a palavra final sobre sua vida ou seu chamado; foi o cenário em que a graça restauradora de Cristo se tornou mais visível. Isso não trivializa a gravidade do pecado — Pedro chorou amargamente —, mas mostra que arrependimento genuíno sempre encontra a porta da restauração aberta.",
           theologianQuote: {
             author: "Dietrich Bonhoeffer",
-            text: "Graça verdadeira nunca ignora a gravidade da queda, mas também nunca a torna a palavra final; ela custou a vida do Filho de Deus, e por isso é capaz de restaurar até o discípulo que negou publicamente seu Senhor. (paráfrase de uma ênfase central de seus escritos sobre graça e discipulado)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme a formulação exata antes de publicar como citação literal",
+            text: "Graça custosa é o evangelho que precisa ser buscado repetidas vezes, o dom que precisa ser pedido, a porta em que se deve bater. [...] É custosa porque condena o pecado, e é graça porque justifica o pecador.",
+            source: "The Cost of Discipleship (Nachfolge, 1937)",
           },
           deepen: {
             historicalContext:
@@ -720,8 +720,8 @@ const lideranca: Trail = {
               "Tradições cristãs divergem sobre os detalhes exatos de restauração formal de líderes que caem em pecado grave (por exemplo, prazos, processos e se — e quando — é apropriado retomar funções específicas de liderança pública). Esta é uma questão importante que exige sabedoria pastoral caso a caso; o princípio bíblico central aqui é que a graça de Deus genuinamente restaura o arrependido, mas restauração ao caráter (relação com Deus) e restauração à função pública de liderança nem sempre seguem o mesmo ritmo ou processo. Para situações reais de queda e restauração, busque sempre o acompanhamento do seu pastor e da liderança da sua igreja local.",
             secondQuote: {
               author: "C.S. Lewis",
-              text: "Não é a ausência de queda que prova um discípulo fiel, mas o que ele faz depois de cair — se corre para mais longe de Deus, ou se deixa, como Pedro, ser encontrado por Ele outra vez. (paráfrase de uma ênfase recorrente em seus escritos sobre arrependimento)",
-              source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme a formulação exata antes de publicar como citação literal",
+              text: "O arrependimento não é algo que Deus exige de você antes de aceitá-lo de volta, e que Ele poderia dispensar se quisesse; é simplesmente a descrição de como é o caminho de volta.",
+              source: "Mere Christianity (HarperCollins), p. 60",
             },
           },
           quizzes: [
