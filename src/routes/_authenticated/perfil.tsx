@@ -200,139 +200,156 @@ function PerfilPage() {
 
       {/* ── Hero: identidade + progresso ─────────────────────────────── */}
       <section className="card-elevated animate-slide-up overflow-hidden">
-        <div className="relative bg-gradient-to-br from-primary/25 via-primary-glow/15 to-transparent p-6 text-center">
-          <div className="relative mx-auto h-32 w-32">
-            <svg viewBox="0 0 136 136" className="absolute inset-0 h-32 w-32 -rotate-90">
-              <circle
-                cx="68"
-                cy="68"
-                r={RING_R}
-                fill="none"
-                strokeWidth="5"
-                stroke="currentColor"
-                className="text-border/70"
-              />
-              <circle
-                cx="68"
-                cy="68"
-                r={RING_R}
-                fill="none"
-                strokeWidth="5"
-                strokeLinecap="round"
-                stroke="url(#profileRingGradient)"
-                strokeDasharray={RING_C}
-                strokeDashoffset={ringOffset}
-                style={{ transition: "stroke-dashoffset 0.6s ease-out" }}
-              />
-              <defs>
-                <linearGradient id="profileRingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="var(--primary)" />
-                  <stop offset="100%" stopColor="var(--primary-glow)" />
-                </linearGradient>
-              </defs>
-            </svg>
+        <div
+          className="relative overflow-hidden bg-cover bg-center p-6 pt-8 text-center"
+          style={{ backgroundImage: "url(/sheep-profile.jpeg)" }}
+        >
+          {/* Camada de leitura: escurece só o suficiente para o texto respirar, sem apagar a arte */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(10,8,20,0.15) 0%, rgba(10,8,20,0.30) 45%, rgba(10,8,20,0.82) 100%)",
+            }}
+          />
+          <div
+            className="absolute inset-0 mix-blend-multiply"
+            style={{
+              background:
+                "linear-gradient(140deg, color-mix(in oklab, var(--primary) 35%, transparent), transparent 60%)",
+            }}
+          />
 
-            <div className="absolute inset-[8px] overflow-hidden rounded-full bg-surface-2 text-5xl ring-2 ring-background">
-              {profile.avatar_url ? (
-                <img src={profile.avatar_url} alt="Foto de perfil" className="h-full w-full object-cover" />
-              ) : level.avatar ? (
-                <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
+          <div className="relative z-10">
+            <div className="relative mx-auto h-32 w-32">
+              <svg viewBox="0 0 136 136" className="absolute inset-0 h-32 w-32 -rotate-90">
+                <circle cx="68" cy="68" r={RING_R} fill="none" strokeWidth="5" stroke="rgba(255,255,255,0.3)" />
+                <circle
+                  cx="68"
+                  cy="68"
+                  r={RING_R}
+                  fill="none"
+                  strokeWidth="5"
+                  strokeLinecap="round"
+                  stroke="url(#profileRingGradient)"
+                  strokeDasharray={RING_C}
+                  strokeDashoffset={ringOffset}
+                  style={{ transition: "stroke-dashoffset 0.6s ease-out" }}
+                />
+                <defs>
+                  <linearGradient id="profileRingGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="var(--primary-glow)" />
+                    <stop offset="100%" stopColor="var(--ancient)" />
+                  </linearGradient>
+                </defs>
+              </svg>
+
+              <div className="absolute inset-[8px] overflow-hidden rounded-full bg-surface-2 text-5xl shadow-[0_0_0_3px_rgba(255,255,255,0.15)]">
+                {profile.avatar_url ? (
+                  <img src={profile.avatar_url} alt="Foto de perfil" className="h-full w-full object-cover" />
+                ) : level.avatar ? (
+                  <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
+                ) : (
+                  <span className="flex h-full w-full items-center justify-center">{ch.emoji}</span>
+                )}
+              </div>
+
+              <span className="absolute -top-1 left-1/2 flex -translate-x-1/2 items-center gap-1 rounded-full bg-ancient px-2.5 py-1 text-[11px] font-bold text-ancient-foreground shadow-md ring-2 ring-black/20">
+                <Star className="h-3 w-3 fill-current" /> Nv {level.level}
+              </span>
+
+              <button
+                onClick={onPickFile}
+                disabled={uploading}
+                className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-2 ring-black/20 transition-transform hover:scale-105 disabled:opacity-60"
+                aria-label="Enviar foto"
+              >
+                {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
+              </button>
+              <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onFileChange} />
+            </div>
+
+            <h2 className="mt-4 text-lg font-bold text-white [text-shadow:0_1px_6px_rgba(0,0,0,0.5)]">
+              {profile.display_name}
+            </h2>
+
+            <div className="mt-1.5 flex items-center justify-center gap-1">
+              {editingUsername ? (
+                <div className="flex items-center gap-1.5">
+                  <div className="flex items-center rounded-full border border-primary bg-background px-2 py-1">
+                    <AtSign className="h-3.5 w-3.5 text-muted-foreground" />
+                    <input
+                      autoFocus
+                      value={usernameDraft}
+                      maxLength={24}
+                      onChange={(e) => setUsernameDraft(normalizeUsername(e.target.value))}
+                      className="w-32 bg-transparent px-1 text-xs font-semibold outline-none"
+                    />
+                  </div>
+                  <button
+                    onClick={() => void saveUsername()}
+                    disabled={savingUsername}
+                    className="rounded-full bg-primary p-1 text-primary-foreground disabled:opacity-50"
+                    aria-label="Salvar"
+                  >
+                    {savingUsername ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <Check className="h-3.5 w-3.5" />
+                    )}
+                  </button>
+                  <button
+                    onClick={() => setEditingUsername(false)}
+                    className="rounded-full border border-border bg-background p-1 text-muted-foreground"
+                    aria-label="Cancelar"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                </div>
               ) : (
-                <span className="flex h-full w-full items-center justify-center">{ch.emoji}</span>
+                <div className="inline-flex items-center gap-1 rounded-full bg-black/25 py-1 pl-3 pr-1 text-xs font-medium text-white/85 backdrop-blur-sm ring-1 ring-white/10">
+                  <span>@{profile.username ?? "sem-id"}</span>
+                  {profile.username && (
+                    <button
+                      onClick={() => void copyUsername()}
+                      className="rounded-full p-1.5 transition-colors hover:bg-white/15 hover:text-white"
+                      aria-label="Copiar ID"
+                    >
+                      {copied ? <Check className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
+                    </button>
+                  )}
+                  <button
+                    onClick={startEditUsername}
+                    className="rounded-full p-1.5 transition-colors hover:bg-white/15 hover:text-white"
+                    aria-label="Editar ID"
+                  >
+                    <Pencil className="h-3 w-3" />
+                  </button>
+                </div>
               )}
             </div>
 
-            <span className="absolute -top-1 left-1/2 flex -translate-x-1/2 items-center gap-1 rounded-full bg-ancient px-2.5 py-1 text-[11px] font-bold text-ancient-foreground shadow-md ring-2 ring-background">
-              <Star className="h-3 w-3 fill-current" /> Nv {level.level}
-            </span>
-
-            <button
-              onClick={onPickFile}
-              disabled={uploading}
-              className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-2 ring-background transition-transform hover:scale-105 disabled:opacity-60"
-              aria-label="Enviar foto"
-            >
-              {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
-            </button>
-            <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onFileChange} />
-          </div>
-
-          <h2 className="mt-4 text-lg font-bold">{profile.display_name}</h2>
-
-          <div className="mt-1.5 flex items-center justify-center gap-1">
-            {editingUsername ? (
-              <div className="flex items-center gap-1.5">
-                <div className="flex items-center rounded-full border border-primary bg-background px-2 py-1">
-                  <AtSign className="h-3.5 w-3.5 text-muted-foreground" />
-                  <input
-                    autoFocus
-                    value={usernameDraft}
-                    maxLength={24}
-                    onChange={(e) => setUsernameDraft(normalizeUsername(e.target.value))}
-                    className="w-32 bg-transparent px-1 text-xs font-semibold outline-none"
-                  />
-                </div>
-                <button
-                  onClick={() => void saveUsername()}
-                  disabled={savingUsername}
-                  className="rounded-full bg-primary p-1 text-primary-foreground disabled:opacity-50"
-                  aria-label="Salvar"
-                >
-                  {savingUsername ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  ) : (
-                    <Check className="h-3.5 w-3.5" />
-                  )}
-                </button>
-                <button
-                  onClick={() => setEditingUsername(false)}
-                  className="rounded-full border border-border bg-background p-1 text-muted-foreground"
-                  aria-label="Cancelar"
-                >
-                  <X className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            ) : (
-              <div className="inline-flex items-center gap-1 rounded-full bg-surface-2 py-1 pl-3 pr-1 text-xs font-medium text-muted-foreground">
-                <span>@{profile.username ?? "sem-id"}</span>
-                {profile.username && (
-                  <button
-                    onClick={() => void copyUsername()}
-                    className="rounded-full p-1.5 transition-colors hover:bg-background hover:text-primary"
-                    aria-label="Copiar ID"
-                  >
-                    {copied ? <Check className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
-                  </button>
-                )}
-                <button
-                  onClick={startEditUsername}
-                  className="rounded-full p-1.5 transition-colors hover:bg-background hover:text-primary"
-                  aria-label="Editar ID"
-                >
-                  <Pencil className="h-3 w-3" />
-                </button>
-              </div>
-            )}
-          </div>
-
-          <p className="mt-3 text-sm font-semibold text-primary">{level.title}</p>
-
-          <div className="mx-auto mt-3 max-w-xs">
-            <div className="mb-1 flex items-center justify-between text-[10px] font-medium text-muted-foreground">
-              <span>
-                Nível {level.level} / {MAX_LEVEL}
-              </span>
-              <span>{Math.round(pct)}%</span>
-            </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-surface-2">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all"
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-            <p className="mt-1.5 text-[11px] text-muted-foreground">
-              {toNext === null ? "Nível máximo alcançado 🔥" : `Faltam ${toNext} XP para o próximo nível`}
+            <p className="mt-3 text-sm font-semibold text-white [text-shadow:0_1px_6px_rgba(0,0,0,0.5)]">
+              {level.title}
             </p>
+
+            <div className="mx-auto mt-3 max-w-xs">
+              <div className="mb-1 flex items-center justify-between text-[10px] font-medium text-white/70">
+                <span>
+                  Nível {level.level} / {MAX_LEVEL}
+                </span>
+                <span>{Math.round(pct)}%</span>
+              </div>
+              <div className="h-2 w-full overflow-hidden rounded-full bg-black/30">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-primary-glow to-ancient transition-all"
+                  style={{ width: `${pct}%` }}
+                />
+              </div>
+              <p className="mt-1.5 text-[11px] text-white/70">
+                {toNext === null ? "Nível máximo alcançado 🔥" : `Faltam ${toNext} XP para o próximo nível`}
+              </p>
+            </div>
           </div>
         </div>
 
@@ -356,9 +373,9 @@ function PerfilPage() {
       </section>
 
       {/* ── Estatísticas ──────────────────────────────────────────────── */}
-      <section>
-        <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Estatísticas</p>
-        <div className="grid grid-cols-2 gap-3">
+      <section className="card-elevated p-4">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Estatísticas</p>
+        <div className="grid grid-cols-4 divide-x divide-border">
           <Stat icon={Trophy} label="Nível" value={String(level.level)} accent="text-primary" />
           <Stat icon={Flame} label="Ofensiva" value={`${profile.streak}d`} accent="text-streak" />
           <Stat icon={BookOpen} label="Lições" value={String(lessonsCount)} accent="text-primary-glow" />
@@ -542,16 +559,10 @@ function Stat({
   accent?: string;
 }) {
   return (
-    <div className="card-elevated flex items-center gap-3 p-3.5">
-      <span
-        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-current/10 ${accent ?? "text-primary"}`}
-      >
-        <Icon className="h-5 w-5" />
-      </span>
-      <div className="min-w-0">
-        <p className="text-lg font-bold leading-tight">{value}</p>
-        <p className="truncate text-[10px] uppercase tracking-wider text-muted-foreground">{label}</p>
-      </div>
+    <div className="flex flex-col items-center gap-1 px-1 text-center">
+      <Icon className={`h-4 w-4 ${accent ?? "text-primary"}`} />
+      <p className="text-base font-bold leading-tight">{value}</p>
+      <p className="text-[9px] uppercase leading-tight tracking-wider text-muted-foreground">{label}</p>
     </div>
   );
 }
