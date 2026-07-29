@@ -93,6 +93,20 @@ export async function cancelChallenge(id: string) {
   if (error) throw error;
 }
 
+/** Cancela um desafio já aceito. Qualquer um dos dois participantes pode cancelar. */
+export async function cancelAcceptedChallenge(id: string) {
+  const { data: u } = await supabase.auth.getUser();
+  if (!u.user) throw new Error("Não autenticado");
+
+  const { error } = await supabase
+    .from("challenges")
+    .update({ status: "canceled" })
+    .eq("id", id)
+    .eq("status", "accepted")
+    .or(`challenger_id.eq.${u.user.id},challenged_id.eq.${u.user.id}`);
+  if (error) throw error;
+}
+
 export async function getChallengeProgressPct(challengeId: string, userId: string) {
   const { data } = await supabase.rpc("challenge_progress", {
     _user: userId,
