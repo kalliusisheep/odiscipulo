@@ -15,7 +15,6 @@ import {
   Brain,
   Check,
   Layers,
-  PartyPopper,
   Quote,
   Share2,
   Sparkles,
@@ -353,9 +352,11 @@ function LicaoPage() {
 
       {step === "done" && (
         <div style={contentZoomStyle} className="flex flex-col items-center text-center">
-          <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-glow shadow-2xl shadow-primary/40">
-            <PartyPopper className="h-12 w-12 text-primary-foreground" />
-          </div>
+          <img
+            src="/sheep-celebration.gif"
+            alt="Ovelha comemorando"
+            className="h-32 w-32 rounded-full object-cover shadow-2xl shadow-primary/40"
+          />
           <h2 className="mt-6 text-2xl font-bold">Lição concluída!</h2>
           <p className="mt-1 text-sm text-muted-foreground">{lesson.title}</p>
           <p className="mt-4 rounded-full bg-primary/20 px-4 py-1.5 text-sm font-bold text-primary">+{lesson.xp} XP</p>
