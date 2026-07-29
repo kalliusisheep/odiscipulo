@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Swords, Sword, Check, X, Clock } from "lucide-react";
+import { Swords, Check, X, Clock } from "lucide-react";
 import {
   listMyChallenges,
   getChallengeProgressPct,
@@ -40,94 +40,6 @@ function playVictoryTrumpet() {
   } catch {
     /* silencioso — áudio é opcional */
   }
-}
-
-// Som do choque de espadas (duelo) — mesmo padrão de síntese via WebAudio.
-function playSwordClash() {
-  if (typeof window === "undefined") return;
-  try {
-    const AudioCtx =
-      window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (!AudioCtx) return;
-    const ctx = new AudioCtx();
-    if (ctx.state === "suspended") void ctx.resume();
-
-    const clang = (start: number, freq: number, volume: number) => {
-      // Timbre metálico agudo com decaimento rápido.
-      const osc = ctx.createOscillator();
-      const oscGain = ctx.createGain();
-      osc.type = "square";
-      osc.frequency.setValueAtTime(freq, start);
-      osc.frequency.exponentialRampToValueAtTime(freq * 0.55, start + 0.22);
-      oscGain.gain.setValueAtTime(0.0001, start);
-      oscGain.gain.exponentialRampToValueAtTime(volume, start + 0.008);
-      oscGain.gain.exponentialRampToValueAtTime(0.0001, start + 0.28);
-      osc.connect(oscGain).connect(ctx.destination);
-      osc.start(start);
-      osc.stop(start + 0.3);
-
-      // Ruído filtrado simulando o impacto das lâminas.
-      const bufferSize = Math.floor(ctx.sampleRate * 0.14);
-      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
-      const noise = ctx.createBufferSource();
-      noise.buffer = buffer;
-      const bandpass = ctx.createBiquadFilter();
-      bandpass.type = "bandpass";
-      bandpass.frequency.value = freq * 1.4;
-      bandpass.Q.value = 5;
-      const noiseGain = ctx.createGain();
-      noiseGain.gain.setValueAtTime(volume * 1.1, start);
-      noiseGain.gain.exponentialRampToValueAtTime(0.0001, start + 0.14);
-      noise.connect(bandpass).connect(noiseGain).connect(ctx.destination);
-      noise.start(start);
-    };
-
-    const now = ctx.currentTime;
-    clang(now + 0.05, 950, 0.14); // primeiro roçar das lâminas
-    clang(now + 0.75, 1500, 0.24); // choque principal, sincronizado com o clarão
-
-    setTimeout(() => void ctx.close(), 1700);
-  } catch {
-    /* silencioso — áudio é opcional */
-  }
-}
-
-/** Overlay do duelo de espadas — toca ao aceitar um desafio, por ~1.5s. */
-function SwordDuelOverlay({ peerName, onDone }: { peerName: string | null; onDone: () => void }) {
-  useEffect(() => {
-    playSwordClash();
-    const t = setTimeout(onDone, 1500);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return (
-    <div className="fixed inset-0 z-[130] flex flex-col items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="relative h-40 w-40">
-        <Sword
-          className="sword-left absolute left-1/2 top-1/2 h-16 w-16 text-slate-100"
-          style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.65))" }}
-        />
-        <Sword
-          className="sword-right absolute left-1/2 top-1/2 h-16 w-16 text-slate-100"
-          style={{ filter: "drop-shadow(0 0 8px rgba(255,255,255,0.65))" }}
-        />
-        <div
-          className="clash-flash absolute left-1/2 top-1/2 h-28 w-28 rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(255,241,199,0.95) 0%, rgba(249,115,22,0.85) 45%, transparent 75%)",
-          }}
-        />
-        <div className="sword-sparks absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full" />
-      </div>
-      <p className="mt-4 text-sm font-bold uppercase tracking-wider text-white/90">
-        Desafio aceito{peerName ? ` — você vs. ${peerName}` : ""}!
-      </p>
-    </div>
-  );
 }
 
 /** Avatar redondo simples usado nos cartões de desafio. */
@@ -243,17 +155,12 @@ export function ChallengePanel({ myId }: { myId: string }) {
     peerName: string | null;
   } | null>(null);
   const [meAvatarUrl, setMeAvatarUrl] = useState<string | null>(null);
-  const [duelInfo, setDuelInfo] = useState<{ peerName: string | null } | null>(null);
-  const prevStatusRef = useRef<Map<string, Challenge["status"]>>(new Map());
-  const firstLoadRef = useRef(true);
 
   const load = async () => {
     const all = await listMyChallenges(myId);
     const relevant = all.filter((c) => c.status === "pending" || c.status === "accepted");
 
     if (relevant.length === 0) {
-      prevStatusRef.current = new Map();
-      firstLoadRef.current = false;
       setItems([]);
       setLoading(false);
       return;
@@ -311,18 +218,6 @@ export function ChallengePanel({ myId }: { myId: string }) {
       const rank = (e: EnrichedChallenge) => (e.isInvite ? 0 : e.isWaiting ? 2 : 1);
       return rank(a) - rank(b);
     });
-
-    // Duelo de espadas: dispara quando um desafio que estava "pending" vira "accepted"
-    // (seja porque eu aceitei, seja porque o outro participante acabou de aceitar).
-    if (!firstLoadRef.current) {
-      const justAccepted = enriched.find((it) => {
-        const prevStatus = prevStatusRef.current.get(it.challenge.id);
-        return prevStatus && prevStatus !== "accepted" && it.challenge.status === "accepted";
-      });
-      if (justAccepted) setDuelInfo({ peerName: justAccepted.peer.display_name });
-    }
-    prevStatusRef.current = new Map(enriched.map((it) => [it.challenge.id, it.challenge.status]));
-    firstLoadRef.current = false;
 
     setItems(enriched);
     setLoading(false);
@@ -393,7 +288,12 @@ export function ChallengePanel({ myId }: { myId: string }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
-  if (loading || items.length === 0) return null;
+  // Some da lista assim que ambos batem 100%, mesmo que o status no banco
+  // ainda não tenha virado "completed" (ex.: a chamada de finish_challenge_step
+  // do segundo participante falhou ou não disparou).
+  const visibleItems = items.filter((i) => !(i.myPct >= 100 && i.peerPct >= 100));
+
+  if (loading || visibleItems.length === 0) return null;
 
   return (
     <section className="space-y-3">
@@ -402,7 +302,7 @@ export function ChallengePanel({ myId }: { myId: string }) {
       </h2>
 
       <div className="space-y-2">
-        {items.map((item) => {
+        {visibleItems.map((item) => {
           const isBusy = busyId === item.challenge.id;
           return (
             <div
@@ -489,8 +389,6 @@ export function ChallengePanel({ myId }: { myId: string }) {
           );
         })}
       </div>
-
-      {duelInfo && <SwordDuelOverlay peerName={duelInfo.peerName} onDone={() => setDuelInfo(null)} />}
 
       {completedModal && (
         <ChallengeCompletedModal
