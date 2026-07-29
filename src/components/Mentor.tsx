@@ -149,7 +149,7 @@ export function MentorFAB() {
             left: "50%",
             transform: "translateX(-50%)",
             [bubbleBelow ? "top" : "bottom"]: FAB_SIZE + 8,
-            background: "hsl(var(--surface))",
+            background: "var(--surface)",
           }}
         >
           {message}
@@ -193,7 +193,6 @@ export function MentorFAB() {
     </div>
   );
 }
-
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -283,7 +282,9 @@ export function MentorChat() {
             </div>
             <div>
               <h2 className="text-sm font-semibold">Barnabéé</h2>
-              <p className="text-[10px] text-muted-foreground">Mentor IA · Companheiro de estudo, não substituto pastoral</p>
+              <p className="text-[10px] text-muted-foreground">
+                Mentor IA · Companheiro de estudo, não substituto pastoral
+              </p>
             </div>
           </div>
           <button
@@ -300,9 +301,7 @@ export function MentorChat() {
             <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
               <div
                 className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
-                  m.role === "user"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-surface-2 text-foreground"
+                  m.role === "user" ? "bg-primary text-primary-foreground" : "bg-surface-2 text-foreground"
                 }`}
               >
                 {m.content || <span className="text-muted-foreground">…</span>}
