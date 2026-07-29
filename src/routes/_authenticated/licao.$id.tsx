@@ -151,7 +151,7 @@ function LicaoPage() {
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
                   {v.ref} · {bibleVersion}
                 </p>
-                <p className="mt-2 scripture text-base leading-relaxed" data-narrate>
+                <p className="mt-2 scripture text-sm leading-relaxed" data-narrate>
                   "{verseText(v, bibleVersion)}"
                 </p>
               </div>
@@ -316,7 +316,7 @@ function LicaoPage() {
 
           <div className="card-elevated p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Oração sugerida</p>
-            <p className="mt-2 scripture text-base leading-relaxed">{lesson.prayer}</p>
+            <p className="mt-2 scripture text-sm leading-relaxed">{lesson.prayer}</p>
           </div>
 
           <div className="card-elevated border-l-4 border-l-ancient p-5">
