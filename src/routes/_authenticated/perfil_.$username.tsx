@@ -1,10 +1,10 @@
 import { createFileRoute, Link, notFound, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { getLevel, MAX_LEVEL } from "@/data/levels";
+import { getLevel, MAX_LEVEL, xpForLevel } from "@/data/levels";
 import { CHARACTERS } from "@/data/content";
 import { toast } from "sonner";
-import { ArrowLeft, MessageCircle, Flame, Trophy, BookOpen, Clock, UserPlus, Check, Copy } from "lucide-react";
+import { ArrowLeft, MessageCircle, Flame, Trophy, BookOpen, Clock, UserPlus, Check, Copy, Sparkles } from "lucide-react";
 import { ChallengeButton } from "@/components/ChallengeButton";
 
 export const Route = createFileRoute("/_authenticated/perfil_/$username")({
@@ -82,9 +82,6 @@ function PublicProfilePage() {
   const addFriend = async () => {
     if (!profile || !myId || profile.id === myId) return;
     setAdding(true);
-    // Usa a função add_friend (SECURITY DEFINER) do banco, que insere a amizade
-    // nos dois sentidos. Um insert direto na tabela friendships falha, pois a
-    // policy de RLS só permite inserir linhas onde user_id = você mesmo.
     const { error } = await supabase.rpc("add_friend", { _target: profile.id });
     setAdding(false);
     if (error) {
@@ -104,16 +101,42 @@ function PublicProfilePage() {
   const ch = CHARACTERS.find((c) => c.id === profile.avatar_char) ?? CHARACTERS[0];
   const isSelf = myId === profile.id;
 
-  return (
-    <div className="mx-auto max-w-lg space-y-4 px-4 pt-6 pb-24">
-      <Link to="/ranking" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary">
-        <ArrowLeft className="h-4 w-4" /> Voltar ao ranking
-      </Link>
+  const currentLevelXp = xpForLevel(level.level);
+  const nextLevelXp = xpForLevel(level.level + 1);
+  const xpInLevel = Math.max(0, profile.xp - currentLevelXp);
+  const xpNeeded = Math.max(1, nextLevelXp - currentLevelXp);
+  const xpPct = Math.min(100, Math.round((xpInLevel / xpNeeded) * 100));
 
-      <section className="card-elevated overflow-hidden">
-        <div className="bg-gradient-to-br from-primary/20 to-primary-glow/10 p-5 text-center">
-          <div className="mx-auto h-28 w-28">
-            <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-3xl bg-surface-2 ring-2 ring-primary/40 text-6xl">
+  return (
+    <div className="mx-auto max-w-lg pb-24">
+      {/* Hero */}
+      <div className="relative overflow-hidden rounded-b-[2.5rem] bg-gradient-to-br from-primary via-primary/85 to-indigo-600 px-5 pb-10 pt-6 text-primary-foreground shadow-xl">
+        <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
+        <div className="absolute -bottom-20 -left-16 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
+
+        <div className="relative flex items-center justify-between">
+          <Link
+            to="/ranking"
+            aria-label="Voltar"
+            className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-xs font-medium backdrop-blur transition hover:bg-white/25"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" /> Voltar
+          </Link>
+          <button
+            onClick={() => void copyUsername()}
+            className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-xs font-medium backdrop-blur transition hover:bg-white/25"
+            aria-label="Copiar ID"
+          >
+            {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+            @{profile.username}
+          </button>
+        </div>
+
+        <div className="relative mt-6 flex flex-col items-center text-center">
+          <div className="relative">
+            {/* Anel */}
+            <div className="absolute -inset-1.5 rounded-full bg-gradient-to-br from-yellow-300 via-white to-yellow-300 blur-md opacity-70" />
+            <div className="relative flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-white ring-4 ring-white/60 text-6xl">
               {profile.avatar_url ? (
                 <img src={profile.avatar_url} alt="Foto" className="h-full w-full object-cover" />
               ) : level.avatar ? (
@@ -122,74 +145,144 @@ function PublicProfilePage() {
                 <span>{ch.emoji}</span>
               )}
             </div>
-          </div>
-          <h2 className="mt-3 text-lg font-bold">{profile.display_name}</h2>
-          <div className="mt-1 flex items-center justify-center gap-1.5">
-            <span className="text-xs font-medium text-muted-foreground">@{profile.username}</span>
-            <button
-              onClick={() => void copyUsername()}
-              className="rounded-full p-1 text-muted-foreground hover:bg-surface-2 hover:text-primary"
-              aria-label="Copiar ID"
-            >
-              {copied ? <Check className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
-            </button>
-          </div>
-          <p className="mt-2 text-xs text-muted-foreground">Patente:</p>
-          <p className="text-base font-semibold text-primary">Nível {level.level} / {MAX_LEVEL}: {level.title}</p>
-          {profile.bio && (
-            <p className="mt-3 rounded-2xl bg-surface-2 px-4 py-2 text-sm italic text-foreground/90">"{profile.bio}"</p>
-          )}
-        </div>
-      </section>
-
-      {!isSelf && (
-        <div className="grid grid-cols-2 gap-3">
-          <Link
-            to="/mensagens/$username"
-            params={{ username: profile.username }}
-            className="flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-md transition-transform active:scale-95"
-          >
-            <MessageCircle className="h-4 w-4" /> Enviar mensagem
-          </Link>
-          {isFriend ? (
-            <div className="flex items-center justify-center gap-2 rounded-2xl border border-success/40 bg-success/10 px-4 py-3 text-sm font-semibold text-success">
-              <Check className="h-4 w-4" /> Irmãos
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-white px-3 py-1 text-[11px] font-bold text-primary shadow">
+              Nível {level.level}
             </div>
-          ) : (
-            <button
-              onClick={() => void addFriend()}
-              disabled={adding}
-              className="flex items-center justify-center gap-2 rounded-2xl border border-border bg-surface-2 px-4 py-3 text-sm font-semibold transition-transform active:scale-95 disabled:opacity-60"
-            >
-              <UserPlus className="h-4 w-4" /> {adding ? "Adicionando…" : "Adicionar irmão"}
-            </button>
+          </div>
+
+          <h1 className="mt-6 text-2xl font-bold leading-tight">{profile.display_name}</h1>
+          <div className="mt-1.5 inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur">
+            <Sparkles className="h-3 w-3" /> {level.title}
+          </div>
+
+          {/* Barra de XP */}
+          <div className="mt-4 w-full max-w-[16rem]">
+            <div className="mb-1 flex items-center justify-between text-[10px] font-semibold text-white/85">
+              <span>{profile.xp} XP</span>
+              <span>Nível {Math.min(MAX_LEVEL, level.level + 1)}</span>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full bg-white/20">
+              <div
+                className="h-full rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.7)] transition-all"
+                style={{ width: `${xpPct}%` }}
+              />
+            </div>
+          </div>
+
+          {profile.bio && (
+            <p className="mt-5 max-w-[20rem] rounded-2xl bg-white/15 px-4 py-3 text-sm italic leading-relaxed text-white/95 backdrop-blur">
+              "{profile.bio}"
+            </p>
           )}
         </div>
-      )}
+      </div>
 
-      {!isSelf && (
-        <ChallengeButton targetId={profile.id} targetName={profile.display_name} />
-      )}
+      <div className="space-y-4 px-4 pt-5">
+        {/* Ações */}
+        {!isSelf && (
+          <>
+            <div className="grid grid-cols-2 gap-3">
+              <Link
+                to="/mensagens/$username"
+                params={{ username: profile.username }}
+                className="flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3.5 text-sm font-semibold text-primary-foreground shadow-md transition-transform active:scale-95"
+              >
+                <MessageCircle className="h-4 w-4" /> Mensagem
+              </Link>
+              {isFriend ? (
+                <div className="flex items-center justify-center gap-2 rounded-2xl border border-success/40 bg-success/10 px-4 py-3.5 text-sm font-semibold text-success">
+                  <Check className="h-4 w-4" /> Irmãos
+                </div>
+              ) : (
+                <button
+                  onClick={() => void addFriend()}
+                  disabled={adding}
+                  className="flex items-center justify-center gap-2 rounded-2xl border border-border bg-surface-2 px-4 py-3.5 text-sm font-semibold transition-transform active:scale-95 disabled:opacity-60"
+                >
+                  <UserPlus className="h-4 w-4" /> {adding ? "Adicionando…" : "Adicionar"}
+                </button>
+              )}
+            </div>
+            <ChallengeButton targetId={profile.id} targetName={profile.display_name} />
+          </>
+        )}
 
-      <section className="card-elevated p-4">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Estatísticas</p>
-        <div className="grid grid-cols-2 gap-2 text-center">
-          <Stat icon={Trophy} label="Nível" value={String(level.level)} />
-          <Stat icon={Flame} label="Ofensiva 🔥" value={`${profile.streak}d`} />
-          <Stat icon={BookOpen} label="Lições" value={String(lessons)} />
-          <Stat icon={Clock} label="Estudo" value={`${lessons * 8}m`} />
-        </div>
-      </section>
+        {/* Estatísticas */}
+        <section>
+          <p className="mb-2 px-1 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Estatísticas</p>
+          <div className="grid grid-cols-2 gap-3">
+            <StatCard
+              icon={Trophy}
+              label="Nível atual"
+              value={`${level.level}/${MAX_LEVEL}`}
+              tone="from-amber-500/25 to-orange-500/10"
+              iconTone="text-amber-500"
+            />
+            <StatCard
+              icon={Flame}
+              label="Ofensiva"
+              value={`${profile.streak}d`}
+              tone="from-orange-500/25 to-red-500/10"
+              iconTone="text-orange-500"
+            />
+            <StatCard
+              icon={BookOpen}
+              label="Lições"
+              value={String(lessons)}
+              tone="from-primary/25 to-indigo-500/10"
+              iconTone="text-primary"
+            />
+            <StatCard
+              icon={Clock}
+              label="Tempo de estudo"
+              value={`${lessons * 8}m`}
+              tone="from-emerald-500/25 to-teal-500/10"
+              iconTone="text-emerald-500"
+            />
+          </div>
+        </section>
+
+        {/* Card de XP total */}
+        <section className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/10 via-surface-2 to-surface p-4">
+          <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-primary/20 blur-2xl" />
+          <div className="relative flex items-center gap-3">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/15">
+              <Sparkles className="h-5 w-5 text-primary" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Experiência total</p>
+              <p className="text-xl font-bold">{profile.xp.toLocaleString("pt-BR")} XP</p>
+              <p className="text-[11px] text-muted-foreground">
+                {xpNeeded - xpInLevel} XP para o próximo nível
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
 
-function Stat({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) {
+function StatCard({
+  icon: Icon,
+  label,
+  value,
+  tone,
+  iconTone,
+}: {
+  icon: React.ElementType;
+  label: string;
+  value: string;
+  tone: string;
+  iconTone: string;
+}) {
   return (
-    <div className="rounded-2xl bg-surface-2 p-3">
-      <Icon className="mx-auto h-4 w-4 text-primary" />
-      <p className="mt-1 text-lg font-bold">{value}</p>
-      <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</p>
+    <div className={`relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br ${tone} p-3.5`}>
+      <div className="flex items-center gap-2">
+        <Icon className={`h-4 w-4 ${iconTone}`} />
+        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{label}</p>
+      </div>
+      <p className="mt-1.5 text-2xl font-bold leading-none">{value}</p>
     </div>
   );
 }
