@@ -72,7 +72,7 @@ export function PushNotifications() {
       { onConflict: "endpoint" },
     );
     if (error) throw error;
-    toast.success("Notificações ativadas. A ovelha avisará você às 06:00.");
+    toast.success("Notificações ativadas. Barnabé avisará você às 06:00 e às 20:00.");
   };
 
   if (!supported || permission === "granted") return null;
