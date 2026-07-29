@@ -124,7 +124,7 @@ function MessagesPage() {
 
       <div className="flex-1 space-y-2 overflow-y-auto px-4 py-4">
         {messages.length === 0 && (
-          <p className="mt-8 text-center text-xs text-muted-foreground">
+          <p className="mt-8 text-center text-sm text-muted-foreground">
             Nenhuma mensagem ainda. Envie a primeira palavra de encorajamento!
           </p>
         )}
@@ -133,12 +133,12 @@ function MessagesPage() {
           return (
             <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
               <div
-                className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm ${
+                className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-base ${
                   mine ? "bg-primary text-primary-foreground" : "bg-surface-2 text-foreground"
                 }`}
               >
                 <p className="leading-relaxed">{m.body}</p>
-                <p className={`mt-1 text-[10px] ${mine ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
+                <p className={`mt-1 text-xs ${mine ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
                   {formatDistanceToNow(new Date(m.created_at), { locale: ptBR, addSuffix: true })}
                 </p>
               </div>
@@ -159,7 +159,7 @@ function MessagesPage() {
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Escreva uma mensagem…"
-          className="flex-1 rounded-full border border-border bg-input px-4 py-2 text-sm outline-none focus:border-primary"
+          className="flex-1 rounded-full border border-border bg-input px-4 py-2.5 text-base outline-none focus:border-primary"
         />
         <button
           type="submit"
