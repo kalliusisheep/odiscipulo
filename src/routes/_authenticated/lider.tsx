@@ -4,11 +4,9 @@ import { toast } from "sonner";
 import {
   ArrowLeft,
   Building2,
-  BookOpen,
   Calendar,
   Check,
   ChevronRight,
-  Crown,
   Loader2,
   MessageCircle,
   Plus,
@@ -32,23 +30,6 @@ const TEMAS = [
   "Dificuldade financeira", "Vida devocional", "Perdão", "Empatia", "Serviço (Mordomia)",
   "Preparo para liderar", "Batismo",
 ];
-const LEADER_LESSON_IDS = ["csl-1", "csl-2", "csl-3", "csl-4", "csl-5", "csl-6", "csl-7", "csl-8", "csl-9", "csl-10"];
-const DISCIPLE_CONTENTS = [
-  ["Orgulho", "Tiago 4:6", "Deus se opõe ao orgulhoso e concede graça ao humilde. O discipulado começa quando reconhecemos que dependemos de Cristo, não da nossa imagem ou capacidade.", "Em qual conversa desta semana posso ouvir antes de responder?"],
-  ["Pecado", "1 João 1:9", "Pecado não é apenas falha moral: é rebelião contra Deus. Em Cristo há perdão real para quem confessa, abandona a ocultação e caminha na luz com a igreja.", "Ore com sinceridade e procure apoio pastoral quando a luta for persistente."],
-  ["Casamento", "Efésios 5:25", "O casamento cristão é uma aliança de serviço, fidelidade e amor sacrificial. Cristo e sua igreja dão o padrão; nenhum cônjuge é chamado a controlar ou ferir o outro.", "Conversem sobre uma forma concreta de servir um ao outro nesta semana."],
-  ["Namoro", "1 Tessalonicenses 4:3-4", "O namoro deve honrar a santidade, a dignidade e a clareza de propósito. Não é um ensaio de casamento, mas um relacionamento que precisa de limites, verdade e acompanhamento maduro.", "Definam limites que protejam a pureza e conversem com uma liderança confiável."],
-  ["Pornografia", "1 Coríntios 6:18-20", "A pornografia reduz pessoas criadas à imagem de Deus a objetos de consumo. A libertação envolve arrependimento, graça, limites práticos, prestação de contas e ajuda pastoral especializada quando necessária.", "Não lute sozinho: remova acessos, procure um líder maduro e estabeleça apoio responsável."],
-  ["Vícios (álcool/drogas)", "1 Coríntios 6:12", "Nada deve dominar o discípulo além de Cristo. Dependências pedem cuidado espiritual e, muitas vezes, acompanhamento médico, psicológico e familiar; buscar tratamento é um passo de coragem, não de vergonha.", "Converse hoje com alguém seguro e busque suporte profissional se houver risco ou abstinência."],
-  ["Dificuldade financeira", "Mateus 6:33", "A ansiedade financeira não se vence com promessas fáceis. Deus chama seu povo à confiança, ao trabalho honesto, à mordomia, à generosidade e à sabedoria para pedir ajuda em tempos difíceis.", "Faça um orçamento simples, priorize o essencial e procure orientação prática na igreja."],
-  ["Vida devocional", "Marcos 1:35", "Jesus buscava o Pai em oração. Vida devocional não é desempenho religioso; é um ritmo de escuta da Palavra, oração e obediência que sustenta a fé nos dias comuns.", "Separe dez minutos diários para ler um Evangelho e responder a Deus em oração."],
-  ["Perdão", "Efésios 4:32", "Perdoar não chama o mal de bem nem dispensa justiça e limites. É entregar a vingança a Deus e recusar que a ofensa governe o coração, seguindo a graça que recebemos em Cristo.", "Nomeie a dor diante de Deus e converse com seu pastor em situações graves ou de abuso."],
-  ["Empatia", "Romanos 12:15", "A empatia cristã se aproxima da alegria e da dor do próximo sem minimizar, corrigir apressadamente ou transformar a conversa em nós mesmos. Ela reflete o Deus que se fez carne.", "Pergunte a alguém como ele está e escute sem interromper nem oferecer soluções imediatas."],
-  ["Serviço (Mordomia)", "1 Pedro 4:10", "Tudo o que recebemos pertence a Deus e foi confiado para servir. Tempo, dons, recursos e oportunidades florescem quando são oferecidos para o bem da igreja e do próximo.", "Escolha uma necessidade concreta da sua comunidade e sirva de forma prática."],
-  ["Preparo para liderar", "2 Timóteo 2:15", "Preparar-se para liderar inclui caráter, conhecimento bíblico, vida de oração, serviço humilde e disposição para ser corrigido. O chamado é reconhecido e amadurecido no contexto da igreja local.", "Peça a um líder uma área específica para estudar e uma oportunidade simples para servir."],
-  ["Batismo", "Romanos 6:3-4", "O batismo é a ordenança dada por Cristo à igreja: um testemunho público de união com sua morte e ressurreição. Não salva por si mesmo, mas expressa a fé e a nova vida do discípulo.", "Se você crê em Cristo e ainda não foi batizado, converse com seu pastor sobre os próximos passos."],
-] as const;
-
 type Person = { id: string; display_name: string; username: string | null; avatar_url: string | null; xp: number; streak: number };
 type Group = { id: string; name: string; topic: string; created_at: string; members: number };
 type Meeting = { id: string; title: string; scheduled_at: string; location: string | null };
@@ -60,10 +41,8 @@ function LiderPage() {
   const [contacts, setContacts] = useState<Person[]>([]);
   const [groups, setGroups] = useState<Group[]>([]);
   const [meetings, setMeetings] = useState<Meeting[]>([]);
-  const [leaderLessonsDone, setLeaderLessonsDone] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [dialog, setDialog] = useState<"disciple" | "group" | "meeting" | "contents" | null>(null);
-  const [selectedContent, setSelectedContent] = useState<number | null>(null);
+  const [dialog, setDialog] = useState<"disciple" | "group" | "meeting" | null>(null);
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState("");
   const [results, setResults] = useState<Person[]>([]);
@@ -75,12 +54,11 @@ function LiderPage() {
   const [meetingLocation, setMeetingLocation] = useState("");
 
   const load = async (leaderId: string) => {
-    const [linksResponse, contactsResponse, groupsResponse, meetingsResponse, progressResponse] = await Promise.all([
+    const [linksResponse, contactsResponse, groupsResponse, meetingsResponse] = await Promise.all([
       db.from("leader_disciples").select("disciple_id").eq("leader_id", leaderId),
       db.from("friendships").select("friend_id").eq("user_id", leaderId),
       db.from("groups").select("id, name, topic, created_at").eq("leader_id", leaderId).order("created_at", { ascending: false }),
       db.from("leader_meetings").select("id, title, scheduled_at, location").eq("leader_id", leaderId).gte("scheduled_at", new Date().toISOString()).order("scheduled_at").limit(3),
-      db.from("lesson_progress").select("lesson_id").eq("user_id", leaderId).in("lesson_id", LEADER_LESSON_IDS),
     ]);
 
     const discipleIds = (linksResponse.data ?? []).map((row: { disciple_id: string }) => row.disciple_id);
@@ -102,7 +80,6 @@ function LiderPage() {
     (memberResponse.data ?? []).forEach((member: { group_id: string }) => totals.set(member.group_id, (totals.get(member.group_id) ?? 0) + 1));
     setGroups(rawGroups.map((group: Omit<Group, "members">) => ({ ...group, members: totals.get(group.id) ?? 0 })));
     setMeetings((meetingsResponse.data ?? []) as Meeting[]);
-    setLeaderLessonsDone((progressResponse.data ?? []).length);
   };
 
   useEffect(() => {
@@ -243,35 +220,6 @@ function LiderPage() {
       </div>
 
       <section className="space-y-2">
-        <h2 className="px-1 text-sm font-semibold text-muted-foreground">Formação de liderança</h2>
-        <Link
-          to="/modulo/$id"
-          params={{ id: "como-ser-lider" }}
-          className="group relative block overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-violet-950 via-indigo-950 to-slate-900 p-4 transition-all duration-300 hover:scale-[1.01]"
-        >
-          <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-violet-400/20 blur-3xl" />
-          <div className="relative flex items-center gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/10"><Crown className="h-5 w-5 text-white/90" /></div>
-            <div className="min-w-0 flex-1">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-white/70">Módulo de liderança</span>
-              <p className="mt-0.5 truncate font-semibold text-white/95">Como ser um líder</p>
-              <p className="truncate text-xs text-white/60">10 trilhas para liderar à maneira de Cristo</p>
-              <div className="mt-2.5 flex items-center gap-3"><div className="h-2 flex-1 overflow-hidden rounded-full bg-white/10 p-[2px]"><div className="h-full rounded-full bg-gradient-to-r from-violet-300 to-indigo-200" style={{ width: `${leaderLessonsDone * 10}%` }} /></div><span className="text-[10px] font-bold text-white/70">{leaderLessonsDone}/10</span></div>
-            </div>
-            <ChevronRight className="h-4 w-4 text-white/60" />
-          </div>
-        </Link>
-      </section>
-
-      <section className="space-y-2">
-        <h2 className="px-1 text-sm font-semibold text-muted-foreground">Apoio ao discipulado</h2>
-        <button onClick={() => { setSelectedContent(null); setDialog("contents"); }} className="group relative block w-full overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-br from-black via-zinc-900 to-black p-4 text-left transition-all hover:scale-[1.01]">
-          <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-white/10 blur-3xl" />
-          <div className="relative flex items-center gap-4"><div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-white/10"><BookOpen className="h-5 w-5 text-white" /></div><div className="min-w-0 flex-1"><span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Biblioteca pastoral</span><p className="mt-0.5 font-semibold text-white">Conteúdos para discípulos</p><p className="truncate text-xs text-white/60">13 temas para conversas e acompanhamento</p></div><ChevronRight className="h-4 w-4 text-white/60" /></div>
-        </button>
-      </section>
-
-      <section className="space-y-2">
         <h2 className="px-1 text-sm font-semibold text-muted-foreground">Grupos de Discipulado</h2>
         {groups.length === 0 ? <Empty text="Nenhum grupo criado ainda." /> : groups.map((group) => (
           <div key={group.id} className="card-elevated flex items-center gap-3 p-4">
@@ -294,12 +242,9 @@ function LiderPage() {
 
       <Dialog open={dialog === "meeting"} onOpenChange={(open) => !open && setDialog(null)}><DialogContent><DialogHeader><DialogTitle>Agendar encontro</DialogTitle><DialogDescription>Registre o próximo encontro do seu discipulado.</DialogDescription></DialogHeader><label className="space-y-1 text-sm font-medium">Título<input value={meetingTitle} onChange={(e) => setMeetingTitle(e.target.value)} placeholder="Ex.: Encontro semanal" className="w-full rounded-lg border border-border bg-input px-3 py-2 text-sm font-normal outline-none focus:border-primary" /></label><label className="space-y-1 text-sm font-medium">Data e hora<input type="datetime-local" value={meetingDate} onChange={(e) => setMeetingDate(e.target.value)} className="w-full rounded-lg border border-border bg-input px-3 py-2 text-sm font-normal outline-none focus:border-primary" /></label><label className="space-y-1 text-sm font-medium">Local (opcional)<input value={meetingLocation} onChange={(e) => setMeetingLocation(e.target.value)} placeholder="Ex.: Sala 3" className="w-full rounded-lg border border-border bg-input px-3 py-2 text-sm font-normal outline-none focus:border-primary" /></label><button onClick={() => void createMeeting()} disabled={saving} className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground disabled:opacity-60">{saving && <Loader2 className="h-4 w-4 animate-spin" />}Agendar encontro</button></DialogContent></Dialog>
 
-      <Dialog open={dialog === "contents"} onOpenChange={(open) => !open && setDialog(null)}><DialogContent className="max-h-[85vh] overflow-y-auto"><DialogHeader><DialogTitle>Conteúdos para discípulos</DialogTitle><DialogDescription>Material de apoio bíblico. Ele complementa, mas não substitui, a comunhão e o cuidado da igreja local.</DialogDescription></DialogHeader>{selectedContent === null ? <div className="grid gap-2">{DISCIPLE_CONTENTS.map(([title, verse], index) => <button key={title} onClick={() => setSelectedContent(index)} className="flex items-center justify-between rounded-xl border border-border p-3 text-left hover:border-primary/60"><div><p className="text-sm font-semibold">{title}</p><p className="text-xs text-muted-foreground">{verse}</p></div><ChevronRight className="h-4 w-4 text-muted-foreground" /></button>)}</div> : <ContentDetail content={DISCIPLE_CONTENTS[selectedContent]} onBack={() => setSelectedContent(null)} />}</DialogContent></Dialog>
     </div>
   );
 }
-
-function ContentDetail({ content, onBack }: { content: readonly [string, string, string, string]; onBack: () => void }) { const [title, verse, teaching, practice] = content; return <div className="space-y-4"><button onClick={onBack} className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Todos os temas</button><section className="rounded-2xl border border-border bg-surface p-4"><p className="text-xs font-semibold uppercase tracking-wider text-primary">Fundamentação bíblica</p><h3 className="mt-1 text-xl font-bold">{title}</h3><p className="mt-3 font-medium text-primary">{verse}</p></section><section className="card-elevated p-4"><p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Para caminhar junto</p><p className="mt-2 text-sm leading-relaxed">{teaching}</p></section><section className="rounded-2xl border border-ancient/30 bg-ancient/5 p-4"><p className="text-xs font-semibold uppercase tracking-wider text-ancient">Passo prático</p><p className="mt-2 text-sm leading-relaxed">{practice}</p></section><p className="text-center text-xs text-muted-foreground">Estude a Bíblia em oração e, quando necessário, procure seu pastor, líder ou um profissional qualificado.</p></div>; }
 
 function Metric({ value, label, color = "text-primary" }: { value: string | number; label: string; color?: string }) { return <div className="p-4 text-center"><p className={`text-2xl font-bold ${color}`}>{value}</p><p className="text-[10px] uppercase text-muted-foreground">{label}</p></div>; }
 function ActionBtn({ icon: Icon, label, onClick }: { icon: React.ElementType; label: string; onClick: () => void }) { return <button onClick={onClick} className="card-elevated flex items-center gap-2 p-3 text-left text-sm font-medium transition-all hover:border-primary/50"><Icon className="h-4 w-4 text-primary" />{label}</button>; }
