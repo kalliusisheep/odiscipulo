@@ -212,6 +212,7 @@ function HomePage() {
 
       <section className="space-y-3">
         <h2 className="text-sm font-semibold text-muted-foreground">Módulos de Discipulado</h2>
+        {modules.filter((m) => m.id === "como-ser-lider").length > 0 && null}
         {modules.map((m) => {
           const mtrails = trailsByModule.get(m.id) ?? [];
           const withLesson = mtrails.filter((t) => t.lesson_id);
