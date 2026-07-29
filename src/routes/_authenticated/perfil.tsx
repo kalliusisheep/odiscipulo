@@ -10,7 +10,25 @@ import { isUsernameAvailable, isValidUsername, normalizeUsername } from "@/lib/u
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 import { useApp } from "@/lib/app-context";
-import { AtSign, Bell, Church, Copy, Check, LogOut, BookOpen, Flame, Trophy, Clock, Camera, Loader2, Pencil, X, ChevronDown, ChevronRight, Sparkles } from "lucide-react";
+import {
+  AtSign,
+  Bell,
+  Church,
+  Copy,
+  Check,
+  LogOut,
+  BookOpen,
+  Flame,
+  Trophy,
+  Clock,
+  Camera,
+  Loader2,
+  Pencil,
+  X,
+  ChevronDown,
+  ChevronRight,
+  Sparkles,
+} from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/perfil")({
   component: PerfilPage,
@@ -62,7 +80,10 @@ function PerfilPage() {
         setBioDraft((p as Profile).bio ?? "");
         setBibleVersion(p.bible_version as (typeof BIBLE_VERSIONS)[number]);
       }
-      const { count } = await supabase.from("lesson_progress").select("*", { count: "exact", head: true }).eq("user_id", u.user.id);
+      const { count } = await supabase
+        .from("lesson_progress")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", u.user.id);
       setLessonsCount(count ?? 0);
     })();
   }, [setBibleVersion]);
@@ -88,7 +109,9 @@ function PerfilPage() {
     try {
       const ext = file.name.split(".").pop() ?? "jpg";
       const path = `${profile.id}/avatar-${Date.now()}.${ext}`;
-      const { error: upErr } = await supabase.storage.from("avatars").upload(path, file, { upsert: true, contentType: file.type });
+      const { error: upErr } = await supabase.storage
+        .from("avatars")
+        .upload(path, file, { upsert: true, contentType: file.type });
       if (upErr) throw upErr;
       const { data: signed } = await supabase.storage.from("avatars").createSignedUrl(path, 60 * 60 * 24 * 365);
       const url = signed?.signedUrl ?? null;
@@ -222,7 +245,11 @@ function PerfilPage() {
                     className="rounded-full bg-primary p-1 text-primary-foreground disabled:opacity-50"
                     aria-label="Salvar"
                   >
-                    {savingUsername ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
+                    {savingUsername ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <Check className="h-3.5 w-3.5" />
+                    )}
                   </button>
                   <button
                     onClick={() => setEditingUsername(false)}
@@ -234,9 +261,7 @@ function PerfilPage() {
                 </div>
               ) : (
                 <div className="flex items-center gap-1 rounded-full bg-surface-2/80 px-2.5 py-1">
-                  <span className="text-xs font-medium text-muted-foreground">
-                    @{profile.username ?? "sem-id"}
-                  </span>
+                  <span className="text-xs font-medium text-muted-foreground">@{profile.username ?? "sem-id"}</span>
                   {profile.username && (
                     <button
                       onClick={() => void copyUsername()}
@@ -261,8 +286,12 @@ function PerfilPage() {
             <div className="mt-4 text-left">
               <div className="flex items-center justify-between gap-2">
                 <div className="min-w-0">
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Sua patente</p>
-                  <p className="mt-0.5 truncate text-sm font-bold text-primary">Nível {level.level} / {MAX_LEVEL} · {level.title}</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    Sua patente
+                  </p>
+                  <p className="mt-0.5 truncate text-sm font-bold text-primary">
+                    Nível {level.level} / {MAX_LEVEL} · {level.title}
+                  </p>
                 </div>
                 <div className="flex shrink-0 items-center gap-1 rounded-full bg-streak/20 px-2.5 py-1">
                   <Flame className="h-3.5 w-3.5 text-streak" />
@@ -276,11 +305,16 @@ function PerfilPage() {
                   <span className="text-[10px] font-semibold text-muted-foreground">{Math.round(levelPct)}%</span>
                 </div>
                 <div className="h-2.5 overflow-hidden rounded-full bg-surface-2">
-                  <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${levelPct}%` }} />
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all"
+                    style={{ width: `${levelPct}%` }}
+                  />
                 </div>
                 <div className="mt-1 flex justify-end">
                   <span className="whitespace-nowrap text-[10px] font-medium text-primary">
-                    {toNext === null ? "🔥 Nível máximo alcançado" : `Faltam ${toNext} XP · próx: ${nextLevel?.title ?? ""}`}
+                    {toNext === null
+                      ? "🔥 Nível máximo alcançado"
+                      : `Faltam ${toNext} XP · próx: ${nextLevel?.title ?? ""}`}
                   </span>
                 </div>
               </div>
@@ -340,7 +374,9 @@ function PerfilPage() {
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold">Comunidade</p>
-            <p className="truncate text-xs text-muted-foreground">{profile.church_name ?? "Não vinculado a uma igreja"}</p>
+            <p className="truncate text-xs text-muted-foreground">
+              {profile.church_name ?? "Não vinculado a uma igreja"}
+            </p>
           </div>
           <button
             onClick={() => {
@@ -369,7 +405,9 @@ function PerfilPage() {
             className={`h-6 w-11 shrink-0 rounded-full transition-all ${profile.notify_devocional ? "bg-primary" : "bg-muted"}`}
             aria-label="Alternar lembrete de devocional"
           >
-            <div className={`h-5 w-5 rounded-full bg-white shadow transition-all ${profile.notify_devocional ? "translate-x-5" : "translate-x-0.5"}`} />
+            <div
+              className={`h-5 w-5 rounded-full bg-white shadow transition-all ${profile.notify_devocional ? "translate-x-5" : "translate-x-0.5"}`}
+            />
           </button>
         </div>
       </section>
@@ -389,7 +427,9 @@ function PerfilPage() {
             className={`h-6 w-11 shrink-0 rounded-full transition-all ${profile.is_leader ? "bg-primary" : "bg-muted"}`}
             aria-label="Alternar modo líder"
           >
-            <div className={`h-5 w-5 rounded-full bg-white shadow transition-all ${profile.is_leader ? "translate-x-5" : "translate-x-0.5"}`} />
+            <div
+              className={`h-5 w-5 rounded-full bg-white shadow transition-all ${profile.is_leader ? "translate-x-5" : "translate-x-0.5"}`}
+            />
           </button>
         </div>
       </section>
@@ -404,7 +444,17 @@ function PerfilPage() {
   );
 }
 
-function BibleVersionSelector({ value, open, onOpenChange, onSelect }: { value: BibleVersion; open: boolean; onOpenChange: (open: boolean) => void; onSelect: (code: BibleVersion) => void }) {
+function BibleVersionSelector({
+  value,
+  open,
+  onOpenChange,
+  onSelect,
+}: {
+  value: BibleVersion;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSelect: (code: BibleVersion) => void;
+}) {
   const current = BIBLE_VERSION_OPTIONS.find((option) => option.code === value) ?? BIBLE_VERSION_OPTIONS[0];
   return (
     <>
@@ -442,7 +492,9 @@ function BibleVersionSelector({ value, open, onOpenChange, onSelect }: { value: 
                   onClick={() => onSelect(option.code)}
                   className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors ${selected ? "bg-primary/5" : "hover:bg-surface-2"}`}
                 >
-                  <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold ${selected ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground"}`}>
+                  <span
+                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold ${selected ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground"}`}
+                  >
                     {option.code}
                   </span>
                   <span className="min-w-0 flex-1">
@@ -467,7 +519,17 @@ const STAT_ACCENTS = {
   ancient: "bg-ancient/15 text-ancient",
 } as const;
 
-function Stat({ icon: Icon, label, value, accent = "primary" }: { icon: React.ElementType; label: string; value: string; accent?: keyof typeof STAT_ACCENTS }) {
+function Stat({
+  icon: Icon,
+  label,
+  value,
+  accent = "primary",
+}: {
+  icon: React.ElementType;
+  label: string;
+  value: string;
+  accent?: keyof typeof STAT_ACCENTS;
+}) {
   return (
     <div className="rounded-2xl bg-surface-2 p-3 text-center transition-transform hover:scale-[1.02]">
       <div className={`mx-auto flex h-8 w-8 items-center justify-center rounded-xl ${STAT_ACCENTS[accent]}`}>
