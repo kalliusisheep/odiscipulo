@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Swords, Check, X, Clock } from "lucide-react";
+import { Swords, Check, X, Clock, ChevronRight } from "lucide-react";
 import {
   listMyChallenges,
   getChallengeProgressPct,
@@ -135,6 +135,12 @@ type PeerProfile = {
 
 type ScopeInfo = { title: string };
 
+/** Destino de navegação ao tocar na barra do desafio. */
+type ChallengeTarget =
+  | { kind: "lesson"; lessonId: string }
+  | { kind: "module"; moduleId: string }
+  | null;
+
 type EnrichedChallenge = {
   challenge: Challenge;
   peer: PeerProfile;
@@ -143,10 +149,12 @@ type EnrichedChallenge = {
   peerPct: number;
   isInvite: boolean; // recebido, ainda pendente, aguardando minha resposta
   isWaiting: boolean; // enviado por mim, ainda pendente
+  target: ChallengeTarget;
 };
 
 /** Painel de desafios ativos exibido na home. */
 export function ChallengePanel({ myId }: { myId: string }) {
+  const nav = useNavigate();
   const [items, setItems] = useState<EnrichedChallenge[]>([]);
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -175,14 +183,15 @@ export function ChallengePanel({ myId }: { myId: string }) {
       supabase.from("profiles").select("avatar_url").eq("id", myId).maybeSingle(),
       supabase.from("profiles").select("id, display_name, username, avatar_url").in("id", peerIds),
       supabase.from("disciple_modules").select("id, title"),
-      supabase.from("disciple_trails").select("id, title"),
+      supabase.from("disciple_trails").select("id, title, lesson_id, module_id"),
     ]);
 
     setMeAvatarUrl(me?.avatar_url ?? null);
 
     const peerById = new Map((peers ?? []).map((p) => [p.id, p as PeerProfile]));
     const moduleTitleById = new Map((modules ?? []).map((m) => [m.id, m.title as string]));
-    const trailTitleById = new Map((trails ?? []).map((t) => [t.id, t.title as string]));
+    type TrailRow = { id: string; title: string; lesson_id: string | null; module_id: string | null };
+    const trailById = new Map((trails ?? []).map((t) => [t.id, t as TrailRow]));
 
     const enriched = await Promise.all(
       relevant.map(async (c) => {
@@ -193,10 +202,22 @@ export function ChallengePanel({ myId }: { myId: string }) {
           username: null,
           avatar_url: null,
         };
+        const trail = c.scope_type === "trail" ? trailById.get(c.scope_id) : undefined;
         const scopeTitle =
           c.scope_type === "module"
             ? moduleTitleById.get(c.scope_id) ?? "Módulo"
-            : trailTitleById.get(c.scope_id) ?? "Trilha";
+            : trail?.title ?? "Trilha";
+
+        // Destino ao tocar na barra: uma lição específica (trilha com conteúdo)
+        // ou a tela do módulo (desafio no nível do módulo, ou trilha sem lição vinculada ainda).
+        let target: ChallengeTarget = null;
+        if (c.scope_type === "module") {
+          target = { kind: "module", moduleId: c.scope_id };
+        } else if (trail?.lesson_id) {
+          target = { kind: "lesson", lessonId: trail.lesson_id };
+        } else if (trail?.module_id) {
+          target = { kind: "module", moduleId: trail.module_id };
+        }
 
         const isAccepted = c.status === "accepted";
         const [myPct, peerPct] = isAccepted
@@ -214,6 +235,7 @@ export function ChallengePanel({ myId }: { myId: string }) {
           peerPct,
           isInvite: c.status === "pending" && c.challenged_id === myId,
           isWaiting: c.status === "pending" && c.challenger_id === myId,
+          target,
         } as EnrichedChallenge;
       }),
     );
@@ -277,6 +299,15 @@ export function ChallengePanel({ myId }: { myId: string }) {
       toast.error("Não foi possível cancelar o desafio. Tente novamente.");
     } finally {
       setBusyId(null);
+    }
+  };
+
+  const goToChallenge = (target: EnrichedChallenge["target"]) => {
+    if (!target) return;
+    if (target.kind === "lesson") {
+      void nav({ to: "/licao/$id", params: { id: target.lessonId } });
+    } else {
+      void nav({ to: "/modulo/$id", params: { id: target.moduleId } });
     }
   };
 
@@ -354,31 +385,55 @@ export function ChallengePanel({ myId }: { myId: string }) {
 
               {item.challenge.status === "accepted" && (
                 <>
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-[10px] font-semibold text-muted-foreground">
-                      <span>Você</span>
-                      <span>{Math.round(item.myPct)}%</span>
+                  <div
+                    role={item.target ? "button" : undefined}
+                    tabIndex={item.target ? 0 : undefined}
+                    onClick={() => goToChallenge(item.target)}
+                    onKeyDown={(e) => {
+                      if (item.target && (e.key === "Enter" || e.key === " ")) {
+                        e.preventDefault();
+                        goToChallenge(item.target);
+                      }
+                    }}
+                    className={`flex items-center gap-2 rounded-xl ${
+                      item.target
+                        ? "-m-1 cursor-pointer p-1 transition-colors hover:bg-surface-2/70 active:bg-surface-2"
+                        : ""
+                    }`}
+                    aria-label={item.target ? `Ir para o desafio: ${item.scope.title}` : undefined}
+                  >
+                    <div className="flex-1 space-y-1.5">
+                      <div className="flex items-center justify-between text-[10px] font-semibold text-muted-foreground">
+                        <span>Você</span>
+                        <span>{Math.round(item.myPct)}%</span>
+                      </div>
+                      <div className="h-2 overflow-hidden rounded-full bg-surface-2">
+                        <div
+                          className="challenge-flame-bar h-full rounded-full"
+                          style={{ width: `${Math.max(3, Math.min(100, item.myPct))}%` }}
+                        />
+                      </div>
+                      <div className="flex items-center justify-between text-[10px] font-semibold text-muted-foreground">
+                        <span>{item.peer.display_name}</span>
+                        <span>{Math.round(item.peerPct)}%</span>
+                      </div>
+                      <div className="h-2 overflow-hidden rounded-full bg-surface-2">
+                        <div
+                          className="h-full rounded-full bg-indigo-400/70 transition-all"
+                          style={{ width: `${Math.max(3, Math.min(100, item.peerPct))}%` }}
+                        />
+                      </div>
                     </div>
-                    <div className="h-2 overflow-hidden rounded-full bg-surface-2">
-                      <div
-                        className="challenge-flame-bar h-full rounded-full"
-                        style={{ width: `${Math.max(3, Math.min(100, item.myPct))}%` }}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between text-[10px] font-semibold text-muted-foreground">
-                      <span>{item.peer.display_name}</span>
-                      <span>{Math.round(item.peerPct)}%</span>
-                    </div>
-                    <div className="h-2 overflow-hidden rounded-full bg-surface-2">
-                      <div
-                        className="h-full rounded-full bg-indigo-400/70 transition-all"
-                        style={{ width: `${Math.max(3, Math.min(100, item.peerPct))}%` }}
-                      />
-                    </div>
+                    {item.target && (
+                      <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+                    )}
                   </div>
 
                   <button
-                    onClick={() => void cancelActive(item)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      void cancelActive(item);
+                    }}
                     disabled={isBusy}
                     className="self-end text-[10px] font-semibold uppercase tracking-wider text-muted-foreground hover:text-destructive disabled:opacity-60"
                   >
