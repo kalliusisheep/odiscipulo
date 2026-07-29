@@ -9,8 +9,9 @@ const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
 const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const admin = createClient(supabaseUrl, serviceRoleKey);
 
-const MIN_CHARS = 300;
-const MAX_CHARS = 400;
+// Texto pode ir de um parágrafo curto até quase 700 caracteres — nunca mais que isso.
+const MIN_CHARS = 450;
+const MAX_CHARS = 700;
 
 type RequestBody = {
   lessonId?: string;
@@ -18,13 +19,25 @@ type RequestBody = {
   context?: string;
 };
 
-function buildPrompt(title: string, context: string) {
-  return `Título do conteúdo: "${title}"
+// Persona resumida do mentor de discipulado — aplicada como voz de fundo
+// de todo texto gerado, mesmo sendo um texto curto de compartilhamento.
+const PERSONA_SYSTEM_PROMPT = `Você é um mentor de discipulado cristão de excelência, reunindo profundidade acadêmica, fidelidade bíblica e experiência pastoral. Sua identidade teológica: cristão evangélico, batista aberto (soteriologia arminiana), cristocêntrico, cessacionista moderado, alinhado à ortodoxia histórica e ao Credo Niceno-Constantinopolitano. Seu fundamento inegociável é Sola Scriptura: a Bíblia é inspirada, infalível, inerrante, suficiente e autoridade final para fé e prática. Você escreve com tom pastoral, acolhedor, caloroso e pessoal — nunca arrogante, nunca genérico, nunca com linguagem de marketing. Seu objetivo nunca é apenas transmitir informação, mas conduzir quem lê a conhecer mais a Deus, amar mais a Cristo e dar um passo prático de fé. Você reconhece que nenhum texto substitui a igreja local, mas seu papel aqui é ser a primeira faísca que desperta o interesse de alguém por um conteúdo bíblico.
 
-Resumo do conteúdo (para você entender do que se trata, não repita isso literalmente):
+Agora, sua tarefa específica: escrever um texto CURTO para alguém compartilhar nas redes sociais (WhatsApp, Instagram) logo depois de concluir uma trilha de estudo bíblico dentro de um app de discipulado. Esse texto vai por cima de uma imagem, então precisa ser direto e envolvente, nunca um sermão completo.`;
+
+function buildPrompt(title: string, context: string) {
+  return `Título da trilha/lição concluída: "${title}"
+
+Resumo do conteúdo estudado (para você entender do que se trata — não repita isso literalmente nem cite como fonte):
 """${context}"""
 
-Escreva um texto para eu compartilhar nas minhas redes sociais (WhatsApp, Instagram) contando a alguém — um amigo, um familiar — o que acabei de aprender nesse conteúdo de estudo bíblico, de um jeito que também apresente a ideia central para essa pessoa e a convide a refletir sobre ela. Escreva em primeira pessoa, como se eu mesmo estivesse escrevendo, em tom pessoal e caloroso, nunca robótico ou genérico. Não use hashtags, não use emojis, não use aspas, não mencione IA nem que o texto foi gerado automaticamente. O texto deve ter entre ${MIN_CHARS} e ${MAX_CHARS} caracteres, em português do Brasil, em um ou dois parágrafos curtos.`;
+Escreva, em português do Brasil e em primeira pessoa (como se eu mesmo, o aluno, estivesse escrevendo), um texto para eu compartilhar com um amigo ou familiar contando o que acabei de aprender.
+
+Regras obrigatórias:
+- O texto deve reunir os pontos mais importantes do conteúdo estudado e, com eles, responder diretamente ao título da trilha ("${title}") ou complementá-lo — quem ler o texto precisa entender, mesmo sem ver o resto do app, do que se trata "${title}".
+- Tom pessoal, caloroso, evangelístico (apresente a ideia central da fé para quem vai ler, convidando essa pessoa a refletir), mas nunca artificial, nunca robótico, nunca com cara de propaganda.
+- Sem hashtags, sem emojis, sem aspas, sem mencionar IA ou que o texto foi gerado automaticamente.
+- Entre ${MIN_CHARS} e ${MAX_CHARS} caracteres, em um ou dois parágrafos curtos.`;
 }
 
 function clampToRange(text: string): string {
@@ -33,7 +46,7 @@ function clampToRange(text: string): string {
   // Corta no limite de frase mais próximo abaixo do máximo, senão em espaço.
   const slice = t.slice(0, MAX_CHARS);
   const lastStop = Math.max(slice.lastIndexOf(". "), slice.lastIndexOf("! "), slice.lastIndexOf("? "));
-  if (lastStop > MIN_CHARS - 40) {
+  if (lastStop > MIN_CHARS - 60) {
     return slice.slice(0, lastStop + 1).trim();
   }
   const lastSpace = slice.lastIndexOf(" ");
@@ -53,11 +66,7 @@ async function callAiGateway(prompt: string): Promise<string> {
     body: JSON.stringify({
       model: "google/gemini-2.5-flash",
       messages: [
-        {
-          role: "system",
-          content:
-            "Você ajuda um cristão a escrever, em português do Brasil, textos curtos, pessoais e calorosos para compartilhar nas redes sociais depois de estudar a Bíblia. Nunca soe como propaganda, nunca use linguagem de marketing, nunca use emojis ou hashtags.",
-        },
+        { role: "system", content: PERSONA_SYSTEM_PROMPT },
         { role: "user", content: prompt },
       ],
       temperature: 0.9,
@@ -81,10 +90,10 @@ async function callAiGateway(prompt: string): Promise<string> {
 // para o botão de compartilhar nunca quebrar para o usuário.
 function fallbackText(title: string): string {
   return (
-    `Hoje eu passei um tempo estudando sobre "${title}" e queria muito dividir isso com você. ` +
-    `Tem coisas que a gente aprende que não dá pra guardar só pra si — precisam ser compartilhadas. ` +
-    `Se você tiver um tempinho livre, separa alguns minutos pra pensar sobre isso também. ` +
-    `Acho que pode fazer diferença no seu dia, assim como fez no meu.`
+    `Hoje eu terminei de estudar sobre "${title}" e queria muito dividir isso com você. ` +
+    `Esse tempo na Palavra me lembrou que Deus continua falando com quem separa um momento pra ouvir Ele — e que fé de verdade cresce quando a gente coloca o que aprende em prática, não só quando acumula conhecimento. ` +
+    `Se você tiver alguns minutos livres hoje, separa um tempinho pra pensar sobre isso também. ` +
+    `Acredito que pode fazer diferença no seu dia, do mesmo jeito que fez no meu.`
   ).slice(0, MAX_CHARS);
 }
 
