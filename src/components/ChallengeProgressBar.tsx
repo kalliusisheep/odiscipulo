@@ -229,8 +229,9 @@ export function ChallengePanel({ myId }: { myId: string }) {
           const title = c.scope_type === "module" ? scopes.modules[c.scope_id] : scopes.trails[c.scope_id];
           const p = progress[c.id] ?? { mine: 0, peer: 0 };
           const iWon = c.first_finisher_id === myId;
-          const theyWon = c.first_finisher_id && c.first_finisher_id !== myId;
-          const leading = p.mine > p.peer;
+          const finished = Boolean(c.first_finisher_id);
+          const leading: "left" | "right" | null =
+            p.mine === p.peer ? null : p.mine > p.peer ? "left" : "right";
           return (
             <div key={c.id} className="card-elevated relative overflow-hidden">
               <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-orange-500/25 via-red-500/10 to-transparent" />
@@ -239,7 +240,7 @@ export function ChallengePanel({ myId }: { myId: string }) {
                   <p className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-red-500 dark:text-red-400">
                     <Swords className="h-3.5 w-3.5" /> Desafio em andamento
                   </p>
-                  {c.first_finisher_id && (
+                  {finished && (
                     <span className="flex items-center gap-1 rounded-full bg-ancient/20 px-2 py-0.5 text-[10px] font-bold text-ancient">
                       <Trophy className="h-3 w-3" /> {iWon ? "Você venceu!" : `${peer?.display_name?.split(" ")[0] ?? "Rival"} venceu`}
                     </span>
@@ -250,16 +251,16 @@ export function ChallengePanel({ myId }: { myId: string }) {
                 </p>
                 <p className="text-[11px] text-muted-foreground">vs {peer?.display_name ?? "…"}</p>
 
-                {/* Duelo visual — barras convergindo */}
-                <div className="mt-4 space-y-3">
-                  <VersusBar
-                    leftLabel="Você"
-                    leftPct={p.mine}
-                    leftAvatar={null}
-                    rightLabel={peer?.display_name?.split(" ")[0] ?? "Rival"}
-                    rightPct={p.peer}
-                    rightAvatar={peer?.avatar_url ?? null}
-                    leading={leading ? "left" : p.peer > p.mine ? "right" : null}
+                {/* Duelo visual — cada barra reflete o percentual real, lado a lado */}
+                <div className="mt-4">
+                  <DuelBars
+                    myAvatar={null}
+                    myPct={p.mine}
+                    myLeading={leading === "left"}
+                    peerLabel={peer?.display_name?.split(" ")[0] ?? "Rival"}
+                    peerAvatar={peer?.avatar_url ?? null}
+                    peerPct={p.peer}
+                    peerLeading={leading === "right"}
                   />
                 </div>
               </div>
@@ -271,62 +272,82 @@ export function ChallengePanel({ myId }: { myId: string }) {
   );
 }
 
-function VersusBar({
-  leftLabel,
-  leftPct,
-  leftAvatar,
-  rightLabel,
-  rightPct,
-  rightAvatar,
+function DuelRow({
+  label,
+  avatar,
+  pct,
   leading,
+  align,
 }: {
-  leftLabel: string;
-  leftPct: number;
-  leftAvatar: string | null;
-  rightLabel: string;
-  rightPct: number;
-  rightAvatar: string | null;
-  leading: "left" | "right" | null;
+  label: string;
+  avatar: string | null;
+  pct: number;
+  leading: boolean;
+  align: "mine" | "peer";
 }) {
   const clamp = (n: number) => Math.max(0, Math.min(100, n));
+  const isMine = align === "mine";
   return (
     <div>
-      <div className="mb-1.5 flex items-center justify-between text-[11px] font-semibold">
-        <span className={`flex items-center gap-1 ${leading === "left" ? "text-orange-500" : "text-foreground"}`}>
-          <Flame className={`h-3 w-3 ${leading === "left" ? "text-orange-500" : "text-muted-foreground"}`} />
-          {leftLabel} <span className="text-[10px] font-bold">{Math.round(clamp(leftPct))}%</span>
-        </span>
-        <span className={`flex items-center gap-1 ${leading === "right" ? "text-orange-500" : "text-foreground"}`}>
-          <span className="text-[10px] font-bold">{Math.round(clamp(rightPct))}%</span> {rightLabel}
-          <Flame className={`h-3 w-3 ${leading === "right" ? "text-orange-500" : "text-muted-foreground"}`} />
-        </span>
-      </div>
-      <div className="relative flex h-4 items-center gap-1 overflow-hidden rounded-full bg-surface-2 p-0.5">
-        <div className="flex h-full flex-1 justify-end overflow-hidden rounded-l-full bg-black/20">
-          <div
-            className="challenge-flame-bar h-full rounded-l-full transition-all duration-500"
-            style={{ width: `${clamp(leftPct)}%` }}
+      <div className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold">
+        {avatar ? (
+          <img
+            src={avatar}
+            alt=""
+            className={`h-4 w-4 rounded-full object-cover ring-1 ${isMine ? "ring-orange-400" : "ring-indigo-400"}`}
           />
-        </div>
-        <div className="h-full w-0.5 shrink-0 bg-white/50" />
-        <div className="flex h-full flex-1 overflow-hidden rounded-r-full bg-black/20">
+        ) : (
           <div
-            className="h-full rounded-r-full bg-gradient-to-r from-indigo-400 via-blue-500 to-indigo-600 shadow-[0_0_10px_rgba(99,102,241,0.6)] transition-all duration-500"
-            style={{ width: `${clamp(rightPct)}%` }}
+            className={`h-4 w-4 rounded-full ring-1 ${
+              isMine ? "bg-orange-500/25 ring-orange-400/60" : "bg-indigo-500/25 ring-indigo-400/60"
+            }`}
           />
-        </div>
-        {/* Avatares nas extremidades */}
-        <div className="pointer-events-none absolute inset-y-0 left-0.5 flex items-center">
-          <div className="h-3 w-3 rounded-full bg-orange-400 shadow-[0_0_6px_rgba(249,115,22,0.9)]" />
-        </div>
-        <div className="pointer-events-none absolute inset-y-0 right-0.5 flex items-center">
-          {rightAvatar ? (
-            <img src={rightAvatar} alt="" className="h-3 w-3 rounded-full object-cover ring-1 ring-indigo-400" />
-          ) : (
-            <div className="h-3 w-3 rounded-full bg-indigo-400 shadow-[0_0_6px_rgba(99,102,241,0.9)]" />
-          )}
-        </div>
+        )}
+        <span className={leading ? "text-orange-500" : "text-foreground"}>{label}</span>
+        {leading && <Flame className="h-3 w-3 text-orange-500" />}
+        <span className="ml-auto text-[11px] font-bold tabular-nums text-foreground">{Math.round(clamp(pct))}%</span>
       </div>
+      <div className="h-2.5 w-full overflow-hidden rounded-full bg-surface-2">
+        <div
+          className={`h-full rounded-full transition-all duration-500 ${
+            isMine
+              ? "challenge-flame-bar"
+              : "bg-gradient-to-r from-indigo-400 via-blue-500 to-indigo-600 shadow-[0_0_8px_rgba(99,102,241,0.55)]"
+          }`}
+          style={{ width: `${clamp(pct)}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Duas barras empilhadas, cada uma numa escala 0–100% completa e independente —
+ * o preenchimento sempre corresponde exatamente ao percentual mostrado ao lado
+ * (antes, cada lado ficava confinado a metade da largura, então mesmo 100% de
+ * progresso preenchia só a metade da barra).
+ */
+function DuelBars({
+  myAvatar,
+  myPct,
+  myLeading,
+  peerLabel,
+  peerAvatar,
+  peerPct,
+  peerLeading,
+}: {
+  myAvatar: string | null;
+  myPct: number;
+  myLeading: boolean;
+  peerLabel: string;
+  peerAvatar: string | null;
+  peerPct: number;
+  peerLeading: boolean;
+}) {
+  return (
+    <div className="space-y-3">
+      <DuelRow label="Você" avatar={myAvatar} pct={myPct} leading={myLeading} align="mine" />
+      <DuelRow label={peerLabel} avatar={peerAvatar} pct={peerPct} leading={peerLeading} align="peer" />
     </div>
   );
 }
