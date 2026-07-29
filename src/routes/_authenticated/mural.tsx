@@ -70,14 +70,28 @@ function Clamores() {
   const [posting, setPosting] = useState(false);
 
   useEffect(() => {
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    let uid: string | null = null;
     void (async () => {
       const { data: u } = await supabase.auth.getUser();
       if (u.user) {
+        uid = u.user.id;
         const { data: prof } = await supabase.from("profiles").select("display_name").eq("id", u.user.id).maybeSingle();
         setMe({ id: u.user.id, name: prof?.display_name ?? u.user.email!.split("@")[0] });
       }
-      await refresh(u.user?.id ?? null);
+      await refresh(uid);
+
+      // Sem isso, posts e "Amém" de outras pessoas só apareciam após F5.
+      channel = supabase
+        .channel("mural-clamores")
+        .on("postgres_changes", { event: "INSERT", schema: "public", table: "mural_posts" }, () => void refresh(uid))
+        .on("postgres_changes", { event: "INSERT", schema: "public", table: "mural_amens" }, () => void refresh(uid))
+        .on("postgres_changes", { event: "DELETE", schema: "public", table: "mural_amens" }, () => void refresh(uid))
+        .subscribe();
     })();
+    return () => {
+      if (channel) void supabase.removeChannel(channel);
+    };
   }, []);
 
   const refresh = async (uid: string | null) => {
@@ -185,7 +199,11 @@ function Diario() {
     void (async () => {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user) return;
-      const { data } = await supabase.from("diary_entries").select("*").eq("user_id", u.user.id).order("created_at", { ascending: false });
+      const { data } = await supabase
+        .from("diary_entries")
+        .select("*")
+        .eq("user_id", u.user.id)
+        .order("created_at", { ascending: false });
       setEntries((data ?? []) as Diary[]);
     })();
   }, []);
