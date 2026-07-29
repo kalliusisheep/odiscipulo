@@ -314,6 +314,13 @@ function LiderInline() {
         <h1 className="text-xl font-semibold">Modo Líder</h1>
         <ThemeToggle />
       </header>
+      <div className="h-36 w-full overflow-hidden rounded-2xl sm:h-44">
+        <img
+          src="/lider-banner.jpg"
+          alt=""
+          className="h-full w-full object-cover object-[center_35%]"
+        />
+      </div>
       <div className="card-elevated p-5">
         <p className="text-sm text-muted-foreground">
           Acompanhe seus discípulos, crie grupos e envie mensagens.
