@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  listMyChallenges,
   getChallengeProgressPct,
   respondChallenge,
+  cancelAcceptedChallenge,
   type Challenge,
+  type ChallengeStatus,
 } from "@/lib/challenges";
-import { Swords, Check, X, Trophy, Flame } from "lucide-react";
+import { Swords, Check, X, Trophy, Flame, Ban } from "lucide-react";
 import { toast } from "sonner";
 
 type PeerMap = Record<string, { display_name: string; username: string | null; avatar_url: string | null }>;
@@ -86,17 +87,192 @@ function SwordsClashOverlay({ onDone }: { onDone: () => void }) {
   );
 }
 
+// Toca um som curto e alegre de vitória (arpejo ascendente)
+function playVictorySound() {
+  try {
+    const AC = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AC) return;
+    const ctx = new AC();
+    const now = ctx.currentTime;
+    [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = "triangle";
+      osc.frequency.value = freq;
+      const start = now + i * 0.11;
+      g.gain.setValueAtTime(0.0001, start);
+      g.gain.exponentialRampToValueAtTime(0.32, start + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, start + 0.5);
+      osc.connect(g).connect(ctx.destination);
+      osc.start(start);
+      osc.stop(start + 0.55);
+    });
+    setTimeout(() => void ctx.close(), 900);
+  } catch {
+    /* silencia — dispositivos em mudo simplesmente não emitem som */
+  }
+}
+
+// Toca uma fanfarra de trombeta para a conclusão mútua do desafio
+function playVictoryTrumpet() {
+  try {
+    const AC = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AC) return;
+    const ctx = new AC();
+    const now = ctx.currentTime;
+    const notes = [
+      { freq: 523.25, start: 0, dur: 0.18 },
+      { freq: 523.25, start: 0.22, dur: 0.18 },
+      { freq: 659.25, start: 0.44, dur: 0.22 },
+      { freq: 783.99, start: 0.7, dur: 1.0 },
+    ];
+    notes.forEach(({ freq, start, dur }) => {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = "sawtooth";
+      osc.frequency.value = freq;
+      const s = now + start;
+      g.gain.setValueAtTime(0.0001, s);
+      g.gain.exponentialRampToValueAtTime(0.32, s + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.001, s + dur);
+      osc.connect(g).connect(ctx.destination);
+      osc.start(s);
+      osc.stop(s + dur + 0.02);
+    });
+    setTimeout(() => void ctx.close(), 2200);
+  } catch {
+    /* silencia — dispositivos em mudo simplesmente não emitem som */
+  }
+}
+
+/** Ovelha dançando (mesmo gif da conclusão da trilha) ao encher a barra de progresso. */
+function SheepVictoryOverlay({ label, onDone }: { label: string; onDone: () => void }) {
+  useEffect(() => {
+    playVictorySound();
+    const t = setTimeout(onDone, 2600);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return (
+    <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/60 px-6 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="flex flex-col items-center gap-3">
+        <img
+          src="/sheep-celebration.gif"
+          alt="Ovelha comemorando"
+          className="h-56 w-56 rounded-3xl object-contain drop-shadow-[0_0_30px_rgba(250,204,21,0.5)]"
+        />
+        <p className="rounded-full bg-white/95 px-4 py-1.5 text-center text-sm font-bold text-foreground shadow">
+          {label}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/** Popup exibido quando os dois participantes concluem o desafio. */
+function ChallengeCompletedModal({
+  meAvatarUrl,
+  peerAvatarUrl,
+  peerName,
+  onClose,
+}: {
+  meAvatarUrl: string | null | undefined;
+  peerAvatarUrl: string | null | undefined;
+  peerName: string | null | undefined;
+  onClose: () => void;
+}) {
+  const [canClose, setCanClose] = useState(false);
+
+  useEffect(() => {
+    playVictoryTrumpet();
+    const t = setTimeout(() => setCanClose(true), 1000);
+    return () => clearTimeout(t);
+  }, []);
+
+  return (
+    <div
+      className="fixed inset-0 z-[120] flex items-center justify-center bg-black/70 px-6 backdrop-blur-sm animate-in fade-in duration-200"
+      onClick={() => canClose && onClose()}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-sm overflow-hidden rounded-3xl border border-ancient/40 bg-gradient-to-b from-slate-900 via-slate-950 to-black p-6 text-center text-white shadow-2xl animate-scale-in"
+      >
+        {canClose && (
+          <button
+            onClick={onClose}
+            aria-label="Fechar"
+            className="absolute right-3 top-3 z-20 rounded-full p-1.5 text-white/60 hover:bg-white/10 hover:text-white"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        )}
+
+        <img
+          src="/sheep-celebration.gif"
+          alt="Ovelha comemorando"
+          className="mx-auto h-40 w-40 object-contain"
+        />
+
+        <h2 className="mt-3 text-xl font-black">Desafio concluído!</h2>
+
+        <div className="mt-4 flex items-center justify-center gap-4">
+          <Avatar url={meAvatarUrl} name="Você" size="h-14 w-14" ring="ring-orange-400" />
+          <Swords className="h-5 w-5 shrink-0 text-white/50" />
+          <Avatar url={peerAvatarUrl} name={peerName} size="h-14 w-14" ring="ring-indigo-400" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ChallengePanel({ myId }: { myId: string }) {
   const [items, setItems] = useState<Challenge[]>([]);
   const [peers, setPeers] = useState<PeerMap>({});
   const [scopes, setScopes] = useState<ScopeMap>({ modules: {}, trails: {} });
   const [progress, setProgress] = useState<Record<string, { mine: number; peer: number }>>({});
   const [clash, setClash] = useState(false);
+  const [barVictory, setBarVictory] = useState<{ id: string; label: string } | null>(null);
+  const [completedChallenge, setCompletedChallenge] = useState<Challenge | null>(null);
   const loadRef = useRef<() => Promise<void>>(async () => {});
+  // Guarda o status anterior de cada desafio só para detectar a transição para "completed"
+  // (não dispara na primeira carga, para não repetir a comemoração de conclusões antigas).
+  const prevStatusRef = useRef<Record<string, ChallengeStatus> | null>(null);
+  const celebratedBarRef = useRef<Set<string>>(new Set());
+  const celebratedCompletionRef = useRef<Set<string>>(new Set());
 
   const load = async () => {
-    const list = await listMyChallenges(myId);
-    setItems(list);
+    // Busca inclui "completed" (além de pending/accepted) só para detectar a transição;
+    // a renderização abaixo continua ignorando desafios concluídos ou cancelados.
+    const { data } = await supabase
+      .from("challenges")
+      .select("*")
+      .or(`challenger_id.eq.${myId},challenged_id.eq.${myId}`)
+      .in("status", ["pending", "accepted", "completed"])
+      .order("created_at", { ascending: false });
+    const list = (data ?? []) as Challenge[];
+
+    const prevStatus = prevStatusRef.current;
+    if (prevStatus) {
+      for (const c of list) {
+        const before = prevStatus[c.id];
+        if (
+          c.status === "completed" &&
+          before &&
+          before !== "completed" &&
+          !celebratedCompletionRef.current.has(c.id)
+        ) {
+          celebratedCompletionRef.current.add(c.id);
+          setCompletedChallenge(c);
+        }
+      }
+    }
+    const nextStatus: Record<string, ChallengeStatus> = {};
+    for (const c of list) nextStatus[c.id] = c.status;
+    prevStatusRef.current = nextStatus;
+
+    const visible = list.filter((c) => c.status !== "completed");
+    setItems(visible);
     if (list.length === 0) {
       setProgress({});
       return;
@@ -107,7 +283,7 @@ export function ChallengePanel({ myId }: { myId: string }) {
     const modIds = Array.from(new Set(list.filter((c) => c.scope_type === "module").map((c) => c.scope_id)));
     const trailIds = Array.from(new Set(list.filter((c) => c.scope_type === "trail").map((c) => c.scope_id)));
     const [{ data: ps }, { data: mods }, { data: trs }] = await Promise.all([
-      supabase.from("profiles").select("id, display_name, username, avatar_url").in("id", peerIds),
+      supabase.from("profiles").select("id, display_name, username, avatar_url").in("id", [myId, ...peerIds]),
       modIds.length ? supabase.from("disciple_modules").select("id, title").in("id", modIds) : Promise.resolve({ data: [] as { id: string; title: string }[] }),
       trailIds.length ? supabase.from("disciple_trails").select("id, title").in("id", trailIds) : Promise.resolve({ data: [] as { id: string; title: string }[] }),
     ]);
@@ -130,6 +306,17 @@ export function ChallengePanel({ myId }: { myId: string }) {
             getChallengeProgressPct(c.id, peerId),
           ]);
           prog[c.id] = { mine, peer };
+
+          // Barra cheia (100%) — comemora com som + gif da ovelha dançando, uma vez por lado.
+          const peerName = pmap[peerId]?.display_name?.split(" ")[0] ?? "seu rival";
+          if (mine >= 100 && !celebratedBarRef.current.has(`mine:${c.id}`)) {
+            celebratedBarRef.current.add(`mine:${c.id}`);
+            setBarVictory({ id: c.id, label: "Você completou sua parte do desafio! 🎉" });
+          }
+          if (peer >= 100 && !celebratedBarRef.current.has(`peer:${c.id}`)) {
+            celebratedBarRef.current.add(`peer:${c.id}`);
+            setBarVictory({ id: c.id, label: `${peerName} completou a parte dele(a)! 🎉` });
+          }
         }),
     );
     setProgress(prog);
@@ -153,6 +340,16 @@ export function ChallengePanel({ myId }: { myId: string }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myId]);
 
+  const cancelActive = async (challenge: Challenge) => {
+    try {
+      await cancelAcceptedChallenge(challenge.id);
+      toast.success("Desafio cancelado.");
+      await load();
+    } catch {
+      toast.error("Não foi possível cancelar o desafio. Tente novamente.");
+    }
+  };
+
   const respond = async (id: string, accept: boolean) => {
     try {
       await respondChallenge(id, accept);
@@ -172,11 +369,37 @@ export function ChallengePanel({ myId }: { myId: string }) {
   const pendingSent = items.filter((c) => c.status === "pending" && c.challenger_id === myId);
   const active = items.filter((c) => c.status === "accepted");
 
-  if (items.length === 0) return clash ? <SwordsClashOverlay onDone={() => setClash(false)} /> : null;
+  const completedPeerId = completedChallenge
+    ? completedChallenge.challenger_id === myId
+      ? completedChallenge.challenged_id
+      : completedChallenge.challenger_id
+    : null;
+
+  const overlays = (
+    <>
+      {clash && <SwordsClashOverlay onDone={() => setClash(false)} />}
+      {barVictory && (
+        <SheepVictoryOverlay label={barVictory.label} onDone={() => setBarVictory(null)} />
+      )}
+      {completedChallenge && (
+        <ChallengeCompletedModal
+          meAvatarUrl={peers[myId]?.avatar_url}
+          peerAvatarUrl={completedPeerId ? peers[completedPeerId]?.avatar_url : null}
+          peerName={completedPeerId ? peers[completedPeerId]?.display_name : null}
+          onClose={() => setCompletedChallenge(null)}
+        />
+      )}
+    </>
+  );
+
+  // O módulo de desafio some da home assim que não há mais convites/desafios ativos
+  // (por exemplo, quando um desafio já aceito é cancelado pelos usuários) — mas as
+  // comemorações pendentes (barra completa / desafio concluído) ainda são exibidas.
+  if (items.length === 0) return overlays;
 
   return (
     <>
-      {clash && <SwordsClashOverlay onDone={() => setClash(false)} />}
+      {overlays}
       <section className="space-y-3">
         <div className="flex items-center gap-2 px-0.5">
           <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-red-500 shadow-[0_0_10px_rgba(239,68,68,0.4)]">
@@ -272,6 +495,14 @@ export function ChallengePanel({ myId }: { myId: string }) {
           return (
             <div key={c.id} className="card-elevated relative overflow-hidden rounded-3xl">
               <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-orange-500/20 via-red-500/[0.06] to-transparent" />
+              <button
+                onClick={() => void cancelActive(c)}
+                aria-label="Cancelar desafio"
+                title="Cancelar desafio"
+                className="absolute right-3 top-3 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-border/60 bg-surface-2/80 text-muted-foreground transition-colors hover:bg-surface hover:text-foreground"
+              >
+                <Ban className="h-3.5 w-3.5" />
+              </button>
               <div className="relative p-4">
                 {finished ? (
                   <div className="mb-3 flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-ancient/25 via-ancient/15 to-ancient/25 py-1.5 text-[11px] font-bold uppercase tracking-wider text-ancient">
@@ -288,7 +519,7 @@ export function ChallengePanel({ myId }: { myId: string }) {
                 <div className="flex items-center justify-center gap-3">
                   <div className="flex flex-col items-center gap-1">
                     <Avatar
-                      url={null}
+                      url={peers[myId]?.avatar_url ?? null}
                       name="Você"
                       size="h-11 w-11"
                       ring={leading === "left" ? "ring-orange-400" : "ring-border"}
