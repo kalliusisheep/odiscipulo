@@ -140,7 +140,7 @@ function LicaoPage() {
           <div className="space-y-5" data-tts-scope="licao-estudo">
             <section className="card-elevated space-y-3 p-5">
               {lesson.intro.map((p, i) => (
-                <p key={i} className="text-sm leading-relaxed text-foreground/90" data-narrate>
+                <p key={i} className="text-base leading-relaxed text-foreground/90" data-narrate>
                   {p}
                 </p>
               ))}
@@ -151,7 +151,7 @@ function LicaoPage() {
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
                   {v.ref} · {bibleVersion}
                 </p>
-                <p className="mt-2 scripture text-sm leading-relaxed" data-narrate>
+                <p className="mt-2 scripture text-base leading-relaxed" data-narrate>
                   "{verseText(v, bibleVersion)}"
                 </p>
               </div>
@@ -181,14 +181,14 @@ function LicaoPage() {
 
             <section className="card-elevated space-y-2 p-5">
               <h2 className="text-base font-semibold">Aprofundando</h2>
-              <p className="text-sm leading-relaxed text-foreground/90" data-narrate>
+              <p className="text-base leading-relaxed text-foreground/90" data-narrate>
                 {lesson.deepDive}
               </p>
             </section>
 
             <div className="card-elevated space-y-2 border-l-4 border-l-ancient p-5">
               <Quote className="h-4 w-4 text-ancient" />
-              <p className="scripture text-sm leading-relaxed" data-narrate>
+              <p className="scripture text-base leading-relaxed" data-narrate>
                 "{lesson.theologianQuote.text}"
               </p>
               <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -311,22 +311,22 @@ function LicaoPage() {
 
           <div className="card-elevated p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Aplicação prática</p>
-            <p className="mt-2 text-sm leading-relaxed">{lesson.application}</p>
+            <p className="mt-2 text-base leading-relaxed">{lesson.application}</p>
           </div>
 
           <div className="card-elevated p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Oração sugerida</p>
-            <p className="mt-2 scripture text-sm leading-relaxed">{lesson.prayer}</p>
+            <p className="mt-2 scripture text-base leading-relaxed">{lesson.prayer}</p>
           </div>
 
           <div className="card-elevated border-l-4 border-l-ancient p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">Desafio da semana</p>
-            <p className="mt-2 text-sm leading-relaxed">{lesson.weeklyChallenge}</p>
+            <p className="mt-2 text-base leading-relaxed">{lesson.weeklyChallenge}</p>
           </div>
 
           <div className="card-elevated p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Pergunta de reflexão</p>
-            <p className="mt-2 text-sm font-medium">{lesson.reflectionQuestion}</p>
+            <p className="mt-2 text-base font-medium">{lesson.reflectionQuestion}</p>
             <textarea
               value={reflection}
               onChange={(e) => setReflection(e.target.value)}
