@@ -23,6 +23,9 @@ import {
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/licao/$id")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    modulo: typeof search.modulo === "string" ? search.modulo : undefined,
+  }),
   component: LicaoPage,
 });
 
@@ -30,6 +33,7 @@ type Step = "estudo" | "fixar" | "aplicar" | "done";
 
 function LicaoPage() {
   const { id } = Route.useParams();
+  const { modulo } = Route.useSearch();
   const nav = useNavigate();
   const { bibleVersion } = useApp();
   const { celebrateActivity } = useCelebration();
@@ -45,7 +49,11 @@ function LicaoPage() {
   }, [step]);
 
   const goBack = () => {
-    void nav({ to: "/home" });
+    if (modulo) {
+      void nav({ to: "/modulo/$id", params: { id: modulo } });
+    } else {
+      void nav({ to: "/home" });
+    }
   };
 
   if (!found) {
@@ -210,6 +218,7 @@ function LicaoPage() {
             <Link
               to="/licao/$id/aprofundar"
               params={{ id: lesson.id }}
+              search={{ modulo }}
               className="flex w-full items-center justify-center gap-2 rounded-2xl border border-ancient/40 bg-ancient/5 py-3.5 text-sm font-semibold text-ancient transition-all hover:bg-ancient/10"
             >
               <Layers className="h-4 w-4" /> Aprofundar
