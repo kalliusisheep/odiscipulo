@@ -187,23 +187,6 @@ function LicaoPage() {
             </div>
           ))}
 
-          {lesson.keywords.length > 0 && (
-            <div className="rounded-2xl border border-ancient/30 bg-ancient/5 p-4">
-              <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-ancient">
-                Palavras no idioma original
-              </p>
-              <div className="space-y-2">
-                {lesson.keywords.map((o, oi) => (
-                  <div key={oi} className="text-xs">
-                    <span className="ancient-text text-sm text-ancient">{o.word}</span>
-                    <span className="text-muted-foreground"> ({o.translit}, {o.lang}) — </span>
-                    <span className="text-foreground/80">{o.meaning}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           <div className="card-elevated p-5">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Explicação</p>
             <p className="mt-2 text-sm leading-relaxed text-foreground/90" data-narrate>
