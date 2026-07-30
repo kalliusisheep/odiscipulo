@@ -179,16 +179,20 @@ export async function generateShareImage({
   // Corpo do texto (justificado), logo abaixo do título, dentro de um painel
   // translúcido. Escolhe o maior tamanho de fonte que ainda cabe no espaço
   // disponível entre o título e o rodapé — o texto pode ter até 700 caracteres.
-  const panelPaddingY = 56;
+  const panelPaddingY = 44;
   const panelPaddingX = 70;
-  const panelTop = titleY + 36;
+  // Bordas do painel (usadas tanto para desenhar o retângulo quanto para
+  // posicionar o texto, garantindo que a margem interna seja igual dos dois lados).
+  const panelLeft = marginX - 20;
+  const panelWidth = contentWidth + 40;
+  const panelTop = titleY + 14;
   const availableHeight = maxBottomY - panelTop;
 
   let chosenFontSize = BODY_FONT_SIZES[BODY_FONT_SIZES.length - 1];
   let chosenLines: { text: string; isParagraphEnd: boolean }[] = [];
   let chosenLineHeight = 0;
   let chosenPanelHeight = 0;
-  const bodyMaxWidth = contentWidth - 80;
+  const bodyMaxWidth = panelWidth - panelPaddingX * 2;
 
   for (const fontSize of BODY_FONT_SIZES) {
     ctx.font = `400 ${fontSize}px "Inter", sans-serif`;
@@ -212,14 +216,16 @@ export async function generateShareImage({
     chosenPanelHeight = chosenLines.length * chosenLineHeight + panelPaddingY * 2;
   }
 
-  ctx.fillStyle = "rgba(12,10,24,0.60)";
-  roundRect(ctx, marginX - 20, panelTop, contentWidth + 40, chosenPanelHeight, 32);
+  // Painel mais transparente (0.42 em vez de 0.60).
+  ctx.fillStyle = "rgba(12,10,24,0.42)";
+  roundRect(ctx, panelLeft, panelTop, panelWidth, chosenPanelHeight, 32);
   ctx.fill();
 
   ctx.font = `400 ${chosenFontSize}px "Inter", sans-serif`;
   ctx.fillStyle = "#f5f3ff";
   let bodyY = panelTop + panelPaddingY + chosenFontSize * 0.78;
-  const textX = marginX + panelPaddingX - 20;
+  // Mesma margem interna (panelPaddingX) dos dois lados do painel.
+  const textX = panelLeft + panelPaddingX;
   chosenLines.forEach((line) => {
     drawParagraphLine(ctx, line.text, textX, bodyY, bodyMaxWidth, !line.isParagraphEnd);
     bodyY += chosenLineHeight;
