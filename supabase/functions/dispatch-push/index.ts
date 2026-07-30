@@ -7,6 +7,7 @@ type QueuedNotification = {
   title: string;
   body: string;
   url: string;
+  data: Record<string, unknown> | null;
 };
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
@@ -22,7 +23,7 @@ webpush.setVapidDetails(subject, publicKey, privateKey);
 Deno.serve(async () => {
   const { data: notifications, error } = await admin
     .from("app_notifications")
-    .select("id, user_id, title, body, url")
+    .select("id, user_id, title, body, url, data")
     .is("delivered_at", null)
     .order("created_at")
     .limit(100);
@@ -40,9 +41,15 @@ Deno.serve(async () => {
         try {
           await webpush.sendNotification(
             { endpoint: subscription.endpoint, keys: { p256dh: subscription.p256dh, auth: subscription.auth } },
-            JSON.stringify({ title: notification.title, body: notification.body, url: notification.url }),
+            JSON.stringify({
+              title: notification.title,
+              body: notification.body,
+              url: notification.url,
+              icon: (notification.data?.icon as string | undefined) ?? "/isheep-img.png",
+            }),
           );
         } catch (error) {
+          console.error("push-failed", subscription.endpoint.slice(0, 60), error instanceof Error ? error.message : error);
           const statusCode = typeof error === "object" && error && "statusCode" in error ? Number(error.statusCode) : 0;
           if (statusCode === 404 || statusCode === 410) {
             await admin.from("push_subscriptions").delete().eq("id", subscription.id);

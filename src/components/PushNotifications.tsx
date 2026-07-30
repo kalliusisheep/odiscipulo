@@ -9,13 +9,22 @@ type AppNotification = { id: string; title: string; body: string; url: string };
 export function PushNotifications() {
   const [supported, setSupported] = useState(false);
   const [permission, setPermission] = useState<NotificationPermission>("default");
+  const [subscribed, setSubscribed] = useState(true);
 
   useEffect(() => {
     setSupported(isPushSupported());
     if ("Notification" in window) setPermission(Notification.permission);
 
     // Keeps the stored subscription valid (renews it when the browser expires it).
-    void syncSubscription();
+    void syncSubscription().finally(async () => {
+      try {
+        const registration = await navigator.serviceWorker.getRegistration("/push-sw.js");
+        const subscription = (await registration?.pushManager.getSubscription()) ?? null;
+        setSubscribed(Boolean(subscription));
+      } catch {
+        setSubscribed(false);
+      }
+    });
     const stopListening = listenForSubscriptionChange();
 
     let channel: ReturnType<typeof supabase.channel> | null = null;
@@ -62,10 +71,11 @@ export function PushNotifications() {
       toast.error("Não foi possível registrar este dispositivo. Tente novamente.");
       return;
     }
+    setSubscribed(true);
     toast.success("Notificações ativadas. Barnabé avisará você às 06:00 e às 20:00.");
   };
 
-  if (!supported || permission === "granted") return null;
+  if (!supported || (permission === "granted" && subscribed)) return null;
   return (
     <button
       type="button"

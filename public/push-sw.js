@@ -4,12 +4,15 @@ self.addEventListener("activate", (event) => event.waitUntil(self.clients.claim(
 self.addEventListener("push", (event) => {
   const payload = event.data ? event.data.json() : {};
   event.waitUntil(
-    self.registration.showNotification(payload.title || "O Discípulo", {
+    self.registration.showNotification(payload.title || "Barnabé, seu Mentor IA", {
       body: payload.body || "Há uma novidade para você.",
-      icon: "/isheep-img.png",
+      icon: payload.icon || "/isheep-img.png",
       badge: "/isheep-img.png",
+      tag: payload.tag || undefined,
+      renotify: true,
       data: { url: payload.url || "/home" },
     }),
+
   );
 });
 
