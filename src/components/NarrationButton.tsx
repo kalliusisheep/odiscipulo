@@ -1,140 +1,376 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { createHash } from "node:crypto";
-
-/** Bucket no Supabase Storage usado como cache dos áudios já gerados pelo Piper. */
-const BUCKET = "narration-audio";
-
-function hashText(text: string): string {
-  return createHash("sha256").update(text).digest("hex");
-}
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Pause, Play, Loader2, AlertCircle } from "lucide-react";
 
 /**
- * Cache é "melhor-esforço": se o Supabase falhar por qualquer motivo (env vars
- * ausentes, bucket não criado ainda, etc.), a narração não pode parar de
- * funcionar por causa disso — só deixamos de aproveitar o cache.
+ * Divide um texto em sentenças respeitando pontuação portuguesa.
+ * Mantém fragmentos curtos anexados à sentença anterior.
  */
-async function tryGetCached(fileName: string): Promise<ArrayBuffer | null> {
-  try {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data } = await supabaseAdmin.storage.from(BUCKET).download(fileName);
-    if (!data) return null;
-    return await data.arrayBuffer();
-  } catch (e) {
-    console.error("Narração: cache indisponível ao ler", e);
-    return null;
+function splitSentences(text: string): string[] {
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (!clean) return [];
+  const matches = clean.match(/[^.!?…]+[.!?…]+["')\]]*|[^.!?…]+$/g);
+  if (!matches) return [clean];
+  const out: string[] = [];
+  for (const raw of matches) {
+    const s = raw.trim();
+    if (!s) continue;
+    if (s.length < 12 && out.length > 0) {
+      out[out.length - 1] = `${out[out.length - 1]} ${s}`;
+    } else {
+      out.push(s);
+    }
   }
+  return out;
 }
 
-async function trySaveCache(fileName: string, audioBuf: ArrayBuffer): Promise<void> {
-  try {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin.storage
-      .from(BUCKET)
-      .upload(fileName, audioBuf, { contentType: "audio/wav", upsert: true });
-    if (error) console.error("Narração: falha ao salvar no cache", error);
-  } catch (e) {
-    console.error("Narração: cache indisponível ao salvar", e);
-  }
-}
+type SentenceUnit = {
+  el: HTMLElement;
+  originalHTML: string;
+  sentences: string[];
+  /** Spans de cada palavra, agrupados por sentença: wordGroups[sentIdx][wordIdx]. */
+  wordGroups: HTMLSpanElement[][];
+  /** Quando true, remove um número inicial (ex.: número de versículo) apenas do áudio enviado à narração — o texto exibido na tela não é alterado. */
+  stripLeadingNumber: boolean;
+};
 
-export const Route = createFileRoute("/api/tts")({
-  server: {
-    handlers: {
-      // Endpoint de "aquecimento": o cliente chama isso assim que a página
-      // carrega, antes do usuário apertar o botão de narrar. Serviços
-      // gratuitos (ex.: Render) hibernam depois de inativos e podem demorar
-      // dezenas de segundos pra responder de novo — isso adianta esse tempo
-      // enquanto a pessoa ainda está lendo, em vez de acontecer só no clique.
-      GET: async () => {
-        const piperUrl = process.env.PIPER_TTS_URL;
-        if (!piperUrl) return new Response("ok", { status: 200 });
-        const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), 45000);
-        try {
-          await fetch(piperUrl.replace(/\/$/, ""), { signal: controller.signal });
-        } catch (e) {
-          // Melhor-esforço: falha aqui não é um erro pro usuário, só significa
-          // que o primeiro clique real vai ter que esperar o Piper acordar.
-          console.error("Narração: aquecimento do Piper falhou", e);
-        } finally {
-          clearTimeout(timer);
-        }
-        return new Response("ok", { status: 200 });
-      },
-      POST: async ({ request }) => {
-        try {
-          const body = (await request.json()) as { text?: string };
-          const text = (body?.text ?? "").trim();
-          if (!text) return new Response("Missing text", { status: 400 });
-          if (text.length > 2000) return new Response("Text too long", { status: 400 });
+type QueueItem = {
+  unitIdx: number;
+  sentIdx: number;
+  /** Texto realmente falado (pode ter o número inicial removido). */
+  spokenText: string;
+  /** Índice (na palavra exibida) do primeiro item falado — usado quando um número inicial foi removido só do áudio. */
+  removedCorrection: number;
+  /** Posição (em caracteres, dentro de spokenText) em que cada palavra falada começa. */
+  wordStarts: number[];
+};
 
-          const fileName = `${hashText(text)}.wav`;
+type Props = {
+  /** CSS selector for the container that holds elements marked with data-narrate. */
+  containerSelector?: string;
+  /** Extra classes for the button */
+  className?: string;
+};
 
-          // 1. Tenta servir do cache (evita gerar áudio de novo pra texto repetido).
-          const cached = await tryGetCached(fileName);
-          if (cached) {
-            return new Response(cached, {
-              headers: {
-                "Content-Type": "audio/wav",
-                "Cache-Control": "public, max-age=31536000, immutable",
-              },
+/** Depois dessa quantidade de falhas seguidas, paramos tudo em vez de tentar pra sempre. */
+const MAX_CONSECUTIVE_FAILURES = 2;
+/** Quanto tempo (ms) o ícone de erro fica visível antes de voltar ao estado normal. */
+const ERROR_DISPLAY_MS = 2500;
+
+export function NarrationButton({ containerSelector, className }: Props) {
+  const [status, setStatus] = useState<"idle" | "loading" | "playing" | "paused" | "error">(
+    "idle",
+  );
+  const unitsRef = useRef<SentenceUnit[]>([]);
+  const queueRef = useRef<QueueItem[]>([]);
+  const activeRef = useRef(false);
+  const failuresRef = useRef(0);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  // Cache de áudio já buscado nesta sessão (evita rebaixar o mesmo trecho ao repetir).
+  const audioCacheRef = useRef<Map<string, string>>(new Map());
+  const abortRef = useRef<AbortController | null>(null);
+  // Tempos estimados (segundos) de início de cada palavra da sentença tocando agora.
+  const wordTimesRef = useRef<number[]>([]);
+  // Palavra atualmente destacada — guardada por referência (não por índice)
+  // pra poder limpar o destaque anterior mesmo trocando de sentença.
+  const highlightedWordRef = useRef<HTMLSpanElement | null>(null);
+
+  const restoreDOM = useCallback(() => {
+    for (const u of unitsRef.current) {
+      u.el.innerHTML = u.originalHTML;
+    }
+    unitsRef.current = [];
+    queueRef.current = [];
+    highlightedWordRef.current = null;
+  }, []);
+
+  const cleanup = useCallback(() => {
+    activeRef.current = false;
+    abortRef.current?.abort();
+    abortRef.current = null;
+    const audio = audioRef.current;
+    if (audio) {
+      audio.onloadedmetadata = null;
+      audio.ontimeupdate = null;
+      audio.onended = null;
+      audio.onerror = null;
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
+    }
+    // Libera a memória dos áudios em cache (blob URLs) desta sessão de narração.
+    for (const url of audioCacheRef.current.values()) URL.revokeObjectURL(url);
+    audioCacheRef.current.clear();
+    wordTimesRef.current = [];
+    restoreDOM();
+  }, [restoreDOM]);
+
+  useEffect(() => {
+    audioRef.current = new Audio();
+    return () => cleanup();
+  }, [cleanup]);
+
+  // Destaca a palavra `wordIdx` da sentença em `idx` (índice na fila).
+  const highlightWordAt = useCallback((idx: number, wordIdx: number) => {
+    const item = queueRef.current[idx];
+    if (!item) return;
+    const unit = unitsRef.current[item.unitIdx];
+    const words = unit?.wordGroups[item.sentIdx];
+    const span = words?.[wordIdx];
+    if (!span || span === highlightedWordRef.current) return;
+    highlightedWordRef.current?.classList.remove("tts-active");
+    span.classList.add("tts-active");
+    highlightedWordRef.current = span;
+    span.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, []);
+
+  const showErrorAndStop = useCallback(() => {
+    activeRef.current = false;
+    setStatus("error");
+    cleanup();
+    setTimeout(() => setStatus("idle"), ERROR_DISPLAY_MS);
+  }, [cleanup]);
+
+  /** Busca o áudio (via cache local ou pelo endpoint /api/tts) e devolve uma blob URL. */
+  const fetchAudioUrl = useCallback(async (spokenText: string, signal: AbortSignal) => {
+    const cached = audioCacheRef.current.get(spokenText);
+    if (cached) return cached;
+    const res = await fetch("/api/tts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: spokenText }),
+      signal,
+    });
+    if (!res.ok) throw new Error(`tts ${res.status}`);
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    audioCacheRef.current.set(spokenText, url);
+    return url;
+  }, []);
+
+  const playFrom = useCallback(
+    (idx: number) => {
+      if (!activeRef.current) return;
+      if (idx >= queueRef.current.length) {
+        setStatus("idle");
+        cleanup();
+        return;
+      }
+      const audio = audioRef.current;
+      if (!audio) {
+        showErrorAndStop();
+        return;
+      }
+
+      setStatus("loading");
+      const item = queueRef.current[idx];
+      const controller = new AbortController();
+      abortRef.current = controller;
+
+      fetchAudioUrl(item.spokenText, controller.signal)
+        .then((url) => {
+          if (!activeRef.current) return;
+
+          // Pré-busca a próxima sentença em paralelo, pra tocar sem espera na sequência.
+          const next = queueRef.current[idx + 1];
+          if (next && !audioCacheRef.current.has(next.spokenText)) {
+            void fetchAudioUrl(next.spokenText, controller.signal).catch(() => {
+              /* se a pré-busca falhar, tentamos de novo quando chegar a vez dela */
             });
           }
 
-          // 2. Sem cache: gera no servidor Piper (Render).
-          const piperUrl = process.env.PIPER_TTS_URL;
-          const piperKey = process.env.PIPER_TTS_API_KEY;
-          if (!piperUrl || !piperKey) {
-            return new Response("PIPER_TTS_URL/PIPER_TTS_API_KEY ausente", { status: 500 });
-          }
+          audio.src = url;
 
-          // Timeout de segurança: sem isso, se o Piper travar (não responder
-          // nem der erro), esse request fica pendurado indefinidamente — e é
-          // exatamente isso que o usuário sente como o botão "travando".
-          const piperController = new AbortController();
-          const piperTimer = setTimeout(() => piperController.abort(), 30000);
-          let res: Response;
-          try {
-            res = await fetch(`${piperUrl.replace(/\/$/, "")}/synthesize`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json", "x-api-key": piperKey },
-              body: JSON.stringify({ text }),
-              signal: piperController.signal,
-            });
-          } catch (e) {
-            const timedOut = (e as Error)?.name === "AbortError";
-            console.error("Narração: erro ao chamar Piper", e);
-            return new Response(timedOut ? "Piper timeout" : "Piper indisponível", {
-              status: 504,
-            });
-          } finally {
-            clearTimeout(piperTimer);
-          }
+          audio.onloadedmetadata = () => {
+            const total = item.spokenText.length || 1;
+            const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
+            wordTimesRef.current = item.wordStarts.map((pos) => (pos / total) * duration);
+          };
 
-          if (!res.ok) {
-            const errText = await res.text().catch(() => "");
-            return new Response(`Piper ${res.status}: ${errText.slice(0, 200)}`, {
-              status: 502,
-            });
-          }
+          audio.ontimeupdate = () => {
+            if (!activeRef.current) return;
+            const times = wordTimesRef.current;
+            let wordIdxInSpoken = 0;
+            for (let i = 0; i < times.length; i++) {
+              if (audio.currentTime >= times[i]) wordIdxInSpoken = i;
+              else break;
+            }
+            highlightWordAt(idx, wordIdxInSpoken + item.removedCorrection);
+          };
 
-          const audioBuf = await res.arrayBuffer();
+          audio.onended = () => {
+            if (!activeRef.current) return;
+            playFrom(idx + 1);
+          };
 
-          // 3. Salva no cache pras próximas vezes (não bloqueia a resposta ao usuário).
-          void trySaveCache(fileName, audioBuf);
+          audio.onerror = () => {
+            if (!activeRef.current) return;
+            console.error("Narração: erro ao tocar áudio");
+            failuresRef.current += 1;
+            if (failuresRef.current >= MAX_CONSECUTIVE_FAILURES) {
+              showErrorAndStop();
+              return;
+            }
+            playFrom(idx + 1);
+          };
 
-          return new Response(audioBuf, {
-            headers: {
-              "Content-Type": "audio/wav",
-              "Cache-Control": "public, max-age=31536000, immutable",
-            },
+          failuresRef.current = 0;
+          setStatus("playing");
+          highlightWordAt(idx, item.removedCorrection);
+          void audio.play().catch(() => {
+            if (!activeRef.current) return;
+            failuresRef.current += 1;
+            if (failuresRef.current >= MAX_CONSECUTIVE_FAILURES) showErrorAndStop();
+            else playFrom(idx + 1);
           });
-        } catch (e) {
-          const msg = e instanceof Error ? e.message : "erro";
-          console.error("Narração: erro em /api/tts", e);
-          return new Response(msg, { status: 500 });
-        }
-      },
+        })
+        .catch((err) => {
+          if (!activeRef.current || (err as Error)?.name === "AbortError") return;
+          console.error("Narração: erro ao buscar áudio", err);
+          failuresRef.current += 1;
+          if (failuresRef.current >= MAX_CONSECUTIVE_FAILURES) {
+            showErrorAndStop();
+            return;
+          }
+          playFrom(idx + 1);
+        });
     },
-  },
-});
+    [cleanup, fetchAudioUrl, highlightWordAt, showErrorAndStop],
+  );
+
+  const buildQueue = useCallback((): boolean => {
+    const container = containerSelector
+      ? document.querySelector<HTMLElement>(containerSelector)
+      : document;
+    if (!container) return false;
+    const nodes = Array.from(
+      (container as ParentNode).querySelectorAll<HTMLElement>("[data-narrate]"),
+    );
+    if (nodes.length === 0) return false;
+
+    const units: SentenceUnit[] = [];
+    const queue: QueueItem[] = [];
+    nodes.forEach((el) => {
+      // Usa o texto visível original (mantém números de versículo etc. na
+      // tela e no destaque); a remoção acontece só no áudio.
+      const text = el.textContent ?? "";
+      const sentences = splitSentences(text);
+      if (sentences.length === 0) return;
+      const originalHTML = el.innerHTML;
+      // Reconstrói o innerHTML com um <span> por palavra (preserva classes
+      // do elemento pai) — o destaque acontece palavra a palavra.
+      el.textContent = "";
+      const wordGroups: HTMLSpanElement[][] = [];
+      const stripLeadingNumber = el.dataset.narrateStripNumbers === "true";
+      sentences.forEach((s, i) => {
+        const words = s.split(/\s+/).filter(Boolean);
+        const wordSpans: HTMLSpanElement[] = [];
+        words.forEach((w, wi) => {
+          const span = document.createElement("span");
+          span.className = "tts-word";
+          span.textContent = w;
+          el.appendChild(span);
+          wordSpans.push(span);
+          if (wi < words.length - 1) el.appendChild(document.createTextNode(" "));
+        });
+        wordGroups.push(wordSpans);
+        if (i < sentences.length - 1) el.appendChild(document.createTextNode(" "));
+      });
+
+      const unitIdx = units.length;
+      units.push({ el, originalHTML, sentences, wordGroups, stripLeadingNumber });
+
+      sentences.forEach((s, i) => {
+        let spokenText = s;
+        let removedCorrection = 0;
+        if (stripLeadingNumber) {
+          const stripped = s.replace(/^\d{1,3}[.\s]+/, "").trim();
+          if (stripped && stripped !== s.trim()) {
+            const originalWordCount = s.split(/\s+/).filter(Boolean).length;
+            const strippedWordCount = stripped.split(/\s+/).filter(Boolean).length;
+            removedCorrection = Math.max(0, originalWordCount - strippedWordCount);
+            spokenText = stripped;
+          }
+        }
+        const spokenWords = spokenText.split(/\s+/).filter(Boolean);
+        const wordStarts: number[] = [];
+        let cursor = 0;
+        for (const w of spokenWords) {
+          const foundAt = spokenText.indexOf(w, cursor);
+          const start = foundAt === -1 ? cursor : foundAt;
+          wordStarts.push(start);
+          cursor = start + w.length;
+        }
+        queue.push({ unitIdx, sentIdx: i, spokenText, removedCorrection, wordStarts });
+      });
+    });
+    unitsRef.current = units;
+    queueRef.current = queue;
+    return queue.length > 0;
+  }, [containerSelector]);
+
+  const handleClick = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) {
+      showErrorAndStop();
+      return;
+    }
+
+    if (status === "playing") {
+      audio.pause();
+      setStatus("paused");
+      return;
+    }
+    if (status === "paused") {
+      void audio.play();
+      setStatus("playing");
+      return;
+    }
+    if (status === "error" || status === "loading") return;
+
+    // idle → start
+    activeRef.current = true;
+    failuresRef.current = 0;
+    const ok = buildQueue();
+    if (!ok) {
+      activeRef.current = false;
+      return;
+    }
+    playFrom(0);
+  }, [buildQueue, playFrom, status, showErrorAndStop]);
+
+  const isBusy = status === "loading";
+  const label =
+    status === "playing"
+      ? "Pausar narração"
+      : status === "paused"
+        ? "Continuar narração"
+        : status === "loading"
+          ? "Carregando narração"
+          : status === "error"
+            ? "Não foi possível narrar (tente novamente)"
+            : "Ouvir narração";
+
+  return (
+    <button
+      type="button"
+      onClick={handleClick}
+      aria-label={label}
+      title={label}
+      disabled={status === "error"}
+      className={
+        className ??
+        "inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface text-primary shadow-sm transition-colors hover:bg-primary/10"
+      }
+    >
+      {isBusy ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : status === "error" ? (
+        <AlertCircle className="h-4 w-4 text-destructive" />
+      ) : status === "playing" ? (
+        <Pause className="h-4 w-4" />
+      ) : (
+        <Play className="h-4 w-4" />
+      )}
+    </button>
+  );
+}
