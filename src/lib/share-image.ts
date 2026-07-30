@@ -1,7 +1,8 @@
 // Gera a imagem de compartilhamento (formato retrato, 1080x1920 — compatível
 // com Status do WhatsApp, Stories do Instagram e compartilhamento comum de
 // imagem) combinando: imagem de fundo já existente no app + título da trilha
-// + texto evangelístico gerado por IA, com o corpo do texto justificado.
+// + texto evangelístico gerado por IA (justificado), posicionado logo abaixo
+// do título.
 
 const CANVAS_W = 1080;
 const CANVAS_H = 1920;
@@ -50,6 +51,23 @@ function wrapWords(ctx: CanvasRenderingContext2D, text: string, maxWidth: number
   return lines;
 }
 
+function wrapParagraphs(
+  ctx: CanvasRenderingContext2D,
+  bodyText: string,
+  maxWidth: number,
+): { text: string; isParagraphEnd: boolean }[] {
+  const lines: { text: string; isParagraphEnd: boolean }[] = [];
+  bodyText
+    .split(/\n+/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .forEach((paragraph) => {
+      const wrapped = wrapWords(ctx, paragraph, maxWidth);
+      wrapped.forEach((line, i) => lines.push({ text: line, isParagraphEnd: i === wrapped.length - 1 }));
+    });
+  return lines;
+}
+
 function drawParagraphLine(
   ctx: CanvasRenderingContext2D,
   line: string,
@@ -88,13 +106,23 @@ async function ensureFontsReady() {
   const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
   if (!fonts) return;
   try {
-    await Promise.all([fonts.load('800 62px "Inter"'), fonts.load('400 42px "Inter"'), fonts.load('600 30px "Inter"')]);
+    await Promise.all([
+      fonts.load('800 58px "Inter"'),
+      fonts.load('400 40px "Inter"'),
+      fonts.load('400 34px "Inter"'),
+      fonts.load('400 30px "Inter"'),
+    ]);
     await fonts.ready;
   } catch {
     // Se a fonte não carregar a tempo, o canvas usa a fonte padrão do sistema —
     // a imagem ainda fica legível, só não com o Inter exato.
   }
 }
+
+// Tamanhos de fonte candidatos para o corpo do texto, do maior para o menor.
+// Como o texto pode ter até ~700 caracteres, reduzimos o tamanho até o painel
+// caber na área disponível abaixo do título.
+const BODY_FONT_SIZES = [40, 36, 32, 28] as const;
 
 export async function generateShareImage({
   title,
@@ -116,26 +144,31 @@ export async function generateShareImage({
   const img = await loadImage(backgroundSrc);
   drawCoverImage(ctx, img, CANVAS_W, CANVAS_H);
 
-  // Overlay escuro em degradê para garantir legibilidade do texto sobre a imagem.
+  // Overlay escuro em degradê, mais forte no topo (onde ficam título + texto)
+  // para garantir legibilidade, esmaecendo em direção à base da imagem.
   const overlay = ctx.createLinearGradient(0, 0, 0, CANVAS_H);
-  overlay.addColorStop(0, "rgba(10,8,20,0.65)");
-  overlay.addColorStop(0.32, "rgba(10,8,20,0.12)");
-  overlay.addColorStop(0.6, "rgba(10,8,20,0.3)");
-  overlay.addColorStop(1, "rgba(6,5,14,0.88)");
+  overlay.addColorStop(0, "rgba(8,6,18,0.82)");
+  overlay.addColorStop(0.55, "rgba(8,6,18,0.55)");
+  overlay.addColorStop(0.78, "rgba(8,6,18,0.22)");
+  overlay.addColorStop(1, "rgba(8,6,18,0.08)");
   ctx.fillStyle = overlay;
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
   const marginX = 90;
   const contentWidth = CANVAS_W - marginX * 2;
+  const topOffset = 120;
+  // Deixamos uma margem inferior generosa para a imagem continuar visível
+  // e o painel nunca encostar no rodapé.
+  const maxBottomY = CANVAS_H - 160;
 
   // Título no topo da imagem.
-  ctx.font = '800 62px "Inter", sans-serif';
+  ctx.font = '800 58px "Inter", sans-serif';
   ctx.fillStyle = "#ffffff";
   ctx.shadowColor = "rgba(0,0,0,0.45)";
   ctx.shadowBlur = 18;
   const titleLines = wrapWords(ctx, title.toUpperCase(), contentWidth).slice(0, 3);
-  const titleLineHeight = 74;
-  let titleY = 150;
+  const titleLineHeight = 70;
+  let titleY = topOffset;
   for (const line of titleLines) {
     ctx.textAlign = "center";
     ctx.fillText(line, CANVAS_W / 2, titleY);
@@ -143,43 +176,54 @@ export async function generateShareImage({
   }
   ctx.shadowBlur = 0;
 
-  // Corpo do texto (justificado) dentro de um painel translúcido.
-  ctx.font = '400 42px "Inter", sans-serif';
-  const bodyLineHeight = 60;
+  // Corpo do texto (justificado), logo abaixo do título, dentro de um painel
+  // translúcido. Escolhe o maior tamanho de fonte que ainda cabe no espaço
+  // disponível entre o título e o rodapé — o texto pode ter até 700 caracteres.
+  const panelPaddingY = 56;
+  const panelPaddingX = 70;
+  const panelTop = titleY + 36;
+  const availableHeight = maxBottomY - panelTop;
+
+  let chosenFontSize = BODY_FONT_SIZES[BODY_FONT_SIZES.length - 1];
+  let chosenLines: { text: string; isParagraphEnd: boolean }[] = [];
+  let chosenLineHeight = 0;
+  let chosenPanelHeight = 0;
   const bodyMaxWidth = contentWidth - 80;
 
-  const bodyLines: { text: string; isParagraphEnd: boolean }[] = [];
-  bodyText
-    .split(/\n+/)
-    .map((p) => p.trim())
-    .filter(Boolean)
-    .forEach((paragraph) => {
-      const wrapped = wrapWords(ctx, paragraph, bodyMaxWidth);
-      wrapped.forEach((line, i) => bodyLines.push({ text: line, isParagraphEnd: i === wrapped.length - 1 }));
-    });
+  for (const fontSize of BODY_FONT_SIZES) {
+    ctx.font = `400 ${fontSize}px "Inter", sans-serif`;
+    const lines = wrapParagraphs(ctx, bodyText, bodyMaxWidth);
+    const lineHeight = Math.round(fontSize * 1.42);
+    const panelHeight = lines.length * lineHeight + panelPaddingY * 2;
+    if (panelHeight <= availableHeight || fontSize === BODY_FONT_SIZES[BODY_FONT_SIZES.length - 1]) {
+      chosenFontSize = fontSize;
+      chosenLines = lines;
+      chosenLineHeight = lineHeight;
+      chosenPanelHeight = panelHeight;
+      break;
+    }
+  }
 
-  const panelPaddingY = 70;
-  const panelPaddingX = 70;
-  const brandSpace = 90;
-  const panelHeight = bodyLines.length * bodyLineHeight + panelPaddingY * 2 + brandSpace;
-  const panelY = Math.max(CANVAS_H - panelHeight - 140, titleY + 40);
+  // Se mesmo no menor tamanho o texto não coube, corta o excesso de linhas
+  // (proteção extra — na prática o limite de 700 caracteres já evita isso).
+  const maxLinesThatFit = Math.max(1, Math.floor((availableHeight - panelPaddingY * 2) / chosenLineHeight));
+  if (chosenLines.length > maxLinesThatFit) {
+    chosenLines = chosenLines.slice(0, maxLinesThatFit);
+    chosenPanelHeight = chosenLines.length * chosenLineHeight + panelPaddingY * 2;
+  }
 
-  ctx.fillStyle = "rgba(12,10,24,0.58)";
-  roundRect(ctx, marginX - 20, panelY, contentWidth + 40, panelHeight, 36);
+  ctx.fillStyle = "rgba(12,10,24,0.60)";
+  roundRect(ctx, marginX - 20, panelTop, contentWidth + 40, chosenPanelHeight, 32);
   ctx.fill();
 
+  ctx.font = `400 ${chosenFontSize}px "Inter", sans-serif`;
   ctx.fillStyle = "#f5f3ff";
-  let bodyY = panelY + panelPaddingY + 34;
+  let bodyY = panelTop + panelPaddingY + chosenFontSize * 0.78;
   const textX = marginX + panelPaddingX - 20;
-  bodyLines.forEach((line) => {
+  chosenLines.forEach((line) => {
     drawParagraphLine(ctx, line.text, textX, bodyY, bodyMaxWidth, !line.isParagraphEnd);
-    bodyY += bodyLineHeight;
+    bodyY += chosenLineHeight;
   });
-
-  ctx.font = '600 30px "Inter", sans-serif';
-  ctx.fillStyle = "rgba(245,243,255,0.65)";
-  ctx.textAlign = "center";
-  ctx.fillText("THE DISCIPLE", CANVAS_W / 2, panelY + panelHeight - panelPaddingY / 2 + 10);
 
   return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(
