@@ -179,13 +179,14 @@ export async function generateShareImage({
   // Corpo do texto (justificado), logo abaixo do título, dentro de um painel
   // translúcido. Escolhe o maior tamanho de fonte que ainda cabe no espaço
   // disponível entre o título e o rodapé — o texto pode ter até 700 caracteres.
-  const panelPaddingY = 44;
-  const panelPaddingX = 70;
-  // Bordas do painel (usadas tanto para desenhar o retângulo quanto para
-  // posicionar o texto, garantindo que a margem interna seja igual dos dois lados).
-  const panelLeft = marginX - 20;
+  // Painel: posição/largura definidas uma única vez e usadas tanto para o
+  // desenho do fundo quanto para o cálculo do texto, garantindo que a
+  // distância do texto até a borda do painel seja igual dos dois lados.
+  const panelX = marginX - 20;
   const panelWidth = contentWidth + 40;
-  const panelTop = titleY + 14;
+  const panelPaddingY = 56;
+  const panelPaddingX = 40; // distância (igual nos 2 lados) entre o texto e a borda do painel
+  const panelTop = titleY + 16; // texto mais próximo do título
   const availableHeight = maxBottomY - panelTop;
 
   let chosenFontSize = BODY_FONT_SIZES[BODY_FONT_SIZES.length - 1];
@@ -216,16 +217,14 @@ export async function generateShareImage({
     chosenPanelHeight = chosenLines.length * chosenLineHeight + panelPaddingY * 2;
   }
 
-  // Painel mais transparente (0.42 em vez de 0.60).
-  ctx.fillStyle = "rgba(12,10,24,0.42)";
-  roundRect(ctx, panelLeft, panelTop, panelWidth, chosenPanelHeight, 32);
+  ctx.fillStyle = "rgba(12,10,24,0.60)";
+  roundRect(ctx, panelX, panelTop, panelWidth, chosenPanelHeight, 32);
   ctx.fill();
 
   ctx.font = `400 ${chosenFontSize}px "Inter", sans-serif`;
   ctx.fillStyle = "#f5f3ff";
   let bodyY = panelTop + panelPaddingY + chosenFontSize * 0.78;
-  // Mesma margem interna (panelPaddingX) dos dois lados do painel.
-  const textX = panelLeft + panelPaddingX;
+  const textX = panelX + panelPaddingX;
   chosenLines.forEach((line) => {
     drawParagraphLine(ctx, line.text, textX, bodyY, bodyMaxWidth, !line.isParagraphEnd);
     bodyY += chosenLineHeight;
