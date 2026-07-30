@@ -6,7 +6,7 @@ import { useState, useRef, useEffect, type PointerEvent as ReactPointerEvent } f
 const FAB_SIZE = 56;
 const STORAGE_KEY = "disciple.mentorFabPos";
 const BUBBLE_VISIBLE_MS = 6000;
-const FALLBACK_SRC = "/isheep-img.png";
+const FALLBACK_SRC = "/mentor-fab.gif";
 
 const EVENT_TO_ANIM_CLASS: Record<Exclude<MascotEvent, null>, string> = {
   wave: "animate-mascot-wave",
@@ -165,12 +165,14 @@ export function MentorFAB() {
         style={{ touchAction: "none" }}
         className={`relative h-14 w-14 cursor-grab overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-glow shadow-2xl shadow-primary/40 transition-transform active:scale-95 active:cursor-grabbing ${animClass}`}
       >
-        <img
-          src={FALLBACK_SRC}
-          alt="Barnabéé, Mentor IA"
-          className="pointer-events-none h-full w-full animate-mascot-face object-cover"
-          draggable={false}
-        />
+        <div className="h-full w-full" style={{ transform: "scale(1.08)" }}>
+          <img
+            src={FALLBACK_SRC}
+            alt="Barnabéé, Mentor IA"
+            className="pointer-events-none h-full w-full animate-mascot-face object-cover"
+            draggable={false}
+          />
+        </div>
       </button>
 
       <span className="pointer-events-none absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-surface text-[11px] shadow ring-1 ring-border">
