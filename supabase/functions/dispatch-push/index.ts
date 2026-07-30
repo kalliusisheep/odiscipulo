@@ -11,7 +11,8 @@ type QueuedNotification = {
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
 const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const subject = Deno.env.get("WEB_PUSH_VAPID_SUBJECT")!;
+const rawSubject = (Deno.env.get("WEB_PUSH_VAPID_SUBJECT") ?? "").trim();
+const subject = /^(https?:|mailto:)/.test(rawSubject) ? rawSubject : `mailto:${rawSubject}`;
 const publicKey = Deno.env.get("WEB_PUSH_VAPID_PUBLIC_KEY")!;
 const privateKey = Deno.env.get("WEB_PUSH_VAPID_PRIVATE_KEY")!;
 const admin = createClient(supabaseUrl, serviceRoleKey);
