@@ -55,70 +55,6 @@ type Props = {
 const MAX_CONSECUTIVE_FAILURES = 2;
 /** Quanto tempo (ms) o ícone de erro fica visível antes de voltar ao estado normal. */
 const ERROR_DISPLAY_MS = 2500;
-/**
- * Intervalo (ms) do "keep-alive" que evita um bug conhecido do Chrome desktop
- * em que a fala para sozinha depois de ~15s em textos longos.
- */
-const KEEP_ALIVE_MS = 10000;
-
-/** Pistas de nomes tipicamente masculinos em vozes de sistema pt-BR/pt-PT. */
-const MALE_VOICE_HINTS = [
-  "daniel",
-  "felipe",
-  "ricardo",
-  "diego",
-  "thiago",
-  "tiago",
-  "francisco",
-  "antonio",
-  "antônio",
-  "carlos",
-  "bruno",
-  "fernando",
-  "male",
-  "masculin",
-  "homem",
-];
-
-function getVoices(): Promise<SpeechSynthesisVoice[]> {
-  return new Promise((resolve) => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-      resolve([]);
-      return;
-    }
-    const synth = window.speechSynthesis;
-    const existing = synth.getVoices();
-    if (existing.length > 0) {
-      resolve(existing);
-      return;
-    }
-    const handler = () => {
-      const voices = synth.getVoices();
-      if (voices.length > 0) {
-        synth.removeEventListener("voiceschanged", handler);
-        clearTimeout(timeoutId);
-        resolve(voices);
-      }
-    };
-    synth.addEventListener("voiceschanged", handler);
-    // Alguns navegadores nunca disparam "voiceschanged" — depois de 3s,
-    // resolve com o que tiver (mesmo que vazio) em vez de travar pra sempre.
-    const timeoutId = setTimeout(() => {
-      synth.removeEventListener("voiceschanged", handler);
-      resolve(synth.getVoices());
-    }, 3000);
-  });
-}
-
-function pickVoice(voices: SpeechSynthesisVoice[]): SpeechSynthesisVoice | null {
-  if (voices.length === 0) return null;
-  const ptVoices = voices.filter((v) => /^pt/i.test(v.lang));
-  const pool = ptVoices.length > 0 ? ptVoices : voices;
-  const male = pool.find((v) =>
-    MALE_VOICE_HINTS.some((hint) => v.name.toLowerCase().includes(hint)),
-  );
-  return male ?? pool[0] ?? null;
-}
 
 export function NarrationButton({ containerSelector, className }: Props) {
   const [status, setStatus] = useState<"idle" | "loading" | "playing" | "paused" | "error">(
@@ -126,27 +62,17 @@ export function NarrationButton({ containerSelector, className }: Props) {
   );
   const unitsRef = useRef<SentenceUnit[]>([]);
   const queueRef = useRef<QueueItem[]>([]);
-  const cursorRef = useRef(0);
   const activeRef = useRef(false);
   const failuresRef = useRef(0);
-  const voiceRef = useRef<SpeechSynthesisVoice | null>(null);
-  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
-  const keepAliveRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  // Cache de áudio já buscado nesta sessão (evita rebaixar o mesmo trecho ao repetir).
+  const audioCacheRef = useRef<Map<string, string>>(new Map());
+  const abortRef = useRef<AbortController | null>(null);
+  // Tempos estimados (segundos) de início de cada palavra da sentença tocando agora.
+  const wordTimesRef = useRef<number[]>([]);
   // Palavra atualmente destacada — guardada por referência (não por índice)
   // pra poder limpar o destaque anterior mesmo trocando de sentença.
   const highlightedWordRef = useRef<HTMLSpanElement | null>(null);
-
-  // Carrega a lista de vozes do sistema uma única vez e escolhe a melhor
-  // voz masculina em português disponível no aparelho.
-  useEffect(() => {
-    let cancelled = false;
-    void getVoices().then((voices) => {
-      if (!cancelled) voiceRef.current = pickVoice(voices);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   const restoreDOM = useCallback(() => {
     for (const u of unitsRef.current) {
@@ -157,24 +83,29 @@ export function NarrationButton({ containerSelector, className }: Props) {
     highlightedWordRef.current = null;
   }, []);
 
-  const stopKeepAlive = useCallback(() => {
-    if (keepAliveRef.current) {
-      clearInterval(keepAliveRef.current);
-      keepAliveRef.current = null;
-    }
-  }, []);
-
   const cleanup = useCallback(() => {
     activeRef.current = false;
-    stopKeepAlive();
-    if (typeof window !== "undefined" && "speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
+    abortRef.current?.abort();
+    abortRef.current = null;
+    const audio = audioRef.current;
+    if (audio) {
+      audio.onloadedmetadata = null;
+      audio.ontimeupdate = null;
+      audio.onended = null;
+      audio.onerror = null;
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
     }
-    utteranceRef.current = null;
+    // Libera a memória dos áudios em cache (blob URLs) desta sessão de narração.
+    for (const url of audioCacheRef.current.values()) URL.revokeObjectURL(url);
+    audioCacheRef.current.clear();
+    wordTimesRef.current = [];
     restoreDOM();
-  }, [restoreDOM, stopKeepAlive]);
+  }, [restoreDOM]);
 
   useEffect(() => {
+    audioRef.current = new Audio();
     return () => cleanup();
   }, [cleanup]);
 
@@ -199,6 +130,23 @@ export function NarrationButton({ containerSelector, className }: Props) {
     setTimeout(() => setStatus("idle"), ERROR_DISPLAY_MS);
   }, [cleanup]);
 
+  /** Busca o áudio (via cache local ou pelo endpoint /api/tts) e devolve uma blob URL. */
+  const fetchAudioUrl = useCallback(async (spokenText: string, signal: AbortSignal) => {
+    const cached = audioCacheRef.current.get(spokenText);
+    if (cached) return cached;
+    const res = await fetch("/api/tts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: spokenText }),
+      signal,
+    });
+    if (!res.ok) throw new Error(`tts ${res.status}`);
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    audioCacheRef.current.set(spokenText, url);
+    return url;
+  }, []);
+
   const playFrom = useCallback(
     (idx: number) => {
       if (!activeRef.current) return;
@@ -207,76 +155,86 @@ export function NarrationButton({ containerSelector, className }: Props) {
         cleanup();
         return;
       }
-      if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      const audio = audioRef.current;
+      if (!audio) {
         showErrorAndStop();
         return;
       }
-      cursorRef.current = idx;
+
       setStatus("loading");
       const item = queueRef.current[idx];
+      const controller = new AbortController();
+      abortRef.current = controller;
 
-      const utterance = new SpeechSynthesisUtterance(item.spokenText);
-      utterance.voice = voiceRef.current;
-      utterance.lang = voiceRef.current?.lang || "pt-BR";
-      utterance.rate = 0.97;
-      utterance.pitch = 0.85;
-      utterance.volume = 1;
+      fetchAudioUrl(item.spokenText, controller.signal)
+        .then((url) => {
+          if (!activeRef.current) return;
 
-      utterance.onstart = () => {
-        if (!activeRef.current) return;
-        failuresRef.current = 0;
-        setStatus("playing");
-        highlightWordAt(idx, item.removedCorrection);
-      };
+          // Pré-busca a próxima sentença em paralelo, pra tocar sem espera na sequência.
+          const next = queueRef.current[idx + 1];
+          if (next && !audioCacheRef.current.has(next.spokenText)) {
+            void fetchAudioUrl(next.spokenText, controller.signal).catch(() => {
+              /* se a pré-busca falhar, tentamos de novo quando chegar a vez dela */
+            });
+          }
 
-      utterance.onboundary = (event) => {
-        if (!activeRef.current) return;
-        if (event.name && event.name !== "word") return;
-        const starts = item.wordStarts;
-        let wordIdxInSpoken = 0;
-        for (let i = 0; i < starts.length; i++) {
-          if (event.charIndex >= starts[i]) wordIdxInSpoken = i;
-          else break;
-        }
-        highlightWordAt(idx, wordIdxInSpoken + item.removedCorrection);
-      };
+          audio.src = url;
 
-      utterance.onend = () => {
-        if (!activeRef.current) return;
-        playFrom(idx + 1);
-      };
+          audio.onloadedmetadata = () => {
+            const total = item.spokenText.length || 1;
+            const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
+            wordTimesRef.current = item.wordStarts.map((pos) => (pos / total) * duration);
+          };
 
-      utterance.onerror = (event) => {
-        if (!activeRef.current) return;
-        // "interrupted"/"canceled" acontecem quando NÓS paramos de propósito
-        // (ex.: usuário clicou em pausar/fechou) — isso não é uma falha real.
-        if (event.error === "interrupted" || event.error === "canceled") return;
-        console.error("Narração: erro", event.error);
-        failuresRef.current += 1;
-        if (failuresRef.current >= MAX_CONSECUTIVE_FAILURES) {
-          showErrorAndStop();
-          return;
-        }
-        playFrom(idx + 1);
-      };
+          audio.ontimeupdate = () => {
+            if (!activeRef.current) return;
+            const times = wordTimesRef.current;
+            let wordIdxInSpoken = 0;
+            for (let i = 0; i < times.length; i++) {
+              if (audio.currentTime >= times[i]) wordIdxInSpoken = i;
+              else break;
+            }
+            highlightWordAt(idx, wordIdxInSpoken + item.removedCorrection);
+          };
 
-      utteranceRef.current = utterance;
-      window.speechSynthesis.speak(utterance);
+          audio.onended = () => {
+            if (!activeRef.current) return;
+            playFrom(idx + 1);
+          };
 
-      // Workaround para um bug conhecido do Chrome desktop: em textos
-      // longos, a síntese de voz às vezes "trava" sozinha depois de ~15s.
-      // Pausar e retomar periodicamente evita esse travamento.
-      stopKeepAlive();
-      keepAliveRef.current = setInterval(() => {
-        if (!activeRef.current) return;
-        const synth = window.speechSynthesis;
-        if (synth.speaking && !synth.paused) {
-          synth.pause();
-          synth.resume();
-        }
-      }, KEEP_ALIVE_MS);
+          audio.onerror = () => {
+            if (!activeRef.current) return;
+            console.error("Narração: erro ao tocar áudio");
+            failuresRef.current += 1;
+            if (failuresRef.current >= MAX_CONSECUTIVE_FAILURES) {
+              showErrorAndStop();
+              return;
+            }
+            playFrom(idx + 1);
+          };
+
+          failuresRef.current = 0;
+          setStatus("playing");
+          highlightWordAt(idx, item.removedCorrection);
+          void audio.play().catch(() => {
+            if (!activeRef.current) return;
+            failuresRef.current += 1;
+            if (failuresRef.current >= MAX_CONSECUTIVE_FAILURES) showErrorAndStop();
+            else playFrom(idx + 1);
+          });
+        })
+        .catch((err) => {
+          if (!activeRef.current || (err as Error)?.name === "AbortError") return;
+          console.error("Narração: erro ao buscar áudio", err);
+          failuresRef.current += 1;
+          if (failuresRef.current >= MAX_CONSECUTIVE_FAILURES) {
+            showErrorAndStop();
+            return;
+          }
+          playFrom(idx + 1);
+        });
     },
-    [cleanup, highlightWordAt, showErrorAndStop, stopKeepAlive],
+    [cleanup, fetchAudioUrl, highlightWordAt, showErrorAndStop],
   );
 
   const buildQueue = useCallback((): boolean => {
@@ -351,19 +309,19 @@ export function NarrationButton({ containerSelector, className }: Props) {
   }, [containerSelector]);
 
   const handleClick = useCallback(() => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+    const audio = audioRef.current;
+    if (!audio) {
       showErrorAndStop();
       return;
     }
-    const synth = window.speechSynthesis;
 
     if (status === "playing") {
-      synth.pause();
+      audio.pause();
       setStatus("paused");
       return;
     }
     if (status === "paused") {
-      synth.resume();
+      void audio.play();
       setStatus("playing");
       return;
     }
@@ -389,7 +347,7 @@ export function NarrationButton({ containerSelector, className }: Props) {
         : status === "loading"
           ? "Carregando narração"
           : status === "error"
-            ? "Não foi possível narrar (verifique se o navegador suporta narração de voz)"
+            ? "Não foi possível narrar (tente novamente)"
             : "Ouvir narração";
 
   return (
