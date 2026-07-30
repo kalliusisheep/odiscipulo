@@ -121,23 +121,30 @@ Deno.serve(async (req) => {
     }
 
     let text: string;
+    let aiSucceeded = true;
     try {
       const raw = await callAiGateway(buildPrompt(title, context ?? ""));
       text = clampToRange(raw);
     } catch (aiError) {
-      console.error("generate-share-text: IA falhou, usando fallback:", aiError);
+      console.error("generate-share-text: IA falhou, usando fallback (NÃO será salvo em cache):", aiError);
       text = fallbackText(title);
+      aiSucceeded = false;
     }
 
-    const { error: insertError } = await admin
-      .from("lesson_share_texts")
-      .upsert(
-        { lesson_id: lessonId, lesson_title: title, share_text: text },
-        { onConflict: "lesson_id" },
-      );
-    if (insertError) console.error("generate-share-text: falha ao salvar cache:", insertError);
+    // Importante: só gravamos no cache quando a IA realmente respondeu.
+    // Se salvássemos o texto de fallback, ele ficaria preso para sempre
+    // nessa lição mesmo depois da IA voltar a funcionar.
+    if (aiSucceeded) {
+      const { error: insertError } = await admin
+        .from("lesson_share_texts")
+        .upsert(
+          { lesson_id: lessonId, lesson_title: title, share_text: text },
+          { onConflict: "lesson_id" },
+        );
+      if (insertError) console.error("generate-share-text: falha ao salvar cache:", insertError);
+    }
 
-    return Response.json({ text, cached: false }, { headers: corsHeaders });
+    return Response.json({ text, cached: false, ai_succeeded: aiSucceeded }, { headers: corsHeaders });
   } catch (error) {
     console.error("generate-share-text: erro inesperado:", error);
     return Response.json(
