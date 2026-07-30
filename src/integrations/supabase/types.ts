@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_notifications: {
+        Row: {
+          body: string
+          created_at: string
+          data: Json
+          delivered_at: string | null
+          id: string
+          kind: string
+          title: string
+          url: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          data?: Json
+          delivered_at?: string | null
+          id?: string
+          kind: string
+          title: string
+          url?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          data?: Json
+          delivered_at?: string | null
+          id?: string
+          kind?: string
+          title?: string
+          url?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       challenges: {
         Row: {
           accepted_at: string | null
@@ -497,6 +533,30 @@ export type Database = {
           lesson_id?: string
           user_id?: string
           xp_gained?: number
+        }
+        Relationships: []
+      }
+      lesson_share_texts: {
+        Row: {
+          created_at: string
+          id: string
+          lesson_id: string
+          lesson_title: string
+          share_text: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          lesson_id: string
+          lesson_title: string
+          share_text: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          lesson_id?: string
+          lesson_title?: string
+          share_text?: string
         }
         Relationships: []
       }
