@@ -57,14 +57,23 @@ function wrapParagraphs(
   maxWidth: number,
 ): { text: string; isParagraphEnd: boolean }[] {
   const lines: { text: string; isParagraphEnd: boolean }[] = [];
-  bodyText
-    .split(/\n+/)
-    .map((p) => p.trim())
-    .filter(Boolean)
-    .forEach((paragraph) => {
-      const wrapped = wrapWords(ctx, paragraph, maxWidth);
-      wrapped.forEach((line, i) => lines.push({ text: line, isParagraphEnd: i === wrapped.length - 1 }));
-    });
+  // Um ou mais "\n" seguidos de espaço opcional e outro "\n" (ou seja, uma
+  // linha em branco real no texto de origem) separam parágrafos e devem
+  // virar um espaço visível na imagem — não apenas uma quebra de linha, como
+  // uma quebra de linha simples dentro do mesmo parágrafo faria.
+  const paragraphs = bodyText
+    .split(/\n\s*\n+/)
+    .map((p) => p.replace(/\n+/g, " ").trim())
+    .filter(Boolean);
+  paragraphs.forEach((paragraph, pIndex) => {
+    const wrapped = wrapWords(ctx, paragraph, maxWidth);
+    wrapped.forEach((line, i) => lines.push({ text: line, isParagraphEnd: i === wrapped.length - 1 }));
+    // Linha vazia = espaço visível entre este parágrafo e o próximo
+    // (tipicamente entre o corpo do texto e a pergunta final).
+    if (pIndex < paragraphs.length - 1) {
+      lines.push({ text: "", isParagraphEnd: true });
+    }
+  });
   return lines;
 }
 
