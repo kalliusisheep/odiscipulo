@@ -2,23 +2,21 @@ import { useEffect, useState } from "react";
 import { Bell } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { getVapidKey, isPushSupported, listenForSubscriptionChange, subscribeAndPersist, syncSubscription } from "@/lib/push";
 
 type AppNotification = { id: string; title: string; body: string; url: string };
-
-function urlBase64ToUint8Array(value: string) {
-  const padding = "=".repeat((4 - (value.length % 4)) % 4);
-  const base64 = (value + padding).replace(/-/g, "+").replace(/_/g, "/");
-  const raw = atob(base64);
-  return Uint8Array.from(raw, (character) => character.charCodeAt(0));
-}
 
 export function PushNotifications() {
   const [supported, setSupported] = useState(false);
   const [permission, setPermission] = useState<NotificationPermission>("default");
 
   useEffect(() => {
-    setSupported("serviceWorker" in navigator && "PushManager" in window && "Notification" in window);
+    setSupported(isPushSupported());
     if ("Notification" in window) setPermission(Notification.permission);
+
+    // Keeps the stored subscription valid (renews it when the browser expires it).
+    void syncSubscription();
+    const stopListening = listenForSubscriptionChange();
 
     let channel: ReturnType<typeof supabase.channel> | null = null;
     void (async () => {
@@ -39,6 +37,7 @@ export function PushNotifications() {
         .subscribe();
     })();
     return () => {
+      stopListening();
       if (channel) void supabase.removeChannel(channel);
     };
   }, []);
@@ -54,24 +53,15 @@ export function PushNotifications() {
       toast.error("Permita as notificações nas configurações do navegador para ativá-las.");
       return;
     }
-    const vapidKey = import.meta.env.VITE_WEB_PUSH_VAPID_PUBLIC_KEY;
-    if (!vapidKey) {
+    if (!getVapidKey()) {
       toast.error("As chaves de notificação ainda não foram configuradas no ambiente publicado.");
       return;
     }
-    const registration = await navigator.serviceWorker.register("/push-sw.js");
-    const subscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(vapidKey),
-    });
-    const keys = subscription.toJSON().keys;
-    const { data } = await supabase.auth.getUser();
-    if (!data.user || !keys?.p256dh || !keys.auth) return;
-    const { error } = await supabase.from("push_subscriptions").upsert(
-      { user_id: data.user.id, endpoint: subscription.endpoint, p256dh: keys.p256dh, auth: keys.auth, updated_at: new Date().toISOString() },
-      { onConflict: "endpoint" },
-    );
-    if (error) throw error;
+    const subscription = await subscribeAndPersist();
+    if (!subscription) {
+      toast.error("Não foi possível registrar este dispositivo. Tente novamente.");
+      return;
+    }
     toast.success("Notificações ativadas. Barnabé avisará você às 06:00 e às 20:00.");
   };
 
