@@ -2,17 +2,42 @@ self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (event) => event.waitUntil(self.clients.claim()));
 
 self.addEventListener("push", (event) => {
-  const payload = event.data ? event.data.json() : {};
   event.waitUntil(
-    self.registration.showNotification(payload.title || "Barnabé, seu Mentor IA", {
-      body: payload.body || "Há uma novidade para você.",
-      icon: payload.icon || "/isheep-img.png",
-      badge: "/isheep-img.png",
-      tag: payload.tag || undefined,
-      renotify: true,
-      data: { url: payload.url || "/home" },
-    }),
+    (async () => {
+      let payload = {};
+      try {
+        payload = event.data ? event.data.json() : {};
+      } catch {
+        payload = {};
+      }
 
+      // O navegador exige um "tag" não-vazio sempre que "renotify" é usado.
+      // Sem isso, showNotification() lança um erro e o Chrome exibe sozinho
+      // a notificação genérica "isheep.app updated while in background".
+      const tag = payload.tag || "isheep-notification";
+
+      try {
+        await self.registration.showNotification(payload.title || "Barnabé, seu Mentor IA", {
+          body: payload.body || "Há uma novidade para você.",
+          icon: payload.icon || "/isheep-img.png",
+          badge: "/isheep-img.png",
+          tag,
+          renotify: true,
+          data: { url: payload.url || "/home" },
+        });
+      } catch (err) {
+        // Fallback de segurança: mesmo se algo inesperado falhar, ainda
+        // mostramos uma notificação simples em vez de deixar o Chrome
+        // substituir por sua mensagem genérica.
+        await self.registration.showNotification("Barnabé, seu Mentor IA", {
+          body: "Há uma novidade para você.",
+          icon: "/isheep-img.png",
+          badge: "/isheep-img.png",
+          tag: "isheep-notification",
+          data: { url: "/home" },
+        });
+      }
+    })(),
   );
 });
 
