@@ -3,6 +3,11 @@
 -- na tabela public.lesson_share_texts. Cada texto resume a lição, responde/complementa
 -- a pergunta do título, e termina com referência bíblica ("De acordo com...").
 
+-- Defensivo: a coluna updated_at deveria existir desde a migração original da tabela,
+-- mas o ambiente cloud não a tem — cria agora se estiver faltando, sem dar erro se já existir.
+ALTER TABLE public.lesson_share_texts
+  ADD COLUMN IF NOT EXISTS updated_at timestamptz NOT NULL DEFAULT now();
+
 INSERT INTO public.lesson_share_texts (lesson_id, lesson_title, share_text) VALUES
   ('db-1-2', 'Quem é Jesus?', 'Acabei de concluir a lição "Quem é Jesus?" e entendi que essa não é uma pergunta qualquer — é a mais decisiva que existe. Jesus não deixou a opção de vê-lo apenas como bom mestre: ou é mentiroso, louco, ou exatamente quem afirmou ser, Deus encarnado. Ele é plenamente Deus e plenamente homem, o Verbo que estava com Deus e era Deus, e que se fez carne para habitar entre nós. Se Jesus é Deus, tudo o que ele disse tem autoridade sobre a minha vida, e a resposta certa diante dele não é admiração distante, mas fé e entrega. De acordo com João 1:1 e 1:14, o Verbo era Deus desde o princípio e se fez carne para viver entre nós.'),
   ('nc-1-1', 'O que aconteceu comigo?', 'Terminei a lição "O que aconteceu comigo?" e descobri que minha conversão não foi apenas uma decisão melhor — foi uma recriação feita por Deus. Jesus chamou isso de nascer de novo, "de novo" e "do alto" ao mesmo tempo: uma origem nova que só vem dele. Paulo chama a mesma realidade de nova criação, não uma versão melhorada do que eu era, mas algo qualitativamente diferente. As coisas antigas já passaram; eis que surgiram coisas novas. Se você também nasceu de novo, viva à altura dessa identidade; se ainda não, saiba que essa recriação está ao alcance de quem crê. De acordo com 2 Coríntios 5:17, se alguém está em Cristo, é nova criação.'),
