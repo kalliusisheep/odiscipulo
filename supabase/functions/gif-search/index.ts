@@ -3,27 +3,29 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const TENOR_API_KEY = Deno.env.get("TENOR_API_KEY");
+const GIPHY_API_KEY = Deno.env.get("GIPHY_API_KEY");
 
-type TenorResult = {
+type GiphyResult = {
   id: string;
-  content_description?: string;
-  media_formats?: {
-    gif?: { url: string };
-    tinygif?: { url: string };
+  title?: string;
+  images?: {
+    fixed_width_small?: { url: string };
+    fixed_height?: { url: string };
+    original?: { url: string };
   };
 };
 
 type RequestBody = { q?: string };
 
-// Proxy simples para a Tenor API — mantém a chave no servidor e devolve só
+// Proxy simples para a Giphy API — mantém a chave no servidor e devolve só
 // os campos que a UI (GifPicker) precisa. Usado no comentário do feed.
+// (Migrado da Tenor API, que a Google encerrou em 30/06/2026.)
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    if (!TENOR_API_KEY) {
-      console.error("gif-search: TENOR_API_KEY não configurada nos secrets do projeto.");
+    if (!GIPHY_API_KEY) {
+      console.error("gif-search: GIPHY_API_KEY não configurada nos secrets do projeto.");
       return Response.json(
         { error: "Busca de GIFs não configurada." },
         { status: 500, headers: corsHeaders },
@@ -34,32 +36,30 @@ Deno.serve(async (req) => {
     const term = (q ?? "").trim();
 
     const params = new URLSearchParams({
-      key: TENOR_API_KEY,
-      client_key: "odiscipulo",
+      api_key: GIPHY_API_KEY,
       limit: "24",
-      media_filter: "gif,tinygif",
-      contentfilter: "high",
-      locale: "pt_BR",
+      rating: "pg-13",
+      lang: "pt",
     });
     if (term) params.set("q", term);
 
     const endpoint = term
-      ? `https://tenor.googleapis.com/v2/search?${params.toString()}`
-      : `https://tenor.googleapis.com/v2/featured?${params.toString()}`;
+      ? `https://api.giphy.com/v1/gifs/search?${params.toString()}`
+      : `https://api.giphy.com/v1/gifs/trending?${params.toString()}`;
 
     const resp = await fetch(endpoint);
     if (!resp.ok) {
-      console.error("gif-search: Tenor respondeu com erro:", resp.status, await resp.text());
+      console.error("gif-search: Giphy respondeu com erro:", resp.status, await resp.text());
       return Response.json({ error: "Falha ao buscar GIFs." }, { status: 502, headers: corsHeaders });
     }
 
-    const data = (await resp.json()) as { results?: TenorResult[] };
-    const gifs = (data.results ?? [])
+    const data = (await resp.json()) as { data?: GiphyResult[] };
+    const gifs = (data.data ?? [])
       .map((r) => ({
         id: r.id,
-        previewUrl: r.media_formats?.tinygif?.url ?? r.media_formats?.gif?.url ?? "",
-        url: r.media_formats?.gif?.url ?? "",
-        description: r.content_description ?? "GIF",
+        previewUrl: r.images?.fixed_width_small?.url ?? r.images?.fixed_height?.url ?? "",
+        url: r.images?.fixed_height?.url ?? r.images?.original?.url ?? "",
+        description: r.title ?? "GIF",
       }))
       .filter((g) => g.url);
 
