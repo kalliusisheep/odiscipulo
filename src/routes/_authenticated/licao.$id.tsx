@@ -5,7 +5,7 @@ import { lessonById, verseText } from "@/data/content";
 import { useApp } from "@/lib/app-context";
 import { useCelebration } from "@/lib/celebration";
 import { awardXpAndStreak } from "@/lib/progress";
-import { logActivity } from "@/lib/activities";
+import { logLessonCompletionToFeed } from "@/lib/feed";
 import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
 import { FontSizeControls } from "@/components/font-size-controls";
 import { NarrationButton } from "@/components/NarrationButton";
@@ -100,22 +100,23 @@ function LicaoPage() {
         { onConflict: "user_id,lesson_id" },
       );
       if (reflection.trim()) {
-        await supabase.from("diary_entries").insert({
-          user_id: u.user.id,
-          lesson_id: lesson.id,
-          lesson_title: lesson.title,
-          question: lesson.reflectionQuestion,
-          answer: reflection.trim(),
-        });
+        // upsert em vez de insert: se o usuário já tinha respondido essa
+        // mesma lição antes, atualiza a resposta em vez de criar duplicata
+        // (há uma constraint única (user_id, lesson_id) no banco).
+        await supabase.from("diary_entries").upsert(
+          {
+            user_id: u.user.id,
+            lesson_id: lesson.id,
+            lesson_title: lesson.title,
+            question: lesson.reflectionQuestion,
+            answer: reflection.trim(),
+          },
+          { onConflict: "user_id,lesson_id" },
+        );
       }
       const { prevXp, newXp } = await awardXpAndStreak(u.user.id, lesson.xp);
       celebrateActivity({ prevXp, newXp, xp: lesson.xp });
-      void logActivity({
-        userId: u.user.id,
-        type: "lesson_completed",
-        title: `Terminou "${lesson.title}"`,
-        subtitle: `${found.trail.title} · ${found.module.title}`,
-      });
+      void logLessonCompletionToFeed(u.user.id, lesson.id, lesson.title);
     }
     setStep("done");
     setSaving(false);
