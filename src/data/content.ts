@@ -166,12 +166,18 @@ const novoConvertido: Trail = {
                 textByVersion: {
                   NVI: "Que, embora tendo a natureza de Deus, não considerou que ser igual a Deus era algo a que devia se apegar; mas esvaziou-se de si mesmo, vindo a ser servo, tornando-se semelhante aos seres humanos.",
                 },
+                originals: [
+                  { word: "μορφῇ", translit: "morphē", meaning: "'forma, natureza essencial' — Jesus possui, por natureza, a essência plena de Deus, não uma aparência", lang: "grego" },
+                ],
               },
               {
                 ref: "Hebreus 1:3",
                 textByVersion: {
                   NVI: "O Filho é o resplendor da glória de Deus e a expressão exata do seu ser, sustentando todas as coisas por sua palavra poderosa.",
                 },
+                originals: [
+                  { word: "χαρακτὴρ", translit: "charaktēr", meaning: "'expressão exata, marca impressa' — como um selo produz uma marca idêntica à sua gravação", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -289,12 +295,18 @@ const novoConvertido: Trail = {
                 textByVersion: {
                   NVI: "Ele nos salvou, não por causa de atos de justiça que tivéssemos feito, mas por sua misericórdia, por meio do lavar regenerador e renovador do Espírito Santo.",
                 },
+                originals: [
+                  { word: "παλιγγενεσία", translit: "palingenesía", meaning: "'regeneração, novo começo' — a mesma realidade que Jesus chama de 'nascer de novo' em João 3", lang: "grego" },
+                ],
               },
               {
                 ref: "Ezequiel 36:26",
                 textByVersion: {
                   NVI: "Darei a vocês um novo coração e porei um novo espírito em vocês; tirarei de vocês o coração de pedra e lhes darei um coração de carne.",
                 },
+                originals: [
+                  { word: "לֵב", translit: "lev", meaning: "'coração' — no hebraico, sede da vontade e do afeto, não só emoção; Deus troca o núcleo endurecido da pessoa por um coração vivo", lang: "hebraico" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -374,6 +386,9 @@ const novoConvertido: Trail = {
                 ACF: "Estas coisas vos escrevi, a vós que credes no nome do Filho de Deus, para que saibais que tendes a vida eterna.",
                 NVT: "Escrevi estas coisas a vocês, que creem no nome do Filho de Deus, para que saibam que têm vida eterna.",
               },
+              originals: [
+                { word: "οἴδατε", translit: "oidate", meaning: "'sabeis' — conhecimento firme e consciente, não impressão vaga ou sentimento passageiro", lang: "grego" },
+              ],
             },
             {
               ref: "Romanos 8:16",
@@ -407,12 +422,18 @@ const novoConvertido: Trail = {
                 textByVersion: {
                   NVI: "Eu lhes dou a vida eterna, e elas jamais perecerão; ninguém as arrancará da minha mão. Meu Pai, que as deu para mim, é maior do que todos; ninguém pode arrancá-las da mão de meu Pai.",
                 },
+                originals: [
+                  { word: "ἁρπάσει", translit: "harpásei", meaning: "'arrebatar à força' — verbo forte que garante que ninguém arranca o crente da mão que o segura", lang: "grego" },
+                ],
               },
               {
                 ref: "2 Coríntios 13:5",
                 textByVersion: {
                   NVI: "Examinem-se a vocês mesmos, para ver se estão na fé; provem-se a vocês mesmos. Vocês não reconhecem que Cristo Jesus está em vocês? A menos que fracassem no exame!",
                 },
+                originals: [
+                  { word: "δοκιμάζετε", translit: "dokimázete", meaning: "'provem-se, testem a autenticidade' — o mesmo verbo usado para testar a pureza de um metal precioso", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -487,6 +508,9 @@ const novoConvertido: Trail = {
                 ACF: "Ele, porém, respondendo, disse: Está escrito: Nem só de pão viverá o homem, mas de toda a palavra que sai da boca de Deus.",
                 NVT: "Mas Jesus lhe disse: 'As Escrituras dizem: Nem só de pão viverá o homem, mas de toda palavra que procede da boca de Deus'.",
               },
+              originals: [
+                { word: "ῥήματι", translit: "rhēmati", meaning: "'palavra proferida' — a Palavra viva e ativa que sai da boca de Deus, não letra morta", lang: "grego" },
+              ],
             },
             {
               ref: "Salmos 119:105",
@@ -520,12 +544,18 @@ const novoConvertido: Trail = {
                 textByVersion: {
                   NVI: "Os bereanos eram mais nobres do que os tessalonicenses, pois receberam a mensagem com grande interesse e examinavam diariamente as Escrituras, para ver se as coisas eram assim mesmo.",
                 },
+                originals: [
+                  { word: "ἀνακρίνοντες", translit: "anakrínontes", meaning: "'examinando cuidadosamente' — investigação diária, padrão de leitor sério, não ouvinte passivo", lang: "grego" },
+                ],
               },
               {
                 ref: "2 Timóteo 3:16-17",
                 textByVersion: {
                   NVI: "Toda a Escritura é inspirada por Deus e útil para o ensino, para a repreensão, para a correção e para a instrução na justiça, para que o homem de Deus seja apto e plenamente preparado para toda boa obra.",
                 },
+                originals: [
+                  { word: "θεόπνευστος", translit: "theópneustos", meaning: "'soprada por Deus' — une theós (Deus) e pnéō (soprar); a Escritura procede do próprio fôlego de Deus", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -607,6 +637,9 @@ const novoConvertido: Trail = {
                 ACF: "E da mesma maneira também o Espírito ajuda as nossas fraquezas; porque não sabemos o que havemos de pedir como convém, mas o mesmo Espírito intercede por nós com gemidos inexprimíveis.",
                 NVT: "E o Espírito Santo nos ajuda em nossa fraqueza. Por exemplo, nós não sabemos o que Deus quer que peçamos em oração, mas o Espírito Santo ora por nós com gemidos que não podem ser expressos em palavras.",
               },
+              originals: [
+                { word: "στεναγμοῖς", translit: "stenagmoîs", meaning: "'gemidos' — algo mais profundo que palavras articuladas, expressando a própria compaixão de Deus por nós", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -628,12 +661,18 @@ const novoConvertido: Trail = {
                 textByVersion: {
                   NVI: "Certa vez Jesus estava orando em determinado lugar. Quando terminou, um de seus discípulos lhe disse: 'Senhor, ensina-nos a orar, como João ensinou aos discípulos dele'.",
                 },
+                originals: [
+                  { word: "προσεύχεσθαι", translit: "proseúchesthai", meaning: "'orar' — o pedido dos discípulos nasce ao observarem Jesus orando; querem aprender pela prática, não só pela doutrina", lang: "grego" },
+                ],
               },
               {
                 ref: "Salmos 62:8",
                 textByVersion: {
                   NVI: "Confiem nele em todo tempo, ó povo; derramem diante dele o coração, pois Deus é o nosso refúgio.",
                 },
+                originals: [
+                  { word: "שִׁפְכוּ", translit: "shiphkû", meaning: "'derramem' — imagem de despejar algo líquido por completo; a oração convida a esvaziar o coração diante de Deus sem reter nada", lang: "hebraico" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -757,12 +796,18 @@ const novoConvertido: Trail = {
                 textByVersion: {
                   NVI: "Como são belos, sobre os montes, os pés daquele que traz boas novas, que proclama a paz, que anuncia boas novas, que proclama a salvação, que diz a Sião: 'O teu Deus reina!'",
                 },
+                originals: [
+                  { word: "מְבַשֵּׂר", translit: "mevasser", meaning: "'aquele que anuncia boas novas' — termo hebraico que prepara, séculos antes, o vocabulário do 'euangélion' do Novo Testamento", lang: "hebraico" },
+                ],
               },
               {
                 ref: "Lucas 4:18",
                 textByVersion: {
                   NVI: "O Espírito do Senhor está sobre mim, porque ele me ungiu para pregar boas novas aos pobres. Ele me enviou para proclamar liberdade aos presos e recuperação da vista aos cegos, para libertar os oprimidos.",
                 },
+                originals: [
+                  { word: "εὐαγγελίσασθαι", translit: "euangelísasthai", meaning: "'anunciar boas novas' — forma verbal de euangélion; Jesus aplica a si mesmo a profecia de Isaías 61 no início do ministério", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -891,12 +936,18 @@ const novoConvertido: Trail = {
                 textByVersion: {
                   NVI: "Quando Israel era menino, eu o amei, e do Egito chamei o meu filho.",
                 },
+                originals: [
+                  { word: "קָרָאתִי", translit: "qara'ti", meaning: "'eu chamei' — o mesmo verbo e padrão que Mateus 2:15 aplica profeticamente a Jesus, o Filho fiel que Israel não foi", lang: "hebraico" },
+                ],
               },
               {
                 ref: "1 João 3:1",
                 textByVersion: {
                   NVI: "Vejam como é grande o amor que o Pai nos concedeu, que sejamos chamados filhos de Deus! E de fato somos! Por isso o mundo não nos conhece, porque não o conheceu.",
                 },
+                originals: [
+                  { word: "τέκνα Θεοῦ", translit: "tékna Theoú", meaning: "'filhos de Deus' — termo preferido de João, com ênfase no vínculo de nascimento, a nova criação", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -994,6 +1045,9 @@ const novoConvertido: Trail = {
                 ACF: "E consideremo-nos uns aos outros, para nos estimularmos ao amor e às boas obras, não deixando a nossa congregação, como é costume de alguns; antes, admoestando-nos uns aos outros; e tanto mais, quanto vedes que se vai aproximando aquele dia.",
                 NVT: "Também vamos pensar em maneiras de estimular uns aos outros a atos de amor e boas obras. E não deixemos de nos reunir, como é costume de alguns, mas encorajemo-nos uns aos outros, principalmente agora que o dia da volta do Senhor está se aproximando.",
               },
+              originals: [
+                { word: "κατανοῶμεν", translit: "katanoōmen", meaning: "'consideremos, observemos atentamente' — olhar propositado para as necessidades do outro, não relance distraído", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -1087,6 +1141,9 @@ const novoConvertido: Trail = {
                 NVI: "Indo eles pelo caminho, chegaram a um lugar onde havia água, e o eunuco disse: 'Aqui há água. Que me impede de ser batizado?' [...] E desceram ambos à água, e Filipe o batizou.",
                 NAA: "E, indo eles caminhando, chegaram a um lugar onde havia água. Então, disse o eunuco: — Eis aqui água; que impede que eu seja batizado? [...] E desceram ambos à água, tanto Filipe como o eunuco, e Filipe o batizou.",
               },
+              originals: [
+                { word: "κωλύει", translit: "kōlýei", meaning: "'impede, é obstáculo' — pergunta retórica do eunuco: nada deveria bloquear o batismo de quem já creu", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -1106,6 +1163,9 @@ const novoConvertido: Trail = {
                 textByVersion: {
                   NVI: "Portanto, vão e façam discípulos de todas as nações, batizando-os em nome do Pai e do Filho e do Espírito Santo.",
                 },
+                originals: [
+                  { word: "βαπτίζοντες", translit: "baptízontes", meaning: "'batizando' — particípio que descreve a ação de imergir em nome da Trindade, dentro do mandato de fazer discípulos", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -1176,6 +1236,9 @@ const novoConvertido: Trail = {
                 NVI: "André, irmão de Simão Pedro, era um dos dois que tinham ouvido as palavras de João e seguido Jesus. O primeiro que ele encontrou foi seu irmão Simão, a quem disse: 'Achamos o Messias' (isto é, o Cristo). E o levou a Jesus.",
                 NAA: "Um dos dois que ouviram João falar, seguindo a Jesus, era André, irmão de Simão Pedro. Ele foi primeiro ter com seu irmão, Simão, e lhe disse: — Achamos o Messias (que quer dizer Cristo). E o levou a Jesus.",
               },
+              originals: [
+                { word: "Μεσσίας", translit: "Messías", meaning: "transliteração grega do hebraico mashíach, 'ungido'; João traduz o termo logo em seguida para seus leitores gregos", lang: "grego" },
+              ],
             },
             {
               ref: "Marcos 5:19",
@@ -1183,6 +1246,9 @@ const novoConvertido: Trail = {
                 NVI: "Jesus, porém, não o permitiu, mas disse: 'Vá para casa, para a sua família, e conte-lhes quanto o Senhor fez por você, e como teve misericórdia de você.'",
                 NAA: "Jesus, porém, não lho permitiu, mas lhe disse: — Vai para tua casa, para os teus, e anuncia-lhes quão grandes coisas te fez o Senhor e como teve compaixão de ti.",
               },
+              originals: [
+                { word: "ἀνάγγειλον", translit: "anángeilon", meaning: "'anuncia, relata detalhadamente' — não um resumo genérico, mas contar especificamente o que Deus fez", lang: "grego" },
+              ],
             },
             {
               ref: "Atos 1:8",
@@ -1212,6 +1278,9 @@ const novoConvertido: Trail = {
                 textByVersion: {
                   NVI: "Filipe encontrou Natanael e lhe disse: 'Achamos aquele sobre quem Moisés escreveu na Lei, e sobre quem os profetas também escreveram: Jesus de Nazaré, filho de José.' Perguntou Natanael: 'Nazaré? Pode vir alguma coisa boa de lá?' Disse Filipe: 'Vem e vê.'",
                 },
+                originals: [
+                  { word: "Ἔρχου καὶ ἴδε", translit: "Érchou kai íde", meaning: "'vem e vê' — convite simples que troca argumento por experiência direta com Jesus", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
