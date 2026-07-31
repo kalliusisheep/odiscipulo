@@ -8,6 +8,8 @@ import { getLevel, xpToNextLevel, levelProgressPct, MAX_LEVEL } from "@/data/lev
 import { toast } from "sonner";
 import { isUsernameAvailable, isValidUsername, normalizeUsername } from "@/lib/username";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ChurchLinkDialog } from "@/components/ChurchLinkDialog";
+import type { ChurchOption } from "@/lib/church";
 
 import { useApp } from "@/lib/app-context";
 import { useMascot, profileStatsLine } from "@/lib/mascot";
@@ -43,23 +45,6 @@ const BIBLE_VERSION_OPTIONS: { code: BibleVersion; name: string; description: st
   { code: "NVT", name: "Nova Versão Transformadora", description: "Linguagem contemporânea e acessível" },
 ];
 
-// Fotos de avatar prontas. Suba seus próprios arquivos de imagem na pasta
-// `public/avatares/` do repositório (mesmo nível da pasta `public/`) usando
-// exatamente os nomes de arquivo abaixo — ou troque os valores de `src` e
-// `label` para bater com os nomes e a quantidade de fotos que você tem.
-const PRESET_AVATARS: { id: string; label: string; src: string }[] = [
-  { id: "avatar-1", label: "Avatar 1", src: "/avatares/avatar-1.png" },
-  { id: "avatar-2", label: "Avatar 2", src: "/avatares/avatar-2.png" },
-  { id: "avatar-3", label: "Avatar 3", src: "/avatares/avatar-3.png" },
-  { id: "avatar-4", label: "Avatar 4", src: "/avatares/avatar-4.png" },
-  { id: "avatar-5", label: "Avatar 5", src: "/avatares/avatar-5.png" },
-  { id: "avatar-6", label: "Avatar 6", src: "/avatares/avatar-6.png" },
-  { id: "avatar-7", label: "Avatar 7", src: "/avatares/avatar-7.png" },
-  { id: "avatar-8", label: "Avatar 8", src: "/avatares/avatar-8.png" },
-  { id: "avatar-9", label: "Avatar 9", src: "/avatares/avatar-9.png" },
-  { id: "avatar-10", label: "Avatar 10", src: "/avatares/avatar-10.png" },
-];
-
 type Profile = {
   id: string;
   display_name: string;
@@ -71,6 +56,7 @@ type Profile = {
   streak: number;
   bible_version: string;
   notify_devocional: boolean;
+  church_id: string | null;
   church_name: string | null;
   is_leader: boolean;
 };
@@ -85,7 +71,7 @@ function PerfilPage() {
   const [usernameDraft, setUsernameDraft] = useState("");
   const [savingUsername, setSavingUsername] = useState(false);
   const [versionOpen, setVersionOpen] = useState(false);
-  const [avatarPickerOpen, setAvatarPickerOpen] = useState(false);
+  const [churchDialogOpen, setChurchDialogOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const { bibleVersion, setBibleVersion } = useApp();
   const nav = useNavigate();
@@ -132,15 +118,7 @@ function PerfilPage() {
     await nav({ to: "/" });
   };
 
-  const onPickFile = () => {
-    setAvatarPickerOpen(false);
-    fileRef.current?.click();
-  };
-
-  const selectPresetAvatar = async (src: string) => {
-    setAvatarPickerOpen(false);
-    await update({ avatar_url: src });
-  };
+  const onPickFile = () => fileRef.current?.click();
 
   const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -271,67 +249,15 @@ function PerfilPage() {
                 )}
               </div>
               <button
-                onClick={() => setAvatarPickerOpen(true)}
+                onClick={onPickFile}
                 disabled={uploading}
                 className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-2 ring-background transition-transform hover:scale-105 active:scale-95 disabled:opacity-60"
-                aria-label="Trocar foto de perfil"
+                aria-label="Enviar foto"
               >
                 {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
               </button>
               <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onFileChange} />
             </div>
-
-            <Dialog open={avatarPickerOpen} onOpenChange={setAvatarPickerOpen}>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Foto de perfil</DialogTitle>
-                  <DialogDescription>Escolha uma das fotos prontas ou envie uma foto sua.</DialogDescription>
-                </DialogHeader>
-
-                <button
-                  type="button"
-                  onClick={onPickFile}
-                  disabled={uploading}
-                  className="flex w-full items-center gap-3 rounded-2xl border border-dashed border-primary/40 bg-primary/5 px-4 py-3 text-left transition-colors hover:bg-primary/10 disabled:opacity-60"
-                >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-                    {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-semibold">Enviar do dispositivo</span>
-                    <span className="block text-xs text-muted-foreground">Escolha uma foto da sua galeria</span>
-                  </span>
-                  <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/40" />
-                </button>
-
-                <p className="mt-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Ou escolha um avatar
-                </p>
-                <div className="grid grid-cols-3 gap-3">
-                  {PRESET_AVATARS.map((preset) => {
-                    const selected = profile.avatar_url === preset.src;
-                    return (
-                      <button
-                        key={preset.id}
-                        type="button"
-                        onClick={() => void selectPresetAvatar(preset.src)}
-                        aria-label={preset.label}
-                        className={`relative aspect-square overflow-hidden rounded-2xl ring-2 transition-transform hover:scale-[1.03] active:scale-95 ${
-                          selected ? "ring-primary" : "ring-border"
-                        }`}
-                      >
-                        <img src={preset.src} alt={preset.label} className="h-full w-full object-cover" />
-                        {selected && (
-                          <span className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground shadow">
-                            <Check className="h-3 w-3" />
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              </DialogContent>
-            </Dialog>
 
             <h2 className="mt-3 text-lg font-bold text-white">{profile.display_name}</h2>
 
@@ -463,10 +389,7 @@ function PerfilPage() {
             subtitle={profile.church_name ?? "Não vinculado a uma igreja"}
             action={
               <button
-                onClick={() => {
-                  const v = window.prompt("Nome da igreja:", profile.church_name ?? "");
-                  if (v !== null) void update({ church_name: v });
-                }}
+                onClick={() => setChurchDialogOpen(true)}
                 className="shrink-0 rounded-full border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:border-primary/50 hover:text-primary"
               >
                 {profile.church_name ? "Alterar" : "Vincular"}
@@ -499,6 +422,17 @@ function PerfilPage() {
           />
         </div>
       </section>
+
+      <ChurchLinkDialog
+        open={churchDialogOpen}
+        onOpenChange={setChurchDialogOpen}
+        userId={profile.id}
+        currentChurchId={profile.church_id}
+        currentChurchName={profile.church_name}
+        onLinked={(church: ChurchOption | null) =>
+          setProfile((p) => (p ? { ...p, church_id: church?.id ?? null, church_name: church?.name ?? null } : p))
+        }
+      />
 
       <button
         onClick={() => void signOut()}
