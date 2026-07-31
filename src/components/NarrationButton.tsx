@@ -56,6 +56,22 @@ const MAX_CONSECUTIVE_FAILURES = 2;
 /** Quanto tempo (ms) o ícone de erro fica visível antes de voltar ao estado normal. */
 const ERROR_DISPLAY_MS = 2500;
 
+/** Voz local (do próprio aparelho) em português — usada como rede de segurança. */
+function pickPortugueseVoice(): SpeechSynthesisVoice | null {
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) return null;
+  const voices = window.speechSynthesis.getVoices();
+  if (voices.length === 0) return null;
+  return (
+    voices.find((v) => v.lang?.toLowerCase().startsWith("pt-br")) ??
+    voices.find((v) => v.lang?.toLowerCase().startsWith("pt")) ??
+    null
+  );
+}
+
+function localSpeechSupported(): boolean {
+  return typeof window !== "undefined" && "speechSynthesis" in window;
+}
+
 export function NarrationButton({ containerSelector, className }: Props) {
   const [status, setStatus] = useState<"idle" | "loading" | "playing" | "paused" | "error">(
     "idle",
@@ -65,6 +81,9 @@ export function NarrationButton({ containerSelector, className }: Props) {
   const activeRef = useRef(false);
   const failuresRef = useRef(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  // Quando a geração de áudio de IA não está disponível (sem créditos, rede,
+  // etc.), passamos a narrar com a voz do próprio aparelho — sempre grátis.
+  const localModeRef = useRef(false);
   // Cache de áudio já buscado nesta sessão (evita rebaixar o mesmo trecho ao repetir).
   const audioCacheRef = useRef<Map<string, string>>(new Map());
   const abortRef = useRef<AbortController | null>(null);
@@ -73,6 +92,7 @@ export function NarrationButton({ containerSelector, className }: Props) {
   // Palavra atualmente destacada — guardada por referência (não por índice)
   // pra poder limpar o destaque anterior mesmo trocando de sentença.
   const highlightedWordRef = useRef<HTMLSpanElement | null>(null);
+
 
   const restoreDOM = useCallback(() => {
     for (const u of unitsRef.current) {
