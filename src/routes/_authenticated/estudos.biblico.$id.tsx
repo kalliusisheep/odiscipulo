@@ -6,6 +6,7 @@ import { verseText } from "@/data/content";
 import { useApp } from "@/lib/app-context";
 import { useCelebration } from "@/lib/celebration";
 import { awardXpAndStreak } from "@/lib/progress";
+import { logActivityOnce } from "@/lib/activities";
 import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
 import { FontSizeControls } from "@/components/font-size-controls";
 import { ShareLessonButton } from "@/components/ShareLessonButton";
@@ -42,6 +43,19 @@ function EstudoBiblicoPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [step]);
+
+  useEffect(() => {
+    if (!study) return;
+    void (async () => {
+      const { data: u } = await supabase.auth.getUser();
+      if (!u.user) return;
+      void logActivityOnce(`study-started-${u.user.id}-${study.id}`, {
+        userId: u.user.id,
+        type: "bible_study_started",
+        title: `Iniciou o estudo bíblico "${study.title}"`,
+      });
+    })();
+  }, [study]);
 
   const shareContext = useMemo(() => {
     if (!study) return "";
@@ -293,7 +307,7 @@ function EstudoBiblicoPage() {
               value={reflection}
               onChange={(e) => setReflection(e.target.value)}
               rows={5}
-              placeholder="Escreva livremente… (sua resposta vai para o Mural → Meu Diário)"
+              placeholder="Escreva livremente… (sua resposta vai para o Feed → Meu Diário)"
               className="mt-3 w-full resize-none rounded-xl border border-border bg-input p-3 text-sm outline-none focus:border-primary"
             />
           </div>
