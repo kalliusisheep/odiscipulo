@@ -21,6 +21,17 @@ function hashText(text: string): string {
   return createHash("sha256").update(`${TTS_MODEL}:${TTS_VOICE}:${text}`).digest("hex");
 }
 
+/**
+ * Nome usado por uma versão anterior do sistema (antes de existir o prefixo
+ * modelo:voz no hash), que salvava o áudio já gerado como `.wav`. Esses
+ * arquivos já foram pagos (créditos já consumidos) e continuam no bucket —
+ * só não eram mais encontrados porque o hash novo é diferente. Verificamos
+ * esse nome antigo como uma segunda tentativa antes de gerar áudio de novo.
+ */
+function legacyFileName(text: string): string {
+  return `${createHash("sha256").update(text).digest("hex")}.wav`;
+}
+
 async function tryGetCached(fileName: string): Promise<ArrayBuffer | null> {
   try {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -30,6 +41,19 @@ async function tryGetCached(fileName: string): Promise<ArrayBuffer | null> {
     return buf.byteLength > 0 ? buf : null;
   } catch (e) {
     console.error("Narração: cache indisponível ao ler", e);
+    return null;
+  }
+}
+
+/** Busca no cache antigo (esquema pré-migração). Se achar, reaproveita o áudio já pago. */
+async function tryGetLegacyCached(text: string): Promise<ArrayBuffer | null> {
+  try {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data } = await supabaseAdmin.storage.from(BUCKET).download(legacyFileName(text));
+    if (!data) return null;
+    const buf = await data.arrayBuffer();
+    return buf.byteLength > 0 ? buf : null;
+  } catch (e) {
     return null;
   }
 }
@@ -71,7 +95,16 @@ export const Route = createFileRoute("/api/tts")({
           const cached = await tryGetCached(fileName);
           if (cached) return audioResponse(cached);
 
-          // 2. Sem cache: gera com a voz de IA da Lovable.
+          // 1.5. Cache antigo: reconecta com áudio já gerado (e já pago) por uma
+          // versão anterior do sistema, salvo sob o nome de arquivo antigo.
+          const legacy = await tryGetLegacyCached(text);
+          if (legacy) {
+            // Copia pro nome novo, então da próxima vez a busca acima (passo 1) já acha direto.
+            void trySaveCache(fileName, legacy);
+            return audioResponse(legacy);
+          }
+
+          // 2. Sem cache (novo nem antigo): gera com a voz de IA da Lovable.
           const apiKey = process.env.LOVABLE_API_KEY;
           if (!apiKey) return new Response("LOVABLE_API_KEY ausente", { status: 500 });
 
