@@ -32,14 +32,14 @@ import {
   ChevronRight,
   ShieldCheck,
   Sparkles,
-  ImageIcon,
 } from "lucide-react";
-
-const PRESET_AVATARS = Array.from({ length: 10 }, (_, i) => `/avatares/avatar-${i + 1}.png`);
 
 export const Route = createFileRoute("/_authenticated/perfil")({
   component: PerfilPage,
 });
+
+// Avatares prontos disponíveis em /public/avatares (avatar-1.png … avatar-10.png)
+const PRESET_AVATARS = Array.from({ length: 10 }, (_, i) => `/avatares/avatar-${i + 1}.png`);
 
 const BIBLE_VERSION_OPTIONS: { code: BibleVersion; name: string; description: string }[] = [
   { code: "NVI", name: "Nova Versão Internacional", description: "Tradução moderna e de leitura fluida" },
@@ -74,8 +74,8 @@ function PerfilPage() {
   const [usernameDraft, setUsernameDraft] = useState("");
   const [savingUsername, setSavingUsername] = useState(false);
   const [versionOpen, setVersionOpen] = useState(false);
+  const [avatarDialogOpen, setAvatarDialogOpen] = useState(false);
   const [churchDialogOpen, setChurchDialogOpen] = useState(false);
-  const [avatarPickerOpen, setAvatarPickerOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const { bibleVersion, setBibleVersion } = useApp();
   const nav = useNavigate();
@@ -122,17 +122,7 @@ function PerfilPage() {
     await nav({ to: "/" });
   };
 
-  const onPickFile = () => setAvatarPickerOpen(true);
-
-  const onChooseFromGallery = () => {
-    setAvatarPickerOpen(false);
-    fileRef.current?.click();
-  };
-
-  const onChoosePresetAvatar = async (url: string) => {
-    setAvatarPickerOpen(false);
-    await update({ avatar_url: url });
-  };
+  const onPickFile = () => fileRef.current?.click();
 
   const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -152,6 +142,11 @@ function PerfilPage() {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = "";
     }
+  };
+
+  const selectPresetAvatar = async (src: string) => {
+    await update({ avatar_url: src });
+    setAvatarDialogOpen(false);
   };
 
   const saveBio = async () => {
@@ -263,58 +258,15 @@ function PerfilPage() {
                 )}
               </div>
               <button
-                onClick={onPickFile}
+                onClick={() => setAvatarDialogOpen(true)}
                 disabled={uploading}
                 className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-2 ring-background transition-transform hover:scale-105 active:scale-95 disabled:opacity-60"
-                aria-label="Enviar foto"
+                aria-label="Trocar foto"
               >
                 {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
               </button>
               <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onFileChange} />
             </div>
-
-            <Dialog open={avatarPickerOpen} onOpenChange={setAvatarPickerOpen}>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Escolher foto de perfil</DialogTitle>
-                  <DialogDescription>Selecione um avatar ou envie uma foto sua.</DialogDescription>
-                </DialogHeader>
-
-                <button
-                  type="button"
-                  onClick={onChooseFromGallery}
-                  className="flex w-full items-center gap-3 rounded-2xl border border-border bg-surface p-3.5 text-left transition-colors hover:border-primary/40 hover:bg-primary/5"
-                >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <ImageIcon className="h-5 w-5" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-semibold">Enviar da galeria</span>
-                    <span className="block text-xs text-muted-foreground">Escolha uma foto do seu celular ou computador</span>
-                  </span>
-                </button>
-
-                <div className="grid grid-cols-5 gap-3 pt-1">
-                  {PRESET_AVATARS.map((url) => (
-                    <button
-                      key={url}
-                      type="button"
-                      onClick={() => void onChoosePresetAvatar(url)}
-                      className={`relative aspect-square overflow-hidden rounded-2xl ring-2 transition-transform hover:scale-105 active:scale-95 ${
-                        profile.avatar_url === url ? "ring-primary" : "ring-transparent"
-                      }`}
-                    >
-                      <img src={url} alt="Avatar" className="h-full w-full object-cover" />
-                      {profile.avatar_url === url && (
-                        <span className="absolute inset-0 flex items-center justify-center bg-black/30">
-                          <Check className="h-5 w-5 text-white" />
-                        </span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </DialogContent>
-            </Dialog>
 
             <h2 className="mt-3 text-lg font-bold text-white">{profile.display_name}</h2>
 
@@ -491,6 +443,18 @@ function PerfilPage() {
         }
       />
 
+      <AvatarPickerDialog
+        open={avatarDialogOpen}
+        onOpenChange={setAvatarDialogOpen}
+        currentAvatar={profile.avatar_url}
+        uploading={uploading}
+        onSelectPreset={(src) => void selectPresetAvatar(src)}
+        onUploadClick={() => {
+          setAvatarDialogOpen(false);
+          onPickFile();
+        }}
+      />
+
       <button
         onClick={() => void signOut()}
         className="flex w-full animate-slide-up items-center justify-center gap-2 rounded-2xl border border-border bg-surface py-3.5 text-sm font-medium text-muted-foreground transition-all hover:border-destructive/40 hover:bg-destructive/5 hover:text-destructive active:scale-[0.99]"
@@ -656,6 +620,65 @@ function BibleVersionSelector({
         </DialogContent>
       </Dialog>
     </>
+  );
+}
+
+function AvatarPickerDialog({
+  open,
+  onOpenChange,
+  currentAvatar,
+  uploading,
+  onSelectPreset,
+  onUploadClick,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  currentAvatar: string | null;
+  uploading: boolean;
+  onSelectPreset: (src: string) => void;
+  onUploadClick: () => void;
+}) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Escolher avatar</DialogTitle>
+          <DialogDescription>Selecione um avatar pronto ou envie sua própria foto.</DialogDescription>
+        </DialogHeader>
+        <div className="grid grid-cols-5 gap-2.5">
+          {PRESET_AVATARS.map((src) => {
+            const selected = currentAvatar === src;
+            return (
+              <button
+                key={src}
+                type="button"
+                onClick={() => onSelectPreset(src)}
+                className={`relative aspect-square overflow-hidden rounded-2xl bg-surface-2 ring-2 transition-transform hover:scale-105 active:scale-95 ${
+                  selected ? "ring-primary" : "ring-transparent"
+                }`}
+                aria-label="Selecionar avatar"
+              >
+                <img src={src} alt="Avatar" className="h-full w-full object-cover" loading="lazy" />
+                {selected && (
+                  <span className="absolute inset-0 flex items-center justify-center bg-black/30">
+                    <Check className="h-6 w-6 text-white" />
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+        <button
+          type="button"
+          onClick={onUploadClick}
+          disabled={uploading}
+          className="mt-1 flex w-full items-center justify-center gap-2 rounded-2xl border border-border py-2.5 text-sm font-medium transition-colors hover:border-primary/50 hover:text-primary disabled:opacity-60"
+        >
+          {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
+          Enviar do dispositivo
+        </button>
+      </DialogContent>
+    </Dialog>
   );
 }
 
