@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getLevel, MAX_LEVEL, xpForLevel } from "@/data/levels";
 import { CHARACTERS } from "@/data/content";
 import { toast } from "sonner";
-import { ArrowLeft, MessageCircle, Flame, Trophy, BookOpen, Clock, UserPlus, Check, Copy, Sparkles } from "lucide-react";
+import { ArrowLeft, MessageCircle, Flame, Trophy, BookOpen, Clock, UserPlus, Check, Copy, Sparkles, Church } from "lucide-react";
 import { ChallengeButton } from "@/components/ChallengeButton";
 
 export const Route = createFileRoute("/_authenticated/perfil_/$username")({
@@ -26,6 +26,7 @@ type Profile = {
   bio: string | null;
   xp: number;
   streak: number;
+  church_name: string | null;
 };
 
 function PublicProfilePage() {
@@ -45,7 +46,7 @@ function PublicProfilePage() {
       setMyId(u.user?.id ?? null);
       const { data: p } = await supabase
         .from("profiles")
-        .select("id, display_name, username, avatar_char, avatar_url, bio, xp, streak")
+        .select("id, display_name, username, avatar_char, avatar_url, bio, xp, streak, church_name")
         .ilike("username", username)
         .maybeSingle();
       if (!p) {
@@ -151,8 +152,15 @@ function PublicProfilePage() {
           </div>
 
           <h1 className="mt-6 text-2xl font-bold leading-tight">{profile.display_name}</h1>
-          <div className="mt-1.5 inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur">
-            <Sparkles className="h-3 w-3" /> {level.title}
+          <div className="mt-1.5 flex flex-wrap items-center justify-center gap-1.5">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur">
+              <Sparkles className="h-3 w-3" /> {level.title}
+            </span>
+            {profile.church_name && (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur">
+                <Church className="h-3 w-3" /> {profile.church_name}
+              </span>
+            )}
           </div>
 
           {/* Barra de XP */}
