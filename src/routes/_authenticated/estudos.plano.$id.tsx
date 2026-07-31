@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/lib/app-context";
 import { useCelebration } from "@/lib/celebration";
 import { awardXpAndStreak } from "@/lib/progress";
+import { logActivityOnce } from "@/lib/activities";
 import { fetchPassage, bibleLabelFor, stripVerseNumbers } from "@/lib/bible";
 import { NarrationButton } from "@/components/NarrationButton";
 import type { BibleVersion } from "@/data/content";
@@ -73,6 +74,16 @@ function PlanoPage() {
       setPlan((p as Plan) ?? null);
       setDays((d as PlanDay[]) ?? []);
       setLoading(false);
+      if (p) {
+        const { data: u } = await supabase.auth.getUser();
+        if (u.user && !cancelled) {
+          void logActivityOnce(`plan-started-${u.user.id}-${id}`, {
+            userId: u.user.id,
+            type: "reading_plan_started",
+            title: `Iniciou o plano de leitura "${(p as Plan).title}"`,
+          });
+        }
+      }
     })();
     return () => {
       cancelled = true;
