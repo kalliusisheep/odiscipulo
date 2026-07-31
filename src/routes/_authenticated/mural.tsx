@@ -57,7 +57,7 @@ function MuralPage() {
         <img
           src="/mural-banner.png"
           alt="Ovelha em capa azul lendo reações no celular, sobre uma muralha"
-          className="h-auto w-full object-cover"
+          className="aspect-[21/9] w-full object-cover object-top"
         />
       </div>
 
