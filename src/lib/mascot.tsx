@@ -351,7 +351,7 @@ export function MascotProvider({ children }: { children: ReactNode }) {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user) return;
       channel = supabase
-        .channel(`mascot-messages-${u.user.id}`)
+        .channel(`mascot-messages-${u.user.id}-${Math.random().toString(36).slice(2)}`)
         .on(
           "postgres_changes",
           { event: "INSERT", schema: "public", table: "messages", filter: `recipient_id=eq.${u.user.id}` },
@@ -386,7 +386,7 @@ export function MascotProvider({ children }: { children: ReactNode }) {
       if (!u.user) return;
       const myId = u.user.id;
       channel = supabase
-        .channel(`mascot-mural-amens-${myId}`)
+        .channel(`mascot-mural-amens-${myId}-${Math.random().toString(36).slice(2)}`)
         .on("postgres_changes", { event: "INSERT", schema: "public", table: "mural_amens" }, (payload) => {
           const { post_id, user_id: amenUserId } = payload.new as { post_id: string; user_id: string };
           if (amenUserId === myId) return; // não reage ao próprio toque

@@ -23,7 +23,7 @@ export function MessagesLinkButton() {
       };
       await compute();
       channel = supabase
-        .channel(`msg-badge-${myId}`)
+        .channel(`msg-badge-${myId}-${Math.random().toString(36).slice(2)}`)
         .on(
           "postgres_changes",
           { event: "*", schema: "public", table: "messages", filter: `recipient_id=eq.${myId}` },

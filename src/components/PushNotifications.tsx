@@ -32,7 +32,7 @@ export function PushNotifications() {
       const { data } = await supabase.auth.getUser();
       if (!data.user) return;
       channel = supabase
-        .channel(`app-notifications-${data.user.id}`)
+        .channel(`app-notifications-${data.user.id}-${Math.random().toString(36).slice(2)}`)
         .on(
           "postgres_changes",
           { event: "INSERT", schema: "public", table: "app_notifications", filter: `user_id=eq.${data.user.id}` },
