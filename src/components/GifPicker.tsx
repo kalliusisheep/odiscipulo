@@ -1,74 +1,148 @@
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+import { useEffect, useRef, useState } from "react";
+import { ImagePlus, Loader2, Search, X } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-const GIPHY_API_KEY = Deno.env.get("GIPHY_API_KEY");
-
-type GiphyResult = {
+type Gif = {
   id: string;
-  title?: string;
-  images?: {
-    fixed_width_small?: { url: string };
-    fixed_height?: { url: string };
-    original?: { url: string };
-  };
+  previewUrl: string;
+  url: string;
+  description: string;
 };
 
-type RequestBody = { q?: string };
+type GifSearchResponse = {
+  gifs?: Gif[];
+  error?: string;
+};
 
-// Proxy simples para a Giphy API — mantém a chave no servidor e devolve só
-// os campos que a UI (GifPicker) precisa. Usado no comentário do feed.
-// (Migrado da Tenor API, que a Google encerrou em 30/06/2026.)
-Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+/**
+ * Botão de GIF que abre um painel de busca (via Edge Function "gif-search",
+ * que consulta a Giphy) e devolve o GIF escolhido pelo `onSelect`.
+ * Usado no campo de comentário do feed.
+ */
+export function GifPicker({ onSelect, className }: { onSelect: (gifUrl: string) => void; className?: string }) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [gifs, setGifs] = useState<Gif[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [errored, setErrored] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  try {
-    if (!GIPHY_API_KEY) {
-      console.error("gif-search: GIPHY_API_KEY não configurada nos secrets do projeto.");
-      return Response.json(
-        { error: "Busca de GIFs não configurada." },
-        { status: 500, headers: corsHeaders },
-      );
+  const search = async (term: string) => {
+    setLoading(true);
+    setErrored(false);
+    try {
+      const { data, error } = await supabase.functions.invoke<GifSearchResponse>("gif-search", {
+        body: { q: term },
+      });
+      if (error || !data || data.error) throw error ?? new Error(data?.error ?? "Falha ao buscar GIFs");
+      setGifs(data.gifs ?? []);
+    } catch (e) {
+      console.error("GifPicker: falha ao buscar GIFs:", e);
+      setErrored(true);
+      setGifs([]);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    const { q }: RequestBody = req.method === "POST" ? await req.json() : {};
-    const term = (q ?? "").trim();
+  useEffect(() => {
+    if (!open) return;
+    void search("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
-    const params = new URLSearchParams({
-      api_key: GIPHY_API_KEY,
-      limit: "24",
-      rating: "pg-13",
-      lang: "pt",
-    });
-    if (term) params.set("q", term);
+  useEffect(() => {
+    if (!open) return;
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => void search(query), 400);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, open]);
 
-    const endpoint = term
-      ? `https://api.giphy.com/v1/gifs/search?${params.toString()}`
-      : `https://api.giphy.com/v1/gifs/trending?${params.toString()}`;
+  useEffect(() => {
+    if (!open) return;
+    const onClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, [open]);
 
-    const resp = await fetch(endpoint);
-    if (!resp.ok) {
-      console.error("gif-search: Giphy respondeu com erro:", resp.status, await resp.text());
-      return Response.json({ error: "Falha ao buscar GIFs." }, { status: 502, headers: corsHeaders });
-    }
+  return (
+    <div ref={containerRef} className={`relative ${className ?? ""}`}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-label="Adicionar GIF"
+        title="Adicionar GIF"
+        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors ${
+          open
+            ? "border-primary bg-primary/15 text-primary"
+            : "border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-primary"
+        }`}
+      >
+        <ImagePlus className="h-4 w-4" />
+      </button>
 
-    const data = (await resp.json()) as { data?: GiphyResult[] };
-    const gifs = (data.data ?? [])
-      .map((r) => ({
-        id: r.id,
-        previewUrl: r.images?.fixed_width_small?.url ?? r.images?.fixed_height?.url ?? "",
-        url: r.images?.fixed_height?.url ?? r.images?.original?.url ?? "",
-        description: r.title ?? "GIF",
-      }))
-      .filter((g) => g.url);
+      {open && (
+        <div className="absolute bottom-10 left-0 z-20 w-72 rounded-2xl border border-border bg-popover p-2.5 shadow-xl animate-slide-up">
+          <div className="flex items-center gap-2 rounded-full border border-border bg-input px-3 py-1.5">
+            <Search className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+            <input
+              autoFocus
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Buscar GIF na web…"
+              className="w-full bg-transparent text-xs outline-none placeholder:text-muted-foreground"
+            />
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label="Fechar busca de GIF"
+              className="shrink-0 text-muted-foreground hover:text-foreground"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </div>
 
-    return Response.json({ gifs }, { headers: corsHeaders });
-  } catch (error) {
-    console.error("gif-search: erro inesperado:", error);
-    return Response.json(
-      { error: error instanceof Error ? error.message : "Erro desconhecido." },
-      { status: 500, headers: corsHeaders },
-    );
-  }
-});
+          <div className="mt-2 grid max-h-64 grid-cols-3 gap-1.5 overflow-y-auto">
+            {loading && (
+              <div className="col-span-3 flex items-center justify-center py-8 text-muted-foreground">
+                <Loader2 className="h-5 w-5 animate-spin" />
+              </div>
+            )}
+            {!loading && errored && (
+              <p className="col-span-3 py-6 text-center text-[11px] text-muted-foreground">
+                Não foi possível buscar GIFs agora.
+              </p>
+            )}
+            {!loading && !errored && gifs.length === 0 && (
+              <p className="col-span-3 py-6 text-center text-[11px] text-muted-foreground">Nenhum GIF encontrado.</p>
+            )}
+            {!loading &&
+              gifs.map((g) => (
+                <button
+                  key={g.id}
+                  type="button"
+                  onClick={() => {
+                    onSelect(g.url);
+                    setOpen(false);
+                    setQuery("");
+                  }}
+                  className="aspect-square overflow-hidden rounded-lg bg-surface-2 transition-transform hover:scale-[1.04]"
+                  title={g.description}
+                >
+                  <img src={g.previewUrl} alt={g.description} className="h-full w-full object-cover" loading="lazy" />
+                </button>
+              ))}
+          </div>
+          {/* Exigido pelos termos de uso da Giphy: atribuição visível onde a busca aparece. */}
+          <p className="mt-1.5 text-center text-[9px] text-muted-foreground">Powered by GIPHY</p>
+        </div>
+      )}
+    </div>
+  );
+}
