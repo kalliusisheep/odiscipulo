@@ -66,12 +66,18 @@ const santificacao: Trail = {
                 textByVersion: {
                   NVI: "Assim foram alguns de vocês. Mas vocês foram lavados, foram santificados, foram justificados em nome do Senhor Jesus Cristo e pelo Espírito do nosso Deus.",
                 },
+                originals: [
+                  { word: "ἀπελούσασθε", translit: "apelousasthe", meaning: "'fostes lavados' — aoristo médio, ação decisiva e completa; a limpeza espiritual já aconteceu, não é processo a repetir", lang: "grego" },
+                ],
               },
               {
                 ref: "Tito 2:11-12",
                 textByVersion: {
                   NVI: "Porque a graça de Deus se manifestou salvadora a todos os homens, ensinando-nos a renunciar à impiedade e às paixões mundanas e a viver de forma sensata, justa e piedosa nesta era presente.",
                 },
+                originals: [
+                  { word: "ἐπεφάνη", translit: "epephanē", meaning: "'manifestou-se, apareceu' — mesma raiz de 'epifania'; a graça de Deus irrompeu visivelmente na história em Cristo", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -181,12 +187,18 @@ const santificacao: Trail = {
                 textByVersion: {
                   NVI: "Assim, encontro esta lei que atua em mim: quando quero fazer o bem, o mal está junto a mim. Pois, no íntimo, tenho prazer na lei de Deus; mas vejo outra lei atuando nos meus membros, guerreando contra a lei da minha mente.",
                 },
+                originals: [
+                  { word: "ἀντιστρατευόμενον", translit: "antistrateuomenon", meaning: "'guerreando contra, fazendo guerra' — termo militar; Paulo descreve um conflito interno real, não uma simples hesitação", lang: "grego" },
+                ],
               },
               {
                 ref: "Colossenses 3:9-10",
                 textByVersion: {
                   NVI: "Não mintam uns aos outros, visto que vocês já se despiram do velho homem com as suas práticas e se revestiram do novo, que está sendo renovado em conhecimento, à imagem do seu Criador.",
                 },
+                originals: [
+                  { word: "ἀπεκδυσάμενοι", translit: "apekdysamenoi", meaning: "'despiram-se completamente' — imagem de tirar uma roupa velha e suja, deixando-a para trás de vez", lang: "grego" },
+                ],
               },
             ],
             exegeticalNotes:
@@ -265,6 +277,9 @@ const santificacao: Trail = {
                 NVI: "Permaneçam em mim, e eu permanecerei em vocês. Nenhum ramo pode dar fruto por si mesmo, se não permanecer na videira. Vocês também não podem dar fruto, a não ser que permaneçam em mim. Eu sou a videira; vocês são os ramos. Se alguém permanecer em mim e eu nele, esse dará muito fruto; pois sem mim vocês não podem fazer coisa alguma.",
                 NAA: "Permanecei em mim, e eu, em vós. Como o ramo, por si mesmo, não pode dar fruto, se não permanecer na videira, assim também vós, se não permanecerdes em mim. Eu sou a videira; vós, os ramos. Quem permanece em mim, e eu, nele, esse dá muito fruto; porque sem mim nada podeis fazer.",
               },
+              originals: [
+                { word: "μένετε", translit: "menete", meaning: "'permanecei' — imperativo presente, repetido dez vezes nesta passagem; união contínua e ativa com Cristo, não um evento único", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -285,12 +300,18 @@ const santificacao: Trail = {
                 textByVersion: {
                   NVI: "Assim, toda árvore boa dá frutos bons, mas a árvore má dá frutos maus. Uma árvore boa não pode dar frutos maus, e uma árvore má não pode dar frutos bons.",
                 },
+                originals: [
+                  { word: "σαπρόν", translit: "sapron", meaning: "'podre, corrompido' — a árvore má não pode produzir outra coisa senão fruto estragado; o fruto denuncia a raiz", lang: "grego" },
+                ],
               },
               {
                 ref: "Efésios 5:9",
                 textByVersion: {
                   NVI: "Pois o fruto da luz consiste em toda a bondade, justiça e verdade.",
                 },
+                originals: [
+                  { word: "φωτός", translit: "phōtos", meaning: "'da luz' — genitivo de phōs; o fruto do Espírito é chamado aqui de fruto da luz, associando santidade à revelação e clareza", lang: "grego" },
+                ],
               },
             ],
             exegeticalNotes:
@@ -363,6 +384,9 @@ const santificacao: Trail = {
                 NVI: "Nele tem prazer, e nele medita de dia e de noite. É como árvore plantada à beira de águas correntes, que dá fruto no tempo certo e cuja folhagem nunca murcha. Tudo o que ele faz prospera!",
                 NAA: "Antes, tem prazer na lei do Senhor e nela medita de dia e de noite. Ele é como a árvore plantada junto a corredouros de águas, a qual dá o seu fruto na estação própria; as suas folhas não caem, e tudo quanto ele faz será bem-sucedido.",
               },
+              originals: [
+                { word: "שָׁתוּל", translit: "shatul", meaning: "'plantada, transplantada' — particípio que indica uma árvore firmemente estabelecida por outra mão, não crescida por acaso", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -383,12 +407,18 @@ const santificacao: Trail = {
                 textByVersion: {
                   NVI: "Quando vocês jejuarem, não fiquem carrancudos como os hipócritas... o seu Pai, que vê o que é feito em secreto, os recompensará.",
                 },
+                originals: [
+                  { word: "ἀφανίζουσιν", translit: "aphanizousin", meaning: "'desfiguram, tornam irreconhecíveis' — os hipócritas distorcem o próprio rosto para que os outros percebam seu jejum", lang: "grego" },
+                ],
               },
               {
                 ref: "Atos 2:42",
                 textByVersion: {
                   NVI: "Todos eles se dedicavam ao ensino dos apóstolos e à comunhão, ao partir do pão e às orações.",
                 },
+                originals: [
+                  { word: "κοινωνίᾳ", translit: "koinōnia", meaning: "'comunhão, participação em comum' — não é apenas convivência social, mas partilha real de vida, bens e propósito", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -491,12 +521,18 @@ const santificacao: Trail = {
                 textByVersion: {
                   NVI: "Portanto, não deixem que o pecado continue dominando o seu corpo mortal, fazendo com que vocês obedeçam aos seus desejos... antes ofereçam-se a Deus, como quem voltou da morte para a vida.",
                 },
+                originals: [
+                  { word: "ὅπλα", translit: "hopla", meaning: "'armas, instrumentos' — Paulo usa vocabulário militar: o corpo pode ser instrumento de injustiça ou arma de justiça nas mãos de Deus", lang: "grego" },
+                ],
               },
               {
                 ref: "Gálatas 2:20",
                 textByVersion: {
                   NVI: "Fui crucificado com Cristo, e já não sou eu quem vive, mas Cristo vive em mim; e a vida que agora vivo no corpo, vivo-a pela fé no Filho de Deus, que me amou e se entregou por mim.",
                 },
+                originals: [
+                  { word: "συνεσταύρωμαι", translit: "synestaurōmai", meaning: "'fui crucificado juntamente' — perfeito passivo, indicando um evento passado com efeito permanente: a identidade antiga está morta para sempre", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -568,6 +604,9 @@ const santificacao: Trail = {
                 NVI: "Quanto à antiga maneira de viver, removam o velho homem, que se corrompe por desejos enganosos; sejam renovados no modo de pensar e revistam-se do novo homem, criado para ser semelhante a Deus em justiça e em santidade provenientes da verdade.",
                 NAA: "Quanto ao procedimento anterior, vos despojeis do velho homem, que se corrompe pelas paixões enganosas, sejais renovados no espírito da vossa mente e vos revistais do novo homem, criado segundo Deus, em verdadeira justiça e santidade.",
               },
+              originals: [
+                { word: "ἀποθέσθαι", translit: "apothesthai", meaning: "'despojar-se, remover' — mesma imagem de tirar uma roupa velha, usada para o 'velho homem' que deve ser deixado de vez", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -588,12 +627,18 @@ const santificacao: Trail = {
                 textByVersion: {
                   NVI: "Destruímos todo argumento e toda pretensão que se levanta contra o conhecimento de Deus, e levamos cativo todo pensamento, para torná-lo obediente a Cristo.",
                 },
+                originals: [
+                  { word: "αἰχμαλωτίζοντες", translit: "aichmalōtizontes", meaning: "'levando cativo' — termo militar para capturar prisioneiros de guerra; todo pensamento deve ser rendido a Cristo", lang: "grego" },
+                ],
               },
               {
                 ref: "Colossenses 3:1-2",
                 textByVersion: {
                   NVI: "Assim, se vocês ressuscitaram com Cristo, procurem as coisas do alto, onde Cristo está assentado à direita de Deus. Pensem nas coisas do alto, não nas coisas terrenas.",
                 },
+                originals: [
+                  { word: "φρονεῖτε", translit: "phroneite", meaning: "'pensai, tende em mente' — não é um pensamento passageiro, mas uma orientação mental fixa e deliberada voltada para as coisas do alto", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -673,6 +718,9 @@ const santificacao: Trail = {
                 NAA: "O ferro com o ferro se afia; assim, o homem afia o rosto do seu amigo.",
                 ACF: "Como o ferro com o ferro se aguça, assim o homem afia o rosto do seu amigo.",
               },
+              originals: [
+                { word: "יָחַד", translit: "yachad", meaning: "'afia, aguça' — do verbo com o mesmo som de 'juntos'; o atrito entre duas pessoas, como entre dois ferros, produz aperfeiçoamento mútuo", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -693,12 +741,18 @@ const santificacao: Trail = {
                 textByVersion: {
                   NVI: "Irmãos, se alguém for surpreendido em algum pecado, vocês, que são espirituais, deverão restaurá-lo com mansidão... Levem os fardos uns dos outros e assim cumpram a lei de Cristo.",
                 },
+                originals: [
+                  { word: "καταρτίζετε", translit: "katartizete", meaning: "'restaurai, ajustai' — termo usado para consertar redes de pesca ou reduzir um osso deslocado; restauração cuidadosa, não punição", lang: "grego" },
+                ],
               },
               {
                 ref: "Atos 2:44-46",
                 textByVersion: {
                   NVI: "Todos os que criam estavam juntos e tinham tudo em comum... Todos os dias reuniam-se nos átrios do templo. Partiam o pão em casa e juntos participavam das refeições, com alegria e sinceridade de coração.",
                 },
+                originals: [
+                  { word: "κοινά", translit: "koina", meaning: "'comuns' — a mesma raiz de koinōnia; os primeiros cristãos tratavam seus bens como pertencentes à comunidade, não apenas a si mesmos", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -791,12 +845,18 @@ const santificacao: Trail = {
                 textByVersion: {
                   NVI: "As minhas ovelhas ouvem a minha voz; eu as conheço, e elas me seguem. Eu lhes dou a vida eterna, e elas jamais perecerão; ninguém as arrebatará da minha mão.",
                 },
+                originals: [
+                  { word: "ἁρπάσει", translit: "harpasei", meaning: "'arrebatará' — verbo de arrancar à força (raiz de 'harpagē'); ninguém pode arrancar as ovelhas da mão de Cristo", lang: "grego" },
+                ],
               },
               {
                 ref: "1 João 2:19",
                 textByVersion: {
                   NVI: "Eles saíram do nosso meio, mas na realidade não eram dos nossos, pois, se fossem dos nossos, teriam permanecido conosco; a saída deles mostrou que nenhum deles era dos nossos.",
                 },
+                originals: [
+                  { word: "μεμενήκεισαν", translit: "memenēkeisan", meaning: "'teriam permanecido' — mais-que-perfeito de menō (permanecer); verbo-chave joanino que marca a fé genuína e duradoura", lang: "grego" },
+                ],
               },
             ],
             theologicalDebate:
@@ -909,12 +969,18 @@ const santificacao: Trail = {
                 textByVersion: {
                   NVI: "E eu pedirei ao Pai, e ele lhes dará outro Conselheiro para estar com vocês para sempre: o Espírito da verdade... vocês o conhecem, porque ele vive com vocês e estará em vocês.",
                 },
+                originals: [
+                  { word: "παράκλητον", translit: "paraklēton", meaning: "'Conselheiro, Advogado, aquele chamado ao lado' — termo jurídico para quem intercede e defende; o Espírito Santo como presença constante", lang: "grego" },
+                ],
               },
               {
                 ref: "Gálatas 5:25",
                 textByVersion: {
                   NVI: "Se vivemos pelo Espírito, andemos também pelo Espírito.",
                 },
+                originals: [
+                  { word: "στοιχῶμεν", translit: "stoichōmen", meaning: "'andemos, mantenhamo-nos em fila' — termo militar de marchar em formação alinhada; viver pelo Espírito é seguir um passo comum", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -1008,12 +1074,18 @@ const santificacao: Trail = {
                 textByVersion: {
                   NVI: "Meus irmãos, considerem motivo de grande alegria o fato de passarem por diversas provações, pois vocês sabem que a prova da sua fé produz perseverança. E a perseverança deve levar a obra a termo, para que vocês sejam maduros e íntegros, sem que falte a vocês coisa alguma.",
                 },
+                originals: [
+                  { word: "ὑπομονήν", translit: "hypomonēn", meaning: "'perseverança' — literalmente 'permanecer debaixo de'; não é resignação passiva, mas resistência ativa sob o peso da provação", lang: "grego" },
+                ],
               },
               {
                 ref: "1 Pedro 1:6-7",
                 textByVersion: {
                   NVI: "Nisso vocês exultam, mesmo tendo sido, por um breve tempo, entristecidos por várias provações, a fim de que a prova de sua fé, mais preciosa que o ouro, que perece, mas é aprovado pelo fogo, seja motivo de louvor, glória e honra quando Jesus Cristo for revelado.",
                 },
+                originals: [
+                  { word: "δοκίμιον", translit: "dokimion", meaning: "'prova, teste de autenticidade' — termo da metalurgia para o processo que comprova a pureza de um metal precioso pelo fogo", lang: "grego" },
+                ],
               },
             ],
             theologicalDebate:
