@@ -107,6 +107,7 @@ export function NarrationButton({ containerSelector, className }: Props) {
     activeRef.current = false;
     abortRef.current?.abort();
     abortRef.current = null;
+    if (localSpeechSupported()) window.speechSynthesis.cancel();
     const audio = audioRef.current;
     if (audio) {
       audio.onloadedmetadata = null;
@@ -123,6 +124,7 @@ export function NarrationButton({ containerSelector, className }: Props) {
     wordTimesRef.current = [];
     restoreDOM();
   }, [restoreDOM]);
+
 
   useEffect(() => {
     audioRef.current = new Audio();
