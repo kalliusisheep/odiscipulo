@@ -56,6 +56,22 @@ const MAX_CONSECUTIVE_FAILURES = 2;
 /** Quanto tempo (ms) o ícone de erro fica visível antes de voltar ao estado normal. */
 const ERROR_DISPLAY_MS = 2500;
 
+/** Voz local (do próprio aparelho) em português — usada como rede de segurança. */
+function pickPortugueseVoice(): SpeechSynthesisVoice | null {
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) return null;
+  const voices = window.speechSynthesis.getVoices();
+  if (voices.length === 0) return null;
+  return (
+    voices.find((v) => v.lang?.toLowerCase().startsWith("pt-br")) ??
+    voices.find((v) => v.lang?.toLowerCase().startsWith("pt")) ??
+    null
+  );
+}
+
+function localSpeechSupported(): boolean {
+  return typeof window !== "undefined" && "speechSynthesis" in window;
+}
+
 export function NarrationButton({ containerSelector, className }: Props) {
   const [status, setStatus] = useState<"idle" | "loading" | "playing" | "paused" | "error">(
     "idle",
@@ -65,6 +81,9 @@ export function NarrationButton({ containerSelector, className }: Props) {
   const activeRef = useRef(false);
   const failuresRef = useRef(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  // Quando a geração de áudio de IA não está disponível (sem créditos, rede,
+  // etc.), passamos a narrar com a voz do próprio aparelho — sempre grátis.
+  const localModeRef = useRef(false);
   // Cache de áudio já buscado nesta sessão (evita rebaixar o mesmo trecho ao repetir).
   const audioCacheRef = useRef<Map<string, string>>(new Map());
   const abortRef = useRef<AbortController | null>(null);
@@ -73,6 +92,7 @@ export function NarrationButton({ containerSelector, className }: Props) {
   // Palavra atualmente destacada — guardada por referência (não por índice)
   // pra poder limpar o destaque anterior mesmo trocando de sentença.
   const highlightedWordRef = useRef<HTMLSpanElement | null>(null);
+
 
   const restoreDOM = useCallback(() => {
     for (const u of unitsRef.current) {
@@ -87,6 +107,7 @@ export function NarrationButton({ containerSelector, className }: Props) {
     activeRef.current = false;
     abortRef.current?.abort();
     abortRef.current = null;
+    if (localSpeechSupported()) window.speechSynthesis.cancel();
     const audio = audioRef.current;
     if (audio) {
       audio.onloadedmetadata = null;
@@ -104,10 +125,15 @@ export function NarrationButton({ containerSelector, className }: Props) {
     restoreDOM();
   }, [restoreDOM]);
 
+
   useEffect(() => {
     audioRef.current = new Audio();
+    // Alguns navegadores só carregam a lista de vozes de forma assíncrona —
+    // pedimos cedo para que a voz pt-BR já esteja pronta se precisarmos dela.
+    if (localSpeechSupported()) window.speechSynthesis.getVoices();
     return () => cleanup();
   }, [cleanup]);
+
 
   // Destaca a palavra `wordIdx` da sentença em `idx` (índice na fila).
   const highlightWordAt = useCallback((idx: number, wordIdx: number) => {
@@ -147,9 +173,79 @@ export function NarrationButton({ containerSelector, className }: Props) {
     return url;
   }, []);
 
+  // Referência para permitir recursão entre os dois modos de narração.
+  const playFromRef = useRef<(idx: number) => void>(() => {});
+
+  /** Narra com a voz do próprio aparelho (grátis e ilimitada). */
+  const playLocalFrom = useCallback(
+    (idx: number) => {
+      if (!activeRef.current) return;
+      if (!localSpeechSupported()) {
+        showErrorAndStop();
+        return;
+      }
+      if (idx >= queueRef.current.length) {
+        setStatus("idle");
+        cleanup();
+        return;
+      }
+      const item = queueRef.current[idx];
+      const synth = window.speechSynthesis;
+      synth.cancel();
+
+      const utter = new SpeechSynthesisUtterance(item.spokenText);
+      utter.lang = "pt-BR";
+      const voice = pickPortugueseVoice();
+      if (voice) utter.voice = voice;
+      utter.rate = 0.95;
+      utter.pitch = 1;
+
+      utter.onboundary = (event) => {
+        if (!activeRef.current) return;
+        const charIndex = event.charIndex ?? 0;
+        let wordIdxInSpoken = 0;
+        for (let i = 0; i < item.wordStarts.length; i++) {
+          if (charIndex >= item.wordStarts[i]) wordIdxInSpoken = i;
+          else break;
+        }
+        highlightWordAt(idx, wordIdxInSpoken + item.removedCorrection);
+      };
+      utter.onend = () => {
+        if (!activeRef.current) return;
+        playLocalFrom(idx + 1);
+      };
+      utter.onerror = () => {
+        if (!activeRef.current) return;
+        playLocalFrom(idx + 1);
+      };
+
+      setStatus("playing");
+      highlightWordAt(idx, item.removedCorrection);
+      synth.speak(utter);
+    },
+    [cleanup, highlightWordAt, showErrorAndStop],
+  );
+
+  /** Passa a usar a voz do aparelho quando a voz de IA não estiver disponível. */
+  const switchToLocal = useCallback(
+    (idx: number) => {
+      if (!localSpeechSupported()) {
+        showErrorAndStop();
+        return;
+      }
+      localModeRef.current = true;
+      playLocalFrom(idx);
+    },
+    [playLocalFrom, showErrorAndStop],
+  );
+
   const playFrom = useCallback(
     (idx: number) => {
       if (!activeRef.current) return;
+      if (localModeRef.current) {
+        playLocalFrom(idx);
+        return;
+      }
       if (idx >= queueRef.current.length) {
         setStatus("idle");
         cleanup();
@@ -157,7 +253,7 @@ export function NarrationButton({ containerSelector, className }: Props) {
       }
       const audio = audioRef.current;
       if (!audio) {
-        showErrorAndStop();
+        switchToLocal(idx);
         return;
       }
 
@@ -199,7 +295,7 @@ export function NarrationButton({ containerSelector, className }: Props) {
 
           audio.onended = () => {
             if (!activeRef.current) return;
-            playFrom(idx + 1);
+            playFromRef.current(idx + 1);
           };
 
           audio.onerror = () => {
@@ -207,10 +303,10 @@ export function NarrationButton({ containerSelector, className }: Props) {
             console.error("Narração: erro ao tocar áudio");
             failuresRef.current += 1;
             if (failuresRef.current >= MAX_CONSECUTIVE_FAILURES) {
-              showErrorAndStop();
+              switchToLocal(idx);
               return;
             }
-            playFrom(idx + 1);
+            playFromRef.current(idx + 1);
           };
 
           failuresRef.current = 0;
@@ -219,23 +315,25 @@ export function NarrationButton({ containerSelector, className }: Props) {
           void audio.play().catch(() => {
             if (!activeRef.current) return;
             failuresRef.current += 1;
-            if (failuresRef.current >= MAX_CONSECUTIVE_FAILURES) showErrorAndStop();
-            else playFrom(idx + 1);
+            if (failuresRef.current >= MAX_CONSECUTIVE_FAILURES) switchToLocal(idx);
+            else playFromRef.current(idx + 1);
           });
         })
         .catch((err) => {
           if (!activeRef.current || (err as Error)?.name === "AbortError") return;
-          console.error("Narração: erro ao buscar áudio", err);
-          failuresRef.current += 1;
-          if (failuresRef.current >= MAX_CONSECUTIVE_FAILURES) {
-            showErrorAndStop();
-            return;
-          }
-          playFrom(idx + 1);
+          console.error("Narração: voz de IA indisponível, usando a voz do aparelho", err);
+          // Sem áudio de IA (sem créditos, rede instável, etc.): a narração
+          // continua com a voz nativa do aparelho, sem interromper a leitura.
+          switchToLocal(idx);
         });
     },
-    [cleanup, fetchAudioUrl, highlightWordAt, showErrorAndStop],
+    [cleanup, fetchAudioUrl, highlightWordAt, playLocalFrom, switchToLocal],
   );
+
+  useEffect(() => {
+    playFromRef.current = playFrom;
+  }, [playFrom]);
+
 
   const buildQueue = useCallback((): boolean => {
     const container = containerSelector
@@ -310,25 +408,25 @@ export function NarrationButton({ containerSelector, className }: Props) {
 
   const handleClick = useCallback(() => {
     const audio = audioRef.current;
-    if (!audio) {
-      showErrorAndStop();
-      return;
-    }
 
     if (status === "playing") {
-      audio.pause();
+      if (localModeRef.current) window.speechSynthesis.pause();
+      else audio?.pause();
       setStatus("paused");
       return;
     }
     if (status === "paused") {
-      void audio.play();
+      if (localModeRef.current) window.speechSynthesis.resume();
+      else void audio?.play();
       setStatus("playing");
       return;
     }
     if (status === "error" || status === "loading") return;
 
     // idle → start
+    localModeRef.current = false;
     activeRef.current = true;
+
     failuresRef.current = 0;
     const ok = buildQueue();
     if (!ok) {
@@ -336,7 +434,7 @@ export function NarrationButton({ containerSelector, className }: Props) {
       return;
     }
     playFrom(0);
-  }, [buildQueue, playFrom, status, showErrorAndStop]);
+  }, [buildQueue, playFrom, status]);
 
   const isBusy = status === "loading";
   const label =
