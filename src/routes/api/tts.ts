@@ -100,7 +100,12 @@ export const Route = createFileRoute("/api/tts")({
           const legacy = await tryGetLegacyCached(text);
           if (legacy) {
             // Copia pro nome novo, então da próxima vez a busca acima (passo 1) já acha direto.
-            void trySaveCache(fileName, legacy);
+            // IMPORTANTE: isso roda no Cloudflare Workers — se não esperarmos (await) o
+            // salvamento terminar antes de responder, o Worker pode encerrar o processo
+            // assim que a resposta é enviada, matando o upload no meio e deixando o
+            // cache vazio pra sempre. Por isso o await aqui, mesmo custando um pouco de
+            // latência.
+            await trySaveCache(fileName, legacy);
             return audioResponse(legacy);
           }
 
@@ -150,7 +155,17 @@ export const Route = createFileRoute("/api/tts")({
           }
 
           // 3. Guarda no cache — próximas escutas do mesmo trecho são gratuitas.
-          void trySaveCache(fileName, audioBuf);
+          // IMPORTANTE: precisa ser `await`, não "dispare e esqueça" (`void`).
+          // No Cloudflare Workers, o processo pode ser encerrado assim que a
+          // resposta HTTP termina de ser enviada — qualquer promise em segundo
+          // plano que não tenha sido esperada (ou presa com ctx.waitUntil) corre
+          // o risco de ser abortada no meio. Era exatamente isso que estava
+          // fazendo o upload para o bucket falhar silenciosamente: o áudio tocava
+          // (e consumia crédito), mas nunca ficava de fato salvo — então na
+          // próxima vez o servidor não achava nada no cache e gerava (e cobrava)
+          // tudo de novo, até os créditos acabarem e a narração cair para a voz
+          // do aparelho/Google.
+          await trySaveCache(fileName, audioBuf);
 
           return audioResponse(audioBuf);
         } catch (e) {
