@@ -44,6 +44,9 @@ const fundamentosDaFe: Trail = {
                 NVI: "A tua palavra é lâmpada que ilumina os meus passos e luz que clareia o meu caminho.",
                 NVT: "Tua palavra é lâmpada que ilumina o meu caminho e luz que clareia a minha jornada.",
               },
+              originals: [
+                { word: "נֵר", translit: "ner", meaning: "'lâmpada' — pequena luz portátil de azeite que ilumina apenas o próximo passo, não todo o caminho de uma vez; imagem de guia gradual e suficiente", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -119,6 +122,9 @@ const fundamentosDaFe: Trail = {
                 NVI: "A graça do Senhor Jesus Cristo, o amor de Deus e a comunhão do Espírito Santo sejam com vocês todos.",
                 NVT: "Que a graça do Senhor Jesus Cristo, o amor de Deus e a comunhão do Espírito Santo estejam com todos vocês.",
               },
+              originals: [
+                { word: "κοινωνία", translit: "koinōnia", meaning: "'comunhão, participação em comum' — a bênção trinitária termina apontando para a obra específica do Espírito de unir os crentes entre si e com Deus", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -198,6 +204,9 @@ const fundamentosDaFe: Trail = {
                 NVI: "Portanto, da mesma forma como o pecado entrou no mundo por um homem, e pelo pecado a morte, assim também a morte veio a todos os homens, porque todos pecaram.",
                 NVT: "Quando Adão pecou, o pecado entrou no mundo. O pecado de Adão trouxe a morte, de modo que a morte se espalhou a todos, porque todos pecaram.",
               },
+              originals: [
+                { word: "διῆλθεν", translit: "diēlthen", meaning: "'passou através, espalhou-se' — descreve a morte atravessando toda a humanidade como uma corrente que passa por todos, por causa do pecado de Adão", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -267,6 +276,9 @@ const fundamentosDaFe: Trail = {
                 NVI: "Farei de você um grande povo, e o abençoarei; tornarei famoso o seu nome, e você será uma bênção... por meio de você todos os povos da terra serão abençoados.",
                 NVT: "Farei de você uma grande nação. Eu o abençoarei e farei seu nome famoso... todas as famílias da terra serão abençoadas por meio de você.",
               },
+              originals: [
+                { word: "בְּרָכָה", translit: "berakah", meaning: "'bênção' — palavra repetida cinco vezes nesta promessa a Abraão; Deus o abençoa para que ele seja, ele mesmo, fonte de bênção para as nações", lang: "hebraico" },
+              ],
             },
             {
               ref: "Lucas 24:27",
@@ -274,6 +286,9 @@ const fundamentosDaFe: Trail = {
                 NVI: "E, começando por Moisés e todos os profetas, explicou-lhes o que constava a respeito dele em todas as Escrituras.",
                 NVT: "Então Jesus os guiou por todas as Escrituras, começando com os livros de Moisés e todos os profetas, explicando o que diziam a respeito dele mesmo.",
               },
+              originals: [
+                { word: "διερμήνευσεν", translit: "diermēneusen", meaning: "'interpretou, explicou' — raiz de 'hermenêutica'; Jesus mesmo ensina o método correto de interpretar as Escrituras: lendo tudo à luz dele", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -348,6 +363,9 @@ const fundamentosDaFe: Trail = {
                 NVI: "Ele é a imagem do Deus invisível... pois nele foram criadas todas as coisas... e nele tudo subsiste.",
                 NVT: "Cristo é a imagem visível do Deus invisível... pois por meio dele Deus criou tudo... ele existe acima de tudo, e é ele quem mantém toda a criação unida.",
               },
+              originals: [
+                { word: "εἰκών", translit: "eikōn", meaning: "'imagem' — raiz de 'ícone'; não uma cópia imperfeita, mas a representação exata e visível do Deus invisível", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -417,6 +435,9 @@ const fundamentosDaFe: Trail = {
                 NVI: "Mas ele foi transpassado por causa das nossas transgressões, foi esmagado por causa de nossas iniquidades; o castigo que nos trouxe paz estava sobre ele, e pelas suas feridas fomos curados.",
                 NVT: "Mas ele foi ferido e esmagado por nossos pecados. Ele foi castigado para que nós tivéssemos paz; foi ferido para que fôssemos curados.",
               },
+              originals: [
+                { word: "מְחֹלָל", translit: "mecholal", meaning: "'transpassado, perfurado' — particípio passivo intenso do verbo chalal; descreve um ferimento fatal, não um simples arranhão", lang: "hebraico" },
+              ],
             },
             {
               ref: "1 Coríntios 15:3-4",
@@ -501,6 +522,9 @@ const fundamentosDaFe: Trail = {
                 NVI: "Mas o fruto do Espírito é amor, alegria, paz, paciência, amabilidade, bondade, fidelidade, mansidão e domínio próprio.",
                 NVT: "Mas quando o Espírito Santo controla nossa vida, ele produz este tipo de fruto em nós: amor, alegria, paz, paciência, gentileza, bondade, fidelidade, mansidão e domínio próprio.",
               },
+              originals: [
+                { word: "καρπός", translit: "karpos", meaning: "'fruto' — no singular, ao contrário das 'obras' da carne (plural); o caráter cristão é uma unidade orgânica produzida pelo Espírito, não uma lista de itens avulsos", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -575,6 +599,9 @@ const fundamentosDaFe: Trail = {
                 NVI: "Se você confessar com a sua boca que Jesus é Senhor e crer em seu coração que Deus o ressuscitou dentre os mortos, você será salvo.",
                 NVT: "Se você declarar publicamente que Jesus Cristo é Senhor e crer em seu coração que Deus o ressuscitou dos mortos, você será salvo.",
               },
+              originals: [
+                { word: "ὁμολογήσῃς", translit: "homologēsēs", meaning: "'confessares' — literalmente 'dizer o mesmo, concordar publicamente'; a fé salvadora se declara abertamente, não fica apenas guardada no coração", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -644,6 +671,9 @@ const fundamentosDaFe: Trail = {
                 NVI: "Vocês são corpo de Cristo, e cada um de vocês é uma parte desse corpo.",
                 NVT: "Todos vocês juntos são o corpo de Cristo, e cada um de vocês é uma parte individual desse corpo.",
               },
+              originals: [
+                { word: "μέλη", translit: "melē", meaning: "'membros, partes do corpo' — cada crente é uma parte funcional e insubstituível do corpo de Cristo, não um espectador avulso", lang: "grego" },
+              ],
             },
             {
               ref: "Hebreus 10:24-25",
@@ -718,6 +748,9 @@ const fundamentosDaFe: Trail = {
                 NVI: "A morada de Deus é com os homens... Ele enxugará dos seus olhos toda lágrima. Não haverá mais morte, nem tristeza, nem choro, nem dor, pois a antiga ordem já passou.",
                 NVT: "Deus estará entre eles... Ele enxugará cada lágrima dos olhos deles, e não haverá mais morte, nem tristeza, nem choro, nem dor, pois a velha ordem de coisas já passou.",
               },
+              originals: [
+                { word: "σκηνώσει", translit: "skēnōsei", meaning: "'armará tenda, habitará' — mesma raiz de 'tabernáculo' e do 'habitou entre nós' de João 1:14; Deus finalmente mora de forma permanente com o seu povo", lang: "grego" },
+              ],
             },
             {
               ref: "1 Tessalonicenses 4:16-17",
