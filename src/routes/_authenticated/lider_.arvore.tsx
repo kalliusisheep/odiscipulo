@@ -31,8 +31,9 @@ const NODE_R = 30;
 const COL_W = 176;
 const ROW_H = 160;
 const PAD = 84;
-const HEADER_H = 136; // espaço reservado só no PDF pra faixa de título + legenda
+const HEADER_H = 104; // espaço reservado só no PDF pra faixa de título + legenda
 const FOOTER_H = 70; // espaço reservado só no PDF pra separador, copyright pequeno e mascote pequena no canto
+const MIN_CANVAS_W = 480; // largura mínima da página exportada, pra cabeçalho/rodapé nunca ficarem espremidos em árvores pequenas
 const NAME_MAX_CHARS = 12;
 const NAME_FONT_SIZE = 9.5;
 
@@ -311,9 +312,11 @@ function ArvorePage() {
     setExporting(true);
     try {
       const scaleFactor = 2;
+      const canvasW = Math.max(layout.width, MIN_CANVAS_W);
+      const treeOffsetX = (canvasW - layout.width) / 2;
       const totalHeight = HEADER_H + layout.height + FOOTER_H;
       const canvas = document.createElement("canvas");
-      canvas.width = Math.max(1, layout.width * scaleFactor);
+      canvas.width = Math.max(1, canvasW * scaleFactor);
       canvas.height = Math.max(1, totalHeight * scaleFactor);
       const ctx = canvas.getContext("2d");
       if (!ctx) throw new Error("sem canvas 2d");
@@ -322,64 +325,77 @@ function ArvorePage() {
       // fundo "pixelado" (xadrez sutil) cobrindo a página inteira
       const pattern = makeCheckerPattern(ctx);
       ctx.fillStyle = pattern ?? C.bg;
-      ctx.fillRect(0, 0, layout.width, totalHeight);
+      ctx.fillRect(0, 0, canvasW, totalHeight);
 
-      // ---------- CABEÇALHO (faixa de título + legenda, só no PDF) ----------
+      // ---------- CABEÇALHO (3 linhas centralizadas — nunca colidem, a
+      // largura de cada elemento é medida antes de posicionar) ----------
       ctx.fillStyle = C.surface;
-      ctx.fillRect(0, 0, layout.width, HEADER_H);
-      ctx.strokeStyle = C.border;
-      ctx.setLineDash([6, 4]);
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(0, HEADER_H);
-      ctx.lineTo(layout.width, HEADER_H);
-      ctx.stroke();
-      ctx.setLineDash([]);
+      ctx.fillRect(0, 0, canvasW, HEADER_H);
 
       const headerMascot = await loadImage("/sheep-mascot.png");
-      const hmSize = 46;
-      if (headerMascot) ctx.drawImage(headerMascot, PAD / 2, 24, hmSize, hmSize);
+      const hmSize = 22;
+      ctx.font = "800 12px ui-monospace, Menlo, monospace";
+      const wBrand = ctx.measureText("iSheep").width;
+      ctx.font = "600 9.5px system-ui, sans-serif";
+      const wSub = ctx.measureText(" · Painel do Líder").width;
+      const rowAWidth = hmSize + 6 + wBrand + wSub;
+      const rowAStart = canvasW / 2 - rowAWidth / 2;
+      if (headerMascot) ctx.drawImage(headerMascot, rowAStart, 12, hmSize, hmSize);
       ctx.textAlign = "left";
       ctx.textBaseline = "alphabetic";
       ctx.fillStyle = C.primaryGlow;
-      ctx.font = "800 15px ui-monospace, Menlo, monospace";
-      ctx.fillText("iSheep", PAD / 2 + hmSize + 12, 44);
+      ctx.font = "800 12px ui-monospace, Menlo, monospace";
+      ctx.fillText("iSheep", rowAStart + hmSize + 6, 27);
       ctx.fillStyle = C.mutedText;
-      ctx.font = "600 10.5px system-ui, sans-serif";
-      ctx.fillText("Painel do Líder", PAD / 2 + hmSize + 12, 60);
+      ctx.font = "600 9.5px system-ui, sans-serif";
+      ctx.fillText(" · Painel do Líder", rowAStart + hmSize + 6 + wBrand, 27);
 
       ctx.textAlign = "center";
       ctx.fillStyle = C.text;
-      ctx.font = "800 21px ui-monospace, Menlo, monospace";
-      ctx.fillText("Árvore de Discipulado", layout.width / 2, 52);
+      ctx.font = "800 17px ui-monospace, Menlo, monospace";
+      const titleY = 54;
+      ctx.fillText("Árvore de Discipulado", canvasW / 2, titleY);
+      const titleWidth = ctx.measureText("Árvore de Discipulado").width;
       ctx.fillStyle = C.primary;
-      ctx.fillRect(layout.width / 2 - 46, 62, 92, 3);
+      ctx.fillRect(canvasW / 2 - titleWidth / 2, titleY + 8, titleWidth, 3);
 
-      // legenda no canto direito do cabeçalho
+      // legenda: linha centralizada, cada item medido antes de posicionar
       const legendItems: [string, string][] = [
         [C.primary, "Você"],
         [C.ancient, "Liderança acima"],
         [C.success, "Discípulos"],
       ];
+      ctx.font = "700 9px ui-monospace, Menlo, monospace";
+      const legendGap = 16;
+      const chipWidths = legendItems.map(([, label]) => 9 + 5 + ctx.measureText(label).width);
+      const legendTotalWidth = chipWidths.reduce((a, b) => a + b, 0) + legendGap * (legendItems.length - 1);
+      let legendX = canvasW / 2 - legendTotalWidth / 2;
+      const legendY = 82;
       ctx.textAlign = "left";
-      ctx.font = "700 9.5px ui-monospace, Menlo, monospace";
-      let legendY = 26;
-      const legendX = layout.width - PAD / 2 - 132;
-      legendItems.forEach(([color, label]) => {
+      legendItems.forEach(([color, label], i) => {
         ctx.fillStyle = color;
-        pixelRoundRect(ctx, legendX, legendY, 9, 9, 2);
+        pixelRoundRect(ctx, legendX, legendY - 8, 9, 9, 2);
         ctx.fill();
         ctx.fillStyle = C.mutedText;
-        ctx.fillText(label, legendX + 15, legendY + 8.5);
-        legendY += 16;
+        ctx.fillText(label, legendX + 14, legendY);
+        legendX += chipWidths[i] + legendGap;
       });
 
-      // cantos estilo "HUD" de jogo (frame decorativo)
-      drawCornerBrackets(ctx, layout.width, totalHeight);
+      ctx.strokeStyle = C.border;
+      ctx.setLineDash([6, 4]);
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, HEADER_H);
+      ctx.lineTo(canvasW, HEADER_H);
+      ctx.stroke();
+      ctx.setLineDash([]);
 
-      // ---------- ÁRVORE ----------
+      // cantos estilo "HUD" de jogo (frame decorativo)
+      drawCornerBrackets(ctx, canvasW, totalHeight);
+
+      // ---------- ÁRVORE (centralizada horizontalmente na página) ----------
       ctx.save();
-      ctx.translate(0, HEADER_H);
+      ctx.translate(treeOffsetX, HEADER_H);
 
       // conexões em estilo "árvore de habilidades" (linha em ângulo reto, tracejada)
       ctx.strokeStyle = C.border;
@@ -493,13 +509,13 @@ function ArvorePage() {
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(PAD / 2, footerTop + 14);
-      ctx.lineTo(layout.width - PAD / 2, footerTop + 14);
+      ctx.lineTo(canvasW - PAD / 2, footerTop + 14);
       ctx.stroke();
       ctx.setLineDash([]);
 
       const mascot = await loadImage("/sheep-mascot.png");
       const mascotSize = 36;
-      const mascotX = layout.width - PAD / 2 - mascotSize;
+      const mascotX = canvasW - PAD / 2 - mascotSize;
       const mascotY = footerTop + FOOTER_H - mascotSize - 14;
       if (mascot) {
         ctx.drawImage(mascot, mascotX, mascotY, mascotSize, mascotSize);
@@ -510,12 +526,25 @@ function ArvorePage() {
       ctx.textAlign = "left";
       ctx.fillText("© 2026 iSheep. All Rights Reserved.", PAD / 2, footerTop + FOOTER_H - 14 - mascotSize / 2 + 4);
 
+      // ---------- monta o PDF final em página A4 padrão, encaixando (nunca
+      // ampliando) a arte pra caber com margem — assim o arquivo sempre
+      // imprime certo, do jeito que a árvore tiver: pequena ou grande. ----------
       const dataUrl = canvas.toDataURL("image/png");
       const jspdfNs = await loadJsPdf();
       const JsPdfCtor = jspdfNs.jsPDF;
-      const orientation = layout.width >= totalHeight ? "l" : "p";
-      const pdf = new JsPdfCtor({ orientation, unit: "pt", format: [layout.width, totalHeight] });
-      pdf.addImage(dataUrl, "PNG", 0, 0, layout.width, totalHeight);
+      const orientation = canvasW > totalHeight ? "l" : "p";
+      const pdf = new JsPdfCtor({ orientation, unit: "pt", format: "a4" });
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+      const margin = 24;
+      const scale = Math.min(1, (pageW - margin * 2) / canvasW, (pageH - margin * 2) / totalHeight);
+      const drawW = canvasW * scale;
+      const drawH = totalHeight * scale;
+      const offsetX = (pageW - drawW) / 2;
+      const offsetY = (pageH - drawH) / 2;
+      pdf.setFillColor(28, 26, 38);
+      pdf.rect(0, 0, pageW, pageH, "F");
+      pdf.addImage(dataUrl, "PNG", offsetX, offsetY, drawW, drawH);
       pdf.save("arvore-de-discipulado.pdf");
 
       if (anyImageFailed) {
