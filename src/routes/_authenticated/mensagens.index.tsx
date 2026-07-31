@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, MessageCircle, Plus, Search, Flame } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { listMyChallenges, getChallengeProgressPct } from "@/lib/challenges";
+import { listMyChallenges, getChallengeProgressPct, checkFinishChallenges } from "@/lib/challenges";
 
 export const Route = createFileRoute("/_authenticated/mensagens/")({
   component: MensagensListPage,
@@ -31,6 +31,14 @@ function MensagensListPage() {
       if (!u.user) return;
       const myId = u.user.id;
       const load = async () => {
+        // Sincroniza com o servidor: se algum desafio já bateu 100% dos dois lados
+        // desde a última checagem, marca como concluído (idempotente).
+        try {
+          await checkFinishChallenges(myId);
+        } catch {
+          /* melhor esforço — não deve travar a lista de conversas */
+        }
+
         // Desafios ativos por parceiro → % de progresso do peer
         const myChallenges = (await listMyChallenges(myId)).filter((c) => c.status === "accepted");
         const partnerToChallenge = new Map<string, string>();
@@ -41,7 +49,14 @@ function MensagensListPage() {
         const peerPct = new Map<string, number>();
         await Promise.all(
           Array.from(partnerToChallenge.entries()).map(async ([peerId, chId]) => {
-            peerPct.set(peerId, await getChallengeProgressPct(chId, peerId));
+            const [pPct, myPct] = await Promise.all([
+              getChallengeProgressPct(chId, peerId),
+              getChallengeProgressPct(chId, myId),
+            ]);
+            // Concluído de fato (ambos em 100%): não mostra mais a barra,
+            // mesmo que o status no banco ainda não tenha sido atualizado.
+            if (pPct >= 100 && myPct >= 100) return;
+            peerPct.set(peerId, pPct);
           }),
         );
 
