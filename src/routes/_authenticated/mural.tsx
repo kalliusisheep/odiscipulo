@@ -6,6 +6,7 @@ import type { FeedItem, FeedKind } from "@/lib/feed";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { VoiceRecorder } from "@/components/VoiceRecorder";
 import { VoiceNotePlayer } from "@/components/VoiceNotePlayer";
+import { GifPicker } from "@/components/GifPicker";
 import { uploadMuralVoiceNote } from "@/lib/voice-upload";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -20,9 +21,11 @@ import {
   MessageCircle,
   MessageSquare,
   Pencil,
+  Send,
   Trash2,
   Trophy,
   Users,
+  X,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/mural")({
@@ -87,7 +90,9 @@ type FeedComment = {
   item_id: string;
   user_id: string;
   author_name: string;
-  body: string;
+  author_avatar_url: string | null;
+  body: string | null;
+  gif_url: string | null;
   created_at: string;
 };
 
@@ -101,6 +106,16 @@ const FEED_KIND_ICON: Record<FeedKind, React.ElementType> = {
   bio_changed: Pencil,
 };
 
+const FEED_KIND_STYLE: Record<FeedKind, string> = {
+  post: "bg-primary/15 text-primary",
+  lesson_completed: "bg-success/15 text-success",
+  module_completed: "bg-streak/20 text-streak",
+  reading_plan_started: "bg-ancient/15 text-ancient",
+  bible_study_started: "bg-ancient/15 text-ancient",
+  avatar_changed: "bg-accent text-accent-foreground",
+  bio_changed: "bg-accent text-accent-foreground",
+};
+
 function Feed() {
   const [items, setItems] = useState<FeedItem[]>([]);
   const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
@@ -109,6 +124,9 @@ function Feed() {
   const [openComments, setOpenComments] = useState<Set<string>>(new Set());
   const [comments, setComments] = useState<Record<string, FeedComment[]>>({});
   const [commentDraft, setCommentDraft] = useState<Record<string, string>>({});
+  const [pendingGif, setPendingGif] = useState<Record<string, string | null>>({});
+  const [commentLikeCounts, setCommentLikeCounts] = useState<Record<string, number>>({});
+  const [myCommentLikes, setMyCommentLikes] = useState<Set<string>>(new Set());
   const [composerText, setComposerText] = useState("");
   const [posting, setPosting] = useState(false);
   const [me, setMe] = useState<{ id: string; name: string; avatarUrl: string | null } | null>(null);
@@ -145,6 +163,25 @@ function Feed() {
     const cc: Record<string, number> = {};
     for (const c of allComments ?? []) cc[c.item_id] = (cc[c.item_id] ?? 0) + 1;
     setCommentCounts(cc);
+  };
+
+  // Busca curtidas dos comentários de um item específico e mescla no estado
+  // global (indexado por comment id, então funciona para vários itens abertos).
+  const loadCommentLikes = async (commentIds: string[], uid: string | null) => {
+    if (commentIds.length === 0) return;
+    const { data } = await supabase.from("feed_comment_likes").select("comment_id, user_id").in("comment_id", commentIds);
+    const counts: Record<string, number> = {};
+    const mine = new Set<string>();
+    for (const l of data ?? []) {
+      counts[l.comment_id] = (counts[l.comment_id] ?? 0) + 1;
+      if (uid && l.user_id === uid) mine.add(l.comment_id);
+    }
+    setCommentLikeCounts((prev) => ({ ...prev, ...counts }));
+    setMyCommentLikes((prev) => {
+      const next = new Set(prev);
+      for (const id of mine) next.add(id);
+      return next;
+    });
   };
 
   useEffect(() => {
@@ -223,21 +260,30 @@ function Feed() {
         .select("*")
         .eq("item_id", itemId)
         .order("created_at", { ascending: true });
-      setComments((prev) => ({ ...prev, [itemId]: (data ?? []) as FeedComment[] }));
+      const list = (data ?? []) as FeedComment[];
+      setComments((prev) => ({ ...prev, [itemId]: list }));
+      void loadCommentLikes(
+        list.map((c) => c.id),
+        me?.id ?? null,
+      );
     }
   };
 
   const sendComment = async (itemId: string) => {
     const text = (commentDraft[itemId] ?? "").trim();
-    if (!text || !me) return;
+    const gifUrl = pendingGif[itemId] ?? null;
+    if ((!text && !gifUrl) || !me) return;
     const { error } = await supabase.from("feed_comments").insert({
       item_id: itemId,
       user_id: me.id,
       author_name: me.name,
-      body: text,
+      author_avatar_url: me.avatarUrl,
+      body: text || null,
+      gif_url: gifUrl,
     });
     if (!error) {
       setCommentDraft((prev) => ({ ...prev, [itemId]: "" }));
+      setPendingGif((prev) => ({ ...prev, [itemId]: null }));
       const { data } = await supabase
         .from("feed_comments")
         .select("*")
@@ -248,24 +294,51 @@ function Feed() {
     }
   };
 
+  const toggleCommentLike = async (commentId: string) => {
+    if (!me) return;
+    const has = myCommentLikes.has(commentId);
+    // Otimista: atualiza a UI na hora, sem esperar a rede.
+    setMyCommentLikes((prev) => {
+      const next = new Set(prev);
+      if (has) next.delete(commentId);
+      else next.add(commentId);
+      return next;
+    });
+    setCommentLikeCounts((prev) => ({ ...prev, [commentId]: Math.max(0, (prev[commentId] ?? 0) + (has ? -1 : 1)) }));
+    if (has) {
+      await supabase.from("feed_comment_likes").delete().eq("comment_id", commentId).eq("user_id", me.id);
+    } else {
+      await supabase.from("feed_comment_likes").insert({ comment_id: commentId, user_id: me.id });
+    }
+  };
+
   return (
     <div className="space-y-4">
-      <div className="card-elevated p-4">
-        <textarea
-          value={composerText}
-          onChange={(e) => setComposerText(e.target.value)}
-          rows={3}
-          placeholder="Escreva algo para compartilhar com seus amigos…"
-          className="w-full resize-none rounded-xl border border-border bg-input p-3 text-sm outline-none focus:border-primary"
-        />
-        <div className="mt-2 flex justify-end">
-          <button
-            onClick={() => void publish()}
-            disabled={!composerText.trim() || posting}
-            className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary-glow disabled:opacity-50"
-          >
-            Publicar
-          </button>
+      <div className="card-elevated flex gap-3 p-4">
+        <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/20 text-sm font-semibold text-primary">
+          {me?.avatarUrl ? (
+            <img src={me.avatarUrl} alt={me.name} className="h-full w-full object-cover" />
+          ) : (
+            me?.name?.[0] ?? "?"
+          )}
+        </div>
+        <div className="min-w-0 flex-1">
+          <textarea
+            value={composerText}
+            onChange={(e) => setComposerText(e.target.value)}
+            rows={3}
+            placeholder="Escreva algo para compartilhar com seus amigos…"
+            className="w-full resize-none rounded-xl border border-border bg-input p-3 text-sm outline-none focus:border-primary"
+          />
+          <div className="mt-2 flex justify-end">
+            <button
+              onClick={() => void publish()}
+              disabled={!composerText.trim() || posting}
+              className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary-glow hover:shadow-md disabled:opacity-50 disabled:shadow-none"
+            >
+              {posting ? "Publicando…" : "Publicar"}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -289,10 +362,15 @@ function Feed() {
           commentsOpen={openComments.has(item.id)}
           commentsList={comments[item.id] ?? []}
           commentDraft={commentDraft[item.id] ?? ""}
+          pendingGif={pendingGif[item.id] ?? null}
+          commentLikeCounts={commentLikeCounts}
+          myCommentLikes={myCommentLikes}
           onToggleLike={() => void toggleLike(item.id)}
           onToggleComments={() => void toggleComments(item.id)}
           onCommentDraftChange={(v) => setCommentDraft((prev) => ({ ...prev, [item.id]: v }))}
+          onPendingGifChange={(url) => setPendingGif((prev) => ({ ...prev, [item.id]: url }))}
           onSendComment={() => void sendComment(item.id)}
+          onToggleCommentLike={(commentId) => void toggleCommentLike(commentId)}
         />
       ))}
     </div>
@@ -307,10 +385,15 @@ function FeedCard({
   commentsOpen,
   commentsList,
   commentDraft,
+  pendingGif,
+  commentLikeCounts,
+  myCommentLikes,
   onToggleLike,
   onToggleComments,
   onCommentDraftChange,
+  onPendingGifChange,
   onSendComment,
+  onToggleCommentLike,
 }: {
   item: FeedItem;
   liked: boolean;
@@ -319,17 +402,22 @@ function FeedCard({
   commentsOpen: boolean;
   commentsList: FeedComment[];
   commentDraft: string;
+  pendingGif: string | null;
+  commentLikeCounts: Record<string, number>;
+  myCommentLikes: Set<string>;
   onToggleLike: () => void;
   onToggleComments: () => void;
   onCommentDraftChange: (v: string) => void;
+  onPendingGifChange: (url: string | null) => void;
   onSendComment: () => void;
+  onToggleCommentLike: (commentId: string) => void;
 }) {
   const Icon = FEED_KIND_ICON[item.kind];
 
   return (
-    <article className="card-elevated p-4">
-      <header className="flex items-start gap-2">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/20 text-sm font-semibold text-primary">
+    <article className="card-elevated overflow-hidden p-4 transition-shadow hover:shadow-lg">
+      <header className="flex items-start gap-2.5">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/20 text-sm font-semibold text-primary ring-2 ring-background">
           {item.author_avatar_url ? (
             <img src={item.author_avatar_url} alt={item.author_name} className="h-full w-full object-cover" />
           ) : (
@@ -337,16 +425,18 @@ function FeedCard({
           )}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold">{item.author_name}</p>
+          <p className="text-sm font-semibold leading-tight">{item.author_name}</p>
           <p className="text-[11px] text-muted-foreground">
             {formatDistanceToNow(new Date(item.created_at), { locale: ptBR, addSuffix: true })}
           </p>
         </div>
-        <Icon className="h-4 w-4 shrink-0 text-primary/70" />
+        <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${FEED_KIND_STYLE[item.kind]}`}>
+          <Icon className="h-3.5 w-3.5" />
+        </div>
       </header>
 
       <div className="mt-3 text-sm leading-relaxed">
-        {item.kind === "post" && <p>{item.body}</p>}
+        {item.kind === "post" && <p className="whitespace-pre-wrap">{item.body}</p>}
 
         {item.kind === "avatar_changed" && (
           <div className="flex items-center gap-3">
@@ -355,7 +445,7 @@ function FeedCard({
               <img
                 src={item.author_avatar_url}
                 alt="Nova foto de perfil"
-                className="h-12 w-12 rounded-xl object-cover"
+                className="h-12 w-12 rounded-xl object-cover ring-1 ring-border"
               />
             )}
           </div>
@@ -376,51 +466,107 @@ function FeedCard({
           item.kind === "bible_study_started") && <p>{item.body}</p>}
       </div>
 
-      <div className="mt-3 flex items-center gap-2">
+      <div className="mt-3 flex items-center gap-2 border-t border-border pt-3">
         <button
           onClick={onToggleLike}
-          className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${
-            liked
-              ? "border-primary bg-primary/20 text-primary"
-              : "border-border bg-background text-muted-foreground hover:border-primary/40"
+          className={`inline-flex flex-1 items-center justify-center gap-1.5 rounded-full py-1.5 text-xs font-medium transition-all ${
+            liked ? "text-primary" : "text-muted-foreground hover:bg-surface-2"
           }`}
         >
-          <Heart className={`h-3.5 w-3.5 ${liked ? "fill-current" : ""}`} /> Curtir{" "}
-          <span className="font-semibold">({likeCount})</span>
+          <Heart className={`h-4 w-4 ${liked ? "fill-current" : ""}`} />
+          Curtir{likeCount > 0 && <span className="font-semibold">({likeCount})</span>}
         </button>
+        <div className="h-4 w-px bg-border" />
         <button
           onClick={onToggleComments}
-          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground transition-all hover:border-primary/40"
+          className={`inline-flex flex-1 items-center justify-center gap-1.5 rounded-full py-1.5 text-xs font-medium transition-all ${
+            commentsOpen ? "text-primary" : "text-muted-foreground hover:bg-surface-2"
+          }`}
         >
-          <MessageCircle className="h-3.5 w-3.5" /> Comentar{" "}
-          <span className="font-semibold">({commentCount})</span>
+          <MessageCircle className="h-4 w-4" />
+          Comentar{commentCount > 0 && <span className="font-semibold">({commentCount})</span>}
         </button>
       </div>
 
       {commentsOpen && (
-        <div className="mt-3 space-y-2 border-t border-border pt-3">
-          {commentsList.map((c) => (
-            <div key={c.id} className="rounded-xl bg-surface-2 p-2.5 text-xs">
-              <span className="font-semibold">{c.author_name}</span> <span className="text-foreground/80">{c.body}</span>
+        <div className="mt-3 space-y-3 border-t border-border pt-3">
+          {commentsList.map((c) => {
+            const commentLiked = myCommentLikes.has(c.id);
+            const commentLikeCount = commentLikeCounts[c.id] ?? 0;
+            return (
+              <div key={c.id} className="flex items-start gap-2">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/20 text-[11px] font-semibold text-primary">
+                  {c.author_avatar_url ? (
+                    <img src={c.author_avatar_url} alt={c.author_name} className="h-full w-full object-cover" />
+                  ) : (
+                    c.author_name[0]
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="inline-block max-w-full rounded-2xl bg-surface-2 px-3 py-2">
+                    <span className="text-xs font-semibold">{c.author_name}</span>
+                    {c.body && <p className="mt-0.5 text-xs leading-relaxed text-foreground/90">{c.body}</p>}
+                    {c.gif_url && (
+                      <img
+                        src={c.gif_url}
+                        alt="GIF enviado no comentário"
+                        className="mt-1.5 max-h-40 w-auto rounded-lg"
+                        loading="lazy"
+                      />
+                    )}
+                  </div>
+                  <div className="mt-1 flex items-center gap-3 px-1">
+                    <span className="text-[10px] text-muted-foreground">
+                      {formatDistanceToNow(new Date(c.created_at), { locale: ptBR, addSuffix: true })}
+                    </span>
+                    <button
+                      onClick={() => onToggleCommentLike(c.id)}
+                      className={`inline-flex items-center gap-1 text-[10px] font-medium transition-colors ${
+                        commentLiked ? "text-primary" : "text-muted-foreground hover:text-primary"
+                      }`}
+                    >
+                      <Heart className={`h-3 w-3 ${commentLiked ? "fill-current" : ""}`} />
+                      Curtir{commentLikeCount > 0 && ` (${commentLikeCount})`}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+
+          <div className="space-y-1.5">
+            {pendingGif && (
+              <div className="relative inline-block">
+                <img src={pendingGif} alt="GIF selecionado" className="max-h-28 rounded-lg" />
+                <button
+                  onClick={() => onPendingGifChange(null)}
+                  aria-label="Remover GIF"
+                  className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-background text-foreground shadow ring-1 ring-border"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </div>
+            )}
+            <div className="flex items-center gap-1.5">
+              <GifPicker onSelect={(url) => onPendingGifChange(url)} />
+              <input
+                value={commentDraft}
+                onChange={(e) => onCommentDraftChange(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") onSendComment();
+                }}
+                placeholder="Escreva um comentário…"
+                className="flex-1 rounded-full border border-border bg-input px-3 py-1.5 text-xs outline-none focus:border-primary"
+              />
+              <button
+                onClick={onSendComment}
+                disabled={!commentDraft.trim() && !pendingGif}
+                aria-label="Enviar comentário"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-all hover:bg-primary-glow disabled:opacity-50"
+              >
+                <Send className="h-3.5 w-3.5" />
+              </button>
             </div>
-          ))}
-          <div className="flex gap-2">
-            <input
-              value={commentDraft}
-              onChange={(e) => onCommentDraftChange(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") onSendComment();
-              }}
-              placeholder="Escreva um comentário…"
-              className="flex-1 rounded-full border border-border bg-input px-3 py-1.5 text-xs outline-none focus:border-primary"
-            />
-            <button
-              onClick={onSendComment}
-              disabled={!commentDraft.trim()}
-              className="rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-50"
-            >
-              Enviar
-            </button>
           </div>
         </div>
       )}
