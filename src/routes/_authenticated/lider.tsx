@@ -9,6 +9,7 @@ import {
   ChevronRight,
   Loader2,
   MessageCircle,
+  Network,
   Plus,
   Search,
   Users,
@@ -218,6 +219,12 @@ function LiderPage() {
         <ActionBtn icon={MessageCircle} label="Mensagem" onClick={() => void navigate({ to: "/mensagens" })} />
         <ActionBtn icon={Calendar} label="Encontro" onClick={() => setDialog("meeting")} />
       </div>
+
+      <Link to="/lider/arvore" className="card-elevated flex items-center gap-3 p-4 transition-all hover:border-primary/50">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary"><Network className="h-5 w-5" /></div>
+        <div className="min-w-0 flex-1"><p className="text-sm font-semibold">Árvore de Discipulado</p><p className="text-xs text-muted-foreground">Veja sua linha de discipulado, de cima a baixo</p></div>
+        <ChevronRight className="h-4 w-4 text-muted-foreground" />
+      </Link>
 
       <section className="space-y-2">
         <h2 className="px-1 text-sm font-semibold text-muted-foreground">Grupos de Discipulado</h2>
