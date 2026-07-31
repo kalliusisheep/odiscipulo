@@ -166,7 +166,13 @@ export function NarrationButton({ containerSelector, className }: Props) {
       body: JSON.stringify({ text: spokenText }),
       signal,
     });
-    if (!res.ok) throw new Error(`tts ${res.status}`);
+    if (!res.ok) {
+      // Lê o corpo da resposta para saber o motivo real (ex.: "TTS 402: sem
+      // créditos", "LOVABLE_API_KEY ausente") — sem isso, o console só
+      // mostrava o número do status, escondendo a causa do problema.
+      const detail = await res.text().catch(() => "");
+      throw new Error(`tts ${res.status}${detail ? `: ${detail.slice(0, 300)}` : ""}`);
+    }
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
     audioCacheRef.current.set(spokenText, url);
