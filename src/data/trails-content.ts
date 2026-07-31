@@ -65,12 +65,18 @@ const comoEstudarBiblia: Trail = {
                 textByVersion: {
                   NVI: "A tua palavra, Senhor, é eterna; permanece firme nos céus.",
                 },
+                originals: [
+                  { word: "לְעוֹלָם", translit: "le'olam", meaning: "'para sempre, eterna' — a palavra de Deus está fixada nos céus, imutável através do tempo", lang: "hebraico" },
+                ],
               },
               {
                 ref: "Mateus 5:18",
                 textByVersion: {
                   NVI: "Digo a verdade: enquanto existirem céus e terra, nem uma letra ou um til jamais desaparecerá da Lei, até que tudo se cumpra.",
                 },
+                originals: [
+                  { word: "ἰῶτα", translit: "iōta", meaning: "'jota' — a menor letra do alfabeto grego; Jesus afirma que nem o menor detalhe da Palavra perderá sua validade", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -136,12 +142,18 @@ const comoEstudarBiblia: Trail = {
               textByVersion: {
                 NVI: "Leram no Livro da Lei de Deus, interpretando-o e explicando-o, a fim de que o povo entendesse o que estava sendo lido.",
               },
+              originals: [
+                { word: "מְפֹרָשׁ", translit: "mephorash", meaning: "'explicado com clareza, esmiuçado' — os levitas não apenas leram em voz alta, mas garantiram que o povo compreendesse cada parte", lang: "hebraico" },
+              ],
             },
             {
               ref: "2 Pedro 3:16",
               textByVersion: {
                 NVI: "[Paulo] fala destes assuntos em todas as suas cartas. Nelas há algumas coisas difíceis de entender, as quais os ignorantes e instáveis torcem, como também o fazem com as demais Escrituras, para a própria destruição deles.",
               },
+              originals: [
+                { word: "δυσνόητά", translit: "dysnoēta", meaning: "'difíceis de entender' — Pedro reconhece abertamente que partes das cartas de Paulo exigem interpretação cuidadosa, não leitura apressada", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -162,12 +174,18 @@ const comoEstudarBiblia: Trail = {
                 textByVersion: {
                   NVI: "Pareceu-me bem também, depois de cuidadosa investigação de tudo desde o princípio, escrever um relato ordenado para ti, ó excelentíssimo Teófilo, para que tenhas certeza das coisas que te foram ensinadas.",
                 },
+                originals: [
+                  { word: "ἀκριβῶς", translit: "akribōs", meaning: "'com exatidão, cuidadosamente' — Lucas descreve seu próprio método de investigação histórica antes de escrever o Evangelho", lang: "grego" },
+                ],
               },
               {
                 ref: "Atos 8:30-31",
                 textByVersion: {
                   NVI: "Filipe correu para o carro e ouviu o homem lendo o profeta Isaías. 'Você entende o que está lendo?', perguntou. 'Como poderei entender se alguém não me ensinar?', respondeu ele.",
                 },
+                originals: [
+                  { word: "γινώσκεις … ἀναγινώσκεις", translit: "ginōskeis … anaginōskeis", meaning: "jogo de palavras grego: 'entendes' (ginōskeis) o que 'lês' (anaginōskeis)? Ler e compreender não são automaticamente a mesma coisa", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -247,6 +265,9 @@ const comoEstudarBiblia: Trail = {
               textByVersion: {
                 NVI: "Meditarei nos teus preceitos e darei atenção às tuas veredas.",
               },
+              originals: [
+                { word: "הָגָה", translit: "hagah", meaning: "'murmurar, meditar ruminando' — imagem de mastigar devagar a Palavra até absorver seu conteúdo", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -267,12 +288,18 @@ const comoEstudarBiblia: Trail = {
                 textByVersion: {
                   NVI: "Sejam agradáveis as palavras da minha boca e a meditação do meu coração diante de ti, Senhor, minha Rocha e meu Redentor.",
                 },
+                originals: [
+                  { word: "צוּר", translit: "tsur", meaning: "'rocha' — imagem de solidez e refúgio; Davi pede que até seus pensamentos internos agradem a quem é sua base firme", lang: "hebraico" },
+                ],
               },
               {
                 ref: "Josué 1:8",
                 textByVersion: {
                   NVI: "Não deixe de falar e meditar dia e noite neste Livro da Lei, para que você seja cuidadoso em agir de acordo com tudo o que nele está escrito. Só assim você prosperará e será bem-sucedido em tudo o que fizer.",
                 },
+                originals: [
+                  { word: "שָׁמַר", translit: "shamar", meaning: "'guardar, observar com cuidado' — a obediência prática é o alvo da meditação, não apenas o conhecimento intelectual", lang: "hebraico" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -337,12 +364,18 @@ const comoEstudarBiblia: Trail = {
               textByVersion: {
                 NVI: "Com muitas parábolas semelhantes a essas, Jesus lhes falava a palavra, tanto quanto podiam compreender. Não lhes dizia nada sem usar parábolas. Mas, quando estava a sós com os seus discípulos, explicava tudo.",
               },
+              originals: [
+                { word: "παραβολή", translit: "parabolē", meaning: "'parábola' — literalmente 'lançar ao lado'; uma comparação colocada junto à verdade para iluminá-la", lang: "grego" },
+              ],
             },
             {
               ref: "Provérbios 1:5-6",
               textByVersion: {
                 NVI: "O sábio, ouvindo-os, aumentará o seu conhecimento, e o discernidor obterá orientação, para entender provérbios e parábolas, ditos e enigmas dos sábios.",
               },
+              originals: [
+                { word: "מָשָׁל", translit: "mashal", meaning: "'provérbio, comparação' — dito breve que exige reflexão para se revelar em toda a profundidade", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -363,12 +396,18 @@ const comoEstudarBiblia: Trail = {
                 textByVersion: {
                   NVI: "Naquele dia Débora e Baraque, filho de Abinoão, cantaram este cântico: 'Quando os líderes lideram em Israel, quando o povo se dispõe para a batalha, louvem o Senhor!'",
                 },
+                originals: [
+                  { word: "שִׁירָה", translit: "shirah", meaning: "'canção, cântico' — Débora e Baraque respondem à vitória com poesia cantada, o gênero apropriado para celebrar a ação de Deus", lang: "hebraico" },
+                ],
               },
               {
                 ref: "Apocalipse 1:1",
                 textByVersion: {
                   NVI: "Revelação de Jesus Cristo, a qual Deus lhe deu para mostrar aos seus servos o que em breve há de acontecer. Ele enviou o seu anjo para dá-la a conhecer ao seu servo João, tornando-a conhecida por sinais.",
                 },
+                originals: [
+                  { word: "σημαίνω", translit: "sēmainō", meaning: "'comunicar por meio de sinais, simbolizar' — a própria palavra avisa o leitor: o que segue será comunicado por símbolos, não descrição literal", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -439,12 +478,18 @@ const comoEstudarBiblia: Trail = {
               textByVersion: {
                 NVI: "E, começando por Moisés e todos os profetas, explicou-lhes o que constava a respeito dele em todas as Escrituras.",
               },
+              originals: [
+                { word: "διερμηνεύω", translit: "diermēneuō", meaning: "'explicar totalmente, interpretar completamente' — Jesus percorre toda a Escritura mostrando como ela aponta para ele", lang: "grego" },
+              ],
             },
             {
               ref: "João 5:39",
               textByVersion: {
                 NVI: "Vocês estudam cuidadosamente as Escrituras, porque pensam que nelas vocês têm a vida eterna. E são as Escrituras que testemunham a meu respeito.",
               },
+              originals: [
+                { word: "ἐρευνάω", translit: "ereunaō", meaning: "'esquadrinhar, investigar minuciosamente' — estudo intenso que, sem apontar para Cristo, perde seu propósito final", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -465,12 +510,18 @@ const comoEstudarBiblia: Trail = {
                 textByVersion: {
                   NVI: "Todos comeram do mesmo alimento espiritual e beberam da mesma bebida espiritual; pois todos bebiam da rocha espiritual que os acompanhava, e essa rocha era Cristo.",
                 },
+                originals: [
+                  { word: "πνευματικῆς", translit: "pneumatikēs", meaning: "'espiritual' — Paulo repete o adjetivo três vezes, identificando a rocha do deserto com Cristo mesmo", lang: "grego" },
+                ],
               },
               {
                 ref: "Colossenses 2:16-17",
                 textByVersion: {
                   NVI: "Portanto, não deixem que ninguém os julgue pelo que vocês comem ou bebem, ou com relação a alguma festividade religiosa... Essas coisas são sombra dos fatos vindouros; a realidade, porém, encontra-se em Cristo.",
                 },
+                originals: [
+                  { word: "σκιὰ", translit: "skia", meaning: "'sombra' — os rituais do Antigo Testamento prenunciavam algo; a substância real (sōma, 'corpo') é Cristo", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -544,6 +595,9 @@ const comoEstudarBiblia: Trail = {
               textByVersion: {
                 NVI: "Pois Esdras tinha dedicado o coração ao estudo e à prática da Lei do Senhor, e ao ensino de seus decretos e ordenanças em Israel.",
               },
+              originals: [
+                { word: "דָּרַשׁ", translit: "darash", meaning: "'buscar, estudar diligentemente' — Esdras dedicou o coração a investigar a Lei antes de praticá-la e ensiná-la", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -564,12 +618,18 @@ const comoEstudarBiblia: Trail = {
                 textByVersion: {
                   NVI: "As palavras do Senhor são palavras imaculadas, como prata refinada numa fornalha de argila, purificada sete vezes.",
                 },
+                originals: [
+                  { word: "צָרַף", translit: "tsaraph", meaning: "'refinar, purificar metais no fogo' — imagem da pureza absoluta das palavras de Deus, testadas sete vezes", lang: "hebraico" },
+                ],
               },
               {
                 ref: "Provérbios 30:5-6",
                 textByVersion: {
                   NVI: "Toda palavra de Deus é comprovadamente verdadeira... Não acrescente nada às suas palavras, do contrário ele o repreenderá e você será considerado mentiroso.",
                 },
+                originals: [
+                  { word: "יָסַף", translit: "yasaph", meaning: "'acrescentar, adicionar' — a proibição protege a suficiência das palavras de Deus contra adições humanas", lang: "hebraico" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -649,6 +709,9 @@ const comoEstudarBiblia: Trail = {
               textByVersion: {
                 NVI: "A lei do Senhor é perfeita e revigora a alma. Os testemunhos do Senhor são dignos de confiança, tornam sábios os inexperientes. Os preceitos do Senhor são justos e dão alegria ao coração.",
               },
+              originals: [
+                { word: "תּוֹרָה", translit: "torah", meaning: "'instrução, ensino' — mais amplo que 'regra'; um sentido de direção paternal para a vida inteira", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -669,12 +732,18 @@ const comoEstudarBiblia: Trail = {
                 textByVersion: {
                   NVI: "Tornei-me tudo para todos os homens, para que de alguma forma eu possa salvar alguns. Faço tudo isso por causa do evangelho, para ser copartícipe dele.",
                 },
+                originals: [
+                  { word: "συγκοινωνὸς", translit: "synkoinōnós", meaning: "'copartícipe' — Paulo não apenas anuncia o evangelho; torna-se parceiro ativo em seus benefícios e seu custo", lang: "grego" },
+                ],
               },
               {
                 ref: "Atos 15:28-29",
                 textByVersion: {
                   NVI: "Pareceu bem ao Espírito Santo e a nós não impor a vocês maiores encargos além destes requisitos essenciais: abster-se de comida sacrificada aos ídolos, do sangue, da carne de animais estrangulados e da imoralidade sexual.",
                 },
+                originals: [
+                  { word: "ἔδοξεν", translit: "édoxen", meaning: "'pareceu bem, foi a decisão' — fórmula de decreto oficial; o concílio expressa discernimento comunitário guiado pelo Espírito", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -739,12 +808,18 @@ const comoEstudarBiblia: Trail = {
               textByVersion: {
                 NVI: "A vocês foi confiado o mistério do Reino de Deus; mas aos que estão de fora tudo é dito por parábolas, para que 'ainda que vejam, não percebam; e ainda que ouçam, não entendam; para que não se convertam e sejam perdoados'.",
               },
+              originals: [
+                { word: "μυστήριον", translit: "mystērion", meaning: "'mistério' — não algo confuso, mas uma verdade antes oculta agora revelada por Deus a quem tem coração disposto", lang: "grego" },
+              ],
             },
             {
               ref: "Lucas 10:36-37",
               textByVersion: {
                 NVI: "'Qual desses três parece a você ter sido o próximo do homem que caiu nas mãos dos assaltantes?' O perito na lei respondeu: 'Aquele que teve misericórdia dele.' Jesus disse: 'Vá e faça o mesmo.'",
               },
+              originals: [
+                { word: "πλησίον", translit: "plēsíon", meaning: "'próximo' — Jesus vira a pergunta original ('quem é meu próximo?') do lado passivo para o ativo: quem age como próximo", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -765,12 +840,18 @@ const comoEstudarBiblia: Trail = {
                 textByVersion: {
                   NVI: "Jesus falou tudo isso à multidão por parábolas; sem usar parábolas nada lhes dizia. Assim se cumpriu o que fora dito pelo profeta: 'Abrirei a minha boca em parábolas, contarei coisas escondidas desde a criação do mundo.'",
                 },
+                originals: [
+                  { word: "κεκρυμμένα", translit: "kekrymména", meaning: "'coisas escondidas' — as parábolas revelam o que estava oculto desde a fundação do mundo, cumprindo profecia (Salmo 78:2)", lang: "grego" },
+                ],
               },
               {
                 ref: "Daniel 2:44-45",
                 textByVersion: {
                   NVI: "Nos dias daqueles reis, o Deus dos céus estabelecerá um reino que jamais será destruído... Foi assim que o rei viu uma pedra sendo cortada de um monte, sem auxílio de mãos.",
                 },
+                originals: [
+                  { word: "אֶבֶן", translit: "even", meaning: "'pedra' — cortada sem auxílio de mãos humanas, símbolo do reino de Deus que se estabelece por iniciativa divina, não força humana", lang: "hebraico" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -835,12 +916,18 @@ const comoEstudarBiblia: Trail = {
               textByVersion: {
                 NVI: "Nele, porém, está o seu prazer, na lei do Senhor, e nessa lei medita de dia e de noite. É como árvore plantada à beira de águas correntes que dá fruto no tempo certo, e as suas folhas não murcham. Tudo o que ele faz prospera.",
               },
+              originals: [
+                { word: "שִׂיחַ", translit: "siach", meaning: "'meditar, ruminar' — mastigar devagar a verdade, repetidas vezes, até extrair todo o proveito", lang: "hebraico" },
+              ],
             },
             {
               ref: "Provérbios 11:14",
               textByVersion: {
                 NVI: "Sem uma direção acertada a nação cai; a vitória depende dos muitos conselheiros.",
               },
+              originals: [
+                { word: "תַּחְבֻּלוֹת", translit: "tachbulot", meaning: "'direção estratégica, conselhos sábios' — a nação carece de rumo quando falta orientação coletiva e ponderada", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -861,12 +948,18 @@ const comoEstudarBiblia: Trail = {
                 textByVersion: {
                   NVI: "Estas palavras que hoje ordeno a vocês estarão em seu coração. Vocês as ensinarão com persistência a seus filhos, e delas falarão quando estiverem sentados em casa, quando andarem pelo caminho, quando se deitarem e quando se levantarem.",
                 },
+                originals: [
+                  { word: "שָׁנַן", translit: "shanan", meaning: "'ensinar diligentemente, incutir com afinco' — imagem de afiar uma lâmina; o ensino repetido 'afia' o coração para a obediência", lang: "hebraico" },
+                ],
               },
               {
                 ref: "2 Timóteo 2:2",
                 textByVersion: {
                   NVI: "E o que você ouviu de mim na presença de muitas testemunhas, confie a homens fiéis que sejam capazes de ensinar a outros.",
                 },
+                originals: [
+                  { word: "παράθου", translit: "paráthou", meaning: "'confie, deposite' — imagem de um depósito valioso entregue aos cuidados de alguém fiel para ser preservado e repassado", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -937,12 +1030,18 @@ const comoEstudarBiblia: Trail = {
               textByVersion: {
                 NVI: "E, começando por Moisés e todos os Profetas, explicou-lhes o que constava a respeito dele em todas as Escrituras.",
               },
+              originals: [
+                { word: "διερμηνεύω", translit: "diermēneuō", meaning: "'explicar totalmente, interpretar completamente' — Jesus percorre toda a Escritura mostrando como ela aponta para ele", lang: "grego" },
+              ],
             },
             {
               ref: "Gênesis 3:15",
               textByVersion: {
                 NVI: "Porei inimizade entre você e a mulher, e entre a sua descendência e o descendente dela; este lhe ferirá a cabeça, e você lhe ferirá o calcanhar.",
               },
+              originals: [
+                { word: "זֶרַע", translit: "zera", meaning: "'descendência, semente' — o mesmo termo que atravessa toda a metanarrativa bíblica até o Descendente prometido, Cristo", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -963,12 +1062,18 @@ const comoEstudarBiblia: Trail = {
                 textByVersion: {
                   NVI: "Ele nos revelou o mistério da sua vontade [...], que ele propôs em Cristo, com o fim de fazer convergir nele, quando os tempos se cumprissem, todas as coisas, tanto as do céu como as da terra.",
                 },
+                originals: [
+                  { word: "ἀνακεφαλαίωσις", translit: "anakephalaiōsis", meaning: "'recapitulação, reunião de tudo sob uma só cabeça' — palavra rara que descreve o objetivo final da história: tudo reunido em Cristo", lang: "grego" },
+                ],
               },
               {
                 ref: "Apocalipse 21:3",
                 textByVersion: {
                   NVI: "Ouvi uma forte voz que vinha do trono e dizia: 'Agora o tabernáculo de Deus está entre os homens, com os quais ele viverá. Eles serão povos dele; o próprio Deus estará com eles e será o seu Deus.'",
                 },
+                originals: [
+                  { word: "σκηνώσει", translit: "skēnōsei", meaning: "'armará tenda, habitará' — mesma raiz de 'tabernáculo'; a presença de Deus entre seu povo, que começou no deserto, culmina aqui para sempre", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -1033,12 +1138,18 @@ const comoEstudarBiblia: Trail = {
               textByVersion: {
                 NVI: "Filipe correu para o carro e ouviu o homem lendo o profeta Isaías. Filipe lhe perguntou: 'Você entende o que está lendo?' Ele respondeu: 'Como poderei entender se alguém não me ajudar?'",
               },
+              originals: [
+                { word: "γινώσκω", translit: "ginōskō", meaning: "'conhecer, compreender' — a pergunta de Filipe mostra que entender não é automático; é algo que se busca", lang: "grego" },
+              ],
             },
             {
               ref: "Neemias 8:8",
               textByVersion: {
                 NVI: "Eles liam claramente o livro da Lei de Deus, interpretando-o e explicando o sentido para que o povo pudesse entender o que estava sendo lido.",
               },
+              originals: [
+                { word: "בִּין", translit: "bin", meaning: "'discernir, dar entendimento' — verbo usado para o trabalho dos levitas de tornar clara a leitura pública da Lei", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -1059,12 +1170,18 @@ const comoEstudarBiblia: Trail = {
                 textByVersion: {
                   NVI: "Abre os meus olhos para que eu veja as maravilhas da tua lei.",
                 },
+                originals: [
+                  { word: "גָּלָה", translit: "galah", meaning: "'revelar, descobrir, abrir' — entender a Escritura é, em parte, um dom que se pede a Deus, não apenas uma técnica", lang: "hebraico" },
+                ],
               },
               {
                 ref: "Mateus 13:10-11",
                 textByVersion: {
                   NVI: "Os discípulos aproximaram-se dele e perguntaram: 'Por que o senhor fala ao povo por parábolas?' Ele respondeu: 'A vocês foi dado o conhecimento dos mistérios do Reino dos céus, mas a eles não foi dado.'",
                 },
+                originals: [
+                  { word: "ἐρωτάω", translit: "erōtaō", meaning: "'perguntar, interrogar com o propósito de aprender' — os discípulos não têm vergonha de admitir que não entendiam", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -1159,6 +1276,9 @@ const oracao: Trail = {
               textByVersion: {
                 NVI: "Da mesma forma o Espírito nos ajuda em nossa fraqueza, pois não sabemos como orar, nem o que pedir, mas o próprio Espírito intercede por nós com gemidos inexprimíveis.",
               },
+              originals: [
+                { word: "στεναγμός", translit: "stenagmos", meaning: "'gemido, suspiro profundo demais para palavras' — descreve a intercessão do Espírito quando nem sabemos como orar", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -1179,12 +1299,18 @@ const oracao: Trail = {
                 textByVersion: {
                   NVI: "E eu farei o que vocês pedirem em meu nome, para que o Filho traga glória ao Pai. O que vocês pedirem em meu nome eu farei.",
                 },
+                originals: [
+                  { word: "ἐν τῷ ὀνόματί μου", translit: "en tō onómati mou", meaning: "'em meu nome' — pedir com a autoridade e o caráter de Cristo, não como fórmula mágica de encerramento", lang: "grego" },
+                ],
               },
               {
                 ref: "Gálatas 4:6",
                 textByVersion: {
                   NVI: "Porque vocês são filhos, Deus enviou aos nossos corações o Espírito de seu Filho, que clama: 'Aba, Pai'.",
                 },
+                originals: [
+                  { word: "Ἀββά", translit: "Abbá", meaning: "'Papai' — palavra aramaica de intimidade familiar que o próprio Espírito coloca em nossa boca ao orarmos", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -1251,12 +1377,18 @@ const oracao: Trail = {
               textByVersion: {
                 NVI: "Vocês, orem assim: Pai nosso, que estás nos céus! Santificado seja o teu nome. Venha o teu Reino; seja feita a tua vontade, assim na terra como no céu. Dá-nos hoje o nosso pão de cada dia. Perdoa as nossas dívidas, assim como perdoamos aos nossos devedores. E não nos deixes cair em tentação, mas livra-nos do mal.",
               },
+              originals: [
+                { word: "ἁγιασθήτω", translit: "hagiasthētō", meaning: "'seja santificado' — verbo no imperativo, primeira petição do Pai Nosso, antes de qualquer pedido pessoal", lang: "grego" },
+              ],
             },
             {
               ref: "Lucas 11:1",
               textByVersion: {
                 NVI: "Certo dia Jesus estava orando em determinado lugar. Tendo terminado, um dos seus discípulos lhe disse: 'Senhor, ensina-nos a orar, como também João ensinou aos seus discípulos'.",
               },
+              originals: [
+                { word: "προσεύχεσθαι", translit: "proseúchesthai", meaning: "'orar' — o pedido nasce da observação da vida de oração de Jesus, não de um milagre espetacular", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -1277,12 +1409,18 @@ const oracao: Trail = {
                 textByVersion: {
                   NVI: "Ele lhes disse: 'Quando orarem, digam: Pai, santificado seja o teu nome. Venha o teu Reino. Dá-nos cada dia o pão de cada dia. Perdoa-nos os nossos pecados, pois também perdoamos a todos que nos devem. E não nos deixes cair em tentação'.",
                 },
+                originals: [
+                  { word: "מַלְכוּת", translit: "malkut", meaning: "'reino, reinado, soberania' — não apenas um lugar, mas o governo ativo de Deus sobre tudo", lang: "hebraico" },
+                ],
               },
               {
                 ref: "Mateus 6:7-8",
                 textByVersion: {
                   NVI: "E, ao orar, não fiquem sempre repetindo a mesma coisa, como fazem os pagãos, pois eles pensam que serão ouvidos por causa de suas muitas palavras. Não sejam como eles, pois o Pai de vocês sabe do que vocês precisam, antes mesmo de o pedirem.",
                 },
+                originals: [
+                  { word: "βαττολογήσητε", translit: "battalogēsēte", meaning: "'fiquem repetindo, tagarelando sem sentido' — termo raro que condena a oração vazia, mecânica, feita para impressionar", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -1356,6 +1494,9 @@ const oracao: Trail = {
               textByVersion: {
                 NVI: "Esta é a confiança que temos ao nos aproximarmos de Deus: se pedirmos alguma coisa de acordo com a sua vontade, ele nos ouve.",
               },
+              originals: [
+                { word: "παρρησία", translit: "parrēsia", meaning: "'confiança livre, ousadia sem medo' — a mesma liberdade de falar concedida ao crente diante de Deus", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -1376,12 +1517,18 @@ const oracao: Trail = {
                 textByVersion: {
                   NVI: "Nesse momento, o véu do santuário do templo foi rasgado em dois, de alto a baixo. A terra tremeu, e as rochas se partiram.",
                 },
+                originals: [
+                  { word: "καταπέτασμα", translit: "katapetasma", meaning: "'véu, cortina' — separava o Lugar Santíssimo; rasgado de alto a baixo, sinaliza acesso aberto a Deus", lang: "grego" },
+                ],
               },
               {
                 ref: "Romanos 8:15",
                 textByVersion: {
                   NVI: "Vocês não receberam um espírito que os escravize para novamente temer, mas receberam o Espírito que os adota como filhos, por meio do qual clamamos: 'Aba, Pai'.",
                 },
+                originals: [
+                  { word: "υἱοθεσία", translit: "huiothesia", meaning: "'adoção como filho' — ato legal e afetuoso pelo qual o crente é incorporado à família de Deus como herdeiro", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -1452,12 +1599,18 @@ const oracao: Trail = {
               textByVersion: {
                 NVI: "Entrem por suas portas com ações de graças e em seus átrios com louvor; deem-lhe graças e bendigam o seu nome.",
               },
+              originals: [
+                { word: "תְּהִלָּה", translit: "tehillah", meaning: "'louvor, canto de adoração' — raiz da palavra 'Salmos' em hebraico (Tehillim), o livro de louvores de Israel", lang: "hebraico" },
+              ],
             },
             {
               ref: "Filipenses 4:6",
               textByVersion: {
                 NVI: "Em tudo, pela oração e súplicas, e com ação de graças, apresentem seus pedidos a Deus.",
               },
+              originals: [
+                { word: "εὐχαριστία", translit: "eucharistia", meaning: "'ação de graças, gratidão expressa em palavras' — raiz da palavra 'eucaristia', usada para a Ceia do Senhor", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -1478,12 +1631,18 @@ const oracao: Trail = {
                 textByVersion: {
                   NVI: "Que tudo o que tem vida dê louvor ao Senhor! Aleluia!",
                 },
+                originals: [
+                  { word: "זָמַר", translit: "zamar", meaning: "'louvar cantando, tocar instrumento em louvor' — verbo que liga louvor e música em todo o Saltério", lang: "hebraico" },
+                ],
               },
               {
                 ref: "Colossenses 3:17",
                 textByVersion: {
                   NVI: "E tudo o que fizerem, seja em palavra ou em ação, façam-no em nome do Senhor Jesus, dando por meio dele graças a Deus Pai.",
                 },
+                originals: [
+                  { word: "δοξολογία", translit: "doxologia", meaning: "'palavra de louvor, atribuição de glória' — toda ação cotidiana pode se tornar esse tipo de oferta a Deus", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -1548,12 +1707,18 @@ const oracao: Trail = {
               textByVersion: {
                 NVI: "Se confessarmos os nossos pecados, ele é fiel e justo para perdoar os nossos pecados e nos purificar de toda injustiça.",
               },
+              originals: [
+                { word: "ὁμολογέω", translit: "homologeō", meaning: "'confessar, concordar com' — literalmente 'dizer a mesma coisa' que Deus diz sobre o pecado, sem minimizar", lang: "grego" },
+              ],
             },
             {
               ref: "Salmos 51:3-4",
               textByVersion: {
                 NVI: "Sei quais são as minhas transgressões, e o meu pecado está sempre diante de mim. Só contra ti pequei e fiz o que tu reprovas.",
               },
+              originals: [
+                { word: "חָטָא", translit: "chata", meaning: "'pecar, errar o alvo' — imagem de uma flecha que não atinge o centro pretendido, desviar-se do padrão de Deus", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -1574,12 +1739,18 @@ const oracao: Trail = {
                 textByVersion: {
                   NVI: "Enquanto guardei silêncio, meus ossos se consumiam em meu gemer o dia inteiro... Então confessei a ti o meu pecado e não escondi a minha iniquidade.",
                 },
+                originals: [
+                  { word: "נָחַם", translit: "nacham", meaning: "'arrepender-se, mudar de propósito' — verbo que descreve uma reviravolta genuína de direção, não apenas remorso emocional", lang: "hebraico" },
+                ],
               },
               {
                 ref: "2 Coríntios 7:10",
                 textByVersion: {
                   NVI: "A tristeza segundo Deus produz arrependimento que leva à salvação e não traz arrependimento nenhum; a tristeza do mundo, porém, produz morte.",
                 },
+                originals: [
+                  { word: "μετάνοια", translit: "metanoia", meaning: "'mudança de mente' — arrependimento genuíno como transformação de rumo, não apenas sentimento de pesar", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -1650,12 +1821,18 @@ const oracao: Trail = {
               textByVersion: {
                 NVI: "Peçam, e lhes será dado; busquem, e encontrarão; batam, e a porta lhes será aberta. Pois todo o que pede recebe; o que busca encontra; e àquele que bate, a porta é aberta.",
               },
+              originals: [
+                { word: "αἰτέω", translit: "aiteō", meaning: "'pedir' — verbo comum usado por Jesus para incentivar o pedido direto e confiante a Deus", lang: "grego" },
+              ],
             },
             {
               ref: "Filipenses 4:6-7",
               textByVersion: {
                 NVI: "Não andem ansiosos por coisa alguma, mas em tudo, pela oração e súplicas, e com ação de graças, apresentem seus pedidos a Deus. E a paz de Deus, que excede todo o entendimento, guardará o coração e a mente de vocês em Cristo Jesus.",
               },
+              originals: [
+                { word: "δέησις", translit: "deēsis", meaning: "'súplica, pedido urgente' — apresentação sincera de uma necessidade específica diante de Deus", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -1676,12 +1853,18 @@ const oracao: Trail = {
                 textByVersion: {
                   NVI: "Que o Senhor seja a sua alegria, e ele atenderá aos desejos do seu coração.",
                 },
+                originals: [
+                  { word: "שָׁאַל", translit: "shaal", meaning: "'pedir, solicitar' — verbo hebraico comum para pedido, usado por Ana ao pedir um filho ao Senhor (1 Samuel 1)", lang: "hebraico" },
+                ],
               },
               {
                 ref: "Tiago 4:2-3",
                 textByVersion: {
                   NVI: "Vocês cobiçam coisas e não as têm; matam e invejam, mas não conseguem obter o que querem... Quando pedem, não recebem, pois pedem por motivos errados.",
                 },
+                originals: [
+                  { word: "ζητέω", translit: "zēteō", meaning: "'buscar' — segundo verbo da tríade de Mateus 7:7, sugerindo que a súplica exige persistência ativa, não um pedido único", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -1755,6 +1938,9 @@ const oracao: Trail = {
               textByVersion: {
                 NVI: "Por isso ele é capaz de salvar definitivamente aqueles que, por meio dele, se aproximam de Deus, pois vive sempre para interceder por eles.",
               },
+              originals: [
+                { word: "ἔντευξις", translit: "enteuxis", meaning: "'intercessão, apelo em favor de outrem' — Cristo vive sempre para exercer esse ministério contínuo por nós", lang: "grego" },
+              ],
             },
           ],
           keywords: [
