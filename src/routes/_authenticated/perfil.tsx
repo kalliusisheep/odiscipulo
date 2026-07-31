@@ -32,7 +32,10 @@ import {
   ChevronRight,
   ShieldCheck,
   Sparkles,
+  ImageIcon,
 } from "lucide-react";
+
+const PRESET_AVATARS = Array.from({ length: 10 }, (_, i) => `/avatares/avatar-${i + 1}.png`);
 
 export const Route = createFileRoute("/_authenticated/perfil")({
   component: PerfilPage,
@@ -72,6 +75,7 @@ function PerfilPage() {
   const [savingUsername, setSavingUsername] = useState(false);
   const [versionOpen, setVersionOpen] = useState(false);
   const [churchDialogOpen, setChurchDialogOpen] = useState(false);
+  const [avatarPickerOpen, setAvatarPickerOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const { bibleVersion, setBibleVersion } = useApp();
   const nav = useNavigate();
@@ -118,7 +122,17 @@ function PerfilPage() {
     await nav({ to: "/" });
   };
 
-  const onPickFile = () => fileRef.current?.click();
+  const onPickFile = () => setAvatarPickerOpen(true);
+
+  const onChooseFromGallery = () => {
+    setAvatarPickerOpen(false);
+    fileRef.current?.click();
+  };
+
+  const onChoosePresetAvatar = async (url: string) => {
+    setAvatarPickerOpen(false);
+    await update({ avatar_url: url });
+  };
 
   const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -258,6 +272,49 @@ function PerfilPage() {
               </button>
               <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onFileChange} />
             </div>
+
+            <Dialog open={avatarPickerOpen} onOpenChange={setAvatarPickerOpen}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Escolher foto de perfil</DialogTitle>
+                  <DialogDescription>Selecione um avatar ou envie uma foto sua.</DialogDescription>
+                </DialogHeader>
+
+                <button
+                  type="button"
+                  onClick={onChooseFromGallery}
+                  className="flex w-full items-center gap-3 rounded-2xl border border-border bg-surface p-3.5 text-left transition-colors hover:border-primary/40 hover:bg-primary/5"
+                >
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <ImageIcon className="h-5 w-5" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-semibold">Enviar da galeria</span>
+                    <span className="block text-xs text-muted-foreground">Escolha uma foto do seu celular ou computador</span>
+                  </span>
+                </button>
+
+                <div className="grid grid-cols-5 gap-3 pt-1">
+                  {PRESET_AVATARS.map((url) => (
+                    <button
+                      key={url}
+                      type="button"
+                      onClick={() => void onChoosePresetAvatar(url)}
+                      className={`relative aspect-square overflow-hidden rounded-2xl ring-2 transition-transform hover:scale-105 active:scale-95 ${
+                        profile.avatar_url === url ? "ring-primary" : "ring-transparent"
+                      }`}
+                    >
+                      <img src={url} alt="Avatar" className="h-full w-full object-cover" />
+                      {profile.avatar_url === url && (
+                        <span className="absolute inset-0 flex items-center justify-center bg-black/30">
+                          <Check className="h-5 w-5 text-white" />
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </DialogContent>
+            </Dialog>
 
             <h2 className="mt-3 text-lg font-bold text-white">{profile.display_name}</h2>
 
