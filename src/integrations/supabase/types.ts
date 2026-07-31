@@ -543,6 +543,7 @@ export type Database = {
           lesson_id: string
           lesson_title: string
           share_text: string
+          updated_at: string
         }
         Insert: {
           created_at?: string
@@ -550,6 +551,7 @@ export type Database = {
           lesson_id: string
           lesson_title: string
           share_text: string
+          updated_at?: string
         }
         Update: {
           created_at?: string
@@ -557,6 +559,7 @@ export type Database = {
           lesson_id?: string
           lesson_title?: string
           share_text?: string
+          updated_at?: string
         }
         Relationships: []
       }
