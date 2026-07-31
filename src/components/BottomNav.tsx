@@ -4,7 +4,7 @@ import { Home, BookOpen, MessageSquareHeart, Trophy, User } from "lucide-react";
 const tabs = [
   { to: "/home", label: "Inicial", icon: Home },
   { to: "/estudos", label: "Estudos", icon: BookOpen },
-  { to: "/mural", label: "Mural", icon: MessageSquareHeart },
+  { to: "/mural", label: "Feed", icon: MessageSquareHeart },
   { to: "/ranking", label: "Ranking", icon: Trophy },
   { to: "/perfil", label: "Perfil", icon: User },
 ] as const;
