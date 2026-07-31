@@ -1,14 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createHash } from "node:crypto";
 
-/** Bucket no Supabase Storage usado como cache dos áudios já gerados pelo Kokoro. */
+/** Bucket no Supabase Storage usado como cache dos áudios já gerados. */
 const BUCKET = "narration-audio";
 
-/** Tempo máximo (ms) que esperamos o servidor Kokoro responder antes de desistir. */
-const KOKORO_TIMEOUT_MS = 20_000;
+/** Modelo de voz (Lovable AI) usado para a narração. */
+const TTS_MODEL = "openai/gpt-4o-mini-tts";
+/** Voz base — calorosa e grave, boa para leitura pastoral. */
+const TTS_VOICE = "onyx";
+/** Direção de estilo: português do Brasil, ritmo calmo e natural. */
+const TTS_INSTRUCTIONS =
+  "Fale em português do Brasil, com sotaque brasileiro natural e nativo. " +
+  "Tom pastoral, caloroso e acolhedor, como quem lê a Bíblia em voz alta para alguém querido. " +
+  "Ritmo calmo e pausado, respeitando a pontuação, sem pressa e sem entonação robótica.";
+
+/** Tempo máximo (ms) que esperamos a geração do áudio antes de desistir. */
+const TTS_TIMEOUT_MS = 25_000;
 
 function hashText(text: string): string {
-  return createHash("sha256").update(text).digest("hex");
+  return createHash("sha256").update(`${TTS_MODEL}:${TTS_VOICE}:${text}`).digest("hex");
 }
 
 async function tryGetCached(fileName: string): Promise<ArrayBuffer | null> {
@@ -16,7 +26,8 @@ async function tryGetCached(fileName: string): Promise<ArrayBuffer | null> {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data } = await supabaseAdmin.storage.from(BUCKET).download(fileName);
     if (!data) return null;
-    return await data.arrayBuffer();
+    const buf = await data.arrayBuffer();
+    return buf.byteLength > 0 ? buf : null;
   } catch (e) {
     console.error("Narração: cache indisponível ao ler", e);
     return null;
@@ -28,11 +39,20 @@ async function trySaveCache(fileName: string, audioBuf: ArrayBuffer): Promise<vo
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.storage
       .from(BUCKET)
-      .upload(fileName, audioBuf, { contentType: "audio/wav", upsert: true });
+      .upload(fileName, audioBuf, { contentType: "audio/mpeg", upsert: true });
     if (error) console.error("Narração: falha ao salvar no cache", error);
   } catch (e) {
     console.error("Narração: cache indisponível ao salvar", e);
   }
+}
+
+function audioResponse(buf: ArrayBuffer): Response {
+  return new Response(buf, {
+    headers: {
+      "Content-Type": "audio/mpeg",
+      "Cache-Control": "public, max-age=31536000, immutable",
+    },
+  });
 }
 
 export const Route = createFileRoute("/api/tts")({
@@ -45,73 +65,61 @@ export const Route = createFileRoute("/api/tts")({
           if (!text) return new Response("Missing text", { status: 400 });
           if (text.length > 2000) return new Response("Text too long", { status: 400 });
 
-          const fileName = `${hashText(text)}-kokoro.wav`;
+          const fileName = `${hashText(text)}.mp3`;
 
-          // 1. Tenta servir do cache.
+          // 1. Cache: se esse trecho já foi narrado alguma vez, serve de graça.
           const cached = await tryGetCached(fileName);
-          if (cached) {
-            return new Response(cached, {
-              headers: {
-                "Content-Type": "audio/wav",
-                "Cache-Control": "public, max-age=31536000, immutable",
-              },
-            });
-          }
+          if (cached) return audioResponse(cached);
 
-          // 2. Sem cache: gera no servidor Kokoro (Render).
-          const kokoroUrl = process.env.KOKORO_TTS_URL;
-          const kokoroKey = process.env.KOKORO_TTS_API_KEY;
-          if (!kokoroUrl) {
-            return new Response("KOKORO_TTS_URL ausente", { status: 500 });
-          }
+          // 2. Sem cache: gera com a voz de IA da Lovable.
+          const apiKey = process.env.LOVABLE_API_KEY;
+          if (!apiKey) return new Response("LOVABLE_API_KEY ausente", { status: 500 });
 
-          const headers: Record<string, string> = { "Content-Type": "application/json" };
-          if (kokoroKey) headers["x-api-key"] = kokoroKey;
-
-          // Timeout: se o Kokoro não responder em KOKORO_TIMEOUT_MS, desistimos
-          // em vez de deixar o request pendurado por minutos.
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), KOKORO_TIMEOUT_MS);
+          const timeoutId = setTimeout(() => controller.abort(), TTS_TIMEOUT_MS);
 
           let res: Response;
           try {
-            res = await fetch(`${kokoroUrl.replace(/\/$/, "")}/synthesize`, {
+            res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
               method: "POST",
-              headers,
-              body: JSON.stringify({ text }),
+              headers: {
+                Authorization: `Bearer ${apiKey}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                model: TTS_MODEL,
+                input: text,
+                voice: TTS_VOICE,
+                instructions: TTS_INSTRUCTIONS,
+                response_format: "mp3",
+                stream_format: "audio",
+                speed: 0.95,
+              }),
               signal: controller.signal,
             });
           } catch (e) {
             clearTimeout(timeoutId);
-            const timedOut = (e as Error)?.name === "AbortError";
-            console.error("Narração: falha ao chamar Kokoro", e);
-            return new Response(
-              timedOut
-                ? "Kokoro: timeout (servidor não respondeu a tempo)"
-                : "Kokoro: erro de rede",
-              { status: 504 },
-            );
+            console.error("Narração: falha ao gerar áudio", e);
+            return new Response("Narração: tempo esgotado ao gerar o áudio", { status: 504 });
           }
           clearTimeout(timeoutId);
 
           if (!res.ok) {
             const errText = await res.text().catch(() => "");
-            return new Response(`Kokoro ${res.status}: ${errText.slice(0, 200)}`, {
-              status: 502,
-            });
+            console.error(`Narração: gateway ${res.status}`, errText.slice(0, 500));
+            const status = res.status === 402 || res.status === 429 ? res.status : 502;
+            return new Response(`TTS ${res.status}: ${errText.slice(0, 200)}`, { status });
           }
 
           const audioBuf = await res.arrayBuffer();
+          if (audioBuf.byteLength === 0) {
+            return new Response("Narração: áudio vazio", { status: 502 });
+          }
 
-          // 3. Salva no cache pras próximas vezes.
+          // 3. Guarda no cache — próximas escutas do mesmo trecho são gratuitas.
           void trySaveCache(fileName, audioBuf);
 
-          return new Response(audioBuf, {
-            headers: {
-              "Content-Type": "audio/wav",
-              "Cache-Control": "public, max-age=31536000, immutable",
-            },
-          });
+          return audioResponse(audioBuf);
         } catch (e) {
           const msg = e instanceof Error ? e.message : "erro";
           console.error("Narração: erro em /api/tts", e);
