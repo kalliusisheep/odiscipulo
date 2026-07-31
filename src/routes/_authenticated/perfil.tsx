@@ -54,6 +54,10 @@ const PRESET_AVATARS: { id: string; label: string; src: string }[] = [
   { id: "avatar-4", label: "Avatar 4", src: "/avatares/avatar-4.png" },
   { id: "avatar-5", label: "Avatar 5", src: "/avatares/avatar-5.png" },
   { id: "avatar-6", label: "Avatar 6", src: "/avatares/avatar-6.png" },
+  { id: "avatar-7", label: "Avatar 7", src: "/avatares/avatar-7.png" },
+  { id: "avatar-8", label: "Avatar 8", src: "/avatares/avatar-8.png" },
+  { id: "avatar-9", label: "Avatar 9", src: "/avatares/avatar-9.png" },
+  { id: "avatar-10", label: "Avatar 10", src: "/avatares/avatar-10.png" },
 ];
 
 type Profile = {
