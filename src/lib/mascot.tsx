@@ -243,6 +243,43 @@ export function muralAmenLines(senderName: string): string[] {
   ];
 }
 
+// Falas ditas quando o usuário recebe um novo desafio de outro usuário.
+// Sempre citam quem desafiou, nunca repetem a mesma frase.
+function challengeReceivedLines(challengerName: string): string[] {
+  return [
+    `${challengerName} te desafiou! Bora aceitar e mostrar do que você é capaz? 🔥`,
+    `Novo desafio de ${challengerName} chegando! Aceita o convite?`,
+    `${challengerName} quer estudar em dupla com você — via desafio. Topa?`,
+    `Um desafio de ${challengerName} pode ser o empurrão que faltava hoje.`,
+    `${challengerName} te chamou pra um desafio! Vai encarar?`,
+    `Tem gente querendo caminhar (e competir com carinho) com você: ${challengerName} te desafiou.`,
+  ];
+}
+
+// Falas ditas quando um amigo publica algo novo no mural — reforçam a
+// comunhão e convidam a orar/encorajar. Sempre citam quem publicou.
+function feedPostLines(authorName: string): string[] {
+  return [
+    `${authorName} acabou de compartilhar algo no mural. Vale dar uma olhada e orar junto.`,
+    `Novo post de ${authorName} no mural — que tal deixar um Amém?`,
+    `${authorName} abriu o coração no mural agora. Vai lá encorajar.`,
+    `Tem clamor novo de ${authorName} no mural — comunhão também é isso.`,
+    `${authorName} publicou algo agora — sua palavra de ânimo pode fazer diferença.`,
+  ];
+}
+
+// Falas ditas quando um amigo ultrapassa o usuário no ranking (por XP).
+// O tom é de convite, nunca de pressão ou comparação negativa.
+function rankingOvertakeLines(name: string): string[] {
+  return [
+    `${name} passou você no ranking! Bora recuperar o ritmo, sem pressa?`,
+    `${name} está subindo rápido — que tal uma lição agora pra acompanhar?`,
+    `Olha, ${name} te ultrapassou. Isso é só um convite pra continuar firme.`,
+    `${name} tá te alcançando no ranking — nada como uma trilha pra hoje.`,
+    `${name} deu um salto no ranking. Que tal correr atrás, no seu tempo?`,
+  ];
+}
+
 // Falas específicas por aba — ditas quando o usuário navega para uma seção
 // do app, pra comentar o conteúdo daquela aba em vez de uma frase genérica.
 // Chave = prefixo da rota (ver `src/components/BottomNav.tsx` e demais rotas).
@@ -602,6 +639,121 @@ export function MascotProvider({ children }: { children: ReactNode }) {
             trigger("jump", pickRandom(muralAmenLines(fanName)), 1600);
           })();
         })
+        .subscribe();
+    })();
+    return () => {
+      if (channel) void supabase.removeChannel(channel);
+    };
+  }, [trigger]);
+
+  // Mascote reage quando chega um novo desafio de outro usuário — mesmo
+  // padrão das mensagens: escuta o INSERT em `challenges` filtrado pelo
+  // desafiado (eu) e busca o nome de quem desafiou antes de comentar.
+  useEffect(() => {
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    void (async () => {
+      const { data: u } = await supabase.auth.getUser();
+      if (!u.user) return;
+      channel = supabase
+        .channel(`mascot-challenges-${u.user.id}-${Math.random().toString(36).slice(2)}`)
+        .on(
+          "postgres_changes",
+          { event: "INSERT", schema: "public", table: "challenges", filter: `challenged_id=eq.${u.user.id}` },
+          (payload) => {
+            const challengerId = (payload.new as { challenger_id: string }).challenger_id;
+            void (async () => {
+              const { data: challenger } = await supabase
+                .from("profiles")
+                .select("display_name")
+                .eq("id", challengerId)
+                .maybeSingle();
+              const challengerName = challenger?.display_name?.trim() || "Um irmão(ã)";
+              trigger("jump", pickRandom(challengeReceivedLines(challengerName)), 1800);
+            })();
+          },
+        )
+        .subscribe();
+    })();
+    return () => {
+      if (channel) void supabase.removeChannel(channel);
+    };
+  }, [trigger]);
+
+  // Mascote comenta quando um amigo publica algo novo no mural — só para
+  // amizades reais (evita reagir a todo post de estranhos/demo e virar
+  // spam) e com uma chance de silêncio pra não comentar todo post.
+  useEffect(() => {
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    void (async () => {
+      const { data: u } = await supabase.auth.getUser();
+      if (!u.user) return;
+      const myId = u.user.id;
+      const { data: fr } = await supabase.from("friendships").select("friend_id").eq("user_id", myId);
+      const friendIds = new Set((fr ?? []).map((r) => r.friend_id as string));
+      if (friendIds.size === 0) return;
+      channel = supabase
+        .channel(`mascot-mural-posts-${myId}-${Math.random().toString(36).slice(2)}`)
+        .on("postgres_changes", { event: "INSERT", schema: "public", table: "mural_posts" }, (payload) => {
+          const row = payload.new as { user_id: string | null; author_name: string };
+          if (!row.user_id || row.user_id === myId) return;
+          if (!friendIds.has(row.user_id)) return;
+          if (Math.random() > 0.7) return; // nem todo post gera comentário, pra não virar spam
+          trigger("jump", pickRandom(feedPostLines(row.author_name)), 1800);
+        })
+        .subscribe();
+    })();
+    return () => {
+      if (channel) void supabase.removeChannel(channel);
+    };
+  }, [trigger]);
+
+  // Mascote avisa quando um amigo ultrapassa o usuário no ranking (XP).
+  // Mantém em ref o XP mais recente do próprio usuário e um controle de
+  // quem já está "à frente" pra só comentar na hora da ultrapassagem, não
+  // a cada atualização de XP do amigo.
+  useEffect(() => {
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    const myXpRef = { current: 0 };
+    const aheadRef = new Set<string>();
+    void (async () => {
+      const { data: u } = await supabase.auth.getUser();
+      if (!u.user) return;
+      const myId = u.user.id;
+      const [{ data: me }, { data: fr }] = await Promise.all([
+        supabase.from("profiles").select("xp").eq("id", myId).maybeSingle(),
+        supabase.from("friendships").select("friend_id").eq("user_id", myId),
+      ]);
+      myXpRef.current = (me?.xp as number | null) ?? 0;
+      const friendIds = (fr ?? []).map((r) => r.friend_id as string);
+      if (friendIds.length === 0) return;
+
+      const filterList = friendIds.join(",");
+      channel = supabase
+        .channel(`mascot-ranking-${myId}-${Math.random().toString(36).slice(2)}`)
+        .on(
+          "postgres_changes",
+          { event: "UPDATE", schema: "public", table: "profiles", filter: `id=eq.${myId}` },
+          (payload) => {
+            const xp = (payload.new as { xp: number }).xp;
+            if (typeof xp === "number") myXpRef.current = xp;
+          },
+        )
+        .on(
+          "postgres_changes",
+          { event: "UPDATE", schema: "public", table: "profiles", filter: `id=in.(${filterList})` },
+          (payload) => {
+            const row = payload.new as { id: string; xp: number; display_name?: string | null };
+            if (typeof row.xp !== "number") return;
+            if (row.xp > myXpRef.current) {
+              if (aheadRef.has(row.id)) return; // já estava à frente, não repete
+              aheadRef.add(row.id);
+              const friendName = row.display_name?.trim() || "Um amigo";
+              trigger("sad", pickRandom(rankingOvertakeLines(friendName)), 1800);
+            } else {
+              aheadRef.delete(row.id);
+            }
+          },
+        )
         .subscribe();
     })();
     return () => {
