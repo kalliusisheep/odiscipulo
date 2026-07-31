@@ -32,7 +32,7 @@ const COL_W = 176;
 const ROW_H = 160;
 const PAD = 84;
 const HEADER_H = 136; // espaço reservado só no PDF pra faixa de título + legenda
-const FOOTER_H = 200; // espaço reservado só no PDF pra separador + logo + copyright
+const FOOTER_H = 70; // espaço reservado só no PDF pra separador, copyright pequeno e mascote pequena no canto
 const NAME_MAX_CHARS = 12;
 const NAME_FONT_SIZE = 9.5;
 
@@ -486,29 +486,29 @@ function ArvorePage() {
       }
       ctx.restore();
 
-      // ---------- RODAPÉ (separador, mascote e copyright, centralizados) ----------
+      // ---------- RODAPÉ (faixa baixa: texto pequeno à esquerda, mascote pequena no canto inferior direito) ----------
       const footerTop = HEADER_H + layout.height;
       ctx.strokeStyle = C.border;
       ctx.setLineDash([6, 4]);
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(PAD / 2, footerTop + 18);
-      ctx.lineTo(layout.width - PAD / 2, footerTop + 18);
+      ctx.moveTo(PAD / 2, footerTop + 14);
+      ctx.lineTo(layout.width - PAD / 2, footerTop + 14);
       ctx.stroke();
       ctx.setLineDash([]);
 
       const mascot = await loadImage("/sheep-mascot.png");
-      const mascotSize = 84;
-      const mascotX = layout.width / 2 - mascotSize / 2;
-      const mascotY = footerTop + 34;
+      const mascotSize = 36;
+      const mascotX = layout.width - PAD / 2 - mascotSize;
+      const mascotY = footerTop + FOOTER_H - mascotSize - 14;
       if (mascot) {
         ctx.drawImage(mascot, mascotX, mascotY, mascotSize, mascotSize);
       }
 
       ctx.fillStyle = C.mutedText;
-      ctx.font = "600 11px system-ui, sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("© 2026 iSheep. All Rights Reserved.", layout.width / 2, mascotY + mascotSize + 26);
+      ctx.font = "600 12px system-ui, sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText("© 2026 iSheep. All Rights Reserved.", PAD / 2, footerTop + FOOTER_H - 14 - mascotSize / 2 + 4);
 
       const dataUrl = canvas.toDataURL("image/png");
       const jspdfNs = await loadJsPdf();
