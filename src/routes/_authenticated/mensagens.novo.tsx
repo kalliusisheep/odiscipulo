@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { normalizeUsername } from "@/lib/username";
 import { toast } from "sonner";
-import { ArrowLeft, AtSign, Loader2, Search, UserCheck, UserPlus, Users } from "lucide-react";
+import { ArrowLeft, AtSign, Church, Loader2, Search, UserCheck, UserPlus, Users } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/mensagens/novo")({
   component: NovaMensagemPage,
@@ -15,6 +15,8 @@ type Contact = {
   username: string;
   avatar_url: string | null;
 };
+
+type ChurchSuggestion = Contact & { church_name: string };
 
 function NovaMensagemPage() {
   const nav = useNavigate();
@@ -29,6 +31,9 @@ function NovaMensagemPage() {
   const [searchResults, setSearchResults] = useState<Contact[]>([]);
   const [searchedOnce, setSearchedOnce] = useState(false);
   const [addingId, setAddingId] = useState<string | null>(null);
+
+  // Sugestões de contatos: outros usuários vinculados à mesma igreja
+  const [churchMembers, setChurchMembers] = useState<ChurchSuggestion[]>([]);
 
   const loadContacts = async (currentMyId: string) => {
     const { data: fr } = await supabase.from("friendships").select("friend_id").eq("user_id", currentMyId);
@@ -51,6 +56,31 @@ function NovaMensagemPage() {
     setContacts(list);
   };
 
+  const loadChurchSuggestions = async (currentMyId: string) => {
+    const { data: myProfile } = await supabase
+      .from("profiles")
+      .select("church_id")
+      .eq("id", currentMyId)
+      .maybeSingle();
+
+    if (!myProfile?.church_id) {
+      setChurchMembers([]);
+      return;
+    }
+
+    // Todo usuário vinculado ao mesmo registro de igreja (mesmo church_id)
+    // aparece como sugestão — o vínculo é exato, não uma comparação de texto.
+    const { data: members } = await supabase
+      .from("profiles")
+      .select("id, display_name, username, avatar_url, church_name")
+      .eq("church_id", myProfile.church_id)
+      .neq("id", currentMyId)
+      .limit(20);
+
+    const list = ((members ?? []) as ChurchSuggestion[]).filter((m) => m.username && m.church_name);
+    setChurchMembers(list);
+  };
+
   useEffect(() => {
     void (async () => {
       setLoading(true);
@@ -61,6 +91,7 @@ function NovaMensagemPage() {
       }
       setMyId(u.user.id);
       await loadContacts(u.user.id);
+      await loadChurchSuggestions(u.user.id);
       setLoading(false);
     })();
   }, []);
@@ -119,6 +150,12 @@ function NovaMensagemPage() {
 
   const isSearchingById = normalizeUsername(query).length >= 2;
 
+  // Não sugere quem já é contato — esses já aparecem na lista de contatos.
+  const churchSuggestions = useMemo(
+    () => churchMembers.filter((m) => !friendIds.has(m.id)),
+    [churchMembers, friendIds],
+  );
+
   return (
     <div className="mx-auto max-w-lg space-y-4 px-4 pt-6 pb-24">
       <header className="flex items-center gap-3">
@@ -142,6 +179,46 @@ function NovaMensagemPage() {
       </div>
 
       {loading && <p className="text-sm text-muted-foreground">Carregando…</p>}
+
+      {/* Sugestões de contatos vinculados à mesma igreja — logo abaixo da busca */}
+      {!loading && !isSearchingById && churchSuggestions.length > 0 && (
+        <section className="space-y-2">
+          <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            <Church className="h-3.5 w-3.5" /> Sugestões da sua igreja
+          </p>
+          <ul className="space-y-2">
+            {churchSuggestions.map((m) => (
+              <li
+                key={m.id}
+                className="flex items-center gap-3 rounded-2xl border border-primary/25 bg-surface-2 p-3"
+              >
+                <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-surface">
+                  {m.avatar_url && <img src={m.avatar_url} alt="" className="h-full w-full object-cover" />}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold">{m.display_name}</p>
+                  <p className="truncate text-xs text-muted-foreground">@{m.username}</p>
+                  <p className="mt-0.5 flex items-center gap-1 truncate text-[11px] text-primary">
+                    <Church className="h-3 w-3 shrink-0" /> {m.church_name}
+                  </p>
+                </div>
+                <button
+                  onClick={() => void addFriend(m)}
+                  disabled={addingId === m.id}
+                  className="flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-background px-3 py-2 text-xs font-semibold transition-colors hover:border-primary disabled:opacity-60"
+                >
+                  {addingId === m.id ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <UserPlus className="h-3.5 w-3.5" />
+                  )}
+                  Adicionar
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* Resultados da busca real por ID (usuários de verdade, sejam ou não seus contatos) */}
       {!loading && isSearchingById && (
