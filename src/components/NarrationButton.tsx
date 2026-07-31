@@ -404,25 +404,25 @@ export function NarrationButton({ containerSelector, className }: Props) {
 
   const handleClick = useCallback(() => {
     const audio = audioRef.current;
-    if (!audio) {
-      showErrorAndStop();
-      return;
-    }
 
     if (status === "playing") {
-      audio.pause();
+      if (localModeRef.current) window.speechSynthesis.pause();
+      else audio?.pause();
       setStatus("paused");
       return;
     }
     if (status === "paused") {
-      void audio.play();
+      if (localModeRef.current) window.speechSynthesis.resume();
+      else void audio?.play();
       setStatus("playing");
       return;
     }
     if (status === "error" || status === "loading") return;
 
     // idle → start
+    localModeRef.current = false;
     activeRef.current = true;
+
     failuresRef.current = 0;
     const ok = buildQueue();
     if (!ok) {
