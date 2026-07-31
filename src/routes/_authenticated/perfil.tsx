@@ -7,6 +7,7 @@ import { CHARACTERS, BIBLE_VERSIONS, type BibleVersion } from "@/data/content";
 import { getLevel, xpToNextLevel, levelProgressPct, MAX_LEVEL } from "@/data/levels";
 import { toast } from "sonner";
 import { isUsernameAvailable, isValidUsername, normalizeUsername } from "@/lib/username";
+import { logActivity } from "@/lib/activities";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 import { useApp } from "@/lib/app-context";
@@ -116,7 +117,15 @@ function PerfilPage() {
       if (upErr) throw upErr;
       const { data: signed } = await supabase.storage.from("avatars").createSignedUrl(path, 60 * 60 * 24 * 365);
       const url = signed?.signedUrl ?? null;
-      if (url) await update({ avatar_url: url });
+      if (url) {
+        await update({ avatar_url: url });
+        void logActivity({
+          userId: profile.id,
+          type: "avatar_changed",
+          title: "Trocou a foto de perfil",
+          imageUrl: url,
+        });
+      }
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -124,7 +133,16 @@ function PerfilPage() {
   };
 
   const saveBio = async () => {
-    await update({ bio: bioDraft.trim() || null });
+    const trimmed = bioDraft.trim();
+    await update({ bio: trimmed || null });
+    if (profile && trimmed) {
+      void logActivity({
+        userId: profile.id,
+        type: "bio_changed",
+        title: "Trocou a bio",
+        subtitle: trimmed,
+      });
+    }
   };
 
   const copyUsername = async () => {
