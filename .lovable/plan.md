@@ -1,61 +1,32 @@
-## 1. Correção — botão "Voltar" do chat
+# Narração: consertar, deixar natural em pt-BR e barata
 
-Em `mensagens.$username.tsx`, trocar o `<Link to="/perfil/$username">` do header por `<Link to="/mensagens">`, retornando para a lista de conversas.
+## Por que parou
 
-## 2. Sistema de Desafios
+A narração hoje chama um servidor externo (Kokoro, hospedado no Render) pelo endpoint `/api/tts`. Esse servidor não está mais respondendo — o app recebe erro 504 ("timeout") e o botão entra em estado de erro. Nada dentro do app está quebrado; a dependência externa é que caiu.
 
-### Banco de dados (nova migração)
-Nova tabela `public.challenges`:
-- `id uuid pk`, `challenger_id uuid`, `challenged_id uuid`
-- `scope_type text check in ('module','trail')`, `scope_id text` (id do módulo ou da trilha)
-- `status text check in ('pending','accepted','rejected','completed','canceled') default 'pending'`
-- `first_finisher_id uuid null`, `first_finished_at timestamptz null`, `second_finished_at timestamptz null`
-- `winner_bonus_awarded bool default false`, `completion_bonus_awarded bool default false`
-- `created_at`, `accepted_at`
+## Como funciona o "gasta só na primeira vez"
 
-GRANTs padrão + RLS: SELECT/INSERT/UPDATE apenas para envolvidos (challenger/challenged). Índices por participante e status.
+Cada frase narrada vira um arquivo de áudio guardado no armazenamento do próprio app, identificado por uma "impressão digital" do texto:
 
-Função `public.challenge_lesson_ids(_scope_type text, _scope_id text) returns setof text` — retorna os `lesson_id`s associados ao escopo, via `disciple_trails` (por `id` da trilha ou pelo `module_id`).
+1. Alguém toca em ouvir uma frase pela primeira vez → o áudio é gerado (aí sim consome créditos, um valor bem pequeno por frase).
+2. O arquivo fica salvo para sempre.
+3. Qualquer pessoa que ouvir aquela mesma frase depois — você ou qualquer outro usuário, quantas vezes quiser — recebe o arquivo salvo. Custo zero, sem limite.
 
-Função `public.challenge_progress(_user uuid, _challenge_id uuid) returns numeric` — % concluída pelo usuário (lesson_progress ∩ lesson_ids do escopo).
+Ou seja: o custo é por **conteúdo novo**, não por **uso**. Como as lições, planos e estudos são textos fixos, depois que cada um for ouvido uma vez o app fica praticamente gratuito para sempre. Só volta a gerar (e a custar centavos) quando você publicar conteúdo novo. O único conteúdo que sempre geraria de novo seria texto dinâmico (ex.: respostas do Mentor IA), e a narração não é usada lá.
 
-Função `public.finish_challenge_step(_challenge_id uuid)` (SECURITY DEFINER) — chamada pelo cliente após completar qualquer lição. Verifica se o `auth.uid()` atingiu 100% do escopo; se sim e nenhum vencedor ainda, marca `first_finisher_id`+`first_finished_at` e credita bônus de vitória; se ambos já concluíram, credita bônus de conclusão dupla e marca `status='completed'`. Idempotente via flags de bônus.
+Esse cache já existe no projeto — ele foi feito para o Kokoro e vai ser reaproveitado.
 
-**Balanceamento de XP** (evitar quebrar economia):
-- Vitória: `+150 XP` para o primeiro (equivalente a 1,5 lição).
-- Conclusão dupla: `+75 XP` extra para cada um.
-- Perdedor ganha `+50 XP` de participação ao terminar.
-Escala fixa, não multiplicativa por tamanho de escopo, pois trilhas já dão XP por lição.
+## O que vou fazer
 
-### Backend/Frontend
+1. **Trocar o motor de voz**: `/api/tts` deixa de chamar o servidor Render e passa a usar a voz de IA da Lovable, com voz e instruções ajustadas para português do Brasil natural, ritmo pastoral e leitura calma.
+2. **Manter e reforçar o cache** no armazenamento do app, para que cada trecho só seja gerado uma vez (custo zero nas repetições).
+3. **Rede de segurança**: se a geração falhar por qualquer motivo (sem créditos, instabilidade), o app cai automaticamente para a voz de português do próprio celular/navegador — a narração nunca fica indisponível, e nesse modo é 100% grátis e ilimitada.
+4. **Melhorar o botão**: mensagens de erro mais claras, retomar de onde parou e destaque de palavras funcionando igual nos dois modos.
 
-**`src/lib/challenges.ts`** — helpers cliente:
-- `listMyActiveChallenges(myId)` — retorna desafios `accepted` e `pending`.
-- `getPeerActiveChallenges(myId, peerId)` — desafios entre nós dois.
-- `getChallengeLessonIds(challengeId)` — via RPC.
-- `getChallengeProgressPct(challengeId, userId)` — via RPC.
-- `createChallenge({ target, scopeType, scopeId })`, `respondChallenge(id, accept)`, `checkFinishChallenges(myId)` — chama `finish_challenge_step` para cada desafio ativo do usuário após completar uma lição.
+## Detalhes técnicos
 
-**`src/components/ChallengeButton.tsx`** — botão "DESAFIAR" no perfil público (`perfil_.$username.tsx`) que abre modal:
-- Lista módulos (checkbox único) + accordion mostrando trilhas de cada módulo.
-- Uma seleção só: módulo inteiro OU uma trilha.
-- Botão "Enviar desafio" → cria linha pending.
-
-**Notificação/aceite**: pending recebido aparece como card no topo da Home (`home.tsx`) e no perfil público do desafiante, com botões Aceitar / Recusar.
-
-**Barra de progresso em chamas** (`ChallengeProgressBar`) — componente novo, renderizado na Home logo abaixo do card de XP quando há desafio ativo. Gradiente âmbar→vermelho, animação `flame-pulse` já ou nova em `styles.css`. Mostra `Meu %` e `% do rival`, título do escopo, ícone.
-
-**Anel flamejante em avatares** — nova classe `.avatar-ring-flame` em `styles.css` (conic-gradient rotativo + glow). Aplicada em:
-- Lista do Ranking (`ranking.tsx`) e pódio, quando o usuário estiver em desafio ativo.
-- Lista de mensagens (`mensagens.index.tsx`).
-Fetch em batch: `getActiveChallengeUserIds()` (Set de ids) para O(1) na renderização.
-
-**Gatilho de finalização**: em `awardXpAndStreak` (ou onde a lição é marcada concluída) chamar `checkFinishChallenges(userId)` após persistir progresso. Locais: `licao.$id.tsx`, `estudos.biblico.$id.tsx`, `estudos.plano.$id.tsx`, `estudos.meditacao.$id.tsx`. Centralizar em `src/lib/progress.ts` para não repetir.
-
-### Arquivos tocados
-- Nova migração SQL.
-- Novo: `src/lib/challenges.ts`, `src/components/ChallengeButton.tsx`, `src/components/ChallengeProgressBar.tsx`.
-- Editados: `mensagens.$username.tsx` (fix voltar), `perfil_.$username.tsx` (botão DESAFIAR + pending), `home.tsx` (barra + card pending), `ranking.tsx` (anel), `mensagens.index.tsx` (anel), `progress.ts` (chamar checkFinishChallenges), `styles.css` (anel + chamas).
-
-### Fora de escopo
-Notificação push. Chat de desafio dedicado. Ranking global de desafios.
+- `src/routes/api/tts.ts`: substituir a chamada Kokoro por `POST https://ai.gateway.lovable.dev/v1/audio/speech` com `LOVABLE_API_KEY` (lido dentro do handler), voz natural para pt-BR, `stream_format: "audio"` e `response_format: "mp3"` (arquivo completo, para poder cachear).
+- Cache: manter `hashText(text)` + bucket `narration-audio` no Storage; mudar extensão/content-type para `audio/mpeg` e a chave do arquivo para refletir o novo motor.
+- Erros: repassar 402/429/5xx com corpo legível para o cliente decidir o fallback.
+- `src/components/NarrationButton.tsx`: adicionar fallback via `window.speechSynthesis` com voz `pt-BR`, usando `onboundary` para o destaque palavra a palavra; acionado quando `/api/tts` falha. Remover a lógica de "erro definitivo" que hoje desabilita o botão.
+- Secrets `KOKORO_TTS_URL` / `KOKORO_TTS_API_KEY` deixam de ser usados.
