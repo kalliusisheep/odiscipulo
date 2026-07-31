@@ -4,6 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useMascot, muralPostLines } from "@/lib/mascot";
 import type { FeedItem, FeedKind } from "@/lib/feed";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { VoiceRecorder } from "@/components/VoiceRecorder";
+import { VoiceNotePlayer } from "@/components/VoiceNotePlayer";
+import { uploadMuralVoiceNote } from "@/lib/voice-upload";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
@@ -432,7 +435,9 @@ function FeedCard({
 type Post = {
   id: string;
   author_name: string;
-  body: string;
+  body: string | null;
+  audio_url: string | null;
+  audio_duration_seconds: number | null;
   is_answered: boolean;
   amens_seed: number;
   created_at: string;
@@ -506,6 +511,23 @@ function Oracoes() {
     }
   };
 
+  const clamarComAudio = async (blob: Blob, seconds: number, mimeType: string) => {
+    if (!me) return;
+    const url = await uploadMuralVoiceNote(me.id, blob, mimeType);
+    const { error } = await supabase.from("mural_posts").insert({
+      user_id: me.id,
+      author_name: me.name,
+      body: null,
+      audio_url: url,
+      audio_duration_seconds: seconds,
+    });
+    if (!error) {
+      await refresh(me.id);
+      const lines = muralPostLines();
+      say(lines[Math.floor(Math.random() * lines.length)]);
+    }
+  };
+
   const toggleAmen = async (postId: string) => {
     if (!me) return;
     const has = myAmens.has(postId);
@@ -527,7 +549,8 @@ function Oracoes() {
           placeholder="Escreva seu clamor para o mural…"
           className="w-full resize-none rounded-xl border border-border bg-input p-3 text-sm outline-none focus:border-primary"
         />
-        <div className="mt-2 flex justify-end">
+        <div className="mt-2 flex items-center justify-between gap-2">
+          <VoiceRecorder onSend={clamarComAudio} maxSeconds={60} />
           <button
             onClick={() => void clamar()}
             disabled={!text.trim() || posting}
@@ -556,7 +579,13 @@ function Oracoes() {
               </span>
             )}
           </header>
-          <p className="mt-3 text-sm leading-relaxed">{p.body}</p>
+          {p.audio_url ? (
+            <div className="mt-3">
+              <VoiceNotePlayer src={p.audio_url} />
+            </div>
+          ) : (
+            p.body && <p className="mt-3 text-sm leading-relaxed">{p.body}</p>
+          )}
           <button
             onClick={() => void toggleAmen(p.id)}
             className={`mt-3 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${
