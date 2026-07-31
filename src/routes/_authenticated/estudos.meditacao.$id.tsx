@@ -170,7 +170,7 @@ function MeditacaoPage() {
             className="w-full resize-none rounded-2xl border border-border bg-input p-4 text-sm outline-none placeholder:text-muted-foreground focus:border-primary disabled:opacity-70"
           />
           <p className="text-[11px] text-muted-foreground">
-            Sua resposta será salva no <strong>Mural → Meu Diário</strong>, marcada como <em>Meditação</em>.
+            Sua resposta será salva no <strong>Feed → Meu Diário</strong>, marcada como <em>Meditação</em>.
           </p>
 
           {saved ? (
