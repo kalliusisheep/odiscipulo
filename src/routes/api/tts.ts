@@ -1,8 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createHash } from "node:crypto";
 
-/** Bucket no Supabase Storage usado como cache dos áudios já gerados pelo Kokoro. */
+/** Bucket no Supabase Storage usado como cache dos áudios já gerados pelo Piper. */
 const BUCKET = "narration-audio";
+
+/** Tempo máximo (ms) que esperamos o servidor Piper responder antes de desistir. */
+const KOKORO_TIMEOUT_MS = 20_000;
 
 function hashText(text: string): string {
   return createHash("sha256").update(text).digest("hex");
@@ -55,7 +58,7 @@ export const Route = createFileRoute("/api/tts")({
             });
           }
 
-          // 2. Sem cache: gera no servidor Kokoro (Render).
+          // 2. Sem cache: gera no servidor Piper (Render).
           const kokoroUrl = process.env.KOKORO_TTS_URL;
           const kokoroKey = process.env.KOKORO_TTS_API_KEY;
           if (!kokoroUrl) {
@@ -65,15 +68,35 @@ export const Route = createFileRoute("/api/tts")({
           const headers: Record<string, string> = { "Content-Type": "application/json" };
           if (kokoroKey) headers["x-api-key"] = kokoroKey;
 
-          const res = await fetch(`${kokoroUrl.replace(/\/$/, "")}/synthesize`, {
-            method: "POST",
-            headers,
-            body: JSON.stringify({ text }),
-          });
+          // Timeout: se o Piper não responder em KOKORO_TIMEOUT_MS, desistimos
+          // em vez de deixar o request pendurado por minutos.
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), KOKORO_TIMEOUT_MS);
+
+          let res: Response;
+          try {
+            res = await fetch(`${kokoroUrl.replace(/\/$/, "")}/synthesize`, {
+              method: "POST",
+              headers,
+              body: JSON.stringify({ text }),
+              signal: controller.signal,
+            });
+          } catch (e) {
+            clearTimeout(timeoutId);
+            const timedOut = (e as Error)?.name === "AbortError";
+            console.error("Narração: falha ao chamar Piper", e);
+            return new Response(
+              timedOut
+                ? "Piper: timeout (servidor não respondeu a tempo)"
+                : "Piper: erro de rede",
+              { status: 504 },
+            );
+          }
+          clearTimeout(timeoutId);
 
           if (!res.ok) {
             const errText = await res.text().catch(() => "");
-            return new Response(`Kokoro ${res.status}: ${errText.slice(0, 200)}`, {
+            return new Response(`Piper ${res.status}: ${errText.slice(0, 200)}`, {
               status: 502,
             });
           }
