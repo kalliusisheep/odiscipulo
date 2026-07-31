@@ -925,6 +925,19 @@ export type Database = {
         Args: { _name: string }
         Returns: string
       }
+      get_my_discipleship_tree: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          display_name: string
+          username: string | null
+          avatar_url: string | null
+          xp: number | null
+          parent_id: string | null
+          direction: string
+          depth: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
