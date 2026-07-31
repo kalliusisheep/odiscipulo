@@ -59,7 +59,7 @@ export function ChurchLinkDialog({
     if (!userId) return;
     const key = church ? `existing:${church.id}` : "unlink";
     setSavingKey(key);
-    const ok = await linkProfileToChurch(userId, church?.id ?? null);
+    const ok = await linkProfileToChurch(userId, church);
     setSavingKey(null);
     if (!ok) {
       toast.error("Não foi possível atualizar sua igreja.");
