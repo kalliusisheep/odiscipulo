@@ -430,7 +430,7 @@ export function NarrationButton({ containerSelector, className }: Props) {
       return;
     }
     playFrom(0);
-  }, [buildQueue, playFrom, status, showErrorAndStop]);
+  }, [buildQueue, playFrom, status]);
 
   const isBusy = status === "loading";
   const label =
