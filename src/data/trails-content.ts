@@ -1961,12 +1961,18 @@ const oracao: Trail = {
                 textByVersion: {
                   NVI: "Então Abraão aproximou-se e perguntou: 'Serás capaz de exterminar o justo com o ímpio?... Longe de ti fazer tal coisa! Matar o justo com o ímpio, tratando o justo e o ímpio da mesma maneira!'",
                 },
+                originals: [
+                  { word: "תִּסְפֶּה", translit: "tispeh", meaning: "'exterminar, varrer' — do verbo saphah; Abraão questiona se Deus varreria o justo junto com o ímpio", lang: "hebraico" },
+                ],
               },
               {
                 ref: "João 17:20",
                 textByVersion: {
                   NVI: "Minha oração não é apenas por eles. Rogo também por aqueles que crerão em mim, por meio da mensagem deles.",
                 },
+                originals: [
+                  { word: "πιστευόντων", translit: "pisteuontōn", meaning: "'os que crêem' — particípio presente, indicando fé contínua; Jesus ora por todos os futuros crentes através da palavra dos apóstolos", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -2045,6 +2051,9 @@ const oracao: Trail = {
               textByVersion: {
                 NVI: "Até quando, Senhor, clamarei por ajuda e tu não ouvirás? Até quando gritarei 'violência!' e tu não salvarás?",
               },
+              originals: [
+                { word: "עַד־אָנָה", translit: "ad-anah", meaning: "'até quando' — expressão hebraica de lamento persistente diante do silêncio aparente de Deus", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -2065,12 +2074,18 @@ const oracao: Trail = {
                 textByVersion: {
                   NVI: "Até quando, Senhor? Vais esquecer-te de mim para sempre? Até quando esconderás de mim o teu rosto?",
                 },
+                originals: [
+                  { word: "תַסְתִּיר", translit: "tastir", meaning: "'esconderás' — do verbo satar; a angústia de sentir o rosto de Deus oculto", lang: "hebraico" },
+                ],
               },
               {
                 ref: "Mateus 26:39",
                 textByVersion: {
                   NVI: "Indo um pouco mais adiante, prostrou-se com o rosto em terra e orou: 'Meu Pai, se é possível, afasta de mim este cálice; contudo, não seja como eu quero, mas como tu queres'.",
                 },
+                originals: [
+                  { word: "παρελθάτω", translit: "parelthatō", meaning: "'que passe' — imperativo aoristo; súplica intensa de Jesus para que o cálice do sofrimento se afastasse, submetida à vontade do Pai", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -2135,12 +2150,18 @@ const oracao: Trail = {
               textByVersion: {
                 NVI: "Enquanto adoravam o Senhor e jejuavam, o Espírito Santo disse: 'Separem-me Barnabé e Saulo para a obra a qual os chamei'. Assim, depois de jejuar, orar e lhes impor as mãos, eles os enviaram.",
               },
+              originals: [
+                { word: "ἀφορίσατε", translit: "aphorisate", meaning: "'separai, apartai' — verbo usado para consagrar alguém a uma missão específica dada pelo Espírito Santo", lang: "grego" },
+              ],
             },
             {
               ref: "Mateus 6:16-18",
               textByVersion: {
                 NVI: "Quando vocês jejuarem, não fiquem carrancudos como os hipócritas... Mas quando você jejuar, penteie os cabelos e lave o rosto, para que não pareça aos outros que você está jejuando, mas somente a seu Pai, que vê o que é feito em secreto.",
               },
+              originals: [
+                { word: "σκυθρωποί", translit: "skythrōpoi", meaning: "'de rosto triste, carrancudos' — descreve os hipócritas que exibem tristeza artificial ao jejuar para serem vistos", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -2161,12 +2182,18 @@ const oracao: Trail = {
                 textByVersion: {
                   NVI: "Este não é o jejum que escolhi: [...] soltar as correntes da injustiça e desatar as cordas do jugo... É partilhar sua comida com o faminto e abrigar em sua casa o pobre.",
                 },
+                originals: [
+                  { word: "מוֹטָה", translit: "motah", meaning: "'jugo, canga' — o jejum que Deus aprova desata as ataduras da injustiça e quebra todo jugo de opressão", lang: "hebraico" },
+                ],
               },
               {
                 ref: "Mateus 4:1-2",
                 textByVersion: {
                   NVI: "Então Jesus foi levado pelo Espírito ao deserto, para ser tentado pelo Diabo. Depois de jejuar quarenta dias e quarenta noites, teve fome.",
                 },
+                originals: [
+                  { word: "ἐνήστευσεν", translit: "enēsteusen", meaning: "'jejuou' — verbo no aoristo indicando um período completo e determinado de jejum antes da tentação", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
@@ -2241,6 +2268,9 @@ const oracao: Trail = {
               textByVersion: {
                 NVI: "De manhã, Senhor, ouves a minha voz; de manhã te apresento a minha oração e fico esperando.",
               },
+              originals: [
+                { word: "אֶעֱרָךְ", translit: "e'erokh", meaning: "'ordenarei, disporei' — linguagem sacrificial; o salmista prepara sua oração pela manhã como quem arruma uma oferta no altar", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -2261,12 +2291,18 @@ const oracao: Trail = {
                 textByVersion: {
                   NVI: "Como é feliz o homem que não anda segundo o conselho dos ímpios... Pois seu prazer está na lei do Senhor, e nessa lei medita dia e noite.",
                 },
+                originals: [
+                  { word: "אַשְׁרֵי", translit: "ashrei", meaning: "'bem-aventurado, feliz' — plural intensivo hebraico que abre o Saltério, descrevendo a plenitude de quem se deleita na lei do Senhor", lang: "hebraico" },
+                ],
               },
               {
                 ref: "1 Timóteo 4:7-8",
                 textByVersion: {
                   NVI: "Exercite-se na piedade. Pois, o exercício físico é de pouco proveito; a piedade, porém, para tudo é proveitosa, porque tem promessa da vida presente e da futura.",
                 },
+                originals: [
+                  { word: "γύμναζε", translit: "gymnaze", meaning: "'exercita-te, treina-te' — termo atlético (raiz de 'ginástica'); Paulo compara a disciplina espiritual ao treino físico, mas de valor superior", lang: "grego" },
+                ],
               },
             ],
             additionalKeywords: [
