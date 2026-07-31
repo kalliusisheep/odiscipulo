@@ -42,6 +42,9 @@ const comoEstudarBiblia: Trail = {
               textByVersion: {
                 NVI: "Antes de tudo, saibam que nenhuma profecia da Escritura provém de interpretação pessoal, pois jamais a profecia teve origem na vontade humana, mas homens falaram da parte de Deus, impelidos pelo Espírito Santo.",
               },
+              originals: [
+                { word: "φερόμενοι", translit: "pheromenoi", meaning: "'impelidos, carregados' — imagem de um barco levado pelo vento; os autores humanos foram conduzidos pelo Espírito sem perder sua voz própria", lang: "grego" },
+              ],
             },
           ],
           keywords: [
