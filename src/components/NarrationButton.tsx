@@ -128,8 +128,12 @@ export function NarrationButton({ containerSelector, className }: Props) {
 
   useEffect(() => {
     audioRef.current = new Audio();
+    // Alguns navegadores só carregam a lista de vozes de forma assíncrona —
+    // pedimos cedo para que a voz pt-BR já esteja pronta se precisarmos dela.
+    if (localSpeechSupported()) window.speechSynthesis.getVoices();
     return () => cleanup();
   }, [cleanup]);
+
 
   // Destaca a palavra `wordIdx` da sentença em `idx` (índice na fila).
   const highlightWordAt = useCallback((idx: number, wordIdx: number) => {
