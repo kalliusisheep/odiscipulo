@@ -1,5 +1,12 @@
 import { useApp } from "@/lib/app-context";
 import { useMascot, type MascotEvent } from "@/lib/mascot";
+import { supabase } from "@/integrations/supabase/client";
+import {
+  fetchMentorMemories,
+  buildMemoryContext,
+  buildMemoryGreeting,
+  extractAndSaveMemory,
+} from "@/lib/mentor-memory";
 import { Send, X, Loader2 } from "lucide-react";
 import { useState, useRef, useEffect, type PointerEvent as ReactPointerEvent } from "react";
 
@@ -211,11 +218,48 @@ export function MentorChat() {
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Memória persistente: quem é o usuário e o que já sabemos dele de
+  // conversas anteriores (pedidos de oração, lutas, áreas de crescimento).
+  const [userId, setUserId] = useState<string | null>(null);
+  const [memoryContext, setMemoryContext] = useState<string | undefined>(undefined);
+
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, loading]);
 
+  // Ao abrir o chat, busca a memória do usuário: monta o contexto que vai
+  // junto em cada requisição ao Mentor e, se a conversa ainda estiver na
+  // saudação padrão, personaliza a primeira fala com base no que ele já
+  // compartilhou antes ("semana passada você comentou que...").
+  useEffect(() => {
+    if (!mentorOpen) return;
+    let cancelled = false;
+    void (async () => {
+      const { data } = await supabase.auth.getUser();
+      if (cancelled || !data.user) return;
+      setUserId(data.user.id);
+      const mems = await fetchMentorMemories(data.user.id);
+      if (cancelled) return;
+      setMemoryContext(buildMemoryContext(mems));
+      setMessages((prev) => {
+        if (prev.length !== 1 || prev[0].role !== "assistant") return prev;
+        const greeting = buildMemoryGreeting(mems);
+        return greeting ? [{ role: "assistant", content: greeting }] : prev;
+      });
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [mentorOpen]);
+
   if (!mentorOpen) return null;
+
+  const closeChat = () => {
+    // Ao fechar, extrai (via um segundo prompt curto e barato) 2-3 fatos
+    // duráveis desta conversa e guarda na memória — sem bloquear o fechamento.
+    if (userId) void extractAndSaveMemory(userId, messages);
+    setMentorOpen(false);
+  };
 
   const send = async () => {
     const text = input.trim();
@@ -228,7 +272,7 @@ export function MentorChat() {
       const res = await fetch("/api/mentor", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        body: JSON.stringify({ messages: next, memoryContext }),
       });
       if (!res.ok || !res.body) throw new Error("Falha ao conversar com o Mentor.");
       const reader = res.body.getReader();
@@ -290,7 +334,7 @@ export function MentorChat() {
             </div>
           </div>
           <button
-            onClick={() => setMentorOpen(false)}
+            onClick={closeChat}
             aria-label="Fechar"
             className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
           >
