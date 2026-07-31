@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Download, Loader2, Minus, Plus as PlusIcon, RotateCcw } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { supabase } from "@/integrations/supabase/client";
+import { getLevel } from "@/data/levels";
 
 export const Route = createFileRoute("/_authenticated/lider_/arvore")({
   component: ArvorePage,
@@ -14,6 +15,7 @@ type TreeNode = {
   display_name: string;
   username: string | null;
   avatar_url: string | null;
+  xp: number | null;
   parent_id: string | null;
   direction: "up" | "self" | "down";
   depth: number;
@@ -22,12 +24,37 @@ type TreeNode = {
 // --- Layout (posiciona cada pessoa num "slot" de grade; depois convertemos
 // para pixels). Mesma lógica é usada tanto pro desenho na tela (SVG) quanto
 // pro desenho no canvas usado na exportação em PDF — uma única fonte de verdade. ---
-const NODE_R = 34;
-const COL_W = 104;
-const ROW_H = 132;
-const PAD = 76;
+const NODE_R = 32;
+const COL_W = 140;
+const ROW_H = 152;
+const PAD = 80;
+const FOOTER_H = 210; // espaço reservado só no PDF pra logo + copyright
 
 type Positions = Map<string, { x: number; y: number }>;
+
+// Paleta "gamificada" — copiada 1:1 das variáveis de cor do app (tema escuro),
+// pra o canvas do PDF (que não enxerga CSS var) bater exatamente com a tela.
+const C = {
+  bg: "oklch(0.17 0.03 265)",
+  bg2: "oklch(0.205 0.032 267)",
+  surface: "oklch(0.22 0.03 265)",
+  border: "oklch(0.34 0.045 270)",
+  primary: "oklch(0.62 0.22 292)",
+  primaryGlow: "oklch(0.72 0.20 285)",
+  ancient: "oklch(0.82 0.13 85)",
+  ancientFg: "oklch(0.22 0.05 85)",
+  success: "oklch(0.68 0.18 155)",
+  text: "oklch(0.97 0.01 265)",
+  mutedText: "oklch(0.74 0.03 265)",
+  shadow: "oklch(0.10 0.02 265)",
+};
+
+function ringColorFor(direction: TreeNode["direction"]) {
+  return direction === "self" ? C.primary : direction === "up" ? C.ancient : C.success;
+}
+function chipTextColorFor(direction: TreeNode["direction"]) {
+  return direction === "up" ? C.ancientFg : "#0e0d16";
+}
 
 function computeLayout(nodes: TreeNode[]): { positions: Positions; width: number; height: number; root: TreeNode | null } {
   const root = nodes.find((n) => n.direction === "self") ?? null;
@@ -107,6 +134,36 @@ async function loadJsPdf(): Promise<any> {
     document.head.appendChild(script);
   });
   return w.jspdf;
+}
+
+// Tile pequeno com um xadrez sutil pra criar o fundo "pixelado" repetindo em
+// pattern, em vez de desenhar centenas de retângulos na mão.
+function makeCheckerPattern(ctx: CanvasRenderingContext2D): CanvasPattern | null {
+  const tile = document.createElement("canvas");
+  tile.width = 16;
+  tile.height = 16;
+  const tctx = tile.getContext("2d");
+  if (!tctx) return null;
+  tctx.fillStyle = C.bg;
+  tctx.fillRect(0, 0, 16, 16);
+  tctx.fillStyle = C.bg2;
+  tctx.fillRect(0, 0, 8, 8);
+  tctx.fillRect(8, 8, 8, 8);
+  return ctx.createPattern(tile, "repeat");
+}
+
+function pixelRoundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.arcTo(x + w, y, x + w, y + r, r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+  ctx.lineTo(x + r, y + h);
+  ctx.arcTo(x, y + h, x, y + h - r, r);
+  ctx.lineTo(x, y + r);
+  ctx.arcTo(x, y, x + r, y, r);
+  ctx.closePath();
 }
 
 const MIN_SCALE = 0.25;
@@ -213,27 +270,38 @@ function ArvorePage() {
     setExporting(true);
     try {
       const scaleFactor = 2;
+      const totalHeight = layout.height + FOOTER_H;
       const canvas = document.createElement("canvas");
       canvas.width = Math.max(1, layout.width * scaleFactor);
-      canvas.height = Math.max(1, layout.height * scaleFactor);
+      canvas.height = Math.max(1, totalHeight * scaleFactor);
       const ctx = canvas.getContext("2d");
       if (!ctx) throw new Error("sem canvas 2d");
       ctx.scale(scaleFactor, scaleFactor);
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, layout.width, layout.height);
 
-      ctx.strokeStyle = "#d8d0c2";
-      ctx.lineWidth = 2;
+      // fundo "pixelado" (xadrez sutil) cobrindo a página inteira, incluindo o rodapé
+      const pattern = makeCheckerPattern(ctx);
+      ctx.fillStyle = pattern ?? C.bg;
+      ctx.fillRect(0, 0, layout.width, totalHeight);
+
+      // conexões em estilo "árvore de habilidades" (linha em ângulo reto, tracejada)
+      ctx.strokeStyle = C.border;
+      ctx.lineWidth = 3;
+      ctx.setLineDash([7, 5]);
+      ctx.lineCap = "square";
       for (const node of nodes) {
         if (!node.parent_id) continue;
         const p1 = layout.positions.get(node.id);
         const p2 = layout.positions.get(node.parent_id);
         if (!p1 || !p2) continue;
+        const midY = (p2.y + NODE_R + (p1.y - NODE_R)) / 2;
         ctx.beginPath();
         ctx.moveTo(p2.x, p2.y + NODE_R);
+        ctx.lineTo(p2.x, midY);
+        ctx.lineTo(p1.x, midY);
         ctx.lineTo(p1.x, p1.y - NODE_R);
         ctx.stroke();
       }
+      ctx.setLineDash([]);
 
       let anyImageFailed = false;
       for (const node of nodes) {
@@ -241,51 +309,91 @@ function ArvorePage() {
         if (!pos) continue;
         const img = node.avatar_url ? await loadImage(node.avatar_url) : null;
         if (node.avatar_url && !img) anyImageFailed = true;
+        const ring = ringColorFor(node.direction);
+        const level = getLevel(node.xp ?? 0).level;
+
+        // sombra "dura" (sem blur) pra dar volume de jogo/pixel-art
+        ctx.fillStyle = C.shadow;
+        ctx.globalAlpha = 0.45;
+        pixelRoundRect(ctx, pos.x - NODE_R + 4, pos.y - NODE_R + 4, NODE_R * 2, NODE_R * 2, 8);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        // brilho externo só pro nó "você"
+        if (node.direction === "self") {
+          ctx.strokeStyle = C.primaryGlow;
+          ctx.lineWidth = 2;
+          pixelRoundRect(ctx, pos.x - NODE_R - 6, pos.y - NODE_R - 6, NODE_R * 2 + 12, NODE_R * 2 + 12, 10);
+          ctx.stroke();
+        }
 
         ctx.save();
-        ctx.beginPath();
-        ctx.arc(pos.x, pos.y, NODE_R, 0, Math.PI * 2);
-        ctx.closePath();
+        pixelRoundRect(ctx, pos.x - NODE_R, pos.y - NODE_R, NODE_R * 2, NODE_R * 2, 8);
         if (img) {
           ctx.clip();
           ctx.drawImage(img, pos.x - NODE_R, pos.y - NODE_R, NODE_R * 2, NODE_R * 2);
         } else {
-          ctx.fillStyle = node.direction === "self" ? "#8a6f45" : "#c2b393";
+          ctx.fillStyle = ring;
+          ctx.globalAlpha = 0.28;
           ctx.fill();
-          ctx.fillStyle = "#ffffff";
-          ctx.font = "bold 22px sans-serif";
+          ctx.globalAlpha = 1;
+          ctx.fillStyle = C.text;
+          ctx.font = "bold 20px ui-monospace, Menlo, monospace";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           ctx.fillText(initials(node.display_name), pos.x, pos.y);
         }
         ctx.restore();
 
-        if (node.direction === "self") {
-          ctx.lineWidth = 3;
-          ctx.strokeStyle = "#8a6f45";
-          ctx.beginPath();
-          ctx.arc(pos.x, pos.y, NODE_R + 3, 0, Math.PI * 2);
-          ctx.stroke();
-        }
+        ctx.strokeStyle = ring;
+        ctx.lineWidth = 3;
+        pixelRoundRect(ctx, pos.x - NODE_R, pos.y - NODE_R, NODE_R * 2, NODE_R * 2, 8);
+        ctx.stroke();
 
-        ctx.fillStyle = "#2b2620";
-        ctx.font = "600 13px sans-serif";
+        ctx.fillStyle = C.text;
+        ctx.font = "600 11px system-ui, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "alphabetic";
-        ctx.fillText(truncate(node.display_name, 18), pos.x, pos.y + NODE_R + 18);
-        if (node.username) {
-          ctx.fillStyle = "#8a8272";
-          ctx.font = "11px sans-serif";
-          ctx.fillText(`@${node.username}`, pos.x, pos.y + NODE_R + 32);
-        }
+        ctx.fillText(truncate(node.display_name, 13), pos.x, pos.y + NODE_R + 15);
+
+        ctx.fillStyle = ring;
+        pixelRoundRect(ctx, pos.x - 23, pos.y + NODE_R + 20, 46, 16, 4);
+        ctx.fill();
+        ctx.fillStyle = chipTextColorFor(node.direction);
+        ctx.font = "bold 9.5px ui-monospace, Menlo, monospace";
+        ctx.fillText(`Nv ${level}`, pos.x, pos.y + NODE_R + 31.5);
       }
+
+      // rodapé: linha separadora, mascote e copyright, centralizados
+      const footerTop = layout.height;
+      ctx.strokeStyle = C.border;
+      ctx.setLineDash([6, 4]);
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(PAD / 2, footerTop + 18);
+      ctx.lineTo(layout.width - PAD / 2, footerTop + 18);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      const mascot = await loadImage("/sheep-mascot.png");
+      const mascotSize = 84;
+      const mascotX = layout.width / 2 - mascotSize / 2;
+      const mascotY = footerTop + 34;
+      if (mascot) {
+        ctx.drawImage(mascot, mascotX, mascotY, mascotSize, mascotSize);
+      }
+
+      ctx.fillStyle = C.mutedText;
+      ctx.font = "600 11px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("© 2026 iSheep. All Rights Reserved.", layout.width / 2, mascotY + mascotSize + 26);
 
       const dataUrl = canvas.toDataURL("image/png");
       const jspdfNs = await loadJsPdf();
       const JsPdfCtor = jspdfNs.jsPDF;
-      const orientation = layout.width >= layout.height ? "l" : "p";
-      const pdf = new JsPdfCtor({ orientation, unit: "pt", format: [layout.width, layout.height] });
-      pdf.addImage(dataUrl, "PNG", 0, 0, layout.width, layout.height);
+      const orientation = layout.width >= totalHeight ? "l" : "p";
+      const pdf = new JsPdfCtor({ orientation, unit: "pt", format: [layout.width, totalHeight] });
+      pdf.addImage(dataUrl, "PNG", 0, 0, layout.width, totalHeight);
       pdf.save("arvore-de-discipulado.pdf");
 
       if (anyImageFailed) {
@@ -332,9 +440,16 @@ function ArvorePage() {
             {totalAbaixo > 0 ? `${totalAbaixo} pessoa${totalAbaixo === 1 ? "" : "s"} abaixo de você.` : "Você ainda não tem discípulos."}
           </p>
 
+          <div className="flex items-center justify-center gap-4 rounded-xl border border-border bg-surface px-3 py-2 font-mono text-[10px] uppercase tracking-wide text-muted-foreground">
+            <Legend color={C.primary} label="Você" />
+            <Legend color={C.ancient} label="Liderança acima" />
+            <Legend color={C.success} label="Discípulos" />
+          </div>
+
           <div
             ref={containerRef}
-            className="relative h-[62vh] w-full touch-none overflow-hidden rounded-2xl border border-border bg-surface"
+            className="relative h-[62vh] w-full touch-none overflow-hidden rounded-2xl border-2"
+            style={{ borderColor: C.border, backgroundColor: C.bg, boxShadow: `4px 4px 0 ${C.shadow}` }}
             onWheel={onWheel}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
@@ -350,20 +465,30 @@ function ArvorePage() {
               }}
             >
               <svg width={layout.width} height={layout.height} viewBox={`0 0 ${layout.width} ${layout.height}`}>
+                <defs>
+                  <pattern id="pixelGrid" width="16" height="16" patternUnits="userSpaceOnUse">
+                    <rect width="16" height="16" fill={C.bg} />
+                    <rect width="8" height="8" fill={C.bg2} />
+                    <rect x="8" y="8" width="8" height="8" fill={C.bg2} />
+                  </pattern>
+                </defs>
+                <rect x={0} y={0} width={layout.width} height={layout.height} fill="url(#pixelGrid)" />
+
                 {nodes.map((node) => {
                   if (!node.parent_id) return null;
                   const p1 = layout.positions.get(node.id);
                   const p2 = layout.positions.get(node.parent_id);
                   if (!p1 || !p2) return null;
+                  const midY = (p2.y + NODE_R + (p1.y - NODE_R)) / 2;
                   return (
-                    <line
+                    <path
                       key={`edge-${node.id}`}
-                      x1={p2.x}
-                      y1={p2.y + NODE_R}
-                      x2={p1.x}
-                      y2={p1.y - NODE_R}
-                      stroke="hsl(var(--border))"
-                      strokeWidth={2}
+                      d={`M ${p2.x} ${p2.y + NODE_R} L ${p2.x} ${midY} L ${p1.x} ${midY} L ${p1.x} ${p1.y - NODE_R}`}
+                      stroke={C.border}
+                      strokeWidth={3}
+                      strokeDasharray="7 5"
+                      strokeLinecap="square"
+                      fill="none"
                     />
                   );
                 })}
@@ -372,15 +497,38 @@ function ArvorePage() {
                   const pos = layout.positions.get(node.id);
                   if (!pos) return null;
                   const clipId = `clip-${node.id}`;
+                  const ring = ringColorFor(node.direction);
+                  const isSelf = node.direction === "self";
+                  const isUp = node.direction === "up";
+                  const level = getLevel(node.xp ?? 0).level;
                   return (
                     <g key={node.id}>
-                      {node.direction === "self" && (
-                        <circle cx={pos.x} cy={pos.y} r={NODE_R + 4} fill="none" stroke="hsl(var(--primary))" strokeWidth={3} />
+                      <rect
+                        x={pos.x - NODE_R + 4}
+                        y={pos.y - NODE_R + 4}
+                        width={NODE_R * 2}
+                        height={NODE_R * 2}
+                        rx={8}
+                        fill={C.shadow}
+                        opacity={0.45}
+                      />
+                      {isSelf && (
+                        <rect
+                          x={pos.x - NODE_R - 6}
+                          y={pos.y - NODE_R - 6}
+                          width={NODE_R * 2 + 12}
+                          height={NODE_R * 2 + 12}
+                          rx={10}
+                          fill="none"
+                          stroke={C.primaryGlow}
+                          strokeWidth={2}
+                          opacity={0.55}
+                        />
                       )}
                       {node.avatar_url ? (
                         <>
                           <clipPath id={clipId}>
-                            <circle cx={pos.x} cy={pos.y} r={NODE_R} />
+                            <rect x={pos.x - NODE_R} y={pos.y - NODE_R} width={NODE_R * 2} height={NODE_R * 2} rx={8} />
                           </clipPath>
                           <image
                             href={node.avatar_url}
@@ -394,20 +542,30 @@ function ArvorePage() {
                         </>
                       ) : (
                         <>
-                          <circle cx={pos.x} cy={pos.y} r={NODE_R} fill={node.direction === "self" ? "hsl(var(--primary))" : "hsl(var(--primary) / 0.4)"} />
-                          <text x={pos.x} y={pos.y} textAnchor="middle" dominantBaseline="central" fill="#fff" fontWeight="700" fontSize={22}>
+                          <rect x={pos.x - NODE_R} y={pos.y - NODE_R} width={NODE_R * 2} height={NODE_R * 2} rx={8} fill={ring} opacity={0.28} />
+                          <text x={pos.x} y={pos.y} textAnchor="middle" dominantBaseline="central" fill={C.text} fontWeight={700} fontSize={20} fontFamily="ui-monospace, monospace">
                             {initials(node.display_name)}
                           </text>
                         </>
                       )}
-                      <text x={pos.x} y={pos.y + NODE_R + 18} textAnchor="middle" fontSize={13} fontWeight={600} fill="currentColor">
-                        {truncate(node.display_name, 18)}
+                      <rect x={pos.x - NODE_R} y={pos.y - NODE_R} width={NODE_R * 2} height={NODE_R * 2} rx={8} fill="none" stroke={ring} strokeWidth={3} />
+
+                      <text x={pos.x} y={pos.y + NODE_R + 15} textAnchor="middle" fontSize={10.5} fontWeight={600} fill={C.text}>
+                        {truncate(node.display_name, 13)}
                       </text>
-                      {node.username && (
-                        <text x={pos.x} y={pos.y + NODE_R + 32} textAnchor="middle" fontSize={11} fill="currentColor" opacity={0.6}>
-                          @{node.username}
-                        </text>
-                      )}
+
+                      <rect x={pos.x - 23} y={pos.y + NODE_R + 20} width={46} height={16} rx={4} fill={ring} />
+                      <text
+                        x={pos.x}
+                        y={pos.y + NODE_R + 31.5}
+                        textAnchor="middle"
+                        fontSize={9.5}
+                        fontWeight={700}
+                        fontFamily="ui-monospace, monospace"
+                        fill={isUp ? C.ancientFg : "#0e0d16"}
+                      >
+                        {`Nv ${level}`}
+                      </text>
                     </g>
                   );
                 })}
@@ -440,5 +598,14 @@ function ArvorePage() {
         </>
       )}
     </div>
+  );
+}
+
+function Legend({ color, label }: { color: string; label: string }) {
+  return (
+    <span className="flex items-center gap-1.5">
+      <span className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: color }} />
+      {label}
+    </span>
   );
 }
