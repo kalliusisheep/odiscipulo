@@ -14,7 +14,23 @@ export const MENTOR_SYSTEM_PROMPT = `Você é o "Mentor Espiritual" do app Disci
 
 Que a graça e a paz sejam multiplicadas ao seu ministério silencioso.`;
 
-export async function streamMentor(messages: { role: string; content: string }[]) {
+/**
+ * Monta o system prompt final, injetando (quando existir) o contexto de
+ * memória de conversas anteriores com este usuário. O bloco de memória é
+ * construído no cliente (src/lib/mentor-memory.ts) a partir da tabela
+ * mentor_memory e enviado junto no corpo da requisição.
+ */
+function buildSystemPrompt(memoryContext?: string): string {
+  if (!memoryContext || !memoryContext.trim()) return MENTOR_SYSTEM_PROMPT;
+  return `${MENTOR_SYSTEM_PROMPT}
+
+---
+
+CONTEXTO DE CONVERSAS ANTERIORES COM ESTE USUÁRIO (fatos que ele já compartilhou). Use com delicadeza pastoral: puxe algo daqui só quando fizer sentido natural na conversa — nunca liste tudo de uma vez, nunca cobre satisfação, nunca faça o usuário se sentir vigiado.
+${memoryContext}`;
+}
+
+export async function streamMentor(messages: { role: string; content: string }[], memoryContext?: string) {
   const apiKey = process.env.LOVABLE_API_KEY;
   if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
 
@@ -27,7 +43,7 @@ export async function streamMentor(messages: { role: string; content: string }[]
     body: JSON.stringify({
       model: "google/gemini-2.5-flash",
       stream: true,
-      messages: [{ role: "system", content: MENTOR_SYSTEM_PROMPT }, ...messages],
+      messages: [{ role: "system", content: buildSystemPrompt(memoryContext) }, ...messages],
     }),
   });
 
@@ -36,4 +52,80 @@ export async function streamMentor(messages: { role: string; content: string }[]
     throw new Error(`Gateway ${res.status}: ${text.slice(0, 200)}`);
   }
   return res.body;
+}
+
+export type ExtractedFact = {
+  category: "pedido_oracao" | "luta" | "crescimento" | "outro";
+  fact: string;
+};
+
+const MEMORY_CATEGORIES = new Set(["pedido_oracao", "luta", "crescimento", "outro"]);
+
+const MEMORY_EXTRACTION_SYSTEM_PROMPT = `Você lê uma conversa entre um usuário e um mentor cristão de IA. Extraia de 0 a 3 fatos DURÁVEIS e específicos sobre o usuário — coisas que continuam relevantes daqui a uma ou duas semanas.
+
+Vale extrair: um pedido de oração específico que ele compartilhou, uma luta pessoal ou espiritual que ele mencionou, uma área em que ele disse querer crescer.
+NÃO vale extrair: perguntas genéricas sobre a Bíblia, dúvidas pontuais de estudo, teologia abstrata, ou qualquer coisa que não diga respeito à vida pessoal do usuário. Se a conversa não trouxer nada durável, devolva uma lista vazia.
+
+Responda APENAS com um JSON válido, sem markdown e sem texto fora do JSON, exatamente neste formato:
+{"facts":[{"category":"pedido_oracao","fact":"frase curta em terceira pessoa resumindo o fato"}]}
+
+"category" deve ser um destes valores: pedido_oracao, luta, crescimento, outro.`;
+
+/**
+ * Segundo prompt, curto e barato: roda depois que o usuário fecha o chat do
+ * Mentor, para extrair fatos duráveis da conversa que acabou de acontecer.
+ * O resultado é salvo pelo cliente na tabela mentor_memory (RLS por usuário).
+ */
+export async function extractMentorMemory(
+  messages: { role: string; content: string }[],
+): Promise<ExtractedFact[]> {
+  const apiKey = process.env.LOVABLE_API_KEY;
+  if (!apiKey) throw new Error("LOVABLE_API_KEY ausente");
+
+  // Últimas ~20 mensagens bastam para captar o que importa, mantendo o
+  // prompt de extração curto (e portanto barato).
+  const transcript = messages
+    .slice(-20)
+    .map((m) => `${m.role === "user" ? "Usuário" : "Mentor"}: ${m.content}`)
+    .join("\n")
+    .slice(0, 6000);
+
+  const res = await fetch(GATEWAY_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: "google/gemini-2.5-flash",
+      messages: [
+        { role: "system", content: MEMORY_EXTRACTION_SYSTEM_PROMPT },
+        { role: "user", content: transcript || "(conversa vazia)" },
+      ],
+      response_format: { type: "json_object" },
+    }),
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`Gateway ${res.status}: ${text.slice(0, 200)}`);
+  }
+
+  const data = (await res.json()) as { choices?: { message?: { content?: string } }[] };
+  const raw = (data.choices?.[0]?.message?.content ?? "{}").replace(/```json|```/g, "").trim();
+
+  try {
+    const parsed = JSON.parse(raw) as { facts?: { category?: string; fact?: string }[] };
+    const facts = Array.isArray(parsed.facts) ? parsed.facts : [];
+    return facts
+      .filter((f) => f && typeof f.fact === "string" && f.fact.trim().length > 0)
+      .map((f) => ({
+        category: (MEMORY_CATEGORIES.has(f.category ?? "") ? f.category : "outro") as ExtractedFact["category"],
+        fact: f.fact!.trim().slice(0, 300),
+      }))
+      .slice(0, 3);
+  } catch (e) {
+    console.error("Memória do Mentor: resposta não era JSON válido", e, raw.slice(0, 200));
+    return [];
+  }
 }
