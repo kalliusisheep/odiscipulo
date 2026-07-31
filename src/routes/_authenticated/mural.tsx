@@ -41,6 +41,15 @@ const TAB_LABELS: Record<Tab, string> = {
   diario: "Meu Diário",
 };
 
+const TAB_BANNERS: Record<Tab, { src: string; alt: string }> = {
+  feed: {
+    src: "/mural-banner.png",
+    alt: "Ovelha em capa azul lendo reações no celular, sobre uma muralha",
+  },
+  oracoes: { src: "/oracoes-banner.png", alt: "Ovelha orando em um barco" },
+  diario: { src: "/diario-banner.png", alt: "Ovelha escrevendo no diário encostada em uma árvore" },
+};
+
 function MuralPage() {
   const [tab, setTab] = useState<Tab>("feed");
   return (
@@ -55,8 +64,9 @@ function MuralPage() {
 
       <div className="overflow-hidden rounded-2xl">
         <img
-          src="/mural-banner.png"
-          alt="Ovelha em capa azul lendo reações no celular, sobre uma muralha"
+          key={tab}
+          src={TAB_BANNERS[tab].src}
+          alt={TAB_BANNERS[tab].alt}
           className="aspect-[21/9] w-full object-cover object-top"
         />
       </div>
