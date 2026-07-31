@@ -98,6 +98,30 @@ export type Database = {
         }
         Relationships: []
       }
+      churches: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          name: string
+          normalized_name: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name: string
+          normalized_name: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name?: string
+          normalized_name?: string
+        }
+        Relationships: []
+      }
       demo_users: {
         Row: {
           avatar_char: string
@@ -688,6 +712,7 @@ export type Database = {
           avatar_url: string | null
           bible_version: string
           bio: string | null
+          church_id: string | null
           church_name: string | null
           created_at: string
           display_name: string
@@ -708,6 +733,7 @@ export type Database = {
           avatar_url?: string | null
           bible_version?: string
           bio?: string | null
+          church_id?: string | null
           church_name?: string | null
           created_at?: string
           display_name?: string
@@ -728,6 +754,7 @@ export type Database = {
           avatar_url?: string | null
           bible_version?: string
           bio?: string | null
+          church_id?: string | null
           church_name?: string | null
           created_at?: string
           display_name?: string
@@ -743,7 +770,15 @@ export type Database = {
           username?: string | null
           xp?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_church_id_fkey"
+            columns: ["church_id"]
+            isOneToOne: false
+            referencedRelation: "churches"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       push_subscriptions: {
         Row: {
@@ -885,6 +920,10 @@ export type Database = {
       finish_challenge_step: {
         Args: { _challenge_id: string }
         Returns: undefined
+      }
+      find_or_create_church: {
+        Args: { _name: string }
+        Returns: string
       }
     }
     Enums: {
