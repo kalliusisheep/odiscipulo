@@ -23,12 +23,18 @@ type TreeNode = {
 
 // --- Layout (posiciona cada pessoa num "slot" de grade; depois convertemos
 // para pixels). Mesma lógica é usada tanto pro desenho na tela (SVG) quanto
-// pro desenho no canvas usado na exportação em PDF — uma única fonte de verdade. ---
-const NODE_R = 32;
-const COL_W = 140;
-const ROW_H = 152;
-const PAD = 80;
-const FOOTER_H = 210; // espaço reservado só no PDF pra logo + copyright
+// pro desenho no canvas usado na exportação em PDF — uma única fonte de verdade.
+// COL_W dá bastante "respiro" horizontal e o nome é sempre truncado a um
+// tamanho pequeno o suficiente pra nunca encostar no vizinho, mesmo em nomes
+// grandes lado a lado. ---
+const NODE_R = 30;
+const COL_W = 176;
+const ROW_H = 160;
+const PAD = 84;
+const HEADER_H = 136; // espaço reservado só no PDF pra faixa de título + legenda
+const FOOTER_H = 200; // espaço reservado só no PDF pra separador + logo + copyright
+const NAME_MAX_CHARS = 12;
+const NAME_FONT_SIZE = 9.5;
 
 type Positions = Map<string, { x: number; y: number }>;
 
@@ -47,6 +53,7 @@ const C = {
   text: "oklch(0.97 0.01 265)",
   mutedText: "oklch(0.74 0.03 265)",
   shadow: "oklch(0.10 0.02 265)",
+  gold: "oklch(0.80 0.16 80)",
 };
 
 function ringColorFor(direction: TreeNode["direction"]) {
@@ -108,7 +115,8 @@ function initials(name: string) {
 }
 
 function truncate(text: string, max: number) {
-  return text.length > max ? `${text.slice(0, max - 1)}…` : text;
+  const clean = (text || "?").trim();
+  return clean.length > max ? `${clean.slice(0, max - 1)}…` : clean;
 }
 
 function loadImage(src: string): Promise<HTMLImageElement | null> {
@@ -166,6 +174,39 @@ function pixelRoundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: 
   ctx.closePath();
 }
 
+// Formato "faixa/banner" de jogo pro selo de nível — hexágono com pontas,
+// bem mais "game HUD" do que um retângulo comum.
+function ribbonPoints(cx: number, cy: number, w: number, h: number, tail: number) {
+  const hw = w / 2;
+  const hh = h / 2;
+  return [
+    [cx - hw, cy - hh],
+    [cx + hw, cy - hh],
+    [cx + hw + tail, cy],
+    [cx + hw, cy + hh],
+    [cx - hw, cy + hh],
+    [cx - hw - tail, cy],
+  ];
+}
+
+function ribbonPath(ctx: CanvasRenderingContext2D, cx: number, cy: number, w: number, h: number, tail: number) {
+  const pts = ribbonPoints(cx, cy, w, h, tail);
+  ctx.beginPath();
+  pts.forEach(([x, y], i) => (i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)));
+  ctx.closePath();
+}
+
+// Coroinha pixelada (3 blocos + base) só pro nó "você" — toque de jogo sem
+// depender de nenhum ícone externo, tudo em retângulos "duros".
+function crownPointsCanvas(ctx: CanvasRenderingContext2D, cx: number, topY: number, color: string) {
+  const s = 5; // tamanho de cada "pixel"
+  ctx.fillStyle = color;
+  ctx.fillRect(cx - s * 3, topY + s, s * 6, s);
+  ctx.fillRect(cx - s * 3, topY, s, s * 2);
+  ctx.fillRect(cx - s, topY, s, s * 2);
+  ctx.fillRect(cx + s * 2, topY, s, s * 2);
+}
+
 const MIN_SCALE = 0.25;
 const MAX_SCALE = 3;
 const clampScale = (s: number) => Math.min(MAX_SCALE, Math.max(MIN_SCALE, s));
@@ -183,7 +224,7 @@ function ArvorePage() {
 
   useEffect(() => {
     void (async () => {
-      const { data, error } = await supabase.rpc("get_my_discipleship_tree" as never);
+      const { data, error } = await supabase.rpc("get_my_discipleship_tree");
       if (error) {
         toast.error("Não foi possível carregar sua árvore de discipulado.");
       } else {
@@ -270,7 +311,7 @@ function ArvorePage() {
     setExporting(true);
     try {
       const scaleFactor = 2;
-      const totalHeight = layout.height + FOOTER_H;
+      const totalHeight = HEADER_H + layout.height + FOOTER_H;
       const canvas = document.createElement("canvas");
       canvas.width = Math.max(1, layout.width * scaleFactor);
       canvas.height = Math.max(1, totalHeight * scaleFactor);
@@ -278,10 +319,67 @@ function ArvorePage() {
       if (!ctx) throw new Error("sem canvas 2d");
       ctx.scale(scaleFactor, scaleFactor);
 
-      // fundo "pixelado" (xadrez sutil) cobrindo a página inteira, incluindo o rodapé
+      // fundo "pixelado" (xadrez sutil) cobrindo a página inteira
       const pattern = makeCheckerPattern(ctx);
       ctx.fillStyle = pattern ?? C.bg;
       ctx.fillRect(0, 0, layout.width, totalHeight);
+
+      // ---------- CABEÇALHO (faixa de título + legenda, só no PDF) ----------
+      ctx.fillStyle = C.surface;
+      ctx.fillRect(0, 0, layout.width, HEADER_H);
+      ctx.strokeStyle = C.border;
+      ctx.setLineDash([6, 4]);
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, HEADER_H);
+      ctx.lineTo(layout.width, HEADER_H);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      const headerMascot = await loadImage("/sheep-mascot.png");
+      const hmSize = 46;
+      if (headerMascot) ctx.drawImage(headerMascot, PAD / 2, 24, hmSize, hmSize);
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillStyle = C.primaryGlow;
+      ctx.font = "800 15px ui-monospace, Menlo, monospace";
+      ctx.fillText("iSheep", PAD / 2 + hmSize + 12, 44);
+      ctx.fillStyle = C.mutedText;
+      ctx.font = "600 10.5px system-ui, sans-serif";
+      ctx.fillText("Painel do Líder", PAD / 2 + hmSize + 12, 60);
+
+      ctx.textAlign = "center";
+      ctx.fillStyle = C.text;
+      ctx.font = "800 21px ui-monospace, Menlo, monospace";
+      ctx.fillText("Árvore de Discipulado", layout.width / 2, 52);
+      ctx.fillStyle = C.primary;
+      ctx.fillRect(layout.width / 2 - 46, 62, 92, 3);
+
+      // legenda no canto direito do cabeçalho
+      const legendItems: [string, string][] = [
+        [C.primary, "Você"],
+        [C.ancient, "Liderança acima"],
+        [C.success, "Discípulos"],
+      ];
+      ctx.textAlign = "left";
+      ctx.font = "700 9.5px ui-monospace, Menlo, monospace";
+      let legendY = 26;
+      const legendX = layout.width - PAD / 2 - 132;
+      legendItems.forEach(([color, label]) => {
+        ctx.fillStyle = color;
+        pixelRoundRect(ctx, legendX, legendY, 9, 9, 2);
+        ctx.fill();
+        ctx.fillStyle = C.mutedText;
+        ctx.fillText(label, legendX + 15, legendY + 8.5);
+        legendY += 16;
+      });
+
+      // cantos estilo "HUD" de jogo (frame decorativo)
+      drawCornerBrackets(ctx, layout.width, totalHeight);
+
+      // ---------- ÁRVORE ----------
+      ctx.save();
+      ctx.translate(0, HEADER_H);
 
       // conexões em estilo "árvore de habilidades" (linha em ângulo reto, tracejada)
       ctx.strokeStyle = C.border;
@@ -300,6 +398,12 @@ function ArvorePage() {
         ctx.lineTo(p1.x, midY);
         ctx.lineTo(p1.x, p1.y - NODE_R);
         ctx.stroke();
+
+        // "nó de circuito" no cotovelo da conexão, toque de tabuleiro de jogo
+        ctx.setLineDash([]);
+        ctx.fillStyle = C.border;
+        ctx.fillRect(p1.x - 2.5, midY - 2.5, 5, 5);
+        ctx.setLineDash([7, 5]);
       }
       ctx.setLineDash([]);
 
@@ -319,12 +423,13 @@ function ArvorePage() {
         ctx.fill();
         ctx.globalAlpha = 1;
 
-        // brilho externo só pro nó "você"
+        // brilho externo + coroa pixelada só pro nó "você"
         if (node.direction === "self") {
           ctx.strokeStyle = C.primaryGlow;
           ctx.lineWidth = 2;
           pixelRoundRect(ctx, pos.x - NODE_R - 6, pos.y - NODE_R - 6, NODE_R * 2 + 12, NODE_R * 2 + 12, 10);
           ctx.stroke();
+          crownPointsCanvas(ctx, pos.x, pos.y - NODE_R - 22, C.gold);
         }
 
         ctx.save();
@@ -338,34 +443,51 @@ function ArvorePage() {
           ctx.fill();
           ctx.globalAlpha = 1;
           ctx.fillStyle = C.text;
-          ctx.font = "bold 20px ui-monospace, Menlo, monospace";
+          ctx.font = "bold 18px ui-monospace, Menlo, monospace";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           ctx.fillText(initials(node.display_name), pos.x, pos.y);
         }
         ctx.restore();
 
+        // moldura "chunky": borda grossa + friso interno claro (efeito bisel de UI de jogo)
         ctx.strokeStyle = ring;
         ctx.lineWidth = 3;
         pixelRoundRect(ctx, pos.x - NODE_R, pos.y - NODE_R, NODE_R * 2, NODE_R * 2, 8);
         ctx.stroke();
+        ctx.strokeStyle = C.text;
+        ctx.globalAlpha = 0.18;
+        ctx.lineWidth = 1;
+        pixelRoundRect(ctx, pos.x - NODE_R + 4, pos.y - NODE_R + 4, NODE_R * 2 - 8, NODE_R * 2 - 8, 5);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
 
+        // nome — pequeno e sempre truncado, então nunca encosta no vizinho
         ctx.fillStyle = C.text;
-        ctx.font = "600 11px system-ui, sans-serif";
+        ctx.font = `700 ${NAME_FONT_SIZE}px system-ui, sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "alphabetic";
-        ctx.fillText(truncate(node.display_name, 13), pos.x, pos.y + NODE_R + 15);
+        ctx.fillText(truncate(node.display_name, NAME_MAX_CHARS), pos.x, pos.y + NODE_R + 16);
 
+        // selo de nível em formato "faixa de jogo"
+        const badgeY = pos.y + NODE_R + 33;
         ctx.fillStyle = ring;
-        pixelRoundRect(ctx, pos.x - 23, pos.y + NODE_R + 20, 46, 16, 4);
+        ribbonPath(ctx, pos.x, badgeY, 44, 17, 6);
         ctx.fill();
+        ctx.strokeStyle = C.shadow;
+        ctx.globalAlpha = 0.5;
+        ctx.lineWidth = 1.5;
+        ribbonPath(ctx, pos.x, badgeY, 44, 17, 6);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
         ctx.fillStyle = chipTextColorFor(node.direction);
         ctx.font = "bold 9.5px ui-monospace, Menlo, monospace";
-        ctx.fillText(`Nv ${level}`, pos.x, pos.y + NODE_R + 31.5);
+        ctx.fillText(`Nv ${level}`, pos.x, badgeY + 3.5);
       }
+      ctx.restore();
 
-      // rodapé: linha separadora, mascote e copyright, centralizados
-      const footerTop = layout.height;
+      // ---------- RODAPÉ (separador, mascote e copyright, centralizados) ----------
+      const footerTop = HEADER_H + layout.height;
       ctx.strokeStyle = C.border;
       ctx.setLineDash([6, 4]);
       ctx.lineWidth = 2;
@@ -481,15 +603,17 @@ function ArvorePage() {
                   if (!p1 || !p2) return null;
                   const midY = (p2.y + NODE_R + (p1.y - NODE_R)) / 2;
                   return (
-                    <path
-                      key={`edge-${node.id}`}
-                      d={`M ${p2.x} ${p2.y + NODE_R} L ${p2.x} ${midY} L ${p1.x} ${midY} L ${p1.x} ${p1.y - NODE_R}`}
-                      stroke={C.border}
-                      strokeWidth={3}
-                      strokeDasharray="7 5"
-                      strokeLinecap="square"
-                      fill="none"
-                    />
+                    <g key={`edge-${node.id}`}>
+                      <path
+                        d={`M ${p2.x} ${p2.y + NODE_R} L ${p2.x} ${midY} L ${p1.x} ${midY} L ${p1.x} ${p1.y - NODE_R}`}
+                        stroke={C.border}
+                        strokeWidth={3}
+                        strokeDasharray="7 5"
+                        strokeLinecap="square"
+                        fill="none"
+                      />
+                      <rect x={p1.x - 2.5} y={midY - 2.5} width={5} height={5} fill={C.border} />
+                    </g>
                   );
                 })}
 
@@ -501,6 +625,7 @@ function ArvorePage() {
                   const isSelf = node.direction === "self";
                   const isUp = node.direction === "up";
                   const level = getLevel(node.xp ?? 0).level;
+                  const badgeY = pos.y + NODE_R + 33;
                   return (
                     <g key={node.id}>
                       <rect
@@ -513,17 +638,25 @@ function ArvorePage() {
                         opacity={0.45}
                       />
                       {isSelf && (
-                        <rect
-                          x={pos.x - NODE_R - 6}
-                          y={pos.y - NODE_R - 6}
-                          width={NODE_R * 2 + 12}
-                          height={NODE_R * 2 + 12}
-                          rx={10}
-                          fill="none"
-                          stroke={C.primaryGlow}
-                          strokeWidth={2}
-                          opacity={0.55}
-                        />
+                        <>
+                          <rect
+                            x={pos.x - NODE_R - 6}
+                            y={pos.y - NODE_R - 6}
+                            width={NODE_R * 2 + 12}
+                            height={NODE_R * 2 + 12}
+                            rx={10}
+                            fill="none"
+                            stroke={C.primaryGlow}
+                            strokeWidth={2}
+                            opacity={0.55}
+                          />
+                          <g fill={C.gold}>
+                            <rect x={pos.x - 15} y={pos.y - NODE_R - 27} width={30} height={5} />
+                            <rect x={pos.x - 15} y={pos.y - NODE_R - 32} width={5} height={10} />
+                            <rect x={pos.x - 2.5} y={pos.y - NODE_R - 32} width={5} height={10} />
+                            <rect x={pos.x + 10} y={pos.y - NODE_R - 32} width={5} height={10} />
+                          </g>
+                        </>
                       )}
                       {node.avatar_url ? (
                         <>
@@ -543,21 +676,32 @@ function ArvorePage() {
                       ) : (
                         <>
                           <rect x={pos.x - NODE_R} y={pos.y - NODE_R} width={NODE_R * 2} height={NODE_R * 2} rx={8} fill={ring} opacity={0.28} />
-                          <text x={pos.x} y={pos.y} textAnchor="middle" dominantBaseline="central" fill={C.text} fontWeight={700} fontSize={20} fontFamily="ui-monospace, monospace">
+                          <text x={pos.x} y={pos.y} textAnchor="middle" dominantBaseline="central" fill={C.text} fontWeight={700} fontSize={18} fontFamily="ui-monospace, monospace">
                             {initials(node.display_name)}
                           </text>
                         </>
                       )}
                       <rect x={pos.x - NODE_R} y={pos.y - NODE_R} width={NODE_R * 2} height={NODE_R * 2} rx={8} fill="none" stroke={ring} strokeWidth={3} />
+                      <rect
+                        x={pos.x - NODE_R + 4}
+                        y={pos.y - NODE_R + 4}
+                        width={NODE_R * 2 - 8}
+                        height={NODE_R * 2 - 8}
+                        rx={5}
+                        fill="none"
+                        stroke={C.text}
+                        strokeWidth={1}
+                        opacity={0.18}
+                      />
 
-                      <text x={pos.x} y={pos.y + NODE_R + 15} textAnchor="middle" fontSize={10.5} fontWeight={600} fill={C.text}>
-                        {truncate(node.display_name, 13)}
+                      <text x={pos.x} y={pos.y + NODE_R + 16} textAnchor="middle" fontSize={NAME_FONT_SIZE} fontWeight={700} fill={C.text}>
+                        {truncate(node.display_name, NAME_MAX_CHARS)}
                       </text>
 
-                      <rect x={pos.x - 23} y={pos.y + NODE_R + 20} width={46} height={16} rx={4} fill={ring} />
+                      <polygon points={ribbonPoints(pos.x, badgeY, 44, 17, 6).map((p) => p.join(",")).join(" ")} fill={ring} stroke={C.shadow} strokeOpacity={0.5} strokeWidth={1.5} />
                       <text
                         x={pos.x}
-                        y={pos.y + NODE_R + 31.5}
+                        y={badgeY + 3.5}
                         textAnchor="middle"
                         fontSize={9.5}
                         fontWeight={700}
@@ -599,6 +743,31 @@ function ArvorePage() {
       )}
     </div>
   );
+}
+
+// Cantos estilo "HUD" de jogo — pequenos brackets decorativos nos 4 cantos
+// da página exportada, puramente estético.
+function drawCornerBrackets(ctx: CanvasRenderingContext2D, w: number, h: number) {
+  const len = 22;
+  const inset = 10;
+  ctx.strokeStyle = C.primary;
+  ctx.globalAlpha = 0.55;
+  ctx.lineWidth = 3;
+  ctx.lineCap = "square";
+  const corners: [number, number, number, number][] = [
+    [inset, inset, 1, 1],
+    [w - inset, inset, -1, 1],
+    [inset, h - inset, 1, -1],
+    [w - inset, h - inset, -1, -1],
+  ];
+  corners.forEach(([x, y, dx, dy]) => {
+    ctx.beginPath();
+    ctx.moveTo(x, y + len * dy);
+    ctx.lineTo(x, y);
+    ctx.lineTo(x + len * dx, y);
+    ctx.stroke();
+  });
+  ctx.globalAlpha = 1;
 }
 
 function Legend({ color, label }: { color: string; label: string }) {
