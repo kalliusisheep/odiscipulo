@@ -6,9 +6,12 @@ export const Route = createFileRoute("/api/mentor")({
     handlers: {
       POST: async ({ request }) => {
         try {
-          const body = (await request.json()) as { messages: { role: string; content: string }[] };
+          const body = (await request.json()) as {
+            messages: { role: string; content: string }[];
+            memoryContext?: string;
+          };
           if (!Array.isArray(body?.messages)) return new Response("Bad request", { status: 400 });
-          const stream = await streamMentor(body.messages);
+          const stream = await streamMentor(body.messages, body.memoryContext);
           return new Response(stream, {
             headers: {
               "Content-Type": "text/event-stream",
