@@ -5,6 +5,7 @@ import { lessonById, verseText } from "@/data/content";
 import { useApp } from "@/lib/app-context";
 import { useCelebration } from "@/lib/celebration";
 import { awardXpAndStreak } from "@/lib/progress";
+import { logActivity } from "@/lib/activities";
 import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
 import { FontSizeControls } from "@/components/font-size-controls";
 import { NarrationButton } from "@/components/NarrationButton";
@@ -109,6 +110,12 @@ function LicaoPage() {
       }
       const { prevXp, newXp } = await awardXpAndStreak(u.user.id, lesson.xp);
       celebrateActivity({ prevXp, newXp, xp: lesson.xp });
+      void logActivity({
+        userId: u.user.id,
+        type: "lesson_completed",
+        title: `Terminou "${lesson.title}"`,
+        subtitle: `${found.trail.title} · ${found.module.title}`,
+      });
     }
     setStep("done");
     setSaving(false);
@@ -333,7 +340,7 @@ function LicaoPage() {
               value={reflection}
               onChange={(e) => setReflection(e.target.value)}
               rows={5}
-              placeholder="Escreva livremente… (sua resposta vai para o Mural → Meu Diário)"
+              placeholder="Escreva livremente… (sua resposta vai para o Feed → Meu Diário)"
               className="mt-3 w-full resize-none rounded-xl border border-border bg-input p-3 text-sm outline-none focus:border-primary"
             />
           </div>
