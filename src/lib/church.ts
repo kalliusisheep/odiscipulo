@@ -43,7 +43,14 @@ export async function createAndLinkChurch(name: string): Promise<ChurchOption | 
   return { id: churchId as string, name: trimmed };
 }
 
-export async function linkProfileToChurch(userId: string, churchId: string | null): Promise<boolean> {
-  const { error } = await supabase.from("profiles").update({ church_id: churchId }).eq("id", userId);
+// Grava tanto o church_id quanto o church_name (desnormalizado) no perfil.
+// O church_name precisa ficar salvo no banco — não só no estado local do
+// React — porque a tela de novo contato lê esse campo diretamente do
+// perfil de OUTROS usuários pra montar a sugestão "mesma igreja".
+export async function linkProfileToChurch(userId: string, church: ChurchOption | null): Promise<boolean> {
+  const { error } = await supabase
+    .from("profiles")
+    .update({ church_id: church?.id ?? null, church_name: church?.name ?? null })
+    .eq("id", userId);
   return !error;
 }
