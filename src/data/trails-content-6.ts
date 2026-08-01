@@ -37,6 +37,9 @@ const vidaCrista: Trail = {
               textByVersion: {
                 NVI: "Não deixe de falar as palavras deste Livro; medite nelas de dia e de noite, para que você tenha cuidado de agir segundo tudo o que nele está escrito; assim você prosperará e será bem-sucedido em tudo.",
               },
+              originals: [
+                { word: "יֶהְגֶּה", translit: "yehgeh", meaning: "'medite, murmure' — hebraico, de hagah; imagem de repetir baixinho o texto para si mesmo até absorvê-lo, não apenas pensar rapidamente nele", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -106,6 +109,9 @@ const vidaCrista: Trail = {
               textByVersion: {
                 NVI: "Orem no Espírito em todas as ocasiões, com todo tipo de oração e súplica. Para isso, estejam atentos e sejam perseverantes em suas orações por todos os santos.",
               },
+              originals: [
+                { word: "ἀγρυπνοῦντες", translit: "agrypnoûntes", meaning: "'estando atentos, vigiando' — literalmente 'sem dormir'; oração perseverante exige vigilância ativa, não apenas boas intenções esporádicas", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -181,6 +187,9 @@ const vidaCrista: Trail = {
               textByVersion: {
                 NVI: "Tudo o que fizerem, façam de todo o coração, como para o Senhor, e não para os homens, sabendo que receberão do Senhor a recompensa da herança. É a Cristo, o Senhor, que vocês estão servindo.",
               },
+              originals: [
+                { word: "ἐκ ψυχῆς", translit: "ek psychês", meaning: "'de toda a alma, de todo o coração' — literalmente 'a partir da alma'; o trabalho comum deve nascer do centro da pessoa, não de obrigação externa", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -250,6 +259,9 @@ const vidaCrista: Trail = {
               textByVersion: {
                 NVI: "Tragam o dízimo integral ao depósito do templo, para que haja alimento em minha casa. Ponham-me à prova, e vejam se não vou abrir as comportas dos céus e derramar bênção sem medida sobre vocês.",
               },
+              originals: [
+                { word: "בְּחָנוּנִי", translit: "bechanuni", meaning: "'ponham-me à prova, testem-me' — hebraico, de bachan, examinar como se testa a pureza de um metal precioso", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -325,6 +337,9 @@ const vidaCrista: Trail = {
               textByVersion: {
                 NVI: "O amor é paciente, é bondoso. O amor não inveja, não se vangloria, não se orgulha. Não maltrata, não procura seus interesses, não se ira facilmente, não guarda rancor.",
               },
+              originals: [
+                { word: "μακροθυμεῖ", translit: "makrothymeî", meaning: "'é paciente' — literalmente 'tem ânimo longo'; suporta a provocação sem explodir, sustentando a boa vontade por longo tempo", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -394,6 +409,9 @@ const vidaCrista: Trail = {
               textByVersion: {
                 NVI: "Antes, santifiquem Cristo como Senhor em seu coração, estando sempre preparados para responder a qualquer pessoa que pedir a razão da esperança que há em vocês. Contudo, façam isso com mansidão e respeito.",
               },
+              originals: [
+                { word: "ἁγιάσατε", translit: "hagiásate", meaning: "'santifiquem' — de hagiázō, separar como santo, reservado; Cristo deve ocupar, no coração, o lugar único e supremo antes de qualquer defesa da fé", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -469,6 +487,9 @@ const vidaCrista: Trail = {
               textByVersion: {
                 NVI: "Cada um é tentado quando atraído e seduzido por sua própria cobiça. Depois, quando a cobiça concebe, dá à luz o pecado; e o pecado, quando consumado, gera a morte.",
               },
+              originals: [
+                { word: "ἀποκύει", translit: "apokýei", meaning: "'dá à luz, gera' — verbo de parto; Tiago descreve o percurso do pecado como uma gestação, do desejo à ação, e da ação à morte", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -538,6 +559,9 @@ const vidaCrista: Trail = {
               textByVersion: {
                 NVI: "Eu sou a videira, vocês são os ramos. Se alguém permanecer em mim e eu nele, esse dará muito fruto; pois sem mim vocês não podem fazer coisa alguma.",
               },
+              originals: [
+                { word: "μένων", translit: "ménōn", meaning: "'permanece' — particípio de ménō, habitar continuamente, não uma visita ocasional; frutificar depende dessa permanência constante em Cristo", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -613,12 +637,18 @@ const vidaCrista: Trail = {
               textByVersion: {
                 NVI: "Assim como o ferro afia o ferro, uma pessoa afia a outra.",
               },
+              originals: [
+                { word: "בַּרְזֶל בְּבַרְזֶל יָחַד", translit: "barzel bevarzel yachad", meaning: "'ferro com ferro se afia' — hebraico; imagem de atrito produtivo, em que o contato entre pessoas aguça o caráter de ambas", lang: "hebraico" },
+              ],
             },
             {
               ref: "Efésios 4:29",
               textByVersion: {
                 NVI: "Nenhuma palavra torpe saia da boca de vocês, mas apenas a que for útil para edificar os outros, conforme a necessidade, para que conceda benefício aos que a ouvem.",
               },
+              originals: [
+                { word: "σαπρὸς", translit: "saprós", meaning: "'torpe, podre' — literalmente usado para alimento estragado ou fruta apodrecida; palavras destrutivas são comparadas a algo em decomposição", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -688,12 +718,18 @@ const vidaCrista: Trail = {
               textByVersion: {
                 NVI: "Sabemos que Deus age em todas as coisas para o bem daqueles que o amam, dos que foram chamados de acordo com o seu propósito.",
               },
+              originals: [
+                { word: "συνεργεῖ", translit: "synergeî", meaning: "'coopera, age em conjunto' — de synergéō, trabalhar junto; Deus não causa isoladamente cada evento, mas tece todas as coisas para um propósito bom", lang: "grego" },
+              ],
             },
             {
               ref: "Salmos 34:18",
               textByVersion: {
                 NVI: "Perto está o Senhor dos que têm o coração quebrantado e salva os de espírito abatido.",
               },
+              originals: [
+                { word: "נִשְׁבְּרֵי־לֵב", translit: "nishberei-lev", meaning: "'quebrantados de coração' — hebraico; expressão de dor genuína e profunda, à qual o Senhor promete proximidade especial", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
