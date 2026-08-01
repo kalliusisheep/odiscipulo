@@ -25,17 +25,18 @@ import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/h
 import { Route as AuthenticatedBemVindoRouteImport } from './routes/_authenticated/bem-vindo'
 import { Route as AuthenticatedMensagensIndexRouteImport } from './routes/_authenticated/mensagens.index'
 import { Route as AuthenticatedEstudosIndexRouteImport } from './routes/_authenticated/estudos.index'
+import { Route as ApiMentorMemoryRouteImport } from './routes/api/mentor.memory'
 import { Route as AuthenticatedPerfilUsernameRouteImport } from './routes/_authenticated/perfil_.$username'
 import { Route as AuthenticatedModuloIdRouteImport } from './routes/_authenticated/modulo.$id'
 import { Route as AuthenticatedMensagensNovoRouteImport } from './routes/_authenticated/mensagens.novo'
 import { Route as AuthenticatedMensagensUsernameRouteImport } from './routes/_authenticated/mensagens.$username'
+import { Route as AuthenticatedLiderArvoreRouteImport } from './routes/_authenticated/lider_.arvore'
 import { Route as AuthenticatedLicaoIdRouteImport } from './routes/_authenticated/licao.$id'
 import { Route as AuthenticatedAdminPregerarTextosRouteImport } from './routes/_authenticated/admin.pregerar-textos'
 import { Route as AuthenticatedLicaoIdAprofundarRouteImport } from './routes/_authenticated/licao.$id_.aprofundar'
 import { Route as AuthenticatedEstudosPlanoIdRouteImport } from './routes/_authenticated/estudos.plano.$id'
 import { Route as AuthenticatedEstudosMeditacaoIdRouteImport } from './routes/_authenticated/estudos.meditacao.$id'
 import { Route as AuthenticatedEstudosBiblicoIdRouteImport } from './routes/_authenticated/estudos.biblico.$id'
-import { Route as AuthenticatedLiderArvoreRouteImport } from './routes/_authenticated/lider_.arvore'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -120,6 +121,11 @@ const AuthenticatedEstudosIndexRoute =
     path: '/estudos/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiMentorMemoryRoute = ApiMentorMemoryRouteImport.update({
+  id: '/memory',
+  path: '/memory',
+  getParentRoute: () => ApiMentorRoute,
+} as any)
 const AuthenticatedPerfilUsernameRoute =
   AuthenticatedPerfilUsernameRouteImport.update({
     id: '/perfil_/$username',
@@ -141,6 +147,12 @@ const AuthenticatedMensagensUsernameRoute =
   AuthenticatedMensagensUsernameRouteImport.update({
     id: '/mensagens/$username',
     path: '/mensagens/$username',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedLiderArvoreRoute =
+  AuthenticatedLiderArvoreRouteImport.update({
+    id: '/lider_/arvore',
+    path: '/lider/arvore',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedLicaoIdRoute = AuthenticatedLicaoIdRouteImport.update({
@@ -178,11 +190,6 @@ const AuthenticatedEstudosBiblicoIdRoute =
     path: '/estudos/biblico/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedLiderArvoreRoute = AuthenticatedLiderArvoreRouteImport.update({
-  id: '/lider_/arvore',
-  path: '/lider/arvore',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -196,21 +203,22 @@ export interface FileRoutesByFullPath {
   '/preview_niveis': typeof AuthenticatedPreview_niveisRoute
   '/ranking': typeof AuthenticatedRankingRoute
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
-  '/api/mentor': typeof ApiMentorRoute
+  '/api/mentor': typeof ApiMentorRouteWithChildren
   '/api/tts': typeof ApiTtsRoute
   '/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
+  '/lider/arvore': typeof AuthenticatedLiderArvoreRoute
   '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
   '/modulo/$id': typeof AuthenticatedModuloIdRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
+  '/api/mentor/memory': typeof ApiMentorMemoryRoute
   '/estudos/': typeof AuthenticatedEstudosIndexRoute
   '/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
   '/licao/$id/aprofundar': typeof AuthenticatedLicaoIdAprofundarRoute
-  '/lider/arvore': typeof AuthenticatedLiderArvoreRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -224,21 +232,22 @@ export interface FileRoutesByTo {
   '/preview_niveis': typeof AuthenticatedPreview_niveisRoute
   '/ranking': typeof AuthenticatedRankingRoute
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
-  '/api/mentor': typeof ApiMentorRoute
+  '/api/mentor': typeof ApiMentorRouteWithChildren
   '/api/tts': typeof ApiTtsRoute
   '/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
+  '/lider/arvore': typeof AuthenticatedLiderArvoreRoute
   '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
   '/modulo/$id': typeof AuthenticatedModuloIdRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
+  '/api/mentor/memory': typeof ApiMentorMemoryRoute
   '/estudos': typeof AuthenticatedEstudosIndexRoute
   '/mensagens': typeof AuthenticatedMensagensIndexRoute
   '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
   '/licao/$id/aprofundar': typeof AuthenticatedLicaoIdAprofundarRoute
-  '/lider/arvore': typeof AuthenticatedLiderArvoreRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -254,21 +263,22 @@ export interface FileRoutesById {
   '/_authenticated/preview_niveis': typeof AuthenticatedPreview_niveisRoute
   '/_authenticated/ranking': typeof AuthenticatedRankingRoute
   '/_authenticated/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
-  '/api/mentor': typeof ApiMentorRoute
+  '/api/mentor': typeof ApiMentorRouteWithChildren
   '/api/tts': typeof ApiTtsRoute
   '/_authenticated/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
   '/_authenticated/licao/$id': typeof AuthenticatedLicaoIdRoute
+  '/_authenticated/lider_/arvore': typeof AuthenticatedLiderArvoreRoute
   '/_authenticated/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/_authenticated/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
   '/_authenticated/modulo/$id': typeof AuthenticatedModuloIdRoute
   '/_authenticated/perfil_/$username': typeof AuthenticatedPerfilUsernameRoute
+  '/api/mentor/memory': typeof ApiMentorMemoryRoute
   '/_authenticated/estudos/': typeof AuthenticatedEstudosIndexRoute
   '/_authenticated/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/_authenticated/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/_authenticated/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/_authenticated/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
   '/_authenticated/licao/$id_/aprofundar': typeof AuthenticatedLicaoIdAprofundarRoute
-  '/_authenticated/lider_/arvore': typeof AuthenticatedLiderArvoreRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -288,17 +298,18 @@ export interface FileRouteTypes {
     | '/api/tts'
     | '/admin/pregerar-textos'
     | '/licao/$id'
+    | '/lider/arvore'
     | '/mensagens/$username'
     | '/mensagens/novo'
     | '/modulo/$id'
     | '/perfil/$username'
+    | '/api/mentor/memory'
     | '/estudos/'
     | '/mensagens/'
     | '/estudos/biblico/$id'
     | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
     | '/licao/$id/aprofundar'
-    | '/lider/arvore'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -316,17 +327,18 @@ export interface FileRouteTypes {
     | '/api/tts'
     | '/admin/pregerar-textos'
     | '/licao/$id'
+    | '/lider/arvore'
     | '/mensagens/$username'
     | '/mensagens/novo'
     | '/modulo/$id'
     | '/perfil/$username'
+    | '/api/mentor/memory'
     | '/estudos'
     | '/mensagens'
     | '/estudos/biblico/$id'
     | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
     | '/licao/$id/aprofundar'
-    | '/lider/arvore'
   id:
     | '__root__'
     | '/'
@@ -345,24 +357,25 @@ export interface FileRouteTypes {
     | '/api/tts'
     | '/_authenticated/admin/pregerar-textos'
     | '/_authenticated/licao/$id'
+    | '/_authenticated/lider_/arvore'
     | '/_authenticated/mensagens/$username'
     | '/_authenticated/mensagens/novo'
     | '/_authenticated/modulo/$id'
     | '/_authenticated/perfil_/$username'
+    | '/api/mentor/memory'
     | '/_authenticated/estudos/'
     | '/_authenticated/mensagens/'
     | '/_authenticated/estudos/biblico/$id'
     | '/_authenticated/estudos/meditacao/$id'
     | '/_authenticated/estudos/plano/$id'
     | '/_authenticated/licao/$id_/aprofundar'
-    | '/_authenticated/lider_/arvore'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
-  ApiMentorRoute: typeof ApiMentorRoute
+  ApiMentorRoute: typeof ApiMentorRouteWithChildren
   ApiTtsRoute: typeof ApiTtsRoute
 }
 
@@ -480,6 +493,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEstudosIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/mentor/memory': {
+      id: '/api/mentor/memory'
+      path: '/memory'
+      fullPath: '/api/mentor/memory'
+      preLoaderRoute: typeof ApiMentorMemoryRouteImport
+      parentRoute: typeof ApiMentorRoute
+    }
     '/_authenticated/perfil_/$username': {
       id: '/_authenticated/perfil_/$username'
       path: '/perfil/$username'
@@ -506,6 +526,13 @@ declare module '@tanstack/react-router' {
       path: '/mensagens/$username'
       fullPath: '/mensagens/$username'
       preLoaderRoute: typeof AuthenticatedMensagensUsernameRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/lider_/arvore': {
+      id: '/_authenticated/lider_/arvore'
+      path: '/lider/arvore'
+      fullPath: '/lider/arvore'
+      preLoaderRoute: typeof AuthenticatedLiderArvoreRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/licao/$id': {
@@ -550,13 +577,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEstudosBiblicoIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/lider_/arvore': {
-      id: '/_authenticated/lider_/arvore'
-      path: '/lider/arvore'
-      fullPath: '/lider/arvore'
-      preLoaderRoute: typeof AuthenticatedLiderArvoreRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
   }
 }
 
@@ -572,6 +592,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRankingDetalhesRoute: typeof AuthenticatedRankingDetalhesRoute
   AuthenticatedAdminPregerarTextosRoute: typeof AuthenticatedAdminPregerarTextosRoute
   AuthenticatedLicaoIdRoute: typeof AuthenticatedLicaoIdRoute
+  AuthenticatedLiderArvoreRoute: typeof AuthenticatedLiderArvoreRoute
   AuthenticatedMensagensUsernameRoute: typeof AuthenticatedMensagensUsernameRoute
   AuthenticatedMensagensNovoRoute: typeof AuthenticatedMensagensNovoRoute
   AuthenticatedModuloIdRoute: typeof AuthenticatedModuloIdRoute
@@ -582,7 +603,6 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedEstudosMeditacaoIdRoute: typeof AuthenticatedEstudosMeditacaoIdRoute
   AuthenticatedEstudosPlanoIdRoute: typeof AuthenticatedEstudosPlanoIdRoute
   AuthenticatedLicaoIdAprofundarRoute: typeof AuthenticatedLicaoIdAprofundarRoute
-  AuthenticatedLiderArvoreRoute: typeof AuthenticatedLiderArvoreRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -597,6 +617,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRankingDetalhesRoute: AuthenticatedRankingDetalhesRoute,
   AuthenticatedAdminPregerarTextosRoute: AuthenticatedAdminPregerarTextosRoute,
   AuthenticatedLicaoIdRoute: AuthenticatedLicaoIdRoute,
+  AuthenticatedLiderArvoreRoute: AuthenticatedLiderArvoreRoute,
   AuthenticatedMensagensUsernameRoute: AuthenticatedMensagensUsernameRoute,
   AuthenticatedMensagensNovoRoute: AuthenticatedMensagensNovoRoute,
   AuthenticatedModuloIdRoute: AuthenticatedModuloIdRoute,
@@ -607,19 +628,40 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedEstudosMeditacaoIdRoute: AuthenticatedEstudosMeditacaoIdRoute,
   AuthenticatedEstudosPlanoIdRoute: AuthenticatedEstudosPlanoIdRoute,
   AuthenticatedLicaoIdAprofundarRoute: AuthenticatedLicaoIdAprofundarRoute,
-  AuthenticatedLiderArvoreRoute: AuthenticatedLiderArvoreRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface ApiMentorRouteChildren {
+  ApiMentorMemoryRoute: typeof ApiMentorMemoryRoute
+}
+
+const ApiMentorRouteChildren: ApiMentorRouteChildren = {
+  ApiMentorMemoryRoute: ApiMentorMemoryRoute,
+}
+
+const ApiMentorRouteWithChildren = ApiMentorRoute._addFileChildren(
+  ApiMentorRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
-  ApiMentorRoute: ApiMentorRoute,
+  ApiMentorRoute: ApiMentorRouteWithChildren,
   ApiTtsRoute: ApiTtsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
