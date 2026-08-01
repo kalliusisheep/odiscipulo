@@ -10,45 +10,145 @@ type CelebrationCtx = {
 
 const Ctx = createContext<CelebrationCtx | null>(null);
 
-// Small WebAudio helpers — respect device volume via master gain and stay quiet if muted.
-function playTone(freqs: number[], duration = 0.35, type: OscillatorType = "sine", volume = 0.18) {
-  if (typeof window === "undefined") return;
+// ------------------------------------------------------------------
+// Sons estilo MMORPG (gerados no próprio aparelho via WebAudio — sem
+// arquivos, sem download, e respeitando o volume do dispositivo).
+// ------------------------------------------------------------------
+
+function getAudioCtx(): AudioContext | null {
+  if (typeof window === "undefined") return null;
+  const AudioCtx =
+    window.AudioContext ??
+    (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+  if (!AudioCtx) return null;
+  const ctx = new AudioCtx();
+  if (ctx.state === "suspended") void ctx.resume();
+  return ctx;
+}
+
+type NoteOpts = {
+  freq: number;
+  start: number;
+  dur: number;
+  type?: OscillatorType;
+  gain?: number;
+  /** Deslize de altura até esta frequência (efeito "swoosh" de RPG). */
+  glideTo?: number;
+  /** Leve desafinação em cents para engrossar o timbre (voz dupla). */
+  detune?: number;
+};
+
+/** Toca uma nota com envelope suave — o tijolo básico dos nossos sons. */
+function note(ctx: AudioContext, out: AudioNode, o: NoteOpts) {
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = o.type ?? "triangle";
+  osc.frequency.setValueAtTime(o.freq, o.start);
+  if (o.glideTo) osc.frequency.exponentialRampToValueAtTime(o.glideTo, o.start + o.dur);
+  if (o.detune) osc.detune.value = o.detune;
+  const peak = o.gain ?? 0.16;
+  gain.gain.setValueAtTime(0.0001, o.start);
+  gain.gain.exponentialRampToValueAtTime(peak, o.start + 0.015);
+  gain.gain.exponentialRampToValueAtTime(0.0001, o.start + o.dur);
+  osc.connect(gain).connect(out);
+  osc.start(o.start);
+  osc.stop(o.start + o.dur + 0.03);
+}
+
+/** Cria um "reverb" barato (delay curto realimentado) — dá o ar épico de masmorra. */
+function makeBus(ctx: AudioContext) {
+  const master = ctx.createGain();
+  master.gain.value = 0.9;
+  const delay = ctx.createDelay(1);
+  delay.delayTime.value = 0.12;
+  const feedback = ctx.createGain();
+  feedback.gain.value = 0.28;
+  const wet = ctx.createGain();
+  wet.gain.value = 0.3;
+  master.connect(ctx.destination);
+  master.connect(delay);
+  delay.connect(feedback).connect(delay);
+  delay.connect(wet).connect(ctx.destination);
+  return master;
+}
+
+function closeSoon(ctx: AudioContext, afterSec: number) {
+  setTimeout(() => void ctx.close(), afterSec * 1000 + 400);
+}
+
+/**
+ * Som de "missão concluída" ao terminar uma lição: arpejo ascendente
+ * brilhante com sino final — curto, marcante e com a cara do app.
+ */
+function successChime() {
+  const ctx = getAudioCtx();
+  if (!ctx) return;
   try {
-    const AudioCtx =
-      window.AudioContext ??
-      (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (!AudioCtx) return;
-    const ctx = new AudioCtx();
-    if (ctx.state === "suspended") void ctx.resume();
-    const now = ctx.currentTime;
-    freqs.forEach((f, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = type;
-      osc.frequency.value = f;
-      const start = now + i * 0.09;
-      const end = start + duration;
-      gain.gain.setValueAtTime(0, start);
-      gain.gain.linearRampToValueAtTime(volume, start + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.001, end);
-      osc.connect(gain).connect(ctx.destination);
-      osc.start(start);
-      osc.stop(end + 0.02);
+    const bus = makeBus(ctx);
+    const t = ctx.currentTime + 0.02;
+    // Arpejo Fá maior ascendente (quest complete)
+    const arp = [523.25, 698.46, 880.0];
+    arp.forEach((f, i) => {
+      const s = t + i * 0.085;
+      note(ctx, bus, { freq: f, start: s, dur: 0.22, type: "triangle", gain: 0.15 });
+      note(ctx, bus, { freq: f * 2, start: s, dur: 0.16, type: "sine", gain: 0.06 });
     });
-    setTimeout(() => void ctx.close(), (freqs.length * 100) + duration * 1000 + 200);
+    // Sino final sustentado + oitava grave dando corpo
+    const end = t + arp.length * 0.085;
+    note(ctx, bus, { freq: 1046.5, start: end, dur: 0.9, type: "sine", gain: 0.14 });
+    note(ctx, bus, { freq: 523.25, start: end, dur: 0.9, type: "triangle", gain: 0.09, detune: -6 });
+    note(ctx, bus, { freq: 261.63, start: end, dur: 0.7, type: "sine", gain: 0.07 });
+    closeSoon(ctx, 1.8);
   } catch {
     /* silent — audio is optional */
   }
 }
 
-function successChime() {
-  // Bright triad: C5 → E5 → G5
-  playTone([523.25, 659.25, 783.99], 0.32, "triangle", 0.16);
-}
-
+/**
+ * Fanfarra de LEVEL UP estilo MMORPG: swoosh ascendente, fanfarra de
+ * metais em acorde e brilho cintilante no fim.
+ */
 function levelUpFanfare() {
-  // Longer fanfare: G4 C5 E5 G5 C6
-  playTone([392, 523.25, 659.25, 783.99, 1046.5], 0.55, "triangle", 0.22);
+  const ctx = getAudioCtx();
+  if (!ctx) return;
+  try {
+    const bus = makeBus(ctx);
+    const t = ctx.currentTime + 0.02;
+
+    // 1. Swoosh de ascensão
+    note(ctx, bus, { freq: 180, start: t, dur: 0.45, type: "sawtooth", gain: 0.07, glideTo: 900 });
+
+    // 2. Fanfarra: G4 → C5 → E5 → G5 (metais em duas vozes levemente desafinadas)
+    const fanfare = [392.0, 523.25, 659.25, 783.99];
+    fanfare.forEach((f, i) => {
+      const s = t + 0.28 + i * 0.13;
+      note(ctx, bus, { freq: f, start: s, dur: 0.3, type: "sawtooth", gain: 0.09 });
+      note(ctx, bus, { freq: f, start: s, dur: 0.3, type: "square", gain: 0.05, detune: 8 });
+      note(ctx, bus, { freq: f / 2, start: s, dur: 0.3, type: "triangle", gain: 0.07 });
+    });
+
+    // 3. Acorde final triunfal (C maior amplo) sustentado
+    const chordAt = t + 0.28 + fanfare.length * 0.13;
+    [261.63, 523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+      note(ctx, bus, {
+        freq: f,
+        start: chordAt,
+        dur: 1.4,
+        type: i === 0 ? "triangle" : "sawtooth",
+        gain: i === 0 ? 0.11 : 0.07,
+        detune: i * 4,
+      });
+    });
+
+    // 4. Cintilância (sparkles) por cima do acorde
+    [1567.98, 2093.0, 2637.02, 2093.0, 3135.96].forEach((f, i) => {
+      note(ctx, bus, { freq: f, start: chordAt + 0.12 + i * 0.07, dur: 0.22, type: "sine", gain: 0.05 });
+    });
+
+    closeSoon(ctx, 3);
+  } catch {
+    /* silent — audio is optional */
+  }
 }
 
 function fireConfetti(intense = false) {
