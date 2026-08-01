@@ -97,42 +97,46 @@ function AuthPage() {
     setGoogleLoading(false);
   };
 
-  // Shared background: the split image (white panel + desert/cross scene with the
-  // mascot). Drop the asset at public/login-bg.jpg — see chat for details.
-  // IMPORTANT: this lives INSIDE the same max-w-md box as the text column below,
-  // so the image and the form always scale together — the white/art split can't
-  // drift out of sync on wide viewports (e.g. the Lovable desktop preview).
-  const Background = () => (
-    <img
-      src="/login-bg.jpg"
-      alt=""
-      aria-hidden="true"
-      className="absolute inset-0 h-full w-full object-cover object-left"
-    />
+  // The source image has the white panel baked into its LEFT half and the
+  // desert/cross/mascot artwork baked into its RIGHT half (50/50). Rather than
+  // stretching that whole image across the screen (which desyncs the white/art
+  // boundary the moment the viewport width doesn't match the image's own
+  // aspect ratio — that's what caused the mascot to bleed into the form),
+  // we render two independent columns:
+  //   1. A real, solid white <div> for the text/form — always 100% correct,
+  //      no matter the screen width.
+  //   2. An "art panel" that shows ONLY the right half of the source image.
+  //      We do this by rendering the image at 200% of the panel's width and
+  //      pinning it to the right edge — so exactly the artwork half is
+  //      visible, cropped only vertically (never horizontally), at any
+  //      viewport size.
+  // Drop the asset at public/login-bg.jpg — see chat for details.
+  const ArtPanel = ({ className = "" }: { className?: string }) => (
+    <div className={`relative overflow-hidden bg-slate-900 ${className}`}>
+      <img
+        src="/login-bg.jpg"
+        alt=""
+        aria-hidden="true"
+        className="absolute right-0 top-0 h-full w-[200%] max-w-none object-cover"
+      />
+    </div>
   );
 
   if (checkingSession) {
     return (
-      <main className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-slate-950 font-sans text-foreground">
-        <div className="relative flex min-h-screen w-full max-w-md items-center justify-center overflow-hidden">
-          <Background />
-          <div className="relative z-10 flex flex-col items-center gap-3 rounded-2xl bg-white/90 px-6 py-5 shadow-sm">
-            <Loader2 className="h-8 w-8 animate-spin text-teal-700" />
-            <p className="text-sm text-slate-500">Entrando...</p>
-          </div>
+      <main className="flex min-h-screen w-full items-center justify-center bg-white font-sans text-foreground">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="h-8 w-8 animate-spin text-teal-700" />
+          <p className="text-sm text-slate-500">Entrando...</p>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-slate-950 font-sans text-foreground">
-      {/* The "phone" box: background art + content column scale together in here. */}
-      <div className="relative mx-auto flex min-h-screen w-full max-w-md overflow-hidden sm:min-h-[100dvh]">
-        <Background />
-
-        {/* Everything below lives inside the white half of the artwork only. */}
-        <div className="relative z-10 flex w-[58%] min-w-[210px] flex-col justify-center px-5 py-8 sm:w-[56%]">
+    <main className="flex min-h-screen w-full overflow-hidden bg-white font-sans text-foreground">
+      {/* Left: real white column — text and form always render correctly here. */}
+      <div className="flex w-full flex-col justify-center px-6 py-8 sm:w-[440px] sm:min-w-[380px] sm:px-10 md:w-[480px]">
           {/* Brand */}
           <div className="mb-6 flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-full border border-teal-800/30 text-teal-800">
@@ -274,9 +278,12 @@ function AuthPage() {
               </button>
             )}
           </form>
-        </div>
       </div>
-    </div>
+
+      {/* Right: artwork panel — always shows exactly the art half of the source
+          image, cropped only vertically, never horizontally. Hidden on very
+          narrow phones where there's no room for it; visible from sm: up. */}
+      <ArtPanel className="hidden sm:block sm:flex-1" />
     </main>
   );
 }
