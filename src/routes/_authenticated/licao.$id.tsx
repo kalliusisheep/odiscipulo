@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lessonById, verseText } from "@/data/content";
 import { useApp } from "@/lib/app-context";
 import { useCelebration } from "@/lib/celebration";
+import { useMascot, trailCompletionLine } from "@/lib/mascot";
 import { awardXpAndStreak } from "@/lib/progress";
 import { logLessonCompletionToFeed } from "@/lib/feed";
 import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
@@ -38,6 +39,7 @@ function LicaoPage() {
   const nav = useNavigate();
   const { bibleVersion } = useApp();
   const { celebrateActivity } = useCelebration();
+  const { trigger } = useMascot();
   const found = useMemo(() => lessonById(id), [id]);
   const [step, setStep] = useState<Step>("estudo");
   const [answers, setAnswers] = useState<Record<number, number>>({});
@@ -95,10 +97,12 @@ function LicaoPage() {
     setSaving(true);
     const { data: u } = await supabase.auth.getUser();
     if (u.user) {
-      await supabase.from("lesson_progress").upsert(
-        { user_id: u.user.id, lesson_id: lesson.id, xp_gained: lesson.xp },
-        { onConflict: "user_id,lesson_id" },
-      );
+      await supabase
+        .from("lesson_progress")
+        .upsert(
+          { user_id: u.user.id, lesson_id: lesson.id, xp_gained: lesson.xp },
+          { onConflict: "user_id,lesson_id" },
+        );
       if (reflection.trim()) {
         // upsert em vez de insert: se o usuário já tinha respondido essa
         // mesma lição antes, atualiza a resposta em vez de criar duplicata
@@ -117,6 +121,18 @@ function LicaoPage() {
       const { prevXp, newXp } = await awardXpAndStreak(u.user.id, lesson.xp);
       celebrateActivity({ prevXp, newXp, xp: lesson.xp });
       void logLessonCompletionToFeed(u.user.id, lesson.id, lesson.title);
+
+      // Reflexão do mentor sobre a trilha concluída — usa o título exato
+      // salvo em disciple_trails (pode diferir levemente do título estático
+      // do conteúdo, ex.: com/sem "?"), pra bater com o dicionário de
+      // comentários específicos em trailCompletionLine.
+      const { data: trail } = await supabase
+        .from("disciple_trails")
+        .select("title")
+        .eq("lesson_id", lesson.id)
+        .maybeSingle();
+      const trailTitle = (trail?.title as string | null) ?? lesson.title;
+      setTimeout(() => trigger("jump", trailCompletionLine(trailTitle), 2600), 900);
     }
     setStep("done");
     setSaving(false);
@@ -160,7 +176,11 @@ function LicaoPage() {
               </div>
               <div className="flex shrink-0 items-center gap-1.5">
                 <NarrationButton containerSelector='[data-tts-scope="licao"]' />
-                <FontSizeControls scaleIndex={scaleIndex} onIncrease={increase} onDecrease={decrease} />
+                <FontSizeControls
+                  scaleIndex={scaleIndex}
+                  onIncrease={increase}
+                  onDecrease={decrease}
+                />
               </div>
             </div>
           </div>
@@ -186,7 +206,10 @@ function LicaoPage() {
                   {v.originals.map((o, oi) => (
                     <div key={oi} className="text-xs">
                       <span className="ancient-text text-ancient">{o.word}</span>
-                      <span className="text-muted-foreground"> ({o.translit}, {o.lang}) — </span>
+                      <span className="text-muted-foreground">
+                        {" "}
+                        ({o.translit}, {o.lang}) —{" "}
+                      </span>
                       <span className="text-foreground/80">{o.meaning}</span>
                     </div>
                   ))}
@@ -196,7 +219,9 @@ function LicaoPage() {
           ))}
 
           <div className="card-elevated p-5">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Explicação</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+              Explicação
+            </p>
             <p className="mt-2 text-sm leading-relaxed text-foreground/90" data-narrate>
               {lesson.deepDive}
             </p>
@@ -242,7 +267,9 @@ function LicaoPage() {
             </div>
             <FontSizeControls scaleIndex={scaleIndex} onIncrease={increase} onDecrease={decrease} />
           </div>
-          <p className="text-sm text-muted-foreground">Responda as perguntas — pode tentar novamente até acertar.</p>
+          <p className="text-sm text-muted-foreground">
+            Responda as perguntas — pode tentar novamente até acertar.
+          </p>
 
           {lesson.quizzes.map((q, qi) => {
             const chosen = answers[qi];
@@ -260,8 +287,10 @@ function LicaoPage() {
                     const optCorrect = i === q.correctIndex;
                     let cls = "border-border bg-surface hover:border-primary/40";
                     if (answered) {
-                      if (isThisChosen && optCorrect) cls = "border-success bg-success/15 text-success";
-                      else if (isThisChosen) cls = "border-destructive bg-destructive/15 text-destructive";
+                      if (isThisChosen && optCorrect)
+                        cls = "border-success bg-success/15 text-success";
+                      else if (isThisChosen)
+                        cls = "border-destructive bg-destructive/15 text-destructive";
                       else if (optCorrect && !isCorrect) cls = "border-success/40 bg-success/5";
                       else cls = "border-border bg-surface opacity-60";
                     }
@@ -304,7 +333,9 @@ function LicaoPage() {
             Continuar para Aplicar <ArrowRight className="h-4 w-4" />
           </button>
           {!canAdvance && (
-            <p className="text-center text-[11px] text-muted-foreground">Responda todas corretamente para prosseguir.</p>
+            <p className="text-center text-[11px] text-muted-foreground">
+              Responda todas corretamente para prosseguir.
+            </p>
           )}
         </div>
       )}
@@ -320,22 +351,30 @@ function LicaoPage() {
           </div>
 
           <div className="card-elevated p-5">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Aplicação prática</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+              Aplicação prática
+            </p>
             <p className="mt-2 text-sm leading-relaxed">{lesson.application}</p>
           </div>
 
           <div className="card-elevated border-l-4 border-l-ancient p-5">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">Desafio da semana</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
+              Desafio da semana
+            </p>
             <p className="mt-2 text-sm leading-relaxed">{lesson.weeklyChallenge}</p>
           </div>
 
           <div className="card-elevated p-5">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Oração sugerida</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+              Oração sugerida
+            </p>
             <p className="mt-2 scripture text-base leading-relaxed">{lesson.prayer}</p>
           </div>
 
           <div className="card-elevated p-5">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Pergunta de reflexão</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+              Pergunta de reflexão
+            </p>
             <p className="mt-2 text-sm font-medium">{lesson.reflectionQuestion}</p>
             <textarea
               value={reflection}
@@ -365,15 +404,26 @@ function LicaoPage() {
           />
           <h2 className="mt-6 text-2xl font-bold">Lição concluída!</h2>
           <p className="mt-1 text-sm text-muted-foreground">{lesson.title}</p>
-          <p className="mt-4 rounded-full bg-primary/20 px-4 py-1.5 text-sm font-bold text-primary">+{lesson.xp} XP</p>
+          <p className="mt-4 rounded-full bg-primary/20 px-4 py-1.5 text-sm font-bold text-primary">
+            +{lesson.xp} XP
+          </p>
           <div className="mt-8 w-full max-w-xs rounded-3xl bg-gradient-to-br from-slate-800 to-slate-900 p-6 text-white">
             <Sparkles className="mx-auto h-8 w-8 text-ancient" />
             <p className="mt-4 scripture text-center text-lg leading-snug">"{lesson.title}"</p>
-            <p className="mt-3 text-center text-[10px] uppercase tracking-[0.3em] text-slate-400">The Disciple</p>
+            <p className="mt-3 text-center text-[10px] uppercase tracking-[0.3em] text-slate-400">
+              The Disciple
+            </p>
           </div>
           <div className="mt-6 flex w-full flex-col gap-2">
-            <ShareLessonButton lessonId={lesson.id} title={lesson.title} shareContext={shareContext} />
-            <Link to="/home" className="rounded-2xl border border-border py-3 text-sm font-medium text-muted-foreground">
+            <ShareLessonButton
+              lessonId={lesson.id}
+              title={lesson.title}
+              shareContext={shareContext}
+            />
+            <Link
+              to="/home"
+              className="rounded-2xl border border-border py-3 text-sm font-medium text-muted-foreground"
+            >
               Voltar à Inicial
             </Link>
           </div>

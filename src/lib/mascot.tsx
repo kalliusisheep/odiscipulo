@@ -4,7 +4,15 @@
 // last_activity_date. Componentes de qualquer tela podem chamar `trigger(...)`
 // para disparar uma reação pontual (pular ao ganhar XP, dançar ao subir de
 // nível, comemorar streak etc).
-import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { xpToNextLevel } from "@/data/levels";
 
@@ -115,7 +123,9 @@ function buildProgressLines(opts: {
   }
 
   if (completedLessons >= 20) {
-    lines.push(`${completedLessons} lições concluídas${who}! Você está construindo um hábito e tanto.`);
+    lines.push(
+      `${completedLessons} lições concluídas${who}! Você está construindo um hábito e tanto.`,
+    );
   } else if (completedLessons >= 5) {
     lines.push(`Você já concluiu ${completedLessons} lições na sua trilha${who}. Bora continuar?`);
   } else if (completedLessons === 0) {
@@ -136,7 +146,8 @@ const TRAIL_COMMENTS: Record<string, string> = {
   "Graça e Adoção": "Filho(a) de Deus por graça — guarda isso no coração.",
   "A Palavra": "A Palavra é viva! Continue voltando a ela todo dia.",
   "A Oração": "Conversar com Deus fica mais natural a cada dia.",
-  "Igreja e Comunhão": "Fé também se vive em comunidade. Já pensou em quem chamar pra caminhar junto?",
+  "Igreja e Comunhão":
+    "Fé também se vive em comunidade. Já pensou em quem chamar pra caminhar junto?",
   Batismo: "Um símbolo tão forte da sua nova vida. Já pensou nesse passo?",
   "Primeiros Tropeços": "Todo mundo tropeça — o que importa é levantar e seguir.",
   "Missão Inicial": "Primeira trilha de missão concluída! Pronto(a) pra mais.",
@@ -152,13 +163,15 @@ const TRAIL_COMMENTS: Record<string, string> = {
   "A Igreja": "Você faz parte de algo maior — o corpo de Cristo.",
   "Escatologia Básica": "O futuro já tem um final garantido. Isso te dá esperança?",
   // Módulo 3 — Como Estudar a Bíblia
-  "A Metanarrativa Bíblica": "Criação, queda, redenção, restauração — agora você enxerga o mapa todo.",
+  "A Metanarrativa Bíblica":
+    "Criação, queda, redenção, restauração — agora você enxerga o mapa todo.",
   "Gêneros Literários": "Ler a Bíblia do jeito certo muda tudo. Ótimo passo!",
   "O Método Indutivo": "Observar, interpretar, aplicar — uma ferramenta pra vida toda.",
   "Contexto Histórico": "Entender o contexto evita muita interpretação torta. Bom trabalho!",
   "Ferramentas de Estudo": "Agora seu estudo bíblico ficou mais rico.",
   "Perguntas ao Texto": "Fazer boas perguntas ao texto já é meio caminho andado.",
-  "Hermenêutica Cristocêntrica": "Toda a Escritura aponta pra Cristo — que jeito lindo de ler a Bíblia.",
+  "Hermenêutica Cristocêntrica":
+    "Toda a Escritura aponta pra Cristo — que jeito lindo de ler a Bíblia.",
   "Evitando Heresias": "Discernimento é essencial. Você está mais preparado(a) agora.",
   "Exegese e Aplicação": "Do texto à vida — é exatamente assim que deve ser.",
   "Hábito de Leitura": "Um hábito de leitura constante muda uma vida inteira.",
@@ -181,7 +194,9 @@ const TRAIL_COMMENTS: Record<string, string> = {
  * assim cita o título real da trilha (nunca deixa a fala vaga).
  */
 export function trailCompletionLine(trailTitle: string): string {
-  return TRAIL_COMMENTS[trailTitle] ?? `Você concluiu "${trailTitle}"! Mais um passo na sua caminhada 🐑`;
+  return (
+    TRAIL_COMMENTS[trailTitle] ?? `Você concluiu "${trailTitle}"! Mais um passo na sua caminhada 🐑`
+  );
 }
 
 // Falas ditas quando chega uma mensagem nova de outro usuário. Variadas de
@@ -265,6 +280,19 @@ function feedPostLines(authorName: string): string[] {
     `${authorName} abriu o coração no mural agora. Vai lá encorajar.`,
     `Tem clamor novo de ${authorName} no mural — comunhão também é isso.`,
     `${authorName} publicou algo agora — sua palavra de ânimo pode fazer diferença.`,
+  ];
+}
+
+// Falas ditas quando um amigo publica algo novo na aba Feed (diferente do
+// Mural de orações — é o mural social, com posts e conquistas). Sempre
+// citam quem publicou.
+function feedItemPostLines(authorName: string): string[] {
+  return [
+    `${authorName} acabou de postar algo no Feed. Vale dar uma olhada.`,
+    `Novo post de ${authorName} no Feed — que tal deixar um comentário?`,
+    `${authorName} compartilhou algo agora no Feed.`,
+    `Tem novidade de ${authorName} no Feed — vai lá conferir.`,
+    `${authorName} publicou algo agora no Feed — sua palavra pode animar o dia dele(a).`,
   ];
 }
 
@@ -405,7 +433,8 @@ function greetingForNow(name: string | null): { text: string; emoji: string } {
 
   if (isSunday) return { text: `Hoje é dia de culto${who}? 🙏`, emoji: "🙏" };
   if (hour >= 5 && hour < 12) return { text: `Bom dia${who}! Vamos estudar?`, emoji: "☀️" };
-  if (hour >= 12 && hour < 18) return { text: `Boa tarde${who}! Pronto pra continuar?`, emoji: "🌤️" };
+  if (hour >= 12 && hour < 18)
+    return { text: `Boa tarde${who}! Pronto pra continuar?`, emoji: "🌤️" };
   if (hour >= 18 && hour < 23) return { text: `Boa noite${who}!`, emoji: "🌙" };
   return { text: `Já tá tarde${who}… não esquece de descansar.`, emoji: "😴" };
 }
@@ -419,13 +448,16 @@ export function MascotProvider({ children }: { children: ReactNode }) {
   // sem precisar re-renderizar o provider a cada troca.
   const nameRef = useRef<string | null>(null);
 
-  const trigger = useCallback((event: Exclude<MascotEvent, null>, message?: string, durationMs = 1600) => {
-    if (clearTimer.current) clearTimeout(clearTimer.current);
-    setState((s) => ({ event, message: message ?? s.message, moodEmoji: s.moodEmoji }));
-    clearTimer.current = setTimeout(() => {
-      setState((s) => ({ ...s, event: null }));
-    }, durationMs);
-  }, []);
+  const trigger = useCallback(
+    (event: Exclude<MascotEvent, null>, message?: string, durationMs = 1600) => {
+      if (clearTimer.current) clearTimeout(clearTimer.current);
+      setState((s) => ({ event, message: message ?? s.message, moodEmoji: s.moodEmoji }));
+      clearTimer.current = setTimeout(() => {
+        setState((s) => ({ ...s, event: null }));
+      }, durationMs);
+    },
+    [],
+  );
 
   const say = useCallback((message: string) => {
     setState((s) => ({ ...s, message }));
@@ -523,7 +555,8 @@ export function MascotProvider({ children }: { children: ReactNode }) {
       const rawDisplay = (p?.display_name as string | null)?.trim();
       // "Novo Discípulo" é o valor padrão de display_name pra quem ainda
       // não escolheu um nome — nesse caso é melhor não usar (não é um nome real).
-      const displayFirstWord = rawDisplay && rawDisplay !== "Novo Discípulo" ? rawDisplay.split(/\s+/)[0] : null;
+      const displayFirstWord =
+        rawDisplay && rawDisplay !== "Novo Discípulo" ? rawDisplay.split(/\s+/)[0] : null;
       nameRef.current = rawFirst || displayFirstWord || null;
 
       const xpLeft = xpToNextLevel((p?.xp as number | null) ?? 0);
@@ -537,14 +570,17 @@ export function MascotProvider({ children }: { children: ReactNode }) {
 
       const todayStr = new Date().toISOString().slice(0, 10);
       const last = (p?.last_activity_date as string | null) ?? null;
-      const diffDays = last ? Math.floor((new Date(todayStr).getTime() - new Date(last).getTime()) / 86400000) : null;
+      const diffDays = last
+        ? Math.floor((new Date(todayStr).getTime() - new Date(last).getTime()) / 86400000)
+        : null;
       const missedDays = diffDays !== null && diffDays >= 2;
 
       if (missedDays) {
         const who = nameRef.current ? `, ${nameRef.current}` : "";
         setState({ event: "sad", message: `Senti sua falta${who}…`, moodEmoji: "😔" });
         sadTimer.current = setTimeout(() => {
-          if (!cancelled) setState({ event: null, message: `Vamos recomeçar hoje${who}?`, moodEmoji: "🙂" });
+          if (!cancelled)
+            setState({ event: null, message: `Vamos recomeçar hoje${who}?`, moodEmoji: "🙂" });
         }, 3200);
       } else {
         const g = greetingForNow(nameRef.current);
@@ -562,7 +598,8 @@ export function MascotProvider({ children }: { children: ReactNode }) {
             setTimeout(
               () => {
                 if (cancelled) return;
-                const pool = progressLines.length > 0 && Math.random() < 0.7 ? progressLines : contextualPool;
+                const pool =
+                  progressLines.length > 0 && Math.random() < 0.7 ? progressLines : contextualPool;
                 say(pickRandom(pool));
               },
               7000 + Math.random() * 4000,
@@ -591,7 +628,12 @@ export function MascotProvider({ children }: { children: ReactNode }) {
         .channel(`mascot-messages-${u.user.id}-${Math.random().toString(36).slice(2)}`)
         .on(
           "postgres_changes",
-          { event: "INSERT", schema: "public", table: "messages", filter: `recipient_id=eq.${u.user.id}` },
+          {
+            event: "INSERT",
+            schema: "public",
+            table: "messages",
+            filter: `recipient_id=eq.${u.user.id}`,
+          },
           (payload) => {
             const senderId = (payload.new as { sender_id: string }).sender_id;
             void (async () => {
@@ -624,21 +666,32 @@ export function MascotProvider({ children }: { children: ReactNode }) {
       const myId = u.user.id;
       channel = supabase
         .channel(`mascot-mural-amens-${myId}-${Math.random().toString(36).slice(2)}`)
-        .on("postgres_changes", { event: "INSERT", schema: "public", table: "mural_amens" }, (payload) => {
-          const { post_id, user_id: amenUserId } = payload.new as { post_id: string; user_id: string };
-          if (amenUserId === myId) return; // não reage ao próprio toque
-          void (async () => {
-            const { data: post } = await supabase.from("mural_posts").select("user_id").eq("id", post_id).maybeSingle();
-            if (post?.user_id !== myId) return; // só reage a Amém no próprio post
-            const { data: fan } = await supabase
-              .from("profiles")
-              .select("display_name")
-              .eq("id", amenUserId)
-              .maybeSingle();
-            const fanName = fan?.display_name?.trim() || "Um irmão(ã)";
-            trigger("jump", pickRandom(muralAmenLines(fanName)), 1600);
-          })();
-        })
+        .on(
+          "postgres_changes",
+          { event: "INSERT", schema: "public", table: "mural_amens" },
+          (payload) => {
+            const { post_id, user_id: amenUserId } = payload.new as {
+              post_id: string;
+              user_id: string;
+            };
+            if (amenUserId === myId) return; // não reage ao próprio toque
+            void (async () => {
+              const { data: post } = await supabase
+                .from("mural_posts")
+                .select("user_id")
+                .eq("id", post_id)
+                .maybeSingle();
+              if (post?.user_id !== myId) return; // só reage a Amém no próprio post
+              const { data: fan } = await supabase
+                .from("profiles")
+                .select("display_name")
+                .eq("id", amenUserId)
+                .maybeSingle();
+              const fanName = fan?.display_name?.trim() || "Um irmão(ã)";
+              trigger("jump", pickRandom(muralAmenLines(fanName)), 1600);
+            })();
+          },
+        )
         .subscribe();
     })();
     return () => {
@@ -658,7 +711,12 @@ export function MascotProvider({ children }: { children: ReactNode }) {
         .channel(`mascot-challenges-${u.user.id}-${Math.random().toString(36).slice(2)}`)
         .on(
           "postgres_changes",
-          { event: "INSERT", schema: "public", table: "challenges", filter: `challenged_id=eq.${u.user.id}` },
+          {
+            event: "INSERT",
+            schema: "public",
+            table: "challenges",
+            filter: `challenged_id=eq.${u.user.id}`,
+          },
           (payload) => {
             const challengerId = (payload.new as { challenger_id: string }).challenger_id;
             void (async () => {
@@ -688,18 +746,67 @@ export function MascotProvider({ children }: { children: ReactNode }) {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user) return;
       const myId = u.user.id;
-      const { data: fr } = await supabase.from("friendships").select("friend_id").eq("user_id", myId);
+      const { data: fr } = await supabase
+        .from("friendships")
+        .select("friend_id")
+        .eq("user_id", myId);
       const friendIds = new Set((fr ?? []).map((r) => r.friend_id as string));
       if (friendIds.size === 0) return;
       channel = supabase
         .channel(`mascot-mural-posts-${myId}-${Math.random().toString(36).slice(2)}`)
-        .on("postgres_changes", { event: "INSERT", schema: "public", table: "mural_posts" }, (payload) => {
-          const row = payload.new as { user_id: string | null; author_name: string };
-          if (!row.user_id || row.user_id === myId) return;
-          if (!friendIds.has(row.user_id)) return;
-          if (Math.random() > 0.7) return; // nem todo post gera comentário, pra não virar spam
-          trigger("jump", pickRandom(feedPostLines(row.author_name)), 1800);
-        })
+        .on(
+          "postgres_changes",
+          { event: "INSERT", schema: "public", table: "mural_posts" },
+          (payload) => {
+            const row = payload.new as { user_id: string | null; author_name: string };
+            if (!row.user_id || row.user_id === myId) return;
+            if (!friendIds.has(row.user_id)) return;
+            if (Math.random() > 0.7) return; // nem todo post gera comentário, pra não virar spam
+            trigger("jump", pickRandom(feedPostLines(row.author_name)), 1800);
+          },
+        )
+        .subscribe();
+    })();
+    return () => {
+      if (channel) void supabase.removeChannel(channel);
+    };
+  }, [trigger]);
+
+  // Mascote comenta quando um amigo publica algo novo na aba Feed (a
+  // tabela feed_items — distinta do Mural de orações, coberto acima).
+  // Só reage a publicações de texto reais (kind === "post"), não aos
+  // eventos automáticos de progresso (lição concluída, módulo concluído
+  // etc.) — senão viraria spam toda vez que um amigo estuda.
+  useEffect(() => {
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    void (async () => {
+      const { data: u } = await supabase.auth.getUser();
+      if (!u.user) return;
+      const myId = u.user.id;
+      const { data: fr } = await supabase
+        .from("friendships")
+        .select("friend_id")
+        .eq("user_id", myId);
+      const friendIds = new Set((fr ?? []).map((r) => r.friend_id as string));
+      if (friendIds.size === 0) return;
+      channel = supabase
+        .channel(`mascot-feed-items-${myId}-${Math.random().toString(36).slice(2)}`)
+        .on(
+          "postgres_changes",
+          { event: "INSERT", schema: "public", table: "feed_items" },
+          (payload) => {
+            const row = payload.new as {
+              user_id: string | null;
+              author_name: string;
+              kind: string;
+            };
+            if (!row.user_id || row.user_id === myId) return;
+            if (!friendIds.has(row.user_id)) return;
+            if (row.kind !== "post") return; // só posts reais, não eventos automáticos
+            if (Math.random() > 0.7) return; // nem todo post gera comentário, pra não virar spam
+            trigger("jump", pickRandom(feedItemPostLines(row.author_name)), 1800);
+          },
+        )
         .subscribe();
     })();
     return () => {
@@ -768,7 +875,9 @@ export function MascotProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <Ctx.Provider value={{ state, trigger, say, pet, commentOnTab, noteLessonCompleted }}>{children}</Ctx.Provider>
+    <Ctx.Provider value={{ state, trigger, say, pet, commentOnTab, noteLessonCompleted }}>
+      {children}
+    </Ctx.Provider>
   );
 }
 
