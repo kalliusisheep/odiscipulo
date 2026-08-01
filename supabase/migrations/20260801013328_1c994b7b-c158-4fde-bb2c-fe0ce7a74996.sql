@@ -1,0 +1,1 @@
+ALTER TABLE public.feed_comments ADD COLUMN IF NOT EXISTS author_avatar_url text;
