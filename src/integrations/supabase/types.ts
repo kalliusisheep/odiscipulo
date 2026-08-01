@@ -625,7 +625,9 @@ export type Database = {
       }
       messages: {
         Row: {
-          body: string
+          audio_duration_seconds: number | null
+          audio_url: string | null
+          body: string | null
           created_at: string
           id: string
           read_at: string | null
@@ -633,7 +635,9 @@ export type Database = {
           sender_id: string
         }
         Insert: {
-          body: string
+          audio_duration_seconds?: number | null
+          audio_url?: string | null
+          body?: string | null
           created_at?: string
           id?: string
           read_at?: string | null
@@ -641,7 +645,9 @@ export type Database = {
           sender_id: string
         }
         Update: {
-          body?: string
+          audio_duration_seconds?: number | null
+          audio_url?: string | null
+          body?: string | null
           created_at?: string
           id?: string
           read_at?: string | null

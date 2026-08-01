@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Mic, Square, Send, Trash2, Loader2 } from "lucide-react";
 import { useVoiceRecorder } from "@/hooks/use-voice-recorder";
 
@@ -14,6 +14,13 @@ type Props = {
   /** Duração máxima da gravação, em segundos (padrão: 60s — suficiente para um testemunho/oração curtos). */
   maxSeconds?: number;
   className?: string;
+  /**
+   * Avisa o componente-pai quando a gravação está ativa (gravando ou já
+   * gravada, aguardando envio). Útil para esconder outros elementos da
+   * mesma linha (campo de texto, emoji) e evitar que o gravador — que
+   * precisa de mais espaço — estoure a largura do container.
+   */
+  onExpandedChange?: (expanded: boolean) => void;
 };
 
 /**
@@ -21,9 +28,16 @@ type Props = {
  * ouvir prévia → enviar ou descartar. Usado tanto no mural de orações quanto
  * no chat entre usuários.
  */
-export function VoiceRecorder({ onSend, maxSeconds = 60, className }: Props) {
-  const { status, seconds, blob, blobUrl, mimeType, start, stop, cancel, reset } = useVoiceRecorder({ maxSeconds });
+export function VoiceRecorder({ onSend, maxSeconds = 60, className, onExpandedChange }: Props) {
+  const { status, seconds, blob, blobUrl, mimeType, start, stop, cancel, reset } = useVoiceRecorder(
+    { maxSeconds },
+  );
   const [sending, setSending] = useState(false);
+
+  const expanded = status === "recording" || status === "recorded";
+  useEffect(() => {
+    onExpandedChange?.(expanded);
+  }, [expanded, onExpandedChange]);
 
   const handleSend = async () => {
     if (!blob || sending) return;
@@ -57,9 +71,12 @@ export function VoiceRecorder({ onSend, maxSeconds = 60, className }: Props) {
 
   if (status === "recording") {
     return (
-      <div className="flex items-center gap-2 rounded-full border border-destructive/40 bg-destructive/10 px-3 py-1.5">
+      <div className="flex min-w-0 flex-1 items-center gap-2 rounded-full border border-destructive/40 bg-destructive/10 px-3 py-1.5">
         <span className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-destructive" />
-        <span className="text-xs font-medium tabular-nums text-destructive">{formatTime(seconds)}</span>
+        <span className="shrink-0 text-xs font-medium tabular-nums text-destructive">
+          {formatTime(seconds)}
+        </span>
+        <span className="min-w-0 flex-1 truncate text-xs text-destructive/70">Gravando…</span>
         <button
           type="button"
           onClick={stop}
@@ -74,9 +91,11 @@ export function VoiceRecorder({ onSend, maxSeconds = 60, className }: Props) {
 
   // status === "recorded"
   return (
-    <div className="flex items-center gap-2 rounded-full border border-border bg-surface px-2 py-1.5">
-      {blobUrl && <audio controls src={blobUrl} className="h-8 max-w-[160px]" />}
-      <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{formatTime(seconds)}</span>
+    <div className="flex min-w-0 flex-1 items-center gap-2 rounded-full border border-border bg-surface px-2 py-1.5">
+      {blobUrl && <audio controls src={blobUrl} className="h-8 min-w-0 flex-1" />}
+      <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+        {formatTime(seconds)}
+      </span>
       <button
         type="button"
         onClick={cancel}
@@ -93,7 +112,11 @@ export function VoiceRecorder({ onSend, maxSeconds = 60, className }: Props) {
         disabled={sending}
         className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground disabled:opacity-50"
       >
-        {sending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
+        {sending ? (
+          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+        ) : (
+          <Send className="h-3.5 w-3.5" />
+        )}
       </button>
     </div>
   );

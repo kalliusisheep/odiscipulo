@@ -133,6 +133,8 @@ function MessagesPage() {
       setMessages((prev) => (prev.some((x) => x.id === data.id) ? prev : [...prev, data as Msg]));
   };
 
+  const [voiceExpanded, setVoiceExpanded] = useState(false);
+
   const insertEmoji = (emoji: string) => {
     setText((t) => t + emoji);
     inputRef.current?.focus();
@@ -250,15 +252,15 @@ function MessagesPage() {
         }}
         className="flex items-center gap-2 border-t border-border bg-background/90 px-3 py-3 backdrop-blur-md"
       >
-        <EmojiPicker onSelect={insertEmoji} />
+        <EmojiPicker onSelect={insertEmoji} className={voiceExpanded ? "hidden" : undefined} />
         <input
           ref={inputRef}
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Escreva uma mensagem…"
-          className="flex-1 rounded-full border border-border bg-input px-4 py-2.5 text-base outline-none transition-colors focus:border-primary"
+          className={`min-w-0 flex-1 rounded-full border border-border bg-input px-4 py-2.5 text-base outline-none transition-colors focus:border-primary ${voiceExpanded ? "hidden" : ""}`}
         />
-        {text.trim() ? (
+        {text.trim() && !voiceExpanded ? (
           <button
             type="submit"
             disabled={sending}
@@ -268,7 +270,7 @@ function MessagesPage() {
             <Send className="h-4 w-4" />
           </button>
         ) : (
-          <VoiceRecorder onSend={sendAudio} maxSeconds={60} />
+          <VoiceRecorder onSend={sendAudio} maxSeconds={60} onExpandedChange={setVoiceExpanded} />
         )}
       </form>
     </div>
