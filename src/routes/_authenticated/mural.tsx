@@ -336,7 +336,7 @@ function Feed() {
       user_id: me.id,
       author_name: me.name,
       author_avatar_url: me.avatarUrl,
-      body: text || null,
+      body: text,
       gif_url: gifUrl,
     });
     if (!error) {

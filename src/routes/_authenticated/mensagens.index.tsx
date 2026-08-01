@@ -70,7 +70,7 @@ function MensagensListPage() {
           const peerId = m.sender_id === myId ? m.recipient_id : m.sender_id;
           if (!byPeer.has(peerId)) {
             byPeer.set(peerId, {
-              body: m.body,
+              body: m.body ?? "🎤 Mensagem de voz",
               at: m.created_at,
               fromMe: m.sender_id === myId,
               unread: m.recipient_id === myId && !m.read_at,

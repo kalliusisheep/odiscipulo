@@ -14,6 +14,97 @@ export type Database = {
   }
   public: {
     Tables: {
+      activities: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string | null
+          subtitle: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          subtitle?: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          subtitle?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      activity_comments: {
+        Row: {
+          activity_id: string
+          author_name: string
+          body: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          activity_id: string
+          author_name: string
+          body: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          activity_id?: string
+          author_name?: string
+          body?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_comments_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      activity_likes: {
+        Row: {
+          activity_id: string
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          activity_id: string
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          activity_id?: string
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_likes_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       app_notifications: {
         Row: {
           body: string
@@ -160,6 +251,7 @@ export type Database = {
           lesson_id: string
           lesson_title: string
           question: string
+          updated_at: string
           user_id: string
         }
         Insert: {
@@ -169,6 +261,7 @@ export type Database = {
           lesson_id: string
           lesson_title: string
           question: string
+          updated_at?: string
           user_id: string
         }
         Update: {
@@ -178,6 +271,7 @@ export type Database = {
           lesson_id?: string
           lesson_title?: string
           question?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -389,6 +483,129 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      feed_comment_likes: {
+        Row: {
+          comment_id: string
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          comment_id: string
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          comment_id?: string
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feed_comment_likes_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "feed_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      feed_comments: {
+        Row: {
+          author_avatar_url: string | null
+          author_name: string
+          body: string
+          created_at: string
+          gif_url: string | null
+          id: string
+          item_id: string
+          user_id: string
+        }
+        Insert: {
+          author_avatar_url?: string | null
+          author_name: string
+          body?: string
+          created_at?: string
+          gif_url?: string | null
+          id?: string
+          item_id: string
+          user_id: string
+        }
+        Update: {
+          author_avatar_url?: string | null
+          author_name?: string
+          body?: string
+          created_at?: string
+          gif_url?: string | null
+          id?: string
+          item_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feed_comments_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "feed_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      feed_items: {
+        Row: {
+          author_avatar_url: string | null
+          author_name: string
+          body: string
+          created_at: string
+          id: string
+          kind: string
+          user_id: string
+        }
+        Insert: {
+          author_avatar_url?: string | null
+          author_name: string
+          body?: string
+          created_at?: string
+          id?: string
+          kind: string
+          user_id: string
+        }
+        Update: {
+          author_avatar_url?: string | null
+          author_name?: string
+          body?: string
+          created_at?: string
+          id?: string
+          kind?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      feed_likes: {
+        Row: {
+          created_at: string
+          item_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          item_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          item_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feed_likes_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "feed_items"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       friendships: {
         Row: {
@@ -623,9 +840,35 @@ export type Database = {
         }
         Relationships: []
       }
+      mentor_memory: {
+        Row: {
+          category: string
+          created_at: string
+          fact: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          fact: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          fact?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
-          body: string
+          audio_duration_seconds: number | null
+          audio_url: string | null
+          body: string | null
           created_at: string
           id: string
           read_at: string | null
@@ -633,7 +876,9 @@ export type Database = {
           sender_id: string
         }
         Insert: {
-          body: string
+          audio_duration_seconds?: number | null
+          audio_url?: string | null
+          body?: string | null
           created_at?: string
           id?: string
           read_at?: string | null
@@ -641,7 +886,9 @@ export type Database = {
           sender_id: string
         }
         Update: {
-          body?: string
+          audio_duration_seconds?: number | null
+          audio_url?: string | null
+          body?: string | null
           created_at?: string
           id?: string
           read_at?: string | null
@@ -679,8 +926,10 @@ export type Database = {
       mural_posts: {
         Row: {
           amens_seed: number
+          audio_duration_seconds: number | null
+          audio_url: string | null
           author_name: string
-          body: string
+          body: string | null
           created_at: string
           id: string
           is_answered: boolean
@@ -688,8 +937,10 @@ export type Database = {
         }
         Insert: {
           amens_seed?: number
+          audio_duration_seconds?: number | null
+          audio_url?: string | null
           author_name: string
-          body: string
+          body?: string | null
           created_at?: string
           id?: string
           is_answered?: boolean
@@ -697,8 +948,10 @@ export type Database = {
         }
         Update: {
           amens_seed?: number
+          audio_duration_seconds?: number | null
+          audio_url?: string | null
           author_name?: string
-          body?: string
+          body?: string | null
           created_at?: string
           id?: string
           is_answered?: boolean
@@ -917,27 +1170,25 @@ export type Database = {
         Args: { _challenge_id: string; _user: string }
         Returns: number
       }
+      find_or_create_church: { Args: { _name: string }; Returns: string }
       finish_challenge_step: {
         Args: { _challenge_id: string }
         Returns: undefined
       }
-      find_or_create_church: {
-        Args: { _name: string }
-        Returns: string
-      }
       get_my_discipleship_tree: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
-          id: string
-          display_name: string
-          username: string | null
-          avatar_url: string | null
-          xp: number | null
-          parent_id: string | null
-          direction: string
+          avatar_url: string
           depth: number
+          direction: string
+          display_name: string
+          id: string
+          parent_id: string
+          username: string
+          xp: number
         }[]
       }
+      normalize_church_name: { Args: { _name: string }; Returns: string }
     }
     Enums: {
       [_ in never]: never
