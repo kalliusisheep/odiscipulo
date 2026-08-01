@@ -99,6 +99,9 @@ function AuthPage() {
 
   // Shared background: the split image (white panel + desert/cross scene with the
   // mascot). Drop the asset at public/login-bg.jpg — see chat for details.
+  // IMPORTANT: this lives INSIDE the same max-w-md box as the text column below,
+  // so the image and the form always scale together — the white/art split can't
+  // drift out of sync on wide viewports (e.g. the Lovable desktop preview).
   const Background = () => (
     <img
       src="/login-bg.jpg"
@@ -110,23 +113,26 @@ function AuthPage() {
 
   if (checkingSession) {
     return (
-      <main className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-white font-sans text-foreground">
-        <Background />
-        <div className="relative z-10 flex flex-col items-center gap-3 rounded-2xl bg-white/90 px-6 py-5 shadow-sm">
-          <Loader2 className="h-8 w-8 animate-spin text-teal-700" />
-          <p className="text-sm text-slate-500">Entrando...</p>
+      <main className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-slate-950 font-sans text-foreground">
+        <div className="relative flex min-h-screen w-full max-w-md items-center justify-center overflow-hidden">
+          <Background />
+          <div className="relative z-10 flex flex-col items-center gap-3 rounded-2xl bg-white/90 px-6 py-5 shadow-sm">
+            <Loader2 className="h-8 w-8 animate-spin text-teal-700" />
+            <p className="text-sm text-slate-500">Entrando...</p>
+          </div>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-white font-sans text-foreground">
-      <Background />
+    <main className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-slate-950 font-sans text-foreground">
+      {/* The "phone" box: background art + content column scale together in here. */}
+      <div className="relative mx-auto flex min-h-screen w-full max-w-md overflow-hidden sm:min-h-[100dvh]">
+        <Background />
 
-      {/* Everything below lives inside the white half of the artwork only. */}
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-md">
-        <div className="flex w-[58%] min-w-[210px] flex-col justify-center px-5 py-8 sm:w-[56%]">
+        {/* Everything below lives inside the white half of the artwork only. */}
+        <div className="relative z-10 flex w-[58%] min-w-[210px] flex-col justify-center px-5 py-8 sm:w-[56%]">
           {/* Brand */}
           <div className="mb-6 flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-full border border-teal-800/30 text-teal-800">
@@ -270,6 +276,7 @@ function AuthPage() {
           </form>
         </div>
       </div>
+    </div>
     </main>
   );
 }
