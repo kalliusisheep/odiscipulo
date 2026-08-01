@@ -22,14 +22,15 @@ function hashText(text: string): string {
 }
 
 /**
- * Nome usado por uma versão anterior do sistema (antes de existir o prefixo
- * modelo:voz no hash), que salvava o áudio já gerado como `.wav`. Esses
+ * Nomes usados por versões anteriores do sistema (antes de existir o prefixo
+ * modelo:voz no hash), que salvavam o áudio já gerado como `.wav`. Esses
  * arquivos já foram pagos (créditos já consumidos) e continuam no bucket —
  * só não eram mais encontrados porque o hash novo é diferente. Verificamos
- * esse nome antigo como uma segunda tentativa antes de gerar áudio de novo.
+ * esses nomes antigos antes de gerar (e cobrar) áudio de novo.
  */
-function legacyFileName(text: string): string {
-  return `${createHash("sha256").update(text).digest("hex")}.wav`;
+function legacyFileNames(text: string): string[] {
+  const plain = createHash("sha256").update(text).digest("hex");
+  return [`${plain}-kokoro.wav`, `${plain}.wav`, `${plain}.mp3`];
 }
 
 async function tryGetCached(fileName: string): Promise<ArrayBuffer | null> {
@@ -45,35 +46,37 @@ async function tryGetCached(fileName: string): Promise<ArrayBuffer | null> {
   }
 }
 
-/** Busca no cache antigo (esquema pré-migração). Se achar, reaproveita o áudio já pago. */
-async function tryGetLegacyCached(text: string): Promise<ArrayBuffer | null> {
-  try {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data } = await supabaseAdmin.storage.from(BUCKET).download(legacyFileName(text));
-    if (!data) return null;
-    const buf = await data.arrayBuffer();
-    return buf.byteLength > 0 ? buf : null;
-  } catch (e) {
-    return null;
+/** Busca nos caches antigos (esquemas pré-migração). Se achar, reaproveita o áudio já pago. */
+async function tryGetLegacyCached(
+  text: string,
+): Promise<{ buf: ArrayBuffer; contentType: string } | null> {
+  for (const name of legacyFileNames(text)) {
+    const buf = await tryGetCached(name);
+    if (buf) return { buf, contentType: name.endsWith(".wav") ? "audio/wav" : "audio/mpeg" };
   }
+  return null;
 }
 
-async function trySaveCache(fileName: string, audioBuf: ArrayBuffer): Promise<void> {
+async function trySaveCache(
+  fileName: string,
+  audioBuf: ArrayBuffer,
+  contentType = "audio/mpeg",
+): Promise<void> {
   try {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.storage
       .from(BUCKET)
-      .upload(fileName, audioBuf, { contentType: "audio/mpeg", upsert: true });
+      .upload(fileName, audioBuf, { contentType, upsert: true });
     if (error) console.error("Narração: falha ao salvar no cache", error);
   } catch (e) {
     console.error("Narração: cache indisponível ao salvar", e);
   }
 }
 
-function audioResponse(buf: ArrayBuffer): Response {
+function audioResponse(buf: ArrayBuffer, contentType = "audio/mpeg"): Response {
   return new Response(buf, {
     headers: {
-      "Content-Type": "audio/mpeg",
+      "Content-Type": contentType,
       "Cache-Control": "public, max-age=31536000, immutable",
     },
   });
