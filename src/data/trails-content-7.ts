@@ -131,6 +131,9 @@ const lideranca: Trail = {
               textByVersion: {
                 NVI: "Depois de lavar os pés deles, Jesus tornou a vestir-se. Voltando a assentar-se, perguntou-lhes: 'Vocês entendem o que fiz? Vocês me chamam mestre e Senhor, e com razão, pois eu o sou. Ora, se eu, sendo Senhor e Mestre, lavei os pés de vocês, vocês também devem lavar os pés uns dos outros. Eu lhes dei o exemplo, para que vocês façam como lhes fiz.'",
               },
+              originals: [
+                { word: "ὑπόδειγμα", translit: "hypódeigma", meaning: "'exemplo, modelo' — padrão concreto a ser copiado; Jesus não apenas ensina o serviço, ele o demonstra como modelo replicável", lang: "grego" },
+              ],
             },
             {
               ref: "Filipenses 2:5-7",
@@ -215,6 +218,9 @@ const lideranca: Trail = {
               textByVersion: {
                 NVI: "É necessário que o bispo seja irrepreensível, por ser encarregado da obra de Deus. Não deve ser arrogante, nem briguento, nem apegado ao vinho, nem violento, nem cobiçoso de lucro desonesto. Ao contrário, deve ser hospitaleiro, amigo do bem, sensato, justo, consagrado e disciplinado. Deve apegar-se firmemente à mensagem fiel.",
               },
+              originals: [
+                { word: "αὐθάδη", translit: "authádē", meaning: "'arrogante' — literalmente 'agradável a si mesmo'; teimosia autocentrada que não ouve conselho nem correção, incompatível com a liderança cristã", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -234,6 +240,9 @@ const lideranca: Trail = {
                 textByVersion: {
                   NVI: "Tenha cuidado com a sua vida e com a sua doutrina. Persevere nisso, porque, agindo assim, você se salvará, e também aos que o ouvem.",
                 },
+                originals: [
+                  { word: "ἔπεχε", translit: "épeche", meaning: "'tenha cuidado, preste atenção' — de epéchō, vigiar atentamente; o líder deve observar tanto sua conduta pessoal quanto o que ensina, com igual seriedade", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -305,6 +314,9 @@ const lideranca: Trail = {
               textByVersion: {
                 NVI: "De madrugada, quando ainda estava escuro, Jesus se levantou, saiu e foi para um lugar deserto, onde ficou orando.",
               },
+              originals: [
+                { word: "ἔρημον", translit: "érēmon", meaning: "'deserto, lugar solitário' — espaço isolado buscado deliberadamente por Jesus para orar, longe da demanda constante das multidões", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -380,6 +392,9 @@ const lideranca: Trail = {
               textByVersion: {
                 NVI: "Se algum de vocês tem falta de sabedoria, peça-a a Deus, que a todos dá livremente, de boa vontade, e a receberá.",
               },
+              originals: [
+                { word: "ἁπλῶς", translit: "haplôs", meaning: "'livremente, com simplicidade' — Deus dá sabedoria sem reservas nem repreensão pela pergunta, ao contrário de doadores humanos relutantes", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -399,6 +414,9 @@ const lideranca: Trail = {
                 textByVersion: {
                   NVI: "Confie no Senhor de todo o seu coração e não se apoie em seu próprio entendimento; reconheça o Senhor em todos os seus caminhos, e ele endireitará as suas veredas.",
                 },
+                originals: [
+                  { word: "בְּטַח", translit: "betach", meaning: "'confie' — hebraico, de batach, apoiar-se com segurança total em algo firme; confiança que se recusa a depender do próprio raciocínio limitado", lang: "hebraico" },
+                ],
               },
             ],
             historicalContext:
@@ -461,12 +479,18 @@ const lideranca: Trail = {
               textByVersion: {
                 NVI: "Respondeu-lhe o sogro de Moisés: 'Não é bom o que você está fazendo. Certamente você e o povo que está com você ficarão esgotados, pois essa tarefa é pesada demais; você não pode realizá-la sozinho'... Escolha ainda dentre o povo homens capazes, tementes a Deus, dignos de confiança, que odeiem o suborno, e estabeleça-os como chefes de mil, chefes de cem, chefes de cinquenta e chefes de dez. Que julguem o povo em todos os momentos.'",
               },
+              originals: [
+                { word: "אַנְשֵׁי־חַיִל", translit: "anshei-chayil", meaning: "'homens capazes, homens de valor' — hebraico, o mesmo termo usado para guerreiros valentes; liderança exige competência real, não apenas boa vontade", lang: "hebraico" },
+              ],
             },
             {
               ref: "Atos 6:3-4",
               textByVersion: {
                 NVI: "Portanto, irmãos, escolham dentre vocês sete homens de bom testemunho, cheios do Espírito e de sabedoria; passaremos a eles essa tarefa, e nós nos dedicaremos à oração e ao ministério da palavra.",
               },
+              originals: [
+                { word: "ἐπισκέψασθε", translit: "episképsasthe", meaning: "'escolham, selecionem com cuidado' — de episképtomai, examinar atentamente antes de decidir; a escolha de líderes exige discernimento, não pressa", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -533,6 +557,9 @@ const lideranca: Trail = {
               textByVersion: {
                 NVI: "Todos eles se juntaram para vir guerrear contra Jerusalém e criar confusão contra ela... Mas oramos ao nosso Deus, e, por causa deles, mantivemos uma guarda de dia e de noite.",
               },
+              originals: [
+                { word: "מִשְׁמָר", translit: "mishmar", meaning: "'guarda, vigilância' — hebraico; Neemias combina oração fervorosa com ação prática de vigilância constante, sem escolher apenas uma das duas", lang: "hebraico" },
+              ],
             },
             {
               ref: "2 Coríntios 4:8-9",
@@ -624,6 +651,9 @@ const lideranca: Trail = {
               textByVersion: {
                 NVI: "Pastoreiem o rebanho de Deus que está sob os seus cuidados, servindo como bispos, não por imposição, mas espontaneamente, de acordo com a vontade de Deus; não por ganância, mas de bom grado; não como dominadores dos que lhes foram confiados, mas como exemplos ao rebanho.",
               },
+              originals: [
+                { word: "ἑκουσίως", translit: "hekousíōs", meaning: "'de boa vontade, espontaneamente' — contrastado com imposição; a liderança pastoral genuína nasce de disposição livre diante de Deus, não obrigação forçada", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -690,6 +720,9 @@ const lideranca: Trail = {
               textByVersion: {
                 NVI: "Pedro respondeu: 'Homem, não sei do que você está falando!' Falava ele ainda, quando o galo cantou. O Senhor se voltou e olhou diretamente para Pedro. Então Pedro se lembrou da palavra que o Senhor lhe tinha dito: 'Hoje, antes que o galo cante, você me negará três vezes'. E, saindo dali, chorou amargamente.",
               },
+              originals: [
+                { word: "ἐμβλέψας", translit: "emblépsas", meaning: "'olhou diretamente, fixou o olhar' — de embléphō, olhar intensamente para dentro; o olhar de Jesus para Pedro não condena, mas confronta com verdade e amor", lang: "grego" },
+              ],
             },
             {
               ref: "João 21:15-17",
@@ -781,6 +814,9 @@ const lideranca: Trail = {
               textByVersion: {
                 NVI: "Quanto a mim, já estou sendo derramado como oferta de bebida, e o tempo da minha partida está próximo. Combati o bom combate, terminei a corrida, guardei a fé. Agora me está reservada a coroa da justiça, que o Senhor, justo Juiz, me dará naquele dia; e não somente a mim, mas também a todos os que amam a sua vinda.",
               },
+              originals: [
+                { word: "σπένδομαι", translit: "spéndomai", meaning: "'sou derramado como oferta de bebida' — imagem litúrgica de libação sacrificial; Paulo descreve sua vida entregue ao ministério até o fim como oferta a Deus", lang: "grego" },
+              ],
             },
           ],
           keywords: [
