@@ -28,15 +28,27 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 function AuthedLayout() {
+  // Na conversa privada o compositor fica colado no rodapé (tela de altura
+  // cheia). A barra de navegação e o balão do Mentor são "fixed" por cima
+  // dela, então cobriam justamente os botões de emoji/microfone/enviar —
+  // era por isso que o envio de áudio parecia não funcionar. Nessa tela
+  // eles ficam ocultos.
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isPrivateChat = /^\/mensagens\/[^/]+$/.test(pathname);
+
   return (
     <AppProvider>
       <MascotProvider>
         <CelebrationProvider>
-          <div className="min-h-screen bg-background pb-24">
+          <div className={`min-h-screen bg-background ${isPrivateChat ? "" : "pb-24"}`}>
             <Outlet />
-            <MentorFAB />
-            <MentorChat />
-            <BottomNav />
+            {!isPrivateChat && (
+              <>
+                <MentorFAB />
+                <MentorChat />
+                <BottomNav />
+              </>
+            )}
           </div>
         </CelebrationProvider>
       </MascotProvider>
