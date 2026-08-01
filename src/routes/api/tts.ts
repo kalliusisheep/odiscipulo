@@ -108,8 +108,8 @@ export const Route = createFileRoute("/api/tts")({
             // assim que a resposta é enviada, matando o upload no meio e deixando o
             // cache vazio pra sempre. Por isso o await aqui, mesmo custando um pouco de
             // latência.
-            await trySaveCache(fileName, legacy);
-            return audioResponse(legacy);
+            await trySaveCache(fileName, legacy.buf, legacy.contentType);
+            return audioResponse(legacy.buf, legacy.contentType);
           }
 
           // 2. Sem cache (novo nem antigo): gera com a voz de IA da Lovable.
