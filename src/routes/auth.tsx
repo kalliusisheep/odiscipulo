@@ -113,28 +113,25 @@ function AuthPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-lg flex-col bg-white">
-      {/* Hero: arte completa (título e ovelha já embutidos na imagem).
-          Proporção fixa via aspect-ratio (não depende de vh/viewport,
-          então não estica nem encolhe de forma imprevisível). */}
-      <div
-        className="relative z-0 w-full shrink-0 overflow-hidden bg-slate-100"
-        style={{ aspectRatio: "9 / 8" }}
-      >
+    <main className="mx-auto w-full max-w-lg bg-white">
+      {/* Wrapper: a imagem é exibida por inteiro, sem corte, do início ao
+          fim da página. O card de login flutua por cima da parte de baixo
+          dela — não faz parte do fluxo da imagem, então a imagem continua
+          visível (e termina) logo abaixo dele. */}
+      <div className="relative w-full">
         <img
           src="/login-hero.png"
           alt="O Discípulo — Discipulado cristão, um passo por dia. Inicie sua jornada de formação espiritual em uma trilha interativa, onde cada passo é intencionalmente desenhado para forjar o caráter de Cristo em você."
-          className="absolute inset-0 object-cover object-top"
-          style={{ width: "100%", height: "100%" }}
+          className="block h-auto w-full"
         />
-      </div>
 
-      {/* Card — módulo de login com fundo branco explícito, sobreposto ao herói.
-          z-10 + margem negativa garantem que ele fique por cima da imagem. */}
-      <div
-        className="relative z-10 -mt-10 flex-1 rounded-t-[28px] bg-white px-6 pb-8 pt-6 shadow-[0_-8px_24px_-8px_rgba(0,0,0,0.15)]"
-        style={{ colorScheme: "light" }}
-      >
+        {/* Card — módulo de login flutuante, curto, arredondado nos 4 cantos.
+            Fica sobreposto à imagem com uma margem lateral e inferior, então
+            dá pra ver a imagem em volta dele e o fim dela na base da página. */}
+        <div
+          className="absolute inset-x-4 bottom-6 z-10 rounded-[28px] bg-white px-6 py-6 shadow-xl"
+          style={{ colorScheme: "light" }}
+        >
         <button
           type="button"
           onClick={handleGoogle}
@@ -256,6 +253,7 @@ function AuthPage() {
             {mode === "signin" ? "Criar conta" : "Entrar"}
           </button>
         </p>
+        </div>
       </div>
     </main>
   );
