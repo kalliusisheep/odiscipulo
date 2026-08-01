@@ -65,6 +65,9 @@ const evangelismo: Trail = {
                 NVI: "Porque Deus tanto amou o mundo que deu o seu Filho Unigênito, para que todo o que nele crer não pereça, mas tenha a vida eterna.",
                 ACF: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.",
               },
+              originals: [
+                { word: "ἠγάπησεν", translit: "ēgápēsen", meaning: "'amou' — de agapáō, amor de doação voluntária e sacrificial, não emoção passageira; é o mesmo verbo usado para o amor de Deus que se entrega", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -86,6 +89,9 @@ const evangelismo: Trail = {
                 textByVersion: {
                   NVI: "Israelitas, ouçam isto: Jesus de Nazaré foi aprovado por Deus diante de vocês por milagres, maravilhas e sinais que Deus fez por meio dele... vocês o mataram, pregando-o na cruz por mãos de homens iníquos. Mas Deus o ressuscitou, rompendo os laços da morte, porque era impossível que ela o retivesse.",
                 },
+                originals: [
+                  { word: "ἀνέστησεν", translit: "anéstēsen", meaning: "'ressuscitou, levantou' — verbo técnico para a ressurreição corporal, não uma sobrevivência espiritual apenas", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -171,6 +177,9 @@ const evangelismo: Trail = {
                 NVI: "Pois o Filho do homem veio buscar e salvar o que se havia perdido.",
                 ACF: "Porque o Filho do homem veio buscar e salvar o que se havia perdido.",
               },
+              originals: [
+                { word: "ζητῆσαι καὶ σῶσαι", translit: "zētēsai kai sōsai", meaning: "'buscar e salvar' — dois verbos no infinitivo que descrevem a missão ativa e intencional de Cristo, não uma espera passiva", lang: "grego" },
+              ],
             },
             {
               ref: "2 Coríntios 5:19-20",
@@ -201,12 +210,18 @@ const evangelismo: Trail = {
                 textByVersion: {
                   NVI: "Eu digo que, da mesma forma, haverá mais alegria no céu por um pecador que se arrepende do que por noventa e nove justos que não precisam arrepender-se.",
                 },
+                originals: [
+                  { word: "μετανοοῦντι", translit: "metanooúnti", meaning: "'que se arrepende' — de metanoéō, mudança radical de mente e direção, não apenas remorso emocional", lang: "grego" },
+                ],
               },
               {
                 ref: "Ezequiel 33:11",
                 textByVersion: {
                   NVI: "Dize-lhes: Juro pela minha vida, palavra do Soberano, o Senhor, que não tenho prazer na morte dos ímpios, mas em que se convertam dos seus maus caminhos e vivam.",
                 },
+                originals: [
+                  { word: "חָפֵץ", translit: "chafets", meaning: "'ter prazer, deleitar-se' — o hebraico nega explicitamente que Deus tenha prazer na morte do ímpio; seu desejo declarado é a conversão e a vida", lang: "hebraico" },
+                ],
               },
             ],
             historicalContext:
@@ -288,6 +303,9 @@ const evangelismo: Trail = {
                 NVI: "Ele respondeu: 'Se ele é pecador, não sei. Uma coisa sei: eu era cego e agora vejo!'",
                 ACF: "Respondeu ele então, e disse: Se é pecador, não sei; uma coisa sei: que, tendo eu sido cego, agora vejo.",
               },
+              originals: [
+                { word: "βλέπω", translit: "blépō", meaning: "'vejo' — no presente do indicativo, marcando uma nova realidade contínua; o mesmo verbo descreve tanto a visão física quanto a percepção espiritual", lang: "grego" },
+              ],
             },
             {
               ref: "1 Pedro 3:15",
@@ -304,6 +322,9 @@ const evangelismo: Trail = {
               textByVersion: {
                 NVI: "Mas tenho contado com a ajuda de Deus até este dia e continuo dando testemunho, tanto a pequenos como a grandes... que o Cristo haveria de sofrer e, sendo o primeiro a ressuscitar dos mortos, proclamaria luz tanto ao seu próprio povo como aos gentios.",
               },
+              originals: [
+                { word: "παθητὸς", translit: "pathētós", meaning: "'haveria de sofrer, destinado a padecer' — termo que liga o sofrimento do Messias ao plano profético já anunciado nas Escrituras", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -410,6 +431,9 @@ const evangelismo: Trail = {
               textByVersion: {
                 NVI: "A mulher samaritana lhe perguntou: 'Como o senhor, sendo judeu, pede a mim, uma samaritana, água para beber?'... Jesus respondeu: 'Se você conhecesse o dom de Deus e quem está pedindo água, você lhe pediria e ele lhe daria água viva.'",
               },
+              originals: [
+                { word: "ὕδωρ ζῶν", translit: "hýdōr zōn", meaning: "'água viva' — expressão que evoca tanto água corrente (em contraste com água parada) quanto, no contexto, a vida que o Espírito concede", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -512,6 +536,9 @@ const evangelismo: Trail = {
                 NVI: "Orem também por mim, para que, quando eu falar, seja-me dada a mensagem, a fim de que anuncie com denodo o mistério do evangelho, do qual sou embaixador preso em correntes; orem para que eu o proclame com denodo, como devo fazer.",
                 ACF: "E por mim, para que me seja dada a palavra na abertura da minha boca, para com ousadia fazer notório o mistério do evangelho, pelo qual sou embaixador em cadeias; para que possa falar dele ousadamente, como me convém falar.",
               },
+              originals: [
+                { word: "παρρησίᾳ", translit: "parrhēsía", meaning: "'denodo, franqueza, ousadia ao falar' — a mesma palavra usada para a confiança dos apóstolos diante de autoridades hostis em Atos", lang: "grego" },
+              ],
             },
             {
               ref: "2 Timóteo 1:7",
@@ -519,6 +546,9 @@ const evangelismo: Trail = {
                 NVI: "Pois Deus não nos deu espírito de covardia, mas de poder, de amor e de equilíbrio.",
                 ACF: "Porque Deus não nos deu o espírito de temor, mas de fortaleza, e de amor, e de moderação.",
               },
+              originals: [
+                { word: "δειλίας", translit: "deilías", meaning: "'covardia, temor covarde' — o que Deus não concede; contrastado com δύναμις (poder), ἀγάπη (amor) e σωφρονισμός (equilíbrio, domínio próprio)", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -606,6 +636,9 @@ const evangelismo: Trail = {
                 NVI: "Estejam sempre preparados para responder a qualquer pessoa que lhes pedir a razão da esperança que há em vocês. Contudo, façam isso com mansidão e respeito, conservando boa consciência.",
                 ACF: "Estai sempre preparados para responder com mansidão e temor a qualquer que vos pedir a razão da esperança que há em vós, tendo uma boa consciência.",
               },
+              originals: [
+                { word: "ἀπολογίαν", translit: "apología", meaning: "'defesa, razão articulada' — termo jurídico usado para defesas formais em tribunais; implica argumento raciocinado, não apenas sentimento", lang: "grego" },
+              ],
             },
             {
               ref: "Atos 17:22-23",
@@ -621,6 +654,9 @@ const evangelismo: Trail = {
               textByVersion: {
                 NVI: "Amados, embora eu estivesse muito ansioso para escrever a vocês acerca da salvação que temos em comum, senti a necessidade de fazê-lo a fim de exortá-los a batalhar pela fé que uma vez por todas foi entregue aos santos.",
               },
+              originals: [
+                { word: "ἐπαγωνίζεσθαι", translit: "epagōnízesthai", meaning: "'batalhar, lutar com esforço' — imagem do atletismo grego, de empenho intenso e persistente em defesa de algo valioso", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -724,12 +760,18 @@ const evangelismo: Trail = {
                 NVI: "Eu plantei, Apolo regou, mas Deus deu o crescimento. Assim, nem o que planta é alguma coisa, nem o que rega, mas Deus, que dá o crescimento.",
                 ACF: "Eu plantei, Apolo regou, mas o crescimento veio de Deus. De modo que, nem o que planta é alguma coisa, nem o que rega, mas Deus, que dá o crescimento.",
               },
+              originals: [
+                { word: "ἐφύτευσα", translit: "ephýteusa", meaning: "'plantei' — aoristo que marca uma ação concluída; contrastado com ηὔξανεν ('dava o crescimento'), no imperfeito, ação contínua de Deus", lang: "grego" },
+              ],
             },
             {
               ref: "2 Timóteo 2:10",
               textByVersion: {
                 NVI: "Por isso, tudo suporto por causa dos eleitos, para que também eles alcancem a salvação que está em Cristo Jesus, com glória eterna.",
               },
+              originals: [
+                { word: "ἐκλεκτούς", translit: "eklektoús", meaning: "'eleitos' — de eklégomai, escolhidos; os que Deus separou para receber a salvação anunciada pelo Evangelho", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -817,6 +859,9 @@ const evangelismo: Trail = {
                 NVI: "Sejam sábios no procedimento de vocês para com os de fora, aproveitando ao máximo cada oportunidade. A conversa de vocês seja sempre agradável e temperada com sal, para que saibam como responder a cada um.",
                 ACF: "Andai em sabedoria para com os que estão de fora, remindo o tempo. A vossa palavra seja sempre agradável, adubada com sal, para que saibais como vos convém responder a cada um.",
               },
+              originals: [
+                { word: "ἅλατι", translit: "hálati", meaning: "'com sal' — forma dativa de hálas; imagem de conversa que conserva o bom sabor e evita a corrupção da fofoca ou da grosseria", lang: "grego" },
+              ],
             },
             {
               ref: "Tiago 1:19",
@@ -824,12 +869,18 @@ const evangelismo: Trail = {
                 NVI: "Cada um seja pronto para ouvir, tardio para falar, tardio para se irar.",
                 ACF: "Todo homem seja pronto para ouvir, tardio para falar, tardio para se irar.",
               },
+              originals: [
+                { word: "ταχὺς", translit: "tachýs", meaning: "'pronto, rápido' — contrastado com βραδύς (bradýs, 'lento, tardio'), usado duas vezes no mesmo versículo para ouvir e para falar/irar-se", lang: "grego" },
+              ],
             },
             {
               ref: "1 Pedro 3:15-16",
               textByVersion: {
                 NVI: "Estejam sempre preparados para responder a qualquer pessoa que lhes pedir a razão da esperança que há em vocês. Contudo, façam isso com mansidão e respeito, conservando boa consciência.",
               },
+              originals: [
+                { word: "ἐλπίδος", translit: "elpídos", meaning: "'esperança' — genitivo de elpís; não otimismo vago, mas expectativa firme e fundamentada naquilo que Deus já prometeu e cumpriu em Cristo", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -925,12 +976,18 @@ const evangelismo: Trail = {
               textByVersion: {
                 NVI: "Chegando a Jerusalém, Saulo procurava reunir-se aos discípulos, mas todos tinham medo dele, não acreditando que ele fosse discípulo. Barnabé, porém, tomou-o consigo e o levou aos apóstolos.",
               },
+              originals: [
+                { word: "ἐπελάβετο", translit: "epelábeto", meaning: "'tomou consigo, agarrou' — verbo que descreve a ação decidida de Barnabé de acolher Saulo apesar do medo geral dos discípulos", lang: "grego" },
+              ],
             },
             {
               ref: "1 Tessalonicenses 2:7-8,11",
               textByVersion: {
                 NVI: "Antes, fomos meigos entre vocês, como uma mãe cuida com carinho de seus filhos. Em nosso profundo afeto por vocês, decidimos dar-lhes não somente o evangelho de Deus, mas também a nossa própria vida... Sabem também como tratamos cada um de vocês como um pai trata os seus filhos.",
               },
+              originals: [
+                { word: "τροφὸς", translit: "trophós", meaning: "'ama de leite, mãe que amamenta' — imagem de cuidado terno e próximo, usada por Paulo para descrever seu afeto pastoral pelos tessalonicenses", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -1027,12 +1084,18 @@ const evangelismo: Trail = {
               textByVersion: {
                 NVI: "Chegou a Éfeso um judeu chamado Apolo... Áquila e Priscila... o convidaram para ir à sua casa e explicaram-lhe com mais precisão o caminho de Deus.",
               },
+              originals: [
+                { word: "ἀκριβέστερον", translit: "akribésteron", meaning: "'com mais precisão, mais exatamente' — comparativo de akribḗs; Áquila e Priscila não corrigem publicamente, mas aprofundam com cuidado particular", lang: "grego" },
+              ],
             },
             {
               ref: "Filipenses 4:9",
               textByVersion: {
                 NVI: "O que vocês aprenderam, receberam, ouviram e viram em mim, ponham em prática. E o Deus da paz estará com vocês.",
               },
+              originals: [
+                { word: "ἐμάθετε", translit: "emáthete", meaning: "'aprendestes' — de manthánō, aprender por instrução recebida; ligado a παρελάβετε ('recebestes'), termo técnico de transmissão fiel de tradição", lang: "grego" },
+              ],
             },
           ],
           keywords: [
