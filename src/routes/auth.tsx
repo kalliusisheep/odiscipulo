@@ -114,7 +114,7 @@ function AuthPage() {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-lg flex-col bg-background">
-      {/* Hero: arte completa (com título e ovelha já embutidos na imagem).
+      {/* Hero: arte completa (título e ovelha já embutidos na imagem).
           Sem texto sobreposto — a imagem inteira é exibida, sem corte. */}
       <div className="w-full shrink-0">
         <img
@@ -124,13 +124,18 @@ function AuthPage() {
         />
       </div>
 
-      {/* Card — módulo de login branco */}
-      <div className="-mt-5 flex-1 rounded-t-[28px] bg-white px-6 pb-8 pt-6 shadow-[0_-8px_24px_-8px_rgba(0,0,0,0.15)]">
+      {/* Módulo de login — cores travadas em "light" para não herdar o tema
+          escuro do app: nada aqui usa tokens de tema (bg-input, border-border,
+          text-muted-foreground), só cores literais. */}
+      <div
+        style={{ colorScheme: "light" }}
+        className="-mt-5 flex-1 rounded-t-[28px] bg-white px-6 pb-8 pt-6 text-gray-900 shadow-[0_-8px_24px_-8px_rgba(0,0,0,0.15)]"
+      >
         <button
           type="button"
           onClick={handleGoogle}
           disabled={googleLoading || loading}
-          className="flex w-full items-center justify-center gap-2 rounded-full border border-border bg-white py-3.5 text-sm font-bold shadow-sm transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
+          className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-200 bg-white py-3.5 text-sm font-bold text-gray-900 shadow-sm transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
         >
           {googleLoading ? (
             <Loader2 className="h-5 w-5 animate-spin" />
@@ -158,9 +163,9 @@ function AuthPage() {
         </button>
 
         <div className="my-5 flex items-center gap-3">
-          <span className="h-px flex-1 bg-border" />
-          <span className="text-xs font-medium text-muted-foreground">ou</span>
-          <span className="h-px flex-1 bg-border" />
+          <span className="h-px flex-1 bg-gray-200" />
+          <span className="text-xs font-medium text-gray-400">ou</span>
+          <span className="h-px flex-1 bg-gray-200" />
         </div>
 
         <form onSubmit={submit} className="space-y-3">
@@ -170,12 +175,12 @@ function AuthPage() {
               placeholder="Como podemos te chamar?"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-full border border-border bg-input px-5 py-3.5 text-sm outline-none transition focus:border-primary"
+              className="w-full rounded-full border border-gray-200 bg-white px-5 py-3.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:border-violet-500"
             />
           )}
 
           <div className="relative">
-            <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <input
               type="email"
               required
@@ -183,12 +188,12 @@ function AuthPage() {
               placeholder="Seu e-mail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-full border border-border bg-input py-3.5 pl-11 pr-4 text-sm outline-none transition focus:border-primary"
+              className="w-full rounded-full border border-gray-200 bg-white py-3.5 pl-11 pr-4 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:border-violet-500"
             />
           </div>
 
           <div className="relative">
-            <Lock className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Lock className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <input
               type={showPassword ? "text" : "password"}
               required
@@ -196,24 +201,24 @@ function AuthPage() {
               placeholder="Sua senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-full border border-border bg-input py-3.5 pl-11 pr-11 text-sm outline-none transition focus:border-primary"
+              className="w-full rounded-full border border-gray-200 bg-white py-3.5 pl-11 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:border-violet-500"
             />
             <button
               type="button"
               onClick={() => setShowPassword((v) => !v)}
               aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 transition-colors hover:text-gray-700"
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
 
-          {error && <p className="text-xs text-destructive">{error}</p>}
+          {error && <p className="text-xs text-red-600">{error}</p>}
 
           <button
             type="submit"
             disabled={loading || googleLoading}
-            className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-primary py-3.5 text-sm font-extrabold text-primary-foreground shadow-sm transition hover:bg-primary-glow active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-violet-600 py-3.5 text-sm font-extrabold text-white shadow-sm transition hover:bg-violet-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
           >
             {loading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -230,19 +235,19 @@ function AuthPage() {
               onClick={() => {
                 /* wire up your existing password-reset flow here if you have one */
               }}
-              className="w-full text-center text-xs font-semibold text-primary underline-offset-2 hover:underline"
+              className="w-full text-center text-xs font-semibold text-violet-600 underline-offset-2 hover:underline"
             >
               Esqueceu a senha?
             </button>
           )}
         </form>
 
-        <p className="mt-6 text-center text-sm text-muted-foreground">
+        <p className="mt-6 text-center text-sm text-gray-500">
           {mode === "signin" ? "Ainda não tem conta? " : "Já tem conta? "}
           <button
             type="button"
             onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-            className="font-bold text-primary hover:underline"
+            className="font-bold text-violet-600 hover:underline"
           >
             {mode === "signin" ? "Criar conta" : "Entrar"}
           </button>
