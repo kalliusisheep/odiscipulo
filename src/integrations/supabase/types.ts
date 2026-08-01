@@ -512,6 +512,7 @@ export type Database = {
       }
       feed_comments: {
         Row: {
+          author_avatar_url: string | null
           author_name: string
           body: string
           created_at: string
@@ -521,6 +522,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          author_avatar_url?: string | null
           author_name: string
           body?: string
           created_at?: string
@@ -530,6 +532,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          author_avatar_url?: string | null
           author_name?: string
           body?: string
           created_at?: string
