@@ -112,55 +112,25 @@ function AuthPage() {
     );
   }
 
-  const HEADLINE =
-    mode === "signin"
-      ? ["Um passo de cada vez.", "Juntos na fé."]
-      : ["Comece sua jornada.", "Juntos na fé."];
-  const SUBTITLE =
-    mode === "signin"
-      ? "Continue aprendendo, crescendo e servindo."
-      : "Dê o primeiro passo na sua trilha de discipulado.";
-
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-lg flex-col bg-background">
-      {/* Hero: arte de fundo (ovelha nas ruínas) com o texto real sobreposto —
-          nada de texto "assado" na imagem, então continua acessível e no
-          idioma/fonte certos, e some suavemente no card branco abaixo. */}
-      <div className="relative h-[46vh] min-h-[300px] w-full shrink-0 overflow-hidden bg-slate-900">
+      {/* Hero: arte completa (com título e ovelha já embutidos na imagem).
+          Sem texto sobreposto — a imagem inteira é exibida, sem corte. */}
+      <div className="w-full shrink-0">
         <img
-          src="/login-bg.jpg"
-          alt=""
-          aria-hidden="true"
-          className="h-full w-full object-cover object-top"
+          src="/login-hero.png"
+          alt="O Discípulo — Discipulado cristão, um passo por dia. Inicie sua jornada de formação espiritual em uma trilha interativa, onde cada passo é intencionalmente desenhado para forjar o caráter de Cristo em você."
+          className="block h-auto w-full"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/10 to-transparent" />
-
-        <div className="absolute left-5 top-6 flex items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/90 text-lg shadow-sm ring-1 ring-white/40">
-            🐑
-          </span>
-          <span className="text-sm font-bold tracking-tight text-white drop-shadow-sm">
-            O Discípulo
-          </span>
-        </div>
-
-        <div className="absolute inset-x-5 bottom-6">
-          <h1 className="text-3xl font-extrabold leading-tight text-white drop-shadow-sm">
-            {HEADLINE[0]}
-            <br />
-            {HEADLINE[1]}
-          </h1>
-          <p className="mt-2 text-sm leading-relaxed text-white/85 drop-shadow-sm">{SUBTITLE}</p>
-        </div>
       </div>
 
-      {/* Card */}
-      <div className="-mt-5 flex-1 rounded-t-[28px] bg-background px-6 pb-8 pt-6 shadow-[0_-8px_24px_-8px_rgba(0,0,0,0.15)]">
+      {/* Card — módulo de login branco */}
+      <div className="-mt-5 flex-1 rounded-t-[28px] bg-white px-6 pb-8 pt-6 shadow-[0_-8px_24px_-8px_rgba(0,0,0,0.15)]">
         <button
           type="button"
           onClick={handleGoogle}
           disabled={googleLoading || loading}
-          className="flex w-full items-center justify-center gap-2 rounded-full border border-border bg-surface py-3.5 text-sm font-bold shadow-sm transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
+          className="flex w-full items-center justify-center gap-2 rounded-full border border-border bg-white py-3.5 text-sm font-bold shadow-sm transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
         >
           {googleLoading ? (
             <Loader2 className="h-5 w-5 animate-spin" />
