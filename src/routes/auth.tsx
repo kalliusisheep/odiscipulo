@@ -2,13 +2,16 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { useEffect, useState } from "react";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { Loader2, Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Entrar — O Discípulo" },
-      { name: "description", content: "Entre em O Discípulo e comece sua jornada de discipulado cristão gamificado." },
+      {
+        name: "description",
+        content: "Entre em O Discípulo e comece sua jornada de discipulado cristão gamificado.",
+      },
     ],
   }),
   ssr: false,
@@ -19,6 +22,7 @@ function AuthPage() {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -97,193 +101,183 @@ function AuthPage() {
     setGoogleLoading(false);
   };
 
-  // The source image has the white panel baked into its LEFT half and the
-  // desert/cross/mascot artwork baked into its RIGHT half (50/50). Rather than
-  // stretching that whole image across the screen (which desyncs the white/art
-  // boundary the moment the viewport width doesn't match the image's own
-  // aspect ratio — that's what caused the mascot to bleed into the form),
-  // we render two independent columns:
-  //   1. A real, solid white <div> for the text/form — always 100% correct,
-  //      no matter the screen width.
-  //   2. An "art panel" that shows ONLY the right half of the source image.
-  //      We do this by rendering the image at 200% of the panel's width and
-  //      pinning it to the right edge — so exactly the artwork half is
-  //      visible, cropped only vertically (never horizontally), at any
-  //      viewport size.
-  // Drop the asset at public/login-bg.jpg — see chat for details.
-  const ArtPanel = ({ className = "" }: { className?: string }) => (
-    <div className={`relative overflow-hidden bg-slate-900 ${className}`}>
-      <img
-        src="/login-bg.jpg"
-        alt=""
-        aria-hidden="true"
-        className="absolute right-0 top-0 h-full w-[200%] max-w-none object-cover"
-      />
-    </div>
-  );
-
   if (checkingSession) {
     return (
-      <main className="flex min-h-screen w-full items-center justify-center bg-white font-sans text-foreground">
+      <main className="flex min-h-screen w-full items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="h-8 w-8 animate-spin text-teal-700" />
-          <p className="text-sm text-slate-500">Entrando...</p>
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-sm text-muted-foreground">Entrando...</p>
         </div>
       </main>
     );
   }
 
+  const HEADLINE =
+    mode === "signin"
+      ? ["Um passo de cada vez.", "Juntos na fé."]
+      : ["Comece sua jornada.", "Juntos na fé."];
+  const SUBTITLE =
+    mode === "signin"
+      ? "Continue aprendendo, crescendo e servindo."
+      : "Dê o primeiro passo na sua trilha de discipulado.";
+
   return (
-    <main className="flex min-h-screen w-full overflow-hidden bg-white font-sans text-foreground">
-      {/* Left: real white column — text and form always render correctly here. */}
-      <div className="flex w-full flex-col justify-center px-6 py-8 sm:w-[440px] sm:min-w-[380px] sm:px-10 md:w-[480px]">
-          {/* Brand */}
-          <div className="mb-6 flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full border border-teal-800/30 text-teal-800">
-              <ArrowRight className="hidden" />
-              <span className="text-lg font-black">D</span>
-            </div>
-            <span className="text-sm font-bold tracking-tight text-slate-800">O Discípulo</span>
-          </div>
+    <main className="mx-auto flex min-h-screen w-full max-w-lg flex-col bg-background">
+      {/* Hero: arte de fundo (ovelha nas ruínas) com o texto real sobreposto —
+          nada de texto "assado" na imagem, então continua acessível e no
+          idioma/fonte certos, e some suavemente no card branco abaixo. */}
+      <div className="relative h-[46vh] min-h-[300px] w-full shrink-0 overflow-hidden bg-slate-900">
+        <img
+          src="/login-bg.jpg"
+          alt=""
+          aria-hidden="true"
+          className="h-full w-full object-cover object-top"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/10 to-transparent" />
 
-          {/* Title */}
-          <h1 className="text-2xl font-extrabold leading-tight text-slate-900 sm:text-3xl">
-            {mode === "signin" ? "Bem-vindo de volta" : "Comece sua jornada"}
+        <div className="absolute left-5 top-6 flex items-center gap-2">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/90 text-lg shadow-sm ring-1 ring-white/40">
+            🐑
+          </span>
+          <span className="text-sm font-bold tracking-tight text-white drop-shadow-sm">
+            O Discípulo
+          </span>
+        </div>
+
+        <div className="absolute inset-x-5 bottom-6">
+          <h1 className="text-3xl font-extrabold leading-tight text-white drop-shadow-sm">
+            {HEADLINE[0]}
+            <br />
+            {HEADLINE[1]}
           </h1>
-          <p className="mt-2 text-sm leading-relaxed text-slate-500">
-            {mode === "signin"
-              ? "Entre para continuar sua trilha de discipulado."
-              : "Crie sua conta e dê o primeiro passo hoje."}
-          </p>
-
-          {/* Tabs */}
-          <div className="mt-6 flex w-full rounded-full bg-slate-100 p-1">
-            <button
-              type="button"
-              onClick={() => setMode("signin")}
-              className={`flex-1 rounded-full py-2 text-sm font-bold transition-all ${
-                mode === "signin"
-                  ? "bg-teal-800 text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
-              }`}
-            >
-              Entrar
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode("signup")}
-              className={`flex-1 rounded-full py-2 text-sm font-bold transition-all ${
-                mode === "signup"
-                  ? "bg-teal-800 text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
-              }`}
-            >
-              Criar conta
-            </button>
-          </div>
-
-          {/* Google */}
-          <button
-            type="button"
-            onClick={handleGoogle}
-            disabled={googleLoading || loading}
-            className="mt-5 flex w-full items-center justify-center gap-2 rounded-full border border-slate-200 bg-white py-3 text-sm font-bold text-slate-700 shadow-sm transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
-          >
-            {googleLoading ? (
-              <Loader2 className="h-5 w-5 animate-spin" />
-            ) : (
-              <svg className="h-5 w-5" viewBox="0 0 24 24">
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-              </svg>
-            )}
-            Continuar com Google
-          </button>
-
-          {/* Divider */}
-          <div className="my-5 flex items-center gap-3">
-            <span className="h-px flex-1 bg-slate-200" />
-            <span className="text-xs uppercase tracking-widest text-slate-400">ou</span>
-            <span className="h-px flex-1 bg-slate-200" />
-          </div>
-
-          {/* Form */}
-          <form onSubmit={submit} className="space-y-3">
-            {mode === "signup" && (
-              <div>
-                <label className="mb-1 block text-xs font-semibold text-slate-600">Seu nome</label>
-                <input
-                  type="text"
-                  placeholder="Como podemos te chamar?"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-teal-700 focus:ring-2 focus:ring-teal-700/20"
-                />
-              </div>
-            )}
-            <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-600">Endereço de e-mail</label>
-              <input
-                type="email"
-                required
-                autoComplete="email"
-                placeholder="voce@exemplo.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-teal-700 focus:ring-2 focus:ring-teal-700/20"
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-600">Senha</label>
-              <input
-                type="password"
-                required
-                minLength={6}
-                autoComplete={mode === "signin" ? "current-password" : "new-password"}
-                placeholder="Mínimo 6 caracteres"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-teal-700 focus:ring-2 focus:ring-teal-700/20"
-              />
-            </div>
-
-            {error && <p className="text-xs text-red-500">{error}</p>}
-
-            <button
-              type="submit"
-              disabled={loading || googleLoading}
-              className="group mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-teal-800 py-3.5 text-sm font-extrabold text-white shadow-sm transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              {loading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <>
-                  {mode === "signin" ? "Entrar" : "Começar jornada"}
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </>
-              )}
-            </button>
-
-            {mode === "signin" && (
-              <button
-                type="button"
-                onClick={() => {
-                  /* wire up your existing password-reset flow here if you have one */
-                }}
-                className="w-full text-center text-xs font-semibold text-teal-800 underline-offset-2 hover:underline"
-              >
-                Esqueceu a senha?
-              </button>
-            )}
-          </form>
+          <p className="mt-2 text-sm leading-relaxed text-white/85 drop-shadow-sm">{SUBTITLE}</p>
+        </div>
       </div>
 
-      {/* Right: artwork panel — always shows exactly the art half of the source
-          image, cropped only vertically, never horizontally. Hidden on very
-          narrow phones where there's no room for it; visible from sm: up. */}
-      <ArtPanel className="hidden sm:block sm:flex-1" />
+      {/* Card */}
+      <div className="-mt-5 flex-1 rounded-t-[28px] bg-background px-6 pb-8 pt-6 shadow-[0_-8px_24px_-8px_rgba(0,0,0,0.15)]">
+        <button
+          type="button"
+          onClick={handleGoogle}
+          disabled={googleLoading || loading}
+          className="flex w-full items-center justify-center gap-2 rounded-full border border-border bg-surface py-3.5 text-sm font-bold shadow-sm transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
+        >
+          {googleLoading ? (
+            <Loader2 className="h-5 w-5 animate-spin" />
+          ) : (
+            <svg className="h-5 w-5" viewBox="0 0 24 24">
+              <path
+                fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+              />
+              <path
+                fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              />
+            </svg>
+          )}
+          Continuar com Google
+        </button>
+
+        <div className="my-5 flex items-center gap-3">
+          <span className="h-px flex-1 bg-border" />
+          <span className="text-xs font-medium text-muted-foreground">ou</span>
+          <span className="h-px flex-1 bg-border" />
+        </div>
+
+        <form onSubmit={submit} className="space-y-3">
+          {mode === "signup" && (
+            <input
+              type="text"
+              placeholder="Como podemos te chamar?"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full rounded-full border border-border bg-input px-5 py-3.5 text-sm outline-none transition focus:border-primary"
+            />
+          )}
+
+          <div className="relative">
+            <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="email"
+              required
+              autoComplete="email"
+              placeholder="Seu e-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded-full border border-border bg-input py-3.5 pl-11 pr-4 text-sm outline-none transition focus:border-primary"
+            />
+          </div>
+
+          <div className="relative">
+            <Lock className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type={showPassword ? "text" : "password"}
+              required
+              autoComplete={mode === "signin" ? "current-password" : "new-password"}
+              placeholder="Sua senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full rounded-full border border-border bg-input py-3.5 pl-11 pr-11 text-sm outline-none transition focus:border-primary"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
+
+          {error && <p className="text-xs text-destructive">{error}</p>}
+
+          <button
+            type="submit"
+            disabled={loading || googleLoading}
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-primary py-3.5 text-sm font-extrabold text-primary-foreground shadow-sm transition hover:bg-primary-glow active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
+          >
+            {loading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : mode === "signin" ? (
+              "Entrar"
+            ) : (
+              "Criar conta"
+            )}
+          </button>
+
+          {mode === "signin" && (
+            <button
+              type="button"
+              onClick={() => {
+                /* wire up your existing password-reset flow here if you have one */
+              }}
+              className="w-full text-center text-xs font-semibold text-primary underline-offset-2 hover:underline"
+            >
+              Esqueceu a senha?
+            </button>
+          )}
+        </form>
+
+        <p className="mt-6 text-center text-sm text-muted-foreground">
+          {mode === "signin" ? "Ainda não tem conta? " : "Já tem conta? "}
+          <button
+            type="button"
+            onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+            className="font-bold text-primary hover:underline"
+          >
+            {mode === "signin" ? "Criar conta" : "Entrar"}
+          </button>
+        </p>
+      </div>
     </main>
   );
 }
