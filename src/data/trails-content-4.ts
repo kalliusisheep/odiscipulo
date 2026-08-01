@@ -135,6 +135,9 @@ const igrejaLocal: Trail = {
               textByVersion: {
                 NVI: "Se seu irmão pecar contra você, vá e, a sós com ele, mostre-lhe a sua falha. Se ele o ouvir, você ganhou seu irmão.",
               },
+              originals: [
+                { word: "ἔλεγξον", translit: "élenxon", meaning: "'mostre a falha, repreenda' — de elénchō, confrontar para corrigir e restaurar, não para humilhar publicamente", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -213,6 +216,9 @@ const igrejaLocal: Trail = {
               textByVersion: {
                 NVI: "Cuidem de vocês mesmos e de todo o rebanho sobre o qual o Espírito Santo os designou bispos, para pastorearem a igreja de Deus, a qual ele comprou com seu próprio sangue.",
               },
+              originals: [
+                { word: "ἐπισκόπους", translit: "episkópous", meaning: "'bispos, supervisores' — de epískopos, aquele que vigia e cuida de perto; ligado a ποιμαίνειν (pastorear), imagem de cuidado pastoral, não controle", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -285,6 +291,9 @@ const igrejaLocal: Trail = {
               textByVersion: {
                 NVI: "Foi ele quem concedeu... com o fim de preparar os santos para a obra do ministério, para que o corpo de Cristo seja edificado.",
               },
+              originals: [
+                { word: "καταρτισμὸν", translit: "katartismón", meaning: "'preparo, aperfeiçoamento' — termo usado para consertar redes de pesca ou reparar ossos quebrados; equipar plenamente para a função", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -399,12 +408,18 @@ const igrejaLocal: Trail = {
                 textByVersion: {
                   NVI: "O bispo deve ser irrepreensível, marido de uma só mulher... apegado à mensagem fiel, como lhe foi ensinada, para que seja capaz de encorajar outros pela sã doutrina e de refutar os que a contradizem.",
                 },
+                originals: [
+                  { word: "ἀνέγκλητος", translit: "anénklētos", meaning: "'irrepreensível' — literalmente 'sem acusação cabível'; não perfeição absoluta, mas vida sem motivo legítimo de escândalo", lang: "grego" },
+                ],
               },
               {
                 ref: "1 Pedro 5:2-3",
                 textByVersion: {
                   NVI: "Pastoreiem o rebanho de Deus que está aos seus cuidados... não por imposição, mas de boa vontade, como Deus quer; não por ganância, mas com o desejo de servir; não como quem domina os que estão sob seus cuidados, mas sendo exemplos para o rebanho.",
                 },
+                originals: [
+                  { word: "ἑκουσίως", translit: "hekousíōs", meaning: "'de boa vontade, voluntariamente' — contrastado com ἀναγκαστῶς (por imposição); o pastoreio genuíno nasce de disposição livre, não obrigação forçada", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -506,12 +521,18 @@ const igrejaLocal: Trail = {
                 textByVersion: {
                   NVI: "Arrependam-se, e cada um de vocês seja batizado em nome de Jesus Cristo... Os que aceitaram a mensagem foram batizados, e naquele dia agregaram-se à igreja cerca de três mil pessoas.",
                 },
+                originals: [
+                  { word: "μετανοήσατε", translit: "metanoḗsate", meaning: "'arrependam-se' imperativo — de metanoéō, mudança radical de mente e direção, base de toda resposta ao Evangelho pregado por Pedro", lang: "grego" },
+                ],
               },
               {
                 ref: "1 Coríntios 11:27-29",
                 textByVersion: {
                   NVI: "Todo aquele que comer o pão ou beber o cálice do Senhor, indignamente, será culpado de pecar contra o corpo e o sangue do Senhor. Examine-se cada um, e então coma do pão e beba do cálice.",
                 },
+                originals: [
+                  { word: "δοκιμαζέτω", translit: "dokimazétō", meaning: "'examine-se' — de dokimázō, testar a autenticidade de algo, como se testa um metal precioso antes de aprová-lo", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -600,6 +621,9 @@ const igrejaLocal: Trail = {
                 NVI: "E consideremo-nos uns aos outros para nos incentivarmos ao amor e às boas obras. Não deixemos de reunir-nos como igreja, segundo o costume de alguns, antes façamos as devidas exortações; e tanto mais quanto vedes que se aproxima aquele dia.",
                 ACF: "E consideremo-nos uns aos outros, para nos estimularmos ao amor e às boas obras, não deixando a nossa congregação, como é costume de alguns, antes, admoestando-nos uns aos outros.",
               },
+              originals: [
+                { word: "ἐπισυναγωγὴν", translit: "episynagōgḗn", meaning: "'reunião, ajuntamento' — a mesma raiz de 'sinagoga'; reunir-se coletivamente, não viver a fé de forma isolada", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -620,12 +644,18 @@ const igrejaLocal: Trail = {
                 textByVersion: {
                   NVI: "Vocês sabem que não deixei de pregar-lhes coisa alguma que os beneficiasse, mas ensinei-lhes publicamente e de casa em casa.",
                 },
+                originals: [
+                  { word: "κατ᾽ οἴκους", translit: "kat' oíkous", meaning: "'de casa em casa' — ministério tanto público (em praças e sinagogas) quanto pessoal e íntimo, dentro dos lares", lang: "grego" },
+                ],
               },
               {
                 ref: "Tiago 5:16",
                 textByVersion: {
                   NVI: "Confessem os seus pecados uns aos outros e orem uns pelos outros, para que sejam curados. A oração de um justo é poderosa e eficaz.",
                 },
+                originals: [
+                  { word: "ἐξομολογεῖσθε", translit: "exomologeîsthe", meaning: "'confessem' — no presente, indicando prática contínua e mútua; não confissão isolada, mas hábito de transparência entre irmãos", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -688,6 +718,9 @@ const igrejaLocal: Trail = {
                 NVI: "Se seu irmão pecar contra você, vá e, a sós com ele, mostre-lhe a sua falta. Se ele o ouvir, você ganhou seu irmão. Mas, se não o ouvir, leve consigo mais um ou dois... Se ele se recusar a ouvi-los, conte à igreja.",
                 ACF: "Ora, se teu irmão pecar contra ti, vai, e repreende-o entre ti e ele só; se te ouvir, ganhaste a teu irmão; se, porém, não te ouvir, leva ainda contigo um ou dois... e, se recusar ouvi-los, dize-o à igreja.",
               },
+              originals: [
+                { word: "ἐκκλησίᾳ", translit: "ekklēsía", meaning: "'igreja, assembleia' — literalmente 'os chamados para fora'; a comunidade reunida tem autoridade final no processo de correção fraterna", lang: "grego" },
+              ],
             },
             {
               ref: "Gálatas 6:1",
@@ -718,12 +751,18 @@ const igrejaLocal: Trail = {
                 textByVersion: {
                   NVI: "Quando vocês estiverem reunidos em nome de nosso Senhor Jesus... entreguem esse homem a Satanás, para a destruição da carne, a fim de que o seu espírito seja salvo no dia do Senhor.",
                 },
+                originals: [
+                  { word: "παραδοῦναι", translit: "paradoûnai", meaning: "'entregar' — o mesmo verbo usado para 'entregar' um preso às autoridades; disciplina como ato sério de entrega, não vingança pessoal", lang: "grego" },
+                ],
               },
               {
                 ref: "2 Coríntios 2:6-8",
                 textByVersion: {
                   NVI: "Para esse homem, é suficiente o castigo que lhe foi imposto pela maioria. Agora, ao contrário, vocês devem perdoá-lo e consolá-lo, para que ele não seja dominado por excessiva tristeza. Por isso eu recomendo que vocês reafirmem o amor que têm por ele.",
                 },
+                originals: [
+                  { word: "κυρῶσαι", translit: "kyrōsai", meaning: "'reafirmar, confirmar' — termo legal usado para ratificar formalmente um contrato ou decisão; o amor precisa ser reafirmado com a mesma seriedade da disciplina", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -791,6 +830,9 @@ const igrejaLocal: Trail = {
                 NVI: "Se for possível, e quanto depender de vocês, vivam em paz com todos.",
                 ACF: "Se for possível, quanto estiver em vós, tende paz com todos os homens.",
               },
+              originals: [
+                { word: "εἰρηνεύοντες", translit: "eirēneúontes", meaning: "'vivendo em paz' — particípio de eirēneúō, de eirḗnē (paz); ação contínua e ativa de buscar a paz, não apenas ausência de conflito", lang: "grego" },
+              ],
             },
             {
               ref: "Mateus 5:9",
@@ -821,12 +863,18 @@ const igrejaLocal: Trail = {
                 textByVersion: {
                   NVI: "Se você estiver apresentando sua oferta diante do altar e ali se lembrar de que seu irmão tem algo contra você, deixe sua oferta ali diante do altar e vá primeiro reconciliar-se com seu irmão; depois volte e apresente sua oferta.",
                 },
+                originals: [
+                  { word: "διαλλάγηθι", translit: "diallágēthi", meaning: "'reconcilie-se' — verbo mais forte que apenas 'fazer as pazes'; implica mudança mútua de atitude entre as duas partes envolvidas", lang: "grego" },
+                ],
               },
               {
                 ref: "1 Coríntios 6:1,7",
                 textByVersion: {
                   NVI: "Se algum de vocês tem uma queixa contra outro, ousa levar o caso a juízo perante os injustos, e não perante os santos?... O fato de haver litígios entre vocês já significa uma completa derrota.",
                 },
+                originals: [
+                  { word: "ἥττημα", translit: "hḗttēma", meaning: "'derrota' — termo de competição, usado para uma derrota esportiva ou militar; litigar entre irmãos já é, em si, uma derrota espiritual", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -909,6 +957,9 @@ const igrejaLocal: Trail = {
                 NVI: "Vocês mesmos sabem que, no início da obra do evangelho... nenhuma igreja participou comigo no dar e no receber, a não ser vocês somente; pois, estando eu ainda em Tessalônica, vocês me enviaram ajuda mais de uma vez para suprir as minhas necessidades.",
                 ACF: "E bem sabeis também, ó filipenses, que, no princípio do evangelho... nenhuma igreja comunicou comigo em razão de dar e receber, senão vós somente; Porque também uma e outra vez me enviastes o necessário a Tessalônica.",
               },
+              originals: [
+                { word: "κοινωνέω", translit: "koinōnéō", meaning: "'participar, ter comunhão' — de koinōnía, parceria compartilhada; o dar dos filipenses é descrito como sociedade genuína, não caridade distante", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -929,12 +980,18 @@ const igrejaLocal: Trail = {
                 textByVersion: {
                   NVI: "Como, pois, invocarão aquele em quem não creram? E como crerão naquele de quem não ouviram falar? E como ouvirão, se não houver quem pregue? E como pregarão, se não forem enviados?",
                 },
+                originals: [
+                  { word: "κηρύσσοντος", translit: "kērýssontos", meaning: "'que prega, proclama' — de kērýssō, o arauto que anuncia oficialmente uma mensagem que não é sua, mas de quem o enviou", lang: "grego" },
+                ],
               },
               {
                 ref: "3 João 1:5-8",
                 textByVersion: {
                   NVI: "Amado, você é fiel no que faz pelos irmãos, mesmo sendo eles estranhos... Enviando-os em sua viagem de maneira digna de Deus, você fará bem. Pois eles saíram por causa do Nome... Portanto, devemos receber com hospitalidade a tais homens, para que sejamos cooperadores com a verdade.",
                 },
+                originals: [
+                  { word: "συνεργοὶ", translit: "synergoí", meaning: "'cooperadores' — literalmente 'que trabalham junto'; hospedar missionários é participar ativamente da obra deles, mesmo sem viajar", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -1058,6 +1115,9 @@ const familiaCrista: Trail = {
                 textByVersion: {
                   NVI: "Vocês perguntam por quê. É porque o Senhor está agindo como testemunha entre você e a mulher da sua mocidade, à qual você foi infiel, embora ela seja sua companheira, sua mulher por aliança... Portanto, tenham cuidado com o seu próprio espírito, e nenhum de vocês seja infiel à mulher da sua mocidade.",
                 },
+                originals: [
+                  { word: "בָּגַד", translit: "bagad", meaning: "'ser infiel, trair' — hebraico usado para quebra de aliança; Deus trata o divórcio injusto como traição de um pacto solene, não apenas rompimento contratual", lang: "hebraico" },
+                ],
               },
             ],
             historicalContext:
@@ -1131,6 +1191,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "Maridos... tratem-nas com honra, como coerdeiras do dom da graça da vida.",
               },
+              originals: [
+                { word: "συγκληρονόμοι", translit: "synklēronómoi", meaning: "'coerdeiros' — literalmente 'que herdam junto'; marido e mulher recebem, em igual dignidade diante de Deus, a mesma graça da vida", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -1208,6 +1271,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "Que todo homem seja pronto para ouvir, tardio para falar e tardio para irar-se.",
               },
+              originals: [
+                { word: "ταχὺς", translit: "tachýs", meaning: "'pronto, rápido' — contrastado com βραδύς (bradýs, 'lento'), repetido duas vezes no versículo: rápido para ouvir, lento para falar e para irar-se", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -1228,6 +1294,9 @@ const familiaCrista: Trail = {
                 textByVersion: {
                   NVI: "A resposta calma desvia a fúria, mas a palavra ríspida desperta a ira.",
                 },
+                originals: [
+                  { word: "מַעֲנֶה־רַךְ", translit: "ma'aneh-rakh", meaning: "'resposta suave, resposta branda' — hebraico; o mesmo termo para 'resposta' usado em contextos jurídicos, aqui aplicado à fala doméstica cotidiana", lang: "hebraico" },
+                ],
               },
             ],
             historicalContext:
@@ -1291,6 +1360,9 @@ const familiaCrista: Trail = {
                 NVI: "Quando ficarem irados, não pequem. Que o sol não se ponha estando vocês ainda irados... Sejam bondosos e compassivos uns para com os outros, perdoando-se mutuamente, assim como Deus perdoou vocês em Cristo.",
                 ACF: "Irai-vos, e não pequeis; não se ponha o sol sobre a vossa ira... Antes sede uns para com os outros benignos, misericordiosos, perdoando-vos uns aos outros, como também Deus vos perdoou em Cristo.",
               },
+              originals: [
+                { word: "χαριζόμενοι", translit: "charizómenoi", meaning: "'perdoando' — de charízomai, verbo ligado a cháris (graça); perdoar é tratado como ato de graça generosa, não obrigação relutante", lang: "grego" },
+              ],
             },
             {
               ref: "Colossenses 3:13",
@@ -1377,6 +1449,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "O marido cumpra o dever conjugal para com sua mulher, e da mesma forma a mulher para com o marido... Não se recusem um ao outro.",
               },
+              originals: [
+                { word: "ὀφειλὴν", translit: "opheilḗn", meaning: "'dívida, dever' — termo comercial para obrigação a ser paga; Paulo aplica essa imagem financeira ao cuidado mútuo dentro do casamento", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -1397,6 +1472,9 @@ const familiaCrista: Trail = {
                 textByVersion: {
                   NVI: "Fujam do pecado sexual!... Vocês não sabem que o seu corpo é santuário do Espírito Santo? ... Vocês não são de vocês mesmos; vocês foram comprados por bom preço. Portanto, glorifiquem a Deus com o seu corpo.",
                 },
+                originals: [
+                  { word: "ναὸς", translit: "naós", meaning: "'santuário, templo' — não o pátio externo, mas o lugar mais sagrado onde Deus habitava; o corpo do crente recebe essa mesma dignidade sagrada", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -1459,6 +1537,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "Vocês ouviram o que foi dito: 'Não adulterarás'. Mas eu digo: qualquer que olhar para uma mulher e a cobiçar, em seu coração já cometeu adultério com ela.",
               },
+              originals: [
+                { word: "ἐπιθυμῆσαι", translit: "epithymêsai", meaning: "'cobiçar' — desejo intenso e deliberadamente cultivado, não um pensamento passageiro e não buscado", lang: "grego" },
+              ],
             },
             {
               ref: "1 Coríntios 6:18-20",
@@ -1547,6 +1628,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "Estas palavras que hoje lhe ordeno estarão em seu coração. Ensine-as com persistência a seus filhos.",
               },
+              originals: [
+                { word: "שִׁנַּנְתָּם", translit: "shinnantam", meaning: "'ensine com persistência, repita' — hebraico, de shanan (afiar); ensinar a Palavra como quem afia uma lâmina, com repetição constante e intencional", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -1567,6 +1651,9 @@ const familiaCrista: Trail = {
                 textByVersion: {
                   NVI: "Os filhos são herança do Senhor; eles são a recompensa que dele vem. Como flechas nas mãos do guerreiro são os filhos nascidos na juventude de alguém. Como é feliz o homem que enche a sua aljava com flechas como essas!",
                 },
+                originals: [
+                  { word: "נַחֲלַת", translit: "nachalat", meaning: "'herança' — hebraico; os filhos são descritos com o mesmo termo usado para a terra prometida, um presente recebido, não uma posse conquistada", lang: "hebraico" },
+                ],
               },
             ],
             historicalContext:
@@ -1631,6 +1718,9 @@ const familiaCrista: Trail = {
                 NVI: "Escolham hoje a quem irão servir... Quanto a mim e à minha família, serviremos ao Senhor.",
                 ACF: "Porém, se vos parece mal aos vossos olhos servir ao Senhor, escolhei hoje a quem sirvais... Mas eu e a minha casa serviremos ao Senhor.",
               },
+              originals: [
+                { word: "בָּחֲרוּ", translit: "bacharu", meaning: "'escolham' — imperativo hebraico de bachar; decisão deliberada e pública, não sentimento vago ou herança automática de fé", lang: "hebraico" },
+              ],
             },
             {
               ref: "Salmo 78:4",
@@ -1717,6 +1807,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "Filhos, obedeçam a seus pais no Senhor, pois isso é justo... este é o primeiro mandamento com promessa.",
               },
+              originals: [
+                { word: "ὑπακούετε", translit: "hypakoúete", meaning: "'obedeçam' — de hypakoúō, literalmente 'ouvir e colocar-se debaixo'; obediência que nasce de escuta atenta, não submissão cega", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -1737,6 +1830,9 @@ const familiaCrista: Trail = {
                 textByVersion: {
                   NVI: "E disse-lhes: 'Habilmente vocês rejeitam o mandamento de Deus, a fim de guardar a sua própria tradição!... vocês anulam a palavra de Deus pela tradição que vocês transmitem uns aos outros.'",
                 },
+                originals: [
+                  { word: "ἀθετεῖτε", translit: "athetetîte", meaning: "'rejeitam, anulam' — de athetéō, tornar sem efeito algo estabelecido; a tradição humana é acusada de revogar, na prática, o próprio mandamento de Deus", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -1799,6 +1895,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "Recordo-me da sinceridade da sua fé, a qual habitou primeiro em sua avó Lóide e em sua mãe Eunice, e estou convencido de que também habita em você.",
               },
+              originals: [
+                { word: "ἀνυπόκριτον", translit: "anypókriton", meaning: "'sincera, sem hipocrisia' — literalmente 'sem máscara de ator'; fé genuína e transparente, transmitida por gerações reais dentro da família", lang: "grego" },
+              ],
             },
             {
               ref: "Salmo 103:17-18",
@@ -1875,6 +1974,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "Gostaria que todos fossem como eu. Mas cada um tem de Deus o seu próprio dom... digo aos solteiros e às viúvas: é bom que permaneçam como eu.",
               },
+              originals: [
+                { word: "χάρισμα", translit: "chárisma", meaning: "'dom, dádiva da graça' — de cháris (graça); tanto o celibato quanto o casamento são descritos como dons distintos, concedidos por Deus, não méritos pessoais", lang: "grego" },
+              ],
             },
             {
               ref: "1 Coríntios 7:32-34",
@@ -1904,6 +2006,9 @@ const familiaCrista: Trail = {
                 textByVersion: {
                   NVI: "Jesus respondeu: 'Nem todos podem aceitar esta palavra, mas somente aqueles a quem é dado... Há também os que renunciaram a casar-se por causa do Reino dos céus. Quem puder aceitar isso, aceite.'",
                 },
+                originals: [
+                  { word: "χωρέω", translit: "chōréō", meaning: "'aceitar, comportar' — literalmente 'dar espaço para, conter dentro de si'; nem todos recebem a capacidade ou o chamado para essa vocação específica", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -1975,6 +2080,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "Acima de tudo, guarde o seu coração, pois dele depende toda a sua vida.",
               },
+              originals: [
+                { word: "נְצֹר", translit: "netsor", meaning: "'guarda!' — imperativo hebraico de natsar, vigiar com atenção constante; o coração é tratado como fonte da qual brota toda a vida", lang: "hebraico" },
+              ],
             },
           ],
           keywords: [
@@ -2042,6 +2150,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "Não acumulem para vocês tesouros na terra... Acumulem para vocês tesouros no céu... Pois onde estiver o seu tesouro, aí também estará o seu coração.",
               },
+              originals: [
+                { word: "θησαυρίζετε", translit: "thēsaurízete", meaning: "'acumulem tesouros' — de thēsaurós (tesouro); o mesmo verbo pode descrever tanto o acúmulo terreno quanto o investimento eterno que Jesus recomenda", lang: "grego" },
+              ],
             },
             {
               ref: "1 Timóteo 6:17-19",
@@ -2071,6 +2182,9 @@ const familiaCrista: Trail = {
                 textByVersion: {
                   NVI: "Lembrem-se disto: aquele que semeia pouco também colherá pouco, e aquele que semeia com fartura também colherá fartamente. Cada um dê conforme determinou em seu coração, não com pesar ou por obrigação, pois Deus ama quem dá com alegria.",
                 },
+                originals: [
+                  { word: "ἱλαρὸν", translit: "hilarón", meaning: "'alegre' — raiz da palavra 'hilário' em português; o doador que Deus ama não é o generoso constrangido, mas o genuinamente contente ao dar", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -2133,6 +2247,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "Se alguém não cuida dos seus, e em especial dos de sua própria família, negou a fé e é pior que um descrente.",
               },
+              originals: [
+                { word: "προνοεῖ", translit: "pronoeî", meaning: "'cuida, provê com antecedência' — de pronoéō, literalmente 'pensar antes'; prover para a família é apresentado como responsabilidade planejada, não reação de última hora", lang: "grego" },
+              ],
             },
             {
               ref: "Filipenses 4:11-13",
@@ -2209,6 +2326,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "Saúdem Priscila e Áquila... Saúdem também a igreja que se reúne na casa deles.",
               },
+              originals: [
+                { word: "συνεργούς", translit: "synergoús", meaning: "'cooperadores, colaboradores' — literalmente 'que trabalham junto'; Paulo usa esse termo para Priscila e Áquila, casal que serviu lado a lado com ele no ministério", lang: "grego" },
+              ],
             },
             {
               ref: "Hebreus 10:24-25",
@@ -2238,6 +2358,9 @@ const familiaCrista: Trail = {
                 textByVersion: {
                   NVI: "Chegou a Éfeso um judeu chamado Apolo... Ele já tinha sido instruído no caminho do Senhor... Priscila e Áquila o ouviram e o levaram para casa, e lhe explicaram com mais precisão o caminho de Deus.",
                 },
+                originals: [
+                  { word: "ἀκριβέστερον", translit: "akribésteron", meaning: "'com mais precisão, mais exatamente' — comparativo de akribḗs; o casal instrui Apolo em particular, com cuidado, sem constrangê-lo publicamente", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -2300,6 +2423,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "Vocês não sabem que todos nós, que fomos batizados em Cristo Jesus, fomos batizados em sua morte?... a fim de vivermos uma vida nova.",
               },
+              originals: [
+                { word: "ἐβαπτίσθημεν", translit: "ebaptísthēmen", meaning: "'fomos batizados' — de baptízō, imergir completamente; o batismo simboliza uma identificação total com a morte e a nova vida de Cristo", lang: "grego" },
+              ],
             },
             {
               ref: "1 Coríntios 11:26",
@@ -2376,6 +2502,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "Perto está o Senhor dos que têm o coração quebrantado e salva os de espírito abatido.",
               },
+              originals: [
+                { word: "נִשְׁבְּרֵי־לֵב", translit: "nishberei-lev", meaning: "'quebrantados de coração' — hebraico; expressão que descreve uma dor profunda e genuína, à qual o Senhor promete proximidade especial", lang: "hebraico" },
+              ],
             },
             {
               ref: "Romanos 8:28",
@@ -2405,6 +2534,9 @@ const familiaCrista: Trail = {
                 textByVersion: {
                   NVI: "Bendito seja o Deus e Pai de nosso Senhor Jesus Cristo, Pai de misericórdia e Deus de toda consolação, que nos consola em todas as nossas tribulações, para que também possamos consolar os que estão passando por qualquer tribulação.",
                 },
+                originals: [
+                  { word: "παράκλησις", translit: "paráklēsis", meaning: "'consolação, encorajamento' — mesma raiz de 'Paráclito' (o Consolador); literalmente 'chamado para o lado de alguém' para fortalecê-lo", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -2467,6 +2599,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "Portanto, o que Deus uniu, ninguém separe... Foi por causa da dureza dos seus corações que Moisés lhes permitiu divorciar-se de suas mulheres. Mas não foi assim desde o princípio.",
               },
+              originals: [
+                { word: "σκληροκαρδίαν", translit: "sklērokardían", meaning: "'dureza de coração' — de sklērós (duro, rígido) e kardía (coração); a permissão do divórcio é descrita como concessão à dureza humana, não ao plano original de Deus", lang: "grego" },
+              ],
             },
             {
               ref: "Malaquias 2:16",
@@ -2552,6 +2687,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "Não se esqueçam da hospitalidade, porque, praticando-a, alguns, sem o saber, hospedaram anjos.",
               },
+              originals: [
+                { word: "φιλοξενίας", translit: "philoxenías", meaning: "'hospitalidade' — literalmente 'amor ao estrangeiro' (phílos + xénos); virtude ativa de acolher quem não pertence ao próprio círculo familiar", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -2572,6 +2710,9 @@ const familiaCrista: Trail = {
                 textByVersion: {
                   NVI: "Amado, você é fiel no que faz para os irmãos, mesmo sendo eles estranhos para você... Devemos, pois, receber com hospitalidade irmãos como esses, para sermos cooperadores da verdade.",
                 },
+                originals: [
+                  { word: "ξένους", translit: "xénous", meaning: "'estranhos, estrangeiros' — os que João recomenda hospedar não são conhecidos próximos, mas irmãos itinerantes sem vínculo pessoal prévio com a igreja local", lang: "grego" },
+                ],
               },
             ],
             historicalContext:
@@ -2634,6 +2775,9 @@ const familiaCrista: Trail = {
               textByVersion: {
                 NVI: "Portanto, vão e façam discípulos de todas as nações, batizando-os em nome do Pai, e do Filho, e do Espírito Santo, ensinando-os a obedecer a tudo o que eu lhes ordenei.",
               },
+              originals: [
+                { word: "μαθητεύσατε", translit: "mathēteúsate", meaning: "'fazei discípulos' — único verbo principal no imperativo do mandato; 'indo', 'batizando' e 'ensinando' são particípios que descrevem como isso acontece", lang: "grego" },
+              ],
             },
             {
               ref: "1 Pedro 3:15",
@@ -2986,6 +3130,9 @@ const missoes: Trail = {
               textByVersion: {
                 NVI: "Vocês sabem que, no início da pregação do evangelho... nenhuma igreja se associou comigo no dar e no receber, a não ser vocês.",
               },
+              originals: [
+                { word: "δόσεως καὶ λήψεως", translit: "dóseōs kai lḗpseōs", meaning: "'dar e receber' — expressão técnica de contabilidade comercial, usada aqui para descrever uma parceria financeira formal entre Paulo e a igreja de Filipos", lang: "grego" },
+              ],
             },
           ],
           keywords: [
@@ -3150,6 +3297,9 @@ const missoes: Trail = {
                 NVI: "Fiz-me tudo para todos, para, por todos os meios possíveis, salvar alguns. Tudo isso faço por causa do evangelho, para ter parte nas suas bênçãos.",
                 ACF: "Fiz-me tudo para todos, para de todos os modos chegar a salvar alguns.",
               },
+              originals: [
+                { word: "γέγονα", translit: "gégona", meaning: "'fiz-me, tornei-me' — perfeito do verbo gínomai, indicando uma adaptação deliberada e duradoura de método e abordagem, sem alterar a mensagem em si", lang: "grego" },
+              ],
             },
           ],
           keywords: [
