@@ -4,7 +4,7 @@ const corsHeaders = {
 };
 
 const GATEWAY_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
-const MODEL = "gemini-2.5-flash";
+const MODEL = "gemini-3.6-flash";
 
 // Migrado do gateway pago da Lovable para a API gratuita do Gemini — ver
 // mentor-chat/index.ts para detalhes.
