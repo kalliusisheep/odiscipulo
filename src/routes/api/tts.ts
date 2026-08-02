@@ -26,6 +26,19 @@ function hashText(text: string): string {
   return createHash("sha256").update(`gemini-tts:${TTS_VOICE}:${text}`).digest("hex");
 }
 
+async function tryGetCached(fileName: string): Promise<ArrayBuffer | null> {
+  try {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data } = await supabaseAdmin.storage.from(BUCKET).download(fileName);
+    if (!data) return null;
+    const buf = await data.arrayBuffer();
+    return buf.byteLength > 0 ? buf : null;
+  } catch (e) {
+    console.error("Narração: cache indisponível ao ler", e);
+    return null;
+  }
+}
+
 async function trySaveCache(
   fileName: string,
   audioBuf: ArrayBuffer,
