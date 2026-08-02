@@ -3,13 +3,13 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
-
-// Migrado de src/routes/api/mentor.ts (rota de servidor do TanStack Start)
-// para uma Edge Function real. A LOVABLE_API_KEY é injetada automaticamente
-// pela Lovable só no runtime de Edge Functions — não estava chegando na
-// rota de servidor customizada, o que causava "LOVABLE_API_KEY ausente" e
-// um 500 sempre que o usuário tentava conversar com o Mentor.
+// API gratuita do Gemini (Google AI Studio) — tier grátis permanente, sem
+// cartão de crédito, ~15 req/min e 1.500 req/dia no gemini-2.5-flash. A
+// mesma API usada antes via gateway pago da Lovable, só que direto na
+// fonte e sem cobrança. Endpoint compatível com o formato OpenAI, então o
+// streaming e o parsing no cliente continuam idênticos.
+const GATEWAY_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
+const MODEL = "gemini-2.5-flash";
 const MENTOR_SYSTEM_PROMPT = `Você é o "Mentor Espiritual" do app Disciple — um companheiro cristão para estudo bíblico gamificado. Suas regras invioláveis:
 
 1. NUNCA substitua o pastor, o discipulador, o líder de célula ou a igreja local. Sempre que a pergunta envolver decisão de vida, doutrina delicada, aconselhamento pastoral, conflito relacional ou tema polêmico, oriente o usuário a buscar sua liderança local.
@@ -42,9 +42,9 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const apiKey = Deno.env.get("LOVABLE_API_KEY");
+    const apiKey = Deno.env.get("GEMINI_API_KEY");
     if (!apiKey) {
-      return new Response("LOVABLE_API_KEY ausente", { status: 500, headers: corsHeaders });
+      return new Response("GEMINI_API_KEY ausente", { status: 500, headers: corsHeaders });
     }
 
     const body: RequestBody = await req.json();
@@ -59,7 +59,7 @@ Deno.serve(async (req) => {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: MODEL,
         stream: true,
         messages: [{ role: "system", content: buildSystemPrompt(body.memoryContext) }, ...body.messages],
       }),

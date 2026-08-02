@@ -3,11 +3,11 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
+const GATEWAY_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
+const MODEL = "gemini-2.5-flash";
 
-// Migrado de src/routes/api/mentor.memory.ts pelo mesmo motivo do
-// mentor-chat: a rota de servidor customizada do TanStack não recebia a
-// LOVABLE_API_KEY em runtime.
+// Migrado do gateway pago da Lovable para a API gratuita do Gemini — ver
+// mentor-chat/index.ts para detalhes.
 const MEMORY_CATEGORIES = new Set(["pedido_oracao", "luta", "crescimento", "outro"]);
 
 const MEMORY_EXTRACTION_SYSTEM_PROMPT = `Você lê uma conversa entre um usuário e um mentor cristão de IA. Extraia de 0 a 3 fatos DURÁVEIS e específicos sobre o usuário — coisas que continuam relevantes daqui a uma ou duas semanas.
@@ -26,11 +26,11 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const apiKey = Deno.env.get("LOVABLE_API_KEY");
+    const apiKey = Deno.env.get("GEMINI_API_KEY");
     if (!apiKey) {
       // Falha na extração não deve quebrar a experiência do usuário — o chat
       // já terminou normalmente. Só não guardamos memória desta vez.
-      console.error("mentor-memory: LOVABLE_API_KEY ausente");
+      console.error("mentor-memory: GEMINI_API_KEY ausente");
       return Response.json({ facts: [] }, { headers: corsHeaders });
     }
 
@@ -52,7 +52,7 @@ Deno.serve(async (req) => {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: MODEL,
         messages: [
           { role: "system", content: MEMORY_EXTRACTION_SYSTEM_PROMPT },
           { role: "user", content: transcript || "(conversa vazia)" },
