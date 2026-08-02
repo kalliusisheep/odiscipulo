@@ -196,7 +196,7 @@ function LicaoPage() {
           {lesson.verses.map((v) => (
             <div key={v.ref} className="rounded-2xl border border-ancient/30 bg-ancient/5 p-4">
               <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
-                {v.ref} · {bibleVersion}
+                <span data-narrate>{v.ref}</span> · {bibleVersion}
               </p>
               <p className="mt-2 scripture text-base leading-relaxed" data-narrate>
                 {`"${verseText(v, bibleVersion)}"`}
