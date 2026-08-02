@@ -53,23 +53,32 @@ Deno.serve(async (req) => {
       return new Response("Bad request", { status: 400, headers: corsHeaders });
     }
 
-    const res = await fetch(GATEWAY_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        stream: true,
-        messages: [{ role: "system", content: buildSystemPrompt(body.memoryContext) }, ...body.messages],
-      }),
-    });
+    const messages = [
+      { role: "system", content: buildSystemPrompt(body.memoryContext) },
+      ...body.messages,
+    ];
 
-    if (!res.ok || !res.body) {
-      const text = await res.text().catch(() => "");
-      return new Response(`Gateway ${res.status}: ${text.slice(0, 200)}`, { status: 502, headers: corsHeaders });
+    let res: Response | null = null;
+    let lastError = "sem resposta";
+    for (const model of MODELS) {
+      res = await fetch(GATEWAY_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({ model, stream: true, messages }),
+      });
+      if (res.ok && res.body) break;
+      lastError = `${res.status}: ${(await res.text().catch(() => "")).slice(0, 200)}`;
+      console.error(`mentor-chat: modelo ${model} falhou —`, lastError);
+      res = null;
     }
+
+    if (!res || !res.body) {
+      return new Response(`Gateway ${lastError}`, { status: 502, headers: corsHeaders });
+    }
+
 
     return new Response(res.body, {
       headers: {
