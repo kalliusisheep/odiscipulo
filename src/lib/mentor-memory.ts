@@ -44,7 +44,8 @@ export function buildMemoryContext(memories: MentorMemoryRow[]): string | undefi
 /** Escolhe um fato recente (prioriza pedido de oração/luta) para abrir a conversa com uma saudação pessoal. */
 export function buildMemoryGreeting(memories: MentorMemoryRow[]): string | null {
   if (memories.length === 0) return null;
-  const priority = memories.find((m) => m.category === "pedido_oracao" || m.category === "luta") ?? memories[0];
+  const priority =
+    memories.find((m) => m.category === "pedido_oracao" || m.category === "luta") ?? memories[0];
   const lower = priority.fact.charAt(0).toLowerCase() + priority.fact.slice(1);
   return `Que bom te ver de novo, irmão(ã)! Da nossa última conversa, guardei que ${lower} Como isso está?`;
 }
@@ -63,13 +64,11 @@ export async function extractAndSaveMemory(
   if (!hasUserTurn) return;
 
   try {
-    const res = await fetch("/api/mentor/memory", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages }),
-    });
-    if (!res.ok) return;
-    const { facts } = (await res.json()) as { facts?: { category: string; fact: string }[] };
+    const { data, error } = await supabase.functions.invoke<{
+      facts?: { category: string; fact: string }[];
+    }>("mentor-memory", { body: { messages } });
+    if (error) return;
+    const facts = data?.facts;
     if (!facts || facts.length === 0) return;
 
     const rows = facts.map((f) => ({
@@ -89,7 +88,13 @@ export async function extractAndSaveMemory(
       .order("created_at", { ascending: false });
     const excess = (all ?? []).slice(MAX_STORED_FACTS);
     if (excess.length > 0) {
-      await supabase.from("mentor_memory").delete().in("id", excess.map((e) => e.id));
+      await supabase
+        .from("mentor_memory")
+        .delete()
+        .in(
+          "id",
+          excess.map((e) => e.id),
+        );
     }
   } catch (e) {
     console.error("Memória do Mentor: falha ao extrair/salvar", e);

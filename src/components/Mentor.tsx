@@ -138,15 +138,20 @@ export function MentorFAB() {
   };
 
   const animClass = event ? EVENT_TO_ANIM_CLASS[event] : "animate-mascot-idle";
-  const showParticles = event === "jump" || event === "dance" || event === "streak" || event === "pet";
-  const particleEmoji = event === "streak" ? "🔥" : event === "dance" ? "⭐" : event === "pet" ? "❤️" : "✨";
+  const showParticles =
+    event === "jump" || event === "dance" || event === "streak" || event === "pet";
+  const particleEmoji =
+    event === "streak" ? "🔥" : event === "dance" ? "⭐" : event === "pet" ? "❤️" : "✨";
 
   // Se a ovelha estiver muito perto do topo da tela, o balão abre pra baixo
   // em vez de pra cima, pra nunca ficar cortado fora da viewport.
   const bubbleBelow = pos.y < 140;
 
   return (
-    <div className="fixed z-40" style={{ left: pos.x, top: pos.y, width: FAB_SIZE, height: FAB_SIZE }}>
+    <div
+      className="fixed z-40"
+      style={{ left: pos.x, top: pos.y, width: FAB_SIZE, height: FAB_SIZE }}
+    >
       {showBubble && message && (
         <div
           className={`animate-fade-in pointer-events-none absolute max-w-[190px] rounded-2xl px-3 py-1.5 text-center text-[11px] font-medium leading-snug text-foreground shadow-md ring-1 ring-border ${
@@ -269,9 +274,16 @@ export function MentorChat() {
     setInput("");
     setLoading(true);
     try {
-      const res = await fetch("/api/mentor", {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const anonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
+      const res = await fetch(`${supabaseUrl}/functions/v1/mentor-chat`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          apikey: anonKey,
+          Authorization: `Bearer ${sessionData.session?.access_token ?? anonKey}`,
+        },
         body: JSON.stringify({ messages: next, memoryContext }),
       });
       if (!res.ok || !res.body) throw new Error("Falha ao conversar com o Mentor.");
@@ -311,7 +323,10 @@ export function MentorChat() {
     } catch (err) {
       setMessages((m) => [
         ...m,
-        { role: "assistant", content: "Perdão, tive dificuldade em responder agora. Tente novamente." },
+        {
+          role: "assistant",
+          content: "Perdão, tive dificuldade em responder agora. Tente novamente.",
+        },
       ]);
     } finally {
       setLoading(false);
@@ -324,7 +339,11 @@ export function MentorChat() {
         <header className="flex items-center justify-between border-b border-border bg-gradient-to-r from-primary/20 to-primary-glow/20 px-4 py-3">
           <div className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-glow">
-              <img src="/isheep-img.png" alt="Barnabéé, Mentor IA" className="h-full w-full object-cover" />
+              <img
+                src="/isheep-img.png"
+                alt="Barnabéé, Mentor IA"
+                className="h-full w-full object-cover"
+              />
             </div>
             <div>
               <h2 className="text-sm font-semibold">Barnabéé</h2>
@@ -347,7 +366,9 @@ export function MentorChat() {
             <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
               <div
                 className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
-                  m.role === "user" ? "bg-primary text-primary-foreground" : "bg-surface-2 text-foreground"
+                  m.role === "user"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-surface-2 text-foreground"
                 }`}
               >
                 {m.content || <span className="text-muted-foreground">…</span>}
