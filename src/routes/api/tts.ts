@@ -4,33 +4,38 @@ import { createHash } from "node:crypto";
 /** Bucket no Supabase Storage usado como cache dos áudios já gerados. */
 const BUCKET = "narration-audio";
 
-/** Modelo de voz (Lovable AI) usado para a narração. */
-const TTS_MODEL = "openai/gpt-4o-mini-tts";
-/** Voz base — calorosa e grave, boa para leitura pastoral. */
-const TTS_VOICE = "onyx";
-/** Direção de estilo: português do Brasil, ritmo calmo e natural. */
-const TTS_INSTRUCTIONS =
-  "Fale em português do Brasil, com sotaque brasileiro natural e nativo. " +
-  "Tom pastoral, caloroso e acolhedor, como quem lê a Bíblia em voz alta para alguém querido. " +
-  "Ritmo calmo e pausado, respeitando a pontuação, sem pressa e sem entonação robótica.";
+/**
+ * Narração 100% gratuita: usamos o Gemini TTS direto na API do Google AI
+ * Studio (tier gratuito permanente, sem cartão e sem créditos da Lovable),
+ * com a mesma chave GEMINI_API_KEY já usada pelo Mentor IA.
+ * Todo áudio gerado é salvo no Storage, então cada trecho é gerado uma única
+ * vez na vida e depois é servido instantaneamente do cache.
+ */
+const TTS_MODELS = ["gemini-3.1-flash-tts-preview", "gemini-2.5-flash-preview-tts"];
+/** Voz calorosa e grave, boa para leitura pastoral. */
+const TTS_VOICE = "Charon";
+/** Direção de estilo (vai no próprio texto, como o Gemini espera). */
+const TTS_STYLE =
+  "Leia em português do Brasil, com sotaque brasileiro natural, tom pastoral, " +
+  "caloroso e acolhedor, ritmo calmo e pausado, respeitando a pontuação:\n\n";
 
 /** Tempo máximo (ms) que esperamos a geração do áudio antes de desistir. */
 const TTS_TIMEOUT_MS = 25_000;
 
 function hashText(text: string): string {
-  return createHash("sha256").update(`${TTS_MODEL}:${TTS_VOICE}:${text}`).digest("hex");
+  return createHash("sha256").update(`gemini-tts:${TTS_VOICE}:${text}`).digest("hex");
 }
 
 /**
- * Nomes usados por versões anteriores do sistema (antes de existir o prefixo
- * modelo:voz no hash), que salvavam o áudio já gerado como `.wav`. Esses
- * arquivos já foram pagos (créditos já consumidos) e continuam no bucket —
- * só não eram mais encontrados porque o hash novo é diferente. Verificamos
- * esses nomes antigos antes de gerar (e cobrar) áudio de novo.
+ * Nomes usados por versões anteriores do sistema. Esses arquivos já existem no
+ * bucket (e já foram pagos) — reaproveitamos antes de gerar de novo.
  */
 function legacyFileNames(text: string): string[] {
   const plain = createHash("sha256").update(text).digest("hex");
-  return [`${plain}-kokoro.wav`, `${plain}.wav`, `${plain}.mp3`];
+  const openai = createHash("sha256")
+    .update(`openai/gpt-4o-mini-tts:onyx:${text}`)
+    .digest("hex");
+  return [`${openai}.mp3`, `${plain}-kokoro.wav`, `${plain}.wav`, `${plain}.mp3`];
 }
 
 async function tryGetCached(fileName: string): Promise<ArrayBuffer | null> {
@@ -60,7 +65,7 @@ async function tryGetLegacyCached(
 async function trySaveCache(
   fileName: string,
   audioBuf: ArrayBuffer,
-  contentType = "audio/mpeg",
+  contentType: string,
 ): Promise<void> {
   try {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -73,13 +78,98 @@ async function trySaveCache(
   }
 }
 
-function audioResponse(buf: ArrayBuffer, contentType = "audio/mpeg"): Response {
+function audioResponse(buf: ArrayBuffer, contentType = "audio/wav"): Response {
   return new Response(buf, {
     headers: {
       "Content-Type": contentType,
       "Cache-Control": "public, max-age=31536000, immutable",
     },
   });
+}
+
+/** O Gemini devolve PCM cru (16-bit, mono). Envelopamos em WAV pro <audio> tocar. */
+function pcmToWav(pcm: Uint8Array, sampleRate = 24000): ArrayBuffer {
+  const header = new ArrayBuffer(44);
+  const view = new DataView(header);
+  const writeStr = (offset: number, s: string) => {
+    for (let i = 0; i < s.length; i++) view.setUint8(offset + i, s.charCodeAt(i));
+  };
+  writeStr(0, "RIFF");
+  view.setUint32(4, 36 + pcm.byteLength, true);
+  writeStr(8, "WAVE");
+  writeStr(12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, 1, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 2, true);
+  view.setUint16(32, 2, true);
+  view.setUint16(34, 16, true);
+  writeStr(36, "data");
+  view.setUint32(40, pcm.byteLength, true);
+  const out = new Uint8Array(44 + pcm.byteLength);
+  out.set(new Uint8Array(header), 0);
+  out.set(pcm, 44);
+  return out.buffer;
+}
+
+function base64ToBytes(b64: string): Uint8Array {
+  const bin = atob(b64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return bytes;
+}
+
+type GeminiTtsResponse = {
+  candidates?: {
+    content?: { parts?: { inlineData?: { data?: string; mimeType?: string } }[] };
+  }[];
+};
+
+/** Gera o áudio no Gemini (grátis). Devolve WAV pronto, ou null se falhar. */
+async function generateWithGemini(
+  apiKey: string,
+  text: string,
+  signal: AbortSignal,
+): Promise<{ buf: ArrayBuffer; error?: undefined } | { buf?: undefined; error: string }> {
+  let lastError = "sem resposta";
+  for (const model of TTS_MODELS) {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
+        body: JSON.stringify({
+          contents: [{ role: "user", parts: [{ text: TTS_STYLE + text }] }],
+          generationConfig: {
+            responseModalities: ["AUDIO"],
+            speechConfig: {
+              voiceConfig: { prebuiltVoiceConfig: { voiceName: TTS_VOICE } },
+            },
+          },
+        }),
+        signal,
+      },
+    );
+
+    if (!res.ok) {
+      lastError = `${res.status}: ${(await res.text().catch(() => "")).slice(0, 200)}`;
+      console.error(`Narração: Gemini ${model} falhou`, lastError);
+      continue;
+    }
+
+    const json = (await res.json()) as GeminiTtsResponse;
+    const part = json.candidates?.[0]?.content?.parts?.find((p) => p.inlineData?.data);
+    const b64 = part?.inlineData?.data;
+    if (!b64) {
+      lastError = "áudio vazio";
+      continue;
+    }
+    const rateMatch = /rate=(\d+)/.exec(part?.inlineData?.mimeType ?? "");
+    const sampleRate = rateMatch ? Number(rateMatch[1]) : 24000;
+    return { buf: pcmToWav(base64ToBytes(b64), sampleRate) };
+  }
+  return { error: lastError };
 }
 
 export const Route = createFileRoute("/api/tts")({
@@ -92,52 +182,28 @@ export const Route = createFileRoute("/api/tts")({
           if (!text) return new Response("Missing text", { status: 400 });
           if (text.length > 2000) return new Response("Text too long", { status: 400 });
 
-          const fileName = `${hashText(text)}.mp3`;
+          const fileName = `${hashText(text)}.wav`;
 
-          // 1. Cache: se esse trecho já foi narrado alguma vez, serve de graça.
+          // 1. Cache: se esse trecho já foi narrado alguma vez, serve na hora.
           const cached = await tryGetCached(fileName);
           if (cached) return audioResponse(cached);
 
-          // 1.5. Cache antigo: reconecta com áudio já gerado (e já pago) por uma
-          // versão anterior do sistema, salvo sob o nome de arquivo antigo.
+          // 1.5. Cache antigo: reaproveita áudio já gerado por versões anteriores.
           const legacy = await tryGetLegacyCached(text);
           if (legacy) {
-            // Copia pro nome novo, então da próxima vez a busca acima (passo 1) já acha direto.
-            // IMPORTANTE: isso roda no Cloudflare Workers — se não esperarmos (await) o
-            // salvamento terminar antes de responder, o Worker pode encerrar o processo
-            // assim que a resposta é enviada, matando o upload no meio e deixando o
-            // cache vazio pra sempre. Por isso o await aqui, mesmo custando um pouco de
-            // latência.
             await trySaveCache(fileName, legacy.buf, legacy.contentType);
             return audioResponse(legacy.buf, legacy.contentType);
           }
 
-          // 2. Sem cache (novo nem antigo): gera com a voz de IA da Lovable.
-          const apiKey = process.env.LOVABLE_API_KEY;
-          if (!apiKey) return new Response("LOVABLE_API_KEY ausente", { status: 500 });
+          // 2. Sem cache: gera com o Gemini TTS (tier gratuito do Google).
+          const apiKey = process.env["GEMINI_API_KEY"];
+          if (!apiKey) return new Response("GEMINI_API_KEY ausente", { status: 500 });
 
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), TTS_TIMEOUT_MS);
-
-          let res: Response;
+          let result: Awaited<ReturnType<typeof generateWithGemini>>;
           try {
-            res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${apiKey}`,
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                model: TTS_MODEL,
-                input: text,
-                voice: TTS_VOICE,
-                instructions: TTS_INSTRUCTIONS,
-                response_format: "mp3",
-                stream_format: "audio",
-                speed: 0.95,
-              }),
-              signal: controller.signal,
-            });
+            result = await generateWithGemini(apiKey, text, controller.signal);
           } catch (e) {
             clearTimeout(timeoutId);
             console.error("Narração: falha ao gerar áudio", e);
@@ -145,32 +211,16 @@ export const Route = createFileRoute("/api/tts")({
           }
           clearTimeout(timeoutId);
 
-          if (!res.ok) {
-            const errText = await res.text().catch(() => "");
-            console.error(`Narração: gateway ${res.status}`, errText.slice(0, 500));
-            const status = res.status === 402 || res.status === 429 ? res.status : 502;
-            return new Response(`TTS ${res.status}: ${errText.slice(0, 200)}`, { status });
+          if (!result.buf) {
+            return new Response(`TTS: ${result.error}`, { status: 502 });
           }
 
-          const audioBuf = await res.arrayBuffer();
-          if (audioBuf.byteLength === 0) {
-            return new Response("Narração: áudio vazio", { status: 502 });
-          }
+          // 3. Guarda no cache — próximas escutas são instantâneas.
+          // Precisa ser `await`: no Worker o processo pode encerrar assim que a
+          // resposta é enviada, abortando um upload em segundo plano.
+          await trySaveCache(fileName, result.buf, "audio/wav");
 
-          // 3. Guarda no cache — próximas escutas do mesmo trecho são gratuitas.
-          // IMPORTANTE: precisa ser `await`, não "dispare e esqueça" (`void`).
-          // No Cloudflare Workers, o processo pode ser encerrado assim que a
-          // resposta HTTP termina de ser enviada — qualquer promise em segundo
-          // plano que não tenha sido esperada (ou presa com ctx.waitUntil) corre
-          // o risco de ser abortada no meio. Era exatamente isso que estava
-          // fazendo o upload para o bucket falhar silenciosamente: o áudio tocava
-          // (e consumia crédito), mas nunca ficava de fato salvo — então na
-          // próxima vez o servidor não achava nada no cache e gerava (e cobrava)
-          // tudo de novo, até os créditos acabarem e a narração cair para a voz
-          // do aparelho/Google.
-          await trySaveCache(fileName, audioBuf);
-
-          return audioResponse(audioBuf);
+          return audioResponse(result.buf);
         } catch (e) {
           const msg = e instanceof Error ? e.message : "erro";
           console.error("Narração: erro em /api/tts", e);
