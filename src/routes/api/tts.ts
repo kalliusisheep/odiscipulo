@@ -11,7 +11,10 @@ const BUCKET = "narration-audio";
  * Todo áudio gerado é salvo no Storage, então cada trecho é gerado uma única
  * vez na vida e depois é servido instantaneamente do cache.
  */
-const TTS_MODELS = ["gemini-3.1-flash-tts-preview", "gemini-2.5-flash-preview-tts"];
+// gemini-2.5-flash-preview-tts primeiro: é o modelo estável (não-preview em
+// termos de cota) e mais barato; o 3.1 preview fica como reforço, já que
+// modelos preview costumam ter cota gratuita bem mais apertada.
+const TTS_MODELS = ["gemini-2.5-flash-preview-tts", "gemini-3.1-flash-tts-preview"];
 /** Voz calorosa e grave, boa para leitura pastoral. */
 const TTS_VOICE = "Charon";
 /** Direção de estilo (vai no próprio texto, como o Gemini espera). */
@@ -19,8 +22,15 @@ const TTS_STYLE =
   "Leia em português do Brasil, com sotaque brasileiro natural, tom pastoral, " +
   "caloroso e acolhedor, ritmo calmo e pausado, respeitando a pontuação:\n\n";
 
-/** Tempo máximo (ms) que esperamos a geração do áudio antes de desistir. */
+/** Tempo máximo (ms) que esperamos a geração do áudio antes de desistir de vez. */
 const TTS_TIMEOUT_MS = 25_000;
+/**
+ * Tempo máximo (ms) que damos a CADA modelo antes de desistir dele e tentar o
+ * próximo. Sem isso, se um modelo travar (rede lenta, cota estourada e sem
+ * resposta rápida do Google), ele sozinho consome os 25s inteiros e o
+ * segundo modelo nunca chega a ser tentado — o usuário só recebe um 504.
+ */
+const TTS_PER_MODEL_TIMEOUT_MS = 12_000;
 
 function hashText(text: string): string {
   return createHash("sha256").update(`gemini-tts:${TTS_VOICE}:${text}`).digest("hex");
@@ -103,6 +113,21 @@ type GeminiTtsResponse = {
   }[];
 };
 
+/** Combina o sinal externo (timeout global) com um timeout curto só deste modelo. */
+function perModelSignal(outerSignal: AbortSignal): { signal: AbortSignal; clear: () => void } {
+  const controller = new AbortController();
+  const onOuterAbort = () => controller.abort();
+  outerSignal.addEventListener("abort", onOuterAbort);
+  const timeoutId = setTimeout(() => controller.abort(), TTS_PER_MODEL_TIMEOUT_MS);
+  return {
+    signal: controller.signal,
+    clear: () => {
+      clearTimeout(timeoutId);
+      outerSignal.removeEventListener("abort", onOuterAbort);
+    },
+  };
+}
+
 /** Gera o áudio no Gemini (grátis). Devolve WAV pronto, ou null se falhar. */
 async function generateWithGemini(
   apiKey: string,
@@ -111,23 +136,35 @@ async function generateWithGemini(
 ): Promise<{ buf: ArrayBuffer; error?: undefined } | { buf?: undefined; error: string }> {
   let lastError = "sem resposta";
   for (const model of TTS_MODELS) {
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
-        body: JSON.stringify({
-          contents: [{ role: "user", parts: [{ text: TTS_STYLE + text }] }],
-          generationConfig: {
-            responseModalities: ["AUDIO"],
-            speechConfig: {
-              voiceConfig: { prebuiltVoiceConfig: { voiceName: TTS_VOICE } },
+    const attempt = perModelSignal(signal);
+    let res: Response;
+    try {
+      res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
+          body: JSON.stringify({
+            contents: [{ role: "user", parts: [{ text: TTS_STYLE + text }] }],
+            generationConfig: {
+              responseModalities: ["AUDIO"],
+              speechConfig: {
+                voiceConfig: { prebuiltVoiceConfig: { voiceName: TTS_VOICE } },
+              },
             },
-          },
-        }),
-        signal,
-      },
-    );
+          }),
+          signal: attempt.signal,
+        },
+      );
+    } catch (e) {
+      // Se foi o timeout do pedido inteiro que abortou, propaga pra parar de vez.
+      if (signal.aborted) throw e;
+      lastError = (e as Error)?.name === "AbortError" ? "tempo esgotado neste modelo" : String(e);
+      console.error(`Narração: Gemini ${model} não respondeu a tempo`, lastError);
+      continue;
+    } finally {
+      attempt.clear();
+    }
 
     if (!res.ok) {
       lastError = `${res.status}: ${(await res.text().catch(() => "")).slice(0, 200)}`;
