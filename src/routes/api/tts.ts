@@ -5,35 +5,25 @@ import { createHash } from "node:crypto";
 const BUCKET = "narration-audio";
 
 /**
- * Narração 100% gratuita: usamos o Gemini TTS direto na API do Google AI
- * Studio (tier gratuito permanente, sem cartão e sem créditos da Lovable),
- * com a mesma chave GEMINI_API_KEY já usada pelo Mentor IA.
+ * Narração via OpenAI TTS (gpt-4o-mini-tts). Diferente do Gemini, esta API
+ * é paga (cobrada por token de áudio gerado) e exige uma conta OpenAI com
+ * créditos/cartão cadastrado — não existe camada gratuita permanente aqui.
  * Todo áudio gerado é salvo no Storage, então cada trecho é gerado uma única
- * vez na vida e depois é servido instantaneamente do cache.
+ * vez na vida e depois é servido instantaneamente do cache, economizando custo.
  */
-// gemini-2.5-flash-preview-tts primeiro: é o modelo estável (não-preview em
-// termos de cota) e mais barato; o 3.1 preview fica como reforço, já que
-// modelos preview costumam ter cota gratuita bem mais apertada.
-const TTS_MODELS = ["gemini-2.5-flash-preview-tts", "gemini-3.1-flash-tts-preview"];
-/** Voz calorosa e grave, boa para leitura pastoral. */
-const TTS_VOICE = "Charon";
-/** Direção de estilo (vai no próprio texto, como o Gemini espera). */
-const TTS_STYLE =
+const TTS_MODEL = "gpt-4o-mini-tts";
+/** Voz grave e calorosa, boa para leitura pastoral. */
+const TTS_VOICE = "onyx";
+/** Instrução de estilo enviada separada do texto (recurso do gpt-4o-mini-tts). */
+const TTS_INSTRUCTIONS =
   "Leia em português do Brasil, com sotaque brasileiro natural, tom pastoral, " +
-  "caloroso e acolhedor, ritmo calmo e pausado, respeitando a pontuação:\n\n";
+  "caloroso e acolhedor, ritmo calmo e pausado, respeitando a pontuação.";
 
-/** Tempo máximo (ms) que esperamos a geração do áudio antes de desistir de vez. */
+/** Tempo máximo (ms) que esperamos a geração do áudio antes de desistir. */
 const TTS_TIMEOUT_MS = 25_000;
-/**
- * Tempo máximo (ms) que damos a CADA modelo antes de desistir dele e tentar o
- * próximo. Sem isso, se um modelo travar (rede lenta, cota estourada e sem
- * resposta rápida do Google), ele sozinho consome os 25s inteiros e o
- * segundo modelo nunca chega a ser tentado — o usuário só recebe um 504.
- */
-const TTS_PER_MODEL_TIMEOUT_MS = 12_000;
 
 function hashText(text: string): string {
-  return createHash("sha256").update(`gemini-tts:${TTS_VOICE}:${text}`).digest("hex");
+  return createHash("sha256").update(`openai-tts:${TTS_VOICE}:${text}`).digest("hex");
 }
 
 async function tryGetCached(fileName: string): Promise<ArrayBuffer | null> {
@@ -74,116 +64,37 @@ function audioResponse(buf: ArrayBuffer, contentType = "audio/wav"): Response {
   });
 }
 
-/** O Gemini devolve PCM cru (16-bit, mono). Envelopamos em WAV pro <audio> tocar. */
-function pcmToWav(pcm: Uint8Array, sampleRate = 24000): ArrayBuffer {
-  const header = new ArrayBuffer(44);
-  const view = new DataView(header);
-  const writeStr = (offset: number, s: string) => {
-    for (let i = 0; i < s.length; i++) view.setUint8(offset + i, s.charCodeAt(i));
-  };
-  writeStr(0, "RIFF");
-  view.setUint32(4, 36 + pcm.byteLength, true);
-  writeStr(8, "WAVE");
-  writeStr(12, "fmt ");
-  view.setUint32(16, 16, true);
-  view.setUint16(20, 1, true);
-  view.setUint16(22, 1, true);
-  view.setUint32(24, sampleRate, true);
-  view.setUint32(28, sampleRate * 2, true);
-  view.setUint16(32, 2, true);
-  view.setUint16(34, 16, true);
-  writeStr(36, "data");
-  view.setUint32(40, pcm.byteLength, true);
-  const out = new Uint8Array(44 + pcm.byteLength);
-  out.set(new Uint8Array(header), 0);
-  out.set(pcm, 44);
-  return out.buffer;
-}
-
-function base64ToBytes(b64: string): Uint8Array {
-  const bin = atob(b64);
-  const bytes = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-  return bytes;
-}
-
-type GeminiTtsResponse = {
-  candidates?: {
-    content?: { parts?: { inlineData?: { data?: string; mimeType?: string } }[] };
-  }[];
-};
-
-/** Combina o sinal externo (timeout global) com um timeout curto só deste modelo. */
-function perModelSignal(outerSignal: AbortSignal): { signal: AbortSignal; clear: () => void } {
-  const controller = new AbortController();
-  const onOuterAbort = () => controller.abort();
-  outerSignal.addEventListener("abort", onOuterAbort);
-  const timeoutId = setTimeout(() => controller.abort(), TTS_PER_MODEL_TIMEOUT_MS);
-  return {
-    signal: controller.signal,
-    clear: () => {
-      clearTimeout(timeoutId);
-      outerSignal.removeEventListener("abort", onOuterAbort);
-    },
-  };
-}
-
-/** Gera o áudio no Gemini (grátis). Devolve WAV pronto, ou null se falhar. */
-async function generateWithGemini(
+/** Gera o áudio na OpenAI. Devolve WAV pronto, ou null se falhar. */
+async function generateWithOpenAI(
   apiKey: string,
   text: string,
   signal: AbortSignal,
 ): Promise<{ buf: ArrayBuffer; error?: undefined } | { buf?: undefined; error: string }> {
-  let lastError = "sem resposta";
-  for (const model of TTS_MODELS) {
-    const attempt = perModelSignal(signal);
-    let res: Response;
-    try {
-      res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
-          body: JSON.stringify({
-            contents: [{ role: "user", parts: [{ text: TTS_STYLE + text }] }],
-            generationConfig: {
-              responseModalities: ["AUDIO"],
-              speechConfig: {
-                voiceConfig: { prebuiltVoiceConfig: { voiceName: TTS_VOICE } },
-              },
-            },
-          }),
-          signal: attempt.signal,
-        },
-      );
-    } catch (e) {
-      // Se foi o timeout do pedido inteiro que abortou, propaga pra parar de vez.
-      if (signal.aborted) throw e;
-      lastError = (e as Error)?.name === "AbortError" ? "tempo esgotado neste modelo" : String(e);
-      console.error(`Narração: Gemini ${model} não respondeu a tempo`, lastError);
-      continue;
-    } finally {
-      attempt.clear();
-    }
+  const res = await fetch("https://api.openai.com/v1/audio/speech", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: TTS_MODEL,
+      voice: TTS_VOICE,
+      input: text,
+      instructions: TTS_INSTRUCTIONS,
+      response_format: "wav",
+    }),
+    signal,
+  });
 
-    if (!res.ok) {
-      lastError = `${res.status}: ${(await res.text().catch(() => "")).slice(0, 200)}`;
-      console.error(`Narração: Gemini ${model} falhou`, lastError);
-      continue;
-    }
-
-    const json = (await res.json()) as GeminiTtsResponse;
-    const part = json.candidates?.[0]?.content?.parts?.find((p) => p.inlineData?.data);
-    const b64 = part?.inlineData?.data;
-    if (!b64) {
-      lastError = "áudio vazio";
-      continue;
-    }
-    const rateMatch = /rate=(\d+)/.exec(part?.inlineData?.mimeType ?? "");
-    const sampleRate = rateMatch ? Number(rateMatch[1]) : 24000;
-    return { buf: pcmToWav(base64ToBytes(b64), sampleRate) };
+  if (!res.ok) {
+    const detail = (await res.text().catch(() => "")).slice(0, 300);
+    console.error("Narração: OpenAI TTS falhou", res.status, detail);
+    return { error: `${res.status}: ${detail}` };
   }
-  return { error: lastError };
+
+  const buf = await res.arrayBuffer();
+  if (buf.byteLength === 0) return { error: "áudio vazio" };
+  return { buf };
 }
 
 export const Route = createFileRoute("/api/tts")({
@@ -198,19 +109,20 @@ export const Route = createFileRoute("/api/tts")({
 
           const fileName = `${hashText(text)}.wav`;
 
-          // 1. Cache: se esse trecho já foi narrado alguma vez, serve na hora.
+          // 1. Cache: se esse trecho já foi narrado alguma vez, serve na hora
+          //    (também economiza créditos da OpenAI).
           const cached = await tryGetCached(fileName);
           if (cached) return audioResponse(cached);
 
-          // 2. Sem cache: gera com o Gemini TTS (tier gratuito do Google).
-          const apiKey = process.env["GEMINI_API_KEY"];
-          if (!apiKey) return new Response("GEMINI_API_KEY ausente", { status: 500 });
+          // 2. Sem cache: gera com a OpenAI (TTS pago).
+          const apiKey = process.env["OPENAI_API_KEY"];
+          if (!apiKey) return new Response("OPENAI_API_KEY ausente", { status: 500 });
 
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), TTS_TIMEOUT_MS);
-          let result: Awaited<ReturnType<typeof generateWithGemini>>;
+          let result: Awaited<ReturnType<typeof generateWithOpenAI>>;
           try {
-            result = await generateWithGemini(apiKey, text, controller.signal);
+            result = await generateWithOpenAI(apiKey, text, controller.signal);
           } catch (e) {
             clearTimeout(timeoutId);
             console.error("Narração: falha ao gerar áudio", e);
@@ -222,7 +134,7 @@ export const Route = createFileRoute("/api/tts")({
             return new Response(`TTS: ${result.error}`, { status: 502 });
           }
 
-          // 3. Guarda no cache — próximas escutas são instantâneas.
+          // 3. Guarda no cache — próximas escutas são instantâneas e grátis.
           // Precisa ser `await`: no Worker o processo pode encerrar assim que a
           // resposta é enviada, abortando um upload em segundo plano.
           await trySaveCache(fileName, result.buf, "audio/wav");
