@@ -15,8 +15,10 @@ import {
 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { verseText } from "@/data/content";
-import { SUPPORT_LESSONS, type SupportLesson } from "@/data/leader-support-content";
+import { SUPPORT_MODULES, type SupportLesson, type SupportModule } from "@/data/leader-support-content";
 import { useApp } from "@/lib/app-context";
+
+const TOTAL_SUPPORT_LESSONS = SUPPORT_MODULES.reduce((sum, m) => sum + m.lessons.length, 0);
 
 type Step = "estudo" | "fixar" | "aplicar";
 
@@ -32,12 +34,16 @@ function shuffled<T>(arr: T[]): T[] {
 
 export function LeaderResources({ completedLessons }: { completedLessons?: number }) {
   const [open, setOpen] = useState(false);
+  const [activeModule, setActiveModule] = useState<SupportModule | null>(null);
   const [selected, setSelected] = useState<SupportLesson | null>(null);
 
   const openLesson = (lesson: SupportLesson) => setSelected(lesson);
   const closeDialog = (nextOpen: boolean) => {
     setOpen(nextOpen);
-    if (!nextOpen) setSelected(null);
+    if (!nextOpen) {
+      setSelected(null);
+      setActiveModule(null);
+    }
   };
 
   return (
@@ -94,7 +100,9 @@ export function LeaderResources({ completedLessons }: { completedLessons?: numbe
             <div className="min-w-0 flex-1">
               <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Biblioteca pastoral</span>
               <p className="mt-0.5 font-semibold text-white">Conteúdos para discípulos</p>
-              <p className="truncate text-xs text-white/60">{SUPPORT_LESSONS.length} lições para conversas e acompanhamento</p>
+              <p className="truncate text-xs text-white/60">
+                {SUPPORT_MODULES.length} módulos · {TOTAL_SUPPORT_LESSONS} trilhas para conversas e acompanhamento
+              </p>
             </div>
             <ChevronRight className="h-4 w-4 text-white/60" />
           </div>
@@ -105,7 +113,50 @@ export function LeaderResources({ completedLessons }: { completedLessons?: numbe
       <Dialog open={open} onOpenChange={closeDialog}>
         <DialogContent className="max-h-[85vh] overflow-y-auto">
           {selected ? (
-            <LessonFlow lesson={selected} onBack={() => setSelected(null)} />
+            <LessonFlow
+              lesson={selected}
+              onBack={() => setSelected(null)}
+            />
+          ) : activeModule ? (
+            <>
+              <DialogHeader>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setActiveModule(null)}
+                    className="rounded-full p-1 text-muted-foreground hover:bg-surface"
+                    aria-label="Voltar para os módulos"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </button>
+                  <DialogTitle>{activeModule.title}</DialogTitle>
+                </div>
+                <DialogDescription>
+                  Escolha uma das {activeModule.lessons.length} trilhas deste módulo.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-2">
+                {activeModule.lessons.map((lesson, i) => (
+                  <button
+                    type="button"
+                    key={lesson.id}
+                    onClick={() => openLesson(lesson)}
+                    className="flex items-center justify-between rounded-xl border border-border p-3 text-left hover:border-primary/60"
+                  >
+                    <div className="flex min-w-0 items-center gap-3">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-surface text-xs font-bold text-muted-foreground">
+                        {i + 1}
+                      </span>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold">{lesson.title}</p>
+                        <p className="truncate text-xs text-muted-foreground">{lesson.verse.ref}</p>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  </button>
+                ))}
+              </div>
+            </>
           ) : (
             <>
               <DialogHeader>
@@ -115,16 +166,16 @@ export function LeaderResources({ completedLessons }: { completedLessons?: numbe
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-2">
-                {SUPPORT_LESSONS.map((lesson) => (
+                {SUPPORT_MODULES.map((mod) => (
                   <button
                     type="button"
-                    key={lesson.id}
-                    onClick={() => openLesson(lesson)}
+                    key={mod.id}
+                    onClick={() => setActiveModule(mod)}
                     className="flex items-center justify-between rounded-xl border border-border p-3 text-left hover:border-primary/60"
                   >
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold">{lesson.title}</p>
-                      <p className="truncate text-xs text-muted-foreground">{lesson.verse.ref}</p>
+                      <p className="truncate text-sm font-semibold">{mod.title}</p>
+                      <p className="truncate text-xs text-muted-foreground">{mod.lessons.length} trilhas</p>
                     </div>
                     <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
                   </button>
