@@ -26,42 +26,6 @@ function hashText(text: string): string {
   return createHash("sha256").update(`gemini-tts:${TTS_VOICE}:${text}`).digest("hex");
 }
 
-/**
- * Nomes usados por versões anteriores do sistema. Esses arquivos já existem no
- * bucket (e já foram pagos) — reaproveitamos antes de gerar de novo.
- */
-function legacyFileNames(text: string): string[] {
-  const plain = createHash("sha256").update(text).digest("hex");
-  const openai = createHash("sha256")
-    .update(`openai/gpt-4o-mini-tts:onyx:${text}`)
-    .digest("hex");
-  return [`${openai}.mp3`, `${plain}-kokoro.wav`, `${plain}.wav`, `${plain}.mp3`];
-}
-
-async function tryGetCached(fileName: string): Promise<ArrayBuffer | null> {
-  try {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data } = await supabaseAdmin.storage.from(BUCKET).download(fileName);
-    if (!data) return null;
-    const buf = await data.arrayBuffer();
-    return buf.byteLength > 0 ? buf : null;
-  } catch (e) {
-    console.error("Narração: cache indisponível ao ler", e);
-    return null;
-  }
-}
-
-/** Busca nos caches antigos (esquemas pré-migração). Se achar, reaproveita o áudio já pago. */
-async function tryGetLegacyCached(
-  text: string,
-): Promise<{ buf: ArrayBuffer; contentType: string } | null> {
-  for (const name of legacyFileNames(text)) {
-    const buf = await tryGetCached(name);
-    if (buf) return { buf, contentType: name.endsWith(".wav") ? "audio/wav" : "audio/mpeg" };
-  }
-  return null;
-}
-
 async function trySaveCache(
   fileName: string,
   audioBuf: ArrayBuffer,
@@ -187,13 +151,6 @@ export const Route = createFileRoute("/api/tts")({
           // 1. Cache: se esse trecho já foi narrado alguma vez, serve na hora.
           const cached = await tryGetCached(fileName);
           if (cached) return audioResponse(cached);
-
-          // 1.5. Cache antigo: reaproveita áudio já gerado por versões anteriores.
-          const legacy = await tryGetLegacyCached(text);
-          if (legacy) {
-            await trySaveCache(fileName, legacy.buf, legacy.contentType);
-            return audioResponse(legacy.buf, legacy.contentType);
-          }
 
           // 2. Sem cache: gera com o Gemini TTS (tier gratuito do Google).
           const apiKey = process.env["GEMINI_API_KEY"];
