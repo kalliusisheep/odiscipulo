@@ -4,12 +4,13 @@ const corsHeaders = {
 };
 
 // API gratuita do Gemini (Google AI Studio) — tier grátis permanente, sem
-// cartão de crédito, ~15 req/min e 1.500 req/dia no gemini-2.5-flash. A
-// mesma API usada antes via gateway pago da Lovable, só que direto na
-// fonte e sem cobrança. Endpoint compatível com o formato OpenAI, então o
-// streaming e o parsing no cliente continuam idênticos.
+// cartão de crédito. A mesma API usada antes via gateway pago da Lovable, só
+// que direto na fonte e sem cobrança. Endpoint compatível com o formato
+// OpenAI, então o streaming e o parsing no cliente continuam idênticos.
 const GATEWAY_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
-const MODEL = "gemini-2.5-flash";
+// Gemini 3.6 Flash; se a chave ainda não tiver acesso, cai para o alias
+// "flash-latest" para o mentor nunca ficar mudo.
+const MODELS = ["gemini-3.6-flash", "gemini-flash-latest"];
 const MENTOR_SYSTEM_PROMPT = `Você é o "Mentor Espiritual" do app Disciple — um companheiro cristão para estudo bíblico gamificado. Suas regras invioláveis:
 
 1. NUNCA substitua o pastor, o discipulador, o líder de célula ou a igreja local. Sempre que a pergunta envolver decisão de vida, doutrina delicada, aconselhamento pastoral, conflito relacional ou tema polêmico, oriente o usuário a buscar sua liderança local.
