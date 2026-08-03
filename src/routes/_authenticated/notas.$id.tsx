@@ -320,17 +320,15 @@ function NotaEditorPage() {
           toast.success("PDF compartilhado.");
           return;
         } catch (shareErr) {
-          if ((shareErr as DOMException)?.name === "AbortError") {
-            // Usuário cancelou a folha de compartilhamento — não é erro,
-            // não precisa de fallback.
-            return;
-          }
-          // Provável causa: a geração do PDF (html2canvas) levou tempo
-          // suficiente para o navegador (principalmente Safari/iOS)
-          // considerar o toque original "expirado" e recusar abrir a
-          // folha de compartilhamento. Guarda o PDF já pronto e oferece
-          // um segundo toque — esse sim, imediato e síncrono — pra tentar
-          // de novo, além da opção de baixar.
+          // Não tratamos "AbortError" como cancelamento definitivo: vários
+          // navegadores (principalmente Android/Chrome) usam esse mesmo nome
+          // de erro tanto para "usuário cancelou a folha" quanto para "o
+          // toque original expirou" (a causa real mais comum, já que a
+          // geração do PDF com html2canvas leva um tempo perceptível antes
+          // de chamar o navigator.share). Como não dá pra distinguir os dois
+          // casos com segurança, sempre caímos no modal de fallback abaixo —
+          // pior caso, o usuário fecha o modal; melhor caso, ele recupera um
+          // PDF que teria sumido em silêncio.
           console.error(shareErr);
         }
       }
