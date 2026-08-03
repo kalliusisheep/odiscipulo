@@ -232,16 +232,43 @@ function NotaEditorPage() {
     setExporting(true);
     try {
       const blob = await exportNoteToPdf({ title: title || "Anotação", contentHtml: editor.getHTML() });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `${slugify(title || "anotacao")}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 10_000);
-      await markNoteExported(id);
-      toast.success("PDF exportado.");
+      const filename = `${slugify(title || "anotacao")}.pdf`;
+      const file = new File([blob], filename, { type: "application/pdf" });
+
+      // No celular, prioriza a folha nativa de compartilhamento (WhatsApp,
+      // Drive, e-mail, AirDrop etc.) em vez de só baixar o arquivo — é o
+      // que o usuário espera ao tocar em "Exportar PDF" dentro do app.
+      // Em navegadores sem suporte a compartilhar arquivos (a maioria dos
+      // desktops), cai no download tradicional.
+      const canShareFile =
+        typeof navigator.share === "function" &&
+        typeof navigator.canShare === "function" &&
+        navigator.canShare({ files: [file] });
+
+      if (canShareFile) {
+        try {
+          await navigator.share({ files: [file], title: title || "Anotação" });
+          await markNoteExported(id);
+          toast.success("PDF pronto para compartilhar.");
+        } catch (shareErr) {
+          // Usuário cancelou a folha de compartilhamento — não é um erro.
+          if ((shareErr as DOMException)?.name !== "AbortError") {
+            console.error(shareErr);
+            toast.error("Não foi possível compartilhar o PDF agora.");
+          }
+        }
+      } else {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 10_000);
+        await markNoteExported(id);
+        toast.success("PDF exportado.");
+      }
     } catch (err) {
       console.error(err);
       toast.error("Não foi possível gerar o PDF agora.");
@@ -251,7 +278,6 @@ function NotaEditorPage() {
   }
 
   const saveLabel = useMemo(() => {
-    if (saveState === "salvando") return "Salvando…";
     if (saveState === "erro") return "Erro ao salvar";
     if (savedAt) return `Salvo às ${savedAt.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
     return "";
