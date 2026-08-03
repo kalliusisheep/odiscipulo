@@ -158,6 +158,7 @@ function BemVindoPage() {
         last_name: last || null,
         display_name: display,
         username: uname,
+        avatar_url: avatarUrl,
         onboarded: true,
       })
       .eq("id", u.user.id);
