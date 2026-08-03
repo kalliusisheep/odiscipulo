@@ -825,9 +825,9 @@ const lideranca: Trail = {
           deepDive:
             "A cadeia de 2 Timóteo 2:2 (Paulo → Timóteo → homens fiéis → outros) descreve o que hoje se chamaria discipulado multiplicador: não basta que a fé chegue à geração seguinte; ela precisa ser transmitida de forma que essa geração seguinte também seja 'capaz de ensinar a outros'. Um líder que forma seguidores dependentes de sua presença pessoal constrói algo frágil, que desaba quando ele sai de cena; um líder que forma outros líderes, capazes de multiplicar o que receberam, constrói algo que continua crescendo muito além de sua própria vida. Em 2 Timóteo 4:7, ao olhar para trás no fim da vida, Paulo não celebra números, plataformas ou reconhecimento público — celebra fidelidade sustentada: 'combati o bom combate, terminei a corrida, guardei a fé'. O verdadeiro legado de um líder cristão não se mede pelo tamanho do que ele construiu sob seu próprio nome, mas pela fidelidade transmitida às pessoas que ele deixa para trás, capazes de continuar multiplicando o que aprenderam.",
           theologianQuote: {
-            author: "C.S. Lewis",
-            text: "Não existem pessoas comuns. Você nunca conversou com um mero mortal. Nações, culturas, artes, civilizações — essas são mortais, e a vida delas é para a nossa como a vida de um mosquito.",
-            source: "O Peso da Glória (The Weight of Glory), sermão pregado em Oxford, 1941",
+            author: "Charles Spurgeon",
+            text: "Aquele que deixou de aprender também deixou de ensinar.",
+            source: "Charles Spurgeon, An All-Round Ministry: Addresses to Ministers and Students (Banner of Truth, 1960), p. 236 — tradução livre de \"He who has ceased to learn has ceased to teach\". Substituímos a citação atribuída a Hernandes Dias Lopes por não termos localizado uma fonte verificável equivalente sobre este tema específico.",
           },
           quizzes: [
             {
