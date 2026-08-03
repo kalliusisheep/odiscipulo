@@ -7,8 +7,8 @@
 
 function normalize(s) {
   return s
-    .replace(/\s+/g, " ")
-    .replace(/[\u200B-\u200D\uFEFF]/g, "") // zero-width
+    .replace(/\s+/g, ' ')
+    .replace(/[\u200B-\u200D\uFEFF]/g, '') // zero-width
     .trim();
 }
 
@@ -24,11 +24,11 @@ function realignOffsets(originalText, highlightedText) {
   }
 
   // 2) fallback: procurar por partes do highlightedText (palavras consecutivas)
-  const words = hi.split(" ").filter(Boolean);
+  const words = hi.split(' ').filter(Boolean);
   // Tentar janelas longas primeiro (n palavras), decrescendo
   for (let window = Math.min(words.length, 8); window >= 2; window--) {
     for (let i = 0; i + window <= words.length; i++) {
-      const fragment = words.slice(i, i + window).join(" ");
+      const fragment = words.slice(i, i + window).join(' ');
       idx = orig.indexOf(fragment);
       if (idx !== -1) {
         // expand to try capturar o contexto completo: buscar palavras antes/depois
