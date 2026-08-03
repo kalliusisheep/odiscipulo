@@ -265,7 +265,7 @@ export function HighlightsProvider({
 
       {pendingSelection &&
         createPortal(
-          <FloatingMenu rect={pendingSelection.rect} onClose={closeAll}>
+          <FloatingMenu onClose={closeAll}>
             {colorPickerFor ? (
               <div className="flex items-center gap-1.5 px-1">
                 {COLORS.map((c) => (
@@ -307,7 +307,7 @@ export function HighlightsProvider({
 
       {pendingHighlight &&
         createPortal(
-          <FloatingMenu rect={pendingHighlight.rect} onClose={closeAll}>
+          <FloatingMenu onClose={closeAll}>
             <MenuButton
               icon={Trash2}
               label="Remover marcação"
@@ -345,29 +345,19 @@ function MenuButton({
   );
 }
 
-function FloatingMenu({
-  rect,
-  onClose,
-  children,
-}: {
-  rect: DOMRect;
-  onClose: () => void;
-  children: ReactNode;
-}) {
-  const top = Math.max(8, rect.top + window.scrollY - 48);
-  const left = Math.min(Math.max(8, rect.left + rect.width / 2), window.innerWidth - 8);
-
-  useEffect(() => {
-    const onScroll = () => onClose();
-    window.addEventListener("scroll", onScroll, true);
-    return () => window.removeEventListener("scroll", onScroll, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+/**
+ * Barra FIXA no rodapé da tela — não "segue" a seleção (sem cálculo de
+ * getBoundingClientRect/posição), só aparece enquanto existe uma seleção
+ * pendente e some quando ela é limpa. Mesmo conceito usado na barra de
+ * formatação de "Minhas Notas" (NoteFormattingToolbar): posição sempre
+ * igual, "congelada" no rodapé, e não fecha mais ao rolar a página — o
+ * scroll simplesmente acontece por baixo dela normalmente.
+ */
+function FloatingMenu({ onClose, children }: { onClose: () => void; children: ReactNode }) {
   return (
     <div
-      className="fixed z-50 flex -translate-x-1/2 items-center divide-x divide-border overflow-hidden rounded-full border border-border bg-popover shadow-xl animate-slide-up"
-      style={{ top, left }}
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-popover/95 shadow-xl backdrop-blur animate-slide-up"
+      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       onMouseDown={(e) => {
         // Crítico: sem preventDefault() o navegador desfaz a seleção de
         // texto ao clicar num botão do menu (o clique "cai fora" do texto
@@ -377,15 +367,17 @@ function FloatingMenu({
         e.stopPropagation();
       }}
     >
-      {children}
-      <button
-        type="button"
-        onClick={onClose}
-        className="flex items-center px-2.5 py-2 text-muted-foreground hover:text-foreground"
-        aria-label="Fechar"
-      >
-        <X className="h-3.5 w-3.5" />
-      </button>
+      <div className="mx-auto flex max-w-lg items-center justify-between gap-1 overflow-x-auto px-3 py-2">
+        <div className="flex items-center gap-1">{children}</div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground"
+          aria-label="Fechar"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </div>
     </div>
   );
 }
