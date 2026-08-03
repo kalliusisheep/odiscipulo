@@ -188,6 +188,68 @@ function BemVindoPage() {
         </div>
 
         <form onSubmit={submit} className="card-elevated space-y-3 p-6">
+          {/* Foto de perfil: upload do dispositivo ou avatar pronto */}
+          <div className="mb-1 flex flex-col items-center gap-3">
+            <div className="relative">
+              <div className="h-24 w-24 overflow-hidden rounded-[26px] bg-surface-2 ring-2 ring-border">
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="Foto de perfil" className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <User className="h-10 w-10 text-muted-foreground" />
+                  </div>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => fileRef.current?.click()}
+                disabled={uploading}
+                aria-label="Enviar foto do dispositivo"
+                className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 disabled:opacity-60"
+              >
+                {uploading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Camera className="h-4 w-4" />
+                )}
+              </button>
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*"
+                onChange={onFileChange}
+                className="hidden"
+              />
+            </div>
+            <p className="text-[11px] text-muted-foreground">
+              Envie uma foto ou escolha um avatar
+            </p>
+            <div className="grid w-full grid-cols-5 gap-2">
+              {PRESET_AVATARS.map((src) => {
+                const selected = avatarUrl === src;
+                return (
+                  <button
+                    key={src}
+                    type="button"
+                    onClick={() => setAvatarUrl(src)}
+                    aria-label="Selecionar avatar"
+                    className={`relative aspect-square overflow-hidden rounded-xl bg-surface-2 ring-2 transition-transform hover:scale-105 active:scale-95 ${
+                      selected ? "ring-primary" : "ring-transparent"
+                    }`}
+                  >
+                    <img src={src} alt="Avatar" className="h-full w-full object-cover" loading="lazy" />
+                    {selected && (
+                      <span className="absolute inset-0 flex items-center justify-center bg-black/30">
+                        <Check className="h-4 w-4 text-white" />
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+
           <label className="block">
             <span className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Nome <span className="text-destructive">*</span>
