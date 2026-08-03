@@ -61,12 +61,84 @@ export const Route = createFileRoute("/_authenticated/notas/$id")({
 type SaveState = "salvo" | "salvando" | "erro";
 type AiAction = "reescrever" | "estruturar";
 
+// Instruções por ação — mesmo conteúdo que existia na edge function "note-ai",
+// que ficou apenas commitada no código e nunca foi publicada no Lovable Cloud.
+const NOTE_AI_PROMPTS: Record<AiAction | "titulo", string> = {
+  titulo:
+    "Você gera títulos curtos e diretos para anotações pessoais de estudo bíblico. " +
+    "Responda APENAS com o título, sem aspas, sem pontuação final, no máximo 6 palavras.",
+  reescrever:
+    "Você reformula textos de anotações pessoais de estudo bíblico, mantendo o sentido original, " +
+    "a pessoa do discurso e o tom espiritual/devocional. Responda APENAS com o texto reescrito, " +
+    "em português brasileiro, sem comentários adicionais.",
+  estruturar:
+    "Você organiza um texto em uma estrutura de lição/estudo bíblico com estas seções, cada uma com um " +
+    "título em ## markdown: Introdução, Pontos principais (em tópicos), Versículos relacionados (se " +
+    "aplicável), Aplicação prática, Conclusão. Responda apenas com o markdown estruturado, em português.",
+};
+
+// Reaproveita a edge function "mentor-chat" (já publicada e ativa) em vez de
+// "note-ai" (existe no código, mas nunca foi deployada no Lovable Cloud —
+// deploy de Edge Function só acontece via o agente de IA do Lovable, e não
+// via git push nem via o botão "Publish"). mentor-chat é um proxy genérico
+// para o Gemini: aceita qualquer array de "messages", então passamos nossa
+// própria instrução de sistema antes do texto do usuário. Único efeito
+// colateral: mentor-chat sempre injeta o system prompt do "Mentor Espiritual"
+// antes do nosso — na prática isso não muda o resultado de forma perceptível,
+// já que o tom pedido (devocional/bíblico) já é o mesmo.
 async function callNoteAi(action: AiAction | "titulo", text: string): Promise<string> {
-  const { data, error } = await supabase.functions.invoke<{ text?: string; error?: string }>("note-ai", {
-    body: { action, text },
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
+  const anonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
+  const { data: sessionData } = await supabase.auth.getSession();
+
+  const res = await fetch(`${supabaseUrl}/functions/v1/mentor-chat`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: anonKey,
+      Authorization: `Bearer ${sessionData.session?.access_token ?? anonKey}`,
+    },
+    body: JSON.stringify({
+      messages: [
+        { role: "system", content: NOTE_AI_PROMPTS[action] },
+        { role: "user", content: text },
+      ],
+    }),
   });
-  if (error || !data?.text) throw new Error(data?.error ?? error?.message ?? "Falha ao chamar a IA.");
-  return data.text;
+
+  if (!res.ok || !res.body) throw new Error("Falha ao chamar a IA.");
+
+  // mentor-chat responde em streaming (SSE, chunks estilo chat.completions) —
+  // mesmo parsing já usado em src/components/Mentor.tsx, só que aqui
+  // acumulamos tudo antes de devolver, porque a UI de sugestão precisa do
+  // texto completo antes de oferecer "aceitar"/"descartar".
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let acc = "";
+  let buf = "";
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += decoder.decode(value, { stream: true });
+    const lines = buf.split("\n");
+    buf = lines.pop() ?? "";
+    for (const line of lines) {
+      const l = line.trim();
+      if (!l.startsWith("data:")) continue;
+      const data = l.slice(5).trim();
+      if (data === "[DONE]") continue;
+      try {
+        const j = JSON.parse(data);
+        const delta = j.choices?.[0]?.delta?.content ?? "";
+        if (delta) acc += delta;
+      } catch {
+        // chunk parcial de um evento SSE — ignora e espera o resto chegar.
+      }
+    }
+  }
+
+  if (!acc.trim()) throw new Error("Resposta vazia da IA.");
+  return acc.trim();
 }
 
 function NotaEditorPage() {
