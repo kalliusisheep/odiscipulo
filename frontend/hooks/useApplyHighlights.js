@@ -103,6 +103,8 @@ function applyHighlightsToContainer(container, highlights) {
       const mark = document.createElement('mark');
       mark.className = 'applied-highlight';
       mark.dataset.highlightId = h.id || '';
+      // store color in dataset for the click event
+      mark.dataset.highlightColor = h.color || 'rgba(255,235,59,0.6)';
       mark.style.backgroundColor = h.color || 'rgba(255,235,59,0.6)';
       mark.textContent = mid;
       frag.appendChild(mark);
@@ -127,6 +129,7 @@ function applyHighlightsToContainer(container, highlights) {
       const mark = document.createElement('mark');
       mark.className = 'applied-highlight';
       mark.dataset.highlightId = h.id || '';
+      mark.dataset.highlightColor = h.color || 'rgba(255,235,59,0.6)';
       mark.style.backgroundColor = h.color || 'rgba(255,235,59,0.6)';
 
       // Extract contents of range and put inside mark
@@ -148,6 +151,7 @@ function applyHighlightsToContainer(container, highlights) {
       const detail = {
         id: m.dataset.highlightId,
         highlighted_text: m.textContent,
+        color: m.dataset.highlightColor,
         rect: { top: rect.top + window.scrollY, left: rect.left + window.scrollX, width: rect.width, height: rect.height }
       };
       const e = new CustomEvent('highlight:clicked', { detail });
