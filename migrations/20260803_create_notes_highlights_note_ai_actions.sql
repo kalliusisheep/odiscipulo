@@ -1,6 +1,9 @@
 -- Migration: create notes, highlights and note_ai_actions tables
 -- Filename: migrations/20260803_create_notes_highlights_note_ai_actions.sql
 
+-- Ensure extension for gen_random_uuid()
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 -- Notes table
 CREATE TABLE IF NOT EXISTS notes (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
