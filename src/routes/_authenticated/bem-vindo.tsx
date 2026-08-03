@@ -100,6 +100,29 @@ function BemVindoPage() {
     return () => clearTimeout(t);
   }, [username, userId, firstName, lastName]);
 
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !userId) return;
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop() ?? "jpg";
+      const path = `${userId}/avatar-${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("avatars")
+        .upload(path, file, { upsert: true, contentType: file.type });
+      if (upErr) throw upErr;
+      const { data: signed } = await supabase.storage
+        .from("avatars")
+        .createSignedUrl(path, 60 * 60 * 24 * 365);
+      if (signed?.signedUrl) setAvatarUrl(signed.signedUrl);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro ao enviar a foto.");
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  };
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const first = firstName.trim();
