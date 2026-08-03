@@ -14,16 +14,18 @@ export default function SelectionIntegrator({ contentId, contentType, children }
   const [menuRect, setMenuRect] = useState(null);
   const [menuShowRemove, setMenuShowRemove] = useState(false);
   const [menuSelectionText, setMenuSelectionText] = useState('');
+  const [selectedColor, setSelectedColor] = useState('#FFF59D');
 
   useEffect(() => {
     function onHighlightClicked(e) {
-      const { id, rect: r, highlighted_text } = e.detail || {};
+      const { id, rect: r, highlighted_text, color } = e.detail || {};
       if (!r) return;
       // open the menu over the highlight with remove option
       setCurrentHighlightId(id || null);
       setMenuRect(r);
       setMenuShowRemove(true);
       setMenuSelectionText(highlighted_text || '');
+      if (color) setSelectedColor(color);
       setShowMenu(true);
     }
     function onHighlightsRefresh() {
@@ -114,7 +116,7 @@ export default function SelectionIntegrator({ contentId, contentType, children }
         start_offset,
         end_offset,
         highlighted_text: sel.toString(),
-        color: 'yellow'
+        color: selectedColor
       };
 
       await apiFetch('/api/highlights', { method: 'POST', body: JSON.stringify(payload) });
@@ -156,6 +158,8 @@ export default function SelectionIntegrator({ contentId, contentType, children }
           onHighlight={onHighlight}
           onRemoveHighlight={onRemoveHighlight}
           showRemove={activeShowRemove}
+          selectedColor={selectedColor}
+          onColorSelect={(c) => setSelectedColor(c)}
         />
       )}
     </div>
