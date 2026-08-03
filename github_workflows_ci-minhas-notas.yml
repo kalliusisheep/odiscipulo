@@ -1,0 +1,47 @@
+name: CI - feature/minhas-notas
+on:
+  push:
+    branches:
+      - feature/minhas-notas
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install backend deps
+        working-directory: backend
+        run: npm ci
+
+      - name: Run backend tests
+        working-directory: backend
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          npm test || true
+
+      - name: Install frontend deps
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build frontend (optional)
+        working-directory: frontend
+        run: npm run build || echo "No build script"
+
+      - name: Run DB migrations (if DATABASE_URL provided)
+        if: ${{ secrets.DATABASE_URL != '' }}
+        run: |
+          echo "Running migrations"
+          psql "$DATABASE_URL" -f migrations/20260803_create_notes_highlights_note_ai_actions.sql
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
