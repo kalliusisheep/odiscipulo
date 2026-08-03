@@ -104,17 +104,19 @@ function DailyQuotePage() {
       </h1>
 
       <section className="relative overflow-hidden rounded-3xl border border-ancient/25 bg-surface-2">
-        <img
-          src={image}
-          alt={`Retrato ilustrado de ${quote.author}`}
-          loading="lazy"
-          width={768}
-          height={768}
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover object-top opacity-20"
-        />
+        {image && (
+          <img
+            src={image}
+            alt={`Retrato ilustrado de ${quote.author}`}
+            loading="lazy"
+            width={768}
+            height={768}
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover object-top opacity-20"
+          />
+        )}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-surface-2/70 via-surface-2/85 to-surface-2" />
         <div className="relative p-6">
-          <p className="font-serif text-xl leading-relaxed text-foreground">“{quote.text}”</p>
+          <p className="font-serif text-xl leading-relaxed text-foreground">"{quote.text}"</p>
           <p className="mt-4 text-sm font-bold text-primary">— {quote.author}</p>
           <p className="mt-1 text-xs text-muted-foreground">{quote.source}</p>
         </div>
