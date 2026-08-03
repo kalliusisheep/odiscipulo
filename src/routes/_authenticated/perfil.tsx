@@ -32,6 +32,7 @@ import {
   ChevronRight,
   ShieldCheck,
   Sparkles,
+  NotebookPen,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/perfil")({
@@ -427,6 +428,19 @@ function PerfilPage() {
                 onChange={() => void update({ is_leader: !profile.is_leader })}
                 ariaLabel="Habilitar modo líder"
               />
+            }
+          />
+          <SettingsRow
+            icon={NotebookPen}
+            title="Minhas Notas"
+            subtitle="Anotações, marcações e trechos salvos"
+            action={
+              <button
+                onClick={() => void nav({ to: "/notas" })}
+                className="shrink-0 rounded-full border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:border-primary/50 hover:text-primary"
+              >
+                Abrir
+              </button>
             }
           />
         </div>
