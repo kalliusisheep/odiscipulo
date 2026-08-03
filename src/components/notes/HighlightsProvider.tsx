@@ -33,13 +33,17 @@ import { createNoteFromSelection } from "@/lib/notes";
 import { generateShareImage } from "@/lib/share-image";
 import { supabase } from "@/integrations/supabase/client";
 
-const COLORS: HighlightColor[] = ["amarelo", "verde", "azul", "rosa", "laranja"];
+const COLORS: HighlightColor[] = ["amarelo", "verde", "azul", "rosa", "laranja", "branco"];
 const COLOR_DOT: Record<HighlightColor, string> = {
   amarelo: "bg-yellow-400",
   verde: "bg-green-400",
   azul: "bg-blue-400",
   rosa: "bg-pink-400",
   laranja: "bg-orange-400",
+  // Mesma inversão da marcação em si: no modo claro o botão da cor branca
+  // apareceria invisível sobre o popover claro, então mostra preto; no
+  // modo escuro mostra branco de verdade.
+  branco: "bg-black dark:bg-white",
 };
 
 type PendingSelection = {
@@ -364,7 +368,14 @@ function FloatingMenu({
     <div
       className="fixed z-50 flex -translate-x-1/2 items-center divide-x divide-border overflow-hidden rounded-full border border-border bg-popover shadow-xl animate-slide-up"
       style={{ top, left }}
-      onMouseDown={(e) => e.stopPropagation()}
+      onMouseDown={(e) => {
+        // Crítico: sem preventDefault() o navegador desfaz a seleção de
+        // texto ao clicar num botão do menu (o clique "cai fora" do texto
+        // selecionado), o que limpa pendingSelection antes do onClick do
+        // botão disparar — e a marcação nunca é criada.
+        e.preventDefault();
+        e.stopPropagation();
+      }}
     >
       {children}
       <button
@@ -449,7 +460,7 @@ export function HighlightedText({
         seg.highlight ? (
           <mark
             key={i}
-            className={`${HIGHLIGHT_COLOR_CLASS[seg.highlight.color]} cursor-pointer rounded-sm text-inherit`}
+            className={`${HIGHLIGHT_COLOR_CLASS[seg.highlight.color]} cursor-pointer rounded-sm`}
             onClick={(e: ReactMouseEvent) => {
               e.stopPropagation();
               ctx.openHighlightMenu(
