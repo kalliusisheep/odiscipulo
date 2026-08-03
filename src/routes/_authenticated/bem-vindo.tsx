@@ -61,6 +61,9 @@ function BemVindoPage() {
       }
       setFirstName(first);
       setLastName(last);
+      setAvatarUrl(
+        p?.avatar_url ?? (meta?.avatar_url as string) ?? (meta?.picture as string) ?? null,
+      );
       if (p?.username) {
         setUsername(p.username);
       } else if (first) {
