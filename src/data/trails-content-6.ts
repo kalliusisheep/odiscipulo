@@ -500,7 +500,7 @@ const vidaCrista: Trail = {
           theologianQuote: {
             author: "Charles Swindoll",
             text: "A vida é dez por cento o que acontece comigo e noventa por cento como reajo a isso... A única coisa que posso mudar é a minha atitude.",
-            source: "Ensaio 'Attitude', amplamente publicado nos escritos de Charles Swindoll (citação real, traduzida)",
+            source: "Ensaio 'Attitude' (Atitude), de Charles R. Swindoll — tradução livre",
           },
           quizzes: [
             {

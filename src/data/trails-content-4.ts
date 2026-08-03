@@ -3668,7 +3668,7 @@ const missoes: Trail = {
           theologianQuote: {
             author: "Tertuliano",
             text: "O sangue dos mártires é semente da igreja.",
-            source: "Apologeticum, cap. 50 — frase amplamente atribuída a Tertuliano; verifique a tradução exata antes de citar como texto literal",
+            source: "Apologeticum, 50.13 (Pais da Igreja, c. 197 d.C.)",
           },
           quizzes: [
             {
