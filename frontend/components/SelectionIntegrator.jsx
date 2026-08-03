@@ -1,8 +1,9 @@
-// frontend/components/SelectionIntegrator.jsx
 import React from 'react';
 import useSelectionFloatingMenu from '../hooks/useSelectionFloatingMenu';
 import SelectionFloatingMenu from './SelectionFloatingMenu';
 import { apiFetch } from '../lib/api';
+// Reuse the existing client-side image generator from the main app
+import { generateShareImage } from '../../src/lib/share-image';
 
 export default function SelectionIntegrator({ contentId, contentType, children }){
   const { selection, rect, showMenu, setShowMenu, clearSelection } = useSelectionFloatingMenu();
@@ -27,14 +28,31 @@ export default function SelectionIntegrator({ contentId, contentType, children }
 
   async function onCreateImage(){
     try{
-      // call existing image generator endpoint (assumed) /api/image-gen with text
-      const res = await fetch('/api/image-gen', { method: 'POST', body: JSON.stringify({ text: selection }), headers: { 'Content-Type': 'application/json' } });
-      const data = await res.json();
-      // expecting { image_url }
-      window.open(data.image_url, '_blank');
+      // Use the same image generator used elsewhere in the app (client-side Canvas)
+      const title = '';
+      const backgroundSrc = '/share-bg-cross.jpg';
+      const blob = await generateShareImage({ title, bodyText: selection, backgroundSrc });
+      const fileName = 'selection.jpg';
+      const file = new File([blob], fileName, { type: 'image/jpeg' });
+
+      const nav = navigator as any;
+      if (nav.share && nav.canShare?.({ files: [file] })) {
+        try {
+          await nav.share({ files: [file], title: selection.slice(0,60) });
+          clearSelection();
+          return;
+        } catch (shareError) {
+          // fallthrough to download
+          console.error('navigator.share failed, falling back to download', shareError);
+        }
+      }
+
+      const url = URL.createObjectURL(blob);
+      // Open preview in a new tab (user can download from there)
+      window.open(url, '_blank');
       clearSelection();
     }catch(e){
-      alert('Erro ao gerar imagem: '+e.message);
+      alert('Erro ao gerar imagem: '+(e.message || e));
     }
   }
 
