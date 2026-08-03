@@ -24,7 +24,6 @@ import { useApp } from "@/lib/app-context";
 import { Flame, Check, ChevronRight, Sparkles, BookOpen } from "lucide-react";
 import { ChallengePanel } from "@/components/ChallengeProgressBar";
 import { LeaderResources } from "@/components/LeaderResources";
-import { DailyQuoteCard } from "@/components/DailyQuoteCard";
 
 
 export const Route = createFileRoute("/_authenticated/home")({
@@ -212,7 +211,6 @@ function HomePage() {
 
 
 
-      <DailyQuoteCard />
 
       <section className="space-y-3">
         <h2 className="text-sm font-semibold text-muted-foreground">Módulos de Discipulado</h2>
