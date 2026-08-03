@@ -24,8 +24,8 @@ const AUTHOR_IMAGES: Record<string, string> = {
   "John Stott": stottImg,
 };
 
-export function authorImageFor(author: string): string {
-  return AUTHOR_IMAGES[author] ?? defaultAuthorImg;
+export function authorImageFor(author: string): string | undefined {
+  return AUTHOR_IMAGES[author];
 }
 
 export const DAILY_QUOTES: DailyQuote[] = [
