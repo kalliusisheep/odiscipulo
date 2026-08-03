@@ -5,6 +5,7 @@ import { lessonById, verseText } from "@/data/content";
 import { useApp } from "@/lib/app-context";
 import { useCelebration } from "@/lib/celebration";
 import { useMascot, trailCompletionLine } from "@/lib/mascot";
+import { HighlightsProvider, HighlightedText } from "@/components/notes/HighlightsProvider";
 import { awardXpAndStreak } from "@/lib/progress";
 import { logLessonCompletionToFeed } from "@/lib/feed";
 import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
@@ -165,97 +166,112 @@ function LicaoPage() {
       </div>
 
       {step === "estudo" && (
-        <div style={contentZoomStyle} className="space-y-5" data-tts-scope="licao">
-          <div>
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex min-w-0 items-center gap-2">
-                <BookOpen className="h-5 w-5 shrink-0 text-primary" />
-                <h1 className="truncate text-2xl font-bold" data-narrate>
-                  {lesson.title}
-                </h1>
-              </div>
-              <div className="flex shrink-0 items-center gap-1.5">
-                <NarrationButton containerSelector='[data-tts-scope="licao"]' />
-                <FontSizeControls
-                  scaleIndex={scaleIndex}
-                  onIncrease={increase}
-                  onDecrease={decrease}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="card-elevated space-y-3 p-5">
-            {lesson.intro.map((p, i) => (
-              <p key={i} className="text-sm leading-relaxed text-foreground/90" data-narrate>
-                {p}
-              </p>
-            ))}
-          </div>
-
-          {lesson.verses.map((v) => (
-            <div key={v.ref} className="rounded-2xl border border-ancient/30 bg-ancient/5 p-4">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
-                <span data-narrate>{v.ref}</span> · {bibleVersion}
-              </p>
-              <p className="mt-2 scripture text-base leading-relaxed" data-narrate>
-                {`"${verseText(v, bibleVersion)}"`}
-              </p>
-              {v.originals && v.originals.length > 0 && (
-                <div className="mt-3 space-y-1.5 border-t border-ancient/20 pt-3">
-                  {v.originals.map((o, oi) => (
-                    <div key={oi} className="text-xs">
-                      <span className="ancient-text text-ancient">{o.word}</span>
-                      <span className="text-muted-foreground">
-                        {" "}
-                        ({o.translit}, {o.lang}) —{" "}
-                      </span>
-                      <span className="text-foreground/80">{o.meaning}</span>
-                    </div>
-                  ))}
+        <HighlightsProvider contentId={lesson.id} contentType="trilha" contentTitle={lesson.title}>
+          <div style={contentZoomStyle} className="space-y-5" data-tts-scope="licao">
+            <div>
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex min-w-0 items-center gap-2">
+                  <BookOpen className="h-5 w-5 shrink-0 text-primary" />
+                  <h1 className="truncate text-2xl font-bold" data-narrate>
+                    {lesson.title}
+                  </h1>
                 </div>
-              )}
+                <div className="flex shrink-0 items-center gap-1.5">
+                  <NarrationButton containerSelector='[data-tts-scope="licao"]' />
+                  <FontSizeControls
+                    scaleIndex={scaleIndex}
+                    onIncrease={increase}
+                    onDecrease={decrease}
+                  />
+                </div>
+              </div>
             </div>
-          ))}
 
-          <div className="card-elevated p-5">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
-              Explicação
-            </p>
-            <p className="mt-2 text-sm leading-relaxed text-foreground/90" data-narrate>
-              {lesson.deepDive}
-            </p>
-          </div>
+            <div className="card-elevated space-y-3 p-5">
+              {lesson.intro.map((p, i) => (
+                <HighlightedText
+                  key={i}
+                  fieldKey={`intro-${i}`}
+                  text={p}
+                  narrate
+                  className="text-sm leading-relaxed text-foreground/90"
+                />
+              ))}
+            </div>
 
-          <blockquote className="card-elevated border-l-4 border-l-ancient p-5">
-            <Quote className="h-4 w-4 text-ancient" />
-            <p className="mt-2 scripture text-base leading-relaxed text-ancient" data-narrate>
-              {`"${lesson.theologianQuote.text}"`}
-            </p>
-            <footer className="mt-2 text-xs font-semibold text-ancient/80">
-              — {lesson.theologianQuote.author}
-              {lesson.theologianQuote.source ? `, ${lesson.theologianQuote.source}` : ""}
-            </footer>
-          </blockquote>
+            {lesson.verses.map((v, vi) => (
+              <div key={v.ref} className="rounded-2xl border border-ancient/30 bg-ancient/5 p-4">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
+                  <span data-narrate>{v.ref}</span> · {bibleVersion}
+                </p>
+                <HighlightedText
+                  fieldKey={`verso-texto-${vi}`}
+                  text={`"${verseText(v, bibleVersion)}"`}
+                  narrate
+                  className="mt-2 block scripture text-base leading-relaxed"
+                />
+                {v.originals && v.originals.length > 0 && (
+                  <div className="mt-3 space-y-1.5 border-t border-ancient/20 pt-3">
+                    {v.originals.map((o, oi) => (
+                      <div key={oi} className="text-xs">
+                        <span className="ancient-text text-ancient">{o.word}</span>
+                        <span className="text-muted-foreground">
+                          {" "}
+                          ({o.translit}, {o.lang}) —{" "}
+                        </span>
+                        <span className="text-foreground/80">{o.meaning}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
 
-          {lesson.deepen && (
-            <Link
-              to="/licao/$id/aprofundar"
-              params={{ id: lesson.id }}
-              search={{ modulo }}
-              className="flex w-full items-center justify-center gap-2 rounded-2xl border border-ancient/40 bg-ancient/5 py-3.5 text-sm font-semibold text-ancient transition-all hover:bg-ancient/10"
+            <div className="card-elevated p-5">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+                Explicação
+              </p>
+              <HighlightedText
+                fieldKey="explicacao"
+                text={lesson.deepDive}
+                narrate
+                className="mt-2 block text-sm leading-relaxed text-foreground/90"
+              />
+            </div>
+
+            <blockquote className="card-elevated border-l-4 border-l-ancient p-5">
+              <Quote className="h-4 w-4 text-ancient" />
+              <HighlightedText
+                fieldKey="citacao"
+                text={`"${lesson.theologianQuote.text}"`}
+                narrate
+                className="mt-2 block scripture text-base leading-relaxed text-ancient"
+              />
+              <footer className="mt-2 text-xs font-semibold text-ancient/80">
+                — {lesson.theologianQuote.author}
+                {lesson.theologianQuote.source ? `, ${lesson.theologianQuote.source}` : ""}
+              </footer>
+            </blockquote>
+
+            {lesson.deepen && (
+              <Link
+                to="/licao/$id/aprofundar"
+                params={{ id: lesson.id }}
+                search={{ modulo }}
+                className="flex w-full items-center justify-center gap-2 rounded-2xl border border-ancient/40 bg-ancient/5 py-3.5 text-sm font-semibold text-ancient transition-all hover:bg-ancient/10"
+              >
+                <Layers className="h-4 w-4" /> Aprofundar
+              </Link>
+            )}
+
+            <button
+              onClick={() => setStep("fixar")}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition-all hover:bg-primary-glow"
             >
-              <Layers className="h-4 w-4" /> Aprofundar
-            </Link>
-          )}
-
-          <button
-            onClick={() => setStep("fixar")}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition-all hover:bg-primary-glow"
-          >
-            Continuar para Fixar <ArrowRight className="h-4 w-4" />
-          </button>
-        </div>
+              Continuar para Fixar <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+        </HighlightsProvider>
       )}
 
       {step === "fixar" && (
