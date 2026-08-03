@@ -1,9 +1,7 @@
-// frontend/components/SelectionFloatingMenu.jsx
-// Renders a floating toolbar near the selection rect with actions: Save Note, Create Image, Highlight
-
 import React from 'react';
 
-export default function SelectionFloatingMenu({ rect, onSaveNote, onCreateImage, onHighlight }) {
+// frontend/components/SelectionFloatingMenu.jsx — extended to support remove action
+export default function SelectionFloatingMenu({ rect, onSaveNote, onCreateImage, onHighlight, onRemoveHighlight, showRemove }) {
   if (!rect) return null;
   const style = {
     position: 'absolute',
@@ -23,7 +21,8 @@ export default function SelectionFloatingMenu({ rect, onSaveNote, onCreateImage,
     <div style={style}>
       <button onClick={onSaveNote}>Salvar em Minhas Notas</button>
       <button onClick={onCreateImage}>Criar Imagem</button>
-      <button onClick={onHighlight}>Marcar</button>
+      {!showRemove && <button onClick={onHighlight}>Marcar</button>}
+      {showRemove && <button onClick={onRemoveHighlight} style={{ color: 'red' }}>Remover marcação</button>}
     </div>
   );
 }
