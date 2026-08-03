@@ -26,9 +26,14 @@ async function ocrImage(imagePath) {
 async function processScan(filePath) {
   console.log('[scan_worker] processScan start', filePath);
   const ext = path.extname(filePath).toLowerCase();
-  if (ext === '.txt') {
+
+  try {
     const content = await fs.readFile(filePath, 'utf8');
-    return { ok: true, pages: 1, results: [{ page: 1, text: content }] };
+    if (ext === '.txt' || (!ext && content.includes('\n') || content.includes(' '))) {
+      return { ok: true, pages: 1, results: [{ page: 1, text: content }] };
+    }
+  } catch (err) {
+    // ignore and continue to other handlers
   }
 
   if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.tiff') {
