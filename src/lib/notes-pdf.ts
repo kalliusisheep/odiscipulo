@@ -5,10 +5,13 @@
 // formatação rica do editor (negrito, itálico, marca-texto colorido) sai
 // exatamente como o usuário viu, sem reescrever um parser de HTML→PDF.
 //
-// Requer: `npm install jspdf html2canvas`
+// Requer: `npm install jspdf html2canvas-pro` (html2canvas-pro, e não o
+// html2canvas original, porque o app usa Tailwind v4 — cores em oklch() —
+// e o html2canvas "puro" não sabe interpretar esse formato de cor e trava
+// com "Attempting to parse an unsupported color function 'oklch'").
 
 import { jsPDF } from "jspdf";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 
 const A4_WIDTH_MM = 210;
 const A4_HEIGHT_MM = 297;
