@@ -1,4 +1,4 @@
-# PR description: feature/minhas-notas → main
+# PR description: feature/minhas-notas -> main
 
 This PR implements the foundation for the "Minhas Notas" feature.
 
