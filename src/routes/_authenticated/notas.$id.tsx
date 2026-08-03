@@ -32,8 +32,10 @@ import {
 
 import { FontSize } from "@/lib/tiptap-font-size";
 import { NoteFormattingToolbar } from "@/components/notes/NoteFormattingToolbar";
+import { ScanInteligenteDialog } from "@/components/notes/ScanInteligenteDialog";
 import { exportNoteToPdf } from "@/lib/notes-pdf";
 import { deleteNote, getNote, logNoteAiAction, markNoteExported, plainTextFromDoc, updateNote } from "@/lib/notes";
+import type { ScanKind } from "@/lib/scan";
 import { supabase } from "@/integrations/supabase/client";
 import {
   AlertDialog,
@@ -156,6 +158,7 @@ function NotaEditorPage() {
   const [aiSuggestion, setAiSuggestion] = useState<{ action: AiAction; text: string } | null>(null);
   const [titleGenerating, setTitleGenerating] = useState(false);
   const [sourceTitle, setSourceTitle] = useState<string | null>(null);
+  const [scanOpen, setScanOpen] = useState(false);
 
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -295,6 +298,42 @@ function NotaEditorPage() {
     }
   }
 
+  // Recebe o texto já reconhecido (PDF/Word/foto/galeria) e insere na nota:
+  // substitui o conteúdo se a nota estiver vazia, ou acrescenta ao final.
+  function handleScanExtracted(text: string, kind: ScanKind) {
+    if (!editor) return;
+
+    const paragraphs = text
+      .split(/\n{2,}/)
+      .map((block) => block.replace(/\n/g, " ").trim())
+      .filter(Boolean)
+      .map((block) => ({ type: "paragraph", content: [{ type: "text", text: block }] }));
+
+    if (!paragraphs.length) {
+      toast.error("Nenhum texto reconhecido para inserir.");
+      return;
+    }
+
+    const currentIsEmpty = !plainTextFromDoc(editor.getJSON() as Record<string, unknown>).trim();
+    if (currentIsEmpty) {
+      editor.commands.setContent({ type: "doc", content: paragraphs }, true);
+    } else {
+      editor.commands.focus("end");
+      editor.commands.insertContent(paragraphs);
+    }
+
+    scheduleSave();
+    void logNoteAiAction(id, "scan_transcricao");
+
+    const sourceTypeByKind: Record<ScanKind, "scan_pdf" | "scan_word" | "scan_foto"> = {
+      pdf: "scan_pdf",
+      word: "scan_word",
+      foto: "scan_foto",
+      galeria: "scan_foto",
+    };
+    void updateNote(id, { source_type: sourceTypeByKind[kind] }).catch((err) => console.error(err));
+  }
+
   function closeShareFallback() {
     if (shareFallback) URL.revokeObjectURL(shareFallback.url);
     setShareFallback(null);
@@ -422,7 +461,7 @@ function NotaEditorPage() {
 
         <button
           type="button"
-          onClick={() => toast.info("Scan Inteligente chega no Bloco 4 — em breve por aqui.")}
+          onClick={() => setScanOpen(true)}
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground"
           aria-label="Scan Inteligente"
           title="Scan Inteligente"
@@ -560,6 +599,9 @@ function NotaEditorPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* ── Scan Inteligente (PDF / Word / foto / galeria) ───────── */}
+      <ScanInteligenteDialog open={scanOpen} onOpenChange={setScanOpen} onExtracted={handleScanExtracted} />
 
       {/* ── Confirmação de exclusão ──────────────────────────────── */}
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
