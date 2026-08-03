@@ -825,9 +825,9 @@ const lideranca: Trail = {
           deepDive:
             "A cadeia de 2 Timóteo 2:2 (Paulo → Timóteo → homens fiéis → outros) descreve o que hoje se chamaria discipulado multiplicador: não basta que a fé chegue à geração seguinte; ela precisa ser transmitida de forma que essa geração seguinte também seja 'capaz de ensinar a outros'. Um líder que forma seguidores dependentes de sua presença pessoal constrói algo frágil, que desaba quando ele sai de cena; um líder que forma outros líderes, capazes de multiplicar o que receberam, constrói algo que continua crescendo muito além de sua própria vida. Em 2 Timóteo 4:7, ao olhar para trás no fim da vida, Paulo não celebra números, plataformas ou reconhecimento público — celebra fidelidade sustentada: 'combati o bom combate, terminei a corrida, guardei a fé'. O verdadeiro legado de um líder cristão não se mede pelo tamanho do que ele construiu sob seu próprio nome, mas pela fidelidade transmitida às pessoas que ele deixa para trás, capazes de continuar multiplicando o que aprenderam.",
           theologianQuote: {
-            author: "Hernandes Dias Lopes",
-            text: "O maior legado que um líder cristão pode deixar não é uma obra com seu nome, mas discípulos fiéis que continuam multiplicando o Evangelho muito depois que sua própria voz já não puder mais ser ouvida. (paráfrase de uma ênfase recorrente em seus estudos sobre 2 Timóteo)",
-            source: "NÃO VERIFICADO — paráfrase gerada para o app; confirme a formulação exata antes de publicar como citação literal",
+            author: "C.S. Lewis",
+            text: "Não existem pessoas comuns. Você nunca conversou com um mero mortal. Nações, culturas, artes, civilizações — essas são mortais, e a vida delas é para a nossa como a vida de um mosquito.",
+            source: "O Peso da Glória (The Weight of Glory), sermão pregado em Oxford, 1941",
           },
           quizzes: [
             {

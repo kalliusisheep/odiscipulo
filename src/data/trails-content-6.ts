@@ -120,9 +120,9 @@ const vidaCrista: Trail = {
           deepDive:
             "A palavra grega adialeíptōs, traduzida como 'continuamente', não significa que Paulo esperava que os tessalonicenses ficassem em silêncio orando 24 horas por dia — isso seria impossível para pessoas que também trabalhavam e cuidavam de famílias. Fora do Novo Testamento, o termo era usado, por exemplo, para descrever uma tosse recorrente: algo que volta repetidamente, em intervalos, não algo que nunca para de acontecer nem por um segundo. A ideia é de um padrão de vida em que a oração é retomada repetidamente ao longo do dia — no trabalho, no trânsito, antes de decisões pequenas — e não apenas reservada para momentos de crise ou para o culto de domingo. Orar 'continuamente' é manter um diálogo aberto com Deus como pano de fundo de toda a vida, não uma atividade isolada.",
           theologianQuote: {
-            author: "Charles Spurgeon",
-            text: "A oração é a respiração da alma, e sem ela desfalecemos.",
-            source: "Citação amplamente atribuída a Spurgeon em suas pregações e escritos sobre oração (citação real, traduzida)",
+            author: "Richard Foster",
+            text: "De todas as Disciplinas Espirituais, a oração é a mais central, porque nos introduz em comunhão perpétua com o Pai.",
+            source: "Celebração da Disciplina (Celebration of Discipline, 1978), cap. 3",
           },
           quizzes: [
             {
@@ -421,8 +421,8 @@ const vidaCrista: Trail = {
             "É significativo que a palavra grega para 'testemunho' (martyría) tenha dado origem, mais tarde, à palavra 'mártir' — alguém cuja vida inteira (não apenas suas palavras) se torna evidência do que professa. Isso ilumina o que Pedro pede em 1 Pedro 3:15: estar 'preparado para responder', mas com 'mansidão e respeito' — testemunho cristão não é debate agressivo nem sermão forçado, é uma vida consistente que gera perguntas genuínas, seguida de uma resposta humilde quando questionada. Mateus 5:16 reforça a mesma lógica: a 'luz' que atrai as pessoas a glorificar a Deus não é um discurso brilhante, mas boas obras visíveis e consistentes. Testemunho eficaz normalmente combina os dois: uma vida que gera credibilidade, e uma prontidão gentil para explicar a razão da esperança quando perguntado.",
           theologianQuote: {
             author: "John Stott",
-            text: "Nosso amor cresce frouxo se não for fortalecido pela verdade, e nossa verdade se torna dura se não for suavizada pelo amor.",
-            source: "Citação amplamente atribuída a John Stott em seus escritos sobre evangelismo e vida cristã (citação real, traduzida)",
+            text: "A verdade se torna dura se não for suavizada pelo amor, e o amor se torna frouxo se não for fortalecido pela verdade.",
+            source: "A Mensagem de Efésios (BST), comentário sobre Efésios 4:15",
           },
           quizzes: [
             {

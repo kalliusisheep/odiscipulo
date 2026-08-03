@@ -54,9 +54,9 @@ const comoEstudarBiblia: Trail = {
           deepDive:
             "Dizer que a Bíblia é 'inspirada' não significa que ela é inspiradora (como um poema pode ser). Significa que ela foi soprada por Deus — theopneustos. Por isso ela tem autoridade sobre a igreja e sobre você. Nenhum comentário, tradição, sentimento ou experiência pode se sobrepor ao texto sagrado. Isso protege o cristão de dois extremos: do racionalismo, que só aceita o que a mente aprova, e do misticismo, que só busca experiências e ignora o texto. Ler a Bíblia é sentar-se aos pés de Deus.",
           theologianQuote: {
-            author: "B. B. Warfield",
-            text: "A Bíblia é a Palavra de Deus de tal forma que, quando a Bíblia fala, Deus fala.",
-            source: "citação amplamente documentada de B. B. Warfield sobre a doutrina da inspiração das Escrituras",
+            author: "Wayne Grudem",
+            text: "A autoridade da Escritura significa que todas as palavras da Escritura são palavras de Deus, de tal modo que descrer ou desobedecer a qualquer palavra da Escritura é descrer ou desobedecer ao próprio Deus.",
+            source: "Teologia Sistemática, cap. 4 — 'A autoridade da Escritura'",
           },
           deepen: {
             additionalVerses: [
@@ -165,7 +165,7 @@ const comoEstudarBiblia: Trail = {
           theologianQuote: {
             author: "D. A. Carson",
             text: "Um texto sem contexto é um pretexto para um texto de prova.",
-            source: "frase amplamente associada a D. A. Carson (que a atribuía a seu pai, Tom Carson)",
+            source: "máxima de interpretação bíblica popularizada por D. A. Carson em 'Os Perigos da Interpretação Bíblica' (Exegetical Fallacies)",
           },
           deepen: {
             additionalVerses: [
@@ -645,7 +645,7 @@ const comoEstudarBiblia: Trail = {
             secondQuote: {
               author: "D. A. Carson",
               text: "Um texto sem contexto é um pretexto para um texto de prova.",
-              source: "frase amplamente associada a D. A. Carson (que a atribuía a seu pai, Tom Carson)",
+              source: "máxima de interpretação bíblica popularizada por D. A. Carson em 'Os Perigos da Interpretação Bíblica' (Exegetical Fallacies)",
             },
           },
           quizzes: [
@@ -1197,7 +1197,7 @@ const comoEstudarBiblia: Trail = {
             secondQuote: {
               author: "D. A. Carson",
               text: "Um texto sem contexto é um pretexto para um texto de prova.",
-              source: "frase amplamente associada a D. A. Carson (que a atribuía a seu pai, Tom Carson)",
+              source: "máxima de interpretação bíblica popularizada por D. A. Carson em 'Os Perigos da Interpretação Bíblica' (Exegetical Fallacies)",
             },
           },
           quizzes: [

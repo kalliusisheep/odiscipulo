@@ -56,9 +56,9 @@ const fundamentosDaFe: Trail = {
           deepDive:
             "Chamamos essa doutrina de 'inspiração verbal e plenária': cada palavra da Escritura (verbal), em todas as suas partes (plenária), carrega autoridade divina. Isso não apaga a personalidade dos autores humanos — Paulo escreve como Paulo, Lucas como Lucas —, mas garante que o que eles escreveram é exatamente o que Deus quis registrar. Um erro comum é tratar a Bíblia como um livro de regras soltas, abrindo em qualquer página em busca de uma frase de efeito. A imagem do salmista é outra: lâmpada para os pés, não holofote para o horizonte inteiro. A Escritura ilumina o passo de hoje, e confiamos que continuará iluminando o de amanhã.",
           theologianQuote: {
-            author: "Charles Spurgeon",
-            text: "A Bíblia não precisa ser defendida; solte-a, e ela se defenderá sozinha.",
-            source: "sermão sobre a defesa das Escrituras, amplamente citado em coletâneas de sermões de C. H. Spurgeon",
+            author: "Agostinho de Hipona",
+            text: "Se crês no que te agrada no Evangelho e rejeitas o que não te agrada, não crês no Evangelho, mas em ti mesmo.",
+            source: "Contra Fausto, XVII.3 (Pais da Igreja)",
           },
           quizzes: [
             {
@@ -89,9 +89,9 @@ const fundamentosDaFe: Trail = {
             theologicalDebate:
               "Existe divergência legítima entre cristãos fiéis sobre até que ponto a inerrância se aplica a detalhes científicos e cronológicos incidentais versus ao propósito teológico e moral do texto. Isso é uma questão secundária; o essencial — que a Escritura é digna de confiança total naquilo que afirma sobre Deus, o homem e a salvação — é compartilhado por toda a ortodoxia histórica.",
             secondQuote: {
-              author: "J. I. Packer",
-              text: "Se eu fosse o diabo, um dos meus primeiros alvos seria impedir as pessoas de mergulhar na Bíblia.",
-              source: "citação amplamente atribuída a J. I. Packer em compilações de suas obras",
+              author: "Charles Spurgeon",
+              text: "Fure-o em qualquer lugar e verá que seu sangue é bíblico: a própria essência da Bíblia jorra dele.",
+              source: "Sobre John Bunyan, em 'Mr. Spurgeon as a Literary Man' (Autobiografia, vol. 4)",
             },
           },
         },
@@ -533,9 +533,9 @@ const fundamentosDaFe: Trail = {
           deepDive:
             "Um erro comum reduz o Espírito Santo a uma 'sensação' religiosa ou a um assunto ligado apenas a experiências extraordinárias. A Bíblia o descreve, antes de tudo, como quem regenera (nos torna novas criaturas, Tito 3:5), habita permanentemente todo crente genuíno (Romanos 8:9) e produz fruto — caráter transformado, não apenas fenômenos pontuais. Sobre os dons espirituais mais extraordinários (como línguas e profecia), há debate sincero entre cristãos fiéis: alguns creem que continuam plenamente ativos hoje (continuísmo); outros, que dons específicos de revelação direta cessaram após o período apostólico, com o cânon completo (cessacionismo moderado). Ambas as posições concordam no essencial: toda manifestação espiritual deve ser julgada pela Escritura, e o fruto do Espírito — caráter como o de Cristo — é sempre a evidência mais segura de sua presença ativa.",
           theologianQuote: {
-            author: "J. I. Packer",
-            text: "Se não fosse pela obra do Espírito Santo, não haveria evangelho, nem fé, nem igreja, nem cristianismo algum no mundo.",
-            source: "citação amplamente compilada de escritos de J. I. Packer sobre o Espírito Santo",
+            author: "Wayne Grudem",
+            text: "A obra do Espírito Santo é manifestar a presença ativa de Deus no mundo e, de modo especial, na igreja.",
+            source: "Teologia Sistemática, cap. 30 — 'A obra do Espírito Santo'",
           },
           quizzes: [
             {
@@ -649,8 +649,8 @@ const fundamentosDaFe: Trail = {
               "A relação entre a soberania de Deus na salvação e a responsabilidade humana em crer é um dos temas mais debatidos, com honestidade, entre tradições reformadas e arminianas — incluindo a questão de saber se um crente genuíno pode, de fato, abandonar a fé. Essa é uma questão secundária importante, mas não essencial, sobre a qual cristãos fiéis discordam. O núcleo compartilhado por ambas as tradições, e inegociável, é: a salvação é inteiramente pela graça de Deus, mediante a fé em Cristo, e não por méritos humanos. Havendo dúvidas pessoais sobre segurança da salvação, vale conversar com seu pastor ou líder de discipulado.",
             secondQuote: {
               author: "Charles Spurgeon",
-              text: "A fé salvadora é uma relação imediata com Cristo: aceitá-lo, recebê-lo e descansar somente nele para a justificação, a santificação e a vida eterna, pela graça de Deus.",
-              source: "citação amplamente compilada dos sermões de C. H. Spurgeon",
+              text: "A fé é composta de três elementos: conhecimento, crença e confiança.",
+              source: "Tudo de Graça (All of Grace, 1886), cap. 'Fé, o que é?'",
             },
           },
         },
@@ -812,9 +812,9 @@ const fundamentosDaFe: Trail = {
             theologicalDebate:
               "As principais posições sobre o milênio (pré-milenismo, amilenismo, pós-milenismo) e sobre o momento do arrebatamento (pré-tribulacionismo, midtribulacionismo, pós-tribulacionismo) representam leituras diferentes de textos proféticos complexos, especialmente de Apocalipse e Daniel. Cristãos igualmente fiéis às Escrituras discordam nesse ponto há séculos. Para um estudo aprofundado e pastoral sobre qual posição adotar, vale muito conversar com seu pastor ou líder de discipulado, que conhece o ensino específico da sua igreja.",
             secondQuote: {
-              author: "J. I. Packer",
-              text: "A esperança cristã é a fé que olha adiante para o cumprimento das promessas de Deus; não é um desejo sem garantia, mas uma certeza garantida pelo próprio Deus.",
-              source: "citação amplamente compilada de escritos de J. I. Packer sobre a esperança cristã",
+              author: "C.S. Lewis",
+              text: "Aponte para o céu e você terá a terra por acréscimo; aponte para a terra e não terá nenhum dos dois.",
+              source: "Cristianismo Puro e Simples (Mere Christianity), Livro III, cap. 10",
             },
           },
         },
