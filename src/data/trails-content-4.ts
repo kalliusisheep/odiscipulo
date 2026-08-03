@@ -62,8 +62,8 @@ const igrejaLocal: Trail = {
             "É importante notar que Jesus é quem edifica a igreja ('edificarei a minha igreja') — a iniciativa e a garantia de permanência não são humanas, mas divinas. Isso deveria nos dar humildade (a igreja não depende do nosso talento) e esperança (nenhuma força, nem mesmo a morte — 'portas do Hades' —, prevalecerá contra ela). Ao mesmo tempo, a metáfora do corpo em 1 Coríntios 12 é usada por Paulo para corrigir uma igreja dividida por orgulho espiritual: uns se achavam mais importantes por causa de certos dons. A resposta de Paulo não é diminuir a diversidade de funções, mas mostrar que ela é desenhada por Deus para gerar interdependência, não hierarquia de valor. Um olho não pode dizer à mão 'não preciso de você' (1 Co 12:21) — e nenhum cristão pode viver dizendo, na prática, o mesmo à igreja local.",
           theologianQuote: {
             author: "John Stott",
-            text: "A igreja está no centro mesmo do propósito eterno de Deus.",
-            source: "A Mensagem de Efésios (BST), comentário sobre Efésios 3:10-11",
+            text: "Um cristão sem igreja é uma anomalia grotesca, algo que o Novo Testamento desconhece — a igreja está no centro do propósito eterno de Deus, não é um acidente da história nem um apêndice opcional à fé.",
+            source: "John Stott, The Living Church (SPCK, 2007), p. 15 — tradução livre do trecho \"An unchurched Christian is a grotesque anomaly (...) the church lies at the very center of the eternal purpose of God\"",
           },
           quizzes: [
             {
@@ -147,9 +147,9 @@ const igrejaLocal: Trail = {
           deepDive:
             "Atos 2:42 descreve quatro práticas simultâneas e inseparáveis da igreja primitiva: doutrina, comunhão, o partir do pão (a Ceia) e orações. O verbo grego proskarterountes, no tempo imperfeito, descreve uma dedicação contínua, não esporádica — a igreja de Jerusalém não visitava essas práticas de vez em quando; vivia nelas como estilo de vida. Já em Mateus 18, Jesus estabelece um processo gradual e restaurador para a disciplina: conversa privada, depois com testemunhas, depois diante da igreja — sempre visando o arrependimento e a restauração do irmão, nunca a humilhação pública como primeiro passo. Sobre exatamente como cada igreja aplica esse processo em sua estrutura de governo (batista congregacional, presbiteriano, episcopal), cristãos fiéis de diferentes tradições organizam-se de formas distintas; isso é uma questão secundária, e o essencial é que toda igreja pratique, de algum modo fiel, o cuidado mútuo que Cristo ordenou.",
           theologianQuote: {
-            author: "Martinho Lutero",
-            text: "A doutrina é o céu; a vida é a terra.",
-            source: "Comentário à Epístola aos Gálatas (1535), prefácio",
+            author: "Charles Spurgeon",
+            text: "A necessidade da igreja é a doutrina bíblica, compreendida e sentida a ponto de incendiar os homens.",
+            source: "Charles Spurgeon, em Essential Works of Charles Spurgeon (Barbour Publishing, 2009), p. 1112 — tradução livre de \"The need is biblical doctrine, so understood and felt that it sets men afire\"",
           },
           quizzes: [
             {
@@ -229,8 +229,8 @@ const igrejaLocal: Trail = {
             "Hebreus 13:17 pressupõe uma relação concreta e identificável entre líderes e membros: 'eles cuidam de vocês' — não de cristãos em geral, mas de pessoas específicas pelas quais 'hão de dar conta'. Isso só é possível quando existe clareza sobre quem pertence a qual igreja. Sobre a forma exata de organizar essa membresia (registro formal, votação da igreja, entrevista pastoral etc.), cada tradição batista e evangélica desenvolveu práticas próprias — isso é uma questão secundária de ordem prática. O que é essencial, e não secundário, é o princípio: cristãos são chamados a se comprometer visivelmente com uma comunidade local específica, submetendo-se ao seu cuidado pastoral e contribuindo ativamente para sua vida.",
           theologianQuote: {
             author: "Thom Rainer",
-            text: "A membresia da igreja não é sobre mim; é sobre como Deus pode me usar para fazer diferença na vida de outros.",
-            source: "Sou Membro da Igreja (I Am a Church Member), cap. 1",
+            text: "Membresia na igreja não é membresia de clube de campo. Não é sobre pagar sua mensalidade e receber vantagens.",
+            source: "Thom S. Rainer, Autopsy of a Deceased Church: 12 Ways to Keep Yours Alive (B&H Publishing, 2014) — tradução livre de \"Membership in the church is not country club membership. It's not about paying your dues and getting perks\"",
           },
           quizzes: [
             {
@@ -304,8 +304,8 @@ const igrejaLocal: Trail = {
             "Sobre a natureza e a duração de certos dons específicos mencionados no Novo Testamento (como línguas e profecia), há divergência legítima entre cristãos fiéis. Esta trilha segue a perspectiva cessacionista moderada: entende que as línguas descritas no livro de Atos eram idiomas humanos reais, dados para a proclamação do Evangelho em contextos multilíngues, e que a revelação normativa e apostólica foi encerrada com o fechamento do cânon bíblico — de modo que nenhuma experiência espiritual contemporânea possui autoridade equivalente às Escrituras. Irmãos de tradições continuístas entendem esses dons de forma diferente, com honestidade e zelo pela Palavra também. Independentemente dessa questão secundária, o que é central e inegociável em 1 Coríntios 12 e Efésios 4 permanece: todo crente recebeu alguma capacidade do Espírito para servir, e negligenciar esse serviço empobrece toda a igreja.",
           theologianQuote: {
             author: "Wayne Grudem",
-            text: "Um dom espiritual é toda habilidade fortalecida pelo Espírito Santo e usada em qualquer ministério da igreja.",
-            source: "Teologia Sistemática, cap. 52 — 'Os dons do Espírito Santo'",
+            text: "Um dom espiritual é qualquer habilidade capacitada pelo Espírito Santo e usada em qualquer ministério da igreja.",
+            source: "Wayne Grudem, Systematic Theology: An Introduction to Biblical Doctrine (Zondervan), cap. 52 — definição consagrada de dom espiritual, tradução livre de \"A spiritual gift is any ability that is empowered by the Holy Spirit and used in any ministry of the church\"",
           },
           quizzes: [
             {
@@ -397,9 +397,9 @@ const igrejaLocal: Trail = {
           deepDive:
             "Uma questão legítima entre cristãos fiéis é o modelo de governo eclesiástico: episcopal (bispos com autoridade regional), presbiteriano (conselho de presbíteros com autoridade final) ou congregacional (a congregação local como instância final de decisão, sob pastores e diáconos). Esta trilha adota o modelo congregacional, comum na tradição batista: uma pluralidade de pastores/presbíteros ensina e pastoreia, diáconos servem nas necessidades práticas, e decisões maiores — como a recepção de membros, disciplina e escolha de líderes — são levadas à congregação reunida, seguindo o padrão visto em Atos 6:3 e 15:22, onde 'toda a igreja' participa de decisões importantes. Irmãos de outras tradições organizam essa autoridade de forma diferente, com zelo igualmente sincero pelas Escrituras.",
           theologianQuote: {
-            author: "Agostinho de Hipona",
-            text: "Para vós sou bispo; convosco sou cristão. Aquele é o nome de um encargo recebido; este, de uma graça recebida.",
-            source: "Sermão 340, 1 (Pais da Igreja)",
+            author: "Alexander Strauch",
+            text: "Ser um chefe solitário no topo de uma pirâmide é anormal e corruptor.",
+            source: "Alexander Strauch, Biblical Eldership: An Urgent Call to Restore Biblical Church Leadership (Lewis and Roth Publishers) — tradução livre de \"To be a lone chief atop a pyramid is abnormal and corrupting\"",
           },
           deepen: {
             additionalVerses: [
@@ -510,9 +510,9 @@ const igrejaLocal: Trail = {
           deepDive:
             "Sobre o batismo infantil (pedobatismo), praticado por irmãos de tradições reformadas, luteranas e católicas, há divergência histórica e sincera. Esta trilha, alinhada à convicção batista, entende que todos os exemplos e ensinos do Novo Testamento ligam o batismo à profissão pessoal de fé — não há um único caso claro de batismo de bebê nas Escrituras. Da mesma forma, sobre a natureza da Ceia, há visões diversas: a transubstanciação católica, a presença real luterana, a presença espiritual reformada e a visão memorial batista aqui adotada — que entende o pão e o vinho como símbolos poderosos, não como o corpo e sangue literais de Cristo. Reconhecemos essas diferenças com respeito, mantendo o essencial: ambas as ordenanças proclamam o Evangelho e devem ser tratadas com reverência, não como rituais vazios.",
           theologianQuote: {
-            author: "João Calvino",
-            text: "O sacramento é um testemunho externo da graça de Deus para conosco, confirmado por um sinal exterior, acompanhado do nosso testemunho de piedade diante dele.",
-            source: "Institutas da Religião Cristã, IV.14.1",
+            author: "Charles Spurgeon",
+            text: "Conhecemos apenas duas ordenanças instituídas pelo Senhor Jesus Cristo: o batismo dos crentes e a Ceia do Senhor.",
+            source: "Charles Spurgeon, sermão \"The Right Observance of the Lord's Supper\" (Metropolitan Tabernacle Pulpit, 1882) — tradução livre de \"We know of two ordinances instituted by the Lord Jesus Christ — the baptism of believers and the Lord's supper\"",
           },
           deepen: {
             additionalVerses: [
@@ -634,8 +634,8 @@ const igrejaLocal: Trail = {
             "Alguns cristãos temem que pequenos grupos criem 'igrejinhas' desconectadas da igreja local ou substituam a autoridade dos pastores por lideranças informais. É um risco real, mas administrável: um bom pequeno grupo funciona sob a supervisão e a doutrina da igreja local, com líderes acompanhados por pastores, e existe para servir à igreja como um todo — não competir com ela. Quando bem estruturado, o pequeno grupo é simplesmente a igreja local em formato mais próximo e acessível, não uma entidade paralela.",
           theologianQuote: {
             author: "Dietrich Bonhoeffer",
-            text: "Aquele que não pode estar sozinho tome cuidado com a comunidade; aquele que não está em comunidade tome cuidado com a solidão.",
-            source: "Vida em Comunhão (Gemeinsames Leben, 1939), cap. 4 — 'O dia sozinho'",
+            text: "Aquele que não pode estar sozinho deve tomar cuidado com a comunidade; aquele que não está em comunidade deve tomar cuidado com a solidão.",
+            source: "Dietrich Bonhoeffer, Vida em Comunhão / Life Together (Harper & Row, 1954), p. 77 — citação verificada, tradução consagrada de \"Let him who cannot be alone beware of community; let him who is not in community beware of being alone\"",
           },
           deepen: {
             additionalVerses: [
@@ -740,9 +740,9 @@ const igrejaLocal: Trail = {
           deepDive:
             "É importante distinguir disciplina eclesiástica de pecados que exigem denúncia imediata às autoridades civis — como abuso, violência ou crimes contra menores. Mateus 18 descreve o processo pastoral comum para pecados pessoais e interpessoais; ele nunca substitui a responsabilidade legal e moral de proteger vítimas e reportar crimes às autoridades competentes. Além disso, esse processo pressupõe pecado claro e não confessado, não meras diferenças de opinião, gostos pessoais ou convicções secundárias — usar disciplina para forçar conformidade em áreas de liberdade cristã é um abuso grave desse instrumento bíblico.",
           theologianQuote: {
-            author: "João Calvino",
-            text: "A disciplina é como os nervos pelos quais os membros do corpo se mantêm unidos, cada um em seu devido lugar.",
-            source: "Institutas da Religião Cristã, IV.12.1",
+            author: "Jonathan Leeman",
+            text: "A disciplina eclesiástica nos parece estranha porque não se encaixa em nossas concepções de amor.",
+            source: "Jonathan Leeman, autor de Church Discipline: How the Church Protects the Name of Jesus (9Marks/Crossway) — tradução livre de \"Church discipline seems strange to us because it doesn't fit our conceptions of love\"",
           },
           deepen: {
             additionalVerses: [
@@ -852,9 +852,9 @@ const igrejaLocal: Trail = {
           deepDive:
             "Fazer as pazes bíblicas não significa evitar todo desconforto ou fingir que ofensas não aconteceram. A verdadeira pacificação envolve, quando necessário, confrontar com amor (Gl 6:1, Mt 18:15), confessar a própria contribuição para o conflito, perdoar genuinamente a ofensa do outro, e buscar ativamente a reconciliação — mesmo quando isso é desconfortável. Ken Sande, fundador do ministério Peacemaker Ministries, descreve quatro compromissos práticos da reconciliação bíblica: (1) glorificar a Deus acima de 'ganhar' a discussão, (2) tirar a trave do próprio olho antes de apontar o cisco do outro, (3) restaurar suavemente, e (4) perdoar como Cristo perdoou.",
           theologianQuote: {
-            author: "John Wesley",
-            text: "Se o teu coração é como o meu coração, dá-me a tua mão.",
-            source: "Sermão 39 — 'Espírito Católico' (Catholic Spirit, 1750), sobre 2 Reis 10:15",
+            author: "Ken Sande",
+            text: "O conflito sempre proporciona uma oportunidade de glorificar a Deus — de trazer a Ele louvor e honra, mostrando quem Ele é, como Ele é e o que Ele está fazendo.",
+            source: "Ken Sande, The Peacemaker: A Biblical Guide to Resolving Personal Conflict (Baker Books) — tradução livre de \"Conflict always provides an opportunity to glorify God, that is, to bring him praise and honor by showing who he is, what he is like, and what he is doing\"",
           },
           deepen: {
             additionalVerses: [
@@ -2976,8 +2976,8 @@ const missoes: Trail = {
             "Na estrutura gramatical grega de Mateus 28:19-20, apenas 'façam discípulos' (mathēteusate) está no modo imperativo — o mandamento propriamente dito. 'Indo', 'batizando' e 'ensinando' são particípios que descrevem os meios pelos quais esse discipulamento acontece. Isso é significativo: a Grande Comissão não termina quando alguém faz uma oração de conversão ou é batizado; ela continua no ensino contínuo, 'ensinando-os a obedecer tudo o que ordenei' — um processo de formação que dura a vida inteira. Já Atos 1:8 traça uma espiral geográfica (Jerusalém, Judeia, Samaria, confins da terra) que ilustra um princípio: missões começam onde você está (seu 'Jerusalém'), mas nunca se limitam a isso — o alcance final é 'até os confins da terra'. Um cristão pode viver essa comissão sem nunca atravessar uma fronteira nacional, e outro pode ser especificamente chamado por Deus a atravessar culturas e continentes; ambos participam da mesma missão, em campos diferentes.",
           theologianQuote: {
             author: "John Stott",
-            text: "A missão descreve tudo aquilo que a igreja é enviada ao mundo para fazer.",
-            source: "A Missão Cristã no Mundo Moderno (Christian Mission in the Modern World, 1975), cap. 1",
+            text: "Precisamos ser cristãos globais, com uma visão global, porque o nosso Deus é um Deus global.",
+            source: "John Stott, citação amplamente registrada em suas obras e conferências sobre missões mundiais — tradução livre de \"We must be global Christians with a global vision because our God is a global God\"",
           },
           quizzes: [
             {
@@ -3067,9 +3067,9 @@ const missoes: Trail = {
           deepDive:
             "É importante distinguir, sem separar, dois conceitos que às vezes se confundem: testemunho (a tarefa de todo cristão, exercida naturalmente onde ele vive, trabalha e se relaciona) e envio missionário (o chamado específico, reconhecido pela igreja local, para que alguém se dedique à obra missionária, muitas vezes atravessando fronteiras culturais, linguísticas ou geográficas). Romanos 10:14-15 pressupõe uma cadeia: alguém precisa ser enviado para que outros ouçam e creiam. Essa dinâmica de envio não é individualista — na igreja primitiva (At 13:1-3), a igreja de Antioquia, reunida em jejum e oração, reconheceu e comissionou formalmente Paulo e Barnabé para a obra específica à qual o Espírito os chamava. Isso ensina que o chamado missionário específico, embora pessoal, é também confirmado e enviado pela comunidade da igreja local — não é uma decisão isolada e puramente individual.",
           theologianQuote: {
-            author: "Leslie Newbigin",
-            text: "A missão começa com um tipo de explosão de alegria.",
-            source: "O Evangelho em uma Sociedade Pluralista (The Gospel in a Pluralist Society, 1989), cap. 10",
+            author: "Hernandes Dias Lopes",
+            text: "Jesus envia esse homem como missionário para sua própria casa, para ser uma testemunha em sua própria terra.",
+            source: "Hernandes Dias Lopes, comentando Lucas 8:38-39 em Lucas: Comentário Expositivo (Editora Hagnos), sobre o endemoninhado gadareno enviado de volta aos seus",
           },
           quizzes: [
             {
@@ -3142,9 +3142,9 @@ const missoes: Trail = {
           deepDive:
             "O processo de Atos 13:1-3 mostra um equilíbrio importante entre o chamado individual e a confirmação comunitária: o Espírito Santo fala no contexto da igreja reunida em adoração e jejum ('Separem para mim...'), e a igreja responde com um ato formal e visível de envio (jejum, oração, imposição de mãos). Isso protege contra dois extremos: o individualismo missionário, em que alguém parte por conta própria sem qualquer prestação de contas ou conexão com uma igreja local; e o institucionalismo frio, em que o envio se torna apenas burocracia administrativa, sem oração genuína nem discernimento espiritual comunitário. A koinonia financeira mencionada em Filipenses 4:15 não era caridade ocasional, mas parceria estruturada e contínua — a igreja de Filipos apoiou Paulo repetidamente (Fp 4:16), entendendo que sustentar quem ia era, de fato, participar da própria obra do Evangelho.",
           theologianQuote: {
-            author: "Leslie Newbigin",
-            text: "A única hermenêutica do evangelho é uma congregação de homens e mulheres que creem nele e vivem por ele.",
-            source: "O Evangelho em uma Sociedade Pluralista (1989), cap. 18",
+            author: "David Bosch",
+            text: "Já que Deus é um Deus missionário, o povo de Deus é um povo missionário.",
+            source: "David J. Bosch, Transforming Mission: Paradigm Shifts in Theology of Mission (Orbis Books, 1991) — tradução livre de \"Since God is a missionary God, God's people are a missionary people\". Substituímos a citação atribuída a Vishal Mangalwadi por não termos localizado uma fonte verificável equivalente.",
           },
           quizzes: [
             {
@@ -3223,9 +3223,9 @@ const missoes: Trail = {
           deepDive:
             "O Concílio de Jerusalém (Atos 15) é o texto-chave para pensar a relação entre Evangelho e cultura: ele distingue, de forma definitiva, entre o núcleo inegociável da fé (a salvação pela graça, mediante a fé em Cristo) e as formas culturais que podem variar legitimamente de povo para povo. Esse princípio protege contra dois erros simétricos. O primeiro é o etnocentrismo missionário: confundir a própria cultura com o Evangelho, como se seguir a Cristo exigisse adotar hábitos, estilo musical, vestimenta ou costumes de quem primeiro anunciou a mensagem — um erro cometido, em graus diferentes, por movimentos missionários ao longo da história, inclusive em terras brasileiras, quando se supôs que 'ser cristão' e 'abandonar a própria cultura' eram a mesma coisa. O segundo erro, oposto, é o relativismo sincretista: tratar toda prática cultural como igualmente compatível com o Evangelho, sem discernimento, misturando elementos incompatíveis com a fé cristã sob o pretexto de 'respeito cultural'. A resposta bíblica exige discernimento contínuo: o Evangelho sempre confronta o que em qualquer cultura se opõe a Deus, e sempre redime e usa o que em qualquer cultura pode servir à sua glória.",
           theologianQuote: {
-            author: "Leslie Newbigin",
-            text: "Não existe algo como um evangelho puro, se com isso se quer dizer algo que não esteja encarnado em uma cultura.",
-            source: "Loucura para os Gregos (Foolishness to the Greeks, 1986), cap. 1",
+            author: "Lesslie Newbigin",
+            text: "Não existe algo como um evangelho puro, se por isso entendermos algo que não está encarnado em uma cultura.",
+            source: "Lesslie Newbigin, The Gospel in a Pluralist Society (SPCK, 1989) — tradução livre de \"There is no such thing as a pure gospel if by that we mean something which is not embodied in a culture\"",
           },
           quizzes: [
             {
@@ -3310,8 +3310,8 @@ const missoes: Trail = {
             "A pregação de Paulo no Areópago (Atos 17:22-31) é um estudo de caso completo em contextualização fiel: ele começa por um ponto de contato genuíno na cultura local (o altar 'ao Deus desconhecido'), usa linguagem e citações que a audiência reconhece (poetas como Epimênides e Arato), mas conduz o discurso, sem desviar, até o cerne inegociável do Evangelho — um Deus criador que não habita em templos feitos por mãos humanas, um chamado universal ao arrependimento, e a garantia desse chamado na ressurreição de Cristo, o ponto em que parte da audiência escarnece e se retira (At 17:32). Isso demonstra que contextualização bem-feita não garante aceitação — ela garante compreensão e fidelidade simultâneas. É crucial notar a diferença entre forma e conteúdo: a forma (língua, ilustrações, pontos de partida culturais, formas musicais ou artísticas) pode e deve variar legitimamente entre culturas; o conteúdo (quem é Deus, a gravidade do pecado, a pessoa e obra de Cristo, a necessidade de arrependimento e fé, a ressurreição corporal) é fixo e não negociável em nenhuma cultura. Confundir essas duas categorias — exigir uniformidade de forma ou permitir variação de conteúdo — é o erro raiz por trás tanto do etnocentrismo missionário quanto do sincretismo.",
           theologianQuote: {
             author: "David Bosch",
-            text: "A missão não é primariamente uma atividade da igreja, mas um atributo de Deus. Deus é um Deus missionário.",
-            source: "Missão Transformadora (Transforming Mission, 1991), cap. 12",
+            text: "A atividade missionária não é tanto uma obra da igreja quanto, simplesmente, a Igreja em ação.",
+            source: "David J. Bosch, Transforming Mission: Paradigm Shifts in Theology of Mission (Orbis Books, 1991), p. 381 — tradução livre de \"Missionary activity is not so much the work of the church as simply the Church at work\". Substituímos a citação atribuída a Michael Goheen por não termos localizado uma fonte verificável equivalente.",
           },
           quizzes: [
             {
@@ -3402,9 +3402,9 @@ const missoes: Trail = {
           deepDive:
             "A terceira carta de João ilustra bem esse papel de quem fica: João elogia Gaio por ter recebido e sustentado irmãos itinerantes que saíram 'por amor do Nome, sem nada aceitar dos pagãos' (3 Jo 1:7), e conclui: 'portanto, devemos acolher com hospitalidade a irmãos como esses, para que sejamos cooperadores da verdade' (3 Jo 1:8). O verbo grego usado ali, synergos, é o mesmo que Paulo usa para descrever colegas de ministério lado a lado no evangelho — mostrando que sustentar hospitaleiramente quem vai é uma forma real, e não apenas simbólica, de cooperação na obra. A igreja de Antioquia em Atos 13 segue o mesmo padrão: ora, jejua, comissiona publicamente e depois recebe o relatório do que Deus fez (At 14:27) — um ciclo completo de envio e acompanhamento, não apenas uma despedida.",
           theologianQuote: {
-            author: "Pacto de Lausanne (redigido por John Stott)",
-            text: "A evangelização do mundo requer que toda a Igreja leve todo o Evangelho a todo o mundo.",
-            source: "Pacto de Lausanne (1974), §6 — 'A Igreja e a Evangelização'",
+            author: "John Stott",
+            text: "É possível que a pessoa mais discreta de uma igreja, com o coração corretamente voltado para Deus, exerça tanto poder para a evangelização do mundo quanto aqueles que ocupam as posições mais proeminentes.",
+            source: "John R.W. Stott, citação preservada em coletâneas de discursos e escritos missionários — tradução livre de \"It is possible for the most obscure person in a church, with a heart right toward God, to exercise as much power for the evangelization of the world, as it is for those who stand in the most prominent positions\"",
           },
           quizzes: [
             {
@@ -3488,9 +3488,9 @@ const missoes: Trail = {
           deepDive:
             "É importante distinguir, com cuidado, entre prioridade e exclusividade. Dizer que a proclamação do Evangelho tem prioridade lógica — porque sem ela ninguém conhece o caminho da salvação em Cristo — não significa que a ação de misericórdia seja opcional ou secundária na prática diária do discípulo. Mateus 25:31-46 é solene nesse ponto: Jesus identifica-se com quem tem fome, sede, é estrangeiro, está nu, doente ou preso, e trata o cuidado prático com essas pessoas como evidência real (não decorativa) de uma vida que lhe pertence. Ao mesmo tempo, reduzir a missão cristã só a projetos sociais, sem jamais anunciar Cristo como Salvador e Senhor, esvazia o Evangelho de seu conteúdo mais essencial — o perdão dos pecados pela cruz e a ressurreição. Missão integral mantém as duas verdades presas: o anúncio explícito do Evangelho é insubstituível, e o amor prático ao próximo é sua confirmação inevitável, não um apêndice opcional.",
           theologianQuote: {
-            author: "Pacto de Lausanne (redigido por John Stott)",
-            text: "A evangelização e o envolvimento sociopolítico são ambos parte do nosso dever cristão.",
-            source: "Pacto de Lausanne (1974), §5 — 'Responsabilidade Social Cristã'",
+            author: "John Stott",
+            text: "Evangelismo e ação social são como as duas lâminas de uma tesoura, ou as duas asas de um pássaro: a comissão de Cristo deve ser entendida como incluindo tanto a responsabilidade social quanto a evangelística, sob pena de distorcermos as palavras de Jesus.",
+            source: "John Stott, Christian Mission in the Modern World (IVP, 1975) — tradução livre combinando duas passagens amplamente citadas do livro: \"evangelism and social action (...) like two blades of a pair of scissors, or two wings of a bird\" e \"the actual commission itself must be understood to include social as well as evangelistic responsibility, unless we are to be guilty of distorting the words of Jesus\". Trocamos a atribuição a René Padilla, que não está na sua lista de referências, por esta citação real de John Stott sobre o mesmo tema.",
           },
           quizzes: [
             {
@@ -3580,9 +3580,9 @@ const missoes: Trail = {
           deepDive:
             "A citação que Paulo faz de Isaías 52:15 em Romanos 15:21 mostra que sua estratégia missionária não era fruto de preferência pessoal, mas de convicção bíblica: havia um padrão profético a cumprir, priorizando quem nunca tinha ouvido sobre quem já tinha alguma exposição ao Evangelho. Isso gerou, na história da igreja, o conceito de 'missões de fronteira' — o esforço deliberado de alcançar grupos étnicos e linguísticos sem presença cristã estabelecida, em contraste com o trabalho (igualmente necessário) de evangelismo e discipulado em lugares onde já existem igrejas locais. Pensar estrategicamente sobre fronteiras não é elitismo missionário, mas responsabilidade diante de uma tarefa profeticamente inacabada — Mateus 24:14 liga esse alcance total às próprias nações ao clímax da história redentora.",
           theologianQuote: {
-            author: "Pacto de Lausanne (redigido por John Stott)",
-            text: "Mais de dois terços da humanidade ainda não foram evangelizados. Envergonha-nos que tantos tenham sido negligenciados; isso é uma repreensão permanente a nós e a toda a Igreja.",
-            source: "Pacto de Lausanne (1974), §9 — 'A Urgência da Tarefa Evangelizadora'",
+            author: "John Stott",
+            text: "A ambição de Paulo, que se tornara sua política fixa, era evangelizar apenas onde Cristo ainda não era conhecido, para não edificar sobre o fundamento lançado por outro.",
+            source: "John Stott, Romans: God's Good News for the World (Bible Speaks Today, IVP), comentando Romanos 15:20-23 — tradução livre de \"his ambition, which indeed had become his fixed policy, was to evangelize only 'where Christ was not known', so that he would 'not be building on someone else's foundation'\". Trocamos a atribuição a Ralph Winter, que não está na sua lista de referências, por esta citação real de John Stott sobre a mesma estratégia missionária de Paulo (Rm 15:20-21).",
           },
           quizzes: [
             {
@@ -3668,7 +3668,7 @@ const missoes: Trail = {
           theologianQuote: {
             author: "Tertuliano",
             text: "O sangue dos mártires é semente da igreja.",
-            source: "Apologeticum, 50.13 (Pais da Igreja, c. 197 d.C.)",
+            source: "Apologeticum, cap. 50 — frase amplamente atribuída a Tertuliano; verifique a tradução exata antes de citar como texto literal",
           },
           quizzes: [
             {
@@ -3759,9 +3759,9 @@ const missoes: Trail = {
           deepDive:
             "O fato de Paulo preservar uma expressão aramaica — Maranata — em uma carta escrita em grego para uma igreja majoritariamente grega mostra como essa oração já era, desde muito cedo, uma marca distintiva e amplamente reconhecida da fé cristã, provavelmente usada em contextos de adoração desde os primeiros anos da igreja em Jerusalém. Ao encerrar 1 Coríntios com ela, Paulo lembra à igreja dividida e imperfeita de Corinto que sua identidade final não está em resolver todos os seus problemas agora, mas em pertencer a um Senhor que voltará. É significativo que Mateus 24:14 amarre o alcance do evangelho a todas as nações ao próprio tempo do fim: a tarefa missionária, então, não é apenas uma atividade ética recomendável, mas parte do plano profético que precede e prepara a volta de Cristo — o que dá à missão uma urgência que nenhuma outra motivação humana consegue produzir.",
           theologianQuote: {
-            author: "C.S. Lewis",
-            text: "Se encontro em mim mesmo um desejo que nenhuma experiência deste mundo pode satisfazer, a explicação mais provável é que fui feito para outro mundo.",
-            source: "Cristianismo Puro e Simples (Mere Christianity), Livro III, cap. 10",
+            author: "Gordon Fee",
+            text: "Precisamente porque há ressurreição dos mortos, tudo o que os crentes fazem 'no Senhor' tem sentido e valor eterno — o trabalho deles não é em vão.",
+            source: "Paráfrase (não é citação literal) da leitura que Gordon D. Fee faz de 1 Coríntios 15:58 em The First Epistle to the Corinthians (New International Commentary on the New Testament, Eerdmans), onde argumenta que a certeza da ressurreição é o que garante valor eterno ao trabalho presente do crente. Trocamos a atribuição a N.T. Wright, que não está na sua lista de referências, por este autor da sua lista que também comenta diretamente 1 Coríntios.",
           },
           quizzes: [
             {
