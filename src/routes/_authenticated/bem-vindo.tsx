@@ -1,13 +1,16 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Sparkles, ArrowRight, AtSign, Check, X, Loader2 } from "lucide-react";
+import { Sparkles, ArrowRight, AtSign, Check, X, Loader2, Camera, User } from "lucide-react";
 import {
   isUsernameAvailable,
   isValidUsername,
   normalizeUsername,
   suggestAvailableUsername,
 } from "@/lib/username";
+
+// Avatares prontos disponíveis em /public/avatares (avatar-1.png … avatar-10.png)
+const PRESET_AVATARS = Array.from({ length: 10 }, (_, i) => `/avatares/avatar-${i + 1}.png`);
 
 export const Route = createFileRoute("/_authenticated/bem-vindo")({
   component: BemVindoPage,
@@ -19,12 +22,16 @@ function BemVindoPage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
   const [checkingUsername, setCheckingUsername] = useState(false);
   const [usernameOk, setUsernameOk] = useState<boolean | null>(null);
   const [suggestion, setSuggestion] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [checking, setChecking] = useState(true);
+
 
   useEffect(() => {
     void (async () => {
@@ -36,7 +43,7 @@ function BemVindoPage() {
       setUserId(u.user.id);
       const { data: p } = await supabase
         .from("profiles")
-        .select("onboarded, first_name, last_name, display_name, username")
+        .select("onboarded, first_name, last_name, display_name, username, avatar_url")
         .eq("id", u.user.id)
         .maybeSingle();
       if (p?.onboarded) {
@@ -54,6 +61,9 @@ function BemVindoPage() {
       }
       setFirstName(first);
       setLastName(last);
+      setAvatarUrl(
+        p?.avatar_url ?? (meta?.avatar_url as string) ?? (meta?.picture as string) ?? null,
+      );
       if (p?.username) {
         setUsername(p.username);
       } else if (first) {
@@ -90,6 +100,29 @@ function BemVindoPage() {
     return () => clearTimeout(t);
   }, [username, userId, firstName, lastName]);
 
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !userId) return;
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop() ?? "jpg";
+      const path = `${userId}/avatar-${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("avatars")
+        .upload(path, file, { upsert: true, contentType: file.type });
+      if (upErr) throw upErr;
+      const { data: signed } = await supabase.storage
+        .from("avatars")
+        .createSignedUrl(path, 60 * 60 * 24 * 365);
+      if (signed?.signedUrl) setAvatarUrl(signed.signedUrl);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro ao enviar a foto.");
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  };
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const first = firstName.trim();
@@ -125,6 +158,7 @@ function BemVindoPage() {
         last_name: last || null,
         display_name: display,
         username: uname,
+        avatar_url: avatarUrl,
         onboarded: true,
       })
       .eq("id", u.user.id);
@@ -154,6 +188,68 @@ function BemVindoPage() {
         </div>
 
         <form onSubmit={submit} className="card-elevated space-y-3 p-6">
+          {/* Foto de perfil: upload do dispositivo ou avatar pronto */}
+          <div className="mb-1 flex flex-col items-center gap-3">
+            <div className="relative">
+              <div className="h-24 w-24 overflow-hidden rounded-[26px] bg-surface-2 ring-2 ring-border">
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="Foto de perfil" className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <User className="h-10 w-10 text-muted-foreground" />
+                  </div>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => fileRef.current?.click()}
+                disabled={uploading}
+                aria-label="Enviar foto do dispositivo"
+                className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 disabled:opacity-60"
+              >
+                {uploading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Camera className="h-4 w-4" />
+                )}
+              </button>
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*"
+                onChange={onFileChange}
+                className="hidden"
+              />
+            </div>
+            <p className="text-[11px] text-muted-foreground">
+              Envie uma foto ou escolha um avatar
+            </p>
+            <div className="grid w-full grid-cols-5 gap-2">
+              {PRESET_AVATARS.map((src) => {
+                const selected = avatarUrl === src;
+                return (
+                  <button
+                    key={src}
+                    type="button"
+                    onClick={() => setAvatarUrl(src)}
+                    aria-label="Selecionar avatar"
+                    className={`relative aspect-square overflow-hidden rounded-xl bg-surface-2 ring-2 transition-transform hover:scale-105 active:scale-95 ${
+                      selected ? "ring-primary" : "ring-transparent"
+                    }`}
+                  >
+                    <img src={src} alt="Avatar" className="h-full w-full object-cover" loading="lazy" />
+                    {selected && (
+                      <span className="absolute inset-0 flex items-center justify-center bg-black/30">
+                        <Check className="h-4 w-4 text-white" />
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+
           <label className="block">
             <span className="mb-1 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Nome <span className="text-destructive">*</span>
