@@ -309,6 +309,80 @@ export type Database = {
         };
         Relationships: [];
       };
+      notes: {
+        Row: {
+          content: Json;
+          created_at: string;
+          exported_at: string | null;
+          id: string;
+          source_content_id: string | null;
+          source_content_title: string | null;
+          source_content_type: string | null;
+          source_type: string;
+          title: string;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          content?: Json;
+          created_at?: string;
+          exported_at?: string | null;
+          id?: string;
+          source_content_id?: string | null;
+          source_content_title?: string | null;
+          source_content_type?: string | null;
+          source_type: string;
+          title?: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          content?: Json;
+          created_at?: string;
+          exported_at?: string | null;
+          id?: string;
+          source_content_id?: string | null;
+          source_content_title?: string | null;
+          source_content_type?: string | null;
+          source_type?: string;
+          title?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      note_ai_actions: {
+        Row: {
+          action_type: string;
+          created_at: string;
+          id: string;
+          note_id: string;
+          user_id: string;
+        };
+        Insert: {
+          action_type: string;
+          created_at?: string;
+          id?: string;
+          note_id: string;
+          user_id: string;
+        };
+        Update: {
+          action_type?: string;
+          created_at?: string;
+          id?: string;
+          note_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "note_ai_actions_note_id_fkey";
+            columns: ["note_id"];
+            isOneToOne: false;
+            referencedRelation: "notes";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       disciple_modules: {
         Row: {
           color: string | null;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Loader2, NotebookPen, Plus, Search } from "lucide-react";
+import { ArrowLeft, Loader2, NotebookPen, Plus, ScanLine, Search } from "lucide-react";
 import { toast } from "sonner";
 
 import { createBlankNote, listNotes, plainTextFromDoc, type NoteListItem } from "@/lib/notes";
@@ -82,6 +82,22 @@ function NotasIndexPage() {
         />
       </div>
 
+      <button
+        type="button"
+        onClick={() => void nav({ to: "/notas/scan" })}
+        className="flex w-full items-center gap-3 rounded-2xl border border-dashed border-primary/40 bg-primary/5 p-3.5 text-left transition-colors hover:bg-primary/10"
+      >
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+          <ScanLine className="h-4.5 w-4.5" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold text-foreground">Scan Inteligente</p>
+          <p className="text-xs text-muted-foreground">
+            PDF, Word, foto ou galeria → vira anotação
+          </p>
+        </div>
+      </button>
+
       {loading ? (
         <div className="flex justify-center pt-10">
           <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
@@ -92,7 +108,9 @@ function NotasIndexPage() {
           <p className="text-sm font-medium text-foreground">
             {query ? "Nenhuma nota encontrada." : "Você ainda não tem nenhuma anotação."}
           </p>
-          {!query && <p className="text-xs text-muted-foreground">Toque no + para criar a primeira.</p>}
+          {!query && (
+            <p className="text-xs text-muted-foreground">Toque no + para criar a primeira.</p>
+          )}
         </div>
       ) : (
         <div className="space-y-2.5">
@@ -104,7 +122,9 @@ function NotasIndexPage() {
               className="card-elevated block w-full p-4 text-left transition-colors hover:border-primary/40"
             >
               <div className="flex items-start justify-between gap-2">
-                <h2 className="truncate text-sm font-semibold text-foreground">{note.title || "Sem título"}</h2>
+                <h2 className="truncate text-sm font-semibold text-foreground">
+                  {note.title || "Sem título"}
+                </h2>
                 <span className="shrink-0 text-[11px] text-muted-foreground">
                   {new Date(note.created_at).toLocaleDateString("pt-BR")}
                 </span>

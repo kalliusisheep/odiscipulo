@@ -32,6 +32,9 @@ import { Route as AuthenticatedMensagensIndexRouteImport } from './routes/_authe
 import { Route as AuthenticatedMensagensUsernameRouteImport } from './routes/_authenticated/mensagens.$username'
 import { Route as AuthenticatedMensagensNovoRouteImport } from './routes/_authenticated/mensagens.novo'
 import { Route as AuthenticatedModuloIdRouteImport } from './routes/_authenticated/modulo.$id'
+import { Route as AuthenticatedNotasIndexRouteImport } from './routes/_authenticated/notas.index'
+import { Route as AuthenticatedNotasIdRouteImport } from './routes/_authenticated/notas.$id'
+import { Route as AuthenticatedNotasScanRouteImport } from './routes/_authenticated/notas.scan'
 import { Route as AuthenticatedPerfilUsernameRouteImport } from './routes/_authenticated/perfil_.$username'
 import { Route as AuthenticatedEstudosBiblicoIdRouteImport } from './routes/_authenticated/estudos.biblico.$id'
 import { Route as AuthenticatedEstudosMeditacaoIdRouteImport } from './routes/_authenticated/estudos.meditacao.$id'
@@ -162,6 +165,21 @@ const AuthenticatedModuloIdRoute = AuthenticatedModuloIdRouteImport.update({
   path: '/modulo/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedNotasIndexRoute = AuthenticatedNotasIndexRouteImport.update({
+  id: '/notas/',
+  path: '/notas/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedNotasIdRoute = AuthenticatedNotasIdRouteImport.update({
+  id: '/notas/$id',
+  path: '/notas/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedNotasScanRoute = AuthenticatedNotasScanRouteImport.update({
+  id: '/notas/scan',
+  path: '/notas/scan',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedPerfilUsernameRoute =
   AuthenticatedPerfilUsernameRouteImport.update({
     id: '/perfil_/$username',
@@ -214,9 +232,12 @@ export interface FileRoutesByFullPath {
   '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
   '/modulo/$id': typeof AuthenticatedModuloIdRoute
+  '/notas/$id': typeof AuthenticatedNotasIdRoute
+  '/notas/scan': typeof AuthenticatedNotasScanRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
   '/estudos/': typeof AuthenticatedEstudosIndexRoute
   '/mensagens/': typeof AuthenticatedMensagensIndexRoute
+  '/notas/': typeof AuthenticatedNotasIndexRoute
   '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
@@ -243,9 +264,12 @@ export interface FileRoutesByTo {
   '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
   '/modulo/$id': typeof AuthenticatedModuloIdRoute
+  '/notas/$id': typeof AuthenticatedNotasIdRoute
+  '/notas/scan': typeof AuthenticatedNotasScanRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
   '/estudos': typeof AuthenticatedEstudosIndexRoute
   '/mensagens': typeof AuthenticatedMensagensIndexRoute
+  '/notas': typeof AuthenticatedNotasIndexRoute
   '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
@@ -274,9 +298,12 @@ export interface FileRoutesById {
   '/_authenticated/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/_authenticated/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
   '/_authenticated/modulo/$id': typeof AuthenticatedModuloIdRoute
+  '/_authenticated/notas/$id': typeof AuthenticatedNotasIdRoute
+  '/_authenticated/notas/scan': typeof AuthenticatedNotasScanRoute
   '/_authenticated/perfil_/$username': typeof AuthenticatedPerfilUsernameRoute
   '/_authenticated/estudos/': typeof AuthenticatedEstudosIndexRoute
   '/_authenticated/mensagens/': typeof AuthenticatedMensagensIndexRoute
+  '/_authenticated/notas/': typeof AuthenticatedNotasIndexRoute
   '/_authenticated/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/_authenticated/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/_authenticated/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
@@ -305,9 +332,12 @@ export interface FileRouteTypes {
     | '/mensagens/$username'
     | '/mensagens/novo'
     | '/modulo/$id'
+    | '/notas/$id'
+    | '/notas/scan'
     | '/perfil/$username'
     | '/estudos/'
     | '/mensagens/'
+    | '/notas/'
     | '/estudos/biblico/$id'
     | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
@@ -334,9 +364,12 @@ export interface FileRouteTypes {
     | '/mensagens/$username'
     | '/mensagens/novo'
     | '/modulo/$id'
+    | '/notas/$id'
+    | '/notas/scan'
     | '/perfil/$username'
     | '/estudos'
     | '/mensagens'
+    | '/notas'
     | '/estudos/biblico/$id'
     | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
@@ -364,9 +397,12 @@ export interface FileRouteTypes {
     | '/_authenticated/mensagens/$username'
     | '/_authenticated/mensagens/novo'
     | '/_authenticated/modulo/$id'
+    | '/_authenticated/notas/$id'
+    | '/_authenticated/notas/scan'
     | '/_authenticated/perfil_/$username'
     | '/_authenticated/estudos/'
     | '/_authenticated/mensagens/'
+    | '/_authenticated/notas/'
     | '/_authenticated/estudos/biblico/$id'
     | '/_authenticated/estudos/meditacao/$id'
     | '/_authenticated/estudos/plano/$id'
@@ -543,6 +579,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedModuloIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/notas/': {
+      id: '/_authenticated/notas/'
+      path: '/notas'
+      fullPath: '/notas/'
+      preLoaderRoute: typeof AuthenticatedNotasIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/notas/$id': {
+      id: '/_authenticated/notas/$id'
+      path: '/notas/$id'
+      fullPath: '/notas/$id'
+      preLoaderRoute: typeof AuthenticatedNotasIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/notas/scan': {
+      id: '/_authenticated/notas/scan'
+      path: '/notas/scan'
+      fullPath: '/notas/scan'
+      preLoaderRoute: typeof AuthenticatedNotasScanRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/perfil_/$username': {
       id: '/_authenticated/perfil_/$username'
       path: '/perfil/$username'
@@ -599,9 +656,12 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMensagensUsernameRoute: typeof AuthenticatedMensagensUsernameRoute
   AuthenticatedMensagensNovoRoute: typeof AuthenticatedMensagensNovoRoute
   AuthenticatedModuloIdRoute: typeof AuthenticatedModuloIdRoute
+  AuthenticatedNotasIdRoute: typeof AuthenticatedNotasIdRoute
+  AuthenticatedNotasScanRoute: typeof AuthenticatedNotasScanRoute
   AuthenticatedPerfilUsernameRoute: typeof AuthenticatedPerfilUsernameRoute
   AuthenticatedEstudosIndexRoute: typeof AuthenticatedEstudosIndexRoute
   AuthenticatedMensagensIndexRoute: typeof AuthenticatedMensagensIndexRoute
+  AuthenticatedNotasIndexRoute: typeof AuthenticatedNotasIndexRoute
   AuthenticatedEstudosBiblicoIdRoute: typeof AuthenticatedEstudosBiblicoIdRoute
   AuthenticatedEstudosMeditacaoIdRoute: typeof AuthenticatedEstudosMeditacaoIdRoute
   AuthenticatedEstudosPlanoIdRoute: typeof AuthenticatedEstudosPlanoIdRoute
@@ -627,9 +687,12 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMensagensUsernameRoute: AuthenticatedMensagensUsernameRoute,
   AuthenticatedMensagensNovoRoute: AuthenticatedMensagensNovoRoute,
   AuthenticatedModuloIdRoute: AuthenticatedModuloIdRoute,
+  AuthenticatedNotasIdRoute: AuthenticatedNotasIdRoute,
+  AuthenticatedNotasScanRoute: AuthenticatedNotasScanRoute,
   AuthenticatedPerfilUsernameRoute: AuthenticatedPerfilUsernameRoute,
   AuthenticatedEstudosIndexRoute: AuthenticatedEstudosIndexRoute,
   AuthenticatedMensagensIndexRoute: AuthenticatedMensagensIndexRoute,
+  AuthenticatedNotasIndexRoute: AuthenticatedNotasIndexRoute,
   AuthenticatedEstudosBiblicoIdRoute: AuthenticatedEstudosBiblicoIdRoute,
   AuthenticatedEstudosMeditacaoIdRoute: AuthenticatedEstudosMeditacaoIdRoute,
   AuthenticatedEstudosPlanoIdRoute: AuthenticatedEstudosPlanoIdRoute,
@@ -648,3 +711,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

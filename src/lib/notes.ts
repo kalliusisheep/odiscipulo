@@ -2,6 +2,7 @@
 // src/lib/*.ts (funções puras que encapsulam chamadas ao supabase client).
 
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 
 export type NoteSourceType = "selecao_texto" | "manual" | "scan_pdf" | "scan_word" | "scan_foto";
 export type NoteSourceContentType = "trilha" | "estudo" | "plano_leitura";
@@ -87,6 +88,39 @@ export async function createNoteFromSelection(params: {
   return data as Note;
 }
 
+/** Cria uma nota a partir do resultado do Scan Inteligente (Bloco 4). */
+export async function createNoteFromScan(params: {
+  text: string;
+  title: string;
+  sourceType: Extract<NoteSourceType, "scan_pdf" | "scan_word" | "scan_foto">;
+}): Promise<Note> {
+  const { data: userRes } = await supabase.auth.getUser();
+  const userId = userRes.user?.id;
+  if (!userId) throw new Error("Usuário não autenticado.");
+
+  const doc = {
+    type: "doc",
+    content: params.text
+      .split(/\n+/)
+      .filter(Boolean)
+      .map((paragraph) => ({ type: "paragraph", content: [{ type: "text", text: paragraph }] })),
+  };
+
+  const { data, error } = await supabase
+    .from("notes")
+    .insert({
+      user_id: userId,
+      title: params.title,
+      content: doc.content.length ? doc : EMPTY_DOC,
+      source_type: params.sourceType,
+    })
+    .select("*")
+    .single();
+
+  if (error) throw error;
+  return data as Note;
+}
+
 export async function getNote(id: string): Promise<Note | null> {
   const { data, error } = await supabase.from("notes").select("*").eq("id", id).maybeSingle();
   if (error) throw error;
@@ -107,7 +141,10 @@ export async function updateNote(
   id: string,
   patch: Partial<Pick<Note, "title" | "content">>,
 ): Promise<void> {
-  const { error } = await supabase.from("notes").update(patch).eq("id", id);
+  const { error } = await supabase
+    .from("notes")
+    .update(patch as { title?: string; content?: Json })
+    .eq("id", id);
   if (error) throw error;
 }
 
@@ -122,12 +159,20 @@ export async function markNoteExported(id: string): Promise<void> {
 
 export async function logNoteAiAction(
   noteId: string,
-  actionType: "reescrever" | "estruturar" | "titulo" | "scan_transcricao" | "scan_reescrita" | "scan_estrutura",
+  actionType:
+    | "reescrever"
+    | "estruturar"
+    | "titulo"
+    | "scan_transcricao"
+    | "scan_reescrita"
+    | "scan_estrutura",
 ): Promise<void> {
   const { data: userRes } = await supabase.auth.getUser();
   const userId = userRes.user?.id;
   if (!userId) return;
-  await supabase.from("note_ai_actions").insert({ note_id: noteId, user_id: userId, action_type: actionType });
+  await supabase
+    .from("note_ai_actions")
+    .insert({ note_id: noteId, user_id: userId, action_type: actionType });
 }
 
 /** Extrai texto puro de um documento Tiptap — usado para mandar contexto pra IA. */

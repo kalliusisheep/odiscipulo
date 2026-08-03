@@ -14,7 +14,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
-import TextStyle from "@tiptap/extension-text-style";
+import { TextStyle } from "@tiptap/extension-text-style";
 import Highlight from "@tiptap/extension-highlight";
 import Placeholder from "@tiptap/extension-placeholder";
 import { toast } from "sonner";
@@ -32,7 +32,14 @@ import {
 import { FontSize } from "@/lib/tiptap-font-size";
 import { NoteFormattingToolbar } from "@/components/notes/NoteFormattingToolbar";
 import { exportNoteToPdf } from "@/lib/notes-pdf";
-import { deleteNote, getNote, logNoteAiAction, markNoteExported, plainTextFromDoc, updateNote } from "@/lib/notes";
+import {
+  deleteNote,
+  getNote,
+  logNoteAiAction,
+  markNoteExported,
+  plainTextFromDoc,
+  updateNote,
+} from "@/lib/notes";
 import { supabase } from "@/integrations/supabase/client";
 import {
   AlertDialog,
@@ -67,10 +74,14 @@ type SaveState = "salvo" | "salvando" | "erro";
 type AiAction = "reescrever" | "estruturar";
 
 async function callNoteAi(action: AiAction | "titulo", text: string): Promise<string> {
-  const { data, error } = await supabase.functions.invoke<{ text?: string; error?: string }>("note-ai", {
-    body: { action, text },
-  });
-  if (error || !data?.text) throw new Error(data?.error ?? error?.message ?? "Falha ao chamar a IA.");
+  const { data, error } = await supabase.functions.invoke<{ text?: string; error?: string }>(
+    "note-ai",
+    {
+      body: { action, text },
+    },
+  );
+  if (error || !data?.text)
+    throw new Error(data?.error ?? error?.message ?? "Falha ao chamar a IA.");
   return data.text;
 }
 
@@ -120,7 +131,7 @@ function NotaEditorPage() {
         if (!note || cancelled) return;
         setTitle(note.title);
         setSourceTitle(note.source_content_title);
-        editor?.commands.setContent(note.content as never, false);
+        editor?.commands.setContent(note.content as never, { emitUpdate: false });
         setSavedAt(new Date(note.updated_at));
       } catch (err) {
         console.error(err);
@@ -132,7 +143,6 @@ function NotaEditorPage() {
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, editor]);
 
   function scheduleSave() {
@@ -209,7 +219,7 @@ function NotaEditorPage() {
     // convertida para parágrafos/headings do editor para manter a
     // formatação posterior possível (negrito, marca-texto, etc.).
     const doc = markdownToTiptapDoc(aiSuggestion.text);
-    editor.commands.setContent(doc, true);
+    editor.commands.setContent(doc, { emitUpdate: true });
     void logNoteAiAction(id, aiSuggestion.action);
     setAiSuggestion(null);
     scheduleSave();
@@ -231,7 +241,10 @@ function NotaEditorPage() {
     if (!editor) return;
     setExporting(true);
     try {
-      const blob = await exportNoteToPdf({ title: title || "Anotação", contentHtml: editor.getHTML() });
+      const blob = await exportNoteToPdf({
+        title: title || "Anotação",
+        contentHtml: editor.getHTML(),
+      });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -253,7 +266,8 @@ function NotaEditorPage() {
   const saveLabel = useMemo(() => {
     if (saveState === "salvando") return "Salvando…";
     if (saveState === "erro") return "Erro ao salvar";
-    if (savedAt) return `Salvo às ${savedAt.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
+    if (savedAt)
+      return `Salvo às ${savedAt.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
     return "";
   }, [saveState, savedAt]);
 
@@ -296,7 +310,11 @@ function NotaEditorPage() {
           aria-label="Exportar em PDF"
           title="Exportar em PDF"
         >
-          {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileDown className="h-4 w-4" />}
+          {exporting ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <FileDown className="h-4 w-4" />
+          )}
         </button>
 
         <DropdownMenu>
@@ -318,7 +336,10 @@ function NotaEditorPage() {
             >
               <ScanLine className="mr-2 h-4 w-4" /> Scan Inteligente
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setDeleteOpen(true)} className="text-destructive focus:text-destructive">
+            <DropdownMenuItem
+              onClick={() => setDeleteOpen(true)}
+              className="text-destructive focus:text-destructive"
+            >
               <Trash2 className="mr-2 h-4 w-4" /> Excluir
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -347,7 +368,11 @@ function NotaEditorPage() {
           title="Sugerir título com IA"
           className="mt-1.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/10 disabled:opacity-50"
         >
-          {titleGenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+          {titleGenerating ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Sparkles className="h-4 w-4" />
+          )}
         </button>
       </div>
 
@@ -366,7 +391,11 @@ function NotaEditorPage() {
             disabled={aiLoading !== null}
             className="flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 disabled:opacity-50"
           >
-            {aiLoading === "reescrever" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5 text-primary" />}
+            {aiLoading === "reescrever" ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Sparkles className="h-3.5 w-3.5 text-primary" />
+            )}
             Reescrever
           </button>
           <div className="h-4 w-px bg-border" />
@@ -376,7 +405,11 @@ function NotaEditorPage() {
             disabled={aiLoading !== null}
             className="flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 disabled:opacity-50"
           >
-            {aiLoading === "estruturar" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5 text-primary" />}
+            {aiLoading === "estruturar" ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Sparkles className="h-3.5 w-3.5 text-primary" />
+            )}
             Organizar como estrutura
           </button>
         </div>
@@ -386,8 +419,12 @@ function NotaEditorPage() {
       <Dialog open={!!aiSuggestion} onOpenChange={(open) => !open && setAiSuggestion(null)}>
         <DialogContent className="max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>{aiSuggestion?.action === "estruturar" ? "Estrutura sugerida" : "Texto reescrito"}</DialogTitle>
-            <DialogDescription>Você pode aceitar e substituir o conteúdo da nota, ou descartar.</DialogDescription>
+            <DialogTitle>
+              {aiSuggestion?.action === "estruturar" ? "Estrutura sugerida" : "Texto reescrito"}
+            </DialogTitle>
+            <DialogDescription>
+              Você pode aceitar e substituir o conteúdo da nota, ou descartar.
+            </DialogDescription>
           </DialogHeader>
           <div className="whitespace-pre-wrap rounded-2xl border border-border bg-surface p-4 text-sm text-foreground">
             {aiSuggestion?.text}
@@ -420,7 +457,10 @@ function NotaEditorPage() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={() => void handleDelete()} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            <AlertDialogAction
+              onClick={() => void handleDelete()}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
               Excluir
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -454,7 +494,10 @@ function markdownToTiptapDoc(markdown: string) {
         content: [{ type: "text", text: headingMatch[2].trim() }],
       };
     }
-    return { type: "paragraph", content: [{ type: "text", text: block.replace(/\n/g, " ").trim() }] };
+    return {
+      type: "paragraph",
+      content: [{ type: "text", text: block.replace(/\n/g, " ").trim() }],
+    };
   });
   return { type: "doc", content: content.length ? content : [{ type: "paragraph" }] };
 }
