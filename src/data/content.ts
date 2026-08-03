@@ -7,7 +7,7 @@ export const BIBLE_VERSIONS = ["NVI", "NAA", "ACF", "NVT"] as const;
 // (que é em inglês). Se quiser oferecer uma versão adicional, use uma tradução
 // em português real que ainda não esteja na lista (ex.: ARC) e preencha o texto
 // correto verso a verso — não reative "KJV" sem o texto em inglês genuíno.
-export type BibleVersion = typeof BIBLE_VERSIONS[number];
+export type BibleVersion = (typeof BIBLE_VERSIONS)[number];
 
 export type Original = {
   word: string;
@@ -81,7 +81,6 @@ export function verseText(v: Verse, version: BibleVersion): string {
     v.textByVersion.NVI ??
     v.textByVersion.NAA ??
     v.textByVersion.ACF ??
-    
     v.textByVersion.NVT ??
     ""
   );
@@ -119,7 +118,13 @@ const novoConvertido: Trail = {
                 NVT: "No princípio, antes de todas as coisas começarem, a Palavra já existia. A Palavra estava com Deus e era Deus... Assim, a Palavra tornou-se homem e viveu aqui na terra entre nós. Ele estava cheio de amor inabalável e fidelidade. E nós vimos a sua glória, a glória do único Filho do Pai.",
               },
               originals: [
-                { word: "λόγος", translit: "lógos", meaning: "'Palavra, Verbo' — expressão perfeita e eterna do próprio Deus, presente desde antes da criação", lang: "grego" },
+                {
+                  word: "λόγος",
+                  translit: "lógos",
+                  meaning:
+                    "'Palavra, Verbo' — expressão perfeita e eterna do próprio Deus, presente desde antes da criação",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -131,7 +136,13 @@ const novoConvertido: Trail = {
                 NVT: "Cristo é a imagem visível do Deus invisível. Ele existia antes que qualquer coisa fosse criada e é supremo sobre toda a criação, pois, por meio dele, Deus criou tudo... Ele existia antes de tudo o mais, e é ele quem mantém a criação unida.",
               },
               originals: [
-                { word: "εἰκὼν", translit: "eikōn", meaning: "'imagem' — não uma cópia imperfeita, mas a representação exata e visível do que é invisível", lang: "grego" },
+                {
+                  word: "εἰκὼν",
+                  translit: "eikōn",
+                  meaning:
+                    "'imagem' — não uma cópia imperfeita, mas a representação exata e visível do que é invisível",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -143,14 +154,38 @@ const novoConvertido: Trail = {
                 NVT: "'E vocês?', ele perguntou. 'Quem vocês dizem que eu sou?' Simão Pedro respondeu: 'Tu és o Messias, o Filho do Deus vivo'.",
               },
               originals: [
-                { word: "Χριστός", translit: "Christós", meaning: "'Ungido, Messias' — o Rei prometido desde o Antigo Testamento, aguardado por Israel", lang: "grego" },
+                {
+                  word: "Χριστός",
+                  translit: "Christós",
+                  meaning:
+                    "'Ungido, Messias' — o Rei prometido desde o Antigo Testamento, aguardado por Israel",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "λόγος", translit: "lógos", meaning: "'Palavra, Verbo'. João escolhe esse termo para dizer que Jesus é a auto-expressão eterna de Deus — não uma criatura, mas Deus mesmo se comunicando e se revelando.", lang: "grego" },
-            { word: "εἰκὼν", translit: "eikōn", meaning: "'imagem'. Jesus não aponta apenas para Deus — ele torna Deus visível. Quem vê a Jesus, vê o caráter e a glória do Pai (João 14:9).", lang: "grego" },
-            { word: "Χριστός", translit: "Christós", meaning: "'Ungido, Messias'. Título que liga Jesus às promessas do Antigo Testamento sobre um Rei, Sacerdote e Profeta enviado por Deus para salvar seu povo.", lang: "grego" },
+            {
+              word: "λόγος",
+              translit: "lógos",
+              meaning:
+                "'Palavra, Verbo'. João escolhe esse termo para dizer que Jesus é a auto-expressão eterna de Deus — não uma criatura, mas Deus mesmo se comunicando e se revelando.",
+              lang: "grego",
+            },
+            {
+              word: "εἰκὼν",
+              translit: "eikōn",
+              meaning:
+                "'imagem'. Jesus não aponta apenas para Deus — ele torna Deus visível. Quem vê a Jesus, vê o caráter e a glória do Pai (João 14:9).",
+              lang: "grego",
+            },
+            {
+              word: "Χριστός",
+              translit: "Christós",
+              meaning:
+                "'Ungido, Messias'. Título que liga Jesus às promessas do Antigo Testamento sobre um Rei, Sacerdote e Profeta enviado por Deus para salvar seu povo.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "João abre seu Evangelho ecoando deliberadamente Gênesis 1:1 — 'no princípio' — para dizer que Jesus, o 'lógos', já estava lá antes de qualquer coisa existir, e que esse Lógos 'era Deus'. Não uma força impessoal, não um anjo superior, não uma criatura exaltada: Deus mesmo. E então vem a afirmação mais chocante do cristianismo: esse Deus eterno 'se fez carne' — tornou-se plenamente humano, sem deixar de ser plenamente divino. Paulo, em Colossenses, acrescenta outra peça: Jesus é a 'eikōn' do Deus invisível — não uma pintura aproximada, mas a representação exata e visível daquilo que ninguém jamais viu. E tudo isso desemboca na pergunta pessoal que Jesus faz a Pedro: não 'o que as pessoas pensam de mim', mas 'quem vocês dizem que eu sou'. A resposta de Pedro — 'o Cristo, o Filho do Deus vivo' — é a confissão que sustenta toda a Igreja cristã através dos séculos. Conhecer fatos sobre Jesus não é o mesmo que confessá-lo como Senhor; a fé cristã nasce quando essa verdade deixa de ser informação e se torna confissão pessoal.",
@@ -167,7 +202,13 @@ const novoConvertido: Trail = {
                   NVI: "Que, embora tendo a natureza de Deus, não considerou que ser igual a Deus era algo a que devia se apegar; mas esvaziou-se de si mesmo, vindo a ser servo, tornando-se semelhante aos seres humanos.",
                 },
                 originals: [
-                  { word: "μορφῇ", translit: "morphē", meaning: "'forma, natureza essencial' — Jesus possui, por natureza, a essência plena de Deus, não uma aparência", lang: "grego" },
+                  {
+                    word: "μορφῇ",
+                    translit: "morphē",
+                    meaning:
+                      "'forma, natureza essencial' — Jesus possui, por natureza, a essência plena de Deus, não uma aparência",
+                    lang: "grego",
+                  },
                 ],
               },
               {
@@ -176,13 +217,31 @@ const novoConvertido: Trail = {
                   NVI: "O Filho é o resplendor da glória de Deus e a expressão exata do seu ser, sustentando todas as coisas por sua palavra poderosa.",
                 },
                 originals: [
-                  { word: "χαρακτὴρ", translit: "charaktēr", meaning: "'expressão exata, marca impressa' — como um selo produz uma marca idêntica à sua gravação", lang: "grego" },
+                  {
+                    word: "χαρακτὴρ",
+                    translit: "charaktēr",
+                    meaning:
+                      "'expressão exata, marca impressa' — como um selo produz uma marca idêntica à sua gravação",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
             additionalKeywords: [
-              { word: "μορφῇ", translit: "morphē", meaning: "'forma, natureza essencial'. Paulo usa esse termo em Filipenses 2:6 para afirmar que Jesus possui, por natureza, a essência plena de Deus — não uma aparência, mas a realidade.", lang: "grego" },
-              { word: "χαρακτὴρ", translit: "charaktēr", meaning: "'expressão exata, marca impressa'. Assim como um selo produz uma marca idêntica à sua gravação, Jesus é a impressão exata do próprio ser de Deus (Hebreus 1:3).", lang: "grego" },
+              {
+                word: "μορφῇ",
+                translit: "morphē",
+                meaning:
+                  "'forma, natureza essencial'. Paulo usa esse termo em Filipenses 2:6 para afirmar que Jesus possui, por natureza, a essência plena de Deus — não uma aparência, mas a realidade.",
+                lang: "grego",
+              },
+              {
+                word: "χαρακτὴρ",
+                translit: "charaktēr",
+                meaning:
+                  "'expressão exata, marca impressa'. Assim como um selo produz uma marca idêntica à sua gravação, Jesus é a impressão exata do próprio ser de Deus (Hebreus 1:3).",
+                lang: "grego",
+              },
             ],
             historicalContext:
               "A confissão de que Jesus é plenamente Deus e plenamente homem não nasceu de especulação filosófica tardia — ela já está presente nos escritos mais antigos do Novo Testamento, como o hino cristológico de Filipenses 2 (provavelmente um cântico usado pela igreja primitiva antes mesmo de Paulo escrever a carta) e nas afirmações diretas dos Evangelhos. Nos primeiros séculos, a Igreja precisou defender essa verdade contra distorções: o docetismo (que negava a humanidade real de Jesus, tratando-a como aparência) e o arianismo (que negava sua plena divindade, tratando-o como a primeira e maior criatura de Deus). O Concílio de Niceia (325 d.C.) e o Concílio de Calcedônia (451 d.C.) não inventaram a doutrina da encarnação — eles a defenderam e a formularam com precisão diante de erros que ameaçavam distorcer o Evangelho.",
@@ -206,10 +265,12 @@ const novoConvertido: Trail = {
                 "A primeira criatura feita por Deus",
               ],
               correctIndex: 1,
-              explanation: "João afirma que o Verbo 'era Deus' e, ao se encarnar, não deixou de sê-lo — Jesus é plenamente Deus e plenamente homem.",
+              explanation:
+                "João afirma que o Verbo 'era Deus' e, ao se encarnar, não deixou de sê-lo — Jesus é plenamente Deus e plenamente homem.",
             },
             {
-              question: "De acordo com o argumento de C.S. Lewis apresentado na lição, o que NÃO é uma opção coerente diante das afirmações de Jesus sobre si mesmo?",
+              question:
+                "De acordo com o argumento de C.S. Lewis apresentado na lição, o que NÃO é uma opção coerente diante das afirmações de Jesus sobre si mesmo?",
               options: [
                 "Que ele seja o Senhor, exatamente quem afirmou ser",
                 "Que ele fosse um mentiroso deliberado",
@@ -217,10 +278,12 @@ const novoConvertido: Trail = {
                 "Que ele fosse apenas um bom mestre moral, mas não Deus",
               ],
               correctIndex: 3,
-              explanation: "Quem afirma ser igual ao Pai e preexistente a Abraão não deixa espaço para ser classificado apenas como 'bom professor' — essa opção não está disponível diante do que Jesus realmente disse.",
+              explanation:
+                "Quem afirma ser igual ao Pai e preexistente a Abraão não deixa espaço para ser classificado apenas como 'bom professor' — essa opção não está disponível diante do que Jesus realmente disse.",
             },
             {
-              question: "Qual foi a resposta de Pedro à pergunta de Jesus em Mateus 16:15-16, e por que ela é importante?",
+              question:
+                "Qual foi a resposta de Pedro à pergunta de Jesus em Mateus 16:15-16, e por que ela é importante?",
               options: [
                 "'Tu és um grande profeta' — reconhecendo apenas um dom espiritual",
                 "'Tu és o Cristo, o Filho do Deus vivo' — confissão que sustenta a fé cristã histórica",
@@ -228,7 +291,8 @@ const novoConvertido: Trail = {
                 "'Tu és um anjo do Senhor' — atribuindo natureza angelical a Jesus",
               ],
               correctIndex: 1,
-              explanation: "A confissão de Pedro identifica Jesus como o Messias prometido e o Filho de Deus — o fundamento da fé que a Igreja confessa desde então.",
+              explanation:
+                "A confissão de Pedro identifica Jesus como o Messias prometido e o Filho de Deus — o fundamento da fé que a Igreja confessa desde então.",
             },
           ],
           application:
@@ -260,7 +324,12 @@ const novoConvertido: Trail = {
                 NVT: "Jesus respondeu: 'Digo-lhe a verdade: ninguém pode ver o Reino de Deus, a menos que nasça de novo'.",
               },
               originals: [
-                { word: "ἄνωθεν", translit: "anōthen", meaning: "de novo / do alto — duplo sentido intencional", lang: "grego" },
+                {
+                  word: "ἄνωθεν",
+                  translit: "anōthen",
+                  meaning: "de novo / do alto — duplo sentido intencional",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -272,14 +341,37 @@ const novoConvertido: Trail = {
                 NVT: "Isso significa que todo aquele que pertence a Cristo tornou-se uma nova pessoa. A velha vida se foi; uma nova vida começou!",
               },
               originals: [
-                { word: "καινὴ κτίσις", translit: "kainē ktisis", meaning: "nova criação — algo qualitativamente novo, não apenas renovado", lang: "grego" },
+                {
+                  word: "καινὴ κτίσις",
+                  translit: "kainē ktisis",
+                  meaning: "nova criação — algo qualitativamente novo, não apenas renovado",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "ἄνωθεν", translit: "anōthen", meaning: "'de novo' ou 'do alto'. O duplo sentido não é acidente — o novo nascimento tem origem celestial, não humana.", lang: "grego" },
-            { word: "καινὴ", translit: "kainē", meaning: "novo em qualidade, não apenas em tempo. Não é 'mais um dia' — é outra categoria de existência.", lang: "grego" },
-            { word: "κτίσις", translit: "ktisis", meaning: "criação, ato criador. A mesma palavra usada para a criação do mundo. Em você, Deus faz obra criadora nova.", lang: "grego" },
+            {
+              word: "ἄνωθεν",
+              translit: "anōthen",
+              meaning:
+                "'de novo' ou 'do alto'. O duplo sentido não é acidente — o novo nascimento tem origem celestial, não humana.",
+              lang: "grego",
+            },
+            {
+              word: "καινὴ",
+              translit: "kainē",
+              meaning:
+                "novo em qualidade, não apenas em tempo. Não é 'mais um dia' — é outra categoria de existência.",
+              lang: "grego",
+            },
+            {
+              word: "κτίσις",
+              translit: "ktisis",
+              meaning:
+                "criação, ato criador. A mesma palavra usada para a criação do mundo. Em você, Deus faz obra criadora nova.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "Quando Jesus fala do novo nascimento a Nicodemos, ele não está descrevendo um esforço religioso melhor — está descrevendo uma recriação. A palavra 'anōthen' carrega intencionalmente dois sentidos: 'de novo' e 'do alto'. Ambos importam. É uma origem nova, e essa origem vem de Deus. Paulo confirma o mesmo mistério em outra palavra: 'kainē ktisis' — não uma versão melhorada da criatura antiga, mas uma criação qualitativamente diferente. O verbo por trás é o mesmo de Gênesis 1: Deus cria. Isso é o que aconteceu com você. Não foi você que decidiu mudar; foi Deus que começou uma obra nova, e agora sua parte é aprender a viver à altura dessa nova identidade.",
@@ -296,7 +388,13 @@ const novoConvertido: Trail = {
                   NVI: "Ele nos salvou, não por causa de atos de justiça que tivéssemos feito, mas por sua misericórdia, por meio do lavar regenerador e renovador do Espírito Santo.",
                 },
                 originals: [
-                  { word: "παλιγγενεσία", translit: "palingenesía", meaning: "'regeneração, novo começo' — a mesma realidade que Jesus chama de 'nascer de novo' em João 3", lang: "grego" },
+                  {
+                    word: "παλιγγενεσία",
+                    translit: "palingenesía",
+                    meaning:
+                      "'regeneração, novo começo' — a mesma realidade que Jesus chama de 'nascer de novo' em João 3",
+                    lang: "grego",
+                  },
                 ],
               },
               {
@@ -305,19 +403,31 @@ const novoConvertido: Trail = {
                   NVI: "Darei a vocês um novo coração e porei um novo espírito em vocês; tirarei de vocês o coração de pedra e lhes darei um coração de carne.",
                 },
                 originals: [
-                  { word: "לֵב", translit: "lev", meaning: "'coração' — no hebraico, sede da vontade e do afeto, não só emoção; Deus troca o núcleo endurecido da pessoa por um coração vivo", lang: "hebraico" },
+                  {
+                    word: "לֵב",
+                    translit: "lev",
+                    meaning:
+                      "'coração' — no hebraico, sede da vontade e do afeto, não só emoção; Deus troca o núcleo endurecido da pessoa por um coração vivo",
+                    lang: "hebraico",
+                  },
                 ],
               },
             ],
             additionalKeywords: [
-              { word: "παλιγγενεσία", translit: "palingenesía", meaning: "'regeneração, novo começo'. Termo usado em Tito 3:5 para descrever o lavar renovador do Espírito — a mesma realidade que Jesus chama de 'nascer de novo' em João 3.", lang: "grego" },
+              {
+                word: "παλιγγενεσία",
+                translit: "palingenesía",
+                meaning:
+                  "'regeneração, novo começo'. Termo usado em Tito 3:5 para descrever o lavar renovador do Espírito — a mesma realidade que Jesus chama de 'nascer de novo' em João 3.",
+                lang: "grego",
+              },
             ],
             historicalContext:
               "Nicodemos era fariseu e 'mestre de Israel' (João 3:10) — alguém treinado para explicar as Escrituras a outros. Jesus provavelmente alude a Ezequiel 36:25-27, onde Deus promete um dia aspergir água pura sobre o povo, dar-lhe um coração novo e colocar seu Espírito nele. Um mestre da lei deveria reconhecer essa promessa profética. A surpresa de Nicodemos não é por desconhecer a ideia de renovação espiritual, mas por não ter percebido que essa promessa profética precisava se cumprir nele mesmo, um judeu religioso e não apenas nos gentios distantes.",
             exegeticalNotes:
               "A expressão 'nascer da água e do Espírito' (João 3:5) tem sido lida de formas diferentes ao longo da história da Igreja: alguns veem uma referência ao batismo cristão; outros, ecoando Ezequiel 36, entendem 'água' como imagem de purificação espiritual paralela ao 'Espírito', descrevendo uma única realidade de limpeza e regeneração, não dois eventos separados. Esta segunda leitura tem a vantagem de manter coerência com o contexto imediato, que é sobre nascimento espiritual, não sobre um rito.",
             theologicalDebate:
-              "Um tema em que cristãos fiéis historicamente divergem é a ordem entre a regeneração (o novo nascimento) e a fé: tradições reformadas ensinam que a regeneração é obra soberana do Espírito que precede e capacita a fé (o cego passa a ver antes de escolher olhar); tradições arminianas — à qual esta trilha está mais alinhada — ensinam que a graça preveniente de Deus capacita toda pessoa a responder livremente ao chamado do Evangelho, e a fé e o novo nascimento acontecem de forma unida nesse instante de resposta. Em ambas as tradições, a ênfase central desta lição permanece verdadeira e inegociável: o novo nascimento é obra de Deus, não conquista humana. Esta é uma questão importante, mas secundária — vale a pena estudá-la com seu pastor ou líder de discipulado.",
+              "Um tema em que cristãos fiéis historicamente divergem é a ordem entre a regeneração (o novo nascimento) e a fé: tradições reformadas ensinam que a regeneração é obra soberana do Espírito que precede e capacita a fé (o cego passa a ver antes de escolher olhar); esta lição segue a ênfase de que a graça preveniente de Deus capacita toda pessoa a responder livremente ao chamado do Evangelho, e a fé e o novo nascimento acontecem de forma unida nesse instante de resposta. Em ambas as leituras, a ênfase central desta lição permanece verdadeira e inegociável: o novo nascimento é obra de Deus, não conquista humana. Esta é uma questão importante, mas secundária — vale a pena estudá-la com seu pastor ou líder de discipulado.",
             secondQuote: {
               author: "John Wesley",
               text: "O novo nascimento é aquela grande mudança que Deus opera na alma quando a traz à vida em Cristo, transformando-a de morte espiritual em vida espiritual.",
@@ -344,7 +454,8 @@ const novoConvertido: Trail = {
                 "'Antigo' e 'moderno'",
               ],
               correctIndex: 1,
-              explanation: "Jesus usa 'anōthen' intencionalmente: o novo nascimento é uma origem nova e celestial.",
+              explanation:
+                "Jesus usa 'anōthen' intencionalmente: o novo nascimento é uma origem nova e celestial.",
             },
             {
               question: "Segundo 2 Coríntios 5:17, ser 'nova criação' significa:",
@@ -387,7 +498,13 @@ const novoConvertido: Trail = {
                 NVT: "Escrevi estas coisas a vocês, que creem no nome do Filho de Deus, para que saibam que têm vida eterna.",
               },
               originals: [
-                { word: "οἴδατε", translit: "oidate", meaning: "'sabeis' — conhecimento firme e consciente, não impressão vaga ou sentimento passageiro", lang: "grego" },
+                {
+                  word: "οἴδατε",
+                  translit: "oidate",
+                  meaning:
+                    "'sabeis' — conhecimento firme e consciente, não impressão vaga ou sentimento passageiro",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -399,14 +516,37 @@ const novoConvertido: Trail = {
                 NVT: "O próprio Espírito Santo se une ao nosso espírito para afirmar que somos filhos de Deus.",
               },
               originals: [
-                { word: "συμμαρτυρεῖ", translit: "symmartyrei", meaning: "testifica junto com, corrobora ao lado", lang: "grego" },
+                {
+                  word: "συμμαρτυρεῖ",
+                  translit: "symmartyrei",
+                  meaning: "testifica junto com, corrobora ao lado",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "οἴδατε", translit: "oidate", meaning: "'sabeis' — conhecimento firme, não mera opinião. João não escreve para você sentir, mas para você saber.", lang: "grego" },
-            { word: "συμμαρτυρεῖ", translit: "symmartyrei", meaning: "'testifica junto com'. O prefixo 'syn-' significa 'com' — o Espírito não testemunha sozinho; corrobora com sua consciência renovada.", lang: "grego" },
-            { word: "τέκνα", translit: "tékna", meaning: "'filhos' — laço de nascimento, não apenas adoção legal. Você é filho pelo mesmo ato do novo nascimento.", lang: "grego" },
+            {
+              word: "οἴδατε",
+              translit: "oidate",
+              meaning:
+                "'sabeis' — conhecimento firme, não mera opinião. João não escreve para você sentir, mas para você saber.",
+              lang: "grego",
+            },
+            {
+              word: "συμμαρτυρεῖ",
+              translit: "symmartyrei",
+              meaning:
+                "'testifica junto com'. O prefixo 'syn-' significa 'com' — o Espírito não testemunha sozinho; corrobora com sua consciência renovada.",
+              lang: "grego",
+            },
+            {
+              word: "τέκνα",
+              translit: "tékna",
+              meaning:
+                "'filhos' — laço de nascimento, não apenas adoção legal. Você é filho pelo mesmo ato do novo nascimento.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "João escreve para que você 'saiba' — não sinta apenas, mas saiba. A segurança tem duas testemunhas: a Palavra escrita (você creu no nome do Filho, e a promessa é firme) e o Espírito (que 'symmartyrei' — testifica junto). Sentimentos oscilam; essas duas testemunhas não. Quando a dúvida bate, o caminho não é buscar mais emoção, mas voltar às testemunhas: o que Deus disse na Palavra, e o que o Espírito confirma no íntimo — um desejo por Deus, uma tristeza pelo pecado, uma inclinação para as coisas do alto que antes não existia. Essas marcas, ainda que pequenas, são obra do Espírito e não podem ser forjadas pela carne.",
@@ -423,7 +563,13 @@ const novoConvertido: Trail = {
                   NVI: "Eu lhes dou a vida eterna, e elas jamais perecerão; ninguém as arrancará da minha mão. Meu Pai, que as deu para mim, é maior do que todos; ninguém pode arrancá-las da mão de meu Pai.",
                 },
                 originals: [
-                  { word: "ἁρπάσει", translit: "harpásei", meaning: "'arrebatar à força' — verbo forte que garante que ninguém arranca o crente da mão que o segura", lang: "grego" },
+                  {
+                    word: "ἁρπάσει",
+                    translit: "harpásei",
+                    meaning:
+                      "'arrebatar à força' — verbo forte que garante que ninguém arranca o crente da mão que o segura",
+                    lang: "grego",
+                  },
                 ],
               },
               {
@@ -432,19 +578,31 @@ const novoConvertido: Trail = {
                   NVI: "Examinem-se a vocês mesmos, para ver se estão na fé; provem-se a vocês mesmos. Vocês não reconhecem que Cristo Jesus está em vocês? A menos que fracassem no exame!",
                 },
                 originals: [
-                  { word: "δοκιμάζετε", translit: "dokimázete", meaning: "'provem-se, testem a autenticidade' — o mesmo verbo usado para testar a pureza de um metal precioso", lang: "grego" },
+                  {
+                    word: "δοκιμάζετε",
+                    translit: "dokimázete",
+                    meaning:
+                      "'provem-se, testem a autenticidade' — o mesmo verbo usado para testar a pureza de um metal precioso",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
             additionalKeywords: [
-              { word: "ἁρπάσει", translit: "harpásei", meaning: "'arrebatar à força'. Jesus usa esse verbo forte em João 10:28 para garantir que ninguém — nem circunstância, nem inimigo — consegue arrancar o crente da mão que o segura.", lang: "grego" },
+              {
+                word: "ἁρπάσει",
+                translit: "harpásei",
+                meaning:
+                  "'arrebatar à força'. Jesus usa esse verbo forte em João 10:28 para garantir que ninguém — nem circunstância, nem inimigo — consegue arrancar o crente da mão que o segura.",
+                lang: "grego",
+              },
             ],
             historicalContext:
               "A doutrina da segurança do crente foi debatida com intensidade especial entre os puritanos ingleses do século XVII, que distinguiam cuidadosamente entre 'ter fé salvadora' e 'ter certeza consciente dessa fé' — reconhecendo que um cristão genuíno pode, por temporadas, viver sem plena certeza subjetiva, sem que isso signifique ausência de salvação real. Já a Reforma Protestante, de modo geral, reagiu contra o ensino medieval que tornava a certeza da salvação quase impossível para o crente comum, prendendo-a a méritos e sacramentos administrados pela Igreja; os reformadores insistiram que a segurança podia — e devia — ser buscada diretamente nas promessas de Cristo.",
             exegeticalNotes:
               "O verbo grego 'oídate' (1 João 5:13, 'saibam') pertence à mesma família de palavras que descrevem conhecimento firme e consciente, não impressão vaga. É significativo que João escreva toda a sua carta para produzir esse tipo de certeza — o texto inteiro de 1 João funciona como um conjunto de 'testes' práticos (obediência aos mandamentos, amor aos irmãos, rejeição do pecado como estilo de vida) que servem de evidência externa confirmando a realidade interna da fé.",
             theologicalDebate:
-              "Um tema em que cristãos fiéis historicamente divergem é se a salvação, uma vez recebida, pode ser perdida. Tradições reformadas defendem a perseverança dos santos ('uma vez salvo, sempre salvo'), apoiadas em textos como João 10:28-29. Tradições arminianas — à qual esta trilha está mais alinhada — reconhecem a força dessas promessas, mas também levam a sério advertências sérias do Novo Testamento (como Hebreus 6:4-6 e 10:26-29) como reais e não meramente hipotéticas, entendendo que a fé precisa perseverar até o fim para se provar genuína. Esta é uma questão doutrinária importante, mas secundária ao Evangelho — cristãos sinceros de ambos os lados concordam que a salvação é pela graça, mediante a fé em Cristo, e nenhum lado ensina que o crente deve viver com ansiedade constante sobre sua salvação. Se essa dúvida pesa sobre você, converse com seu pastor ou líder espiritual.",
+              "Um tema em que cristãos fiéis historicamente divergem é se a salvação, uma vez recebida, pode ser perdida. Tradições reformadas defendem a perseverança dos santos ('uma vez salvo, sempre salvo'), apoiadas em textos como João 10:28-29. Esta lição reconhece a força dessas promessas, mas também leva a sério advertências sérias do Novo Testamento (como Hebreus 6:4-6 e 10:26-29) como reais e não meramente hipotéticas, entendendo que a fé precisa perseverar até o fim para se provar genuína. Esta é uma questão doutrinária importante, mas secundária ao Evangelho — cristãos sinceros de ambos os lados concordam que a salvação é pela graça, mediante a fé em Cristo, e nenhum lado ensina que o crente deve viver com ansiedade constante sobre sua salvação. Se essa dúvida pesa sobre você, converse com seu pastor ou líder espiritual.",
             secondQuote: {
               author: "John Wesley",
               text: "O testemunho do Espírito é uma impressão interior na alma, pela qual o Espírito de Deus testifica diretamente ao meu espírito que sou filho de Deus.",
@@ -509,7 +667,13 @@ const novoConvertido: Trail = {
                 NVT: "Mas Jesus lhe disse: 'As Escrituras dizem: Nem só de pão viverá o homem, mas de toda palavra que procede da boca de Deus'.",
               },
               originals: [
-                { word: "ῥήματι", translit: "rhēmati", meaning: "'palavra proferida' — a Palavra viva e ativa que sai da boca de Deus, não letra morta", lang: "grego" },
+                {
+                  word: "ῥήματι",
+                  translit: "rhēmati",
+                  meaning:
+                    "'palavra proferida' — a Palavra viva e ativa que sai da boca de Deus, não letra morta",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -521,14 +685,38 @@ const novoConvertido: Trail = {
                 NVT: "A tua palavra é lâmpada que ilumina meus passos e luz que clareia meu caminho.",
               },
               originals: [
-                { word: "נֵר", translit: "nēr", meaning: "lâmpada de óleo — a que ilumina o próximo passo, não o horizonte inteiro", lang: "hebraico" },
+                {
+                  word: "נֵר",
+                  translit: "nēr",
+                  meaning:
+                    "lâmpada de óleo — a que ilumina o próximo passo, não o horizonte inteiro",
+                  lang: "hebraico",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "נֵר", translit: "nēr", meaning: "lâmpada portátil de óleo. Não é holofote — é a luz próxima que revela o próximo passo. Deus ilumina hoje, não amanhã inteiro.", lang: "hebraico" },
-            { word: "רֶגֶל", translit: "regel", meaning: "pé, passo. A Palavra guia o caminhar concreto, não apenas o pensamento abstrato.", lang: "hebraico" },
-            { word: "ῥήματι", translit: "rhēmati", meaning: "'palavra proferida' — a Palavra viva e ativa que sai da boca de Deus, não letra morta.", lang: "grego" },
+            {
+              word: "נֵר",
+              translit: "nēr",
+              meaning:
+                "lâmpada portátil de óleo. Não é holofote — é a luz próxima que revela o próximo passo. Deus ilumina hoje, não amanhã inteiro.",
+              lang: "hebraico",
+            },
+            {
+              word: "רֶגֶל",
+              translit: "regel",
+              meaning:
+                "pé, passo. A Palavra guia o caminhar concreto, não apenas o pensamento abstrato.",
+              lang: "hebraico",
+            },
+            {
+              word: "ῥήματι",
+              translit: "rhēmati",
+              meaning:
+                "'palavra proferida' — a Palavra viva e ativa que sai da boca de Deus, não letra morta.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "O salmista não diz que a Palavra é um holofote que ilumina o horizonte inteiro — ela é 'nēr', a lâmpada de óleo que ilumina o próximo passo. Deus raramente mostra o mapa completo; Ele mostra o próximo passo. Por isso a leitura diária: você precisa da luz de hoje, não da luz do ano que vem. E Jesus, ao ser tentado no deserto, revela que a Palavra é alimento tão essencial quanto o pão. Sem ela, o homem interior enfraquece — mesmo que o exterior pareça forte. A disciplina da leitura diária não é para ganhar aprovação de Deus, mas para receber a luz e o pão que Ele já disse que você precisa hoje.",
@@ -545,7 +733,13 @@ const novoConvertido: Trail = {
                   NVI: "Os bereanos eram mais nobres do que os tessalonicenses, pois receberam a mensagem com grande interesse e examinavam diariamente as Escrituras, para ver se as coisas eram assim mesmo.",
                 },
                 originals: [
-                  { word: "ἀνακρίνοντες", translit: "anakrínontes", meaning: "'examinando cuidadosamente' — investigação diária, padrão de leitor sério, não ouvinte passivo", lang: "grego" },
+                  {
+                    word: "ἀνακρίνοντες",
+                    translit: "anakrínontes",
+                    meaning:
+                      "'examinando cuidadosamente' — investigação diária, padrão de leitor sério, não ouvinte passivo",
+                    lang: "grego",
+                  },
                 ],
               },
               {
@@ -554,12 +748,24 @@ const novoConvertido: Trail = {
                   NVI: "Toda a Escritura é inspirada por Deus e útil para o ensino, para a repreensão, para a correção e para a instrução na justiça, para que o homem de Deus seja apto e plenamente preparado para toda boa obra.",
                 },
                 originals: [
-                  { word: "θεόπνευστος", translit: "theópneustos", meaning: "'soprada por Deus' — une theós (Deus) e pnéō (soprar); a Escritura procede do próprio fôlego de Deus", lang: "grego" },
+                  {
+                    word: "θεόπνευστος",
+                    translit: "theópneustos",
+                    meaning:
+                      "'soprada por Deus' — une theós (Deus) e pnéō (soprar); a Escritura procede do próprio fôlego de Deus",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
             additionalKeywords: [
-              { word: "ἀνακρίνοντες", translit: "anakrínontes", meaning: "'examinando cuidadosamente'. Descreve os bereanos investigando as Escrituras dia após dia, o padrão de um leitor sério, não apenas de um ouvinte passivo.", lang: "grego" },
+              {
+                word: "ἀνακρίνοντες",
+                translit: "anakrínontes",
+                meaning:
+                  "'examinando cuidadosamente'. Descreve os bereanos investigando as Escrituras dia após dia, o padrão de um leitor sério, não apenas de um ouvinte passivo.",
+                lang: "grego",
+              },
             ],
             historicalContext:
               "Durante boa parte da história da Igreja, o acesso pessoal às Escrituras foi limitado — manuscritos eram caros, a alfabetização era rara, e por séculos a Bíblia circulava principalmente em latim, uma língua que o povo comum não falava mais no dia a dia. A Reforma Protestante do século XVI, com a tradução da Bíblia para línguas vernáculas e a invenção da imprensa, devolveu ao crente comum algo que a Igreja primitiva já valorizava: o acesso direto e diário à Palavra, como se vê no elogio que Lucas faz aos bereanos em Atos 17:11, que examinavam as Escrituras por conta própria para confirmar até o ensino do apóstolo Paulo.",
@@ -583,7 +789,8 @@ const novoConvertido: Trail = {
                 "Só serve para pregação pública",
               ],
               correctIndex: 1,
-              explanation: "A palavra hebraica 'nēr' descreve a lâmpada portátil, que ilumina os passos, não o horizonte inteiro.",
+              explanation:
+                "A palavra hebraica 'nēr' descreve a lâmpada portátil, que ilumina os passos, não o horizonte inteiro.",
             },
             {
               question: "Ao citar Deuteronômio no deserto, Jesus ensina que:",
@@ -594,7 +801,8 @@ const novoConvertido: Trail = {
                 "A tentação vem sempre da fome",
               ],
               correctIndex: 1,
-              explanation: "Sem a Palavra, o homem interior enfraquece — mesmo com o corpo bem alimentado.",
+              explanation:
+                "Sem a Palavra, o homem interior enfraquece — mesmo com o corpo bem alimentado.",
             },
           ],
           application:
@@ -626,7 +834,12 @@ const novoConvertido: Trail = {
                 NVT: "Vocês devem orar assim: 'Pai nosso, que estás no céu, santificado seja o teu nome.",
               },
               originals: [
-                { word: "Πάτερ", translit: "Páter", meaning: "Pai — intimidade familiar, não distância religiosa", lang: "grego" },
+                {
+                  word: "Πάτερ",
+                  translit: "Páter",
+                  meaning: "Pai — intimidade familiar, não distância religiosa",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -638,14 +851,38 @@ const novoConvertido: Trail = {
                 NVT: "E o Espírito Santo nos ajuda em nossa fraqueza. Por exemplo, nós não sabemos o que Deus quer que peçamos em oração, mas o Espírito Santo ora por nós com gemidos que não podem ser expressos em palavras.",
               },
               originals: [
-                { word: "στεναγμοῖς", translit: "stenagmoîs", meaning: "'gemidos' — algo mais profundo que palavras articuladas, expressando a própria compaixão de Deus por nós", lang: "grego" },
+                {
+                  word: "στεναγμοῖς",
+                  translit: "stenagmoîs",
+                  meaning:
+                    "'gemidos' — algo mais profundo que palavras articuladas, expressando a própria compaixão de Deus por nós",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "Πάτερ", translit: "Páter", meaning: "'Pai' — a palavra que a criança usava para chamar o pai em casa. Jesus autoriza intimidade filial, não formalidade religiosa.", lang: "grego" },
-            { word: "συναντιλαμβάνεται", translit: "synantilambánetai", meaning: "'ajuda pegando junto do outro lado da carga'. O Espírito não observa você orando — carrega junto.", lang: "grego" },
-            { word: "ἐντυγχάνει", translit: "entynchánei", meaning: "'intercede, encontra em favor de'. Quando você não sabe orar, alguém já está orando por você — dentro de você.", lang: "grego" },
+            {
+              word: "Πάτερ",
+              translit: "Páter",
+              meaning:
+                "'Pai' — a palavra que a criança usava para chamar o pai em casa. Jesus autoriza intimidade filial, não formalidade religiosa.",
+              lang: "grego",
+            },
+            {
+              word: "συναντιλαμβάνεται",
+              translit: "synantilambánetai",
+              meaning:
+                "'ajuda pegando junto do outro lado da carga'. O Espírito não observa você orando — carrega junto.",
+              lang: "grego",
+            },
+            {
+              word: "ἐντυγχάνει",
+              translit: "entynchánei",
+              meaning:
+                "'intercede, encontra em favor de'. Quando você não sabe orar, alguém já está orando por você — dentro de você.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "Jesus começa a oração modelo com 'Páter' — a palavra que uma criança usava para chamar seu pai em casa. Não é performance. Deus não é impressionado com vocabulário difícil; Ele é comovido por corações filiais. E quando você não souber orar (todos nós passamos por isso), Paulo garante: o Espírito ora por você. O verbo 'synantilambánetai' descreve alguém que pega o outro lado da carga junto contigo. Você não ora sozinho. Comece pequeno. Fale com o Pai como um filho — e confie que, mesmo quando as palavras falharem, o Espírito continua traduzindo o coração para Deus.",
@@ -662,7 +899,13 @@ const novoConvertido: Trail = {
                   NVI: "Certa vez Jesus estava orando em determinado lugar. Quando terminou, um de seus discípulos lhe disse: 'Senhor, ensina-nos a orar, como João ensinou aos discípulos dele'.",
                 },
                 originals: [
-                  { word: "προσεύχεσθαι", translit: "proseúchesthai", meaning: "'orar' — o pedido dos discípulos nasce ao observarem Jesus orando; querem aprender pela prática, não só pela doutrina", lang: "grego" },
+                  {
+                    word: "προσεύχεσθαι",
+                    translit: "proseúchesthai",
+                    meaning:
+                      "'orar' — o pedido dos discípulos nasce ao observarem Jesus orando; querem aprender pela prática, não só pela doutrina",
+                    lang: "grego",
+                  },
                 ],
               },
               {
@@ -671,12 +914,24 @@ const novoConvertido: Trail = {
                   NVI: "Confiem nele em todo tempo, ó povo; derramem diante dele o coração, pois Deus é o nosso refúgio.",
                 },
                 originals: [
-                  { word: "שִׁפְכוּ", translit: "shiphkû", meaning: "'derramem' — imagem de despejar algo líquido por completo; a oração convida a esvaziar o coração diante de Deus sem reter nada", lang: "hebraico" },
+                  {
+                    word: "שִׁפְכוּ",
+                    translit: "shiphkû",
+                    meaning:
+                      "'derramem' — imagem de despejar algo líquido por completo; a oração convida a esvaziar o coração diante de Deus sem reter nada",
+                    lang: "hebraico",
+                  },
                 ],
               },
             ],
             additionalKeywords: [
-              { word: "στεναγμοῖς", translit: "stenagmoîs", meaning: "'gemidos'. Palavra usada em Romanos 8:26 para descrever a intercessão do Espírito — algo mais profundo do que palavras articuladas, expressando a própria compaixão de Deus por nós.", lang: "grego" },
+              {
+                word: "στεναγμοῖς",
+                translit: "stenagmoîs",
+                meaning:
+                  "'gemidos'. Palavra usada em Romanos 8:26 para descrever a intercessão do Espírito — algo mais profundo do que palavras articuladas, expressando a própria compaixão de Deus por nós.",
+                lang: "grego",
+              },
             ],
             historicalContext:
               "No judaísmo do primeiro século, as orações formais (como a Amidá) geralmente se dirigiam a Deus com títulos de reverência distante — 'Senhor do universo', 'Rei eterno'. Chamar Deus de 'Abbá/Pai' de forma tão direta e íntima, como Jesus ensina no Pai Nosso, era incomum para os padrões religiosos da época. Os discípulos, ao pedirem 'ensina-nos a orar' (Lucas 11:1), reconheciam que havia algo distintivo na vida de oração de Jesus que eles queriam aprender.",
@@ -700,7 +955,8 @@ const novoConvertido: Trail = {
                 "Orar apenas em público",
               ],
               correctIndex: 2,
-              explanation: "'Páter' é a palavra doméstica, familiar. Jesus autoriza intimidade filial.",
+              explanation:
+                "'Páter' é a palavra doméstica, familiar. Jesus autoriza intimidade filial.",
             },
             {
               question: "Segundo Romanos 8:26, quando não sabemos orar:",
@@ -749,7 +1005,13 @@ const novoConvertido: Trail = {
                 NVT: "Transmiti a vocês o que é da mais alta importância e que também me foi passado: Cristo morreu por nossos pecados, como dizem as Escrituras. Foi sepultado e ressuscitou no terceiro dia, como dizem as Escrituras.",
               },
               originals: [
-                { word: "εὐαγγέλιον", translit: "euangélion", meaning: "'boa notícia' — anúncio público de um acontecimento que muda a realidade", lang: "grego" },
+                {
+                  word: "εὐαγγέλιον",
+                  translit: "euangélion",
+                  meaning:
+                    "'boa notícia' — anúncio público de um acontecimento que muda a realidade",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -761,7 +1023,13 @@ const novoConvertido: Trail = {
                 NVT: "Não me envergonho da Boa Nova sobre Cristo. Ela é o poder de Deus em ação, para salvar todo aquele que crê — primeiro os judeus e também os gentios.",
               },
               originals: [
-                { word: "δύναμις", translit: "dýnamis", meaning: "'poder' — força efetiva que produz resultado; origem da palavra 'dinamite'", lang: "grego" },
+                {
+                  word: "δύναμις",
+                  translit: "dýnamis",
+                  meaning:
+                    "'poder' — força efetiva que produz resultado; origem da palavra 'dinamite'",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -773,14 +1041,38 @@ const novoConvertido: Trail = {
                 NVT: "'Chegou o tempo prometido por Deus!', ele anunciava. 'O Reino de Deus está próximo! Arrependam-se dos seus pecados e creiam na Boa Nova!'",
               },
               originals: [
-                { word: "μετανοεῖτε", translit: "metanoeîte", meaning: "'mudai de mente' — reorientação profunda de pensamento, afetos e direção", lang: "grego" },
+                {
+                  word: "μετανοεῖτε",
+                  translit: "metanoeîte",
+                  meaning:
+                    "'mudai de mente' — reorientação profunda de pensamento, afetos e direção",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "εὐαγγέλιον", translit: "euangélion", meaning: "'boa notícia'. No mundo romano, o anúncio da vitória ou da coroação de um imperador. Para Paulo, o anúncio de que Jesus é o verdadeiro Rei que venceu o pecado e a morte.", lang: "grego" },
-            { word: "δύναμις", translit: "dýnamis", meaning: "'poder efetivo'. O Evangelho não é apenas informação — é força de Deus que produz salvação real em quem crê.", lang: "grego" },
-            { word: "πίστις", translit: "pístis", meaning: "'fé, confiança'. Não é assentimento intelectual apenas, mas descanso confiante em Cristo e naquilo que Ele fez.", lang: "grego" },
+            {
+              word: "εὐαγγέλιον",
+              translit: "euangélion",
+              meaning:
+                "'boa notícia'. No mundo romano, o anúncio da vitória ou da coroação de um imperador. Para Paulo, o anúncio de que Jesus é o verdadeiro Rei que venceu o pecado e a morte.",
+              lang: "grego",
+            },
+            {
+              word: "δύναμις",
+              translit: "dýnamis",
+              meaning:
+                "'poder efetivo'. O Evangelho não é apenas informação — é força de Deus que produz salvação real em quem crê.",
+              lang: "grego",
+            },
+            {
+              word: "πίστις",
+              translit: "pístis",
+              meaning:
+                "'fé, confiança'. Não é assentimento intelectual apenas, mas descanso confiante em Cristo e naquilo que Ele fez.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "John Stott dizia que o Evangelho tem três tempos verbais: passado, presente e futuro. No passado, Cristo morreu e ressuscitou por nós — é fato histórico consumado. No presente, esse mesmo Evangelho continua sendo 'dýnamis' de Deus para salvação — não é apenas o portal por onde entramos na fé, mas o poder que nos sustenta nela. No futuro, esse Evangelho aponta para o Reino que virá em plenitude quando Cristo voltar. Muitos cristãos tratam o Evangelho como algo apenas para não-convertidos — uma espécie de porta de entrada. Mas o Novo Testamento apresenta o Evangelho como o próprio ar que respiramos. Paulo escreve aos cristãos de Roma, gente já convertida, dizendo que quer pregar o Evangelho a eles (Romanos 1:15). Nós nunca deixamos de precisar dele. Toda vez que a culpa acusa, voltamos ao Evangelho. Toda vez que o orgulho infla, voltamos ao Evangelho. Toda vez que o cansaço bate, voltamos ao Evangelho. Ele não é o ABC da fé — ele é a fé inteira, do primeiro dia ao último.",
@@ -797,7 +1089,13 @@ const novoConvertido: Trail = {
                   NVI: "Como são belos, sobre os montes, os pés daquele que traz boas novas, que proclama a paz, que anuncia boas novas, que proclama a salvação, que diz a Sião: 'O teu Deus reina!'",
                 },
                 originals: [
-                  { word: "מְבַשֵּׂר", translit: "mevasser", meaning: "'aquele que anuncia boas novas' — termo hebraico que prepara, séculos antes, o vocabulário do 'euangélion' do Novo Testamento", lang: "hebraico" },
+                  {
+                    word: "מְבַשֵּׂר",
+                    translit: "mevasser",
+                    meaning:
+                      "'aquele que anuncia boas novas' — termo hebraico que prepara, séculos antes, o vocabulário do 'euangélion' do Novo Testamento",
+                    lang: "hebraico",
+                  },
                 ],
               },
               {
@@ -806,12 +1104,24 @@ const novoConvertido: Trail = {
                   NVI: "O Espírito do Senhor está sobre mim, porque ele me ungiu para pregar boas novas aos pobres. Ele me enviou para proclamar liberdade aos presos e recuperação da vista aos cegos, para libertar os oprimidos.",
                 },
                 originals: [
-                  { word: "εὐαγγελίσασθαι", translit: "euangelísasthai", meaning: "'anunciar boas novas' — forma verbal de euangélion; Jesus aplica a si mesmo a profecia de Isaías 61 no início do ministério", lang: "grego" },
+                  {
+                    word: "εὐαγγελίσασθαι",
+                    translit: "euangelísasthai",
+                    meaning:
+                      "'anunciar boas novas' — forma verbal de euangélion; Jesus aplica a si mesmo a profecia de Isaías 61 no início do ministério",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
             additionalKeywords: [
-              { word: "מְבַשֵּׂר", translit: "mevasser", meaning: "'aquele que anuncia boas novas'. Termo hebraico de Isaías 52:7 que prepara, séculos antes, o vocabulário que o Novo Testamento usará para descrever o anúncio do Evangelho.", lang: "hebraico" },
+              {
+                word: "מְבַשֵּׂר",
+                translit: "mevasser",
+                meaning:
+                  "'aquele que anuncia boas novas'. Termo hebraico de Isaías 52:7 que prepara, séculos antes, o vocabulário que o Novo Testamento usará para descrever o anúncio do Evangelho.",
+                lang: "hebraico",
+              },
             ],
             historicalContext:
               "No mundo greco-romano do primeiro século, 'euangélion' já era palavra conhecida fora dos círculos religiosos: usava-se para anunciar publicamente vitórias militares, o nascimento de um herdeiro imperial ou a ascensão de um novo César ao trono — como registra, por exemplo, a inscrição do calendário de Priene (9 a.C.), que chama o nascimento do imperador Augusto de 'boa notícia (euangelion) para o mundo'. Quando os apóstolos anunciam o 'evangelho de Jesus Cristo', eles usam deliberadamente essa linguagem política de proclamação real — dizendo, em contraste direto com César, que o verdadeiro Rei e Senhor do mundo é Jesus.",
@@ -834,7 +1144,8 @@ const novoConvertido: Trail = {
                 "Um sinônimo de milagre",
               ],
               correctIndex: 1,
-              explanation: "'Euangélion' era o anúncio de vitórias ou da coroação de um imperador. O Novo Testamento usa a palavra para dizer: Jesus é o verdadeiro Rei, e a notícia da sua vitória precisa ser proclamada.",
+              explanation:
+                "'Euangélion' era o anúncio de vitórias ou da coroação de um imperador. O Novo Testamento usa a palavra para dizer: Jesus é o verdadeiro Rei, e a notícia da sua vitória precisa ser proclamada.",
             },
             {
               question: "Segundo 1 Coríntios 15:3-4, o conteúdo central do Evangelho é:",
@@ -845,7 +1156,8 @@ const novoConvertido: Trail = {
                 "Uma promessa de prosperidade material",
               ],
               correctIndex: 1,
-              explanation: "Paulo entrega esses fatos como 'de primeira importância'. O Evangelho é história antes de ser aplicação.",
+              explanation:
+                "Paulo entrega esses fatos como 'de primeira importância'. O Evangelho é história antes de ser aplicação.",
             },
             {
               question: "Em Romanos 1:16, Paulo diz que o Evangelho é 'dýnamis' de Deus, isto é:",
@@ -856,7 +1168,8 @@ const novoConvertido: Trail = {
                 "Uma técnica para ter uma vida melhor",
               ],
               correctIndex: 1,
-              explanation: "'Dýnamis' aponta para força que produz resultado real. O Evangelho salva de fato quem crê.",
+              explanation:
+                "'Dýnamis' aponta para força que produz resultado real. O Evangelho salva de fato quem crê.",
             },
           ],
           application:
@@ -888,7 +1201,13 @@ const novoConvertido: Trail = {
                 NVT: "Antes mesmo de criar o mundo, Deus nos amou e nos escolheu em Cristo para sermos santos e irrepreensíveis diante dele. Deus decidiu de antemão que nos adotaria em sua própria família, trazendo-nos a si mesmo por meio de Jesus Cristo. Isso lhe deu enorme prazer.",
               },
               originals: [
-                { word: "υἱοθεσία", translit: "huiothesía", meaning: "'adoção como filho' — ato jurídico irrevogável no mundo greco-romano, conferindo nome, herança e status permanente", lang: "grego" },
+                {
+                  word: "υἱοθεσία",
+                  translit: "huiothesía",
+                  meaning:
+                    "'adoção como filho' — ato jurídico irrevogável no mundo greco-romano, conferindo nome, herança e status permanente",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -900,7 +1219,13 @@ const novoConvertido: Trail = {
                 NVT: "Vocês não receberam de Deus um espírito que os torne outra vez escravos do medo; receberam, ao contrário, o Espírito de Deus, quando ele os adotou como seus próprios filhos. E, pelo Espírito, dizemos: 'Aba, Pai'.",
               },
               originals: [
-                { word: "Ἀββά", translit: "Abbá", meaning: "termo aramaico íntimo pelo qual um filho chamava o pai; carrega ternura, confiança e proximidade", lang: "grego" },
+                {
+                  word: "Ἀββά",
+                  translit: "Abbá",
+                  meaning:
+                    "termo aramaico íntimo pelo qual um filho chamava o pai; carrega ternura, confiança e proximidade",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -912,15 +1237,45 @@ const novoConvertido: Trail = {
                 NVT: "Mas, a todos que creram nele e o aceitaram, ele deu o direito de se tornarem filhos de Deus.",
               },
               originals: [
-                { word: "τέκνα", translit: "tékna", meaning: "'filhos' pelo laço de nascimento; termo afetivo que sublinha o vínculo familiar real", lang: "grego" },
-                { word: "ἐξουσίαν", translit: "exousían", meaning: "'direito, autoridade' — não capacidade humana, mas prerrogativa concedida por Deus", lang: "grego" },
+                {
+                  word: "τέκνα",
+                  translit: "tékna",
+                  meaning:
+                    "'filhos' pelo laço de nascimento; termo afetivo que sublinha o vínculo familiar real",
+                  lang: "grego",
+                },
+                {
+                  word: "ἐξουσίαν",
+                  translit: "exousían",
+                  meaning:
+                    "'direito, autoridade' — não capacidade humana, mas prerrogativa concedida por Deus",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "χάρις", translit: "cháris", meaning: "'graça' — favor totalmente imerecido. É o solo em que a adoção acontece: ninguém é adotado por mérito próprio.", lang: "grego" },
-            { word: "υἱοθεσία", translit: "huiothesía", meaning: "'adoção como filho'. No direito romano, um ato irrevogável que conferia nome, herança e identidade permanente ao adotado.", lang: "grego" },
-            { word: "Ἀββά", translit: "Abbá", meaning: "palavra aramaica que Jesus mesmo usou para se dirigir ao Pai (Marcos 14:36). Colocada em nossos lábios pelo Espírito, ela é sinal de que somos família.", lang: "grego" },
+            {
+              word: "χάρις",
+              translit: "cháris",
+              meaning:
+                "'graça' — favor totalmente imerecido. É o solo em que a adoção acontece: ninguém é adotado por mérito próprio.",
+              lang: "grego",
+            },
+            {
+              word: "υἱοθεσία",
+              translit: "huiothesía",
+              meaning:
+                "'adoção como filho'. No direito romano, um ato irrevogável que conferia nome, herança e identidade permanente ao adotado.",
+              lang: "grego",
+            },
+            {
+              word: "Ἀββά",
+              translit: "Abbá",
+              meaning:
+                "palavra aramaica que Jesus mesmo usou para se dirigir ao Pai (Marcos 14:36). Colocada em nossos lábios pelo Espírito, ela é sinal de que somos família.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "A graça abre caminho para a adoção, e a adoção é onde a graça alcança seu ápice. Paulo escolhe a palavra 'huiothesía' com precisão jurídica: no mundo romano, o filho adotivo assumia um novo nome, entrava numa nova linhagem, herdava plenamente e não podia ser deserdado. Aplicado à salvação, isso significa que Deus não te deu apenas um perdão — Ele te deu um sobrenome. Você chama-se, agora, filho. E, mais impressionante ainda, o Espírito Santo põe nos seus lábios a mesma palavra que Jesus usou no Getsêmani: 'Abbá' (Marcos 14:36). É o vocabulário familiar da Trindade sendo emprestado a você. J. I. Packer disse que se você quer avaliar o quanto entendeu o cristianismo, pergunte-se se você pensa em Deus, e se dirige a Deus, como Pai. Se sim, você entendeu o Evangelho. Se essa palavra ainda soa estranha, distante, aterrorizante — o problema não é teológico, é filial. A boa notícia é que o próprio Espírito ensina o coração adotado a soletrar 'Abbá'. Não com esforço religioso, mas com descanso confiante. Você não precisa merecer ser filho; você já é. O que resta é aprender a viver como um.",
@@ -937,7 +1292,13 @@ const novoConvertido: Trail = {
                   NVI: "Quando Israel era menino, eu o amei, e do Egito chamei o meu filho.",
                 },
                 originals: [
-                  { word: "קָרָאתִי", translit: "qara'ti", meaning: "'eu chamei' — o mesmo verbo e padrão que Mateus 2:15 aplica profeticamente a Jesus, o Filho fiel que Israel não foi", lang: "hebraico" },
+                  {
+                    word: "קָרָאתִי",
+                    translit: "qara'ti",
+                    meaning:
+                      "'eu chamei' — o mesmo verbo e padrão que Mateus 2:15 aplica profeticamente a Jesus, o Filho fiel que Israel não foi",
+                    lang: "hebraico",
+                  },
                 ],
               },
               {
@@ -946,12 +1307,24 @@ const novoConvertido: Trail = {
                   NVI: "Vejam como é grande o amor que o Pai nos concedeu, que sejamos chamados filhos de Deus! E de fato somos! Por isso o mundo não nos conhece, porque não o conheceu.",
                 },
                 originals: [
-                  { word: "τέκνα Θεοῦ", translit: "tékna Theoú", meaning: "'filhos de Deus' — termo preferido de João, com ênfase no vínculo de nascimento, a nova criação", lang: "grego" },
+                  {
+                    word: "τέκνα Θεοῦ",
+                    translit: "tékna Theoú",
+                    meaning:
+                      "'filhos de Deus' — termo preferido de João, com ênfase no vínculo de nascimento, a nova criação",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
             additionalKeywords: [
-              { word: "τέκνα Θεοῦ", translit: "tékna Theoú", meaning: "'filhos de Deus'. Termo preferido do apóstolo João, com ênfase no vínculo de nascimento (nova criação); complementa a imagem jurídica de 'huiothesía' que Paulo usa, com ênfase no ato legal de adoção.", lang: "grego" },
+              {
+                word: "τέκνα Θεοῦ",
+                translit: "tékna Theoú",
+                meaning:
+                  "'filhos de Deus'. Termo preferido do apóstolo João, com ênfase no vínculo de nascimento (nova criação); complementa a imagem jurídica de 'huiothesía' que Paulo usa, com ênfase no ato legal de adoção.",
+                lang: "grego",
+              },
             ],
             historicalContext:
               "No mundo romano, a adoção de um herdeiro era prática comum entre famílias de posição social, e nem sempre envolvia crianças: o caso mais famoso da história romana é a adoção de Otávio (o futuro imperador Augusto) por Júlio César, que o tornou herdeiro legal pleno, com novo nome e status, apesar de Otávio já ser adulto. Esse pano de fundo cultural ilumina por que Paulo escolhe a linguagem de adoção, e não apenas de nascimento, para descrever nossa nova relação com Deus: ela enfatiza uma decisão deliberada e um ato legal, não apenas um evento biológico.",
@@ -974,7 +1347,8 @@ const novoConvertido: Trail = {
                 "Uma prática ritual do Antigo Testamento",
               ],
               correctIndex: 1,
-              explanation: "No mundo romano, a adoção era irrevogável: um pai podia deserdar um filho biológico, mas jamais um filho adotivo. Paulo usa essa força jurídica para descrever nossa segurança em Deus.",
+              explanation:
+                "No mundo romano, a adoção era irrevogável: um pai podia deserdar um filho biológico, mas jamais um filho adotivo. Paulo usa essa força jurídica para descrever nossa segurança em Deus.",
             },
             {
               question: "Segundo Romanos 8:15, o Espírito Santo produz no filho adotado:",
@@ -985,7 +1359,8 @@ const novoConvertido: Trail = {
                 "Uma sensação vaga de espiritualidade",
               ],
               correctIndex: 1,
-              explanation: "O mesmo Espírito que estava sobre Jesus no Getsêmani coloca em seus lábios a mesma palavra íntima: 'Abbá'. É sinal de família, não de escravidão.",
+              explanation:
+                "O mesmo Espírito que estava sobre Jesus no Getsêmani coloca em seus lábios a mesma palavra íntima: 'Abbá'. É sinal de família, não de escravidão.",
             },
             {
               question: "A diferença entre viver como servo e viver como filho de Deus é:",
@@ -996,7 +1371,8 @@ const novoConvertido: Trail = {
                 "O servo tem mais herança",
               ],
               correctIndex: 1,
-              explanation: "A adoção não anula a obediência — ela muda o motivo. Filhos obedecem por amor, não por medo.",
+              explanation:
+                "A adoção não anula a obediência — ela muda o motivo. Filhos obedecem por amor, não por medo.",
             },
           ],
           application:
@@ -1034,7 +1410,12 @@ const novoConvertido: Trail = {
                 NVT: "Todos os credores se dedicavam com fervor ao ensino dos apóstolos, à vida em comunidade, à Ceia do Senhor e às orações.",
               },
               originals: [
-                { word: "κοινωνία", translit: "koinōnía", meaning: "comunhão, participação compartilhada, vida em comum", lang: "grego" },
+                {
+                  word: "κοινωνία",
+                  translit: "koinōnía",
+                  meaning: "comunhão, participação compartilhada, vida em comum",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -1046,12 +1427,24 @@ const novoConvertido: Trail = {
                 NVT: "Também vamos pensar em maneiras de estimular uns aos outros a atos de amor e boas obras. E não deixemos de nos reunir, como é costume de alguns, mas encorajemo-nos uns aos outros, principalmente agora que o dia da volta do Senhor está se aproximando.",
               },
               originals: [
-                { word: "κατανοῶμεν", translit: "katanoōmen", meaning: "'consideremos, observemos atentamente' — olhar propositado para as necessidades do outro, não relance distraído", lang: "grego" },
+                {
+                  word: "κατανοῶμεν",
+                  translit: "katanoōmen",
+                  meaning:
+                    "'consideremos, observemos atentamente' — olhar propositado para as necessidades do outro, não relance distraído",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "κοινωνία", translit: "koinōnía", meaning: "'comunhão'. Não é sinônimo de socializar — descreve participação real e compartilhada na vida, nos recursos e no sofrimento uns dos outros.", lang: "grego" },
+            {
+              word: "κοινωνία",
+              translit: "koinōnía",
+              meaning:
+                "'comunhão'. Não é sinônimo de socializar — descreve participação real e compartilhada na vida, nos recursos e no sofrimento uns dos outros.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "'Koinōnía' aparece em Atos 2:42 ao lado de três outras práticas — ensino, partir do pão, orações — como parte do mesmo pacote da vida cristã inicial, não como opcional avançado. E o contexto de Hebreus 10:24-25 é revelador: o autor não manda simplesmente 'não faltar aos cultos' — ele conecta a reunião com um propósito específico, 'incentivar-nos ao amor e às boas obras' e 'encorajar-nos uns aos outros'. Ou seja, a igreja existe para que crentes ativamente cuidem uns dos outros, não apenas para que ouçam uma pregação em silêncio e vão embora. Um cristão que evita a igreja local não está apenas perdendo um benefício espiritual — está retirando de si mesmo um dos meios que Deus escolheu para sua própria santificação, e retirando de outros o cuidado que ele deveria oferecer.",
@@ -1070,7 +1463,8 @@ const novoConvertido: Trail = {
           },
           quizzes: [
             {
-              question: "Segundo Atos 2:42, o que caracterizava a vida dos primeiros convertidos, além da fé pessoal?",
+              question:
+                "Segundo Atos 2:42, o que caracterizava a vida dos primeiros convertidos, além da fé pessoal?",
               options: [
                 "Isolamento para estudo bíblico individual",
                 "Perseverança conjunta no ensino, na comunhão, no partir do pão e nas orações",
@@ -1078,10 +1472,12 @@ const novoConvertido: Trail = {
                 "Dependência exclusiva dos apóstolos para tudo",
               ],
               correctIndex: 1,
-              explanation: "A vida cristã nasceu, desde o início, como vida compartilhada — não como prática individual isolada.",
+              explanation:
+                "A vida cristã nasceu, desde o início, como vida compartilhada — não como prática individual isolada.",
             },
             {
-              question: "Um cristão que diz 'minha fé é só entre mim e Deus, não preciso de igreja' está em desacordo com qual ensino bíblico central desta lição?",
+              question:
+                "Um cristão que diz 'minha fé é só entre mim e Deus, não preciso de igreja' está em desacordo com qual ensino bíblico central desta lição?",
               options: [
                 "Com nenhum — essa é uma posição bíblica legítima",
                 "Com o padrão do Novo Testamento, no qual a conversão insere o crente num corpo, e a comunhão é meio de crescimento e cuidado mútuo",
@@ -1089,10 +1485,12 @@ const novoConvertido: Trail = {
                 "Com a doutrina da salvação apenas pela graça",
               ],
               correctIndex: 1,
-              explanation: "Hebreus 10:24-25 e Atos 2:42 mostram que a comunhão não é acessório — é parte do desenho bíblico da vida cristã.",
+              explanation:
+                "Hebreus 10:24-25 e Atos 2:42 mostram que a comunhão não é acessório — é parte do desenho bíblico da vida cristã.",
             },
             {
-              question: "Por que o autor de Hebreus manda os crentes 'não abandonar a nossa congregação'?",
+              question:
+                "Por que o autor de Hebreus manda os crentes 'não abandonar a nossa congregação'?",
               options: [
                 "Apenas por tradição religiosa, sem propósito declarado",
                 "Para que se incentivem mutuamente ao amor e às boas obras, especialmente diante da pressão e da perseguição",
@@ -1100,7 +1498,8 @@ const novoConvertido: Trail = {
                 "Porque a Bíblia proíbe qualquer tempo a sós com Deus",
               ],
               correctIndex: 1,
-              explanation: "O propósito da reunião é explicitamente relacional e mútuo — incentivo e encorajamento uns aos outros.",
+              explanation:
+                "O propósito da reunião é explicitamente relacional e mútuo — incentivo e encorajamento uns aos outros.",
             },
           ],
           application:
@@ -1132,7 +1531,13 @@ const novoConvertido: Trail = {
                 NVT: "Vocês não sabem que, quando fomos batizados para nos unirmos a Cristo Jesus, todos nós fomos batizados em sua morte? Pois fomos sepultados com Cristo pelo batismo na morte. E, assim como Cristo foi ressuscitado dos mortos pela glória gloriosa do Pai, agora nós também podemos viver uma vida nova.",
               },
               originals: [
-                { word: "βαπτίζω", translit: "baptízō", meaning: "imergir, mergulhar completamente — a imagem visual de ser submerso e emergir", lang: "grego" },
+                {
+                  word: "βαπτίζω",
+                  translit: "baptízō",
+                  meaning:
+                    "imergir, mergulhar completamente — a imagem visual de ser submerso e emergir",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -1142,12 +1547,24 @@ const novoConvertido: Trail = {
                 NAA: "E, indo eles caminhando, chegaram a um lugar onde havia água. Então, disse o eunuco: — Eis aqui água; que impede que eu seja batizado? [...] E desceram ambos à água, tanto Filipe como o eunuco, e Filipe o batizou.",
               },
               originals: [
-                { word: "κωλύει", translit: "kōlýei", meaning: "'impede, é obstáculo' — pergunta retórica do eunuco: nada deveria bloquear o batismo de quem já creu", lang: "grego" },
+                {
+                  word: "κωλύει",
+                  translit: "kōlýei",
+                  meaning:
+                    "'impede, é obstáculo' — pergunta retórica do eunuco: nada deveria bloquear o batismo de quem já creu",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "βαπτίζω", translit: "baptízō", meaning: "'imergir, mergulhar completamente'. A própria palavra descreve o modo do batismo praticado no Novo Testamento: por imersão, não por aspersão.", lang: "grego" },
+            {
+              word: "βαπτίζω",
+              translit: "baptízō",
+              meaning:
+                "'imergir, mergulhar completamente'. A própria palavra descreve o modo do batismo praticado no Novo Testamento: por imersão, não por aspersão.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "Em cada caso registrado no livro de Atos, o padrão é o mesmo: uma pessoa ouve o Evangelho, crê, e é batizada — nessa ordem, e geralmente sem demora. O eunuco etíope, ao ver água no caminho, pergunta 'que me impede de ser batizado?' — evidência de que ele já entendia o batismo como resposta natural e imediata à fé. Isso não significa que a preparação seja dispensável: a igreja local tem a responsabilidade de instruir e acompanhar quem será batizado. O ponto é outro — é a fé, e não o acúmulo de exigências externas, que qualifica alguém para o batismo. A palavra grega 'baptízō' descrevia, no uso comum da época, o ato de mergulhar um tecido no tingimento ou afundar um navio — sempre com o sentido de submersão completa, o que explica por que diversas tradições cristãs praticam o batismo por imersão total, e não por aspersão. O significado teológico, segundo Romanos 6, não é lavagem de pecados (isso já aconteceu pela fé), mas identificação visível com a morte e ressurreição de Cristo — o crente 'morre' simbolicamente ao ser submerso, e 'ressuscita' ao emergir da água, numa encenação pública do Evangelho que ele já criu.",
@@ -1164,7 +1581,13 @@ const novoConvertido: Trail = {
                   NVI: "Portanto, vão e façam discípulos de todas as nações, batizando-os em nome do Pai e do Filho e do Espírito Santo.",
                 },
                 originals: [
-                  { word: "βαπτίζοντες", translit: "baptízontes", meaning: "'batizando' — particípio que descreve a ação de imergir em nome da Trindade, dentro do mandato de fazer discípulos", lang: "grego" },
+                  {
+                    word: "βαπτίζοντες",
+                    translit: "baptízontes",
+                    meaning:
+                      "'batizando' — particípio que descreve a ação de imergir em nome da Trindade, dentro do mandato de fazer discípulos",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
@@ -1185,7 +1608,8 @@ const novoConvertido: Trail = {
                 "O batismo deve ser adiado por vários anos após a conversão para testar a fé",
               ],
               correctIndex: 1,
-              explanation: "Efésios 2:8-9 é claro: a salvação vem pela graça, mediante a fé. O batismo é resposta obediente e pública a essa salvação, não sua causa.",
+              explanation:
+                "Efésios 2:8-9 é claro: a salvação vem pela graça, mediante a fé. O batismo é resposta obediente e pública a essa salvação, não sua causa.",
             },
             {
               question: "O que o batismo representa, segundo Romanos 6:3-4?",
@@ -1196,10 +1620,12 @@ const novoConvertido: Trail = {
                 "A entrada automática no céu",
               ],
               correctIndex: 1,
-              explanation: "O crente 'morre' simbolicamente ao ser imerso e 'ressuscita' ao emergir — uma encenação visível do Evangelho que ele já criu.",
+              explanation:
+                "O crente 'morre' simbolicamente ao ser imerso e 'ressuscita' ao emergir — uma encenação visível do Evangelho que ele já criu.",
             },
             {
-              question: "No relato do eunuco etíope (Atos 8:36-38), o que chama atenção sobre o momento do batismo?",
+              question:
+                "No relato do eunuco etíope (Atos 8:36-38), o que chama atenção sobre o momento do batismo?",
               options: [
                 "Ele foi orientado a esperar meses antes de ser batizado",
                 "Ele foi batizado imediatamente após crer, assim que havia água disponível",
@@ -1207,7 +1633,8 @@ const novoConvertido: Trail = {
                 "Ele exigiu um exame teológico longo antes do batismo",
               ],
               correctIndex: 1,
-              explanation: "O padrão do livro de Atos é batismo como resposta imediata à fé — o que não dispensa a preparação e o acompanhamento da igreja local, mas mostra que é a fé, e não a demora, que qualifica alguém para o batismo.",
+              explanation:
+                "O padrão do livro de Atos é batismo como resposta imediata à fé — o que não dispensa a preparação e o acompanhamento da igreja local, mas mostra que é a fé, e não a demora, que qualifica alguém para o batismo.",
             },
           ],
           application:
@@ -1237,7 +1664,13 @@ const novoConvertido: Trail = {
                 NAA: "Um dos dois que ouviram João falar, seguindo a Jesus, era André, irmão de Simão Pedro. Ele foi primeiro ter com seu irmão, Simão, e lhe disse: — Achamos o Messias (que quer dizer Cristo). E o levou a Jesus.",
               },
               originals: [
-                { word: "Μεσσίας", translit: "Messías", meaning: "transliteração grega do hebraico mashíach, 'ungido'; João traduz o termo logo em seguida para seus leitores gregos", lang: "grego" },
+                {
+                  word: "Μεσσίας",
+                  translit: "Messías",
+                  meaning:
+                    "transliteração grega do hebraico mashíach, 'ungido'; João traduz o termo logo em seguida para seus leitores gregos",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -1247,7 +1680,13 @@ const novoConvertido: Trail = {
                 NAA: "Jesus, porém, não lho permitiu, mas lhe disse: — Vai para tua casa, para os teus, e anuncia-lhes quão grandes coisas te fez o Senhor e como teve compaixão de ti.",
               },
               originals: [
-                { word: "ἀνάγγειλον", translit: "anángeilon", meaning: "'anuncia, relata detalhadamente' — não um resumo genérico, mas contar especificamente o que Deus fez", lang: "grego" },
+                {
+                  word: "ἀνάγγειλον",
+                  translit: "anángeilon",
+                  meaning:
+                    "'anuncia, relata detalhadamente' — não um resumo genérico, mas contar especificamente o que Deus fez",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -1257,12 +1696,24 @@ const novoConvertido: Trail = {
                 NAA: "Mas recebereis poder ao descer sobre vós o Espírito Santo e sereis minhas testemunhas tanto em Jerusalém como em toda a Judeia e Samaria e até os confins da terra.",
               },
               originals: [
-                { word: "μάρτυς", translit: "mártys", meaning: "testemunha — a mesma raiz de onde vem a palavra 'mártir'; testemunhar pode custar caro", lang: "grego" },
+                {
+                  word: "μάρτυς",
+                  translit: "mártys",
+                  meaning:
+                    "testemunha — a mesma raiz de onde vem a palavra 'mártir'; testemunhar pode custar caro",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "μάρτυς", translit: "mártys", meaning: "'testemunha'. No grego, é a mesma palavra que originou 'mártir' — quem testemunha, no relato bíblico, frequentemente paga um preço por isso.", lang: "grego" },
+            {
+              word: "μάρτυς",
+              translit: "mártys",
+              meaning:
+                "'testemunha'. No grego, é a mesma palavra que originou 'mártir' — quem testemunha, no relato bíblico, frequentemente paga um preço por isso.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "Repare no padrão relacional do início do discipulado no Evangelho de João: André encontra Jesus e vai direto ao irmão; Filipe encontra Jesus e vai direto a Natanael (João 1:45). Nenhum dos dois espera 'estar pronto'. A ferramenta que usam não é um argumento apologético sofisticado, mas o convite mais simples possível: 'vem e vê' (João 1:46). Jesus segue esse mesmo padrão com o gadareno liberto — ele não é levado para acompanhar os discípulos em treinamento; é enviado de volta para casa, para contar aos seus. Isso ensina algo importante para quem está começando: sua missão inicial não é distante nem espetacular. Ela começa no espaço mais próximo que você tem — sua família, seus amigos, seu ambiente de trabalho — e a matéria-prima é a sua própria experiência com Cristo, contada com honestidade. Atos 1:8 amplia esse chamado para o mundo inteiro, mas note a ordem geográfica: Jerusalém primeiro — o lugar mais próximo, mais familiar, às vezes o mais difícil de todos para testemunhar.",
@@ -1279,7 +1730,13 @@ const novoConvertido: Trail = {
                   NVI: "Filipe encontrou Natanael e lhe disse: 'Achamos aquele sobre quem Moisés escreveu na Lei, e sobre quem os profetas também escreveram: Jesus de Nazaré, filho de José.' Perguntou Natanael: 'Nazaré? Pode vir alguma coisa boa de lá?' Disse Filipe: 'Vem e vê.'",
                 },
                 originals: [
-                  { word: "Ἔρχου καὶ ἴδε", translit: "Érchou kai íde", meaning: "'vem e vê' — convite simples que troca argumento por experiência direta com Jesus", lang: "grego" },
+                  {
+                    word: "Ἔρχου καὶ ἴδε",
+                    translit: "Érchou kai íde",
+                    meaning:
+                      "'vem e vê' — convite simples que troca argumento por experiência direta com Jesus",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
@@ -1292,7 +1749,8 @@ const novoConvertido: Trail = {
           },
           quizzes: [
             {
-              question: "No padrão visto em João 1 (André e Filipe), qual foi o principal método de testemunho usado?",
+              question:
+                "No padrão visto em João 1 (André e Filipe), qual foi o principal método de testemunho usado?",
               options: [
                 "Um sermão público bem estruturado",
                 "Um convite relacional simples e direto a alguém próximo: 'vem e vê'",
@@ -1300,10 +1758,12 @@ const novoConvertido: Trail = {
                 "A distribuição de panfletos",
               ],
               correctIndex: 1,
-              explanation: "O testemunho inicial no Evangelho de João acontece de pessoa para pessoa, dentro de relações já existentes — irmão para irmão, amigo para amigo.",
+              explanation:
+                "O testemunho inicial no Evangelho de João acontece de pessoa para pessoa, dentro de relações já existentes — irmão para irmão, amigo para amigo.",
             },
             {
-              question: "Por que Jesus enviou o gadareno liberto de volta para casa, em vez de levá-lo para acompanhar os discípulos (Marcos 5:19)?",
+              question:
+                "Por que Jesus enviou o gadareno liberto de volta para casa, em vez de levá-lo para acompanhar os discípulos (Marcos 5:19)?",
               options: [
                 "Porque ele não era digno de seguir Jesus",
                 "Para que ele testemunhasse primeiro no espaço mais próximo e familiar que já tinha",
@@ -1311,10 +1771,12 @@ const novoConvertido: Trail = {
                 "Porque a família dele exigiu isso",
               ],
               correctIndex: 1,
-              explanation: "A missão inicial começa no lugar mais próximo — família e conhecidos — antes de qualquer alcance mais distante.",
+              explanation:
+                "A missão inicial começa no lugar mais próximo — família e conhecidos — antes de qualquer alcance mais distante.",
             },
             {
-              question: "Qual é a diferença entre o chamado geral ao testemunho e o dom espiritual de evangelista, segundo a lição?",
+              question:
+                "Qual é a diferença entre o chamado geral ao testemunho e o dom espiritual de evangelista, segundo a lição?",
               options: [
                 "Não existe diferença — são a mesma coisa",
                 "Todo crente é chamado a testemunhar sua própria história; nem todos recebem o dom específico de evangelista vocacionado",
@@ -1322,7 +1784,8 @@ const novoConvertido: Trail = {
                 "O dom de evangelista substitui a necessidade de testemunho pessoal",
               ],
               correctIndex: 1,
-              explanation: "Efésios 4:11 descreve o dom de evangelista como específico a alguns; mas o chamado a testemunhar (Atos 1:8) é para toda a igreja.",
+              explanation:
+                "Efésios 4:11 descreve o dom de evangelista como específico a alguns; mas o chamado a testemunhar (Atos 1:8) é para toda a igreja.",
             },
           ],
           application:
@@ -1352,13 +1815,25 @@ import { comoSerLider } from "./como-ser-lider";
 // Trilhas em preparação — títulos e descrições, sem lições ainda.
 const upcoming: Trail[] = [];
 
-export const trails: Trail[] = [novoConvertido, ...additionalTrails3, ...additionalTrails, ...additionalTrails2, ...additionalTrails4, ...additionalTrails5, ...additionalTrails6, ...additionalTrails7, comoSerLider, ...upcoming]
-  .sort((a, b) => a.order - b.order);
+export const trails: Trail[] = [
+  novoConvertido,
+  ...additionalTrails3,
+  ...additionalTrails,
+  ...additionalTrails2,
+  ...additionalTrails4,
+  ...additionalTrails5,
+  ...additionalTrails6,
+  ...additionalTrails7,
+  comoSerLider,
+  ...upcoming,
+].sort((a, b) => a.order - b.order);
 
 export const trailById = (id: string) => trails.find((t) => t.id === id);
 
 export const allLessons = (): { trail: Trail; module: ModuleT; lesson: Lesson }[] =>
-  trails.flatMap((t) => t.modules.flatMap((m) => m.lessons.map((l) => ({ trail: t, module: m, lesson: l }))));
+  trails.flatMap((t) =>
+    t.modules.flatMap((m) => m.lessons.map((l) => ({ trail: t, module: m, lesson: l }))),
+  );
 
 export const lessonById = (id: string) => allLessons().find((x) => x.lesson.id === id);
 
@@ -1373,11 +1848,46 @@ export type StudyItem = {
 };
 
 export const studies: StudyItem[] = [
-  { id: "s1", title: "Plano de Leitura Anual (Cronológico)", description: "Leia a Bíblia inteira em 365 dias, em ordem histórica.", category: "Plano de Leitura", minutes: 15, icon: "CalendarDays" },
-  { id: "s2", title: "Salmos para dias difíceis", description: "10 salmos comentados para momentos de angústia.", category: "Estudo Bíblico", minutes: 20, icon: "HeartCrack" },
-  { id: "s3", title: "Meditação guiada — Sermão do Monte", description: "Deixe a IA te guiar por Mateus 5 em oração silenciosa.", category: "Meditação IA", minutes: 10, icon: "Wind" },
-  { id: "s4", title: "O Evangelho segundo João em 21 dias", description: "Um capítulo por dia, com perguntas de reflexão.", category: "Plano de Leitura", minutes: 12, icon: "BookMarked" },
-  { id: "s5", title: "As parábolas do Reino", description: "Estudo temático das principais parábolas de Jesus.", category: "Estudo Bíblico", minutes: 25, icon: "Wheat" },
+  {
+    id: "s1",
+    title: "Plano de Leitura Anual (Cronológico)",
+    description: "Leia a Bíblia inteira em 365 dias, em ordem histórica.",
+    category: "Plano de Leitura",
+    minutes: 15,
+    icon: "CalendarDays",
+  },
+  {
+    id: "s2",
+    title: "Salmos para dias difíceis",
+    description: "10 salmos comentados para momentos de angústia.",
+    category: "Estudo Bíblico",
+    minutes: 20,
+    icon: "HeartCrack",
+  },
+  {
+    id: "s3",
+    title: "Meditação guiada — Sermão do Monte",
+    description: "Deixe a IA te guiar por Mateus 5 em oração silenciosa.",
+    category: "Meditação IA",
+    minutes: 10,
+    icon: "Wind",
+  },
+  {
+    id: "s4",
+    title: "O Evangelho segundo João em 21 dias",
+    description: "Um capítulo por dia, com perguntas de reflexão.",
+    category: "Plano de Leitura",
+    minutes: 12,
+    icon: "BookMarked",
+  },
+  {
+    id: "s5",
+    title: "As parábolas do Reino",
+    description: "Estudo temático das principais parábolas de Jesus.",
+    category: "Estudo Bíblico",
+    minutes: 25,
+    icon: "Wheat",
+  },
 ];
 
 // Níveis / Títulos gamificados (mantidos por compatibilidade — o sistema principal usa src/data/levels.ts)

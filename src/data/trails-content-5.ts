@@ -44,8 +44,20 @@ const evangelismo: Trail = {
                 NVT: "Pois o que recebi, e é da mais alta importância, eu passei adiante para vocês: que Cristo morreu pelos nossos pecados, conforme haviam anunciado as Escrituras. Ele foi sepultado e ressuscitou ao terceiro dia, como as Escrituras haviam predito. Depois apareceu a Pedro e, então, aos Doze.",
               },
               originals: [
-                { word: "εὐαγγέλιον", translit: "euangélion", meaning: "'boa notícia' — anúncio de um fato já realizado, não uma proposta ou conselho", lang: "grego" },
-                { word: "παρέδωκα", translit: "parédōka", meaning: "'transmiti, entreguei' — termo técnico para a passagem fiel de uma tradição recebida, sem alteração", lang: "grego" },
+                {
+                  word: "εὐαγγέλιον",
+                  translit: "euangélion",
+                  meaning:
+                    "'boa notícia' — anúncio de um fato já realizado, não uma proposta ou conselho",
+                  lang: "grego",
+                },
+                {
+                  word: "παρέδωκα",
+                  translit: "parédōka",
+                  meaning:
+                    "'transmiti, entreguei' — termo técnico para a passagem fiel de uma tradição recebida, sem alteração",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -56,7 +68,13 @@ const evangelismo: Trail = {
                 NVT: "Pois não tenho vergonha desta Boa Notícia a respeito de Cristo. É o poder de Deus para salvar todos os que creem, os judeus primeiro e também os gentios.",
               },
               originals: [
-                { word: "δύναμις", translit: "dýnamis", meaning: "'poder, força ativa' — o Evangelho não apenas informa, ele produz salvação real em quem crê", lang: "grego" },
+                {
+                  word: "δύναμις",
+                  translit: "dýnamis",
+                  meaning:
+                    "'poder, força ativa' — o Evangelho não apenas informa, ele produz salvação real em quem crê",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -66,14 +84,38 @@ const evangelismo: Trail = {
                 ACF: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.",
               },
               originals: [
-                { word: "ἠγάπησεν", translit: "ēgápēsen", meaning: "'amou' — de agapáō, amor de doação voluntária e sacrificial, não emoção passageira; é o mesmo verbo usado para o amor de Deus que se entrega", lang: "grego" },
+                {
+                  word: "ἠγάπησεν",
+                  translit: "ēgápēsen",
+                  meaning:
+                    "'amou' — de agapáō, amor de doação voluntária e sacrificial, não emoção passageira; é o mesmo verbo usado para o amor de Deus que se entrega",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "εὐαγγέλιον", translit: "euangélion", meaning: "'boa notícia' — no mundo greco-romano, usada para anunciar vitórias militares ou a ascensão de um imperador; os cristãos a aplicam a Cristo, o verdadeiro Rei.", lang: "grego" },
-            { word: "κήρυγμα", translit: "kḗrygma", meaning: "'proclamação' — o conteúdo essencial pregado pelos apóstolos, distinto de ensino moral ou especulação filosófica.", lang: "grego" },
-            { word: "πίστις", translit: "pístis", meaning: "'fé' — resposta pessoal de confiança e entrega à mensagem anunciada, não mero assentimento intelectual.", lang: "grego" },
+            {
+              word: "εὐαγγέλιον",
+              translit: "euangélion",
+              meaning:
+                "'boa notícia' — no mundo greco-romano, usada para anunciar vitórias militares ou a ascensão de um imperador; os cristãos a aplicam a Cristo, o verdadeiro Rei.",
+              lang: "grego",
+            },
+            {
+              word: "κήρυγμα",
+              translit: "kḗrygma",
+              meaning:
+                "'proclamação' — o conteúdo essencial pregado pelos apóstolos, distinto de ensino moral ou especulação filosófica.",
+              lang: "grego",
+            },
+            {
+              word: "πίστις",
+              translit: "pístis",
+              meaning:
+                "'fé' — resposta pessoal de confiança e entrega à mensagem anunciada, não mero assentimento intelectual.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "Se você precisasse resumir o Evangelho para alguém em trinta segundos, o que diria? Um jeito simples e fiel de organizar essa mensagem segue quatro movimentos da própria narrativa bíblica: Deus (criou tudo bom, e é santo e justo), Homem (pecou, se rebelou, está separado de Deus e sob julgamento), Cristo (o Filho de Deus se encarnou, viveu sem pecado, morreu como substituto na cruz e ressuscitou fisicamente), Resposta (arrependimento e fé pessoal em Cristo, não obras, é o que recebe essa salvação). Esse esqueleto de quatro pontos aparece, com variações de linguagem, em praticamente todo resumo evangelístico fiel já usado pela Igreja — porque não é uma fórmula inventada, é a estrutura da própria mensagem apostólica. O erro mais comum ao evangelizar é pular direto para 'Cristo' e 'Resposta' sem primeiro estabelecer quem é Deus e qual é o problema real do pecado — o resultado é um Evangelho que soa como solução para um problema que a pessoa ainda não sabe que tem.",
@@ -90,7 +132,13 @@ const evangelismo: Trail = {
                   NVI: "Israelitas, ouçam isto: Jesus de Nazaré foi aprovado por Deus diante de vocês por milagres, maravilhas e sinais que Deus fez por meio dele... vocês o mataram, pregando-o na cruz por mãos de homens iníquos. Mas Deus o ressuscitou, rompendo os laços da morte, porque era impossível que ela o retivesse.",
                 },
                 originals: [
-                  { word: "ἀνέστησεν", translit: "anéstēsen", meaning: "'ressuscitou, levantou' — verbo técnico para a ressurreição corporal, não uma sobrevivência espiritual apenas", lang: "grego" },
+                  {
+                    word: "ἀνέστησεν",
+                    translit: "anéstēsen",
+                    meaning:
+                      "'ressuscitou, levantou' — verbo técnico para a ressurreição corporal, não uma sobrevivência espiritual apenas",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
@@ -107,7 +155,8 @@ const evangelismo: Trail = {
           },
           quizzes: [
             {
-              question: "Segundo 1 Coríntios 15:3-5, qual é o núcleo histórico da mensagem que Paulo 'recebeu e transmitiu'?",
+              question:
+                "Segundo 1 Coríntios 15:3-5, qual é o núcleo histórico da mensagem que Paulo 'recebeu e transmitiu'?",
               options: [
                 "Uma lista de regras morais para se viver corretamente",
                 "A morte de Cristo pelos pecados, seu sepultamento e sua ressurreição ao terceiro dia, conforme as Escrituras",
@@ -115,10 +164,12 @@ const evangelismo: Trail = {
                 "Uma promessa de prosperidade material para quem crê",
               ],
               correctIndex: 1,
-              explanation: "Paulo usa linguagem técnica de transmissão fiel de tradição para descrever fatos históricos objetivos: morte, sepultamento e ressurreição de Cristo, ambos conforme as Escrituras.",
+              explanation:
+                "Paulo usa linguagem técnica de transmissão fiel de tradição para descrever fatos históricos objetivos: morte, sepultamento e ressurreição de Cristo, ambos conforme as Escrituras.",
             },
             {
-              question: "Qual é a diferença essencial entre 'Evangelho' e um simples 'bom conselho', segundo esta lição?",
+              question:
+                "Qual é a diferença essencial entre 'Evangelho' e um simples 'bom conselho', segundo esta lição?",
               options: [
                 "Não há diferença real entre os dois",
                 "O Evangelho é uma notícia sobre algo que Deus já fez; o conselho diz o que você ainda precisa fazer",
@@ -126,7 +177,8 @@ const evangelismo: Trail = {
                 "Um bom conselho é sempre mais eficaz que uma notícia",
               ],
               correctIndex: 1,
-              explanation: "'Euangélion' significa boa notícia — o anúncio de um fato consumado por Deus em Cristo, não uma instrução moral a ser cumprida por esforço próprio.",
+              explanation:
+                "'Euangélion' significa boa notícia — o anúncio de um fato consumado por Deus em Cristo, não uma instrução moral a ser cumprida por esforço próprio.",
             },
             {
               question: "Qual erro comum a lição aponta ao resumir o Evangelho para alguém?",
@@ -137,7 +189,8 @@ const evangelismo: Trail = {
                 "Mencionar a ressurreição de Cristo",
               ],
               correctIndex: 1,
-              explanation: "Sem entender o problema (Deus é santo, o homem pecou), a solução em Cristo soa como resposta a uma pergunta que a pessoa ainda não fez.",
+              explanation:
+                "Sem entender o problema (Deus é santo, o homem pecou), a solução em Cristo soa como resposta a uma pergunta que a pessoa ainda não fez.",
             },
           ],
           application:
@@ -168,7 +221,13 @@ const evangelismo: Trail = {
                 ACF: "E, chegando-se Jesus, falou-lhes, dizendo: É-me dado todo o poder no céu e na terra. Portanto ide, ensinai todas as nações, batizando-as em nome do Pai, e do Filho, e do Espírito Santo; ensinando-as a guardar todas as coisas que eu vos tenho mandado; e eis que eu estou convosco todos os dias, até a consumação dos séculos.",
               },
               originals: [
-                { word: "μαθητεύσατε", translit: "mathēteúsate", meaning: "'fazei discípulos' — o único verbo principal no imperativo do mandato; 'indo', 'batizando' e 'ensinando' são particípios que descrevem como esse discipulado acontece", lang: "grego" },
+                {
+                  word: "μαθητεύσατε",
+                  translit: "mathēteúsate",
+                  meaning:
+                    "'fazei discípulos' — o único verbo principal no imperativo do mandato; 'indo', 'batizando' e 'ensinando' são particípios que descrevem como esse discipulado acontece",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -178,7 +237,13 @@ const evangelismo: Trail = {
                 ACF: "Porque o Filho do homem veio buscar e salvar o que se havia perdido.",
               },
               originals: [
-                { word: "ζητῆσαι καὶ σῶσαι", translit: "zētēsai kai sōsai", meaning: "'buscar e salvar' — dois verbos no infinitivo que descrevem a missão ativa e intencional de Cristo, não uma espera passiva", lang: "grego" },
+                {
+                  word: "ζητῆσαι καὶ σῶσαι",
+                  translit: "zētēsai kai sōsai",
+                  meaning:
+                    "'buscar e salvar' — dois verbos no infinitivo que descrevem a missão ativa e intencional de Cristo, não uma espera passiva",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -188,13 +253,31 @@ const evangelismo: Trail = {
                 ACF: "Isto é, Deus estava em Cristo reconciliando consigo o mundo, não lhes imputando os seus pecados... De sorte que somos embaixadores da parte de Cristo, como se Deus por nós rogasse.",
               },
               originals: [
-                { word: "πρεσβεύομεν", translit: "presbeúomen", meaning: "'somos embaixadores' — representantes oficiais que falam em nome de outro, sem autoridade própria, mas com a autoridade de quem os enviou", lang: "grego" },
+                {
+                  word: "πρεσβεύομεν",
+                  translit: "presbeúomen",
+                  meaning:
+                    "'somos embaixadores' — representantes oficiais que falam em nome de outro, sem autoridade própria, mas com a autoridade de quem os enviou",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "καταλλαγή", translit: "katallagḗ", meaning: "'reconciliação' — restauração de uma relação quebrada; o ministério confiado à Igreja de anunciar essa reconciliação já realizada em Cristo.", lang: "grego" },
-            { word: "πρεσβευτής", translit: "presbeutḗs", meaning: "'embaixador' — quem representa uma autoridade estrangeira em território alheio, sem falar por si mesmo, mas por quem o enviou.", lang: "grego" },
+            {
+              word: "καταλλαγή",
+              translit: "katallagḗ",
+              meaning:
+                "'reconciliação' — restauração de uma relação quebrada; o ministério confiado à Igreja de anunciar essa reconciliação já realizada em Cristo.",
+              lang: "grego",
+            },
+            {
+              word: "πρεσβευτής",
+              translit: "presbeutḗs",
+              meaning:
+                "'embaixador' — quem representa uma autoridade estrangeira em território alheio, sem falar por si mesmo, mas por quem o enviou.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "É importante distinguir, com honestidade pastoral, entre dois chamados diferentes descritos no Novo Testamento: o chamado geral de todo crente a ser testemunha de Cristo (Atos 1:8, 1 Pedro 3:15) e o dom espiritual específico de evangelista, mencionado em Efésios 4:11 junto a apóstolos, profetas, pastores e mestres. Nem todo cristão tem o dom de evangelista — a capacitação especial e o chamado vocacional para pregar publicamente o Evangelho, muitas vezes de forma itinerante ou pública. Mas todo cristão, sem exceção, é chamado a testemunhar: a compartilhar, no espaço relacional em que já vive, a história de o que Cristo fez por ele. Confundir essas duas coisas produz dois erros opostos: ou a igreja terceiriza todo o evangelismo para 'os dons', deixando de testemunhar no cotidiano, ou impõe a todo crente uma pressão de pregação pública para a qual ele não foi dotado. O equilíbrio bíblico é: todos testemunham; nem todos pregam publicamente como vocação.",
@@ -211,7 +294,13 @@ const evangelismo: Trail = {
                   NVI: "Eu digo que, da mesma forma, haverá mais alegria no céu por um pecador que se arrepende do que por noventa e nove justos que não precisam arrepender-se.",
                 },
                 originals: [
-                  { word: "μετανοοῦντι", translit: "metanooúnti", meaning: "'que se arrepende' — de metanoéō, mudança radical de mente e direção, não apenas remorso emocional", lang: "grego" },
+                  {
+                    word: "μετανοοῦντι",
+                    translit: "metanooúnti",
+                    meaning:
+                      "'que se arrepende' — de metanoéō, mudança radical de mente e direção, não apenas remorso emocional",
+                    lang: "grego",
+                  },
                 ],
               },
               {
@@ -220,7 +309,13 @@ const evangelismo: Trail = {
                   NVI: "Dize-lhes: Juro pela minha vida, palavra do Soberano, o Senhor, que não tenho prazer na morte dos ímpios, mas em que se convertam dos seus maus caminhos e vivam.",
                 },
                 originals: [
-                  { word: "חָפֵץ", translit: "chafets", meaning: "'ter prazer, deleitar-se' — o hebraico nega explicitamente que Deus tenha prazer na morte do ímpio; seu desejo declarado é a conversão e a vida", lang: "hebraico" },
+                  {
+                    word: "חָפֵץ",
+                    translit: "chafets",
+                    meaning:
+                      "'ter prazer, deleitar-se' — o hebraico nega explicitamente que Deus tenha prazer na morte do ímpio; seu desejo declarado é a conversão e a vida",
+                    lang: "hebraico",
+                  },
                 ],
               },
             ],
@@ -237,7 +332,8 @@ const evangelismo: Trail = {
           },
           quizzes: [
             {
-              question: "Segundo as parábolas de Lucas 15, qual é a reação do céu diante de um pecador que se arrepende?",
+              question:
+                "Segundo as parábolas de Lucas 15, qual é a reação do céu diante de um pecador que se arrepende?",
               options: [
                 "Indiferença — o céu não se importa com casos individuais",
                 "Alegria e festa, semelhante à alegria de quem encontra o que estava perdido",
@@ -245,10 +341,12 @@ const evangelismo: Trail = {
                 "Nenhuma reação é descrita",
               ],
               correctIndex: 1,
-              explanation: "As três parábolas (ovelha, moeda, filho perdidos) terminam em festa — revelando que buscar o perdido é alegria para Deus, não fardo relutante.",
+              explanation:
+                "As três parábolas (ovelha, moeda, filho perdidos) terminam em festa — revelando que buscar o perdido é alegria para Deus, não fardo relutante.",
             },
             {
-              question: "Qual é a diferença entre o chamado geral ao testemunho e o dom espiritual de evangelista (Efésios 4:11)?",
+              question:
+                "Qual é a diferença entre o chamado geral ao testemunho e o dom espiritual de evangelista (Efésios 4:11)?",
               options: [
                 "Não existe diferença — são idênticos",
                 "Todo crente é chamado a testemunhar sua própria história; o dom de evangelista é uma capacitação vocacional específica, dada a alguns",
@@ -256,18 +354,16 @@ const evangelismo: Trail = {
                 "O dom de evangelista substitui a necessidade de obediência à Grande Comissão pelos demais crentes",
               ],
               correctIndex: 1,
-              explanation: "Efésios 4:11 descreve o evangelista como um dom específico, dado a alguns para a edificação da igreja; o chamado a testemunhar (Atos 1:8) é para toda a igreja, sem exceção.",
+              explanation:
+                "Efésios 4:11 descreve o evangelista como um dom específico, dado a alguns para a edificação da igreja; o chamado a testemunhar (Atos 1:8) é para toda a igreja, sem exceção.",
             },
             {
-              question: "Gramaticalmente, em Mateus 28:19-20, qual é o único verbo no imperativo (o mandato central)?",
-              options: [
-                "'Ide' (ir)",
-                "'Fazei discípulos'",
-                "'Batizando'",
-                "'Ensinando'",
-              ],
+              question:
+                "Gramaticalmente, em Mateus 28:19-20, qual é o único verbo no imperativo (o mandato central)?",
+              options: ["'Ide' (ir)", "'Fazei discípulos'", "'Batizando'", "'Ensinando'"],
               correctIndex: 1,
-              explanation: "'Ide', 'batizando' e 'ensinando' são particípios subordinados; o único imperativo principal é 'fazei discípulos' — o alvo real do mandato.",
+              explanation:
+                "'Ide', 'batizando' e 'ensinando' são particípios subordinados; o único imperativo principal é 'fazei discípulos' — o alvo real do mandato.",
             },
           ],
           application:
@@ -304,7 +400,13 @@ const evangelismo: Trail = {
                 ACF: "Respondeu ele então, e disse: Se é pecador, não sei; uma coisa sei: que, tendo eu sido cego, agora vejo.",
               },
               originals: [
-                { word: "βλέπω", translit: "blépō", meaning: "'vejo' — no presente do indicativo, marcando uma nova realidade contínua; o mesmo verbo descreve tanto a visão física quanto a percepção espiritual", lang: "grego" },
+                {
+                  word: "βλέπω",
+                  translit: "blépō",
+                  meaning:
+                    "'vejo' — no presente do indicativo, marcando uma nova realidade contínua; o mesmo verbo descreve tanto a visão física quanto a percepção espiritual",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -314,7 +416,13 @@ const evangelismo: Trail = {
                 ACF: "Antes, santificai ao Senhor Deus em vosso coração; e estai sempre preparados para responder com mansidão e temor a qualquer que vos pedir a razão da esperança que há em vós.",
               },
               originals: [
-                { word: "ἀπολογία", translit: "apología", meaning: "'defesa, resposta razoável' — termo jurídico usado para uma defesa articulada diante de um tribunal, não um ataque agressivo", lang: "grego" },
+                {
+                  word: "ἀπολογία",
+                  translit: "apología",
+                  meaning:
+                    "'defesa, resposta razoável' — termo jurídico usado para uma defesa articulada diante de um tribunal, não um ataque agressivo",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -323,20 +431,39 @@ const evangelismo: Trail = {
                 NVI: "Mas tenho contado com a ajuda de Deus até este dia e continuo dando testemunho, tanto a pequenos como a grandes... que o Cristo haveria de sofrer e, sendo o primeiro a ressuscitar dos mortos, proclamaria luz tanto ao seu próprio povo como aos gentios.",
               },
               originals: [
-                { word: "παθητὸς", translit: "pathētós", meaning: "'haveria de sofrer, destinado a padecer' — termo que liga o sofrimento do Messias ao plano profético já anunciado nas Escrituras", lang: "grego" },
+                {
+                  word: "παθητὸς",
+                  translit: "pathētós",
+                  meaning:
+                    "'haveria de sofrer, destinado a padecer' — termo que liga o sofrimento do Messias ao plano profético já anunciado nas Escrituras",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "μαρτυρία", translit: "martyría", meaning: "'testemunho' — relato daquilo que se viu e viveu pessoalmente; raiz da palavra posterior 'mártir', alguém que testemunha até o preço máximo.", lang: "grego" },
-            { word: "ἀπολογία", translit: "apología", meaning: "'defesa razoável' — resposta articulada e respeitosa, não confronto agressivo.", lang: "grego" },
+            {
+              word: "μαρτυρία",
+              translit: "martyría",
+              meaning:
+                "'testemunho' — relato daquilo que se viu e viveu pessoalmente; raiz da palavra posterior 'mártir', alguém que testemunha até o preço máximo.",
+              lang: "grego",
+            },
+            {
+              word: "ἀπολογία",
+              translit: "apología",
+              meaning:
+                "'defesa razoável' — resposta articulada e respeitosa, não confronto agressivo.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "Um testemunho claro e útil geralmente segue três movimentos simples. Primeiro, 'antes': como era sua vida, seus valores e sua relação (ou ausência de relação) com Deus antes de conhecer a Cristo — sem exagero nem dramatização artificial; testemunhos de conversões graduais e discretas são tão válidos quanto os dramáticos. Segundo, 'encontro': o que especificamente aconteceu — um momento, um período, uma pessoa, um versículo que Deus usou. Terceiro, 'depois': o que mudou de fato, com exemplos concretos, não apenas sentimentos vagos ('mudou minha vida' diz pouco; 'aprendi a perdoar meu pai' diz muito). O erro mais comum é gastar 90% do tempo no 'antes' (contando a própria história de forma sensacionalista) e quase nada explicando quem é Cristo e o que Ele fez — invertendo o centro da narrativa, que deve sempre ser Ele, não nós.",
           theologianQuote: {
             author: "Lesslie Newbigin",
             text: "Só conheço uma pista para essa pergunta, uma única hermenêutica do Evangelho: uma comunidade de homens e mulheres que creem nele e vivem por ele.",
-            source: "Lesslie Newbigin, The Gospel in a Pluralist Society (1989), p. 227 (tradução livre) — no original, Newbigin fala da igreja/comunidade; aplicamos o princípio também ao testemunho pessoal de cada discípulo dentro dessa comunidade",
+            source:
+              "Lesslie Newbigin, The Gospel in a Pluralist Society (1989), p. 227 (tradução livre) — no original, Newbigin fala da igreja/comunidade; aplicamos o princípio também ao testemunho pessoal de cada discípulo dentro dessa comunidade",
           },
           deepen: {
             historicalContext:
@@ -352,7 +479,8 @@ const evangelismo: Trail = {
           },
           quizzes: [
             {
-              question: "Segundo a lição, qual é a estrutura simples e útil para organizar um testemunho pessoal?",
+              question:
+                "Segundo a lição, qual é a estrutura simples e útil para organizar um testemunho pessoal?",
               options: [
                 "Apenas descrever, em detalhes, os pecados cometidos antes da conversão",
                 "Antes (como eu era), encontro (o que aconteceu) e depois (o que mudou, com exemplos concretos)",
@@ -360,7 +488,8 @@ const evangelismo: Trail = {
                 "Um discurso teológico complexo, sem menção à própria vida",
               ],
               correctIndex: 1,
-              explanation: "A estrutura antes-encontro-depois segue o próprio padrão narrativo bíblico de queda e redenção, e ajuda o ouvinte a acompanhar a história com clareza.",
+              explanation:
+                "A estrutura antes-encontro-depois segue o próprio padrão narrativo bíblico de queda e redenção, e ajuda o ouvinte a acompanhar a história com clareza.",
             },
             {
               question: "O que a palavra grega 'apología', em 1 Pedro 3:15, realmente significa?",
@@ -371,7 +500,8 @@ const evangelismo: Trail = {
                 "Uma explicação apenas para especialistas em teologia",
               ],
               correctIndex: 1,
-              explanation: "'Apología' é termo jurídico para defesa racional formal; o próprio versículo qualifica essa defesa com 'mansidão e temor', unindo firmeza e humildade.",
+              explanation:
+                "'Apología' é termo jurídico para defesa racional formal; o próprio versículo qualifica essa defesa com 'mansidão e temor', unindo firmeza e humildade.",
             },
             {
               question: "Qual erro comum a lição aponta ao contar um testemunho pessoal?",
@@ -382,7 +512,8 @@ const evangelismo: Trail = {
                 "Usar linguagem simples demais",
               ],
               correctIndex: 1,
-              explanation: "O testemunho deve sempre apontar para Cristo como centro, não se tornar uma narrativa autocentrada em que a pessoa é a protagonista principal.",
+              explanation:
+                "O testemunho deve sempre apontar para Cristo como centro, não se tornar uma narrativa autocentrada em que a pessoa é a protagonista principal.",
             },
           ],
           application:
@@ -413,7 +544,13 @@ const evangelismo: Trail = {
                 ACF: "Vós sois o sal da terra... Vós sois a luz do mundo... Assim resplandeça a vossa luz diante dos homens, para que vejam as vossas boas obras e glorifiquem a vosso Pai, que está nos céus.",
               },
               originals: [
-                { word: "ἅλας", translit: "hálas", meaning: "'sal' — usado na Antiguidade tanto para tempero quanto para conservação; imagem de influência constante e discreta", lang: "grego" },
+                {
+                  word: "ἅλας",
+                  translit: "hálas",
+                  meaning:
+                    "'sal' — usado na Antiguidade tanto para tempero quanto para conservação; imagem de influência constante e discreta",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -423,7 +560,13 @@ const evangelismo: Trail = {
                 ACF: "Andai em sabedoria para com os que estão de fora, remindo o tempo. A vossa palavra seja sempre agradável, adubada com sal, para que saibais como vos convém responder a cada um.",
               },
               originals: [
-                { word: "καιρός", translit: "kairós", meaning: "'tempo oportuno, ocasião certa' — distinto de 'chrónos' (tempo cronológico); a oportunidade certa a ser reconhecida e aproveitada", lang: "grego" },
+                {
+                  word: "καιρός",
+                  translit: "kairós",
+                  meaning:
+                    "'tempo oportuno, ocasião certa' — distinto de 'chrónos' (tempo cronológico); a oportunidade certa a ser reconhecida e aproveitada",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -432,20 +575,39 @@ const evangelismo: Trail = {
                 NVI: "A mulher samaritana lhe perguntou: 'Como o senhor, sendo judeu, pede a mim, uma samaritana, água para beber?'... Jesus respondeu: 'Se você conhecesse o dom de Deus e quem está pedindo água, você lhe pediria e ele lhe daria água viva.'",
               },
               originals: [
-                { word: "ὕδωρ ζῶν", translit: "hýdōr zōn", meaning: "'água viva' — expressão que evoca tanto água corrente (em contraste com água parada) quanto, no contexto, a vida que o Espírito concede", lang: "grego" },
+                {
+                  word: "ὕδωρ ζῶν",
+                  translit: "hýdōr zōn",
+                  meaning:
+                    "'água viva' — expressão que evoca tanto água corrente (em contraste com água parada) quanto, no contexto, a vida que o Espírito concede",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "καιρός", translit: "kairós", meaning: "'ocasião oportuna' — o momento certo, reconhecido e aproveitado, e não forçado.", lang: "grego" },
-            { word: "ἅλας", translit: "hálas", meaning: "'sal' — tempero e conservante; imagem de influência contínua, não de um único evento evangelístico isolado.", lang: "grego" },
+            {
+              word: "καιρός",
+              translit: "kairós",
+              meaning:
+                "'ocasião oportuna' — o momento certo, reconhecido e aproveitado, e não forçado.",
+              lang: "grego",
+            },
+            {
+              word: "ἅλας",
+              translit: "hálas",
+              meaning:
+                "'sal' — tempero e conservante; imagem de influência contínua, não de um único evento evangelístico isolado.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "João 4 revela um padrão evangelístico rico em detalhes práticos: Jesus atravessa uma barreira cultural e religiosa (judeus normalmente evitavam a Samaria), inicia com um pedido simples e vulnerável ('me dá de beber'), faz perguntas genuínas em vez de acusações, reconhece com honestidade a situação de vida da mulher sem minimizar nem exagerar seu pecado, e só depois de estabelecida a confiança revela verdades mais profundas sobre si mesmo. O resultado é uma conversa que a própria mulher leva de volta à sua cidade, gerando um pequeno avivamento local (João 4:39-42). Esse padrão sugere que evangelismo eficaz raramente é um evento isolado e forçado — é, na maior parte das vezes, o fruto de relações reais, tempo investido, perguntas genuínas e disposição de cruzar barreiras sociais para se aproximar de quem é diferente de nós.",
           theologianQuote: {
             author: "Charles Swindoll",
             text: "Nada fala mais alto, nem com mais força, do que uma vida de integridade.",
-            source: "Charles R. Swindoll (citação amplamente documentada em suas obras e pregações) (tradução livre)",
+            source:
+              "Charles R. Swindoll (citação amplamente documentada em suas obras e pregações) (tradução livre)",
           },
           deepen: {
             historicalContext:
@@ -461,7 +623,8 @@ const evangelismo: Trail = {
           },
           quizzes: [
             {
-              question: "No padrão evangelístico de João 4, o que Jesus faz antes de revelar verdades espirituais profundas à mulher samaritana?",
+              question:
+                "No padrão evangelístico de João 4, o que Jesus faz antes de revelar verdades espirituais profundas à mulher samaritana?",
               options: [
                 "Começa imediatamente acusando-a de seus pecados",
                 "Inicia com um pedido simples, faz perguntas genuínas e estabelece uma conversa real, cruzando barreiras sociais",
@@ -469,10 +632,12 @@ const evangelismo: Trail = {
                 "Pede que ela primeiro se converta ao judaísmo",
               ],
               correctIndex: 1,
-              explanation: "Jesus cruza barreiras culturais, inicia com vulnerabilidade ('me dá de beber'), faz perguntas e ouve, e só então aprofunda a conversa espiritual.",
+              explanation:
+                "Jesus cruza barreiras culturais, inicia com vulnerabilidade ('me dá de beber'), faz perguntas e ouve, e só então aprofunda a conversa espiritual.",
             },
             {
-              question: "O que a imagem de 'sal' (Mateus 5:13) sugere sobre a influência do cristão no mundo?",
+              question:
+                "O que a imagem de 'sal' (Mateus 5:13) sugere sobre a influência do cristão no mundo?",
               options: [
                 "Um evento evangelístico único e isolado",
                 "Uma influência constante e discreta, presente continuamente, como tempero em cada interação",
@@ -480,10 +645,12 @@ const evangelismo: Trail = {
                 "Uma pressão constante para converter todos imediatamente",
               ],
               correctIndex: 1,
-              explanation: "Sal tempera continuamente, aos poucos — imagem de presença constante e discreta, não de um único confronto evangelístico.",
+              explanation:
+                "Sal tempera continuamente, aos poucos — imagem de presença constante e discreta, não de um único confronto evangelístico.",
             },
             {
-              question: "O que significa 'kairós', em Colossenses 4:5, e por que isso importa para o evangelismo cotidiano?",
+              question:
+                "O que significa 'kairós', em Colossenses 4:5, e por que isso importa para o evangelismo cotidiano?",
               options: [
                 "Tempo cronológico contado em horas — sugere um cronograma rígido de evangelismo",
                 "Ocasião oportuna e específica — sugere atenção e sabedoria para reconhecer o momento certo, sem forçar nem deixar passar",
@@ -491,7 +658,8 @@ const evangelismo: Trail = {
                 "Um período de jejum obrigatório antes de evangelizar",
               ],
               correctIndex: 1,
-              explanation: "'Kairós' contrasta com 'chrónos' (tempo sequencial) e descreve o momento oportuno certo — reconhecido com sabedoria, não imposto artificialmente.",
+              explanation:
+                "'Kairós' contrasta com 'chrónos' (tempo sequencial) e descreve o momento oportuno certo — reconhecido com sabedoria, não imposto artificialmente.",
             },
           ],
           application:
@@ -527,7 +695,13 @@ const evangelismo: Trail = {
                 NVI: "Agora, Senhor, considera as ameaças deles e capacita os teus servos para pregarem a tua palavra com toda a ousadia... Depois de orarem, tremeu o lugar em que estavam reunidos; todos ficaram cheios do Espírito Santo e anunciavam a palavra de Deus com ousadia.",
               },
               originals: [
-                { word: "παρρησία", translit: "parrēsía", meaning: "'ousadia, franqueza' — literalmente 'dizer tudo'; termo usado no contexto político grego para a liberdade de falar abertamente numa assembleia", lang: "grego" },
+                {
+                  word: "παρρησία",
+                  translit: "parrēsía",
+                  meaning:
+                    "'ousadia, franqueza' — literalmente 'dizer tudo'; termo usado no contexto político grego para a liberdade de falar abertamente numa assembleia",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -537,7 +711,13 @@ const evangelismo: Trail = {
                 ACF: "E por mim, para que me seja dada a palavra na abertura da minha boca, para com ousadia fazer notório o mistério do evangelho, pelo qual sou embaixador em cadeias; para que possa falar dele ousadamente, como me convém falar.",
               },
               originals: [
-                { word: "παρρησίᾳ", translit: "parrhēsía", meaning: "'denodo, franqueza, ousadia ao falar' — a mesma palavra usada para a confiança dos apóstolos diante de autoridades hostis em Atos", lang: "grego" },
+                {
+                  word: "παρρησίᾳ",
+                  translit: "parrhēsía",
+                  meaning:
+                    "'denodo, franqueza, ousadia ao falar' — a mesma palavra usada para a confiança dos apóstolos diante de autoridades hostis em Atos",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -547,20 +727,38 @@ const evangelismo: Trail = {
                 ACF: "Porque Deus não nos deu o espírito de temor, mas de fortaleza, e de amor, e de moderação.",
               },
               originals: [
-                { word: "δειλίας", translit: "deilías", meaning: "'covardia, temor covarde' — o que Deus não concede; contrastado com δύναμις (poder), ἀγάπη (amor) e σωφρονισμός (equilíbrio, domínio próprio)", lang: "grego" },
+                {
+                  word: "δειλίας",
+                  translit: "deilías",
+                  meaning:
+                    "'covardia, temor covarde' — o que Deus não concede; contrastado com δύναμις (poder), ἀγάπη (amor) e σωφρονισμός (equilíbrio, domínio próprio)",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "παρρησία", translit: "parrēsía", meaning: "'ousadia, franqueza' — falar abertamente, sem esconder por medo; um dom pedido em oração, não uma personalidade natural.", lang: "grego" },
-            { word: "δειλία", translit: "deilía", meaning: "'covardia, timidez paralisante' — o oposto do espírito que Deus dá ao crente (2 Tm 1:7).", lang: "grego" },
+            {
+              word: "παρρησία",
+              translit: "parrēsía",
+              meaning:
+                "'ousadia, franqueza' — falar abertamente, sem esconder por medo; um dom pedido em oração, não uma personalidade natural.",
+              lang: "grego",
+            },
+            {
+              word: "δειλία",
+              translit: "deilía",
+              meaning:
+                "'covardia, timidez paralisante' — o oposto do espírito que Deus dá ao crente (2 Tm 1:7).",
+              lang: "grego",
+            },
           ],
           deepDive:
             "É importante notar que a ousadia bíblica nunca é apresentada como ausência de sabedoria ou de tato. O mesmo Novo Testamento que pede ousadia (Atos 4:29, Efésios 6:19) também pede mansidão e respeito (1 Pedro 3:15) e sabedoria no procedimento com os de fora (Colossenses 4:5). Ousadia sem mansidão vira agressividade, que afasta em vez de atrair; mansidão sem ousadia vira silêncio covarde disfarçado de educação. O equilíbrio bíblico é falar com clareza e coragem sobre Cristo, sem, no entanto, tratar quem discorda com desprezo, impaciência ou hostilidade. Vale lembrar ainda que, em contextos onde o evangelismo é legalmente restrito ou perigoso, a aplicação prática da ousadia bíblica exige também sabedoria situacional e prudência — a Escritura nunca pede imprudência temerária, mas fidelidade corajosa dentro da sabedoria disponível a cada contexto.",
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Aquele que tem vergonha de falar a verdade de Deus precisa, ele mesmo, ter vergonha de si!",
-            source: "Charles H. Spurgeon, sermão \"The Very Bold Prophecy\" (tradução livre)",
+            source: 'Charles H. Spurgeon, sermão "The Very Bold Prophecy" (tradução livre)',
           },
           deepen: {
             historicalContext:
@@ -576,7 +774,8 @@ const evangelismo: Trail = {
           },
           quizzes: [
             {
-              question: "Diante da ameaça das autoridades religiosas, o que a igreja primitiva pediu a Deus em oração, segundo Atos 4:29-31?",
+              question:
+                "Diante da ameaça das autoridades religiosas, o que a igreja primitiva pediu a Deus em oração, segundo Atos 4:29-31?",
               options: [
                 "Que a ameaça e a perseguição fossem removidas imediatamente",
                 "Capacitação e ousadia para continuar pregando a palavra de Deus, apesar da ameaça",
@@ -584,10 +783,12 @@ const evangelismo: Trail = {
                 "Permissão para parar de evangelizar até a ameaça passar",
               ],
               correctIndex: 1,
-              explanation: "A oração da igreja primitiva prioriza fidelidade corajosa à missão, não a remoção da ameaça — e Deus responde enchendo-os do Espírito Santo com ousadia.",
+              explanation:
+                "A oração da igreja primitiva prioriza fidelidade corajosa à missão, não a remoção da ameaça — e Deus responde enchendo-os do Espírito Santo com ousadia.",
             },
             {
-              question: "Segundo 2 Timóteo 1:7, qual é o espírito que Deus dá ao crente, em contraste com a covardia?",
+              question:
+                "Segundo 2 Timóteo 1:7, qual é o espírito que Deus dá ao crente, em contraste com a covardia?",
               options: [
                 "Um espírito de arrogância e confronto",
                 "Um espírito de poder, amor e moderação (equilíbrio)",
@@ -595,10 +796,12 @@ const evangelismo: Trail = {
                 "Um espírito de isolamento social",
               ],
               correctIndex: 1,
-              explanation: "O contraste bíblico à covardia não é agressividade, mas um equilíbrio entre poder, amor genuíno e domínio próprio.",
+              explanation:
+                "O contraste bíblico à covardia não é agressividade, mas um equilíbrio entre poder, amor genuíno e domínio próprio.",
             },
             {
-              question: "Segundo a lição, o que caracteriza o equilíbrio bíblico entre ousadia e mansidão no evangelismo?",
+              question:
+                "Segundo a lição, o que caracteriza o equilíbrio bíblico entre ousadia e mansidão no evangelismo?",
               options: [
                 "Ousadia sem qualquer preocupação com a forma como se fala",
                 "Falar com clareza e coragem sobre Cristo, mas sem tratar quem discorda com desprezo ou hostilidade",
@@ -606,7 +809,8 @@ const evangelismo: Trail = {
                 "Priorizar sempre a mansidão, mesmo que isso signifique nunca falar de Cristo",
               ],
               correctIndex: 1,
-              explanation: "Ousadia sem mansidão vira agressividade; mansidão sem ousadia vira silêncio covarde — a Escritura pede as duas coisas juntas.",
+              explanation:
+                "Ousadia sem mansidão vira agressividade; mansidão sem ousadia vira silêncio covarde — a Escritura pede as duas coisas juntas.",
             },
           ],
           application:
@@ -637,7 +841,13 @@ const evangelismo: Trail = {
                 ACF: "Estai sempre preparados para responder com mansidão e temor a qualquer que vos pedir a razão da esperança que há em vós, tendo uma boa consciência.",
               },
               originals: [
-                { word: "ἀπολογίαν", translit: "apología", meaning: "'defesa, razão articulada' — termo jurídico usado para defesas formais em tribunais; implica argumento raciocinado, não apenas sentimento", lang: "grego" },
+                {
+                  word: "ἀπολογίαν",
+                  translit: "apología",
+                  meaning:
+                    "'defesa, razão articulada' — termo jurídico usado para defesas formais em tribunais; implica argumento raciocinado, não apenas sentimento",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -646,7 +856,13 @@ const evangelismo: Trail = {
                 NVI: "Então Paulo, levantando-se no meio do Areópago, disse: 'Atenienses, vejo que em todos os aspectos vocês são muito religiosos, pois, andando pela cidade, observando os objetos de adoração, encontrei também um altar com esta inscrição: A um Deus desconhecido. Ora, o que vocês adoram sem conhecer, isso mesmo lhes anuncio.'",
               },
               originals: [
-                { word: "ἐπαγωνίζεσθαι", translit: "epagōnízesthai", meaning: "'lutar/contender esforçadamente' — imagem atlética de esforço intenso na defesa da fé (Judas 1:3), sem sugerir agressividade contra pessoas", lang: "grego" },
+                {
+                  word: "ἐπαγωνίζεσθαι",
+                  translit: "epagōnízesthai",
+                  meaning:
+                    "'lutar/contender esforçadamente' — imagem atlética de esforço intenso na defesa da fé (Judas 1:3), sem sugerir agressividade contra pessoas",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -655,20 +871,39 @@ const evangelismo: Trail = {
                 NVI: "Amados, embora eu estivesse muito ansioso para escrever a vocês acerca da salvação que temos em comum, senti a necessidade de fazê-lo a fim de exortá-los a batalhar pela fé que uma vez por todas foi entregue aos santos.",
               },
               originals: [
-                { word: "ἐπαγωνίζεσθαι", translit: "epagōnízesthai", meaning: "'batalhar, lutar com esforço' — imagem do atletismo grego, de empenho intenso e persistente em defesa de algo valioso", lang: "grego" },
+                {
+                  word: "ἐπαγωνίζεσθαι",
+                  translit: "epagōnízesthai",
+                  meaning:
+                    "'batalhar, lutar com esforço' — imagem do atletismo grego, de empenho intenso e persistente em defesa de algo valioso",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "ἀπολογία", translit: "apología", meaning: "'defesa razoável' — dar razões articuladas para a fé, diante de objeções honestas.", lang: "grego" },
-            { word: "ἐπαγωνίζεσθαι", translit: "epagōnízesthai", meaning: "'contender esforçadamente' — imagem de esforço atlético na defesa da fé, dirigido à verdade, não à agressão contra pessoas.", lang: "grego" },
+            {
+              word: "ἀπολογία",
+              translit: "apología",
+              meaning:
+                "'defesa razoável' — dar razões articuladas para a fé, diante de objeções honestas.",
+              lang: "grego",
+            },
+            {
+              word: "ἐπαγωνίζεσθαι",
+              translit: "epagōnízesthai",
+              meaning:
+                "'contender esforçadamente' — imagem de esforço atlético na defesa da fé, dirigido à verdade, não à agressão contra pessoas.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "Sem pretender esgotar o assunto (que merece estudo contínuo ao longo da vida), três objeções aparecem com frequência em conversas cotidianas, e vale ter ao menos um ponto de partida simples e honesto para cada uma: (1) O problema do sofrimento — a Bíblia nunca minimiza o sofrimento real, mas ensina que Deus entrou nele pessoalmente em Cristo (que sofreu e morreu), e promete restauração final (Apocalipse 21:4); a existência do mal, paradoxalmente, pressupõe um padrão real de bem, o que é mais difícil de explicar sem Deus do que com Ele. (2) A exclusividade de Cristo diante de outras religiões — Jesus mesmo afirmou ser 'o caminho, a verdade e a vida' (João 14:6); isso soa estreito à cultura contemporânea, mas é coerente: se Cristo realmente ressuscitou dos mortos (um fato histórico investigável, não apenas uma opinião religiosa entre outras), essa afirmação exclusiva se torna razoável, não arrogante. (3) A confiabilidade da Bíblia — o Novo Testamento tem, de longe, mais manuscritos antigos e mais próximos dos eventos originais do que qualquer outro documento da Antiguidade, um fato reconhecido mesmo por historiadores seculares. Em todos os casos, o objetivo não é 'vencer' a pessoa num debate, mas remover obstáculos honestos que impedem alguém de considerar Cristo com seriedade.",
           theologianQuote: {
             author: "William Lane Craig",
             text: "Mais frequentemente, é o que você é, e não o que você diz, que trará um descrente a Cristo. Esta é, portanto, a apologética suprema: sua vida.",
-            source: "William Lane Craig, Reasonable Faith (Crossway, 1994), pp. 301–302 (tradução livre)",
+            source:
+              "William Lane Craig, Reasonable Faith (Crossway, 1994), pp. 301–302 (tradução livre)",
           },
           deepen: {
             historicalContext:
@@ -684,7 +919,8 @@ const evangelismo: Trail = {
           },
           quizzes: [
             {
-              question: "No discurso de Paulo no Areópago (Atos 17), qual foi seu ponto de partida ao se dirigir aos filósofos atenienses?",
+              question:
+                "No discurso de Paulo no Areópago (Atos 17), qual foi seu ponto de partida ao se dirigir aos filósofos atenienses?",
               options: [
                 "Citou diretamente o Antigo Testamento hebraico como autoridade inquestionável para eles",
                 "Observou a própria religiosidade e cultura deles (o altar 'ao deus desconhecido') como ponto de contato inicial",
@@ -692,10 +928,12 @@ const evangelismo: Trail = {
                 "Ignorou completamente a cultura grega e falou apenas de doutrina cristã abstrata",
               ],
               correctIndex: 1,
-              explanation: "Paulo estabelece pontos de contato genuínos com a cultura da audiência antes de apresentar a revelação específica de Cristo — um modelo de apologética contextualizada.",
+              explanation:
+                "Paulo estabelece pontos de contato genuínos com a cultura da audiência antes de apresentar a revelação específica de Cristo — um modelo de apologética contextualizada.",
             },
             {
-              question: "Segundo a lição, o que fazer quando você não sabe responder a uma pergunta difícil sobre a fé?",
+              question:
+                "Segundo a lição, o que fazer quando você não sabe responder a uma pergunta difícil sobre a fé?",
               options: [
                 "Inventar uma resposta convincente para não parecer despreparado",
                 "Admitir honestamente que não sabe, e se dispor a pesquisar junto com a pessoa",
@@ -703,10 +941,12 @@ const evangelismo: Trail = {
                 "Encerrar a conversa e evitar a pessoa dali em diante",
               ],
               correctIndex: 1,
-              explanation: "A honestidade sobre os próprios limites constrói mais confiança do que respostas apressadas e superficiais — e apologética não substitui a obra do Espírito Santo na conversão.",
+              explanation:
+                "A honestidade sobre os próprios limites constrói mais confiança do que respostas apressadas e superficiais — e apologética não substitui a obra do Espírito Santo na conversão.",
             },
             {
-              question: "Qual é a diferença metodológica citada entre apologética 'evidencialista' e 'pressuposicionalista'?",
+              question:
+                "Qual é a diferença metodológica citada entre apologética 'evidencialista' e 'pressuposicionalista'?",
               options: [
                 "Uma nega a Bíblia; a outra a aceita integralmente",
                 "A evidencialista enfatiza argumentos históricos e filosóficos independentes; a pressuposicionalista parte da revelação bíblica como fundamento de toda racionalidade",
@@ -714,7 +954,8 @@ const evangelismo: Trail = {
                 "Uma é bíblica; a outra é herética",
               ],
               correctIndex: 1,
-              explanation: "São duas abordagens metodológicas legítimas usadas por apologistas cristãos fiéis comprometidos com a mesma Escritura, não uma questão de ortodoxia versus heresia.",
+              explanation:
+                "São duas abordagens metodológicas legítimas usadas por apologistas cristãos fiéis comprometidos com a mesma Escritura, não uma questão de ortodoxia versus heresia.",
             },
           ],
           application:
@@ -751,7 +992,13 @@ const evangelismo: Trail = {
                 ACF: "Como pois invocarão aquele em quem não creram? e como crerão naquele de quem não ouviram? e como ouvirão, se não há quem pregue?... De sorte que a fé é pelo ouvir, e o ouvir pela palavra de Deus.",
               },
               originals: [
-                { word: "κηρύσσων", translit: "kērýssōn", meaning: "'quem pregue, quem proclame' — particípio ligado à necessidade de um proclamador humano real para que a fé aconteça", lang: "grego" },
+                {
+                  word: "κηρύσσων",
+                  translit: "kērýssōn",
+                  meaning:
+                    "'quem pregue, quem proclame' — particípio ligado à necessidade de um proclamador humano real para que a fé aconteça",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -761,7 +1008,13 @@ const evangelismo: Trail = {
                 ACF: "Eu plantei, Apolo regou, mas o crescimento veio de Deus. De modo que, nem o que planta é alguma coisa, nem o que rega, mas Deus, que dá o crescimento.",
               },
               originals: [
-                { word: "ἐφύτευσα", translit: "ephýteusa", meaning: "'plantei' — aoristo que marca uma ação concluída; contrastado com ηὔξανεν ('dava o crescimento'), no imperfeito, ação contínua de Deus", lang: "grego" },
+                {
+                  word: "ἐφύτευσα",
+                  translit: "ephýteusa",
+                  meaning:
+                    "'plantei' — aoristo que marca uma ação concluída; contrastado com ηὔξανεν ('dava o crescimento'), no imperfeito, ação contínua de Deus",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -770,20 +1023,39 @@ const evangelismo: Trail = {
                 NVI: "Por isso, tudo suporto por causa dos eleitos, para que também eles alcancem a salvação que está em Cristo Jesus, com glória eterna.",
               },
               originals: [
-                { word: "ἐκλεκτούς", translit: "eklektoús", meaning: "'eleitos' — de eklégomai, escolhidos; os que Deus separou para receber a salvação anunciada pelo Evangelho", lang: "grego" },
+                {
+                  word: "ἐκλεκτούς",
+                  translit: "eklektoús",
+                  meaning:
+                    "'eleitos' — de eklégomai, escolhidos; os que Deus separou para receber a salvação anunciada pelo Evangelho",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "κηρύσσω", translit: "kērýssō", meaning: "'pregar, proclamar publicamente' — anúncio autorizado, como um arauto anunciando a mensagem do rei.", lang: "grego" },
-            { word: "συνεργός", translit: "synergós", meaning: "'cooperador, cocolaborador' — usado por Paulo (1 Co 3:9) para descrever pregadores como colaboradores de Deus, nunca como sua fonte de poder.", lang: "grego" },
+            {
+              word: "κηρύσσω",
+              translit: "kērýssō",
+              meaning:
+                "'pregar, proclamar publicamente' — anúncio autorizado, como um arauto anunciando a mensagem do rei.",
+              lang: "grego",
+            },
+            {
+              word: "συνεργός",
+              translit: "synergós",
+              meaning:
+                "'cooperador, cocolaborador' — usado por Paulo (1 Co 3:9) para descrever pregadores como colaboradores de Deus, nunca como sua fonte de poder.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "É útil pensar nessa relação com uma analogia simples: Deus decretou soberanamente que uma plantação cresça — mas também decretou que ela cresça através de sementes plantadas, terra regada e sol brilhando, não por mágica desconectada de causas reais. Ninguém pergunta 'se Deus decidiu a colheita, por que plantar sementes?' — a soberania divina sobre o resultado não anula, mas *inclui*, os meios ordinários pelos quais esse resultado acontece. O mesmo vale para a evangelização: a soberania de Deus na salvação nunca é usada, na Escritura, como desculpa para a passividade humana — pelo contrário, é precisamente o fundamento da confiança com que evangelizamos, sabendo que nosso esforço não depende, no fim, apenas do nosso próprio talento ou eloquência, mas da obra segura de Deus através dele.",
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Não podemos fazer os homens virem; essa é a obra do Espírito Santo — mas podemos persuadi-los pelo amor de Jesus.",
-            source: "Charles H. Spurgeon, The Sword and Trowel (1883), pp. 207–208 (tradução livre)",
+            source:
+              "Charles H. Spurgeon, The Sword and Trowel (1883), pp. 207–208 (tradução livre)",
           },
           deepen: {
             historicalContext:
@@ -791,7 +1063,7 @@ const evangelismo: Trail = {
             exegeticalNotes:
               "O verbo grego por trás de 'pregue', em Romanos 10:14 ('kērýssōn'), vem do mundo do arauto real — alguém enviado oficialmente para proclamar publicamente a mensagem de um rei, com autoridade delegada, mas sem originar a mensagem por si mesmo. Isso ilustra bem o papel do evangelista: mensageiro autorizado, nunca autor da mensagem que proclama.",
             theologicalDebate:
-              "A relação entre a soberania de Deus na eleição e a responsabilidade humana na evangelização é compreendida de formas diferentes entre tradições reformadas e arminianas — como já visto em outras lições desta trilha. Tradições reformadas tendem a enfatizar que a pregação é o meio pelo qual Deus efetivamente chama os eleitos, de forma certa e garantida; tradições arminianas — à qual esta trilha está mais alinhada — enfatizam que a graça preveniente de Deus capacita genuinamente qualquer ouvinte a responder, tornando a pregação um convite real e sincero a todos, não apenas aos já predeterminados. Ambas as tradições concordam, sem exceção, que a evangelização é um meio ordenado e necessário por Deus, e que negligenciá-la é desobediência, independentemente de como se entende os detalhes da eleição.",
+              "A relação entre a soberania de Deus na eleição e a responsabilidade humana na evangelização é compreendida de formas diferentes entre tradições reformadas e arminianas — como já visto em outras lições desta trilha. Tradições reformadas tendem a enfatizar que a pregação é o meio pelo qual Deus efetivamente chama os eleitos, de forma certa e garantida; esta lição enfatiza que a graça preveniente de Deus capacita genuinamente qualquer ouvinte a responder, tornando a pregação um convite real e sincero a todos, não apenas aos já predeterminados. Ambas as leituras concordam, sem exceção, que a evangelização é um meio ordenado e necessário por Deus, e que negligenciá-la é desobediência, independentemente de como se entende os detalhes da eleição.",
             secondQuote: {
               author: "J. I. Packer",
               text: "A soberania de Deus na salvação e a genuína responsabilidade humana de evangelizar não são um paradoxo a ser resolvido pela razão, mas duas verdades bíblicas a serem sustentadas juntas, com humildade, diante do mistério de Deus.",
@@ -799,7 +1071,8 @@ const evangelismo: Trail = {
           },
           quizzes: [
             {
-              question: "Segundo Romanos 10:14-15, qual é a cadeia de necessidade que Paulo estabelece para que alguém creia?",
+              question:
+                "Segundo Romanos 10:14-15, qual é a cadeia de necessidade que Paulo estabelece para que alguém creia?",
               options: [
                 "A fé acontece independentemente de qualquer pregação humana",
                 "Sem pregador não há mensagem ouvida; sem mensagem ouvida não há fé; a pregação humana é meio necessário nesse processo",
@@ -807,10 +1080,12 @@ const evangelismo: Trail = {
                 "Somente experiências místicas diretas geram fé salvadora",
               ],
               correctIndex: 1,
-              explanation: "Paulo estabelece uma cadeia lógica: crer depende de ouvir, ouvir depende de pregação, e pregação depende de alguém ser enviado — tornando a evangelização meio necessário, não opcional.",
+              explanation:
+                "Paulo estabelece uma cadeia lógica: crer depende de ouvir, ouvir depende de pregação, e pregação depende de alguém ser enviado — tornando a evangelização meio necessário, não opcional.",
             },
             {
-              question: "Qual analogia a lição usa para explicar a relação entre soberania divina e meios humanos na evangelização?",
+              question:
+                "Qual analogia a lição usa para explicar a relação entre soberania divina e meios humanos na evangelização?",
               options: [
                 "Um sorteio aleatório, sem qualquer meio envolvido",
                 "O plantio de uma colheita: Deus decreta o crescimento, mas através de meios reais como sementes plantadas e terra regada",
@@ -818,10 +1093,12 @@ const evangelismo: Trail = {
                 "Um contrato comercial entre Deus e o evangelista",
               ],
               correctIndex: 1,
-              explanation: "Assim como a soberania de Deus sobre a colheita não anula a necessidade de plantar sementes, sua soberania na salvação não anula, mas inclui, a pregação humana como meio.",
+              explanation:
+                "Assim como a soberania de Deus sobre a colheita não anula a necessidade de plantar sementes, sua soberania na salvação não anula, mas inclui, a pregação humana como meio.",
             },
             {
-              question: "Segundo a lição, o que tradições reformadas e arminianas concordam sobre evangelização, apesar de suas diferenças sobre eleição?",
+              question:
+                "Segundo a lição, o que tradições reformadas e arminianas concordam sobre evangelização, apesar de suas diferenças sobre eleição?",
               options: [
                 "Que a evangelização é dispensável para quem já é eleito",
                 "Que a evangelização é um meio ordenado e necessário por Deus, e negligenciá-la é desobediência, independentemente da posição sobre eleição",
@@ -829,7 +1106,8 @@ const evangelismo: Trail = {
                 "Que a evangelização substitui a necessidade de oração",
               ],
               correctIndex: 1,
-              explanation: "Apesar de divergirem nos detalhes sobre a eleição, ambas as tradições concordam que a pregação fiel é meio necessário e ordenado por Deus, nunca opcional.",
+              explanation:
+                "Apesar de divergirem nos detalhes sobre a eleição, ambas as tradições concordam que a pregação fiel é meio necessário e ordenado por Deus, nunca opcional.",
             },
           ],
           application:
@@ -860,7 +1138,13 @@ const evangelismo: Trail = {
                 ACF: "Andai em sabedoria para com os que estão de fora, remindo o tempo. A vossa palavra seja sempre agradável, adubada com sal, para que saibais como vos convém responder a cada um.",
               },
               originals: [
-                { word: "ἅλατι", translit: "hálati", meaning: "'com sal' — forma dativa de hálas; imagem de conversa que conserva o bom sabor e evita a corrupção da fofoca ou da grosseria", lang: "grego" },
+                {
+                  word: "ἅλατι",
+                  translit: "hálati",
+                  meaning:
+                    "'com sal' — forma dativa de hálas; imagem de conversa que conserva o bom sabor e evita a corrupção da fofoca ou da grosseria",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -870,7 +1154,13 @@ const evangelismo: Trail = {
                 ACF: "Todo homem seja pronto para ouvir, tardio para falar, tardio para se irar.",
               },
               originals: [
-                { word: "ταχὺς", translit: "tachýs", meaning: "'pronto, rápido' — contrastado com βραδύς (bradýs, 'lento, tardio'), usado duas vezes no mesmo versículo para ouvir e para falar/irar-se", lang: "grego" },
+                {
+                  word: "ταχὺς",
+                  translit: "tachýs",
+                  meaning:
+                    "'pronto, rápido' — contrastado com βραδύς (bradýs, 'lento, tardio'), usado duas vezes no mesmo versículo para ouvir e para falar/irar-se",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -879,20 +1169,39 @@ const evangelismo: Trail = {
                 NVI: "Estejam sempre preparados para responder a qualquer pessoa que lhes pedir a razão da esperança que há em vocês. Contudo, façam isso com mansidão e respeito, conservando boa consciência.",
               },
               originals: [
-                { word: "ἐλπίδος", translit: "elpídos", meaning: "'esperança' — genitivo de elpís; não otimismo vago, mas expectativa firme e fundamentada naquilo que Deus já prometeu e cumpriu em Cristo", lang: "grego" },
+                {
+                  word: "ἐλπίδος",
+                  translit: "elpídos",
+                  meaning:
+                    "'esperança' — genitivo de elpís; não otimismo vago, mas expectativa firme e fundamentada naquilo que Deus já prometeu e cumpriu em Cristo",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "πραΰτης", translit: "praǘtēs", meaning: "'mansidão' — força sob controle, não fraqueza; qualidade explicitamente exigida ao dar razão da fé (1 Pe 3:15), tanto presencial quanto digitalmente.", lang: "grego" },
-            { word: "καιρός", translit: "kairós", meaning: "'ocasião oportuna' — reconhecer quando um comentário edifica e quando apenas alimenta discórdia é parte da sabedoria pedida em Colossenses 4:5.", lang: "grego" },
+            {
+              word: "πραΰτης",
+              translit: "praǘtēs",
+              meaning:
+                "'mansidão' — força sob controle, não fraqueza; qualidade explicitamente exigida ao dar razão da fé (1 Pe 3:15), tanto presencial quanto digitalmente.",
+              lang: "grego",
+            },
+            {
+              word: "καιρός",
+              translit: "kairós",
+              meaning:
+                "'ocasião oportuna' — reconhecer quando um comentário edifica e quando apenas alimenta discórdia é parte da sabedoria pedida em Colossenses 4:5.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "Três princípios práticos ajudam a aplicar a sabedoria bíblica ao ambiente digital: primeiro, lembre-se de que por trás de cada comentário há uma pessoa real, criada à imagem de Deus — o anonimato relativo das telas facilita esquecer isso, e é justamente aí que a mansidão bíblica (1 Pedro 3:15) precisa ser mais deliberadamente praticada. Segundo, nem toda discussão pede resposta pública imediata — Tiago 1:19 ('tardio para falar, tardio para se irar') é sabedoria especialmente relevante num ambiente desenhado para reações rápidas; às vezes, uma conversa privada, mais lenta e pessoal, comunica mais amor do que um comentário público defendendo um ponto. Terceiro, seu perfil e sua conduta digital consistente ao longo do tempo — o que você compartilha, como reage, como trata quem discorda — comunicam tanto quanto qualquer postagem isolada e explicitamente evangelística; a coerência entre vida online e offline é, ela mesma, um testemunho silencioso poderoso.",
           theologianQuote: {
             author: "John Mark Comer",
             text: "Aquilo a que você dá atenção é a pessoa em que você se torna.",
-            source: "John Mark Comer (citação amplamente documentada em suas obras sobre atenção e vida digital) (tradução livre)",
+            source:
+              "John Mark Comer (citação amplamente documentada em suas obras sobre atenção e vida digital) (tradução livre)",
           },
           deepen: {
             historicalContext:
@@ -908,7 +1217,8 @@ const evangelismo: Trail = {
           },
           quizzes: [
             {
-              question: "Segundo a lição, qual princípio de Colossenses 4:5-6 se aplica diretamente ao testemunho nas redes sociais?",
+              question:
+                "Segundo a lição, qual princípio de Colossenses 4:5-6 se aplica diretamente ao testemunho nas redes sociais?",
               options: [
                 "Falar o máximo possível sobre qualquer assunto religioso, em qualquer contexto",
                 "Ter sabedoria no procedimento com os 'de fora' e uma conversa agradável, temperada com sal",
@@ -916,10 +1226,12 @@ const evangelismo: Trail = {
                 "Responder imediatamente a toda crítica recebida online",
               ],
               correctIndex: 1,
-              explanation: "A sabedoria e a fala 'temperada com sal' pedidas por Paulo se aplicam tanto a conversas presenciais quanto a interações digitais.",
+              explanation:
+                "A sabedoria e a fala 'temperada com sal' pedidas por Paulo se aplicam tanto a conversas presenciais quanto a interações digitais.",
             },
             {
-              question: "Por que Tiago 1:19 ('tardio para falar, tardio para se irar') é especialmente relevante no ambiente digital?",
+              question:
+                "Por que Tiago 1:19 ('tardio para falar, tardio para se irar') é especialmente relevante no ambiente digital?",
               options: [
                 "Porque as redes sociais não têm relação com esse princípio",
                 "Porque o ambiente digital tende a recompensar reações rápidas e emocionais, tornando a pausa reflexiva ainda mais necessária",
@@ -927,10 +1239,12 @@ const evangelismo: Trail = {
                 "Porque é melhor nunca comentar nada online",
               ],
               correctIndex: 1,
-              explanation: "O design de muitas redes sociais incentiva respostas imediatas; a sabedoria de ser 'tardio para falar' é um contrapeso bíblico deliberado a essa pressão.",
+              explanation:
+                "O design de muitas redes sociais incentiva respostas imediatas; a sabedoria de ser 'tardio para falar' é um contrapeso bíblico deliberado a essa pressão.",
             },
             {
-              question: "Segundo a lição, o que comunica testemunho tão poderoso quanto uma postagem explicitamente evangelística?",
+              question:
+                "Segundo a lição, o que comunica testemunho tão poderoso quanto uma postagem explicitamente evangelística?",
               options: [
                 "O número de seguidores de um perfil",
                 "A coerência entre a conduta digital consistente ao longo do tempo e a vida offline da pessoa",
@@ -938,7 +1252,8 @@ const evangelismo: Trail = {
                 "O uso de linguagem teológica complexa online",
               ],
               correctIndex: 1,
-              explanation: "A consistência de caráter, tanto online quanto offline, é, por si só, um testemunho silencioso e poderoso, tanto quanto qualquer postagem explícita.",
+              explanation:
+                "A consistência de caráter, tanto online quanto offline, é, por si só, um testemunho silencioso e poderoso, tanto quanto qualquer postagem explícita.",
             },
           ],
           application:
@@ -968,7 +1283,13 @@ const evangelismo: Trail = {
                 NVI: "Portanto, vão e façam discípulos de todas as nações, batizando-os em nome do Pai, do Filho e do Espírito Santo, ensinando-os a obedecer a tudo o que eu ordenei.",
               },
               originals: [
-                { word: "τηρεῖν", translit: "tēreîn", meaning: "'guardar, obedecer continuamente' — não apenas conhecer intelectualmente, mas praticar de forma perseverante", lang: "grego" },
+                {
+                  word: "τηρεῖν",
+                  translit: "tēreîn",
+                  meaning:
+                    "'guardar, obedecer continuamente' — não apenas conhecer intelectualmente, mas praticar de forma perseverante",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -977,7 +1298,13 @@ const evangelismo: Trail = {
                 NVI: "Chegando a Jerusalém, Saulo procurava reunir-se aos discípulos, mas todos tinham medo dele, não acreditando que ele fosse discípulo. Barnabé, porém, tomou-o consigo e o levou aos apóstolos.",
               },
               originals: [
-                { word: "ἐπελάβετο", translit: "epelábeto", meaning: "'tomou consigo, agarrou' — verbo que descreve a ação decidida de Barnabé de acolher Saulo apesar do medo geral dos discípulos", lang: "grego" },
+                {
+                  word: "ἐπελάβετο",
+                  translit: "epelábeto",
+                  meaning:
+                    "'tomou consigo, agarrou' — verbo que descreve a ação decidida de Barnabé de acolher Saulo apesar do medo geral dos discípulos",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -986,13 +1313,31 @@ const evangelismo: Trail = {
                 NVI: "Antes, fomos meigos entre vocês, como uma mãe cuida com carinho de seus filhos. Em nosso profundo afeto por vocês, decidimos dar-lhes não somente o evangelho de Deus, mas também a nossa própria vida... Sabem também como tratamos cada um de vocês como um pai trata os seus filhos.",
               },
               originals: [
-                { word: "τροφὸς", translit: "trophós", meaning: "'ama de leite, mãe que amamenta' — imagem de cuidado terno e próximo, usada por Paulo para descrever seu afeto pastoral pelos tessalonicenses", lang: "grego" },
+                {
+                  word: "τροφὸς",
+                  translit: "trophós",
+                  meaning:
+                    "'ama de leite, mãe que amamenta' — imagem de cuidado terno e próximo, usada por Paulo para descrever seu afeto pastoral pelos tessalonicenses",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "τηρέω", translit: "tēréō", meaning: "'guardar, obedecer continuamente' — discipulado genuíno inclui prática perseverante, não apenas conhecimento intelectual.", lang: "grego" },
-            { word: "νήπιος", translit: "nḗpios", meaning: "'criancinha, recém-nascido' — imagem usada por Paulo (1 Co 3:1) para crentes ainda imaturos, que precisam de cuidado apropriado à sua fase.", lang: "grego" },
+            {
+              word: "τηρέω",
+              translit: "tēréō",
+              meaning:
+                "'guardar, obedecer continuamente' — discipulado genuíno inclui prática perseverante, não apenas conhecimento intelectual.",
+              lang: "grego",
+            },
+            {
+              word: "νήπιος",
+              translit: "nḗpios",
+              meaning:
+                "'criancinha, recém-nascido' — imagem usada por Paulo (1 Co 3:1) para crentes ainda imaturos, que precisam de cuidado apropriado à sua fase.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "Cuidar bem de um recém-convertido nas primeiras semanas costuma incluir passos simples, mas decisivos: ajudá-lo a começar um hábito realista de leitura bíblica (mesmo que pequeno no início — cinco minutos são melhores do que uma meta ambiciosa e abandonada em uma semana), introduzi-lo pessoalmente a uma igreja local e, idealmente, apresentá-lo você mesmo a algumas pessoas ali (assim como Barnabé apresentou Paulo aos apóstolos, reduzindo o medo natural de chegar sozinho a um lugar novo), conversar abertamente sobre o batismo como próximo passo público de obediência, e estar disponível para dúvidas simples nas primeiras semanas, sem pressa de que a pessoa 'já saiba tudo'. O erro mais comum é acompanhar intensamente até a decisão de fé, e depois desaparecer — deixando a pessoa sozinha justamente na fase mais frágil e vulnerável do seu crescimento espiritual.",
@@ -1015,7 +1360,8 @@ const evangelismo: Trail = {
           },
           quizzes: [
             {
-              question: "Segundo Mateus 28:19-20, o que a Grande Comissão pede além de simplesmente levar alguém a uma decisão inicial de fé?",
+              question:
+                "Segundo Mateus 28:19-20, o que a Grande Comissão pede além de simplesmente levar alguém a uma decisão inicial de fé?",
               options: [
                 "Nada além disso — a Grande Comissão termina na decisão de fé",
                 "Ensinar o novo crente a obedecer continuamente a tudo o que Cristo ordenou",
@@ -1023,7 +1369,8 @@ const evangelismo: Trail = {
                 "Deixar a pessoa por conta própria para descobrir a fé sozinha",
               ],
               correctIndex: 1,
-              explanation: "'Fazer discípulos' inclui explicitamente ensinar obediência contínua e perseverante, não apenas gerar uma decisão pontual de fé.",
+              explanation:
+                "'Fazer discípulos' inclui explicitamente ensinar obediência contínua e perseverante, não apenas gerar uma decisão pontual de fé.",
             },
             {
               question: "O que Barnabé fez por Paulo, recém-convertido, em Atos 9:26-27?",
@@ -1034,7 +1381,8 @@ const evangelismo: Trail = {
                 "Ignorou completamente a situação",
               ],
               correctIndex: 1,
-              explanation: "Barnabé modela o cuidado inicial de acolher e apresentar um recém-convertido à comunidade, quando ele mais precisava desse apoio.",
+              explanation:
+                "Barnabé modela o cuidado inicial de acolher e apresentar um recém-convertido à comunidade, quando ele mais precisava desse apoio.",
             },
             {
               question: "Qual erro comum a lição aponta no discipulado de recém-convertidos?",
@@ -1045,7 +1393,8 @@ const evangelismo: Trail = {
                 "Falar sobre o batismo como próximo passo",
               ],
               correctIndex: 1,
-              explanation: "O erro mais comum e prejudicial é o abandono logo após a conversão — exatamente quando o cuidado contínuo é mais necessário.",
+              explanation:
+                "O erro mais comum e prejudicial é o abandono logo após a conversão — exatamente quando o cuidado contínuo é mais necessário.",
             },
           ],
           application:
@@ -1076,7 +1425,13 @@ const evangelismo: Trail = {
                 ACF: "E o que de mim, entre muitas testemunhas, ouviste, confia-o a homens fiéis, que sejam idôneos para também ensinarem os outros.",
               },
               originals: [
-                { word: "παράθου", translit: "paráthou", meaning: "'confie, deposite como depósito seguro' — imagem financeira de um depósito confiado a alguém de confiança, para ser preservado e repassado", lang: "grego" },
+                {
+                  word: "παράθου",
+                  translit: "paráthou",
+                  meaning:
+                    "'confie, deposite como depósito seguro' — imagem financeira de um depósito confiado a alguém de confiança, para ser preservado e repassado",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -1085,7 +1440,13 @@ const evangelismo: Trail = {
                 NVI: "Chegou a Éfeso um judeu chamado Apolo... Áquila e Priscila... o convidaram para ir à sua casa e explicaram-lhe com mais precisão o caminho de Deus.",
               },
               originals: [
-                { word: "ἀκριβέστερον", translit: "akribésteron", meaning: "'com mais precisão, mais exatamente' — comparativo de akribḗs; Áquila e Priscila não corrigem publicamente, mas aprofundam com cuidado particular", lang: "grego" },
+                {
+                  word: "ἀκριβέστερον",
+                  translit: "akribésteron",
+                  meaning:
+                    "'com mais precisão, mais exatamente' — comparativo de akribḗs; Áquila e Priscila não corrigem publicamente, mas aprofundam com cuidado particular",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -1094,13 +1455,31 @@ const evangelismo: Trail = {
                 NVI: "O que vocês aprenderam, receberam, ouviram e viram em mim, ponham em prática. E o Deus da paz estará com vocês.",
               },
               originals: [
-                { word: "ἐμάθετε", translit: "emáthete", meaning: "'aprendestes' — de manthánō, aprender por instrução recebida; ligado a παρελάβετε ('recebestes'), termo técnico de transmissão fiel de tradição", lang: "grego" },
+                {
+                  word: "ἐμάθετε",
+                  translit: "emáthete",
+                  meaning:
+                    "'aprendestes' — de manthánō, aprender por instrução recebida; ligado a παρελάβετε ('recebestes'), termo técnico de transmissão fiel de tradição",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "παρατίθημι", translit: "paratíthēmi", meaning: "'depositar, confiar' — termo financeiro para um depósito seguro; discipular é confiar um tesouro recebido a outra pessoa de confiança.", lang: "grego" },
-            { word: "πιστός", translit: "pistós", meaning: "'fiel, digno de confiança' — a qualificação central que Paulo pede em quem recebe esse depósito espiritual, mais do que talento ou eloquência.", lang: "grego" },
+            {
+              word: "παρατίθημι",
+              translit: "paratíthēmi",
+              meaning:
+                "'depositar, confiar' — termo financeiro para um depósito seguro; discipular é confiar um tesouro recebido a outra pessoa de confiança.",
+              lang: "grego",
+            },
+            {
+              word: "πιστός",
+              translit: "pistós",
+              meaning:
+                "'fiel, digno de confiança' — a qualificação central que Paulo pede em quem recebe esse depósito espiritual, mais do que talento ou eloquência.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "Vale notar, em 2 Timóteo 2:2, que a única qualificação explicitamente exigida por Paulo para receber esse 'depósito' e repassá-lo adiante é ser 'fiel' (pistós) — não brilhante, não eloquente, não formado teologicamente, apenas fiel e capaz de ensinar. Isso é uma boa notícia prática: multiplicar discípulos não exige que você seja um especialista teológico antes de começar — exige fidelidade em compartilhar o que você já genuinamente aprendeu e vive, com disposição de investir tempo pessoal em outra pessoa específica, assim como alguém provavelmente investiu tempo em você. Áquila e Priscila, em Atos 18, ilustram isso bem: um casal comum, sem cargo formal de ensino público, que investiu tempo pessoal explicando 'com mais precisão' o caminho de Deus a Apolo, um pregador já talentoso — multiplicação acontece tanto em conversas informais quanto em discipulados formalmente estruturados.",
@@ -1123,7 +1502,8 @@ const evangelismo: Trail = {
           },
           quizzes: [
             {
-              question: "Em 2 Timóteo 2:2, quantas gerações espirituais de ensino Paulo menciona explicitamente em uma única frase?",
+              question:
+                "Em 2 Timóteo 2:2, quantas gerações espirituais de ensino Paulo menciona explicitamente em uma única frase?",
               options: [
                 "Apenas duas: Paulo e Timóteo",
                 "Quatro: Paulo, Timóteo, homens fiéis, e os outros que esses homens ensinarão",
@@ -1131,10 +1511,12 @@ const evangelismo: Trail = {
                 "Dez gerações completas",
               ],
               correctIndex: 1,
-              explanation: "Paulo descreve uma cadeia de multiplicação: ele ensina Timóteo, que confia a homens fiéis, que ensinarão ainda outros — quatro gerações mencionadas.",
+              explanation:
+                "Paulo descreve uma cadeia de multiplicação: ele ensina Timóteo, que confia a homens fiéis, que ensinarão ainda outros — quatro gerações mencionadas.",
             },
             {
-              question: "Segundo a lição, qual é a única qualificação explicitamente exigida por Paulo em 2 Timóteo 2:2 para alguém receber e repassar o ensino apostólico?",
+              question:
+                "Segundo a lição, qual é a única qualificação explicitamente exigida por Paulo em 2 Timóteo 2:2 para alguém receber e repassar o ensino apostólico?",
               options: [
                 "Formação teológica avançada",
                 "Ser fiel ('pistós') e capaz de ensinar a outros — não talento excepcional ou eloquência",
@@ -1142,7 +1524,8 @@ const evangelismo: Trail = {
                 "Ter conhecido pessoalmente o apóstolo Paulo",
               ],
               correctIndex: 1,
-              explanation: "A qualificação central exigida é fidelidade, não brilho intelectual ou eloquência — o que torna a multiplicação acessível a qualquer discípulo maduro e fiel.",
+              explanation:
+                "A qualificação central exigida é fidelidade, não brilho intelectual ou eloquência — o que torna a multiplicação acessível a qualquer discípulo maduro e fiel.",
             },
             {
               question: "O que Áquila e Priscila fizeram por Apolo, em Atos 18:24-26?",
@@ -1153,7 +1536,8 @@ const evangelismo: Trail = {
                 "Recusaram-se a ajudá-lo por ele ser estrangeiro",
               ],
               correctIndex: 1,
-              explanation: "Um casal comum investiu tempo pessoal e discreto para aprofundar o entendimento de um pregador já talentoso — um belo exemplo de multiplicação informal.",
+              explanation:
+                "Um casal comum investiu tempo pessoal e discreto para aprofundar o entendimento de um pregador já talentoso — um belo exemplo de multiplicação informal.",
             },
           ],
           application:

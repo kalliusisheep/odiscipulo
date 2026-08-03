@@ -31,7 +31,13 @@ const santificacao: Trail = {
                 NVT: "Queridos amigos, quando eu estava com vocês, sempre obedeciam, e agora, quando estou ausente, é ainda mais importante que o façam. Continuem trabalhando com temor e tremor para revelar a salvação de vocês por meio da maneira como vivem, pois Deus opera em vocês para que queiram obedecê-lo e o façam.",
               },
               originals: [
-                { word: "κατεργάζεσθε", translit: "katergazesthe", meaning: "trabalhai até completar, levai a cabo com esforço contínuo e responsável", lang: "grego" },
+                {
+                  word: "κατεργάζεσθε",
+                  translit: "katergazesthe",
+                  meaning:
+                    "trabalhai até completar, levai a cabo com esforço contínuo e responsável",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -43,21 +49,44 @@ const santificacao: Trail = {
                 NVT: "É vontade de Deus que vocês sejam santificados, que se abstenham de todo pecado sexual.",
               },
               originals: [
-                { word: "ἁγιασμός", translit: "hagiasmos", meaning: "santificação, processo ativo de se tornar separado e semelhante a Deus", lang: "grego" },
+                {
+                  word: "ἁγιασμός",
+                  translit: "hagiasmos",
+                  meaning: "santificação, processo ativo de se tornar separado e semelhante a Deus",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "δικαιόω", translit: "dikaioō", meaning: "justificar, declarar justo por decreto legal — ato instantâneo e completo, recebido unicamente pela fé", lang: "grego" },
-            { word: "ἁγιασμός", translit: "hagiasmos", meaning: "santificação — processo contínuo de crescimento na semelhança com Cristo, que exige cooperação ativa do crente com a graça", lang: "grego" },
-            { word: "κατεργάζομαι", translit: "katergazomai", meaning: "trabalhar até realizar por completo, com esforço perseverante e responsabilidade pessoal", lang: "grego" },
+            {
+              word: "δικαιόω",
+              translit: "dikaioō",
+              meaning:
+                "justificar, declarar justo por decreto legal — ato instantâneo e completo, recebido unicamente pela fé",
+              lang: "grego",
+            },
+            {
+              word: "ἁγιασμός",
+              translit: "hagiasmos",
+              meaning:
+                "santificação — processo contínuo de crescimento na semelhança com Cristo, que exige cooperação ativa do crente com a graça",
+              lang: "grego",
+            },
+            {
+              word: "κατεργάζομαι",
+              translit: "katergazomai",
+              meaning:
+                "trabalhar até realizar por completo, com esforço perseverante e responsabilidade pessoal",
+              lang: "grego",
+            },
           ],
           deepDive:
             "Note a ordem em Filipenses 2:12-13: primeiro 'operai' (katergazesthe — trabalho contínuo, esforçado, real), depois a razão: 'porque é Deus quem opera em vós'. A gramática já ensina teologia: o crente tem um papel ativo e responsável na sua santificação — não é espectador passivo de um processo automático. Ao mesmo tempo, esse esforço não é a causa da nossa transformação, mas a resposta cooperativa a uma graça que Deus oferece e sustém livremente a todo aquele que crê. Você não se santifica para permanecer salvo por mérito próprio, mas porque a graça de Deus, recebida pela fé e sustentada por uma comunhão viva com Ele, capacita e convida você a responder com obediência voluntária. A luta contra o pecado não é sinal de fé fraca — é sinal de vida espiritual real, e o convite bíblico é sempre para que você, com toda a força que o Espírito concede, persevere na busca ativa da santidade, sem a qual, diz o autor de Hebreus, ninguém verá o Senhor (Hb 12:14).",
           theologianQuote: {
             author: "John Wesley",
             text: "Pela justificação somos salvos da culpa do pecado e restaurados ao favor de Deus; pela santificação somos salvos do poder e da raiz do pecado, e restaurados à imagem de Deus.",
-            source: "John Wesley, Sermão 85 — \"On Working Out Our Own Salvation\" (tradução livre)",
+            source: 'John Wesley, Sermão 85 — "On Working Out Our Own Salvation" (tradução livre)',
           },
           deepen: {
             additionalVerses: [
@@ -67,7 +96,13 @@ const santificacao: Trail = {
                   NVI: "Assim foram alguns de vocês. Mas vocês foram lavados, foram santificados, foram justificados em nome do Senhor Jesus Cristo e pelo Espírito do nosso Deus.",
                 },
                 originals: [
-                  { word: "ἀπελούσασθε", translit: "apelousasthe", meaning: "'fostes lavados' — aoristo médio, ação decisiva e completa; a limpeza espiritual já aconteceu, não é processo a repetir", lang: "grego" },
+                  {
+                    word: "ἀπελούσασθε",
+                    translit: "apelousasthe",
+                    meaning:
+                      "'fostes lavados' — aoristo médio, ação decisiva e completa; a limpeza espiritual já aconteceu, não é processo a repetir",
+                    lang: "grego",
+                  },
                 ],
               },
               {
@@ -76,14 +111,20 @@ const santificacao: Trail = {
                   NVI: "Porque a graça de Deus se manifestou salvadora a todos os homens, ensinando-nos a renunciar à impiedade e às paixões mundanas e a viver de forma sensata, justa e piedosa nesta era presente.",
                 },
                 originals: [
-                  { word: "ἐπεφάνη", translit: "epephanē", meaning: "'manifestou-se, apareceu' — mesma raiz de 'epifania'; a graça de Deus irrompeu visivelmente na história em Cristo", lang: "grego" },
+                  {
+                    word: "ἐπεφάνη",
+                    translit: "epephanē",
+                    meaning:
+                      "'manifestou-se, apareceu' — mesma raiz de 'epifania'; a graça de Deus irrompeu visivelmente na história em Cristo",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
             historicalContext:
               "A distinção clara entre justificação (veredito jurídico instantâneo) e santificação (processo contínuo) foi um dos pontos centrais recuperados pela Reforma Protestante no século XVI. Antes dela, havia confusão generalizada entre os dois conceitos na teologia medieval, o que, na prática, deixava a segurança da salvação do crente dependente do seu próprio progresso moral. Reformadores como Lutero insistiram que a justificação é 'somente pela fé' (sola fide) — completa e imediata —, enquanto a santificação, sua consequência necessária, se desenrola ao longo de toda a vida cristã.",
             theologicalDebate:
-              "Tradições cristãs fiéis diferem quanto à ênfase quanto à cooperação humana na santificação: correntes mais reformadas tendem a enfatizar a obra soberana e monergista de Deus mesmo no processo contínuo, enquanto correntes arminianas e wesleyanas — como a adotada nesta trilha — enfatizam a resposta ativa e responsável do crente à graça oferecida, numa cooperação real entre Deus e o crente. Ambas concordam, porém, que a santificação nunca é mérito humano isolado, mas sempre resposta a uma graça que vem primeiro de Deus.",
+              "Tradições cristãs fiéis diferem quanto à ênfase quanto à cooperação humana na santificação: correntes mais reformadas tendem a enfatizar a obra soberana e monergista de Deus mesmo no processo contínuo, enquanto esta lição enfatiza a resposta ativa e responsável do crente à graça oferecida, numa cooperação real entre Deus e o crente. Ambas concordam, porém, que a santificação nunca é mérito humano isolado, mas sempre resposta a uma graça que vem primeiro de Deus.",
             secondQuote: {
               author: "Charles Hodge",
               text: "A justificação nos declara justos diante de Deus; a santificação nos torna, progressivamente, justos de fato. Uma é obra concluída na cruz; a outra é obra em andamento no coração.",
@@ -99,10 +140,12 @@ const santificacao: Trail = {
                 "Santificação vem antes da justificação",
               ],
               correctIndex: 1,
-              explanation: "Justificação é veredito instantâneo pela fé; santificação é obra progressiva do Espírito, à qual o crente responde ativamente com obediência.",
+              explanation:
+                "Justificação é veredito instantâneo pela fé; santificação é obra progressiva do Espírito, à qual o crente responde ativamente com obediência.",
             },
             {
-              question: "Em Filipenses 2:12-13, por que Paulo manda 'operar a salvação com temor e tremor'?",
+              question:
+                "Em Filipenses 2:12-13, por que Paulo manda 'operar a salvação com temor e tremor'?",
               options: [
                 "Porque a graça de Deus é insuficiente sem esforço humano",
                 "Como resposta ativa e responsável ao fato de que Deus já está operando em nós",
@@ -110,7 +153,8 @@ const santificacao: Trail = {
                 "Porque a obediência é opcional para quem já creu",
               ],
               correctIndex: 1,
-              explanation: "Trabalhamos com seriedade porque Deus já opera primeiro — nosso esforço é resposta real e necessária, não mero detalhe automático.",
+              explanation:
+                "Trabalhamos com seriedade porque Deus já opera primeiro — nosso esforço é resposta real e necessária, não mero detalhe automático.",
             },
             {
               question: "Segundo a lição, o que a busca ativa da santidade revela sobre o crente?",
@@ -121,7 +165,8 @@ const santificacao: Trail = {
                 "Que a santificação é opcional para quem já foi justificado",
               ],
               correctIndex: 1,
-              explanation: "Um coração verdadeiramente tocado pela graça deseja, por amor, se parecer com Aquele que o salvou.",
+              explanation:
+                "Um coração verdadeiramente tocado pela graça deseja, por amor, se parecer com Aquele que o salvou.",
             },
           ],
           application:
@@ -152,7 +197,12 @@ const santificacao: Trail = {
                 NVT: "É por isso que digo: deixem-se guiar pelo Espírito Santo. Então vocês não seguirão os desejos da carne pecaminosa. A natureza pecaminosa deseja o que é contrário ao Espírito, e o Espírito deseja o que é contrário à natureza pecaminosa. Esses dois lutam entre si e impedem que vocês façam o que desejam.",
               },
               originals: [
-                { word: "ἀντίκειται", translit: "antikeitai", meaning: "opor-se, estar em conflito direto e contínuo", lang: "grego" },
+                {
+                  word: "ἀντίκειται",
+                  translit: "antikeitai",
+                  meaning: "opor-se, estar em conflito direto e contínuo",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -164,14 +214,38 @@ const santificacao: Trail = {
                 NVT: "Pois, se viverem de acordo com a natureza pecaminosa, vocês morrerão. Mas, se pelo poder do Espírito vocês fizerem morrer as ações pecaminosas do corpo, vocês viverão.",
               },
               originals: [
-                { word: "θανατοῦτε", translit: "thanatoute", meaning: "façam morrer — ação ativa, deliberada e violenta contra o pecado, não passividade", lang: "grego" },
+                {
+                  word: "θανατοῦτε",
+                  translit: "thanatoute",
+                  meaning:
+                    "façam morrer — ação ativa, deliberada e violenta contra o pecado, não passividade",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "σάρξ", translit: "sarx", meaning: "'carne' — não o corpo físico em si, mas a natureza inclinada ao pecado que ainda resiste em nós mesmo após a conversão", lang: "grego" },
-            { word: "πνεῦμα", translit: "pneuma", meaning: "'Espírito' — a nova natureza e a presença pessoal do Espírito Santo, que capacita e convida à obediência", lang: "grego" },
-            { word: "θανατοῦτε", translit: "thanatoute", meaning: "'façam morrer' — verbo no imperativo, exigindo ação ativa e contínua do crente contra o pecado, em cooperação com o Espírito", lang: "grego" },
+            {
+              word: "σάρξ",
+              translit: "sarx",
+              meaning:
+                "'carne' — não o corpo físico em si, mas a natureza inclinada ao pecado que ainda resiste em nós mesmo após a conversão",
+              lang: "grego",
+            },
+            {
+              word: "πνεῦμα",
+              translit: "pneuma",
+              meaning:
+                "'Espírito' — a nova natureza e a presença pessoal do Espírito Santo, que capacita e convida à obediência",
+              lang: "grego",
+            },
+            {
+              word: "θανατοῦτε",
+              translit: "thanatoute",
+              meaning:
+                "'façam morrer' — verbo no imperativo, exigindo ação ativa e contínua do crente contra o pecado, em cooperação com o Espírito",
+              lang: "grego",
+            },
           ],
           deepDive:
             "A palavra 'antikeitai' descreve uma oposição contínua, não um round único vencido de uma vez por todas. A vida cristã normal inclui essa tensão — e Paulo não manda o crente se sentir condenado por senti-la, mas o chama à ação: 'andai no Espírito' é um verbo no imperativo presente, indicando um caminhar contínuo e deliberado, dia após dia. Da mesma forma, 'fazer morrer os feitos do corpo' (Rm 8:13) não é experiência passiva — é responsabilidade ativa do crente, exercida pelo poder do Espírito que já habita nele. Aqui vale destacar, com humildade e respeito às diferentes tradições cristãs: o poder para essa vitória vem do Espírito Santo, e a vida cristã madura envolve o exercício de disciplinas espirituais — oração, Palavra, comunhão, jejum — como meios pelos quais o crente coopera ativamente com a graça que já recebeu, e não apenas espera passivamente por uma experiência espiritual. Toda manifestação espiritual, seja ela qual for, deve ser sempre julgada e submetida à autoridade final das Escrituras, e não substituir a disciplina bíblica de andar diariamente pelo Espírito.",
@@ -188,7 +262,13 @@ const santificacao: Trail = {
                   NVI: "Assim, encontro esta lei que atua em mim: quando quero fazer o bem, o mal está junto a mim. Pois, no íntimo, tenho prazer na lei de Deus; mas vejo outra lei atuando nos meus membros, guerreando contra a lei da minha mente.",
                 },
                 originals: [
-                  { word: "ἀντιστρατευόμενον", translit: "antistrateuomenon", meaning: "'guerreando contra, fazendo guerra' — termo militar; Paulo descreve um conflito interno real, não uma simples hesitação", lang: "grego" },
+                  {
+                    word: "ἀντιστρατευόμενον",
+                    translit: "antistrateuomenon",
+                    meaning:
+                      "'guerreando contra, fazendo guerra' — termo militar; Paulo descreve um conflito interno real, não uma simples hesitação",
+                    lang: "grego",
+                  },
                 ],
               },
               {
@@ -197,7 +277,13 @@ const santificacao: Trail = {
                   NVI: "Não mintam uns aos outros, visto que vocês já se despiram do velho homem com as suas práticas e se revestiram do novo, que está sendo renovado em conhecimento, à imagem do seu Criador.",
                 },
                 originals: [
-                  { word: "ἀπεκδυσάμενοι", translit: "apekdysamenoi", meaning: "'despiram-se completamente' — imagem de tirar uma roupa velha e suja, deixando-a para trás de vez", lang: "grego" },
+                  {
+                    word: "ἀπεκδυσάμενοι",
+                    translit: "apekdysamenoi",
+                    meaning:
+                      "'despiram-se completamente' — imagem de tirar uma roupa velha e suja, deixando-a para trás de vez",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
@@ -220,7 +306,8 @@ const santificacao: Trail = {
                 "Termina completamente logo após a conversão",
               ],
               correctIndex: 1,
-              explanation: "Paulo descreve essa guerra como normal para todo cristão — e chama à ação contínua, não ao desespero.",
+              explanation:
+                "Paulo descreve essa guerra como normal para todo cristão — e chama à ação contínua, não ao desespero.",
             },
             {
               question: "Segundo Romanos 8:13, 'fazer morrer os feitos do corpo' é:",
@@ -231,7 +318,8 @@ const santificacao: Trail = {
                 "Uma promessa que só se cumprirá no céu",
               ],
               correctIndex: 1,
-              explanation: "O verbo no imperativo exige responsabilidade e ação contínua do crente, em cooperação com o Espírito.",
+              explanation:
+                "O verbo no imperativo exige responsabilidade e ação contínua do crente, em cooperação com o Espírito.",
             },
           ],
           application:
@@ -268,7 +356,13 @@ const santificacao: Trail = {
                 NVT: "Mas o Espírito produz em nossa vida este tipo de fruto: amor, alegria, paz, paciência, gentileza, bondade, fidelidade, humildade e autocontrole. Não existe lei contra essas coisas!",
               },
               originals: [
-                { word: "καρπός", translit: "karpos", meaning: "fruto — singular, algo orgânico que cresce, não um conjunto de itens separados", lang: "grego" },
+                {
+                  word: "καρπός",
+                  translit: "karpos",
+                  meaning:
+                    "fruto — singular, algo orgânico que cresce, não um conjunto de itens separados",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -278,20 +372,39 @@ const santificacao: Trail = {
                 NAA: "Permanecei em mim, e eu, em vós. Como o ramo, por si mesmo, não pode dar fruto, se não permanecer na videira, assim também vós, se não permanecerdes em mim. Eu sou a videira; vós, os ramos. Quem permanece em mim, e eu, nele, esse dá muito fruto; porque sem mim nada podeis fazer.",
               },
               originals: [
-                { word: "μένετε", translit: "menete", meaning: "'permanecei' — imperativo presente, repetido dez vezes nesta passagem; união contínua e ativa com Cristo, não um evento único", lang: "grego" },
+                {
+                  word: "μένετε",
+                  translit: "menete",
+                  meaning:
+                    "'permanecei' — imperativo presente, repetido dez vezes nesta passagem; união contínua e ativa com Cristo, não um evento único",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "καρπός", translit: "karpos", meaning: "'fruto', no singular — indica unidade orgânica, não uma coleção de conquistas separadas", lang: "grego" },
-            { word: "μένω", translit: "menō", meaning: "'permanecer, habitar continuamente' — a condição indispensável para que o fruto cresça", lang: "grego" },
+            {
+              word: "καρπός",
+              translit: "karpos",
+              meaning:
+                "'fruto', no singular — indica unidade orgânica, não uma coleção de conquistas separadas",
+              lang: "grego",
+            },
+            {
+              word: "μένω",
+              translit: "menō",
+              meaning:
+                "'permanecer, habitar continuamente' — a condição indispensável para que o fruto cresça",
+              lang: "grego",
+            },
           ],
           deepDive:
             "A escolha do singular 'karpos' (fruto, não frutos) revela que amor, alegria, paz, paciência e as demais virtudes não são adquiridas isoladamente uma por uma — elas crescem juntas, como expressões de uma única vida transformada pelo Espírito. Jesus explica a condição para isso em João 15: 'permanecer' (menō) — um verbo que indica permanência contínua e ativa, não uma visita ocasional. O crente que negligencia a oração, a Palavra e a comunhão da igreja local não deve se surpreender ao ver o fruto minguar; e o crente que persevera nessas disciplinas, mesmo sem sentir resultados imediatos, está criando exatamente as condições onde o Espírito Santo produz, com o tempo, um caráter cada vez mais parecido com o de Cristo. Vale notar que esse crescimento não é fatalista nem automático: o crente mantém a responsabilidade e a liberdade de permanecer ou de se afastar — e é chamado, a cada dia, a escolher permanecer.",
           theologianQuote: {
             author: "Richard Foster",
             text: "As disciplinas espirituais são o meio da graça de Deus para a formação genuína do caráter — do coração, da mente e do espírito.",
-            source: "Richard J. Foster, Celebration of Discipline (edição revisada, 1988) (tradução livre)",
+            source:
+              "Richard J. Foster, Celebration of Discipline (edição revisada, 1988) (tradução livre)",
           },
           deepen: {
             additionalVerses: [
@@ -301,7 +414,13 @@ const santificacao: Trail = {
                   NVI: "Assim, toda árvore boa dá frutos bons, mas a árvore má dá frutos maus. Uma árvore boa não pode dar frutos maus, e uma árvore má não pode dar frutos bons.",
                 },
                 originals: [
-                  { word: "σαπρόν", translit: "sapron", meaning: "'podre, corrompido' — a árvore má não pode produzir outra coisa senão fruto estragado; o fruto denuncia a raiz", lang: "grego" },
+                  {
+                    word: "σαπρόν",
+                    translit: "sapron",
+                    meaning:
+                      "'podre, corrompido' — a árvore má não pode produzir outra coisa senão fruto estragado; o fruto denuncia a raiz",
+                    lang: "grego",
+                  },
                 ],
               },
               {
@@ -310,7 +429,13 @@ const santificacao: Trail = {
                   NVI: "Pois o fruto da luz consiste em toda a bondade, justiça e verdade.",
                 },
                 originals: [
-                  { word: "φωτός", translit: "phōtos", meaning: "'da luz' — genitivo de phōs; o fruto do Espírito é chamado aqui de fruto da luz, associando santidade à revelação e clareza", lang: "grego" },
+                  {
+                    word: "φωτός",
+                    translit: "phōtos",
+                    meaning:
+                      "'da luz' — genitivo de phōs; o fruto do Espírito é chamado aqui de fruto da luz, associando santidade à revelação e clareza",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
@@ -333,7 +458,8 @@ const santificacao: Trail = {
                 "Porque as outras oito são menos importantes que o amor",
               ],
               correctIndex: 1,
-              explanation: "O singular 'karpos' revela unidade orgânica: o fruto do Espírito cresce como um todo integrado.",
+              explanation:
+                "O singular 'karpos' revela unidade orgânica: o fruto do Espírito cresce como um todo integrado.",
             },
             {
               question: "Segundo João 15, qual é a condição indispensável para dar fruto?",
@@ -344,7 +470,8 @@ const santificacao: Trail = {
                 "Alcançar um nível avançado de conhecimento teológico",
               ],
               correctIndex: 1,
-              explanation: "'Menō' (permanecer) indica uma comunhão contínua e ativa com Cristo, sem a qual não há fruto genuíno.",
+              explanation:
+                "'Menō' (permanecer) indica uma comunhão contínua e ativa com Cristo, sem a qual não há fruto genuíno.",
             },
           ],
           application:
@@ -375,7 +502,13 @@ const santificacao: Trail = {
                 NVT: "Não perca tempo com histórias profanas e sem sentido. Em vez disso, treine-se para a piedade. O treinamento físico é bom, mas o treinamento na santidade é bem mais importante, pois promete benefícios tanto nesta vida como na próxima.",
               },
               originals: [
-                { word: "γύμναζε", translit: "gymnaze", meaning: "exercita-te, treina — de onde vem a palavra 'ginástica'; disciplina ativa e repetida", lang: "grego" },
+                {
+                  word: "γύμναζε",
+                  translit: "gymnaze",
+                  meaning:
+                    "exercita-te, treina — de onde vem a palavra 'ginástica'; disciplina ativa e repetida",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -385,20 +518,39 @@ const santificacao: Trail = {
                 NAA: "Antes, tem prazer na lei do Senhor e nela medita de dia e de noite. Ele é como a árvore plantada junto a corredouros de águas, a qual dá o seu fruto na estação própria; as suas folhas não caem, e tudo quanto ele faz será bem-sucedido.",
               },
               originals: [
-                { word: "שָׁתוּל", translit: "shatul", meaning: "'plantada, transplantada' — particípio que indica uma árvore firmemente estabelecida por outra mão, não crescida por acaso", lang: "hebraico" },
+                {
+                  word: "שָׁתוּל",
+                  translit: "shatul",
+                  meaning:
+                    "'plantada, transplantada' — particípio que indica uma árvore firmemente estabelecida por outra mão, não crescida por acaso",
+                  lang: "hebraico",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "γυμνάζω", translit: "gymnazō", meaning: "'exercitar, treinar' — disciplina ativa e repetida, de onde deriva a palavra 'ginástica'", lang: "grego" },
-            { word: "εὐσέβεια", translit: "eusebeia", meaning: "'piedade' — reverência prática e vivida diante de Deus, não apenas sentimento religioso", lang: "grego" },
+            {
+              word: "γυμνάζω",
+              translit: "gymnazō",
+              meaning:
+                "'exercitar, treinar' — disciplina ativa e repetida, de onde deriva a palavra 'ginástica'",
+              lang: "grego",
+            },
+            {
+              word: "εὐσέβεια",
+              translit: "eusebeia",
+              meaning:
+                "'piedade' — reverência prática e vivida diante de Deus, não apenas sentimento religioso",
+              lang: "grego",
+            },
           ],
           deepDive:
             "O verbo 'gymnaze' (exercita-te) é o mesmo usado para o treinamento físico dos atletas gregos — disciplina, repetição, esforço direcionado a um objetivo. Paulo não hesita em aplicar essa mesma linguagem à vida espiritual: a piedade não acontece por acidente, mas é 'treinada'. Isso é coerente com toda a Escritura — o salmista descreve o homem bem-aventurado como aquele que medita 'de dia e de noite' na Palavra, não ocasionalmente. É importante distinguir claramente entre disciplinas espirituais bíblicas (oração, leitura da Palavra, jejum, comunhão, adoração, generosidade) — que são meios ordinários de graça, claramente ensinados nas Escrituras — e experiências ou práticas contemporâneas que alegam revelação direta ou fenômenos extraordinários. Toda prática ou experiência espiritual, por mais legítima que pareça, deve ser examinada e submetida à autoridade final e suficiente da Palavra de Deus (2 Tm 3:16-17), e questões mais específicas sobre dons espirituais e experiências místicas merecem ser conversadas com sua liderança espiritual local.",
           theologianQuote: {
             author: "John Mark Comer",
             text: "Sem solidão, é praticamente impossível viver uma vida espiritual.",
-            source: "John Mark Comer, Practicing the Way (WaterBrook, 2024), p. 58 (tradução livre)",
+            source:
+              "John Mark Comer, Practicing the Way (WaterBrook, 2024), p. 58 (tradução livre)",
           },
           deepen: {
             additionalVerses: [
@@ -408,7 +560,13 @@ const santificacao: Trail = {
                   NVI: "Quando vocês jejuarem, não fiquem carrancudos como os hipócritas... o seu Pai, que vê o que é feito em secreto, os recompensará.",
                 },
                 originals: [
-                  { word: "ἀφανίζουσιν", translit: "aphanizousin", meaning: "'desfiguram, tornam irreconhecíveis' — os hipócritas distorcem o próprio rosto para que os outros percebam seu jejum", lang: "grego" },
+                  {
+                    word: "ἀφανίζουσιν",
+                    translit: "aphanizousin",
+                    meaning:
+                      "'desfiguram, tornam irreconhecíveis' — os hipócritas distorcem o próprio rosto para que os outros percebam seu jejum",
+                    lang: "grego",
+                  },
                 ],
               },
               {
@@ -417,7 +575,13 @@ const santificacao: Trail = {
                   NVI: "Todos eles se dedicavam ao ensino dos apóstolos e à comunhão, ao partir do pão e às orações.",
                 },
                 originals: [
-                  { word: "κοινωνίᾳ", translit: "koinōnia", meaning: "'comunhão, participação em comum' — não é apenas convivência social, mas partilha real de vida, bens e propósito", lang: "grego" },
+                  {
+                    word: "κοινωνίᾳ",
+                    translit: "koinōnia",
+                    meaning:
+                      "'comunhão, participação em comum' — não é apenas convivência social, mas partilha real de vida, bens e propósito",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
@@ -440,10 +604,12 @@ const santificacao: Trail = {
                 "Que a piedade é apenas um sentimento passageiro",
               ],
               correctIndex: 1,
-              explanation: "'Gymnaze' é o mesmo verbo usado para treinamento atlético — disciplina, repetição e esforço direcionado.",
+              explanation:
+                "'Gymnaze' é o mesmo verbo usado para treinamento atlético — disciplina, repetição e esforço direcionado.",
             },
             {
-              question: "Segundo a lição, como devem ser tratadas experiências espirituais extraordinárias que alegam revelação direta?",
+              question:
+                "Segundo a lição, como devem ser tratadas experiências espirituais extraordinárias que alegam revelação direta?",
               options: [
                 "Devem ser aceitas sempre como verdadeiras, sem questionamento",
                 "Devem ser examinadas e submetidas à autoridade final das Escrituras",
@@ -451,7 +617,8 @@ const santificacao: Trail = {
                 "São irrelevantes para a vida cristã",
               ],
               correctIndex: 1,
-              explanation: "Toda experiência espiritual deve ser julgada pela Bíblia, que é suficiente e final em autoridade.",
+              explanation:
+                "Toda experiência espiritual deve ser julgada pela Bíblia, que é suficiente e final em autoridade.",
             },
           ],
           application:
@@ -488,7 +655,13 @@ const santificacao: Trail = {
                 NVT: "Por essa razão, considerem seu corpo terreno como morto para o pecado sexual, a impureza, as paixões e os desejos malignos. Não sejam gananciosos, pois a ganância é idolatria. Mas agora é hora de abandonar essas coisas: raiva, fúria, malícia, calúnia e linguagem suja.",
               },
               originals: [
-                { word: "νεκρώσατε", translit: "nekrōsate", meaning: "façam morrer, tratem como morto — verbo enérgico, no imperativo, sem meio-termo", lang: "grego" },
+                {
+                  word: "νεκρώσατε",
+                  translit: "nekrōsate",
+                  meaning:
+                    "façam morrer, tratem como morto — verbo enérgico, no imperativo, sem meio-termo",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -499,20 +672,38 @@ const santificacao: Trail = {
                 ACF: "Mas cada um é tentado, quando atraído e engodado pela sua própria concupiscência. Depois, havendo a concupiscência concebido, pare o pecado; e o pecado, sendo consumado, gera a morte.",
               },
               originals: [
-                { word: "ἀποκύει", translit: "apokyei", meaning: "'dá à luz' — imagem de gestação: o pecado nasce de um desejo que foi alimentado, não de um acidente súbito", lang: "grego" },
+                {
+                  word: "ἀποκύει",
+                  translit: "apokyei",
+                  meaning:
+                    "'dá à luz' — imagem de gestação: o pecado nasce de um desejo que foi alimentado, não de um acidente súbito",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "νεκρόω", translit: "nekroō", meaning: "'fazer morrer, matar' — a mesma raiz de 'necrose'; ação decisiva e sem meio-termo contra o pecado", lang: "grego" },
-            { word: "ἐπιθυμία", translit: "epithymia", meaning: "'desejo, cobiça' — impulso interior que, alimentado, gera o pecado", lang: "grego" },
+            {
+              word: "νεκρόω",
+              translit: "nekroō",
+              meaning:
+                "'fazer morrer, matar' — a mesma raiz de 'necrose'; ação decisiva e sem meio-termo contra o pecado",
+              lang: "grego",
+            },
+            {
+              word: "ἐπιθυμία",
+              translit: "epithymia",
+              meaning: "'desejo, cobiça' — impulso interior que, alimentado, gera o pecado",
+              lang: "grego",
+            },
           ],
           deepDive:
             "Tiago descreve o nascimento do pecado como uma gestação: primeiro um desejo é atraído e seduzido, depois esse desejo é 'concebido' e, por fim, 'dá à luz' o pecado. A imagem ensina algo prático e libertador: o pecado quase nunca nasce de um acidente repentino — ele é gestado em desejos que escolhemos alimentar, silenciosamente, muito antes do ato visível. Por isso, Colossenses 3 não manda apenas 'parar de pecar', mas 'fazer morrer' (nekrōsate) — tratar a raiz, não apenas o fruto visível. Isso significa identificar os pensamentos, ambientes e hábitos que alimentam o desejo antes que ele se torne ato, e cortá-los com decisão, pela dependência do Espírito. É importante notar que essa mortificação não é ascetismo — não se trata de odiar o corpo ou o prazer em si, que Deus criou bons —, mas de recusar, com seriedade espiritual, tudo o que se opõe à santidade à qual fomos chamados. Quando a luta envolver padrões profundos de pecado que se repetem apesar do esforço sincero, é sábio e bíblico buscar também o acompanhamento e a oração de líderes espirituais maduros da igreja local, que Deus estabeleceu como parte do processo de cura e crescimento.",
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Olhe para a cruz e odeie o seu pecado, pois foi o pecado que pregou o Bem-Amado na árvore; olhando para a cruz, você matará o pecado.",
-            source: "Charles H. Spurgeon, em Spurgeon at His Best (Baker Publishing Group, 1988) (tradução livre)",
+            source:
+              "Charles H. Spurgeon, em Spurgeon at His Best (Baker Publishing Group, 1988) (tradução livre)",
           },
           deepen: {
             additionalVerses: [
@@ -522,7 +713,13 @@ const santificacao: Trail = {
                   NVI: "Portanto, não deixem que o pecado continue dominando o seu corpo mortal, fazendo com que vocês obedeçam aos seus desejos... antes ofereçam-se a Deus, como quem voltou da morte para a vida.",
                 },
                 originals: [
-                  { word: "ὅπλα", translit: "hopla", meaning: "'armas, instrumentos' — Paulo usa vocabulário militar: o corpo pode ser instrumento de injustiça ou arma de justiça nas mãos de Deus", lang: "grego" },
+                  {
+                    word: "ὅπλα",
+                    translit: "hopla",
+                    meaning:
+                      "'armas, instrumentos' — Paulo usa vocabulário militar: o corpo pode ser instrumento de injustiça ou arma de justiça nas mãos de Deus",
+                    lang: "grego",
+                  },
                 ],
               },
               {
@@ -531,7 +728,13 @@ const santificacao: Trail = {
                   NVI: "Fui crucificado com Cristo, e já não sou eu quem vive, mas Cristo vive em mim; e a vida que agora vivo no corpo, vivo-a pela fé no Filho de Deus, que me amou e se entregou por mim.",
                 },
                 originals: [
-                  { word: "συνεσταύρωμαι", translit: "synestaurōmai", meaning: "'fui crucificado juntamente' — perfeito passivo, indicando um evento passado com efeito permanente: a identidade antiga está morta para sempre", lang: "grego" },
+                  {
+                    word: "συνεσταύρωμαι",
+                    translit: "synestaurōmai",
+                    meaning:
+                      "'fui crucificado juntamente' — perfeito passivo, indicando um evento passado com efeito permanente: a identidade antiga está morta para sempre",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
@@ -544,7 +747,8 @@ const santificacao: Trail = {
           },
           quizzes: [
             {
-              question: "O que o verbo 'façam morrer' (nekrōsate) em Colossenses 3:5 comunica sobre como tratar o pecado?",
+              question:
+                "O que o verbo 'façam morrer' (nekrōsate) em Colossenses 3:5 comunica sobre como tratar o pecado?",
               options: [
                 "Que se deve apenas reduzir gradualmente, sem pressa",
                 "Que exige uma ação decisiva e séria, tratando a raiz do pecado com firmeza",
@@ -552,7 +756,8 @@ const santificacao: Trail = {
                 "Que só líderes espirituais precisam lidar com isso",
               ],
               correctIndex: 1,
-              explanation: "O verbo é enérgico e no imperativo — exige ação decisiva do crente, pelo poder do Espírito, contra a raiz do pecado.",
+              explanation:
+                "O verbo é enérgico e no imperativo — exige ação decisiva do crente, pelo poder do Espírito, contra a raiz do pecado.",
             },
             {
               question: "Segundo Tiago 1:14-15, como o pecado normalmente nasce?",
@@ -563,7 +768,8 @@ const santificacao: Trail = {
                 "Só depois que a pessoa já pecou muitas vezes",
               ],
               correctIndex: 1,
-              explanation: "Tiago usa a imagem de uma gestação: o pecado nasce de um desejo cultivado, não de puro acaso.",
+              explanation:
+                "Tiago usa a imagem de uma gestação: o pecado nasce de um desejo cultivado, não de puro acaso.",
             },
           ],
           application:
@@ -594,8 +800,19 @@ const santificacao: Trail = {
                 NVT: "Assim, rogo a vocês, irmãos, por causa da misericórdia de Deus, que entreguem seu corpo a Deus como sacrifício vivo e santo. Vivam de tal maneira que ele possa aceitá-lo. Essa é, na verdade, a forma de adoração de vocês. Não copiem os costumes deste mundo, mas deixem que Deus os transforme por meio de uma mudança em seu modo de pensar.",
               },
               originals: [
-                { word: "συσχηματίζεσθε", translit: "syschēmatizesthe", meaning: "moldar-se conforme um padrão externo, temporário e superficial", lang: "grego" },
-                { word: "μεταμορφοῦσθε", translit: "metamorphousthe", meaning: "transformar-se por dentro, de forma essencial e progressiva — mesma raiz de 'metamorfose'", lang: "grego" },
+                {
+                  word: "συσχηματίζεσθε",
+                  translit: "syschēmatizesthe",
+                  meaning: "moldar-se conforme um padrão externo, temporário e superficial",
+                  lang: "grego",
+                },
+                {
+                  word: "μεταμορφοῦσθε",
+                  translit: "metamorphousthe",
+                  meaning:
+                    "transformar-se por dentro, de forma essencial e progressiva — mesma raiz de 'metamorfose'",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -605,20 +822,39 @@ const santificacao: Trail = {
                 NAA: "Quanto ao procedimento anterior, vos despojeis do velho homem, que se corrompe pelas paixões enganosas, sejais renovados no espírito da vossa mente e vos revistais do novo homem, criado segundo Deus, em verdadeira justiça e santidade.",
               },
               originals: [
-                { word: "ἀποθέσθαι", translit: "apothesthai", meaning: "'despojar-se, remover' — mesma imagem de tirar uma roupa velha, usada para o 'velho homem' que deve ser deixado de vez", lang: "grego" },
+                {
+                  word: "ἀποθέσθαι",
+                  translit: "apothesthai",
+                  meaning:
+                    "'despojar-se, remover' — mesma imagem de tirar uma roupa velha, usada para o 'velho homem' que deve ser deixado de vez",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "συσχηματίζω", translit: "syschēmatizō", meaning: "'moldar-se a um padrão externo' — pressão da cultura para conformar pensamento e desejo", lang: "grego" },
-            { word: "μεταμορφόω", translit: "metamorphoō", meaning: "'transformar por dentro' — mudança essencial e progressiva, mesma raiz de 'metamorfose'", lang: "grego" },
+            {
+              word: "συσχηματίζω",
+              translit: "syschēmatizō",
+              meaning:
+                "'moldar-se a um padrão externo' — pressão da cultura para conformar pensamento e desejo",
+              lang: "grego",
+            },
+            {
+              word: "μεταμορφόω",
+              translit: "metamorphoō",
+              meaning:
+                "'transformar por dentro' — mudança essencial e progressiva, mesma raiz de 'metamorfose'",
+              lang: "grego",
+            },
           ],
           deepDive:
             "O contraste grego entre 'syschēmatizesthe' e 'metamorphousthe' é rico: o primeiro verbo descreve algo que se amolda por fora, como uma máscara ou um figurino temporário, ajustado à pressão externa do ambiente; o segundo descreve uma mudança de essência, de dentro para fora, como uma lagarta que se torna borboleta — não uma reforma cosmética, mas uma nova natureza se manifestando. Paulo ensina que essa transformação acontece pela 'renovação da mente' — um processo contínuo (o verbo está no presente, indicando ação repetida), não um evento único. Isso acontece, na prática, pela exposição regular e deliberada à Palavra de Deus, que reeduca o que consideramos desejável, certo e valioso, desafiando os padrões que a cultura nos ensinou a aceitar sem questionar. Efésios 4 usa imagem semelhante de vestuário: despir o velho homem, revestir o novo — uma escolha ativa e diária, não apenas um sentimento passivo de mudança. É importante lembrar, com humildade, que discernir onde a cultura contradiz a Palavra exige sabedoria e comunhão com outros crentes — ninguém faz essa leitura sozinho, sem o corpo de Cristo ao redor.",
           theologianQuote: {
             author: "James W. Sire",
             text: "Pensar bem é servir bem a Deus.",
-            source: "James W. Sire, Habits of the Mind: Intellectual Life as a Christian Calling (2000) (tradução livre)",
+            source:
+              "James W. Sire, Habits of the Mind: Intellectual Life as a Christian Calling (2000) (tradução livre)",
           },
           deepen: {
             additionalVerses: [
@@ -628,7 +864,13 @@ const santificacao: Trail = {
                   NVI: "Destruímos todo argumento e toda pretensão que se levanta contra o conhecimento de Deus, e levamos cativo todo pensamento, para torná-lo obediente a Cristo.",
                 },
                 originals: [
-                  { word: "αἰχμαλωτίζοντες", translit: "aichmalōtizontes", meaning: "'levando cativo' — termo militar para capturar prisioneiros de guerra; todo pensamento deve ser rendido a Cristo", lang: "grego" },
+                  {
+                    word: "αἰχμαλωτίζοντες",
+                    translit: "aichmalōtizontes",
+                    meaning:
+                      "'levando cativo' — termo militar para capturar prisioneiros de guerra; todo pensamento deve ser rendido a Cristo",
+                    lang: "grego",
+                  },
                 ],
               },
               {
@@ -637,7 +879,13 @@ const santificacao: Trail = {
                   NVI: "Assim, se vocês ressuscitaram com Cristo, procurem as coisas do alto, onde Cristo está assentado à direita de Deus. Pensem nas coisas do alto, não nas coisas terrenas.",
                 },
                 originals: [
-                  { word: "φρονεῖτε", translit: "phroneite", meaning: "'pensai, tende em mente' — não é um pensamento passageiro, mas uma orientação mental fixa e deliberada voltada para as coisas do alto", lang: "grego" },
+                  {
+                    word: "φρονεῖτε",
+                    translit: "phroneite",
+                    meaning:
+                      "'pensai, tende em mente' — não é um pensamento passageiro, mas uma orientação mental fixa e deliberada voltada para as coisas do alto",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
@@ -652,7 +900,8 @@ const santificacao: Trail = {
           },
           quizzes: [
             {
-              question: "Qual é o contraste central entre 'conformar-se' e 'transformar-se' em Romanos 12:2?",
+              question:
+                "Qual é o contraste central entre 'conformar-se' e 'transformar-se' em Romanos 12:2?",
               options: [
                 "Não há diferença real entre os dois termos",
                 "Conformar-se é um ajuste externo e temporário; transformar-se é uma mudança de essência, de dentro para fora",
@@ -660,7 +909,8 @@ const santificacao: Trail = {
                 "Os dois descrevem apenas mudanças de comportamento visível",
               ],
               correctIndex: 1,
-              explanation: "'Syschēmatizesthe' descreve um molde externo; 'metamorphousthe' descreve mudança essencial, como a metamorfose de uma lagarta.",
+              explanation:
+                "'Syschēmatizesthe' descreve um molde externo; 'metamorphousthe' descreve mudança essencial, como a metamorfose de uma lagarta.",
             },
             {
               question: "Segundo a lição, como a renovação da mente normalmente acontece?",
@@ -671,7 +921,8 @@ const santificacao: Trail = {
                 "É automática após a conversão, sem necessidade de disciplina",
               ],
               correctIndex: 1,
-              explanation: "O verbo grego está no presente contínuo — a renovação é um processo contínuo, alimentado pela Palavra.",
+              explanation:
+                "O verbo grego está no presente contínuo — a renovação é um processo contínuo, alimentado pela Palavra.",
             },
           ],
           application:
@@ -708,7 +959,13 @@ const santificacao: Trail = {
                 NVT: "Vamos pensar em maneiras de estimular uns aos outros a atos de amor e boas ações. E não deixemos de nos reunir, como alguns têm o costume de fazer, mas encorajemo-nos uns aos outros, principalmente agora que o dia da volta do Senhor está se aproximando.",
               },
               originals: [
-                { word: "παροξυσμός", translit: "paroxysmos", meaning: "estímulo intenso, provocação positiva — despertar ativamente o outro para o amor e as boas obras", lang: "grego" },
+                {
+                  word: "παροξυσμός",
+                  translit: "paroxysmos",
+                  meaning:
+                    "estímulo intenso, provocação positiva — despertar ativamente o outro para o amor e as boas obras",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -719,20 +976,39 @@ const santificacao: Trail = {
                 ACF: "Como o ferro com o ferro se aguça, assim o homem afia o rosto do seu amigo.",
               },
               originals: [
-                { word: "יָחַד", translit: "yachad", meaning: "'afia, aguça' — do verbo com o mesmo som de 'juntos'; o atrito entre duas pessoas, como entre dois ferros, produz aperfeiçoamento mútuo", lang: "hebraico" },
+                {
+                  word: "יָחַד",
+                  translit: "yachad",
+                  meaning:
+                    "'afia, aguça' — do verbo com o mesmo som de 'juntos'; o atrito entre duas pessoas, como entre dois ferros, produz aperfeiçoamento mútuo",
+                  lang: "hebraico",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "παροξυσμός", translit: "paroxysmos", meaning: "'estímulo, provocação' — usado aqui em sentido positivo, para despertar amor e boas obras", lang: "grego" },
-            { word: "κατανοέω", translit: "katanoeō", meaning: "'considerar atentamente, observar com propósito' — atenção intencional voltada para o bem do outro", lang: "grego" },
+            {
+              word: "παροξυσμός",
+              translit: "paroxysmos",
+              meaning:
+                "'estímulo, provocação' — usado aqui em sentido positivo, para despertar amor e boas obras",
+              lang: "grego",
+            },
+            {
+              word: "κατανοέω",
+              translit: "katanoeō",
+              meaning:
+                "'considerar atentamente, observar com propósito' — atenção intencional voltada para o bem do outro",
+              lang: "grego",
+            },
           ],
           deepDive:
             "O autor de Hebreus escreve para uma comunidade tentada a se afastar da fé sob pressão e perseguição — e o remédio que ele prescreve não é apenas doutrina individual mais sólida, mas comunhão mais fiel. 'Consideremo-nos uns aos outros' (katanoōmen) é um verbo de atenção intencional: não basta estar fisicamente perto de outros crentes; é preciso observá-los com propósito, notando onde precisam de encorajamento, correção ou apoio prático. O resultado desse olhar atento é o 'paroxysmos' — um estímulo ativo, quase uma provocação boa, para o amor e as boas obras. Isso mostra que a igreja local não é um acessório opcional da vida cristã, nem apenas um lugar de consumo espiritual passivo (ouvir uma pregação e ir embora), mas o ambiente que Deus escolheu para que crentes ativamente cuidem uns dos outros. Questões sobre como viver essa comunhão de forma saudável — lidar com conflitos, mágoas ou dificuldades dentro da igreja local — são, por natureza, delicadas e pessoais, e merecem ser conversadas diretamente com seu pastor ou líder espiritual, que conhece sua realidade concreta.",
           theologianQuote: {
             author: "Dietrich Bonhoeffer",
             text: "A comunidade cristã é como a santificação do cristão: é um dom de Deus que não podemos reivindicar para nós mesmos.",
-            source: "Dietrich Bonhoeffer, Life Together: Prayerbook of the Bible (Fortress Press, 1996) (tradução livre)",
+            source:
+              "Dietrich Bonhoeffer, Life Together: Prayerbook of the Bible (Fortress Press, 1996) (tradução livre)",
           },
           deepen: {
             additionalVerses: [
@@ -742,7 +1018,13 @@ const santificacao: Trail = {
                   NVI: "Irmãos, se alguém for surpreendido em algum pecado, vocês, que são espirituais, deverão restaurá-lo com mansidão... Levem os fardos uns dos outros e assim cumpram a lei de Cristo.",
                 },
                 originals: [
-                  { word: "καταρτίζετε", translit: "katartizete", meaning: "'restaurai, ajustai' — termo usado para consertar redes de pesca ou reduzir um osso deslocado; restauração cuidadosa, não punição", lang: "grego" },
+                  {
+                    word: "καταρτίζετε",
+                    translit: "katartizete",
+                    meaning:
+                      "'restaurai, ajustai' — termo usado para consertar redes de pesca ou reduzir um osso deslocado; restauração cuidadosa, não punição",
+                    lang: "grego",
+                  },
                 ],
               },
               {
@@ -751,7 +1033,13 @@ const santificacao: Trail = {
                   NVI: "Todos os que criam estavam juntos e tinham tudo em comum... Todos os dias reuniam-se nos átrios do templo. Partiam o pão em casa e juntos participavam das refeições, com alegria e sinceridade de coração.",
                 },
                 originals: [
-                  { word: "κοινά", translit: "koina", meaning: "'comuns' — a mesma raiz de koinōnia; os primeiros cristãos tratavam seus bens como pertencentes à comunidade, não apenas a si mesmos", lang: "grego" },
+                  {
+                    word: "κοινά",
+                    translit: "koina",
+                    meaning:
+                      "'comuns' — a mesma raiz de koinōnia; os primeiros cristãos tratavam seus bens como pertencentes à comunidade, não apenas a si mesmos",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
@@ -762,7 +1050,8 @@ const santificacao: Trail = {
           },
           quizzes: [
             {
-              question: "Segundo Hebreus 10:24-25, qual é o propósito de 'considerar uns aos outros'?",
+              question:
+                "Segundo Hebreus 10:24-25, qual é o propósito de 'considerar uns aos outros'?",
               options: [
                 "Apenas cumprir uma obrigação religiosa semanal",
                 "Estimular ativamente ao amor e às boas obras, através de atenção e encorajamento mútuo",
@@ -770,7 +1059,8 @@ const santificacao: Trail = {
                 "Comparar o próprio desempenho espiritual com o dos outros",
               ],
               correctIndex: 1,
-              explanation: "O texto conecta atenção mútua ('consideremo-nos') com um estímulo positivo e ativo ao amor e às boas obras.",
+              explanation:
+                "O texto conecta atenção mútua ('consideremo-nos') com um estímulo positivo e ativo ao amor e às boas obras.",
             },
             {
               question: "O que a lição ensina sobre a santificação e a comunhão da igreja local?",
@@ -781,7 +1071,8 @@ const santificacao: Trail = {
                 "É possível crescer espiritualmente com a mesma eficácia estando sozinho",
               ],
               correctIndex: 1,
-              explanation: "A Bíblia conecta diretamente o crescimento em santidade com a comunhão fiel da igreja local.",
+              explanation:
+                "A Bíblia conecta diretamente o crescimento em santidade com a comunhão fiel da igreja local.",
             },
           ],
           application:
@@ -812,7 +1103,13 @@ const santificacao: Trail = {
                 NVT: "E tenho certeza de que Deus, que começou a boa obra em vocês, continuará essa obra até completá-la no dia da volta de Cristo Jesus.",
               },
               originals: [
-                { word: "ἐπιτελέσει", translit: "epitelesei", meaning: "'aperfeiçoará, completará' — verbo no futuro, promessa certa e não condicionada ao mérito humano", lang: "grego" },
+                {
+                  word: "ἐπιτελέσει",
+                  translit: "epitelesei",
+                  meaning:
+                    "'aperfeiçoará, completará' — verbo no futuro, promessa certa e não condicionada ao mérito humano",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -823,20 +1120,38 @@ const santificacao: Trail = {
                 ACF: "Portanto, nós também, pois que estamos rodeados de uma tão grande nuvem de testemunhas, deixemos todo o peso, e o pecado que tão de perto nos rodeia, e corramos com paciência a carreira que nos está proposta, olhando para Jesus, autor e consumador da fé.",
               },
               originals: [
-                { word: "ὑπομονή", translit: "hypomonē", meaning: "perseverança — resistência ativa e voluntária, não mera espera passiva", lang: "grego" },
+                {
+                  word: "ὑπομονή",
+                  translit: "hypomonē",
+                  meaning: "perseverança — resistência ativa e voluntária, não mera espera passiva",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "ἐπιτελέω", translit: "epiteleō", meaning: "'completar, levar até o fim' — Deus é o sujeito que garante a conclusão da obra iniciada", lang: "grego" },
-            { word: "ὑπομονή", translit: "hypomonē", meaning: "'perseverança' — resistência ativa e voluntária diante da dificuldade, não passividade", lang: "grego" },
+            {
+              word: "ἐπιτελέω",
+              translit: "epiteleō",
+              meaning:
+                "'completar, levar até o fim' — Deus é o sujeito que garante a conclusão da obra iniciada",
+              lang: "grego",
+            },
+            {
+              word: "ὑπομονή",
+              translit: "hypomonē",
+              meaning:
+                "'perseverança' — resistência ativa e voluntária diante da dificuldade, não passividade",
+              lang: "grego",
+            },
           ],
           deepDive:
             "A confiança de Paulo em Filipenses 1:6 não é ingênua — ele conhecia bem as fraquezas reais daquela igreja. Mas sua certeza não repousa no desempenho deles, e sim no caráter de Deus, que 'começou' e promete 'completar' (epitelesei, verbo no futuro, sem condicionais escondidos). Isso é motivo de descanso genuíno para o crente que luta com recaídas: a perseverança final na fé depende, em última instância, da fidelidade de Deus, e não apenas da força de vontade humana. Ao mesmo tempo, Hebreus 12 chama o crente a correr com 'hypomonē' — uma palavra que descreve resistência ativa, o atleta que continua correndo mesmo cansado, não alguém deitado esperando passivamente o fim da corrida. As duas verdades não competem: precisamos correr, e a certeza de que Deus sustenta a corrida é exatamente o que nos dá coragem para continuar correndo depois de tropeçar. Sobre como essa segurança se relaciona, em detalhes, com situações específicas de dúvida, recaída ou desânimo espiritual profundo, é sempre sábio buscar a Palavra em oração e conversar com seu pastor ou discipulador, que pode acompanhar sua caminhada de perto.",
           theologianQuote: {
             author: "Wayne Grudem",
             text: "Todos os que verdadeiramente nasceram de novo serão guardados pelo poder de Deus e perseverarão como cristãos até o fim de suas vidas.",
-            source: "Wayne Grudem, Systematic Theology, cap. 40 — \"The Perseverance of the Saints\" (tradução livre)",
+            source:
+              'Wayne Grudem, Systematic Theology, cap. 40 — "The Perseverance of the Saints" (tradução livre)',
           },
           deepen: {
             additionalVerses: [
@@ -846,7 +1161,13 @@ const santificacao: Trail = {
                   NVI: "As minhas ovelhas ouvem a minha voz; eu as conheço, e elas me seguem. Eu lhes dou a vida eterna, e elas jamais perecerão; ninguém as arrebatará da minha mão.",
                 },
                 originals: [
-                  { word: "ἁρπάσει", translit: "harpasei", meaning: "'arrebatará' — verbo de arrancar à força (raiz de 'harpagē'); ninguém pode arrancar as ovelhas da mão de Cristo", lang: "grego" },
+                  {
+                    word: "ἁρπάσει",
+                    translit: "harpasei",
+                    meaning:
+                      "'arrebatará' — verbo de arrancar à força (raiz de 'harpagē'); ninguém pode arrancar as ovelhas da mão de Cristo",
+                    lang: "grego",
+                  },
                 ],
               },
               {
@@ -855,12 +1176,18 @@ const santificacao: Trail = {
                   NVI: "Eles saíram do nosso meio, mas na realidade não eram dos nossos, pois, se fossem dos nossos, teriam permanecido conosco; a saída deles mostrou que nenhum deles era dos nossos.",
                 },
                 originals: [
-                  { word: "μεμενήκεισαν", translit: "memenēkeisan", meaning: "'teriam permanecido' — mais-que-perfeito de menō (permanecer); verbo-chave joanino que marca a fé genuína e duradoura", lang: "grego" },
+                  {
+                    word: "μεμενήκεισαν",
+                    translit: "memenēkeisan",
+                    meaning:
+                      "'teriam permanecido' — mais-que-perfeito de menō (permanecer); verbo-chave joanino que marca a fé genuína e duradoura",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
             theologicalDebate:
-              "A chamada 'perseverança dos santos' é um dos temas em que tradições evangélicas fiéis mantêm posições diferentes. Correntes mais reformadas entendem que todo aquele que é genuinamente regenerado perseverará necessariamente até o fim, de forma incondicional, porque essa perseverança é garantida pela obra soberana de Deus. Correntes arminianas e wesleyanas — a base teológica adotada nesta trilha — entendem que a segurança do crente está firmemente ancorada na fidelidade de Deus, mas que a Escritura também contém advertências sérias e reais contra o abandono da fé (como Hebreus 6 e 10), a serem levadas a sério, não apenas como hipótese retórica. Em ambas as leituras, o alicerce da esperança do crente nunca é o próprio desempenho, mas a fidelidade de Deus, e o caminho de resposta é o mesmo: perseverar ativamente na fé, apoiado nessa fidelidade.",
+              "A chamada 'perseverança dos santos' é um dos temas em que tradições evangélicas fiéis mantêm posições diferentes. Correntes mais reformadas entendem que todo aquele que é genuinamente regenerado perseverará necessariamente até o fim, de forma incondicional, porque essa perseverança é garantida pela obra soberana de Deus. Esta lição entende que a segurança do crente está firmemente ancorada na fidelidade de Deus, mas que a Escritura também contém advertências sérias e reais contra o abandono da fé (como Hebreus 6 e 10), a serem levadas a sério, não apenas como hipótese retórica. Em ambas as leituras, o alicerce da esperança do crente nunca é o próprio desempenho, mas a fidelidade de Deus, e o caminho de resposta é o mesmo: perseverar ativamente na fé, apoiado nessa fidelidade.",
             secondQuote: {
               author: "F. F. Bruce",
               text: "A segurança do crente não está numa garantia abstrata e impessoal, mas na mão do Bom Pastor que o segura — e é justamente essa segurança que o capacita a continuar seguindo-o com fé viva, dia após dia.",
@@ -868,7 +1195,8 @@ const santificacao: Trail = {
           },
           quizzes: [
             {
-              question: "Em que se baseia a confiança de Paulo em Filipenses 1:6 de que a igreja perseverará até o fim?",
+              question:
+                "Em que se baseia a confiança de Paulo em Filipenses 1:6 de que a igreja perseverará até o fim?",
               options: [
                 "No desempenho espiritual impecável da igreja de Filipos",
                 "No caráter fiel de Deus, que completa a obra que começou",
@@ -876,7 +1204,8 @@ const santificacao: Trail = {
                 "Em uma promessa condicionada ao mérito humano",
               ],
               correctIndex: 1,
-              explanation: "Paulo funda sua certeza no caráter de Deus, não no desempenho da igreja — 'epitelesei' é promessa divina, não conquista humana.",
+              explanation:
+                "Paulo funda sua certeza no caráter de Deus, não no desempenho da igreja — 'epitelesei' é promessa divina, não conquista humana.",
             },
             {
               question: "O que a palavra grega 'hypomonē' (perseverança) comunica em Hebreus 12:1?",
@@ -887,10 +1216,12 @@ const santificacao: Trail = {
                 "A ideia de que o esforço humano é irrelevante",
               ],
               correctIndex: 1,
-              explanation: "'Hypomonē' descreve resistência ativa, não passividade — o crente é chamado a correr, apoiado na fidelidade de Deus.",
+              explanation:
+                "'Hypomonē' descreve resistência ativa, não passividade — o crente é chamado a correr, apoiado na fidelidade de Deus.",
             },
             {
-              question: "Como as duas verdades — a fidelidade de Deus e o chamado à perseverança ativa — se relacionam segundo a lição?",
+              question:
+                "Como as duas verdades — a fidelidade de Deus e o chamado à perseverança ativa — se relacionam segundo a lição?",
               options: [
                 "Elas se contradizem e o crente deve escolher uma delas",
                 "A certeza da fidelidade de Deus sustenta e fortalece a perseverança ativa do crente, em vez de anulá-la",
@@ -898,7 +1229,8 @@ const santificacao: Trail = {
                 "A perseverança ativa substitui a necessidade da graça de Deus",
               ],
               correctIndex: 1,
-              explanation: "As duas verdades se complementam: a fidelidade de Deus é o fundamento que dá coragem para continuar correndo com perseverança.",
+              explanation:
+                "As duas verdades se complementam: a fidelidade de Deus é o fundamento que dá coragem para continuar correndo com perseverança.",
             },
           ],
           application:
@@ -936,7 +1268,13 @@ const santificacao: Trail = {
                 NVT: "Pois, se vocês viverem de acordo com a natureza pecaminosa, vão morrer. Mas, se pelo poder do Espírito vocês derem morte às ações pecaminosas do corpo, vão viver. Pois todos os que são guiados pelo Espírito de Deus são filhos de Deus.",
               },
               originals: [
-                { word: "πνεύματι", translit: "pneumati", meaning: "'pelo Espírito' — instrumento e agente ativo da mortificação do pecado, não o crente isolado", lang: "grego" },
+                {
+                  word: "πνεύματι",
+                  translit: "pneumati",
+                  meaning:
+                    "'pelo Espírito' — instrumento e agente ativo da mortificação do pecado, não o crente isolado",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -947,13 +1285,31 @@ const santificacao: Trail = {
                 ACF: "E não vos embriagueis com vinho, em que há contenda, mas enchei-vos do Espírito.",
               },
               originals: [
-                { word: "πληροῦσθε", translit: "plērousthe", meaning: "'sejam cheios' — verbo no imperativo presente passivo: uma ordem contínua, renovada a cada dia, não um evento único", lang: "grego" },
+                {
+                  word: "πληροῦσθε",
+                  translit: "plērousthe",
+                  meaning:
+                    "'sejam cheios' — verbo no imperativo presente passivo: uma ordem contínua, renovada a cada dia, não um evento único",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "παράκλητος", translit: "paráklētos", meaning: "'Consolador, Advogado, Aquele que vem ao lado'. Título usado por Jesus para o Espírito Santo em João 14-16, indicando presença ativa e permanente de ajuda.", lang: "grego" },
-            { word: "πληρόω", translit: "plēroō", meaning: "'encher, dominar completamente'. Usado em Efésios 5:18 no imperativo contínuo — o crente é chamado a viver constantemente rendido ao controle do Espírito.", lang: "grego" },
+            {
+              word: "παράκλητος",
+              translit: "paráklētos",
+              meaning:
+                "'Consolador, Advogado, Aquele que vem ao lado'. Título usado por Jesus para o Espírito Santo em João 14-16, indicando presença ativa e permanente de ajuda.",
+              lang: "grego",
+            },
+            {
+              word: "πληρόω",
+              translit: "plēroō",
+              meaning:
+                "'encher, dominar completamente'. Usado em Efésios 5:18 no imperativo contínuo — o crente é chamado a viver constantemente rendido ao controle do Espírito.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "Há uma diferença importante, muitas vezes esquecida, entre a habitação do Espírito e o enchimento do Espírito. A habitação (o Espírito vivendo permanentemente em cada crente genuíno) acontece uma única vez, no momento da conversão, e nunca é retirada — é selo e garantia da salvação (Ef 1:13-14). Já o enchimento é repetido, condicional à submissão do crente, e descreve o quanto, no dia a dia, uma pessoa está de fato rendida ao controle do Espírito, em vez de andar segundo seus próprios impulsos. Por isso Paulo pode, na mesma carta, afirmar que todo crente tem o Espírito (Ef 1:13) e, ainda assim, ordenar que os efésios 'sejam cheios' dele (Ef 5:18) — a presença é garantida pela graça; o enchimento prático depende de uma entrega diária e renovada. Romanos 8 amplia esse quadro: é 'pelo Espírito' que o crente mata as obras da carne (v.13), é o Espírito quem 'guia' os filhos de Deus (v.14), e é o mesmo Espírito quem intercede por nós 'com gemidos inexprimíveis' quando nem sabemos como orar diante de uma dor (v.26). A santificação, portanto, nunca é uma tarefa solitária de força de vontade — é cooperação real e diária entre o esforço do crente e a obra ativa, presente e pessoal do Espírito Santo dentro dele.",
@@ -970,7 +1326,13 @@ const santificacao: Trail = {
                   NVI: "E eu pedirei ao Pai, e ele lhes dará outro Conselheiro para estar com vocês para sempre: o Espírito da verdade... vocês o conhecem, porque ele vive com vocês e estará em vocês.",
                 },
                 originals: [
-                  { word: "παράκλητον", translit: "paraklēton", meaning: "'Conselheiro, Advogado, aquele chamado ao lado' — termo jurídico para quem intercede e defende; o Espírito Santo como presença constante", lang: "grego" },
+                  {
+                    word: "παράκλητον",
+                    translit: "paraklēton",
+                    meaning:
+                      "'Conselheiro, Advogado, aquele chamado ao lado' — termo jurídico para quem intercede e defende; o Espírito Santo como presença constante",
+                    lang: "grego",
+                  },
                 ],
               },
               {
@@ -979,7 +1341,13 @@ const santificacao: Trail = {
                   NVI: "Se vivemos pelo Espírito, andemos também pelo Espírito.",
                 },
                 originals: [
-                  { word: "στοιχῶμεν", translit: "stoichōmen", meaning: "'andemos, mantenhamo-nos em fila' — termo militar de marchar em formação alinhada; viver pelo Espírito é seguir um passo comum", lang: "grego" },
+                  {
+                    word: "στοιχῶμεν",
+                    translit: "stoichōmen",
+                    meaning:
+                      "'andemos, mantenhamo-nos em fila' — termo militar de marchar em formação alinhada; viver pelo Espírito é seguir um passo comum",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
@@ -990,7 +1358,8 @@ const santificacao: Trail = {
           },
           quizzes: [
             {
-              question: "Qual é a diferença entre a habitação do Espírito e o enchimento do Espírito, segundo a lição?",
+              question:
+                "Qual é a diferença entre a habitação do Espírito e o enchimento do Espírito, segundo a lição?",
               options: [
                 "São a mesma coisa, sem distinção bíblica",
                 "A habitação acontece uma vez, na conversão, e permanece; o enchimento é repetido e depende da submissão diária do crente",
@@ -998,7 +1367,8 @@ const santificacao: Trail = {
                 "Nenhum dos dois está disponível para todo crente",
               ],
               correctIndex: 1,
-              explanation: "A presença do Espírito é dada uma vez e selada; o enchimento (Ef 5:18) é uma ordem contínua, renovada dia após dia.",
+              explanation:
+                "A presença do Espírito é dada uma vez e selada; o enchimento (Ef 5:18) é uma ordem contínua, renovada dia após dia.",
             },
             {
               question: "Segundo Romanos 8:13, como o crente mata as obras da carne?",
@@ -1009,7 +1379,8 @@ const santificacao: Trail = {
                 "Isso não é possível nesta vida",
               ],
               correctIndex: 1,
-              explanation: "O texto grego é claro: 'pelo Espírito' (pneumati) — o Espírito é agente ativo, não apenas espectador do esforço humano.",
+              explanation:
+                "O texto grego é claro: 'pelo Espírito' (pneumati) — o Espírito é agente ativo, não apenas espectador do esforço humano.",
             },
           ],
           application:
@@ -1041,7 +1412,13 @@ const santificacao: Trail = {
                 NVT: "Também temos alegria em nossos sofrimentos, porque sabemos que o sofrimento produz perseverança. E a perseverança desenvolve firmeza de caráter, e o caráter fortalece nossa esperança na salvação. E a esperança não decepciona, porque temos a certeza de que Deus nos ama profundamente, pois derramou seu amor em nosso coração por meio do Espírito Santo, que nos foi dado.",
               },
               originals: [
-                { word: "ὑπομονή", translit: "hypomonē", meaning: "'perseverança, resistência ativa' — a mesma qualidade formada pela tribulação, quando recebida com fé", lang: "grego" },
+                {
+                  word: "ὑπομονή",
+                  translit: "hypomonē",
+                  meaning:
+                    "'perseverança, resistência ativa' — a mesma qualidade formada pela tribulação, quando recebida com fé",
+                  lang: "grego",
+                },
               ],
             },
             {
@@ -1052,13 +1429,31 @@ const santificacao: Trail = {
                 ACF: "Porque aqueles por um pouco de tempo, como bem lhes parecia, nos castigavam; mas este, para nosso proveito, para sermos participantes da sua santidade. Ora, nenhum castigo, ao presente, parece ser causa de gozo, senão de tristeza; mas depois produz um fruto pacífico de justiça nos exercitados por ele.",
               },
               originals: [
-                { word: "γυμνάζω", translit: "gymnazō", meaning: "'exercitar, treinar' — mesma raiz de 'ginástica'; a disciplina treina o crente como um atleta, não o destrói", lang: "grego" },
+                {
+                  word: "γυμνάζω",
+                  translit: "gymnazō",
+                  meaning:
+                    "'exercitar, treinar' — mesma raiz de 'ginástica'; a disciplina treina o crente como um atleta, não o destrói",
+                  lang: "grego",
+                },
               ],
             },
           ],
           keywords: [
-            { word: "ὑπομονή", translit: "hypomonē", meaning: "'perseverança' — resistência ativa formada pela tribulação recebida com fé, não amargura passiva.", lang: "grego" },
-            { word: "παιδεία", translit: "paideia", meaning: "'disciplina, educação formativa'. Usada em Hebreus 12 para descrever o sofrimento permitido por Deus como treino de um pai que ama, não como punição de um juiz hostil.", lang: "grego" },
+            {
+              word: "ὑπομονή",
+              translit: "hypomonē",
+              meaning:
+                "'perseverança' — resistência ativa formada pela tribulação recebida com fé, não amargura passiva.",
+              lang: "grego",
+            },
+            {
+              word: "παιδεία",
+              translit: "paideia",
+              meaning:
+                "'disciplina, educação formativa'. Usada em Hebreus 12 para descrever o sofrimento permitido por Deus como treino de um pai que ama, não como punição de um juiz hostil.",
+              lang: "grego",
+            },
           ],
           deepDive:
             "É importante notar a ordem cuidadosa da cadeia lógica em Romanos 5:3-5: tribulação produz perseverança (hypomonē); perseverança produz caráter aprovado (a qualidade de quem foi testado e passou no teste); e caráter aprovado produz esperança mais firme, porque já viu, na prática, a fidelidade de Deus sustentando através da dor. Nenhum desses elos aparece automaticamente — a mesma tribulação pode produzir amargura em vez de perseverança, se recebida com descrença em vez de fé. Por isso Tiago 1:2-4 conecta a mesma ideia à sabedoria: 'se algum de vocês tem falta de sabedoria, peça-a a Deus'. Já Hebreus 12 usa a metáfora da disciplina paterna e do treino atlético (paideia, gymnazō) — o sofrimento permitido por Deus na vida do crente não é sinal de abandono, mas evidência de que ele nos trata como filhos legítimos, investindo em nosso caráter a longo prazo. Isso é radicalmente diferente da ideia, comum em algumas correntes religiosas, de que todo sofrimento é resultado direto de um pecado específico ou de falta de fé — o livro de Jó existe justamente para desmontar essa equação simplista. O propósito de Deus no sofrimento não é sempre visível ou explicável no momento, mas sua promessa em Romanos 8:28-29 permanece: ele opera todas as coisas para o bem daqueles que o amam, conformando-os à imagem de Cristo. Diante de dor profunda ou perda significativa, essa verdade nunca deve ser usada como resposta apressada ou insensível para outra pessoa que sofre — ela é, antes, um alicerce para a própria fé se firmar, e um cuidado pastoral atento, junto com a igreja local, é essencial para caminhar com quem sofre.",
@@ -1075,7 +1470,13 @@ const santificacao: Trail = {
                   NVI: "Meus irmãos, considerem motivo de grande alegria o fato de passarem por diversas provações, pois vocês sabem que a prova da sua fé produz perseverança. E a perseverança deve levar a obra a termo, para que vocês sejam maduros e íntegros, sem que falte a vocês coisa alguma.",
                 },
                 originals: [
-                  { word: "ὑπομονήν", translit: "hypomonēn", meaning: "'perseverança' — literalmente 'permanecer debaixo de'; não é resignação passiva, mas resistência ativa sob o peso da provação", lang: "grego" },
+                  {
+                    word: "ὑπομονήν",
+                    translit: "hypomonēn",
+                    meaning:
+                      "'perseverança' — literalmente 'permanecer debaixo de'; não é resignação passiva, mas resistência ativa sob o peso da provação",
+                    lang: "grego",
+                  },
                 ],
               },
               {
@@ -1084,7 +1485,13 @@ const santificacao: Trail = {
                   NVI: "Nisso vocês exultam, mesmo tendo sido, por um breve tempo, entristecidos por várias provações, a fim de que a prova de sua fé, mais preciosa que o ouro, que perece, mas é aprovado pelo fogo, seja motivo de louvor, glória e honra quando Jesus Cristo for revelado.",
                 },
                 originals: [
-                  { word: "δοκίμιον", translit: "dokimion", meaning: "'prova, teste de autenticidade' — termo da metalurgia para o processo que comprova a pureza de um metal precioso pelo fogo", lang: "grego" },
+                  {
+                    word: "δοκίμιον",
+                    translit: "dokimion",
+                    meaning:
+                      "'prova, teste de autenticidade' — termo da metalurgia para o processo que comprova a pureza de um metal precioso pelo fogo",
+                    lang: "grego",
+                  },
                 ],
               },
             ],
@@ -1097,7 +1504,8 @@ const santificacao: Trail = {
           },
           quizzes: [
             {
-              question: "Segundo Romanos 5:3-5, qual é a sequência que a tribulação pode produzir na vida do crente?",
+              question:
+                "Segundo Romanos 5:3-5, qual é a sequência que a tribulação pode produzir na vida do crente?",
               options: [
                 "Tribulação leva direto à esperança, sem passos intermediários",
                 "Tribulação produz perseverança; perseverança produz caráter aprovado; caráter aprovado produz esperança",
@@ -1105,10 +1513,12 @@ const santificacao: Trail = {
                 "A tribulação não tem nenhum propósito formativo",
               ],
               correctIndex: 1,
-              explanation: "Paulo descreve uma cadeia: tribulação → perseverança → caráter aprovado → esperança, quando recebida com fé.",
+              explanation:
+                "Paulo descreve uma cadeia: tribulação → perseverança → caráter aprovado → esperança, quando recebida com fé.",
             },
             {
-              question: "Como Hebreus 12:10-11 descreve o propósito da disciplina de Deus na vida do crente?",
+              question:
+                "Como Hebreus 12:10-11 descreve o propósito da disciplina de Deus na vida do crente?",
               options: [
                 "Como punição de um juiz hostil e distante",
                 "Como treino de um Pai que ama, visando nosso bem e nossa participação na santidade dele",
@@ -1116,7 +1526,8 @@ const santificacao: Trail = {
                 "Como prova de que Deus abandonou o crente",
               ],
               correctIndex: 1,
-              explanation: "'Paideia' descreve disciplina formativa de um pai amoroso, não punição hostil — o objetivo é participarmos da santidade de Deus.",
+              explanation:
+                "'Paideia' descreve disciplina formativa de um pai amoroso, não punição hostil — o objetivo é participarmos da santidade de Deus.",
             },
           ],
           application:
