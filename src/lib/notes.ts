@@ -21,7 +21,7 @@ export type Note = {
   updated_at: string;
 };
 
-export type NoteListItem = Pick<
+export type NoteListItem = Pick
   Note,
   "id" | "title" | "content" | "source_type" | "source_content_title" | "created_at"
 >;
@@ -102,10 +102,10 @@ export async function listNotes(): Promise<NoteListItem[]> {
   return (data ?? []) as NoteListItem[];
 }
 
-/** Salvamento incremental (autosave) — título e/ou conteúdo. */
+/** Salvamento incremental (autosave) — título, conteúdo e/ou origem (ex: após um Scan Inteligente). */
 export async function updateNote(
   id: string,
-  patch: Partial<Pick<Note, "title" | "content">>,
+  patch: Partial<Pick<Note, "title" | "content" | "source_type">>,
 ): Promise<void> {
   const { error } = await supabase.from("notes").update(patch).eq("id", id);
   if (error) throw error;
