@@ -605,9 +605,8 @@ const evangelismo: Trail = {
             "João 4 revela um padrão evangelístico rico em detalhes práticos: Jesus atravessa uma barreira cultural e religiosa (judeus normalmente evitavam a Samaria), inicia com um pedido simples e vulnerável ('me dá de beber'), faz perguntas genuínas em vez de acusações, reconhece com honestidade a situação de vida da mulher sem minimizar nem exagerar seu pecado, e só depois de estabelecida a confiança revela verdades mais profundas sobre si mesmo. O resultado é uma conversa que a própria mulher leva de volta à sua cidade, gerando um pequeno avivamento local (João 4:39-42). Esse padrão sugere que evangelismo eficaz raramente é um evento isolado e forçado — é, na maior parte das vezes, o fruto de relações reais, tempo investido, perguntas genuínas e disposição de cruzar barreiras sociais para se aproximar de quem é diferente de nós.",
           theologianQuote: {
             author: "Charles Swindoll",
-            text: "Nada fala mais alto, nem com mais força, do que uma vida de integridade.",
-            source:
-              "Charles R. Swindoll (citação amplamente documentada em suas obras e pregações) (tradução livre)",
+            text: "A vida é dez por cento o que acontece comigo e noventa por cento como eu reajo a isso.",
+            source: "Ensaio 'Attitude' (Atitude), de Charles R. Swindoll — tradução livre",
           },
           deepen: {
             historicalContext:
@@ -1199,9 +1198,8 @@ const evangelismo: Trail = {
             "Três princípios práticos ajudam a aplicar a sabedoria bíblica ao ambiente digital: primeiro, lembre-se de que por trás de cada comentário há uma pessoa real, criada à imagem de Deus — o anonimato relativo das telas facilita esquecer isso, e é justamente aí que a mansidão bíblica (1 Pedro 3:15) precisa ser mais deliberadamente praticada. Segundo, nem toda discussão pede resposta pública imediata — Tiago 1:19 ('tardio para falar, tardio para se irar') é sabedoria especialmente relevante num ambiente desenhado para reações rápidas; às vezes, uma conversa privada, mais lenta e pessoal, comunica mais amor do que um comentário público defendendo um ponto. Terceiro, seu perfil e sua conduta digital consistente ao longo do tempo — o que você compartilha, como reage, como trata quem discorda — comunicam tanto quanto qualquer postagem isolada e explicitamente evangelística; a coerência entre vida online e offline é, ela mesma, um testemunho silencioso poderoso.",
           theologianQuote: {
             author: "John Mark Comer",
-            text: "Aquilo a que você dá atenção é a pessoa em que você se torna.",
-            source:
-              "John Mark Comer (citação amplamente documentada em suas obras sobre atenção e vida digital) (tradução livre)",
+            text: "Aquilo a que você presta atenção determina a pessoa em que você se torna.",
+            source: "O Fim Impiedoso da Pressa (The Ruthless Elimination of Hurry, 2019), cap. 'Silêncio e solidão' — tradução livre"
           },
           deepen: {
             historicalContext:

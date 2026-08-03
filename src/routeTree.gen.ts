@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedBemVindoRouteImport } from './routes/_authenticated/bem-vindo'
+import { Route as AuthenticatedCitacaoDoDiaRouteImport } from './routes/_authenticated/citacao-do-dia'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedLiderRouteImport } from './routes/_authenticated/lider'
 import { Route as AuthenticatedMuralRouteImport } from './routes/_authenticated/mural'
@@ -56,6 +57,12 @@ const AuthenticatedBemVindoRoute = AuthenticatedBemVindoRouteImport.update({
   path: '/bem-vindo',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedCitacaoDoDiaRoute =
+  AuthenticatedCitacaoDoDiaRouteImport.update({
+    id: '/citacao-do-dia',
+    path: '/citacao-do-dia',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   id: '/home',
   path: '/home',
@@ -190,6 +197,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof AuthenticatedBemVindoRoute
+  '/citacao-do-dia': typeof AuthenticatedCitacaoDoDiaRoute
   '/home': typeof AuthenticatedHomeRoute
   '/lider': typeof AuthenticatedLiderRoute
   '/mural': typeof AuthenticatedMuralRoute
@@ -218,6 +226,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof AuthenticatedBemVindoRoute
+  '/citacao-do-dia': typeof AuthenticatedCitacaoDoDiaRoute
   '/home': typeof AuthenticatedHomeRoute
   '/lider': typeof AuthenticatedLiderRoute
   '/mural': typeof AuthenticatedMuralRoute
@@ -248,6 +257,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/bem-vindo': typeof AuthenticatedBemVindoRoute
+  '/_authenticated/citacao-do-dia': typeof AuthenticatedCitacaoDoDiaRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/lider': typeof AuthenticatedLiderRoute
   '/_authenticated/mural': typeof AuthenticatedMuralRoute
@@ -278,6 +288,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/bem-vindo'
+    | '/citacao-do-dia'
     | '/home'
     | '/lider'
     | '/mural'
@@ -306,6 +317,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/bem-vindo'
+    | '/citacao-do-dia'
     | '/home'
     | '/lider'
     | '/mural'
@@ -335,6 +347,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/bem-vindo'
+    | '/_authenticated/citacao-do-dia'
     | '/_authenticated/home'
     | '/_authenticated/lider'
     | '/_authenticated/mural'
@@ -395,6 +408,13 @@ declare module '@tanstack/react-router' {
       path: '/bem-vindo'
       fullPath: '/bem-vindo'
       preLoaderRoute: typeof AuthenticatedBemVindoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/citacao-do-dia': {
+      id: '/_authenticated/citacao-do-dia'
+      path: '/citacao-do-dia'
+      fullPath: '/citacao-do-dia'
+      preLoaderRoute: typeof AuthenticatedCitacaoDoDiaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/home': {
@@ -563,6 +583,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedBemVindoRoute: typeof AuthenticatedBemVindoRoute
+  AuthenticatedCitacaoDoDiaRoute: typeof AuthenticatedCitacaoDoDiaRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedLiderRoute: typeof AuthenticatedLiderRoute
   AuthenticatedMuralRoute: typeof AuthenticatedMuralRoute
@@ -589,6 +610,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedBemVindoRoute: AuthenticatedBemVindoRoute,
+  AuthenticatedCitacaoDoDiaRoute: AuthenticatedCitacaoDoDiaRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedLiderRoute: AuthenticatedLiderRoute,
   AuthenticatedMuralRoute: AuthenticatedMuralRoute,

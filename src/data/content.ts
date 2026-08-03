@@ -378,7 +378,7 @@ const novoConvertido: Trail = {
           theologianQuote: {
             author: "Charles Spurgeon",
             text: "Minha fé não descansa no que eu sou, ou serei, ou sinto, ou sei, mas no que Cristo é, no que ele fez e no que está fazendo por mim.",
-            source: "citação amplamente compilada dos sermões e escritos de C. H. Spurgeon",
+            source: "Tudo de Graça (All of Grace, 1886), cap. 'Fé, o que é?'",
           },
           deepen: {
             additionalVerses: [
@@ -552,8 +552,8 @@ const novoConvertido: Trail = {
             "João escreve para que você 'saiba' — não sinta apenas, mas saiba. A segurança tem duas testemunhas: a Palavra escrita (você creu no nome do Filho, e a promessa é firme) e o Espírito (que 'symmartyrei' — testifica junto). Sentimentos oscilam; essas duas testemunhas não. Quando a dúvida bate, o caminho não é buscar mais emoção, mas voltar às testemunhas: o que Deus disse na Palavra, e o que o Espírito confirma no íntimo — um desejo por Deus, uma tristeza pelo pecado, uma inclinação para as coisas do alto que antes não existia. Essas marcas, ainda que pequenas, são obra do Espírito e não podem ser forjadas pela carne.",
           theologianQuote: {
             author: "Charles Spurgeon",
-            text: "A fé salvadora é uma relação imediata com Cristo: aceitá-lo, recebê-lo e descansar somente nele para a justificação, a santificação e a vida eterna, pela graça de Deus.",
-            source: "citação amplamente compilada dos sermões de C. H. Spurgeon",
+            text: "A fé é composta de três elementos: conhecimento, crença e confiança.",
+            source: "Tudo de Graça (All of Grace, 1886), cap. 'Fé, o que é?'",
           },
           deepen: {
             additionalVerses: [
@@ -721,9 +721,9 @@ const novoConvertido: Trail = {
           deepDive:
             "O salmista não diz que a Palavra é um holofote que ilumina o horizonte inteiro — ela é 'nēr', a lâmpada de óleo que ilumina o próximo passo. Deus raramente mostra o mapa completo; Ele mostra o próximo passo. Por isso a leitura diária: você precisa da luz de hoje, não da luz do ano que vem. E Jesus, ao ser tentado no deserto, revela que a Palavra é alimento tão essencial quanto o pão. Sem ela, o homem interior enfraquece — mesmo que o exterior pareça forte. A disciplina da leitura diária não é para ganhar aprovação de Deus, mas para receber a luz e o pão que Ele já disse que você precisa hoje.",
           theologianQuote: {
-            author: "J. I. Packer",
-            text: "Se eu fosse o diabo, um dos meus primeiros alvos seria impedir as pessoas de mergulhar na Bíblia.",
-            source: "citação amplamente atribuída a J. I. Packer em compilações de suas obras",
+            author: "John Wesley",
+            text: "Dá-me esse livro! A qualquer preço, dá-me o livro de Deus! Eu o tenho; aqui há conhecimento suficiente para mim.",
+            source: "Prefácio aos Sermões sobre Várias Ocasiões (1746)",
           },
           deepen: {
             additionalVerses: [
