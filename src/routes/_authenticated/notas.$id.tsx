@@ -21,8 +21,10 @@ import { toast } from "sonner";
 import {
   ArrowLeft,
   Check,
+  Download,
   Loader2,
   ScanLine,
+  Share2,
   Sparkles,
   Trash2,
   FileDown,
@@ -77,6 +79,7 @@ function NotaEditorPage() {
   const [savedAt, setSavedAt] = useState<Date | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [shareFallback, setShareFallback] = useState<{ file: File; url: string; filename: string } | null>(null);
   const [aiLoading, setAiLoading] = useState<AiAction | null>(null);
   const [aiSuggestion, setAiSuggestion] = useState<{ action: AiAction; text: string } | null>(null);
   const [titleGenerating, setTitleGenerating] = useState(false);
@@ -220,6 +223,11 @@ function NotaEditorPage() {
     }
   }
 
+  function closeShareFallback() {
+    if (shareFallback) URL.revokeObjectURL(shareFallback.url);
+    setShareFallback(null);
+  }
+
   async function handleExportPdf() {
     if (!editor) return;
     setExporting(true);
@@ -228,11 +236,6 @@ function NotaEditorPage() {
       const filename = `${slugify(title || "anotacao")}.pdf`;
       const file = new File([blob], filename, { type: "application/pdf" });
 
-      // No celular, prioriza a folha nativa de compartilhamento (WhatsApp,
-      // Drive, e-mail, AirDrop etc.) em vez de só baixar o arquivo — é o
-      // que o usuário espera ao tocar em "Exportar PDF" dentro do app.
-      // Em navegadores sem suporte a compartilhar arquivos (a maioria dos
-      // desktops), cai no download tradicional.
       const canShareFile =
         typeof navigator.share === "function" &&
         typeof navigator.canShare === "function" &&
@@ -242,26 +245,26 @@ function NotaEditorPage() {
         try {
           await navigator.share({ files: [file], title: title || "Anotação" });
           await markNoteExported(id);
-          toast.success("PDF pronto para compartilhar.");
+          toast.success("PDF compartilhado.");
+          return;
         } catch (shareErr) {
-          // Usuário cancelou a folha de compartilhamento — não é um erro.
-          if ((shareErr as DOMException)?.name !== "AbortError") {
-            console.error(shareErr);
-            toast.error("Não foi possível compartilhar o PDF agora.");
+          if ((shareErr as DOMException)?.name === "AbortError") {
+            // Usuário cancelou a folha de compartilhamento — não é erro,
+            // não precisa de fallback.
+            return;
           }
+          // Provável causa: a geração do PDF (html2canvas) levou tempo
+          // suficiente para o navegador (principalmente Safari/iOS)
+          // considerar o toque original "expirado" e recusar abrir a
+          // folha de compartilhamento. Guarda o PDF já pronto e oferece
+          // um segundo toque — esse sim, imediato e síncrono — pra tentar
+          // de novo, além da opção de baixar.
+          console.error(shareErr);
         }
-      } else {
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 10_000);
-        await markNoteExported(id);
-        toast.success("PDF exportado.");
       }
+
+      const url = URL.createObjectURL(blob);
+      setShareFallback({ file, url, filename });
     } catch (err) {
       console.error(err);
       toast.error("Não foi possível gerar o PDF agora.");
@@ -270,7 +273,36 @@ function NotaEditorPage() {
     }
   }
 
+  async function handleManualShare() {
+    if (!shareFallback) return;
+    try {
+      await navigator.share({ files: [shareFallback.file], title: title || "Anotação" });
+      await markNoteExported(id);
+      toast.success("PDF compartilhado.");
+      closeShareFallback();
+    } catch (err) {
+      if ((err as DOMException)?.name !== "AbortError") {
+        console.error(err);
+        toast.error("Não foi possível compartilhar. Tente baixar o PDF.");
+      }
+    }
+  }
+
+  function handleManualDownload() {
+    if (!shareFallback) return;
+    const link = document.createElement("a");
+    link.href = shareFallback.url;
+    link.download = shareFallback.filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    void markNoteExported(id);
+    toast.success("PDF baixado.");
+    closeShareFallback();
+  }
+
   const saveLabel = useMemo(() => {
+    if (saveState === "salvando") return "Salvando…";
     if (saveState === "erro") return "Erro ao salvar";
     if (savedAt) return `Salvo às ${savedAt.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
     return "";
@@ -421,6 +453,40 @@ function NotaEditorPage() {
             >
               <Check className="h-4 w-4" /> Aceitar
             </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* ── Fallback de compartilhamento (quando a folha nativa falha ao
+           abrir logo após a geração do PDF — normalmente por o toque
+           original ter "expirado" durante o processamento) ──────────── */}
+      <Dialog open={!!shareFallback} onOpenChange={(open) => !open && closeShareFallback()}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>PDF pronto</DialogTitle>
+            <DialogDescription>
+              {typeof navigator !== "undefined" && typeof navigator.share === "function"
+                ? "Toque em \"Compartilhar\" para escolher um app no seu celular, ou baixe o arquivo."
+                : "Seu navegador não suporta compartilhamento direto de arquivos — baixe o PDF abaixo."}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2">
+            <button
+              type="button"
+              onClick={handleManualDownload}
+              className="inline-flex items-center gap-1.5 rounded-2xl border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-surface-2"
+            >
+              <Download className="h-4 w-4" /> Baixar PDF
+            </button>
+            {typeof navigator !== "undefined" && typeof navigator.share === "function" && (
+              <button
+                type="button"
+                onClick={() => void handleManualShare()}
+                className="inline-flex items-center gap-1.5 rounded-2xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary-glow"
+              >
+                <Share2 className="h-4 w-4" /> Compartilhar
+              </button>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>
