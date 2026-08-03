@@ -21,7 +21,7 @@ export type Note = {
   updated_at: string;
 };
 
-export type NoteListItem = Pick
+export type NoteListItem = Pick<
   Note,
   "id" | "title" | "content" | "source_type" | "source_content_title" | "created_at"
 >;
