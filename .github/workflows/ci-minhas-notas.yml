@@ -1,0 +1,4 @@
+$(cat <<'YML'
+# workflow completo que te enviei (inclui instalação de tesseract/poppler e steps)
+YML
+)
