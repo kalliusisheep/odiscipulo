@@ -1,19 +1,53 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import useSelectionFloatingMenu from '../hooks/useSelectionFloatingMenu';
 import SelectionFloatingMenu from './SelectionFloatingMenu';
 import { apiFetch } from '../lib/api';
 // Reuse the existing client-side image generator from the main app
 import { generateShareImage } from '../../src/lib/share-image';
+import getCharacterOffsetsWithin from '../hooks/getCharacterOffsetsWithin';
 
 export default function SelectionIntegrator({ contentId, contentType, children }){
   const { selection, rect, showMenu, setShowMenu, clearSelection } = useSelectionFloatingMenu();
 
+  // state for highlight click (when user clicks an existing mark)
+  const [currentHighlightId, setCurrentHighlightId] = useState(null);
+  const [menuRect, setMenuRect] = useState(null);
+  const [menuShowRemove, setMenuShowRemove] = useState(false);
+  const [menuSelectionText, setMenuSelectionText] = useState('');
+  const [selectedColor, setSelectedColor] = useState('#FFF59D');
+
+  useEffect(() => {
+    function onHighlightClicked(e) {
+      const { id, rect: r, highlighted_text, color } = e.detail || {};
+      if (!r) return;
+      // open the menu over the highlight with remove option
+      setCurrentHighlightId(id || null);
+      setMenuRect(r);
+      setMenuShowRemove(true);
+      setMenuSelectionText(highlighted_text || '');
+      if (color) setSelectedColor(color);
+      setShowMenu(true);
+    }
+    function onHighlightsRefresh() {
+      // keep it simple: close menu when highlights changed
+      setCurrentHighlightId(null);
+      setMenuShowRemove(false);
+      setMenuSelectionText('');
+      clearSelection();
+    }
+    window.addEventListener('app:highlight:clicked', onHighlightClicked);
+    window.addEventListener('app:highlights:refresh', onHighlightsRefresh);
+    return () => {
+      window.removeEventListener('app:highlight:clicked', onHighlightClicked);
+      window.removeEventListener('app:highlights:refresh', onHighlightsRefresh);
+    };
+  }, [setShowMenu, clearSelection]);
+
   async function onSaveNote(){
     try{
-      // Generate a short title via AI later; for now create note with a temp title
       const payload = {
-        title: selection.slice(0, 60) + (selection.length > 60 ? '...' : ''),
-        content: { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: selection }] }] },
+        title: (menuSelectionText || selection || '').slice(0, 60) + ((menuSelectionText || selection || '').length > 60 ? '...' : ''),
+        content: { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: menuSelectionText || selection }] }] },
         source_type: 'selecao_texto',
         source_content_id: contentId,
         source_content_title: null
@@ -28,27 +62,25 @@ export default function SelectionIntegrator({ contentId, contentType, children }
 
   async function onCreateImage(){
     try{
-      // Use the same image generator used elsewhere in the app (client-side Canvas)
       const title = '';
       const backgroundSrc = '/share-bg-cross.jpg';
-      const blob = await generateShareImage({ title, bodyText: selection, backgroundSrc });
+      const bodyText = menuSelectionText || selection || '';
+      const blob = await generateShareImage({ title, bodyText, backgroundSrc });
       const fileName = 'selection.jpg';
       const file = new File([blob], fileName, { type: 'image/jpeg' });
 
-      const nav = navigator as any;
+      const nav = navigator;
       if (nav.share && nav.canShare?.({ files: [file] })) {
         try {
-          await nav.share({ files: [file], title: selection.slice(0,60) });
+          await nav.share({ files: [file], title: bodyText.slice(0,60) });
           clearSelection();
           return;
         } catch (shareError) {
-          // fallthrough to download
           console.error('navigator.share failed, falling back to download', shareError);
         }
       }
 
       const url = URL.createObjectURL(blob);
-      // Open preview in a new tab (user can download from there)
       window.open(url, '_blank');
       clearSelection();
     }catch(e){
@@ -58,8 +90,38 @@ export default function SelectionIntegrator({ contentId, contentType, children }
 
   async function onHighlight(){
     try{
-      // For simplicity, compute offsets on the client if possible; here we send highlight_text only
-      await apiFetch('/api/highlights', { method: 'POST', body: JSON.stringify({ content_id: contentId, content_type: contentType, start_offset: 0, end_offset: 0, highlighted_text: selection, color: 'yellow' }) });
+      const sel = window.getSelection();
+      if (!sel || sel.isCollapsed) {
+        alert('Seleção vazia');
+        return;
+      }
+      const range = sel.getRangeAt(0);
+      const container = document.querySelector(`[data-content-id="${contentId}"]`);
+      let start_offset = 0;
+      let end_offset = 0;
+      if (container) {
+        const off = getCharacterOffsetsWithin(container, range);
+        if (off) {
+          start_offset = off.start;
+          end_offset = off.end;
+        } else {
+          start_offset = 0;
+          end_offset = 0;
+        }
+      }
+
+      const payload = {
+        content_id: contentId,
+        content_type: contentType,
+        start_offset,
+        end_offset,
+        highlighted_text: sel.toString(),
+        color: selectedColor
+      };
+
+      await apiFetch('/api/highlights', { method: 'POST', body: JSON.stringify(payload) });
+      // notify highlights wrapper to refresh
+      window.dispatchEvent(new CustomEvent('app:highlights:refresh'));
       alert('Trecho marcado');
       clearSelection();
     }catch(e){
@@ -67,11 +129,38 @@ export default function SelectionIntegrator({ contentId, contentType, children }
     }
   }
 
+  async function onRemoveHighlight(){
+    try {
+      if (!currentHighlightId) return;
+      await apiFetch(`/api/highlights/${currentHighlightId}`, { method: 'DELETE' });
+      // ask content wrapper to refresh highlights
+      window.dispatchEvent(new CustomEvent('app:highlights:refresh'));
+      setCurrentHighlightId(null);
+      setMenuShowRemove(false);
+      clearSelection();
+    } catch (err) {
+      alert('Erro ao remover marcação: ' + err.message);
+    }
+  }
+
+  // choose which rect & showRemove to pass to menu:
+  const activeRect = menuRect || rect;
+  const activeShowRemove = menuShowRemove || false;
+
   return (
     <div>
       {children}
-      {showMenu && rect && (
-        <SelectionFloatingMenu rect={rect} onSaveNote={onSaveNote} onCreateImage={onCreateImage} onHighlight={onHighlight} />
+      { (showMenu || activeShowRemove) && activeRect && (
+        <SelectionFloatingMenu
+          rect={activeRect}
+          onSaveNote={onSaveNote}
+          onCreateImage={onCreateImage}
+          onHighlight={onHighlight}
+          onRemoveHighlight={onRemoveHighlight}
+          showRemove={activeShowRemove}
+          selectedColor={selectedColor}
+          onColorSelect={(c) => setSelectedColor(c)}
+        />
       )}
     </div>
   );

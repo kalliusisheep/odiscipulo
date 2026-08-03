@@ -13,6 +13,7 @@ const path = require('path');
 const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
 const tesseract = require('tesseract.js');
+const { processScan } = require('../worker/scan_worker');
 
 function requireAuth(req, res, next) {
   if (!req.user || !req.user.id) return res.status(401).json({ error: 'Unauthorized' });
@@ -34,9 +35,10 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         if (parsed && parsed.text && parsed.text.trim().length > 0) {
           text = parsed.text;
         } else {
-          // fallback to OCR per page would be implemented here
-          // For now, run OCR on the whole file image-wise (requires pdf->images pipeline)
-          text = '';
+          const workerResult = await processScan(req.file.path);
+          if (workerResult.ok && workerResult.results?.[0]?.text) {
+            text = workerResult.results[0].text;
+          }
         }
       } catch (e) {
         console.warn('pdf-parse failed, falling back to OCR', e);
@@ -45,25 +47,18 @@ router.post('/upload', upload.single('file'), async (req, res) => {
       const result = await mammoth.extractRawText({ path: req.file.path });
       text = result.value;
     } else {
-      // assume image
-      const worker = tesseract.createWorker();
-      await worker.load();
-      await worker.loadLanguage('por+eng');
-      await worker.initialize('por+eng');
-      const { data: { text: ocrText } } = await worker.recognize(req.file.path);
-      await worker.terminate();
-      text = ocrText;
+      const workerResult = await processScan(req.file.path);
+      if (workerResult.ok && workerResult.results?.[0]?.text) {
+        text = workerResult.results[0].text;
+      }
     }
 
-    // Save as a new note with source_type depending on ext
     const sourceType = ext === '.pdf' ? 'scan_pdf' : ext === '.docx' ? 'scan_word' : 'scan_foto';
-    // Respond with extracted text and suggested actions (frontend will call AI endpoints as needed)
     res.json({ extracted_text: text, suggested_actions: ['transcribe', 'reescrever', 'estruturar'], source_type: sourceType });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Processing error' });
   } finally {
-    // cleanup file
     try { fs.unlinkSync(req.file.path); } catch (e) {}
   }
 });
