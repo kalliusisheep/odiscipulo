@@ -532,7 +532,7 @@ function NotaEditorPage() {
             className="flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 disabled:opacity-50"
           >
             {aiLoading === "estruturar" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5 text-primary" />}
-            Organizar como estrutura
+            Estruturar como lição
           </button>
         </div>
       </div>
