@@ -22,7 +22,6 @@ import {
   ArrowLeft,
   Check,
   Loader2,
-  MoreVertical,
   ScanLine,
   Sparkles,
   Trash2,
@@ -52,12 +51,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 export const Route = createFileRoute("/_authenticated/notas/$id")({
   component: NotaEditorPage,
@@ -325,30 +318,25 @@ function NotaEditorPage() {
           {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileDown className="h-4 w-4" />}
         </button>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              type="button"
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground"
-              aria-label="Mais ações"
-            >
-              <MoreVertical className="h-4 w-4" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => void handleExportPdf()}>
-              <FileDown className="mr-2 h-4 w-4" /> Exportar PDF
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => toast.info("Scan Inteligente chega no Bloco 4 — em breve por aqui.")}
-            >
-              <ScanLine className="mr-2 h-4 w-4" /> Scan Inteligente
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setDeleteOpen(true)} className="text-destructive focus:text-destructive">
-              <Trash2 className="mr-2 h-4 w-4" /> Excluir
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <button
+          type="button"
+          onClick={() => toast.info("Scan Inteligente chega no Bloco 4 — em breve por aqui.")}
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground"
+          aria-label="Scan Inteligente"
+          title="Scan Inteligente"
+        >
+          <ScanLine className="h-4 w-4" />
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setDeleteOpen(true)}
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+          aria-label="Excluir anotação"
+          title="Excluir anotação"
+        >
+          <Trash2 className="h-4 w-4" />
+        </button>
       </header>
 
       {/* ── Origem (se a nota veio de um conteúdo) ──────────────── */}
