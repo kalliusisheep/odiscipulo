@@ -8,7 +8,6 @@ import spurgeonImg from "@/assets/authors/spurgeon.jpg";
 import wesleyImg from "@/assets/authors/wesley.jpg";
 import bonhoefferImg from "@/assets/authors/bonhoeffer.jpg";
 import stottImg from "@/assets/authors/stott.jpg";
-import defaultAuthorImg from "@/assets/authors/default.jpg";
 
 export type DailyQuote = {
   id: string;
