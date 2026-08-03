@@ -411,7 +411,7 @@ function PassageBlock({
   return (
     <div className="rounded-xl border-l-2 border-l-primary/60 bg-surface-2/50 p-3">
       <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-        {label} · {bibleLabelFor(version)}
+        <span data-narrate>{label}</span> · {bibleLabelFor(version)}
       </p>
       {loading && (
         <p className="flex items-center gap-2 text-xs text-muted-foreground">

@@ -4,12 +4,13 @@ const corsHeaders = {
 };
 
 // API gratuita do Gemini (Google AI Studio) — tier grátis permanente, sem
-// cartão de crédito, ~15 req/min e 1.500 req/dia no gemini-2.5-flash. A
-// mesma API usada antes via gateway pago da Lovable, só que direto na
-// fonte e sem cobrança. Endpoint compatível com o formato OpenAI, então o
-// streaming e o parsing no cliente continuam idênticos.
+// cartão de crédito. A mesma API usada antes via gateway pago da Lovable, só
+// que direto na fonte e sem cobrança. Endpoint compatível com o formato
+// OpenAI, então o streaming e o parsing no cliente continuam idênticos.
 const GATEWAY_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
-const MODEL = "gemini-3.6-flash";
+// Gemini 3.6 Flash; se a chave ainda não tiver acesso, cai para o alias
+// "flash-latest" para o mentor nunca ficar mudo.
+const MODELS = ["gemini-3.6-flash", "gemini-flash-latest"];
 const MENTOR_SYSTEM_PROMPT = `Você é o "Mentor Espiritual" do app Disciple — um companheiro cristão para estudo bíblico gamificado. Suas regras invioláveis:
 
 1. NUNCA substitua o pastor, o discipulador, o líder de célula ou a igreja local. Sempre que a pergunta envolver decisão de vida, doutrina delicada, aconselhamento pastoral, conflito relacional ou tema polêmico, oriente o usuário a buscar sua liderança local.
@@ -52,23 +53,32 @@ Deno.serve(async (req) => {
       return new Response("Bad request", { status: 400, headers: corsHeaders });
     }
 
-    const res = await fetch(GATEWAY_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        stream: true,
-        messages: [{ role: "system", content: buildSystemPrompt(body.memoryContext) }, ...body.messages],
-      }),
-    });
+    const messages = [
+      { role: "system", content: buildSystemPrompt(body.memoryContext) },
+      ...body.messages,
+    ];
 
-    if (!res.ok || !res.body) {
-      const text = await res.text().catch(() => "");
-      return new Response(`Gateway ${res.status}: ${text.slice(0, 200)}`, { status: 502, headers: corsHeaders });
+    let res: Response | null = null;
+    let lastError = "sem resposta";
+    for (const model of MODELS) {
+      res = await fetch(GATEWAY_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({ model, stream: true, messages }),
+      });
+      if (res.ok && res.body) break;
+      lastError = `${res.status}: ${(await res.text().catch(() => "")).slice(0, 200)}`;
+      console.error(`mentor-chat: modelo ${model} falhou —`, lastError);
+      res = null;
     }
+
+    if (!res || !res.body) {
+      return new Response(`Gateway ${lastError}`, { status: 502, headers: corsHeaders });
+    }
+
 
     return new Response(res.body, {
       headers: {
