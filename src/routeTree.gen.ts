@@ -13,7 +13,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedBemVindoRouteImport } from './routes/_authenticated/bem-vindo'
-import { Route as AuthenticatedCitacaoDoDiaRouteImport } from './routes/_authenticated/citacao-do-dia'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedLiderRouteImport } from './routes/_authenticated/lider'
 import { Route as AuthenticatedMuralRouteImport } from './routes/_authenticated/mural'
@@ -32,6 +31,8 @@ import { Route as AuthenticatedMensagensIndexRouteImport } from './routes/_authe
 import { Route as AuthenticatedMensagensUsernameRouteImport } from './routes/_authenticated/mensagens.$username'
 import { Route as AuthenticatedMensagensNovoRouteImport } from './routes/_authenticated/mensagens.novo'
 import { Route as AuthenticatedModuloIdRouteImport } from './routes/_authenticated/modulo.$id'
+import { Route as AuthenticatedNotasIndexRouteImport } from './routes/_authenticated/notas.index'
+import { Route as AuthenticatedNotasIdRouteImport } from './routes/_authenticated/notas.$id'
 import { Route as AuthenticatedPerfilUsernameRouteImport } from './routes/_authenticated/perfil_.$username'
 import { Route as AuthenticatedEstudosBiblicoIdRouteImport } from './routes/_authenticated/estudos.biblico.$id'
 import { Route as AuthenticatedEstudosMeditacaoIdRouteImport } from './routes/_authenticated/estudos.meditacao.$id'
@@ -57,12 +58,6 @@ const AuthenticatedBemVindoRoute = AuthenticatedBemVindoRouteImport.update({
   path: '/bem-vindo',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedCitacaoDoDiaRoute =
-  AuthenticatedCitacaoDoDiaRouteImport.update({
-    id: '/citacao-do-dia',
-    path: '/citacao-do-dia',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   id: '/home',
   path: '/home',
@@ -162,6 +157,16 @@ const AuthenticatedModuloIdRoute = AuthenticatedModuloIdRouteImport.update({
   path: '/modulo/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedNotasIndexRoute = AuthenticatedNotasIndexRouteImport.update({
+  id: '/notas/',
+  path: '/notas/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedNotasIdRoute = AuthenticatedNotasIdRouteImport.update({
+  id: '/notas/$id',
+  path: '/notas/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedPerfilUsernameRoute =
   AuthenticatedPerfilUsernameRouteImport.update({
     id: '/perfil_/$username',
@@ -197,7 +202,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof AuthenticatedBemVindoRoute
-  '/citacao-do-dia': typeof AuthenticatedCitacaoDoDiaRoute
   '/home': typeof AuthenticatedHomeRoute
   '/lider': typeof AuthenticatedLiderRoute
   '/mural': typeof AuthenticatedMuralRoute
@@ -214,9 +218,11 @@ export interface FileRoutesByFullPath {
   '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
   '/modulo/$id': typeof AuthenticatedModuloIdRoute
+  '/notas/$id': typeof AuthenticatedNotasIdRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
   '/estudos/': typeof AuthenticatedEstudosIndexRoute
   '/mensagens/': typeof AuthenticatedMensagensIndexRoute
+  '/notas/': typeof AuthenticatedNotasIndexRoute
   '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
@@ -226,7 +232,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/bem-vindo': typeof AuthenticatedBemVindoRoute
-  '/citacao-do-dia': typeof AuthenticatedCitacaoDoDiaRoute
   '/home': typeof AuthenticatedHomeRoute
   '/lider': typeof AuthenticatedLiderRoute
   '/mural': typeof AuthenticatedMuralRoute
@@ -243,9 +248,11 @@ export interface FileRoutesByTo {
   '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
   '/modulo/$id': typeof AuthenticatedModuloIdRoute
+  '/notas/$id': typeof AuthenticatedNotasIdRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
   '/estudos': typeof AuthenticatedEstudosIndexRoute
   '/mensagens': typeof AuthenticatedMensagensIndexRoute
+  '/notas': typeof AuthenticatedNotasIndexRoute
   '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
@@ -257,7 +264,6 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/bem-vindo': typeof AuthenticatedBemVindoRoute
-  '/_authenticated/citacao-do-dia': typeof AuthenticatedCitacaoDoDiaRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/lider': typeof AuthenticatedLiderRoute
   '/_authenticated/mural': typeof AuthenticatedMuralRoute
@@ -274,9 +280,11 @@ export interface FileRoutesById {
   '/_authenticated/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
   '/_authenticated/mensagens/novo': typeof AuthenticatedMensagensNovoRoute
   '/_authenticated/modulo/$id': typeof AuthenticatedModuloIdRoute
+  '/_authenticated/notas/$id': typeof AuthenticatedNotasIdRoute
   '/_authenticated/perfil_/$username': typeof AuthenticatedPerfilUsernameRoute
   '/_authenticated/estudos/': typeof AuthenticatedEstudosIndexRoute
   '/_authenticated/mensagens/': typeof AuthenticatedMensagensIndexRoute
+  '/_authenticated/notas/': typeof AuthenticatedNotasIndexRoute
   '/_authenticated/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/_authenticated/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/_authenticated/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
@@ -288,7 +296,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/bem-vindo'
-    | '/citacao-do-dia'
     | '/home'
     | '/lider'
     | '/mural'
@@ -305,9 +312,11 @@ export interface FileRouteTypes {
     | '/mensagens/$username'
     | '/mensagens/novo'
     | '/modulo/$id'
+    | '/notas/$id'
     | '/perfil/$username'
     | '/estudos/'
     | '/mensagens/'
+    | '/notas/'
     | '/estudos/biblico/$id'
     | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
@@ -317,7 +326,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/bem-vindo'
-    | '/citacao-do-dia'
     | '/home'
     | '/lider'
     | '/mural'
@@ -334,9 +342,11 @@ export interface FileRouteTypes {
     | '/mensagens/$username'
     | '/mensagens/novo'
     | '/modulo/$id'
+    | '/notas/$id'
     | '/perfil/$username'
     | '/estudos'
     | '/mensagens'
+    | '/notas'
     | '/estudos/biblico/$id'
     | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
@@ -347,7 +357,6 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/bem-vindo'
-    | '/_authenticated/citacao-do-dia'
     | '/_authenticated/home'
     | '/_authenticated/lider'
     | '/_authenticated/mural'
@@ -364,9 +373,11 @@ export interface FileRouteTypes {
     | '/_authenticated/mensagens/$username'
     | '/_authenticated/mensagens/novo'
     | '/_authenticated/modulo/$id'
+    | '/_authenticated/notas/$id'
     | '/_authenticated/perfil_/$username'
     | '/_authenticated/estudos/'
     | '/_authenticated/mensagens/'
+    | '/_authenticated/notas/'
     | '/_authenticated/estudos/biblico/$id'
     | '/_authenticated/estudos/meditacao/$id'
     | '/_authenticated/estudos/plano/$id'
@@ -408,13 +419,6 @@ declare module '@tanstack/react-router' {
       path: '/bem-vindo'
       fullPath: '/bem-vindo'
       preLoaderRoute: typeof AuthenticatedBemVindoRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/citacao-do-dia': {
-      id: '/_authenticated/citacao-do-dia'
-      path: '/citacao-do-dia'
-      fullPath: '/citacao-do-dia'
-      preLoaderRoute: typeof AuthenticatedCitacaoDoDiaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/home': {
@@ -543,6 +547,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedModuloIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/notas/': {
+      id: '/_authenticated/notas/'
+      path: '/notas'
+      fullPath: '/notas/'
+      preLoaderRoute: typeof AuthenticatedNotasIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/notas/$id': {
+      id: '/_authenticated/notas/$id'
+      path: '/notas/$id'
+      fullPath: '/notas/$id'
+      preLoaderRoute: typeof AuthenticatedNotasIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/perfil_/$username': {
       id: '/_authenticated/perfil_/$username'
       path: '/perfil/$username'
@@ -583,7 +601,6 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedBemVindoRoute: typeof AuthenticatedBemVindoRoute
-  AuthenticatedCitacaoDoDiaRoute: typeof AuthenticatedCitacaoDoDiaRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedLiderRoute: typeof AuthenticatedLiderRoute
   AuthenticatedMuralRoute: typeof AuthenticatedMuralRoute
@@ -599,9 +616,11 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMensagensUsernameRoute: typeof AuthenticatedMensagensUsernameRoute
   AuthenticatedMensagensNovoRoute: typeof AuthenticatedMensagensNovoRoute
   AuthenticatedModuloIdRoute: typeof AuthenticatedModuloIdRoute
+  AuthenticatedNotasIdRoute: typeof AuthenticatedNotasIdRoute
   AuthenticatedPerfilUsernameRoute: typeof AuthenticatedPerfilUsernameRoute
   AuthenticatedEstudosIndexRoute: typeof AuthenticatedEstudosIndexRoute
   AuthenticatedMensagensIndexRoute: typeof AuthenticatedMensagensIndexRoute
+  AuthenticatedNotasIndexRoute: typeof AuthenticatedNotasIndexRoute
   AuthenticatedEstudosBiblicoIdRoute: typeof AuthenticatedEstudosBiblicoIdRoute
   AuthenticatedEstudosMeditacaoIdRoute: typeof AuthenticatedEstudosMeditacaoIdRoute
   AuthenticatedEstudosPlanoIdRoute: typeof AuthenticatedEstudosPlanoIdRoute
@@ -610,7 +629,6 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedBemVindoRoute: AuthenticatedBemVindoRoute,
-  AuthenticatedCitacaoDoDiaRoute: AuthenticatedCitacaoDoDiaRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedLiderRoute: AuthenticatedLiderRoute,
   AuthenticatedMuralRoute: AuthenticatedMuralRoute,
@@ -627,9 +645,11 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMensagensUsernameRoute: AuthenticatedMensagensUsernameRoute,
   AuthenticatedMensagensNovoRoute: AuthenticatedMensagensNovoRoute,
   AuthenticatedModuloIdRoute: AuthenticatedModuloIdRoute,
+  AuthenticatedNotasIdRoute: AuthenticatedNotasIdRoute,
   AuthenticatedPerfilUsernameRoute: AuthenticatedPerfilUsernameRoute,
   AuthenticatedEstudosIndexRoute: AuthenticatedEstudosIndexRoute,
   AuthenticatedMensagensIndexRoute: AuthenticatedMensagensIndexRoute,
+  AuthenticatedNotasIndexRoute: AuthenticatedNotasIndexRoute,
   AuthenticatedEstudosBiblicoIdRoute: AuthenticatedEstudosBiblicoIdRoute,
   AuthenticatedEstudosMeditacaoIdRoute: AuthenticatedEstudosMeditacaoIdRoute,
   AuthenticatedEstudosPlanoIdRoute: AuthenticatedEstudosPlanoIdRoute,
