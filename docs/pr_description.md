@@ -20,4 +20,3 @@ Checklist
 - [ ] Wire auth middleware so req.user.id is available to backend routes
 - [ ] Install dependencies and run server locally
 - [ ] QA mobile selection behavior and image generator UI
-
