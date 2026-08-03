@@ -159,6 +159,7 @@ function NotaEditorPage() {
   const [titleGenerating, setTitleGenerating] = useState(false);
   const [sourceTitle, setSourceTitle] = useState<string | null>(null);
   const [scanOpen, setScanOpen] = useState(false);
+  const [formattingActive, setFormattingActive] = useState(false);
 
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -510,32 +511,36 @@ function NotaEditorPage() {
       <div className="mt-4 flex-1">
         <EditorContent editor={editor} />
       </div>
-      <NoteFormattingToolbar editor={editor} />
+      <NoteFormattingToolbar editor={editor} onActiveChange={setFormattingActive} />
 
-      {/* ── Ações de IA (fixas na base) ──────────────────────────── */}
-      <div className="sticky bottom-4 mt-6 flex justify-center gap-2">
-        <div className="flex items-center gap-1 rounded-full border border-border bg-popover p-1 shadow-lg">
-          <button
-            type="button"
-            onClick={() => void handleAiAction("reescrever")}
-            disabled={aiLoading !== null}
-            className="flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 disabled:opacity-50"
-          >
-            {aiLoading === "reescrever" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5 text-primary" />}
-            Reescrever
-          </button>
-          <div className="h-4 w-px bg-border" />
-          <button
-            type="button"
-            onClick={() => void handleAiAction("estruturar")}
-            disabled={aiLoading !== null}
-            className="flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 disabled:opacity-50"
-          >
-            {aiLoading === "estruturar" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5 text-primary" />}
-            Estruturar como lição
-          </button>
+      {/* ── Ações de IA (fixas na base) ─────────────────────────────
+           Escondidas enquanto a barra de formatação estiver visível
+           (há um texto selecionado), pra não sobrepor no rodapé. ── */}
+      {!formattingActive && (
+        <div className="sticky bottom-4 mt-6 flex justify-center gap-2">
+          <div className="flex items-center gap-1 rounded-full border border-border bg-popover p-1 shadow-lg">
+            <button
+              type="button"
+              onClick={() => void handleAiAction("reescrever")}
+              disabled={aiLoading !== null}
+              className="flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 disabled:opacity-50"
+            >
+              {aiLoading === "reescrever" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5 text-primary" />}
+              Reescrever
+            </button>
+            <div className="h-4 w-px bg-border" />
+            <button
+              type="button"
+              onClick={() => void handleAiAction("estruturar")}
+              disabled={aiLoading !== null}
+              className="flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 disabled:opacity-50"
+            >
+              {aiLoading === "estruturar" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5 text-primary" />}
+              Estruturar como lição
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* ── Preview da sugestão de IA ────────────────────────────── */}
       <Dialog open={!!aiSuggestion} onOpenChange={(open) => !open && setAiSuggestion(null)}>
