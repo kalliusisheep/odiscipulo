@@ -387,6 +387,20 @@ function PerfilPage() {
           </span>
           <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/40" />
         </button>
+        <button
+          type="button"
+          onClick={() => void nav({ to: "/notas" })}
+          className="card-elevated mt-3 flex w-full items-center gap-3 p-4 text-left transition-colors hover:border-primary/40"
+        >
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <NotebookPen className="h-5 w-5" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-semibold">Minhas Notas</span>
+            <span className="block truncate text-xs text-muted-foreground">Anotações, marcações e trechos salvos</span>
+          </span>
+          <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/40" />
+        </button>
       </section>
 
       {/* ── Preferências ─────────────────────────────────────────── */}
@@ -438,19 +452,6 @@ function PerfilPage() {
                 onChange={() => void update({ is_leader: !profile.is_leader })}
                 ariaLabel="Habilitar modo líder"
               />
-            }
-          />
-          <SettingsRow
-            icon={NotebookPen}
-            title="Minhas Notas"
-            subtitle="Anotações, marcações e trechos salvos"
-            action={
-              <button
-                onClick={() => void nav({ to: "/notas" })}
-                className="shrink-0 rounded-full border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:border-primary/50 hover:text-primary"
-              >
-                Abrir
-              </button>
             }
           />
         </div>
