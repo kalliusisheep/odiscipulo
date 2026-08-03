@@ -43,7 +43,7 @@ function BemVindoPage() {
       setUserId(u.user.id);
       const { data: p } = await supabase
         .from("profiles")
-        .select("onboarded, first_name, last_name, display_name, username")
+        .select("onboarded, first_name, last_name, display_name, username, avatar_url")
         .eq("id", u.user.id)
         .maybeSingle();
       if (p?.onboarded) {
