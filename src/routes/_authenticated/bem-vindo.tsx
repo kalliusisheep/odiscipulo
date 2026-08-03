@@ -1,13 +1,16 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Sparkles, ArrowRight, AtSign, Check, X, Loader2 } from "lucide-react";
+import { Sparkles, ArrowRight, AtSign, Check, X, Loader2, Camera, User } from "lucide-react";
 import {
   isUsernameAvailable,
   isValidUsername,
   normalizeUsername,
   suggestAvailableUsername,
 } from "@/lib/username";
+
+// Avatares prontos disponíveis em /public/avatares (avatar-1.png … avatar-10.png)
+const PRESET_AVATARS = Array.from({ length: 10 }, (_, i) => `/avatares/avatar-${i + 1}.png`);
 
 export const Route = createFileRoute("/_authenticated/bem-vindo")({
   component: BemVindoPage,
@@ -19,12 +22,16 @@ function BemVindoPage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
   const [checkingUsername, setCheckingUsername] = useState(false);
   const [usernameOk, setUsernameOk] = useState<boolean | null>(null);
   const [suggestion, setSuggestion] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [checking, setChecking] = useState(true);
+
 
   useEffect(() => {
     void (async () => {
