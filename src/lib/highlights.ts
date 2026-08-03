@@ -4,7 +4,7 @@
 import { supabase } from "@/integrations/supabase/client";
 
 export type HighlightContentType = "trilha" | "estudo" | "plano_leitura";
-export type HighlightColor = "amarelo" | "verde" | "azul" | "rosa" | "laranja";
+export type HighlightColor = "amarelo" | "verde" | "azul" | "rosa" | "laranja" | "branco";
 
 export type Highlight = {
   id: string;
@@ -17,12 +17,22 @@ export type Highlight = {
   color: HighlightColor;
 };
 
+// Cada entrada já inclui a cor do texto (não depender de "text-inherit"
+// aplicado externamente: como todas as classes Tailwind têm a mesma
+// especificidade, a ordem de qual "color:" vence no CSS final não é
+// garantida pela ordem no atributo className).
+// "branco" é especial: para continuar legível nos dois temas, ela se
+// inverte — no modo claro (fundo do app claro), um marca-texto branco de
+// verdade ficaria invisível, então renderiza como fundo preto + texto
+// branco; no modo escuro, fundo branco + texto preto, como um marca-texto
+// branco normal.
 export const HIGHLIGHT_COLOR_CLASS: Record<HighlightColor, string> = {
-  amarelo: "bg-yellow-300/50 dark:bg-yellow-400/30",
-  verde: "bg-green-300/50 dark:bg-green-400/30",
-  azul: "bg-blue-300/50 dark:bg-blue-400/30",
-  rosa: "bg-pink-300/50 dark:bg-pink-400/30",
-  laranja: "bg-orange-300/50 dark:bg-orange-400/30",
+  amarelo: "bg-yellow-300/50 dark:bg-yellow-400/30 text-inherit",
+  verde: "bg-green-300/50 dark:bg-green-400/30 text-inherit",
+  azul: "bg-blue-300/50 dark:bg-blue-400/30 text-inherit",
+  rosa: "bg-pink-300/50 dark:bg-pink-400/30 text-inherit",
+  laranja: "bg-orange-300/50 dark:bg-orange-400/30 text-inherit",
+  branco: "bg-black text-white dark:bg-white dark:text-black",
 };
 
 /** Busca todas as marcações do usuário atual para um conteúdo específico. */
