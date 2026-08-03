@@ -493,7 +493,7 @@ function NotaEditorPage() {
         <input
           value={title}
           onChange={(e) => handleTitleChange(e.target.value)}
-          placeholder="Título da anotação…"
+          placeholder="Escreva aqui seu título"
           className="w-full flex-1 border-none bg-transparent text-2xl font-bold text-foreground outline-none placeholder:text-muted-foreground/50"
         />
         <button
