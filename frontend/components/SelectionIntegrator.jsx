@@ -4,13 +4,13 @@ import SelectionFloatingMenu from './SelectionFloatingMenu';
 import { apiFetch } from '../lib/api';
 // Reuse the existing client-side image generator from the main app
 import { generateShareImage } from '../../src/lib/share-image';
+import getCharacterOffsetsWithin from '../hooks/getCharacterOffsetsWithin';
 
 export default function SelectionIntegrator({ contentId, contentType, children }){
   const { selection, rect, showMenu, setShowMenu, clearSelection } = useSelectionFloatingMenu();
 
   async function onSaveNote(){
     try{
-      // Generate a short title via AI later; for now create note with a temp title
       const payload = {
         title: selection.slice(0, 60) + (selection.length > 60 ? '...' : ''),
         content: { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: selection }] }] },
@@ -28,27 +28,24 @@ export default function SelectionIntegrator({ contentId, contentType, children }
 
   async function onCreateImage(){
     try{
-      // Use the same image generator used elsewhere in the app (client-side Canvas)
       const title = '';
       const backgroundSrc = '/share-bg-cross.jpg';
       const blob = await generateShareImage({ title, bodyText: selection, backgroundSrc });
       const fileName = 'selection.jpg';
       const file = new File([blob], fileName, { type: 'image/jpeg' });
 
-      const nav = navigator as any;
+      const nav = navigator;
       if (nav.share && nav.canShare?.({ files: [file] })) {
         try {
           await nav.share({ files: [file], title: selection.slice(0,60) });
           clearSelection();
           return;
         } catch (shareError) {
-          // fallthrough to download
           console.error('navigator.share failed, falling back to download', shareError);
         }
       }
 
       const url = URL.createObjectURL(blob);
-      // Open preview in a new tab (user can download from there)
       window.open(url, '_blank');
       clearSelection();
     }catch(e){
@@ -58,8 +55,45 @@ export default function SelectionIntegrator({ contentId, contentType, children }
 
   async function onHighlight(){
     try{
-      // For simplicity, compute offsets on the client if possible; here we send highlight_text only
-      await apiFetch('/api/highlights', { method: 'POST', body: JSON.stringify({ content_id: contentId, content_type: contentType, start_offset: 0, end_offset: 0, highlighted_text: selection, color: 'yellow' }) });
+      // get DOM selection and range
+      const sel = window.getSelection();
+      if (!sel || sel.isCollapsed) {
+        alert('Seleção vazia');
+        return;
+      }
+      const range = sel.getRangeAt(0);
+
+      // find the container that holds the content text.
+      // Ensure content container has attribute: data-content-id="{contentId}"
+      const container = document.querySelector(`[data-content-id="${contentId}"]`);
+      let start_offset = 0;
+      let end_offset = 0;
+      if (container) {
+        const off = getCharacterOffsetsWithin(container, range);
+        if (off) {
+          start_offset = off.start;
+          end_offset = off.end;
+        } else {
+          // fallback: send zero offsets but include highlighted_text (server will try to realign)
+          start_offset = 0;
+          end_offset = 0;
+        }
+      } else {
+        // no container found => send highlighted_text only
+        start_offset = 0;
+        end_offset = 0;
+      }
+
+      const payload = {
+        content_id: contentId,
+        content_type: contentType,
+        start_offset,
+        end_offset,
+        highlighted_text: sel.toString(),
+        color: 'yellow'
+      };
+
+      await apiFetch('/api/highlights', { method: 'POST', body: JSON.stringify(payload) });
       alert('Trecho marcado');
       clearSelection();
     }catch(e){
