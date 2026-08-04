@@ -55,14 +55,29 @@ const UNAVAILABLE = "Informação indisponível na base consultada.";
 
 /**
  * Traduções alinhadas ao texto da versão em português, e não glossas isoladas
- * de dicionário. Este conjunto pode crescer versículo a versículo à medida que
+ * de dicionário. Cada palavra pode ter mais de uma tradução contextual (ex.
+ * variantes aceitas na alinhagem) — por isso cada posição é um array, não uma
+ * string única. Este conjunto pode crescer versículo a versículo à medida que
  * o alinhamento revisado é incorporado à base.
  */
-const CONTEXTUAL_WORDS: Record<string, string[]> = {
-  "1:1:1": ["No princípio", "criou", "Deus", "—", "os céus", "e", "a terra"],
+const CONTEXTUAL_WORDS: Record<string, string[][]> = {
+  "1:1:1": [
+    ["No princípio"],
+    ["criou", "fez"],
+    ["Deus"],
+    ["—"],
+    ["os céus", "o céu"],
+    ["e"],
+    ["a terra"],
+  ],
 };
 
-function contextualTranslationFor(book: number, chapter: number, verse: number, index: number) {
+function contextualTranslationFor(
+  book: number,
+  chapter: number,
+  verse: number,
+  index: number,
+): string[] | null {
   return CONTEXTUAL_WORDS[[book, chapter, verse].join(":")]?.[index] ?? null;
 }
 
@@ -216,6 +231,13 @@ function VerseStudy() {
               {words.map((w, i) => {
                 const e = w.strong ? entries[w.strong] : null;
                 const contextual = contextualTranslationFor(book, chapter, verse, i);
+                const senses =
+                  contextual ??
+                  (e?.definitions?.length
+                    ? e.definitions.slice(0, 3)
+                    : e?.meaning
+                      ? [e.meaning]
+                      : []);
                 return (
                   <button
                     key={w.index}
@@ -247,9 +269,20 @@ function VerseStudy() {
                         <span className="text-xs text-muted-foreground">—</span>
                       )}
                     </div>
-                    <p className="min-w-0 text-sm leading-snug text-foreground/90">
-                      {contextual ?? e?.meaning ?? "—"}
-                    </p>
+                    <div className="min-w-0 text-sm leading-snug text-foreground/90">
+                      {senses.length > 0 ? (
+                        senses.map((s, idx) => (
+                          <span key={idx}>
+                            {s}
+                            {idx < senses.length - 1 && (
+                              <span className="text-muted-foreground"> · </span>
+                            )}
+                          </span>
+                        ))
+                      ) : (
+                        <span>—</span>
+                      )}
+                    </div>
                   </button>
                 );
               })}
