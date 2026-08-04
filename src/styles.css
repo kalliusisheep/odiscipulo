@@ -161,7 +161,11 @@
 }
 
 @utility ancient-text {
-  font-family: var(--font-serif);
+  /* Cormorant Garamond não tem glifos gregos/hebraicos — sem um fallback
+     explícito, o navegador usa uma fonte genérica do sistema pra essas
+     palavras, o que destoa do resto da UI. Noto Serif (grego) e Noto Serif
+     Hebrew cobrem esses alfabetos mantendo o mesmo peso/estilo serifado. */
+  font-family: "Cormorant Garamond", "Noto Serif Hebrew", "Noto Serif", "Times New Roman", Georgia, serif;
   color: var(--ancient);
   letter-spacing: 0.02em;
 }
