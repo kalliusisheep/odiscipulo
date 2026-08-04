@@ -216,23 +216,41 @@ function grab(html: string, label: string): string | null {
   return value || null;
 }
 
-function parseStrongHtml(code: string, html: string): StrongEntry {
+/** Payload bruto de um item de /dictionary-definition/ na API do bolls.life. */
+type BollsDictionaryHit = {
+  topic: string;
+  definition: string;
+  lexeme?: string | null;
+  transliteration?: string | null;
+  pronunciation?: string | null;
+  short_definition?: string | null;
+};
+
+/**
+ * Monta o verbete a partir dos campos ESTRUTURADOS que a API do bolls.life
+ * já devolve (lexeme, transliteration, pronunciation, short_definition) —
+ * ver docs oficiais: https://github.com/Bolls-Bible/bain/blob/master/docs/API.md
+ * Só recorre a regex sobre o HTML de `definition` para os dados que a API
+ * NÃO expõe como campo estruturado: classe gramatical, raiz/origem, lista de
+ * definições do léxico e palavras relacionadas (S:Gxxxx / S:Hxxxx).
+ */
+function parseStrongHtml(code: string, hit: BollsDictionaryHit): StrongEntry {
+  const html = hit.definition ?? "";
   const defBlock = html.split(/<p class="def">.*?<\/p>/i)[1] ?? "";
   const beforeOrigin = defBlock.split(/<p class="origin"/i)[0] ?? "";
   const definitions = beforeOrigin
     .split(/<\/p>/i)
     .map((p) => stripTags(p))
     .filter((p) => p.length > 1);
-  const strongsMatch = html.match(/-\s*Strongs:\s*([\s\S]*?)(?:<p|$)/i);
   return {
     code,
-    original: grab(html, "Original"),
-    transliteration: grab(html, "Transliteration"),
-    phonetic: grab(html, "Phonetic"),
+    original: hit.lexeme?.trim() || grab(html, "Original"),
+    transliteration: hit.transliteration?.trim() || grab(html, "Transliteration"),
+    phonetic: hit.pronunciation?.trim() || grab(html, "Phonetic"),
     partOfSpeech: translateGrammarTerms(grab(html, "Part\\(s\\) of speech")),
     origin: translateGrammarTerms(grab(html, "Origin")),
     definitions,
-    strongsGloss: strongsMatch ? stripTags(strongsMatch[1]) : null,
+    strongsGloss: hit.short_definition?.trim() || null,
     related: Array.from(new Set((html.match(/S:([GH]\d+)/g) ?? []).map((s) => s.slice(2)))).filter(
       (c) => c !== code,
     ),
@@ -244,10 +262,10 @@ export async function fetchStrongEntry(code: string): Promise<StrongEntry | null
   return cached(`strong:${code}`, async () => {
     const res = await fetch(`${API}/dictionary-definition/BDBT/${code}/`);
     if (!res.ok) return null;
-    const json = (await res.json()) as { topic: string; definition: string }[];
+    const json = (await res.json()) as BollsDictionaryHit[];
     const hit = json.find((d) => d.topic?.toUpperCase() === code.toUpperCase()) ?? json[0];
     if (!hit) return null;
-    return parseStrongHtml(code, hit.definition ?? "");
+    return parseStrongHtml(code, hit);
   });
 }
 
