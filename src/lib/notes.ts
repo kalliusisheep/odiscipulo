@@ -2,6 +2,7 @@
 // src/lib/*.ts (funções puras que encapsulam chamadas ao supabase client).
 
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 
 export type NoteSourceType = "selecao_texto" | "manual" | "scan_pdf" | "scan_word" | "scan_foto";
 export type NoteSourceContentType = "trilha" | "estudo" | "plano_leitura";
