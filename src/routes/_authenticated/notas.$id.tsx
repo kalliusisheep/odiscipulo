@@ -34,7 +34,14 @@ import { FontSize } from "@/lib/tiptap-font-size";
 import { NoteFormattingToolbar } from "@/components/notes/NoteFormattingToolbar";
 import { ScanInteligenteDialog } from "@/components/notes/ScanInteligenteDialog";
 import { exportNoteToPdf } from "@/lib/notes-pdf";
-import { deleteNote, getNote, logNoteAiAction, markNoteExported, plainTextFromDoc, updateNote } from "@/lib/notes";
+import {
+  deleteNote,
+  getNote,
+  logNoteAiAction,
+  markNoteExported,
+  plainTextFromDoc,
+  updateNote,
+} from "@/lib/notes";
 import type { ScanKind } from "@/lib/scan";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -153,7 +160,11 @@ function NotaEditorPage() {
   const [savedAt, setSavedAt] = useState<Date | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [exporting, setExporting] = useState(false);
-  const [shareFallback, setShareFallback] = useState<{ file: File; url: string; filename: string } | null>(null);
+  const [shareFallback, setShareFallback] = useState<{
+    file: File;
+    url: string;
+    filename: string;
+  } | null>(null);
   const [aiLoading, setAiLoading] = useState<AiAction | null>(null);
   const [aiSuggestion, setAiSuggestion] = useState<{ action: AiAction; text: string } | null>(null);
   const [titleGenerating, setTitleGenerating] = useState(false);
@@ -204,7 +215,6 @@ function NotaEditorPage() {
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, editor]);
 
   function scheduleSave() {
@@ -344,7 +354,10 @@ function NotaEditorPage() {
     if (!editor) return;
     setExporting(true);
     try {
-      const blob = await exportNoteToPdf({ title: title || "Anotação", contentHtml: editor.getHTML() });
+      const blob = await exportNoteToPdf({
+        title: title || "Anotação",
+        contentHtml: editor.getHTML(),
+      });
       const filename = `${slugify(title || "anotacao")}.pdf`;
       const file = new File([blob], filename, { type: "application/pdf" });
 
@@ -414,7 +427,8 @@ function NotaEditorPage() {
   const saveLabel = useMemo(() => {
     if (saveState === "salvando") return "Salvando…";
     if (saveState === "erro") return "Erro ao salvar";
-    if (savedAt) return `Salvo às ${savedAt.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
+    if (savedAt)
+      return `Salvo às ${savedAt.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
     return "";
   }, [saveState, savedAt]);
 
@@ -457,7 +471,11 @@ function NotaEditorPage() {
           aria-label="Exportar em PDF"
           title="Exportar em PDF"
         >
-          {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileDown className="h-4 w-4" />}
+          {exporting ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <FileDown className="h-4 w-4" />
+          )}
         </button>
 
         <button
@@ -503,7 +521,11 @@ function NotaEditorPage() {
           title="Sugerir título com IA"
           className="mt-1.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/10 disabled:opacity-50"
         >
-          {titleGenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+          {titleGenerating ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Sparkles className="h-4 w-4" />
+          )}
         </button>
       </div>
 
@@ -525,7 +547,11 @@ function NotaEditorPage() {
               disabled={aiLoading !== null}
               className="flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 disabled:opacity-50"
             >
-              {aiLoading === "reescrever" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5 text-primary" />}
+              {aiLoading === "reescrever" ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Sparkles className="h-3.5 w-3.5 text-primary" />
+              )}
               Reescrever
             </button>
             <div className="h-4 w-px bg-border" />
@@ -535,7 +561,11 @@ function NotaEditorPage() {
               disabled={aiLoading !== null}
               className="flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 disabled:opacity-50"
             >
-              {aiLoading === "estruturar" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5 text-primary" />}
+              {aiLoading === "estruturar" ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Sparkles className="h-3.5 w-3.5 text-primary" />
+              )}
               Estruturar como lição
             </button>
           </div>
@@ -546,8 +576,12 @@ function NotaEditorPage() {
       <Dialog open={!!aiSuggestion} onOpenChange={(open) => !open && setAiSuggestion(null)}>
         <DialogContent className="max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>{aiSuggestion?.action === "estruturar" ? "Estrutura sugerida" : "Texto reescrito"}</DialogTitle>
-            <DialogDescription>Você pode aceitar e substituir o conteúdo da nota, ou descartar.</DialogDescription>
+            <DialogTitle>
+              {aiSuggestion?.action === "estruturar" ? "Estrutura sugerida" : "Texto reescrito"}
+            </DialogTitle>
+            <DialogDescription>
+              Você pode aceitar e substituir o conteúdo da nota, ou descartar.
+            </DialogDescription>
           </DialogHeader>
           <div className="whitespace-pre-wrap rounded-2xl border border-border bg-surface p-4 text-sm text-foreground">
             {aiSuggestion?.text}
@@ -580,7 +614,7 @@ function NotaEditorPage() {
             <DialogTitle>PDF pronto</DialogTitle>
             <DialogDescription>
               {typeof navigator !== "undefined" && typeof navigator.share === "function"
-                ? "Toque em \"Compartilhar\" para escolher um app no seu celular, ou baixe o arquivo."
+                ? 'Toque em "Compartilhar" para escolher um app no seu celular, ou baixe o arquivo.'
                 : "Seu navegador não suporta compartilhamento direto de arquivos — baixe o PDF abaixo."}
             </DialogDescription>
           </DialogHeader>
@@ -606,7 +640,11 @@ function NotaEditorPage() {
       </Dialog>
 
       {/* ── Scan Inteligente (PDF / Word / foto / galeria) ───────── */}
-      <ScanInteligenteDialog open={scanOpen} onOpenChange={setScanOpen} onExtracted={handleScanExtracted} />
+      <ScanInteligenteDialog
+        open={scanOpen}
+        onOpenChange={setScanOpen}
+        onExtracted={handleScanExtracted}
+      />
 
       {/* ── Confirmação de exclusão ──────────────────────────────── */}
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
@@ -617,7 +655,10 @@ function NotaEditorPage() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={() => void handleDelete()} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            <AlertDialogAction
+              onClick={() => void handleDelete()}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
               Excluir
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -651,7 +692,10 @@ function markdownToTiptapDoc(markdown: string) {
         content: [{ type: "text", text: headingMatch[2].trim() }],
       };
     }
-    return { type: "paragraph", content: [{ type: "text", text: block.replace(/\n/g, " ").trim() }] };
+    return {
+      type: "paragraph",
+      content: [{ type: "text", text: block.replace(/\n/g, " ").trim() }],
+    };
   });
   return { type: "doc", content: content.length ? content : [{ type: "paragraph" }] };
 }

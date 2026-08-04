@@ -131,12 +131,20 @@ export async function markNoteExported(id: string): Promise<void> {
 
 export async function logNoteAiAction(
   noteId: string,
-  actionType: "reescrever" | "estruturar" | "titulo" | "scan_transcricao" | "scan_reescrita" | "scan_estrutura",
+  actionType:
+    | "reescrever"
+    | "estruturar"
+    | "titulo"
+    | "scan_transcricao"
+    | "scan_reescrita"
+    | "scan_estrutura",
 ): Promise<void> {
   const { data: userRes } = await supabase.auth.getUser();
   const userId = userRes.user?.id;
   if (!userId) return;
-  await supabase.from("note_ai_actions").insert({ note_id: noteId, user_id: userId, action_type: actionType });
+  await supabase
+    .from("note_ai_actions")
+    .insert({ note_id: noteId, user_id: userId, action_type: actionType });
 }
 
 /** Extrai texto puro de um documento Tiptap — usado para mandar contexto pra IA. */

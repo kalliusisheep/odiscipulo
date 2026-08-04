@@ -26,7 +26,11 @@ const MIN_TEXT_LAYER_CHARS = 40; // abaixo disso, tratamos o PDF como "sem texto
 const IMAGE_MAX_DIMENSION = 1800; // redimensiona fotos grandes antes de mandar pra IA
 
 /** Ponto de entrada único — decide a estratégia certa pra cada tipo de arquivo. */
-export async function scanFile(file: File, kind: ScanKind, onProgress?: ScanProgress): Promise<string> {
+export async function scanFile(
+  file: File,
+  kind: ScanKind,
+  onProgress?: ScanProgress,
+): Promise<string> {
   if (kind === "word") {
     onProgress?.("Lendo o documento Word…");
     const text = await extractTextFromDocx(file);
@@ -72,9 +76,8 @@ async function extractTextFromDocx(file: File): Promise<string> {
 // ───────────────────────── PDF ─────────────────────────
 
 type PdfjsModule = typeof import("pdfjs-dist");
-type PdfDocumentProxy = Awaited<ReturnType<PdfjsModule["getDocument"]>>["promise"] extends Promise<infer T>
-  ? T
-  : never;
+type PdfDocumentProxy =
+  Awaited<ReturnType<PdfjsModule["getDocument"]>>["promise"] extends Promise<infer T> ? T : never;
 
 let pdfjsPromise: Promise<PdfjsModule> | null = null;
 

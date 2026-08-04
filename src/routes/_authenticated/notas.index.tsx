@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, Loader2, NotebookPen, Plus, ScanLine, Search } from "lucide-react";
+import { ArrowLeft, Loader2, NotebookPen, Plus, Search } from "lucide-react";
 import { toast } from "sonner";
 
 import { createBlankNote, listNotes, plainTextFromDoc, type NoteListItem } from "@/lib/notes";
@@ -81,22 +81,6 @@ function NotasIndexPage() {
           className="w-full rounded-2xl border border-border bg-surface py-2.5 pl-10 pr-4 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary/50"
         />
       </div>
-
-      <button
-        type="button"
-        onClick={() => void nav({ to: "/notas/scan" })}
-        className="flex w-full items-center gap-3 rounded-2xl border border-dashed border-primary/40 bg-primary/5 p-3.5 text-left transition-colors hover:bg-primary/10"
-      >
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
-          <ScanLine className="h-4.5 w-4.5" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold text-foreground">Scan Inteligente</p>
-          <p className="text-xs text-muted-foreground">
-            PDF, Word, foto ou galeria → vira anotação
-          </p>
-        </div>
-      </button>
 
       {loading ? (
         <div className="flex justify-center pt-10">
