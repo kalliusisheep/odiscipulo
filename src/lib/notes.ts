@@ -2,6 +2,7 @@
 // src/lib/*.ts (funções puras que encapsulam chamadas ao supabase client).
 
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 
 export type NoteSourceType = "selecao_texto" | "manual" | "scan_pdf" | "scan_word" | "scan_foto";
 export type NoteSourceContentType = "trilha" | "estudo" | "plano_leitura";
@@ -107,7 +108,15 @@ export async function updateNote(
   id: string,
   patch: Partial<Pick<Note, "title" | "content" | "source_type">>,
 ): Promise<void> {
-  const { error } = await supabase.from("notes").update(patch).eq("id", id);
+  const payload: {
+    title?: string;
+    source_type?: string;
+    content?: Json;
+  } = {};
+  if (patch.title !== undefined) payload.title = patch.title;
+  if (patch.source_type !== undefined) payload.source_type = patch.source_type;
+  if (patch.content !== undefined) payload.content = patch.content as Json;
+  const { error } = await supabase.from("notes").update(payload).eq("id", id);
   if (error) throw error;
 }
 
