@@ -39,7 +39,7 @@ function ToolbarButton({
       title={label}
       onMouseDown={(e) => e.preventDefault()} // não perde a seleção de texto ao clicar
       onClick={onClick}
-      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors ${
+      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-colors ${
         active ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-surface-2"
       }`}
     >
@@ -49,12 +49,11 @@ function ToolbarButton({
 }
 
 /**
- * Barra de formatação FIXA na parte inferior da tela (viewport), não presa à
- * posição da seleção. Diferente da versão anterior (que calculava
- * getBoundingClientRect() do range e "seguia" o texto selecionado), aqui a
- * barra só aparece/desaparece conforme existe ou não uma seleção de texto —
- * a posição em si nunca muda, fica "congelada" no rodapé e acompanha o
- * scroll da página normalmente (position: fixed já cuida disso sozinho).
+ * Barra de formatação FIXA no TOPO da tela (viewport), centralizada, em
+ * formato de "pill" flutuante — não presa à posição da seleção. A barra só
+ * aparece/desaparece conforme existe ou não uma seleção de texto; a posição
+ * em si nunca muda, fica fixa no topo e não se move com o scroll da página
+ * (position: fixed já garante isso).
  */
 export function NoteFormattingToolbar({
   editor,
@@ -103,10 +102,10 @@ export function NoteFormattingToolbar({
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-popover/95 shadow-xl backdrop-blur"
-      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      className="fixed inset-x-0 top-0 z-50 flex justify-center px-3 animate-in fade-in slide-in-from-top-2 duration-150"
+      style={{ paddingTop: "calc(env(safe-area-inset-top) + 0.75rem)" }}
     >
-      <div className="mx-auto flex max-w-lg items-center gap-0.5 overflow-x-auto px-3 py-2">
+      <div className="flex max-w-[calc(100vw-1.5rem)] items-center gap-0.5 overflow-x-auto rounded-full border border-border bg-popover/95 px-2 py-1.5 shadow-2xl shadow-black/20 backdrop-blur-md">
         <ToolbarButton label="Negrito" active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()}>
           <Bold className="h-4 w-4" />
         </ToolbarButton>
@@ -135,7 +134,7 @@ export function NoteFormattingToolbar({
             <Type className="h-4 w-4" />
           </ToolbarButton>
           {sizePickerOpen && (
-            <div className="absolute bottom-12 left-1/2 flex -translate-x-1/2 flex-col gap-0.5 rounded-xl border border-border bg-popover p-1 shadow-xl">
+            <div className="absolute left-1/2 top-12 flex -translate-x-1/2 flex-col gap-0.5 rounded-xl border border-border bg-popover p-1 shadow-xl">
               {FONT_SIZE_OPTIONS.map((opt) => (
                 <button
                   key={opt.token}
@@ -166,7 +165,7 @@ export function NoteFormattingToolbar({
             <Highlighter className="h-4 w-4" />
           </ToolbarButton>
           {colorPickerOpen && (
-            <div className="absolute bottom-12 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-xl border border-border bg-popover p-2 shadow-xl">
+            <div className="absolute left-1/2 top-12 flex -translate-x-1/2 items-center gap-1.5 rounded-xl border border-border bg-popover p-2 shadow-xl">
               {HIGHLIGHT_COLORS.map((c) => (
                 <button
                   key={c.token}
