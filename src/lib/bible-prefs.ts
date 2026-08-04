@@ -6,7 +6,7 @@ const FONT_KEY = "disciple.bible.fontScale";
 export const BIBLE_FONT_SCALES = [15, 17, 19, 21, 24];
 
 export function useBiblePrefs() {
-  const [translation, setTranslationState] = useState("ARC09");
+  const [translation, setTranslationState] = useState("NVIPT");
   const [fontIndex, setFontIndex] = useState(1);
 
   useEffect(() => {
