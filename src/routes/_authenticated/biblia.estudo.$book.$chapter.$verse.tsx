@@ -62,6 +62,7 @@ function VerseStudy() {
   const [occ, setOcc] = useState<Record<string, { c: number; f: number[]; l: number[] }>>({});
   const [xrefs, setXrefs] = useState<[number, number, number][]>([]);
   const [openWord, setOpenWord] = useState<OriginalWord | null>(null);
+
   const lang = originalTranslationFor(book).lang;
 
   useEffect(() => {
@@ -149,6 +150,7 @@ function VerseStudy() {
               <Loader2 className="h-6 w-6 animate-spin text-primary" />
             </div>
           )}
+
           {(origError || (words === null && false)) && (
             <p className="mt-6 text-sm text-muted-foreground">{UNAVAILABLE}</p>
           )}
@@ -244,7 +246,6 @@ function VerseStudy() {
                   </button>
                 );
               })}
-
               {analysis && (
                 <div className="card-elevated mt-4 space-y-1.5 p-4 text-sm">
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
@@ -302,8 +303,9 @@ function VerseStudy() {
                       <p className="text-muted-foreground">{UNAVAILABLE}</p>
                     )}
                     <p className="pt-2 text-[11px] text-muted-foreground">
-                      Definições na língua original da fonte (inglês) — BDB/Thayer não têm edição em
-                      português. Classe gramatical e origem já traduzidas.
+                      Definições traduzidas automaticamente para português a partir da fonte acadêmica em
+                      inglês (BDB/Thayer) — o léxico não tem edição oficial em português. A tradução
+                      automática pode conter imprecisões; classe gramatical e origem foram revisadas.
                     </p>
                     <p className="text-[11px] text-muted-foreground">
                       Fonte: Brown-Driver-Briggs / Thayer (concordância de Strong).
@@ -397,8 +399,8 @@ function WordDetail({
               ))}
             </div>
             <p className="mt-2 text-[11px] text-muted-foreground">
-              Definições na língua original da fonte (inglês) — sem edição em português do
-              BDB/Thayer.
+              Definições traduzidas automaticamente para português a partir da fonte em inglês (BDB/Thayer),
+              que não tem edição oficial em português. Pode conter imprecisões da tradução automática.
             </p>
           </details>
         )}
