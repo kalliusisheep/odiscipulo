@@ -817,9 +817,14 @@ function parseStrongHtml(code: string, html: string): StrongEntry {
  * etc.) sempre tragam o sentido correto. */
 export async function fetchStrongEntry(code: string): Promise<StrongEntry | null> {
   const upperCode = code.toUpperCase();
+  // "v2" na chave: invalida automaticamente qualquer verbete que já estivesse
+  // salvo no localStorage do navegador do usuário no formato antigo (sem o
+  // campo `meaning`), evitando que fiquem "mudos" na interface até o usuário
+  // limpar o cache manualmente.
+  const cacheKey = `strong:v2:${upperCode}`;
   const override = CORE_TERMS[upperCode];
   if (override) {
-    return cached(`strong:${upperCode}`, async () => {
+    return cached(cacheKey, async () => {
       const definitions = override.definitions ?? [override.meaning];
       return {
         code: upperCode,
@@ -837,7 +842,7 @@ export async function fetchStrongEntry(code: string): Promise<StrongEntry | null
     });
   }
 
-  return cached(`strong:${upperCode}`, async () => {
+  return cached(cacheKey, async () => {
     const res = await fetch(`${API}/dictionary-definition/BDBT/${upperCode}/`);
     if (!res.ok) return null;
     const json = (await res.json()) as { topic: string; definition: string }[];
