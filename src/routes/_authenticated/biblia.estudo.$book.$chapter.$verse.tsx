@@ -82,6 +82,27 @@ function contextualTranslationFor(
   return CONTEXTUAL_WORDS[[book, chapter, verse].join(":")]?.[index] ?? null;
 }
 
+/**
+ * Sentidos exibidos para uma palavra: prioriza a tradução contextual alinhada
+ * ao versículo (CONTEXTUAL_WORDS) e cai para os sentidos do léxico
+ * (definitions) ou para o `meaning` combinado, quando não há alinhamento
+ * manual para aquela posição. Usada tanto na aba Interlinear quanto na aba
+ * Palavras, para que as duas sempre mostrem a mesma tradução.
+ */
+function sensesFor(
+  book: number,
+  chapter: number,
+  verse: number,
+  index: number,
+  entry: StrongEntry | null | undefined,
+): string[] {
+  const contextual = contextualTranslationFor(book, chapter, verse, index);
+  if (contextual) return contextual;
+  if (entry?.definitions?.length) return entry.definitions.slice(0, 3);
+  if (entry?.meaning) return [entry.meaning];
+  return [];
+}
+
 type VerseAnalysis = {
   verbos: string[];
   substantivos: string[];
@@ -256,14 +277,7 @@ function VerseStudy() {
               </div>
               {words.map((w, i) => {
                 const e = w.strong ? entries[w.strong] : null;
-                const contextual = contextualTranslationFor(book, chapter, verse, i);
-                const senses =
-                  contextual ??
-                  (e?.definitions?.length
-                    ? e.definitions.slice(0, 3)
-                    : e?.meaning
-                      ? [e.meaning]
-                      : []);
+                const senses = sensesFor(book, chapter, verse, i, e);
                 return (
                   <button
                     key={w.index}
@@ -320,8 +334,14 @@ function VerseStudy() {
 
           {aba === "palavras" && words && (
             <div className="space-y-2">
-              {words.map((w) => {
+              {words.map((w, i) => {
                 const e = w.strong ? entries[w.strong] : null;
+                // Mesma lógica de tradução usada na aba Interlinear: prioriza
+                // a tradução contextual alinhada ao versículo e cai para os
+                // sentidos do léxico (definitions) ou para o `meaning`
+                // combinado. Assim, Palavras e Interlinear sempre mostram a
+                // mesma tradução para cada palavra.
+                const senses = sensesFor(book, chapter, verse, i, e);
                 return (
                   <button
                     key={w.index}
@@ -333,7 +353,20 @@ function VerseStudy() {
                       <p className="text-xs text-muted-foreground">
                         {e?.transliteration ?? UNAVAILABLE}
                       </p>
-                      <p className="mt-1 text-sm">{e?.meaning ?? UNAVAILABLE}</p>
+                      <p className="mt-1 text-sm">
+                        {senses.length > 0 ? (
+                          senses.map((s, idx) => (
+                            <span key={idx}>
+                              {s}
+                              {idx < senses.length - 1 && (
+                                <span className="text-muted-foreground"> · </span>
+                              )}
+                            </span>
+                          ))
+                        ) : (
+                          UNAVAILABLE
+                        )}
+                      </p>
                       <p className="mt-1 text-[11px] text-primary">Strong {w.strong ?? "—"}</p>
                       <p className="text-[11px] text-muted-foreground">
                         Pronúncia (aprox. pt-BR):{" "}
