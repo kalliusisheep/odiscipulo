@@ -141,6 +141,162 @@ export type Database = {
         }
         Relationships: []
       }
+      bible_bookmarks: {
+        Row: {
+          book: number
+          chapter: number
+          created_at: string
+          id: string
+          label: string | null
+          updated_at: string
+          user_id: string
+          verse: number
+        }
+        Insert: {
+          book: number
+          chapter: number
+          created_at?: string
+          id?: string
+          label?: string | null
+          updated_at?: string
+          user_id: string
+          verse?: number
+        }
+        Update: {
+          book?: number
+          chapter?: number
+          created_at?: string
+          id?: string
+          label?: string | null
+          updated_at?: string
+          user_id?: string
+          verse?: number
+        }
+        Relationships: []
+      }
+      bible_favorites: {
+        Row: {
+          book: number
+          chapter: number
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+          verse: number
+        }
+        Insert: {
+          book: number
+          chapter: number
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+          verse: number
+        }
+        Update: {
+          book?: number
+          chapter?: number
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+          verse?: number
+        }
+        Relationships: []
+      }
+      bible_highlights: {
+        Row: {
+          book: number
+          chapter: number
+          color: string
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+          verse: number
+        }
+        Insert: {
+          book: number
+          chapter: number
+          color?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+          verse: number
+        }
+        Update: {
+          book?: number
+          chapter?: number
+          color?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+          verse?: number
+        }
+        Relationships: []
+      }
+      bible_notes: {
+        Row: {
+          book: number
+          chapter: number
+          content: string
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+          verse: number
+        }
+        Insert: {
+          book: number
+          chapter: number
+          content: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+          verse: number
+        }
+        Update: {
+          book?: number
+          chapter?: number
+          content?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+          verse?: number
+        }
+        Relationships: []
+      }
+      bible_reading_progress: {
+        Row: {
+          book: number
+          chapter: number
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          book: number
+          chapter: number
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          book?: number
+          chapter?: number
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       challenges: {
         Row: {
           accepted_at: string | null
