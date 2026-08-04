@@ -45,10 +45,6 @@ export type Verse = { verse: number; text: string };
 export type OriginalWord = { word: string; strong: string | null; index: number };
 export type OriginalVerse = { verse: number; words: OriginalWord[] };
 
-/** Palavra original já acompanhada da tradução curta do léxico (quando existe). */
-export type OriginalWordWithGloss = OriginalWord & { gloss: string | null };
-export type OriginalVerseWithGlosses = { verse: number; words: OriginalWordWithGloss[] };
-
 const mem = new Map<string, unknown>();
 
 function lsGet<T>(key: string): T | null {
@@ -213,30 +209,61 @@ export function translateGrammarTerms(text: string | null): string | null {
   return out;
 }
 
+/**
+ * Extrai um campo rotulado do HTML do léxico, como fallback para quando a
+ * API não devolve o dado já pronto em um campo JSON separado. O traço
+ * ("- Label:") é tratado como opcional, porque o HTML real da API bolls.life
+ * nem sempre o inclui (ex.: "Transliteration: <b>...</b>" sem traço) — o
+ * regex antigo exigia o traço e por isso nunca encontrava nada.
+ */
 function grab(html: string, label: string): string | null {
-  const re = new RegExp(`-\\s*${label}:\\s*(?:<b>)?(.*?)(?:</b>)?\\s*<p`, "i");
+  const re = new RegExp(`-?\\s*${label}:\\s*(?:<b>)?([\\s\\S]*?)(?:<\\/b>)?\\s*(?:<p|<br|$)`, "i");
   const m = html.match(re);
   const value = m ? stripTags(m[1]) : "";
   return value || null;
 }
 
-function parseStrongHtml(code: string, html: string): StrongEntry {
+/** Campos que a API bolls.life já entrega prontos, fora do HTML. */
+type StrongApiFields = {
+  lexeme?: string | null;
+  transliteration?: string | null;
+  pronunciation?: string | null;
+  short_definition?: string | null;
+};
+
+function parseStrongHtml(code: string, html: string, apiFields: StrongApiFields = {}): StrongEntry {
   const defBlock = html.split(/<p class="def">.*?<\/p>/i)[1] ?? "";
   const beforeOrigin = defBlock.split(/<p class="origin"/i)[0] ?? "";
   const definitions = beforeOrigin
     .split(/<\/p>/i)
     .map((p) => stripTags(p))
     .filter((p) => p.length > 1);
-  const strongsMatch = html.match(/-\s*Strongs:\s*([\s\S]*?)(?:<p|$)/i);
+
+  // A API já devolve "lexeme", "transliteration", "pronunciation" e
+  // "short_definition" como campos separados no JSON — usamos esses valores
+  // diretamente. O grab() no HTML só entra como reforço, caso algum verbete
+  // específico não traga o campo pronto.
+  const original = (apiFields.lexeme && apiFields.lexeme.trim()) || grab(html, "Original");
+  const transliteration =
+    (apiFields.transliteration && apiFields.transliteration.trim()) || grab(html, "Transliteration");
+  const phonetic = (apiFields.pronunciation && apiFields.pronunciation.trim()) || grab(html, "Phonetic");
+
+  const strongsGloss =
+    (apiFields.short_definition && stripTags(apiFields.short_definition).trim()) ||
+    (() => {
+      const strongsMatch = html.match(/-?\s*Strongs:\s*([\s\S]*?)(?:<p|$)/i);
+      return strongsMatch ? stripTags(strongsMatch[1]) : null;
+    })();
+
   return {
     code,
-    original: grab(html, "Original"),
-    transliteration: grab(html, "Transliteration"),
-    phonetic: grab(html, "Phonetic"),
+    original: original || null,
+    transliteration: transliteration || null,
+    phonetic: phonetic || null,
     partOfSpeech: translateGrammarTerms(grab(html, "Part\\(s\\) of speech")),
     origin: translateGrammarTerms(grab(html, "Origin")),
     definitions,
-    strongsGloss: strongsMatch ? stripTags(strongsMatch[1]) : null,
+    strongsGloss: strongsGloss || null,
     related: Array.from(new Set((html.match(/S:([GH]\d+)/g) ?? []).map((s) => s.slice(2)))).filter(
       (c) => c !== code,
     ),
@@ -245,13 +272,21 @@ function parseStrongHtml(code: string, html: string): StrongEntry {
 
 /** Verbete do léxico (BDB para hebraico, Thayer para grego). */
 export async function fetchStrongEntry(code: string): Promise<StrongEntry | null> {
-  return cached(`strong:${code}`, async () => {
+  // Chave de cache trocada para "strong:v2:" para invalidar automaticamente
+  // qualquer resultado quebrado ("—") que já esteja salvo no localStorage
+  // dos usuários a partir da versão anterior, com o parser com bug.
+  return cached(`strong:v2:${code}`, async () => {
     const res = await fetch(`${API}/dictionary-definition/BDBT/${code}/`);
     if (!res.ok) return null;
-    const json = (await res.json()) as { topic: string; definition: string }[];
+    const json = (await res.json()) as (StrongApiFields & { topic: string; definition: string })[];
     const hit = json.find((d) => d.topic?.toUpperCase() === code.toUpperCase()) ?? json[0];
     if (!hit) return null;
-    return parseStrongHtml(code, hit.definition ?? "");
+    return parseStrongHtml(code, hit.definition ?? "", {
+      lexeme: hit.lexeme,
+      transliteration: hit.transliteration,
+      pronunciation: hit.pronunciation,
+      short_definition: hit.short_definition,
+    });
   });
 }
 
@@ -264,54 +299,6 @@ export async function fetchStrongEntries(codes: string[]): Promise<Record<string
     if (entry) out[c] = entry;
   });
   return out;
-}
-
-/**
- * Melhor tradução curta disponível para um verbete: primeiro tenta o gloss
- * oficial de Strong; se a fonte não tiver, cai para a primeira definição do
- * léxico (BDB/Thayer). Retorna null apenas se a fonte não tiver nada.
- */
-function bestGloss(entry: StrongEntry | undefined): string | null {
-  if (!entry) return null;
-  if (entry.strongsGloss) return entry.strongsGloss;
-  if (entry.definitions.length > 0) return entry.definitions[0];
-  return null;
-}
-
-/**
- * Capítulo no idioma original, palavra a palavra, já com a tradução curta
- * de cada palavra anexada (buscada no léxico BDB/Thayer a partir do número
- * de Strong). Use esta função na tela "Interlinear" para exibir a tradução
- * ao lado/abaixo de cada palavra original.
- */
-export async function fetchOriginalChapterWithGlosses(
-  book: number,
-  chapter: number,
-): Promise<OriginalVerseWithGlosses[]> {
-  const verses = await fetchOriginalChapter(book, chapter);
-  const codes = Array.from(
-    new Set(
-      verses.flatMap((v) => v.words.map((w) => w.strong).filter((s): s is string => Boolean(s))),
-    ),
-  );
-  const entries = await fetchStrongEntries(codes);
-  return verses.map((v) => ({
-    verse: v.verse,
-    words: v.words.map((w) => ({
-      ...w,
-      gloss: w.strong ? bestGloss(entries[w.strong]) : null,
-    })),
-  }));
-}
-
-/** Mesmo que fetchOriginalChapterWithGlosses, mas para um único versículo. */
-export async function fetchOriginalVerseWithGlosses(
-  book: number,
-  chapter: number,
-  verse: number,
-): Promise<OriginalWordWithGloss[] | null> {
-  const all = await fetchOriginalChapterWithGlosses(book, chapter);
-  return all.find((v) => v.verse === verse)?.words ?? null;
 }
 
 export type Occurrence = { c: number; f: [number, number, number]; l: [number, number, number] };
