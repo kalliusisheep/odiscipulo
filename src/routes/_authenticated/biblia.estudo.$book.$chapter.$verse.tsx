@@ -380,37 +380,40 @@ function WordDetail({
         </button>
       </div>
 
-      <div className="mt-4 space-y-2">
+      {/* Bloco único: cada linha vira uma seção separada por uma divisória
+          fina, em vez de cartões soltos — título em destaque, valor logo
+          abaixo, tudo dentro do mesmo contêiner. */}
+      <div className="card-elevated mt-4 divide-y divide-border overflow-hidden p-0">
         {rows.map(([k, v]) => (
-          <div key={k} className="rounded-2xl border border-border bg-surface p-3">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{k}</p>
-            <p className="mt-0.5 text-sm text-foreground/90">{v}</p>
+          <div key={k} className="px-4 py-3">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary/80">{k}</p>
+            <p className="mt-0.5 text-sm leading-snug text-foreground/90">{v}</p>
           </div>
         ))}
 
         {entry && entry.definitions.length > 0 && (
-          <details className="rounded-2xl border border-border bg-surface p-3" open>
-            <summary className="cursor-pointer text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          <div className="px-4 py-3">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary/80">
               Verbete do léxico
-            </summary>
-            <div className="mt-2 space-y-1 text-sm text-foreground/85">
+            </p>
+            <div className="mt-1 space-y-1 text-sm leading-snug text-foreground/90">
               {entry.definitions.map((d, i) => (
                 <p key={i}>{d}</p>
               ))}
             </div>
-            <p className="mt-2 text-[11px] text-muted-foreground">
-              Definições traduzidas automaticamente para português a partir da fonte em inglês (BDB/Thayer),
-              que não tem edição oficial em português. Pode conter imprecisões da tradução automática.
+            <p className="mt-2 text-[11px] leading-snug text-muted-foreground">
+              Traduzido automaticamente do inglês (BDB/Thayer, sem edição oficial em português) — pode
+              conter imprecisões.
             </p>
-          </details>
+          </div>
         )}
 
         {entry && entry.related.length > 0 && (
-          <div className="rounded-2xl border border-border bg-surface p-3">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          <div className="px-4 py-3">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary/80">
               Palavras relacionadas
             </p>
-            <p className="mt-1 break-words text-sm text-primary">{entry.related.join(", ")}</p>
+            <p className="mt-0.5 break-words text-sm text-primary">{entry.related.join(", ")}</p>
           </div>
         )}
       </div>
