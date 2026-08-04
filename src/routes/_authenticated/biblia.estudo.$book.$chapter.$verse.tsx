@@ -196,7 +196,7 @@ function VerseStudy() {
                         {e?.transliteration ?? "—"}
                       </p>
                       <p className="truncate text-sm leading-tight text-foreground/85">
-                        {e?.strongsGloss ?? "—"}
+                        {e?.meaning ?? "—"}
                       </p>
                     </div>
                     {w.strong && (
@@ -226,7 +226,7 @@ function VerseStudy() {
                     <div className="min-w-0 flex-1">
                       <p className="ancient-text text-lg text-ancient">{w.word}</p>
                       <p className="text-xs text-muted-foreground">{e?.transliteration ?? UNAVAILABLE}</p>
-                      <p className="mt-1 text-sm">{e?.strongsGloss ?? UNAVAILABLE}</p>
+                      <p className="mt-1 text-sm">{e?.meaning ?? UNAVAILABLE}</p>
                       <p className="mt-1 text-[11px] text-primary">Strong {w.strong ?? "—"}</p>
                       <p className="text-[11px] text-muted-foreground">
                         Pronúncia (aprox. pt-BR): {approximatePtBr(e?.transliteration ?? null) ?? "—"}
@@ -350,7 +350,7 @@ function WordDetail({
     ["Fonética (Strong)", entry?.phonetic ?? UNAVAILABLE],
     ["Pronúncia aproximada em pt-BR", approximatePtBr(entry?.transliteration ?? null) ?? UNAVAILABLE],
     ["Número de Strong", word.strong ?? UNAVAILABLE],
-    ["Significado", entry?.strongsGloss ?? UNAVAILABLE],
+    ["Significado", entry?.meaning ?? UNAVAILABLE],
     ["Classe gramatical", entry?.partOfSpeech ?? UNAVAILABLE],
     ["Raiz / origem", entry?.origin ?? UNAVAILABLE],
     ["Ocorrências na Escritura", occurrence ? String(occurrence.c) : UNAVAILABLE],
