@@ -25,7 +25,7 @@ export type PtTranslation = {
 };
 
 /** Traduções em português disponíveis no leitor (arquitetura extensível:
- *  basta acrescentar um item aqui para habilitar uma nova versão). */
+ * basta acrescentar um item aqui para habilitar uma nova versão). */
 export const PT_TRANSLATIONS: PtTranslation[] = [
   { code: "NVIPT", label: "NVI", full: "Nova Versão Internacional" },
   { code: "NAA", label: "NAA", full: "Nova Almeida Atualizada" },
@@ -44,6 +44,10 @@ export function translationByCode(code: string): PtTranslation {
 export type Verse = { verse: number; text: string };
 export type OriginalWord = { word: string; strong: string | null; index: number };
 export type OriginalVerse = { verse: number; words: OriginalWord[] };
+
+/** Palavra original já acompanhada da tradução curta do léxico (quando existe). */
+export type OriginalWordWithGloss = OriginalWord & { gloss: string | null };
+export type OriginalVerseWithGlosses = { verse: number; words: OriginalWordWithGloss[] };
 
 const mem = new Map<string, unknown>();
 
@@ -216,41 +220,23 @@ function grab(html: string, label: string): string | null {
   return value || null;
 }
 
-/** Payload bruto de um item de /dictionary-definition/ na API do bolls.life. */
-type BollsDictionaryHit = {
-  topic: string;
-  definition: string;
-  lexeme?: string | null;
-  transliteration?: string | null;
-  pronunciation?: string | null;
-  short_definition?: string | null;
-};
-
-/**
- * Monta o verbete a partir dos campos ESTRUTURADOS que a API do bolls.life
- * já devolve (lexeme, transliteration, pronunciation, short_definition) —
- * ver docs oficiais: https://github.com/Bolls-Bible/bain/blob/master/docs/API.md
- * Só recorre a regex sobre o HTML de `definition` para os dados que a API
- * NÃO expõe como campo estruturado: classe gramatical, raiz/origem, lista de
- * definições do léxico e palavras relacionadas (S:Gxxxx / S:Hxxxx).
- */
-function parseStrongHtml(code: string, hit: BollsDictionaryHit): StrongEntry {
-  const html = hit.definition ?? "";
+function parseStrongHtml(code: string, html: string): StrongEntry {
   const defBlock = html.split(/<p class="def">.*?<\/p>/i)[1] ?? "";
   const beforeOrigin = defBlock.split(/<p class="origin"/i)[0] ?? "";
   const definitions = beforeOrigin
     .split(/<\/p>/i)
     .map((p) => stripTags(p))
     .filter((p) => p.length > 1);
+  const strongsMatch = html.match(/-\s*Strongs:\s*([\s\S]*?)(?:<p|$)/i);
   return {
     code,
-    original: hit.lexeme?.trim() || grab(html, "Original"),
-    transliteration: hit.transliteration?.trim() || grab(html, "Transliteration"),
-    phonetic: hit.pronunciation?.trim() || grab(html, "Phonetic"),
+    original: grab(html, "Original"),
+    transliteration: grab(html, "Transliteration"),
+    phonetic: grab(html, "Phonetic"),
     partOfSpeech: translateGrammarTerms(grab(html, "Part\\(s\\) of speech")),
     origin: translateGrammarTerms(grab(html, "Origin")),
     definitions,
-    strongsGloss: hit.short_definition?.trim() || null,
+    strongsGloss: strongsMatch ? stripTags(strongsMatch[1]) : null,
     related: Array.from(new Set((html.match(/S:([GH]\d+)/g) ?? []).map((s) => s.slice(2)))).filter(
       (c) => c !== code,
     ),
@@ -262,10 +248,10 @@ export async function fetchStrongEntry(code: string): Promise<StrongEntry | null
   return cached(`strong:${code}`, async () => {
     const res = await fetch(`${API}/dictionary-definition/BDBT/${code}/`);
     if (!res.ok) return null;
-    const json = (await res.json()) as BollsDictionaryHit[];
+    const json = (await res.json()) as { topic: string; definition: string }[];
     const hit = json.find((d) => d.topic?.toUpperCase() === code.toUpperCase()) ?? json[0];
     if (!hit) return null;
-    return parseStrongHtml(code, hit);
+    return parseStrongHtml(code, hit.definition ?? "");
   });
 }
 
@@ -281,27 +267,51 @@ export async function fetchStrongEntries(codes: string[]): Promise<Record<string
 }
 
 /**
- * Tradução curta (gloss) por palavra, para exibir ao lado do texto original
- * na visão Interlinear. NÃO é um dado novo nem gerado por IA: reaproveita o
- * mesmo verbete acadêmico do léxico (BDB/Thayer, via bolls.life) já usado na
- * aba "Palavras" — usa o campo "Strongs" do verbete e, apenas quando esse
- * campo não existir na fonte, cai para a primeira definição do léxico. Se
- * nenhum dos dois existir na fonte, o valor retornado é null e a interface
- * deve indicar "indisponível" — nunca preencher com algo inventado.
+ * Melhor tradução curta disponível para um verbete: primeiro tenta o gloss
+ * oficial de Strong; se a fonte não tiver, cai para a primeira definição do
+ * léxico (BDB/Thayer). Retorna null apenas se a fonte não tiver nada.
  */
-export async function fetchWordGlosses(
-  codes: (string | null)[],
-): Promise<Record<string, string | null>> {
-  const validCodes = Array.from(
-    new Set(codes.filter((c): c is string => typeof c === "string" && c.length > 0)),
+function bestGloss(entry: StrongEntry | undefined): string | null {
+  if (!entry) return null;
+  if (entry.strongsGloss) return entry.strongsGloss;
+  if (entry.definitions.length > 0) return entry.definitions[0];
+  return null;
+}
+
+/**
+ * Capítulo no idioma original, palavra a palavra, já com a tradução curta
+ * de cada palavra anexada (buscada no léxico BDB/Thayer a partir do número
+ * de Strong). Use esta função na tela "Interlinear" para exibir a tradução
+ * ao lado/abaixo de cada palavra original.
+ */
+export async function fetchOriginalChapterWithGlosses(
+  book: number,
+  chapter: number,
+): Promise<OriginalVerseWithGlosses[]> {
+  const verses = await fetchOriginalChapter(book, chapter);
+  const codes = Array.from(
+    new Set(
+      verses.flatMap((v) => v.words.map((w) => w.strong).filter((s): s is string => Boolean(s))),
+    ),
   );
-  const entries = await fetchStrongEntries(validCodes);
-  const out: Record<string, string | null> = {};
-  for (const code of validCodes) {
-    const entry = entries[code];
-    out[code] = entry?.strongsGloss ?? entry?.definitions[0] ?? null;
-  }
-  return out;
+  const entries = await fetchStrongEntries(codes);
+  return verses.map((v) => ({
+    verse: v.verse,
+    words: v.words.map((w) => ({
+      ...w,
+      gloss: w.strong ? bestGloss(entries[w.strong]) : null,
+    })),
+  }));
+}
+
+/** Mesmo que fetchOriginalChapterWithGlosses, mas para um único versículo. */
+export async function fetchOriginalVerseWithGlosses(
+  book: number,
+  chapter: number,
+  verse: number,
+): Promise<OriginalWordWithGloss[] | null> {
+  const all = await fetchOriginalChapterWithGlosses(book, chapter);
+  return all.find((v) => v.verse === verse)?.words ?? null;
 }
 
 export type Occurrence = { c: number; f: [number, number, number]; l: [number, number, number] };
