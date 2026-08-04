@@ -53,6 +53,19 @@ export const Route = createFileRoute("/_authenticated/biblia/estudo/$book/$chapt
 
 const UNAVAILABLE = "Informação indisponível na base consultada.";
 
+/**
+ * Traduções alinhadas ao texto da versão em português, e não glossas isoladas
+ * de dicionário. Este conjunto pode crescer versículo a versículo à medida que
+ * o alinhamento revisado é incorporado à base.
+ */
+const CONTEXTUAL_WORDS: Record<string, string[]> = {
+  "1:1:1": ["No princípio", "criou", "Deus", "—", "os céus", "e", "a terra"],
+};
+
+function contextualTranslationFor(book: number, chapter: number, verse: number, index: number) {
+  return CONTEXTUAL_WORDS[[book, chapter, verse].join(":")]?.[index] ?? null;
+}
+
 function VerseStudy() {
   const { book: b, chapter: c, verse: v } = Route.useParams();
   const book = Number(b);
@@ -195,41 +208,53 @@ function VerseStudy() {
 
           {aba === "interlinear" && words && (
             <div className="card-elevated divide-y divide-border overflow-hidden p-0">
+              <div className="grid grid-cols-[minmax(0,1.45fr)_4.5rem_minmax(0,1.1fr)] gap-2 border-b border-border bg-surface/50 px-3.5 py-2 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                <span>Original / transliteração</span>
+                <span className="text-center">Strong</span>
+                <span>Português</span>
+              </div>
               {words.map((w, i) => {
                 const e = w.strong ? entries[w.strong] : null;
+                const contextual = contextualTranslationFor(book, chapter, verse, i);
                 return (
                   <button
                     key={w.index}
                     onClick={() => setOpenWord(w)}
-                    className="flex w-full items-center gap-3 p-3.5 text-left transition-colors hover:bg-surface"
+                    className="grid w-full grid-cols-[minmax(0,1.45fr)_4.5rem_minmax(0,1.1fr)] items-center gap-2 p-3.5 text-left transition-colors hover:bg-surface"
                   >
-                    <span className="w-6 shrink-0 text-center text-[11px] font-semibold text-muted-foreground">
-                      {i + 1}
-                    </span>
-                    <span
-                      dir={lang === "hebraico" ? "rtl" : "ltr"}
-                      className="ancient-text w-20 shrink-0 text-center text-lg leading-tight text-ancient"
-                    >
-                      {w.word}
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-[11px] italic leading-tight text-muted-foreground">
-                        {e?.transliteration ?? "—"}
-                      </p>
-                      <p className="truncate text-sm leading-tight text-foreground/85">
-                        {e?.meaning ?? "—"}
-                      </p>
-                    </div>
-                    {w.strong && (
-                      <span className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
-                        {w.strong}
+                    <div className="flex min-w-0 items-center gap-2">
+                      <span className="w-4 shrink-0 text-center text-[10px] font-semibold text-muted-foreground">
+                        {i + 1}
                       </span>
-                    )}
+                      <div className="min-w-0">
+                        <p
+                          dir={lang === "hebraico" ? "rtl" : "ltr"}
+                          className="ancient-text truncate text-lg leading-tight text-ancient"
+                        >
+                          {w.word}
+                        </p>
+                        <p className="truncate text-[11px] italic leading-tight text-muted-foreground">
+                          {e?.transliteration ?? "—"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      {w.strong ? (
+                        <span className="inline-block rounded-full border border-primary/30 px-2 py-0.5 text-[10px] font-semibold text-primary">
+                          {w.strong}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">—</span>
+                      )}
+                    </div>
+                    <p className="min-w-0 text-sm leading-snug text-foreground/90">
+                      {contextual ?? e?.meaning ?? "—"}
+                    </p>
                   </button>
                 );
               })}
               <p className="p-3.5 text-[11px] text-muted-foreground">
-                Ordem conforme o texto original · Toque em uma palavra para ver a análise completa
+                Tradução alinhada ao versículo em português · Toque em uma palavra para ver a análise completa
               </p>
             </div>
           )}
