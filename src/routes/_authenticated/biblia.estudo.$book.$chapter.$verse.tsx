@@ -117,7 +117,7 @@ function VerseStudy() {
       </div>
 
       <div className="card-elevated mt-4 p-4">
-        <p className="scripture text-base leading-relaxed">{text ?? "Carregando…"}</p>
+        <p className="text-base leading-relaxed">{text ?? "Carregando…"}</p>
       </div>
 
       <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
