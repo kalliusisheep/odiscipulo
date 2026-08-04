@@ -262,6 +262,30 @@ export async function fetchStrongEntries(codes: string[]): Promise<Record<string
   return out;
 }
 
+/**
+ * Tradução curta (gloss) por palavra, para exibir ao lado do texto original
+ * na visão Interlinear. NÃO é um dado novo nem gerado por IA: reaproveita o
+ * mesmo verbete acadêmico do léxico (BDB/Thayer, via bolls.life) já usado na
+ * aba "Palavras" — usa o campo "Strongs" do verbete e, apenas quando esse
+ * campo não existir na fonte, cai para a primeira definição do léxico. Se
+ * nenhum dos dois existir na fonte, o valor retornado é null e a interface
+ * deve indicar "indisponível" — nunca preencher com algo inventado.
+ */
+export async function fetchWordGlosses(
+  codes: (string | null)[],
+): Promise<Record<string, string | null>> {
+  const validCodes = Array.from(
+    new Set(codes.filter((c): c is string => typeof c === "string" && c.length > 0)),
+  );
+  const entries = await fetchStrongEntries(validCodes);
+  const out: Record<string, string | null> = {};
+  for (const code of validCodes) {
+    const entry = entries[code];
+    out[code] = entry?.strongsGloss ?? entry?.definitions[0] ?? null;
+  }
+  return out;
+}
+
 export type Occurrence = { c: number; f: [number, number, number]; l: [number, number, number] };
 
 let occurrencesPromise: Promise<Record<string, Occurrence>> | null = null;
