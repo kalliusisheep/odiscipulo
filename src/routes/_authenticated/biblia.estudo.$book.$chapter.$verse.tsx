@@ -99,6 +99,7 @@ function VerseStudy() {
 
   return (
     <div className="mx-auto min-h-screen max-w-lg pb-28 animate-slide-up">
+      {/* TÍTULO */}
       <div className="sticky top-0 z-20 border-b border-border bg-background/95 px-4 pt-4 pb-2 backdrop-blur supports-[backdrop-filter]:bg-background/80">
         <div className="flex items-center gap-2">
           <Link
@@ -117,6 +118,7 @@ function VerseStudy() {
           </div>
         </div>
 
+        {/* MENU DE ABAS — logo abaixo do título */}
         <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
           {TABS.map((t) => (
             <button
@@ -135,181 +137,183 @@ function VerseStudy() {
       </div>
 
       <div className="px-4">
-      <div className="card-elevated mt-4 p-4">
-        <p className="text-base leading-relaxed">{text ?? "Carregando…"}</p>
-      </div>
+        {/* CARD DO VERSÍCULO — logo abaixo do menu de abas */}
+        <div className="card-elevated mt-4 p-4">
+          <p className="text-base leading-relaxed">{text ?? "Carregando…"}</p>
+        </div>
 
-      <div className="mt-4 animate-slide-up">
-        {!words && !origError && aba !== "referencias" && (
-          <div className="mt-10 flex justify-center">
-            <Loader2 className="h-6 w-6 animate-spin text-primary" />
-          </div>
-        )}
-        {(origError || (words === null && false)) && (
-          <p className="mt-6 text-sm text-muted-foreground">{UNAVAILABLE}</p>
-        )}
+        {/* CONTEÚDO DA ABA */}
+        <div className="mt-4 animate-slide-up">
+          {!words && !origError && aba !== "referencias" && (
+            <div className="mt-10 flex justify-center">
+              <Loader2 className="h-6 w-6 animate-spin text-primary" />
+            </div>
+          )}
+          {(origError || (words === null && false)) && (
+            <p className="mt-6 text-sm text-muted-foreground">{UNAVAILABLE}</p>
+          )}
 
-        {aba === "original" && words && (
-          <div className="card-elevated space-y-3 p-4">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
-              Texto original ({lang})
-            </p>
-            <p
-              dir={lang === "hebraico" ? "rtl" : "ltr"}
-              className="ancient-text text-xl leading-loose text-foreground"
-            >
-              {words.map((w) => w.word).join(" ")}
-            </p>
-            <p className="border-t border-border pt-3 text-[11px] text-muted-foreground">
-              Fonte: {lang === "grego" ? "Tischendorf 8ª ed. com Strong" : "Westminster Leningrad Codex com Strong"}
-            </p>
-          </div>
-        )}
-
-        {aba === "interlinear" && words && (
-          <div className="card-elevated divide-y divide-border overflow-hidden p-0">
-            {words.map((w, i) => {
-              const e = w.strong ? entries[w.strong] : null;
-              return (
-                <button
-                  key={w.index}
-                  onClick={() => setOpenWord(w)}
-                  className="flex w-full items-center gap-3 p-3.5 text-left transition-colors hover:bg-surface"
-                >
-                  <span className="w-6 shrink-0 text-center text-[11px] font-semibold text-muted-foreground">
-                    {i + 1}
-                  </span>
-                  <span
-                    dir={lang === "hebraico" ? "rtl" : "ltr"}
-                    className="ancient-text w-20 shrink-0 text-center text-lg leading-tight text-ancient"
-                  >
-                    {w.word}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-[11px] italic leading-tight text-muted-foreground">
-                      {e?.transliteration ?? "—"}
-                    </p>
-                    <p className="truncate text-sm leading-tight text-foreground/85">
-                      {e?.strongsGloss ?? "—"}
-                    </p>
-                  </div>
-                  {w.strong && (
-                    <span className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
-                      {w.strong}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-            <p className="p-3.5 text-[11px] text-muted-foreground">
-              Ordem conforme o texto original · Toque em uma palavra para ver a análise completa
-            </p>
-          </div>
-        )}
-
-        {aba === "palavras" && words && (
-          <div className="space-y-2">
-            {words.map((w) => {
-              const e = w.strong ? entries[w.strong] : null;
-              return (
-                <button
-                  key={w.index}
-                  onClick={() => setOpenWord(w)}
-                  className="card-elevated flex w-full items-center gap-3 p-4 text-left"
-                >
-                  <div className="min-w-0 flex-1">
-                    <p className="ancient-text text-lg text-ancient">{w.word}</p>
-                    <p className="text-xs text-muted-foreground">{e?.transliteration ?? UNAVAILABLE}</p>
-                    <p className="mt-1 text-sm">{e?.strongsGloss ?? UNAVAILABLE}</p>
-                    <p className="mt-1 text-[11px] text-primary">Strong {w.strong ?? "—"}</p>
-                    <p className="text-[11px] text-muted-foreground">
-                      Pronúncia (aprox. pt-BR): {approximatePtBr(e?.transliteration ?? null) ?? "—"}
-                    </p>
-                  </div>
-                  <span
-                    role="button"
-                    aria-label="Ouvir"
-                    onClick={(ev) => {
-                      ev.stopPropagation();
-                      speak(w.word);
-                    }}
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary"
-                  >
-                    <Volume2 className="h-4.5 w-4.5" />
-                  </span>
-                </button>
-              );
-            })}
-
-            {analysis && (
-              <div className="card-elevated mt-4 space-y-1.5 p-4 text-sm">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
-                  Análise do versículo
-                </p>
-                <p>Palavras no original: {analysis.count}</p>
-                <p>Verbos identificados: {analysis.verbs.join(", ") || UNAVAILABLE}</p>
-                <p className="break-words">Números de Strong: {analysis.strongs.join(", ") || UNAVAILABLE}</p>
-                <p className="text-[11px] text-muted-foreground">
-                  Dados extraídos diretamente do texto original anotado. Morfologia completa não consta
-                  nesta base.
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-
-        {aba === "referencias" && (
-          <div className="space-y-2">
-            {xrefs.length === 0 && <p className="text-sm text-muted-foreground">{UNAVAILABLE}</p>}
-            {xrefs.map(([bk, ch, vs]) => (
-              <Link
-                key={`${bk}-${ch}-${vs}`}
-                to="/biblia/estudo/$book/$chapter/$verse"
-                params={{ book: String(bk), chapter: String(ch), verse: String(vs) }}
-                search={{ aba: "original" as const }}
-                className="block rounded-2xl border border-border bg-surface p-3.5 text-sm font-medium"
+          {aba === "original" && words && (
+            <div className="card-elevated space-y-3 p-4">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
+                Texto original ({lang})
+              </p>
+              <p
+                dir={lang === "hebraico" ? "rtl" : "ltr"}
+                className="ancient-text text-xl leading-loose text-foreground"
               >
-                {bookNameById(bk)} {ch}:{vs}
-              </Link>
-            ))}
-            {xrefs.length > 0 && (
-              <p className="pt-2 text-[11px] text-muted-foreground">Fonte: openbible.info (CC-BY).</p>
-            )}
-          </div>
-        )}
+                {words.map((w) => w.word).join(" ")}
+              </p>
+              <p className="border-t border-border pt-3 text-[11px] text-muted-foreground">
+                Fonte: {lang === "grego" ? "Tischendorf 8ª ed. com Strong" : "Westminster Leningrad Codex com Strong"}
+              </p>
+            </div>
+          )}
 
-        {aba === "lexico" && words && (
-          <div className="space-y-2">
-            {Object.values(entries).length === 0 && (
-              <p className="text-sm text-muted-foreground">{UNAVAILABLE}</p>
-            )}
-            {Object.values(entries).map((e) => (
-              <details key={e.code} className="card-elevated p-4">
-                <summary className="cursor-pointer text-sm font-semibold">
-                  <span className="ancient-text text-ancient">{e.original ?? e.code}</span> · {e.code}
-                </summary>
-                <div className="mt-2 space-y-1 text-sm text-foreground/85">
-                  <p className="text-xs text-muted-foreground">
-                    {e.transliteration ?? "—"} · {e.phonetic ?? "—"}
+          {aba === "interlinear" && words && (
+            <div className="card-elevated divide-y divide-border overflow-hidden p-0">
+              {words.map((w, i) => {
+                const e = w.strong ? entries[w.strong] : null;
+                return (
+                  <button
+                    key={w.index}
+                    onClick={() => setOpenWord(w)}
+                    className="flex w-full items-center gap-3 p-3.5 text-left transition-colors hover:bg-surface"
+                  >
+                    <span className="w-6 shrink-0 text-center text-[11px] font-semibold text-muted-foreground">
+                      {i + 1}
+                    </span>
+                    <span
+                      dir={lang === "hebraico" ? "rtl" : "ltr"}
+                      className="ancient-text w-20 shrink-0 text-center text-lg leading-tight text-ancient"
+                    >
+                      {w.word}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-[11px] italic leading-tight text-muted-foreground">
+                        {e?.transliteration ?? "—"}
+                      </p>
+                      <p className="truncate text-sm leading-tight text-foreground/85">
+                        {e?.strongsGloss ?? "—"}
+                      </p>
+                    </div>
+                    {w.strong && (
+                      <span className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
+                        {w.strong}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+              <p className="p-3.5 text-[11px] text-muted-foreground">
+                Ordem conforme o texto original · Toque em uma palavra para ver a análise completa
+              </p>
+            </div>
+          )}
+
+          {aba === "palavras" && words && (
+            <div className="space-y-2">
+              {words.map((w) => {
+                const e = w.strong ? entries[w.strong] : null;
+                return (
+                  <button
+                    key={w.index}
+                    onClick={() => setOpenWord(w)}
+                    className="card-elevated flex w-full items-center gap-3 p-4 text-left"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <p className="ancient-text text-lg text-ancient">{w.word}</p>
+                      <p className="text-xs text-muted-foreground">{e?.transliteration ?? UNAVAILABLE}</p>
+                      <p className="mt-1 text-sm">{e?.strongsGloss ?? UNAVAILABLE}</p>
+                      <p className="mt-1 text-[11px] text-primary">Strong {w.strong ?? "—"}</p>
+                      <p className="text-[11px] text-muted-foreground">
+                        Pronúncia (aprox. pt-BR): {approximatePtBr(e?.transliteration ?? null) ?? "—"}
+                      </p>
+                    </div>
+                    <span
+                      role="button"
+                      aria-label="Ouvir"
+                      onClick={(ev) => {
+                        ev.stopPropagation();
+                        speak(w.word);
+                      }}
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary"
+                    >
+                      <Volume2 className="h-4.5 w-4.5" />
+                    </span>
+                  </button>
+                );
+              })}
+
+              {analysis && (
+                <div className="card-elevated mt-4 space-y-1.5 p-4 text-sm">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+                    Análise do versículo
                   </p>
-                  {e.definitions.length ? (
-                    e.definitions.map((d, i) => <p key={i}>{d}</p>)
-                  ) : (
-                    <p className="text-muted-foreground">{UNAVAILABLE}</p>
-                  )}
-                  <p className="pt-2 text-[11px] text-muted-foreground">
-                    Definições na língua original da fonte (inglês) — BDB/Thayer não têm edição em
-                    português. Classe gramatical e origem já traduzidas.
-                  </p>
+                  <p>Palavras no original: {analysis.count}</p>
+                  <p>Verbos identificados: {analysis.verbs.join(", ") || UNAVAILABLE}</p>
+                  <p className="break-words">Números de Strong: {analysis.strongs.join(", ") || UNAVAILABLE}</p>
                   <p className="text-[11px] text-muted-foreground">
-                    Fonte: Brown-Driver-Briggs / Thayer (concordância de Strong).
+                    Dados extraídos diretamente do texto original anotado. Morfologia completa não consta
+                    nesta base.
                   </p>
                 </div>
-              </details>
-            ))}
-          </div>
-        )}
-      </div>
+              )}
+            </div>
+          )}
+
+          {aba === "referencias" && (
+            <div className="space-y-2">
+              {xrefs.length === 0 && <p className="text-sm text-muted-foreground">{UNAVAILABLE}</p>}
+              {xrefs.map(([bk, ch, vs]) => (
+                <Link
+                  key={`${bk}-${ch}-${vs}`}
+                  to="/biblia/estudo/$book/$chapter/$verse"
+                  params={{ book: String(bk), chapter: String(ch), verse: String(vs) }}
+                  search={{ aba: "original" as const }}
+                  className="block rounded-2xl border border-border bg-surface p-3.5 text-sm font-medium"
+                >
+                  {bookNameById(bk)} {ch}:{vs}
+                </Link>
+              ))}
+              {xrefs.length > 0 && (
+                <p className="pt-2 text-[11px] text-muted-foreground">Fonte: openbible.info (CC-BY).</p>
+              )}
+            </div>
+          )}
+
+          {aba === "lexico" && words && (
+            <div className="space-y-2">
+              {Object.values(entries).length === 0 && (
+                <p className="text-sm text-muted-foreground">{UNAVAILABLE}</p>
+              )}
+              {Object.values(entries).map((e) => (
+                <details key={e.code} className="card-elevated p-4">
+                  <summary className="cursor-pointer text-sm font-semibold">
+                    <span className="ancient-text text-ancient">{e.original ?? e.code}</span> · {e.code}
+                  </summary>
+                  <div className="mt-2 space-y-1 text-sm text-foreground/85">
+                    <p className="text-xs text-muted-foreground">
+                      {e.transliteration ?? "—"} · {e.phonetic ?? "—"}
+                    </p>
+                    {e.definitions.length ? (
+                      e.definitions.map((d, i) => <p key={i}>{d}</p>)
+                    ) : (
+                      <p className="text-muted-foreground">{UNAVAILABLE}</p>
+                    )}
+                    <p className="pt-2 text-[11px] text-muted-foreground">
+                      Definições na língua original da fonte (inglês) — BDB/Thayer não têm edição em
+                      português. Classe gramatical e origem já traduzidas.
+                    </p>
+                    <p className="text-[11px] text-muted-foreground">
+                      Fonte: Brown-Driver-Briggs / Thayer (concordância de Strong).
+                    </p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <Sheet open={!!openWord} onOpenChange={(o) => !o && setOpenWord(null)}>
