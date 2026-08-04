@@ -2,7 +2,8 @@
 //
 // Fontes (todas acadêmicas e verificáveis — nada é gerado por IA):
 // - Texto em português: bolls.life (Almeida Revista e Corrigida, Almeida
-//   Corrigida Fiel, Tradução Brasileira, King James Atualizada)
+//   Corrigida Fiel, Tradução Brasileira, King James Atualizada, Nova
+//   Versão Internacional, Nova Almeida Atualizada)
 // - Grego do NT: Tischendorf 8ª edição com numeração de Strong (TISCH)
 // - Hebraico do AT: Westminster Leningrad Codex com Strong (WLCa)
 // - Léxico: Brown-Driver-Briggs (hebraico) / Thayer (grego) — dicionário BDBT
@@ -26,13 +27,15 @@ export type PtTranslation = {
 /** Traduções em português disponíveis no leitor (arquitetura extensível:
  *  basta acrescentar um item aqui para habilitar uma nova versão). */
 export const PT_TRANSLATIONS: PtTranslation[] = [
+  { code: "NVIPT", label: "NVI", full: "Nova Versão Internacional" },
+  { code: "NAA", label: "NAA", full: "Nova Almeida Atualizada" },
   { code: "ARC09", label: "ARC", full: "Almeida Revista e Corrigida" },
   { code: "ACF11", label: "ACF", full: "Almeida Corrigida Fiel" },
   { code: "TB10", label: "TB", full: "Tradução Brasileira" },
   { code: "KJA", label: "KJA", full: "King James Atualizada" },
 ];
 
-export const DEFAULT_TRANSLATION = "ARC09";
+export const DEFAULT_TRANSLATION = "NVIPT";
 
 export function translationByCode(code: string): PtTranslation {
   return PT_TRANSLATIONS.find((t) => t.code === code) ?? PT_TRANSLATIONS[0];
@@ -154,6 +157,58 @@ export type StrongEntry = {
   related: string[];
 };
 
+/**
+ * Traduz os termos gramaticais recorrentes que vêm em inglês na fonte
+ * acadêmica (Brown-Driver-Briggs / Thayer, via bolls.life) para português.
+ * Cobre o vocabulário fixo de classificação gramatical — não é uma tradução
+ * livre do texto do léxico (que permanece na fonte original em inglês,
+ * já que não há uma base acadêmica equivalente em português).
+ */
+const GRAMMAR_TERMS: [RegExp, string][] = [
+  [/\bMasculine\b/gi, "Masculino"],
+  [/\bFeminine\b/gi, "Feminino"],
+  [/\bCommon\b/gi, "Comum"],
+  [/\bProper\b/gi, "Próprio"],
+  [/\bNoun\b/gi, "Substantivo"],
+  [/\bVerb\b/gi, "Verbo"],
+  [/\bAdjective\b/gi, "Adjetivo"],
+  [/\bAdverb\b/gi, "Advérbio"],
+  [/\bPronoun\b/gi, "Pronome"],
+  [/\bPreposition\b/gi, "Preposição"],
+  [/\bConjunction\b/gi, "Conjunção"],
+  [/\bInterjection\b/gi, "Interjeição"],
+  [/\bParticle\b/gi, "Partícula"],
+  [/\bArticle\b/gi, "Artigo"],
+  [/\bDefinite\b/gi, "Definido"],
+  [/\bIndefinite\b/gi, "Indefinido"],
+  [/\bDemonstrative\b/gi, "Demonstrativo"],
+  [/\bPersonal\b/gi, "Pessoal"],
+  [/\bRelative\b/gi, "Relativo"],
+  [/\bInterrogative\b/gi, "Interrogativo"],
+  [/\bReflexive\b/gi, "Reflexivo"],
+  [/\bPossessive\b/gi, "Possessivo"],
+  [/\bNumeral\b/gi, "Numeral"],
+  [/\bCardinal\b/gi, "Cardinal"],
+  [/\bOrdinal\b/gi, "Ordinal"],
+  [/\bParticiple\b/gi, "Particípio"],
+  [/\bPassive\b/gi, "Passivo"],
+  [/\bActive\b/gi, "Ativo"],
+  [/\bPlural\b/gi, "Plural"],
+  [/\bSingular\b/gi, "Singular"],
+  [/\bfrom\b/gi, "de"],
+  [/\ba primitive root\b/gi, "uma raiz primitiva"],
+  [/\bprimitive root\b/gi, "raiz primitiva"],
+  [/\bof uncertain derivation\b/gi, "de derivação incerta"],
+  [/\bcontracted from\b/gi, "contraído de"],
+];
+
+export function translateGrammarTerms(text: string | null): string | null {
+  if (!text) return text;
+  let out = text;
+  for (const [re, pt] of GRAMMAR_TERMS) out = out.replace(re, pt);
+  return out;
+}
+
 function grab(html: string, label: string): string | null {
   const re = new RegExp(`-\\s*${label}:\\s*(?:<b>)?(.*?)(?:</b>)?\\s*<p`, "i");
   const m = html.match(re);
@@ -174,8 +229,8 @@ function parseStrongHtml(code: string, html: string): StrongEntry {
     original: grab(html, "Original"),
     transliteration: grab(html, "Transliteration"),
     phonetic: grab(html, "Phonetic"),
-    partOfSpeech: grab(html, "Part\\(s\\) of speech"),
-    origin: grab(html, "Origin"),
+    partOfSpeech: translateGrammarTerms(grab(html, "Part\\(s\\) of speech")),
+    origin: translateGrammarTerms(grab(html, "Origin")),
     definitions,
     strongsGloss: strongsMatch ? stripTags(strongsMatch[1]) : null,
     related: Array.from(new Set((html.match(/S:([GH]\d+)/g) ?? []).map((s) => s.slice(2)))).filter(
