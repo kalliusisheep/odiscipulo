@@ -24,6 +24,7 @@ import { Route as AuthenticatedRankingDetalhesRouteImport } from './routes/_auth
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as AuthenticatedAdminPregerarNarracaoRouteImport } from './routes/_authenticated/admin.pregerar-narracao'
 import { Route as AuthenticatedAdminPregerarTextosRouteImport } from './routes/_authenticated/admin.pregerar-textos'
+import { Route as AuthenticatedBibliaIndexRouteImport } from './routes/_authenticated/biblia.index'
 import { Route as AuthenticatedEstudosIndexRouteImport } from './routes/_authenticated/estudos.index'
 import { Route as AuthenticatedLicaoIdRouteImport } from './routes/_authenticated/licao.$id'
 import { Route as AuthenticatedLiderArvoreRouteImport } from './routes/_authenticated/lider_.arvore'
@@ -115,6 +116,12 @@ const AuthenticatedAdminPregerarTextosRoute =
   AuthenticatedAdminPregerarTextosRouteImport.update({
     id: '/admin/pregerar-textos',
     path: '/admin/pregerar-textos',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedBibliaIndexRoute =
+  AuthenticatedBibliaIndexRouteImport.update({
+    id: '/biblia/',
+    path: '/biblia/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedEstudosIndexRoute =
@@ -220,6 +227,7 @@ export interface FileRoutesByFullPath {
   '/modulo/$id': typeof AuthenticatedModuloIdRoute
   '/notas/$id': typeof AuthenticatedNotasIdRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
+  '/biblia/': typeof AuthenticatedBibliaIndexRoute
   '/estudos/': typeof AuthenticatedEstudosIndexRoute
   '/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/notas/': typeof AuthenticatedNotasIndexRoute
@@ -250,6 +258,7 @@ export interface FileRoutesByTo {
   '/modulo/$id': typeof AuthenticatedModuloIdRoute
   '/notas/$id': typeof AuthenticatedNotasIdRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
+  '/biblia': typeof AuthenticatedBibliaIndexRoute
   '/estudos': typeof AuthenticatedEstudosIndexRoute
   '/mensagens': typeof AuthenticatedMensagensIndexRoute
   '/notas': typeof AuthenticatedNotasIndexRoute
@@ -282,6 +291,7 @@ export interface FileRoutesById {
   '/_authenticated/modulo/$id': typeof AuthenticatedModuloIdRoute
   '/_authenticated/notas/$id': typeof AuthenticatedNotasIdRoute
   '/_authenticated/perfil_/$username': typeof AuthenticatedPerfilUsernameRoute
+  '/_authenticated/biblia/': typeof AuthenticatedBibliaIndexRoute
   '/_authenticated/estudos/': typeof AuthenticatedEstudosIndexRoute
   '/_authenticated/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/_authenticated/notas/': typeof AuthenticatedNotasIndexRoute
@@ -314,6 +324,7 @@ export interface FileRouteTypes {
     | '/modulo/$id'
     | '/notas/$id'
     | '/perfil/$username'
+    | '/biblia/'
     | '/estudos/'
     | '/mensagens/'
     | '/notas/'
@@ -344,6 +355,7 @@ export interface FileRouteTypes {
     | '/modulo/$id'
     | '/notas/$id'
     | '/perfil/$username'
+    | '/biblia'
     | '/estudos'
     | '/mensagens'
     | '/notas'
@@ -375,6 +387,7 @@ export interface FileRouteTypes {
     | '/_authenticated/modulo/$id'
     | '/_authenticated/notas/$id'
     | '/_authenticated/perfil_/$username'
+    | '/_authenticated/biblia/'
     | '/_authenticated/estudos/'
     | '/_authenticated/mensagens/'
     | '/_authenticated/notas/'
@@ -498,6 +511,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminPregerarTextosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/biblia/': {
+      id: '/_authenticated/biblia/'
+      path: '/biblia'
+      fullPath: '/biblia/'
+      preLoaderRoute: typeof AuthenticatedBibliaIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/estudos/': {
       id: '/_authenticated/estudos/'
       path: '/estudos'
@@ -618,6 +638,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedModuloIdRoute: typeof AuthenticatedModuloIdRoute
   AuthenticatedNotasIdRoute: typeof AuthenticatedNotasIdRoute
   AuthenticatedPerfilUsernameRoute: typeof AuthenticatedPerfilUsernameRoute
+  AuthenticatedBibliaIndexRoute: typeof AuthenticatedBibliaIndexRoute
   AuthenticatedEstudosIndexRoute: typeof AuthenticatedEstudosIndexRoute
   AuthenticatedMensagensIndexRoute: typeof AuthenticatedMensagensIndexRoute
   AuthenticatedNotasIndexRoute: typeof AuthenticatedNotasIndexRoute
@@ -647,6 +668,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedModuloIdRoute: AuthenticatedModuloIdRoute,
   AuthenticatedNotasIdRoute: AuthenticatedNotasIdRoute,
   AuthenticatedPerfilUsernameRoute: AuthenticatedPerfilUsernameRoute,
+  AuthenticatedBibliaIndexRoute: AuthenticatedBibliaIndexRoute,
   AuthenticatedEstudosIndexRoute: AuthenticatedEstudosIndexRoute,
   AuthenticatedMensagensIndexRoute: AuthenticatedMensagensIndexRoute,
   AuthenticatedNotasIndexRoute: AuthenticatedNotasIndexRoute,
