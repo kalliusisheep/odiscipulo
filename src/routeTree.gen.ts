@@ -35,6 +35,7 @@ import { Route as AuthenticatedModuloIdRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedNotasIndexRouteImport } from './routes/_authenticated/notas.index'
 import { Route as AuthenticatedNotasIdRouteImport } from './routes/_authenticated/notas.$id'
 import { Route as AuthenticatedPerfilUsernameRouteImport } from './routes/_authenticated/perfil_.$username'
+import { Route as AuthenticatedBibliaBookChapterRouteImport } from './routes/_authenticated/biblia.$book.$chapter'
 import { Route as AuthenticatedEstudosBiblicoIdRouteImport } from './routes/_authenticated/estudos.biblico.$id'
 import { Route as AuthenticatedEstudosMeditacaoIdRouteImport } from './routes/_authenticated/estudos.meditacao.$id'
 import { Route as AuthenticatedEstudosPlanoIdRouteImport } from './routes/_authenticated/estudos.plano.$id'
@@ -180,6 +181,12 @@ const AuthenticatedPerfilUsernameRoute =
     path: '/perfil/$username',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedBibliaBookChapterRoute =
+  AuthenticatedBibliaBookChapterRouteImport.update({
+    id: '/biblia/$book/$chapter',
+    path: '/biblia/$book/$chapter',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedEstudosBiblicoIdRoute =
   AuthenticatedEstudosBiblicoIdRouteImport.update({
     id: '/estudos/biblico/$id',
@@ -231,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/estudos/': typeof AuthenticatedEstudosIndexRoute
   '/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/notas/': typeof AuthenticatedNotasIndexRoute
+  '/biblia/$book/$chapter': typeof AuthenticatedBibliaBookChapterRoute
   '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
@@ -262,6 +270,7 @@ export interface FileRoutesByTo {
   '/estudos': typeof AuthenticatedEstudosIndexRoute
   '/mensagens': typeof AuthenticatedMensagensIndexRoute
   '/notas': typeof AuthenticatedNotasIndexRoute
+  '/biblia/$book/$chapter': typeof AuthenticatedBibliaBookChapterRoute
   '/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
@@ -295,6 +304,7 @@ export interface FileRoutesById {
   '/_authenticated/estudos/': typeof AuthenticatedEstudosIndexRoute
   '/_authenticated/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/_authenticated/notas/': typeof AuthenticatedNotasIndexRoute
+  '/_authenticated/biblia/$book/$chapter': typeof AuthenticatedBibliaBookChapterRoute
   '/_authenticated/estudos/biblico/$id': typeof AuthenticatedEstudosBiblicoIdRoute
   '/_authenticated/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/_authenticated/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
@@ -328,6 +338,7 @@ export interface FileRouteTypes {
     | '/estudos/'
     | '/mensagens/'
     | '/notas/'
+    | '/biblia/$book/$chapter'
     | '/estudos/biblico/$id'
     | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
@@ -359,6 +370,7 @@ export interface FileRouteTypes {
     | '/estudos'
     | '/mensagens'
     | '/notas'
+    | '/biblia/$book/$chapter'
     | '/estudos/biblico/$id'
     | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
@@ -391,6 +403,7 @@ export interface FileRouteTypes {
     | '/_authenticated/estudos/'
     | '/_authenticated/mensagens/'
     | '/_authenticated/notas/'
+    | '/_authenticated/biblia/$book/$chapter'
     | '/_authenticated/estudos/biblico/$id'
     | '/_authenticated/estudos/meditacao/$id'
     | '/_authenticated/estudos/plano/$id'
@@ -588,6 +601,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPerfilUsernameRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/biblia/$book/$chapter': {
+      id: '/_authenticated/biblia/$book/$chapter'
+      path: '/biblia/$book/$chapter'
+      fullPath: '/biblia/$book/$chapter'
+      preLoaderRoute: typeof AuthenticatedBibliaBookChapterRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/estudos/biblico/$id': {
       id: '/_authenticated/estudos/biblico/$id'
       path: '/estudos/biblico/$id'
@@ -642,6 +662,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedEstudosIndexRoute: typeof AuthenticatedEstudosIndexRoute
   AuthenticatedMensagensIndexRoute: typeof AuthenticatedMensagensIndexRoute
   AuthenticatedNotasIndexRoute: typeof AuthenticatedNotasIndexRoute
+  AuthenticatedBibliaBookChapterRoute: typeof AuthenticatedBibliaBookChapterRoute
   AuthenticatedEstudosBiblicoIdRoute: typeof AuthenticatedEstudosBiblicoIdRoute
   AuthenticatedEstudosMeditacaoIdRoute: typeof AuthenticatedEstudosMeditacaoIdRoute
   AuthenticatedEstudosPlanoIdRoute: typeof AuthenticatedEstudosPlanoIdRoute
@@ -672,6 +693,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedEstudosIndexRoute: AuthenticatedEstudosIndexRoute,
   AuthenticatedMensagensIndexRoute: AuthenticatedMensagensIndexRoute,
   AuthenticatedNotasIndexRoute: AuthenticatedNotasIndexRoute,
+  AuthenticatedBibliaBookChapterRoute: AuthenticatedBibliaBookChapterRoute,
   AuthenticatedEstudosBiblicoIdRoute: AuthenticatedEstudosBiblicoIdRoute,
   AuthenticatedEstudosMeditacaoIdRoute: AuthenticatedEstudosMeditacaoIdRoute,
   AuthenticatedEstudosPlanoIdRoute: AuthenticatedEstudosPlanoIdRoute,
