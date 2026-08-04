@@ -1,22 +1,3 @@
-// Camada de dados do módulo "Bíblia de Estudos".
-//
-// Fontes (todas acadêmicas e verificáveis — nada é gerado por IA):
-// - Texto em português: bolls.life (Almeida Revista e Corrigida, Almeida
-//   Corrigida Fiel, Tradução Brasileira, King James Atualizada, Nova
-//   Versão Internacional, Nova Almeida Atualizada)
-// - Grego do NT: Tischendorf 8ª edição com numeração de Strong (TISCH)
-// - Hebraico do AT: Westminster Leningrad Codex com Strong (WLCa)
-// - Léxico: Brown-Driver-Briggs (hebraico) / Thayer (grego) — dicionário BDBT
-// - Referências cruzadas: openbible.info (CC-BY), pré-processadas em
-//   /data/xrefs/<livro>.json
-// - Ocorrências de cada número de Strong: índice pré-calculado a partir dos
-//   textos TISCH/WLCa em /data/strongs-occurrences.json
-// - Termos centrais (CORE_TERMS, abaixo): tradução conferida manualmente por
-//   revisão humana, não extraída por heurística da fonte.
-//
-// Se um dado não existir na fonte, a interface informa que está indisponível.
-// Nenhuma informação bíblica é inventada, estimada ou completada por IA.
-
 import { supabase } from "@/integrations/supabase/client";
 
 const API = "https://bolls.life";
@@ -871,12 +852,9 @@ function buildStrongEntry(hit: BollsDictHit): StrongEntry {
  * etc.) sempre tragam o sentido correto. */
 export async function fetchStrongEntry(code: string): Promise<StrongEntry | null> {
   const upperCode = code.toUpperCase();
-  // "v3" na chave: além do "v2" (que já invalidava o formato sem `meaning`),
-  // esta versão passa a montar o verbete a partir dos campos estruturados da
-  // API (lexeme/transliteration/pronunciation/short_definition), então
-  // qualquer verbete salvo no navegador nas versões anteriores precisa ser
-  // buscado de novo.
-  const cacheKey = `strong:v3:${upperCode}`;
+  // "v4" na chave: além do "v3" (que já invalidava o formato anterior),
+  // esta versão atualiza a chave de cache conforme solicitado.
+  const cacheKey = `strong:v4:${upperCode}`;
   const override = CORE_TERMS[upperCode];
   if (override) {
     return cached(cacheKey, async () => {
