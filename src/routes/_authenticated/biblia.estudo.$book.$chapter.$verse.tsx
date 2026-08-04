@@ -15,6 +15,7 @@ import {
   type StrongEntry,
 } from "@/lib/bible-source";
 import { useBiblePrefs } from "@/lib/bible-prefs";
+import { supabase } from "@/integrations/supabase/client";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ArrowLeft, Loader2, Volume2 } from "lucide-react";
 
@@ -81,6 +82,12 @@ function contextualTranslationFor(
   return CONTEXTUAL_WORDS[[book, chapter, verse].join(":")]?.[index] ?? null;
 }
 
+type VerseAnalysis = {
+  verbos: string[];
+  substantivos: string[];
+  resumo: string;
+};
+
 function VerseStudy() {
   const { book: b, chapter: c, verse: v } = Route.useParams();
   const book = Number(b);
@@ -97,6 +104,9 @@ function VerseStudy() {
   const [occ, setOcc] = useState<Record<string, { c: number; f: number[]; l: number[] }>>({});
   const [xrefs, setXrefs] = useState<[number, number, number][]>([]);
   const [openWord, setOpenWord] = useState<OriginalWord | null>(null);
+  const [analysis, setAnalysis] = useState<VerseAnalysis | null>(null);
+  const [analysisLoading, setAnalysisLoading] = useState(false);
+  const [analysisError, setAnalysisError] = useState(false);
 
   const lang = originalTranslationFor(book).lang;
 
@@ -109,6 +119,7 @@ function VerseStudy() {
     void loadOccurrences().then((o) => setOcc(o as never));
     setOrigError(false);
     setWords(null);
+    setAnalysis(null);
     fetchOriginalVerse(book, chapter, verse)
       .then(async (w) => {
         setWords(w);
@@ -122,15 +133,30 @@ function VerseStudy() {
       .catch(() => setOrigError(true));
   }, [translation, book, chapter, verse]);
 
-  const analysis = useMemo(() => {
-    if (!words) return null;
-    const strongs = words.map((w) => w.strong).filter(Boolean) as string[];
-    const verbs = strongs.filter((s) => /verb/i.test(entries[s]?.partOfSpeech ?? ""));
-    return {
-      count: words.length,
-      strongs: Array.from(new Set(strongs)),
-      verbs: Array.from(new Set(verbs)),
-    };
+  // Análise do versículo, gerada pelo Gemini a partir das palavras do
+  // original e do léxico já carregado (roda de novo quando `entries` chega
+  // da tradução, para a IA receber os dados já em português).
+  useEffect(() => {
+    if (!words || words.length === 0 || Object.keys(entries).length === 0) return;
+    setAnalysisLoading(true);
+    setAnalysisError(false);
+    const payload = words.map((w) => ({
+      word: w.word,
+      strong: w.strong,
+      partOfSpeech: w.strong ? (entries[w.strong]?.partOfSpeech ?? null) : null,
+      meaning: w.strong ? (entries[w.strong]?.meaning ?? null) : null,
+    }));
+    supabase.functions
+      .invoke<VerseAnalysis>("verse-analysis", { body: { words: payload } })
+      .then(({ data, error }) => {
+        if (error || !data) {
+          setAnalysisError(true);
+          return;
+        }
+        setAnalysis(data);
+      })
+      .catch(() => setAnalysisError(true))
+      .finally(() => setAnalysisLoading(false));
   }, [words, entries]);
 
   const speak = (word: string) => {
@@ -328,20 +354,32 @@ function VerseStudy() {
                   </button>
                 );
               })}
-              {analysis && (
+
+              {analysisLoading && (
+                <div className="card-elevated mt-4 flex items-center justify-center gap-2 p-4 text-sm text-muted-foreground">
+                  <Loader2 className="h-4 w-4 animate-spin" /> Analisando versículo…
+                </div>
+              )}
+
+              {!analysisLoading && analysis && (
                 <div className="card-elevated mt-4 space-y-1.5 p-4 text-sm">
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
                     Análise do versículo
                   </p>
-                  <p>Palavras no original: {analysis.count}</p>
-                  <p>Verbos identificados: {analysis.verbs.join(", ") || UNAVAILABLE}</p>
+                  <p>{analysis.resumo}</p>
+                  <p>Verbos identificados: {analysis.verbos.join(", ") || UNAVAILABLE}</p>
                   <p className="break-words">
-                    Números de Strong: {analysis.strongs.join(", ") || UNAVAILABLE}
+                    Substantivos identificados: {analysis.substantivos.join(", ") || UNAVAILABLE}
                   </p>
                   <p className="text-[11px] text-muted-foreground">
-                    Dados extraídos diretamente do texto original anotado. Morfologia completa não
-                    consta nesta base.
+                    Análise gerada por IA (Gemini) a partir dos dados do texto original anotado.
                   </p>
+                </div>
+              )}
+
+              {!analysisLoading && analysisError && (
+                <div className="card-elevated mt-4 p-4 text-sm text-muted-foreground">
+                  Não foi possível gerar a análise do versículo no momento.
                 </div>
               )}
             </div>
