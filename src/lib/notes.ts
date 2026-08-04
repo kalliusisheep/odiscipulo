@@ -107,10 +107,15 @@ export async function updateNote(
   id: string,
   patch: Partial<Pick<Note, "title" | "content" | "source_type">>,
 ): Promise<void> {
-  const { error } = await supabase
-    .from("notes")
-    .update(patch as Record<string, unknown>)
-    .eq("id", id);
+  const payload: {
+    title?: string;
+    source_type?: string;
+    content?: Json;
+  } = {};
+  if (patch.title !== undefined) payload.title = patch.title;
+  if (patch.source_type !== undefined) payload.source_type = patch.source_type;
+  if (patch.content !== undefined) payload.content = patch.content as Json;
+  const { error } = await supabase.from("notes").update(payload).eq("id", id);
   if (error) throw error;
 }
 
