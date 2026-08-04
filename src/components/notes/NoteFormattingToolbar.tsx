@@ -39,7 +39,7 @@ function ToolbarButton({
       title={label}
       onMouseDown={(e) => e.preventDefault()} // não perde a seleção de texto ao clicar
       onClick={onClick}
-      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors ${
+      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors ${
         active ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-surface-2"
       }`}
     >
@@ -49,139 +49,156 @@ function ToolbarButton({
 }
 
 /**
- * Toolbar flutuante posicionada acima da seleção atual, dentro do editor.
- * Usa getBoundingClientRect() do range selecionado — mesma técnica usada,
- * em espírito, pelo menu de seleção do Bloco 1 sobre o conteúdo estático.
+ * Barra de formatação FIXA na parte inferior da tela (viewport), não presa à
+ * posição da seleção. Diferente da versão anterior (que calculava
+ * getBoundingClientRect() do range e "seguia" o texto selecionado), aqui a
+ * barra só aparece/desaparece conforme existe ou não uma seleção de texto —
+ * a posição em si nunca muda, fica "congelada" no rodapé e acompanha o
+ * scroll da página normalmente (position: fixed já cuida disso sozinho).
  */
-export function NoteFormattingToolbar({ editor }: { editor: Editor }) {
-  const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
+export function NoteFormattingToolbar({
+  editor,
+  onActiveChange,
+}: {
+  editor: Editor;
+  onActiveChange?: (active: boolean) => void;
+}) {
+  const [hasSelection, setHasSelection] = useState(false);
   const [colorPickerOpen, setColorPickerOpen] = useState(false);
   const [sizePickerOpen, setSizePickerOpen] = useState(false);
 
   useEffect(() => {
-    const updatePosition = () => {
+    const updateSelection = () => {
       const { from, to } = editor.state.selection;
-      if (from === to) {
-        setPosition(null);
+      const active = from !== to;
+      setHasSelection(active);
+      if (!active) {
         setColorPickerOpen(false);
         setSizePickerOpen(false);
-        return;
       }
-      const domSelection = window.getSelection();
-      if (!domSelection || domSelection.rangeCount === 0) return;
-      const rect = domSelection.getRangeAt(0).getBoundingClientRect();
-      if (!rect || (rect.width === 0 && rect.height === 0)) return;
-      setPosition({ top: rect.top + window.scrollY - 52, left: rect.left + window.scrollX + rect.width / 2 });
     };
 
-    editor.on("selectionUpdate", updatePosition);
-    editor.on("blur", () => {
+    const handleBlur = () => {
       // pequeno atraso pra permitir clique nos próprios botões da toolbar
-      setTimeout(() => setPosition(null), 150);
-    });
+      setTimeout(() => {
+        setHasSelection(false);
+        setColorPickerOpen(false);
+        setSizePickerOpen(false);
+      }, 150);
+    };
+
+    editor.on("selectionUpdate", updateSelection);
+    editor.on("blur", handleBlur);
     return () => {
-      editor.off("selectionUpdate", updatePosition);
+      editor.off("selectionUpdate", updateSelection);
+      editor.off("blur", handleBlur);
     };
   }, [editor]);
 
-  if (!position) return null;
+  useEffect(() => {
+    onActiveChange?.(hasSelection);
+  }, [hasSelection, onActiveChange]);
+
+  if (!hasSelection) return null;
 
   return (
     <div
-      className="fixed z-50 flex -translate-x-1/2 items-center gap-0.5 rounded-2xl border border-border bg-popover p-1 shadow-xl"
-      style={{ top: position.top, left: position.left }}
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-popover/95 shadow-xl backdrop-blur"
+      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
-      <ToolbarButton label="Negrito" active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()}>
-        <Bold className="h-4 w-4" />
-      </ToolbarButton>
-      <ToolbarButton label="Itálico" active={editor.isActive("italic")} onClick={() => editor.chain().focus().toggleItalic().run()}>
-        <Italic className="h-4 w-4" />
-      </ToolbarButton>
-      <ToolbarButton
-        label="Sublinhado"
-        active={editor.isActive("underline")}
-        onClick={() => editor.chain().focus().toggleUnderline().run()}
-      >
-        <UnderlineIcon className="h-4 w-4" />
-      </ToolbarButton>
-
-      <div className="mx-0.5 h-5 w-px bg-border" />
-
-      <div className="relative">
-        <ToolbarButton
-          label="Tamanho da fonte"
-          active={sizePickerOpen}
-          onClick={() => {
-            setSizePickerOpen((v) => !v);
-            setColorPickerOpen(false);
-          }}
-        >
-          <Type className="h-4 w-4" />
+      <div className="mx-auto flex max-w-lg items-center gap-0.5 overflow-x-auto px-3 py-2">
+        <ToolbarButton label="Negrito" active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()}>
+          <Bold className="h-4 w-4" />
         </ToolbarButton>
-        {sizePickerOpen && (
-          <div className="absolute left-1/2 top-10 flex -translate-x-1/2 flex-col gap-0.5 rounded-xl border border-border bg-popover p-1 shadow-xl">
-            {FONT_SIZE_OPTIONS.map((opt) => (
-              <button
-                key={opt.token}
-                type="button"
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => {
-                  editor.chain().focus().setFontSize(opt.token).run();
-                  setSizePickerOpen(false);
-                }}
-                className="whitespace-nowrap rounded-lg px-3 py-1.5 text-left text-xs font-medium text-foreground hover:bg-surface-2"
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="relative">
-        <ToolbarButton
-          label="Marca-texto"
-          active={editor.isActive("highlight") || colorPickerOpen}
-          onClick={() => {
-            setColorPickerOpen((v) => !v);
-            setSizePickerOpen(false);
-          }}
-        >
-          <Highlighter className="h-4 w-4" />
+        <ToolbarButton label="Itálico" active={editor.isActive("italic")} onClick={() => editor.chain().focus().toggleItalic().run()}>
+          <Italic className="h-4 w-4" />
         </ToolbarButton>
-        {colorPickerOpen && (
-          <div className="absolute left-1/2 top-10 flex -translate-x-1/2 items-center gap-1.5 rounded-xl border border-border bg-popover p-2 shadow-xl">
-            {HIGHLIGHT_COLORS.map((c) => (
-              <button
-                key={c.token}
-                type="button"
-                aria-label={c.label}
-                title={c.label}
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => {
-                  editor.chain().focus().toggleHighlight({ color: c.hex }).run();
-                  setColorPickerOpen(false);
-                }}
-                className="h-6 w-6 shrink-0 rounded-full ring-1 ring-border transition-transform hover:scale-110"
-                style={{ backgroundColor: c.hex }}
-              />
-            ))}
-            {editor.isActive("highlight") && (
-              <button
-                type="button"
-                title="Remover marca-texto"
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => {
-                  editor.chain().focus().unsetHighlight().run();
-                  setColorPickerOpen(false);
-                }}
-                className="ml-1 h-6 w-6 shrink-0 rounded-full border border-dashed border-muted-foreground/50 text-[10px] text-muted-foreground"
-              >
-                ×
-              </button>
-            )}
-          </div>
-        )}
+        <ToolbarButton
+          label="Sublinhado"
+          active={editor.isActive("underline")}
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+        >
+          <UnderlineIcon className="h-4 w-4" />
+        </ToolbarButton>
+
+        <div className="mx-1 h-5 w-px shrink-0 bg-border" />
+
+        <div className="relative shrink-0">
+          <ToolbarButton
+            label="Tamanho da fonte"
+            active={sizePickerOpen}
+            onClick={() => {
+              setSizePickerOpen((v) => !v);
+              setColorPickerOpen(false);
+            }}
+          >
+            <Type className="h-4 w-4" />
+          </ToolbarButton>
+          {sizePickerOpen && (
+            <div className="absolute bottom-12 left-1/2 flex -translate-x-1/2 flex-col gap-0.5 rounded-xl border border-border bg-popover p-1 shadow-xl">
+              {FONT_SIZE_OPTIONS.map((opt) => (
+                <button
+                  key={opt.token}
+                  type="button"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => {
+                    editor.chain().focus().setFontSize(opt.token).run();
+                    setSizePickerOpen(false);
+                  }}
+                  className="whitespace-nowrap rounded-lg px-3 py-1.5 text-left text-xs font-medium text-foreground hover:bg-surface-2"
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="relative shrink-0">
+          <ToolbarButton
+            label="Marca-texto"
+            active={editor.isActive("highlight") || colorPickerOpen}
+            onClick={() => {
+              setColorPickerOpen((v) => !v);
+              setSizePickerOpen(false);
+            }}
+          >
+            <Highlighter className="h-4 w-4" />
+          </ToolbarButton>
+          {colorPickerOpen && (
+            <div className="absolute bottom-12 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-xl border border-border bg-popover p-2 shadow-xl">
+              {HIGHLIGHT_COLORS.map((c) => (
+                <button
+                  key={c.token}
+                  type="button"
+                  aria-label={c.label}
+                  title={c.label}
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => {
+                    editor.chain().focus().toggleHighlight({ color: c.hex }).run();
+                    setColorPickerOpen(false);
+                  }}
+                  className="h-6 w-6 shrink-0 rounded-full ring-1 ring-border transition-transform hover:scale-110"
+                  style={{ backgroundColor: c.hex }}
+                />
+              ))}
+              {editor.isActive("highlight") && (
+                <button
+                  type="button"
+                  title="Remover marca-texto"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => {
+                    editor.chain().focus().unsetHighlight().run();
+                    setColorPickerOpen(false);
+                  }}
+                  className="ml-1 h-6 w-6 shrink-0 rounded-full border border-dashed border-muted-foreground/50 text-[10px] text-muted-foreground"
+                >
+                  ×
+                </button>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

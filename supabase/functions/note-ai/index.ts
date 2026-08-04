@@ -1,3 +1,4 @@
+// Redeploy trigger: publicando esta função no Lovable Cloud (estava commitada mas nunca deployada).
 // Ações de IA sobre uma nota: gerar título curto, reescrever mantendo o
 // sentido, ou organizar como estrutura de lição/estudo. Mesmo gateway já
 // usado em mentor-chat (Gemini via endpoint compatível com OpenAI) — mas

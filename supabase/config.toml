@@ -11,3 +11,5 @@ verify_jwt = true
 verify_jwt = true
 [functions.mentor-memory]
 verify_jwt = true
+[functions.note-ai]
+verify_jwt = true

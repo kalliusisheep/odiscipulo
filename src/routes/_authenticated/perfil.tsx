@@ -28,7 +28,6 @@ import {
   Loader2,
   Pencil,
   X,
-  ChevronDown,
   ChevronRight,
   ShieldCheck,
   Sparkles,
@@ -369,30 +368,55 @@ function PerfilPage() {
       {/* ── Estatísticas ─────────────────────────────────────────── */}
       <section className="animate-slide-up" style={{ animationDelay: "90ms", animationFillMode: "backwards" }}>
         <SectionLabel>Estatísticas</SectionLabel>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <StatCard icon={Trophy} label="Nível" value={String(level.level)} tint="var(--primary)" delay={0} />
-          <StatCard icon={Flame} label="Ofensiva" value={`${profile.streak}d`} tint="var(--streak)" delay={40} />
-          <StatCard icon={BookOpen} label="Lições" value={String(lessonsCount)} tint="var(--success)" delay={80} />
-          <StatCard icon={Clock} label="Estudo" value={`${lessonsCount * 8}m`} tint="var(--ancient)" delay={120} />
+        <div className="card-elevated flex items-center divide-x divide-border overflow-hidden">
+          <StatItem icon={Trophy} label="Nível" value={String(level.level)} tint="var(--primary)" />
+          <StatItem icon={Flame} label="Ofensiva" value={`${profile.streak}d`} tint="var(--streak)" />
+          <StatItem icon={BookOpen} label="Lições" value={String(lessonsCount)} tint="var(--success)" />
+          <StatItem icon={Clock} label="Estudo" value={`${lessonsCount * 8}m`} tint="var(--ancient)" />
         </div>
+        <button
+          type="button"
+          onClick={() => void nav({ to: "/biblia" })}
+          className="card-elevated mt-3 flex w-full items-center gap-3 p-4 text-left transition-colors hover:border-primary/40"
+        >
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <BookOpen className="h-5 w-5" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-semibold">Bíblia de Estudos</span>
+          </span>
+          <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/40" />
+        </button>
+        <button
+          type="button"
+          onClick={() => void nav({ to: "/notas" })}
+          className="card-elevated mt-3 flex w-full items-center gap-3 p-4 text-left transition-colors hover:border-primary/40"
+        >
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <NotebookPen className="h-5 w-5" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-semibold">Minhas Notas</span>
+            <span className="block truncate text-xs text-muted-foreground">Anotações, marcações e trechos salvos</span>
+          </span>
+          <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/40" />
+        </button>
       </section>
-
-      {/* ── Versão da Bíblia ─────────────────────────────────────── */}
-      <BibleVersionSelector
-        value={bibleVersion}
-        open={versionOpen}
-        onOpenChange={setVersionOpen}
-        onSelect={(code) => {
-          setBibleVersion(code);
-          void update({ bible_version: code });
-          setVersionOpen(false);
-        }}
-      />
 
       {/* ── Preferências ─────────────────────────────────────────── */}
       <section className="animate-slide-up" style={{ animationDelay: "140ms", animationFillMode: "backwards" }}>
         <SectionLabel>Preferências</SectionLabel>
         <div className="card-elevated divide-y divide-border overflow-hidden">
+          <BibleVersionSelector
+            value={bibleVersion}
+            open={versionOpen}
+            onOpenChange={setVersionOpen}
+            onSelect={(code) => {
+              setBibleVersion(code);
+              void update({ bible_version: code });
+              setVersionOpen(false);
+            }}
+          />
           <SettingsRow
             icon={Church}
             title="Comunidade"
@@ -428,19 +452,6 @@ function PerfilPage() {
                 onChange={() => void update({ is_leader: !profile.is_leader })}
                 ariaLabel="Habilitar modo líder"
               />
-            }
-          />
-          <SettingsRow
-            icon={NotebookPen}
-            title="Minhas Notas"
-            subtitle="Anotações, marcações e trechos salvos"
-            action={
-              <button
-                onClick={() => void nav({ to: "/notas" })}
-                className="shrink-0 rounded-full border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:border-primary/50 hover:text-primary"
-              >
-                Abrir
-              </button>
             }
           />
         </div>
@@ -491,32 +502,22 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   return <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{children}</p>;
 }
 
-function StatCard({
+function StatItem({
   icon: Icon,
   label,
   value,
   tint,
-  delay = 0,
 }: {
   icon: React.ElementType;
   label: string;
   value: string;
   tint: string;
-  delay?: number;
 }) {
   return (
-    <div
-      className="card-elevated animate-slide-up flex flex-col items-center gap-2 p-3.5 text-center transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.97]"
-      style={{ animationDelay: `${delay}ms`, animationFillMode: "backwards" }}
-    >
-      <span
-        className="flex h-10 w-10 items-center justify-center rounded-2xl"
-        style={{ background: `color-mix(in oklab, ${tint} 16%, transparent)`, color: tint }}
-      >
-        <Icon className="h-5 w-5" />
-      </span>
-      <p className="text-lg font-bold leading-none">{value}</p>
-      <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">{label}</p>
+    <div className="flex flex-1 flex-col items-center gap-1 py-3">
+      <Icon className="h-5 w-5" style={{ color: tint }} />
+      <p className="text-base font-bold leading-none">{value}</p>
+      <p className="text-[9px] font-medium uppercase tracking-wider text-muted-foreground">{label}</p>
     </div>
   );
 }
@@ -578,23 +579,20 @@ function BibleVersionSelector({
   const current = BIBLE_VERSION_OPTIONS.find((option) => option.code === value) ?? BIBLE_VERSION_OPTIONS[0];
   return (
     <>
-      <section className="animate-slide-up" style={{ animationDelay: "115ms", animationFillMode: "backwards" }}>
-        <SectionLabel>Versão da Bíblia</SectionLabel>
-        <button
-          type="button"
-          onClick={() => onOpenChange(true)}
-          className="card-elevated flex w-full items-center gap-3 p-4 text-left transition-colors hover:border-primary/40"
-        >
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-xs font-bold text-primary-foreground">
-            {current.code}
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="block text-sm font-semibold">{current.name}</span>
-            <span className="block truncate text-xs text-muted-foreground">{current.description}</span>
-          </span>
-          <ChevronDown className="h-5 w-5 shrink-0 text-muted-foreground" />
-        </button>
-      </section>
+      <button
+        type="button"
+        onClick={() => onOpenChange(true)}
+        className="flex w-full items-center gap-3 p-4 text-left transition-colors hover:bg-surface-2"
+      >
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+          <BookOpen className="h-5 w-5" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold">Versão da Bíblia</p>
+          <p className="truncate text-xs text-muted-foreground">{current.name}</p>
+        </div>
+        <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/40" />
+      </button>
 
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent>

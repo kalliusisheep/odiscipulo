@@ -88,39 +88,6 @@ export async function createNoteFromSelection(params: {
   return data as Note;
 }
 
-/** Cria uma nota a partir do resultado do Scan Inteligente (Bloco 4). */
-export async function createNoteFromScan(params: {
-  text: string;
-  title: string;
-  sourceType: Extract<NoteSourceType, "scan_pdf" | "scan_word" | "scan_foto">;
-}): Promise<Note> {
-  const { data: userRes } = await supabase.auth.getUser();
-  const userId = userRes.user?.id;
-  if (!userId) throw new Error("Usuário não autenticado.");
-
-  const doc = {
-    type: "doc",
-    content: params.text
-      .split(/\n+/)
-      .filter(Boolean)
-      .map((paragraph) => ({ type: "paragraph", content: [{ type: "text", text: paragraph }] })),
-  };
-
-  const { data, error } = await supabase
-    .from("notes")
-    .insert({
-      user_id: userId,
-      title: params.title,
-      content: doc.content.length ? doc : EMPTY_DOC,
-      source_type: params.sourceType,
-    })
-    .select("*")
-    .single();
-
-  if (error) throw error;
-  return data as Note;
-}
-
 export async function getNote(id: string): Promise<Note | null> {
   const { data, error } = await supabase.from("notes").select("*").eq("id", id).maybeSingle();
   if (error) throw error;
@@ -136,15 +103,20 @@ export async function listNotes(): Promise<NoteListItem[]> {
   return (data ?? []) as NoteListItem[];
 }
 
-/** Salvamento incremental (autosave) — título e/ou conteúdo. */
+/** Salvamento incremental (autosave) — título, conteúdo e/ou origem (ex: após um Scan Inteligente). */
 export async function updateNote(
   id: string,
-  patch: Partial<Pick<Note, "title" | "content">>,
+  patch: Partial<Pick<Note, "title" | "content" | "source_type">>,
 ): Promise<void> {
-  const { error } = await supabase
-    .from("notes")
-    .update(patch as { title?: string; content?: Json })
-    .eq("id", id);
+  const payload: {
+    title?: string;
+    source_type?: string;
+    content?: Json;
+  } = {};
+  if (patch.title !== undefined) payload.title = patch.title;
+  if (patch.source_type !== undefined) payload.source_type = patch.source_type;
+  if (patch.content !== undefined) payload.content = patch.content as Json;
+  const { error } = await supabase.from("notes").update(payload).eq("id", id);
   if (error) throw error;
 }
 
@@ -159,20 +131,12 @@ export async function markNoteExported(id: string): Promise<void> {
 
 export async function logNoteAiAction(
   noteId: string,
-  actionType:
-    | "reescrever"
-    | "estruturar"
-    | "titulo"
-    | "scan_transcricao"
-    | "scan_reescrita"
-    | "scan_estrutura",
+  actionType: "reescrever" | "estruturar" | "titulo" | "scan_transcricao" | "scan_reescrita" | "scan_estrutura",
 ): Promise<void> {
   const { data: userRes } = await supabase.auth.getUser();
   const userId = userRes.user?.id;
   if (!userId) return;
-  await supabase
-    .from("note_ai_actions")
-    .insert({ note_id: noteId, user_id: userId, action_type: actionType });
+  await supabase.from("note_ai_actions").insert({ note_id: noteId, user_id: userId, action_type: actionType });
 }
 
 /** Extrai texto puro de um documento Tiptap — usado para mandar contexto pra IA. */

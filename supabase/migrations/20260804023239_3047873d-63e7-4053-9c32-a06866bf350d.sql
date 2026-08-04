@@ -1,0 +1,1 @@
+ALTER TABLE public.highlights ADD COLUMN IF NOT EXISTS field_key TEXT NOT NULL DEFAULT '';
