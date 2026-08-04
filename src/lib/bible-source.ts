@@ -280,7 +280,17 @@ function parseStrongHtml(code: string, html: string, apiFields: StrongApiFields 
     (apiFields.transliteration && apiFields.transliteration.trim()) || grab(html, "Transliteration");
   const phonetic = (apiFields.pronunciation && apiFields.pronunciation.trim()) || grab(html, "Phonetic");
 
+  // IMPORTANTE: "short_definition" (campo pronto da API) NÃO é "o
+  // significado" da palavra — é apenas a primeira palavra em ordem
+  // ALFABÉTICA entre todas as traduções que o KJV já usou para esse número
+  // de Strong. Ex.: para H1254 (bara', "criar"), a API devolve "choose"
+  // só porque "choose" vem antes de "create" no alfabeto — mesmo o KJV
+  // usando "created" 42 vezes contra "choose" só 2. Por isso, priorizamos
+  // a primeira definição do próprio verbete do léxico (BDB/Thayer), que
+  // por convenção lexicográfica sempre traz o sentido principal primeiro,
+  // e só caímos para o campo alfabético da API como último recurso.
   const strongsGloss =
+    (definitions[0] && definitions[0].trim()) ||
     (apiFields.short_definition && stripTags(apiFields.short_definition).trim()) ||
     (() => {
       const strongsMatch = html.match(/-?\s*Strongs:\s*([\s\S]*?)(?:<p|$)/i);
@@ -328,9 +338,11 @@ async function translateEntryToPt(entry: StrongEntry): Promise<StrongEntry> {
 /** Verbete do léxico (BDB para hebraico, Thayer para grego), já traduzido
  * automaticamente para português. */
 export async function fetchStrongEntry(code: string): Promise<StrongEntry | null> {
-  // Chave "strong:v3:" para invalidar o cache das versões anteriores, que
-  // guardavam o verbete sem tradução (ou com o parser antigo quebrado).
-  return cached(`strong:v3:${code}`, async () => {
+  // Chave "strong:v4:" para invalidar o cache das versões anteriores, que
+  // guardavam o significado escolhido pela ordem alfabética do campo
+  // "short_definition" da API (não confiável) em vez do sentido primário
+  // do próprio léxico.
+  return cached(`strong:v4:${code}`, async () => {
     const res = await fetch(`${API}/dictionary-definition/BDBT/${code}/`);
     if (!res.ok) return null;
     const json = (await res.json()) as (StrongApiFields & { topic: string; definition: string })[];
