@@ -7,13 +7,16 @@
 // - Grego do NT: Tischendorf 8ª edição com numeração de Strong (TISCH)
 // - Hebraico do AT: Westminster Leningrad Codex com Strong (WLCa)
 // - Léxico: Brown-Driver-Briggs (hebraico) / Thayer (grego) — dicionário BDBT
+//   (fonte em inglês; traduzida automaticamente para português — ver
+//   translateToPt — e sinalizada como tradução automática na interface)
 // - Referências cruzadas: openbible.info (CC-BY), pré-processadas em
 //   /data/xrefs/<livro>.json
 // - Ocorrências de cada número de Strong: índice pré-calculado a partir dos
 //   textos TISCH/WLCa em /data/strongs-occurrences.json
 //
 // Se um dado não existir na fonte, a interface informa que está indisponível.
-// Nenhuma informação bíblica é inventada, estimada ou completada por IA.
+// Nenhuma informação bíblica é inventada, estimada ou completada por IA —
+// apenas traduzida automaticamente quando a fonte original é em inglês.
 
 const API = "https://bolls.life";
 
@@ -91,6 +94,40 @@ function stripTags(html: string): string {
     .trim();
 }
 
+/**
+ * Tradução automática inglês→português para o texto do léxico (BDB/Thayer),
+ * que só existe em inglês na fonte acadêmica. Usa a API pública e gratuita
+ * do MyMemory (sem chave). Resultado fica em cache (memória + localStorage),
+ * então cada trecho só é traduzido uma vez por navegador. Se a tradução
+ * falhar ou a cota diária da API se esgotar, o texto original em inglês é
+ * devolvido como reserva — a interface nunca fica vazia.
+ */
+async function translateToPt(text: string): Promise<string> {
+  const trimmed = text.trim();
+  if (!trimmed) return trimmed;
+  return cached(`tr:en-pt:${trimmed.toLowerCase()}`, async () => {
+    try {
+      const res = await fetch(
+        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(trimmed)}&langpair=en|pt-BR`,
+      );
+      if (!res.ok) return trimmed;
+      const json = (await res.json()) as {
+        responseStatus?: number | string;
+        responseData?: { translatedText?: string };
+      };
+      const translated = json.responseData?.translatedText;
+      const ok =
+        String(json.responseStatus) === "200" &&
+        typeof translated === "string" &&
+        translated.trim().length > 0 &&
+        !translated.toUpperCase().includes("MYMEMORY WARNING");
+      return ok ? translated!.trim() : trimmed;
+    } catch {
+      return trimmed;
+    }
+  });
+}
+
 /** Capítulo em português. */
 export async function fetchChapter(
   translation: string,
@@ -160,9 +197,10 @@ export type StrongEntry = {
 /**
  * Traduz os termos gramaticais recorrentes que vêm em inglês na fonte
  * acadêmica (Brown-Driver-Briggs / Thayer, via bolls.life) para português.
- * Cobre o vocabulário fixo de classificação gramatical — não é uma tradução
- * livre do texto do léxico (que permanece na fonte original em inglês,
- * já que não há uma base acadêmica equivalente em português).
+ * Cobre o vocabulário fixo de classificação gramatical (rápido, sem chamada
+ * de rede) — usado só para "Part(s) of speech", que é sempre um token curto
+ * e previsível. "Origin" e "definitions" usam tradução automática completa
+ * (translateToPt), porque são frases livres, não um vocabulário fixo.
  */
 const GRAMMAR_TERMS: [RegExp, string][] = [
   [/\bMasculine\b/gi, "Masculino"],
@@ -195,11 +233,6 @@ const GRAMMAR_TERMS: [RegExp, string][] = [
   [/\bActive\b/gi, "Ativo"],
   [/\bPlural\b/gi, "Plural"],
   [/\bSingular\b/gi, "Singular"],
-  [/\bfrom\b/gi, "de"],
-  [/\ba primitive root\b/gi, "uma raiz primitiva"],
-  [/\bprimitive root\b/gi, "raiz primitiva"],
-  [/\bof uncertain derivation\b/gi, "de derivação incerta"],
-  [/\bcontracted from\b/gi, "contraído de"],
 ];
 
 export function translateGrammarTerms(text: string | null): string | null {
@@ -213,8 +246,7 @@ export function translateGrammarTerms(text: string | null): string | null {
  * Extrai um campo rotulado do HTML do léxico, como fallback para quando a
  * API não devolve o dado já pronto em um campo JSON separado. O traço
  * ("- Label:") é tratado como opcional, porque o HTML real da API bolls.life
- * nem sempre o inclui (ex.: "Transliteration: <b>...</b>" sem traço) — o
- * regex antigo exigia o traço e por isso nunca encontrava nada.
+ * nem sempre o inclui (ex.: "Transliteration: <b>...</b>" sem traço).
  */
 function grab(html: string, label: string): string | null {
   const re = new RegExp(`-?\\s*${label}:\\s*(?:<b>)?([\\s\\S]*?)(?:<\\/b>)?\\s*(?:<p|<br|$)`, "i");
@@ -258,10 +290,14 @@ function parseStrongHtml(code: string, html: string, apiFields: StrongApiFields 
   return {
     code,
     original: original || null,
+    // transliteration e phonetic NÃO são traduzidos — são a grafia
+    // fonética da palavra original, não texto em inglês.
     transliteration: transliteration || null,
     phonetic: phonetic || null,
     partOfSpeech: translateGrammarTerms(grab(html, "Part\\(s\\) of speech")),
-    origin: translateGrammarTerms(grab(html, "Origin")),
+    // origin fica em inglês bruto aqui; é traduzido depois, em
+    // fetchStrongEntry, via translateToPt (tradução automática completa).
+    origin: grab(html, "Origin"),
     definitions,
     strongsGloss: strongsGloss || null,
     related: Array.from(new Set((html.match(/S:([GH]\d+)/g) ?? []).map((s) => s.slice(2)))).filter(
@@ -270,23 +306,43 @@ function parseStrongHtml(code: string, html: string, apiFields: StrongApiFields 
   };
 }
 
-/** Verbete do léxico (BDB para hebraico, Thayer para grego). */
+/**
+ * Traduz para português os campos de texto livre em inglês de um verbete
+ * (strongsGloss, origin, definitions). partOfSpeech já vem traduzido
+ * deterministicamente e transliteration/phonetic não são traduzidos.
+ */
+async function translateEntryToPt(entry: StrongEntry): Promise<StrongEntry> {
+  const [strongsGloss, origin, definitions] = await Promise.all([
+    entry.strongsGloss ? translateToPt(entry.strongsGloss) : Promise.resolve(null),
+    entry.origin ? translateToPt(entry.origin) : Promise.resolve(null),
+    Promise.all(entry.definitions.map((d) => translateToPt(d))),
+  ]);
+  return {
+    ...entry,
+    strongsGloss: strongsGloss ?? entry.strongsGloss,
+    origin: origin ?? entry.origin,
+    definitions,
+  };
+}
+
+/** Verbete do léxico (BDB para hebraico, Thayer para grego), já traduzido
+ * automaticamente para português. */
 export async function fetchStrongEntry(code: string): Promise<StrongEntry | null> {
-  // Chave de cache trocada para "strong:v2:" para invalidar automaticamente
-  // qualquer resultado quebrado ("—") que já esteja salvo no localStorage
-  // dos usuários a partir da versão anterior, com o parser com bug.
-  return cached(`strong:v2:${code}`, async () => {
+  // Chave "strong:v3:" para invalidar o cache das versões anteriores, que
+  // guardavam o verbete sem tradução (ou com o parser antigo quebrado).
+  return cached(`strong:v3:${code}`, async () => {
     const res = await fetch(`${API}/dictionary-definition/BDBT/${code}/`);
     if (!res.ok) return null;
     const json = (await res.json()) as (StrongApiFields & { topic: string; definition: string })[];
     const hit = json.find((d) => d.topic?.toUpperCase() === code.toUpperCase()) ?? json[0];
     if (!hit) return null;
-    return parseStrongHtml(code, hit.definition ?? "", {
+    const raw = parseStrongHtml(code, hit.definition ?? "", {
       lexeme: hit.lexeme,
       transliteration: hit.transliteration,
       pronunciation: hit.pronunciation,
       short_definition: hit.short_definition,
     });
+    return translateEntryToPt(raw);
   });
 }
 
