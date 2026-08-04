@@ -755,52 +755,75 @@ function grab(html: string, label: string): string | null {
   return value || null;
 }
 
-/**
- * Combina o 1º e o 2º sentido do léxico em um único texto de "Significado",
- * em vez de trazer apenas o primeiro sentido isolado. O 2º sentido só é
- * anexado quando for curto (limite de caracteres abaixo) e diferente do
- * primeiro — sentidos longos continuam disponíveis na íntegra em
- * `definitions`, para não poluir o resumo mostrado como "Significado".
- */
-const SECOND_SENSE_MAX_LENGTH = 90;
+/** Formato de cada item devolvido por /dictionary-definition/BDBT/<code>/
+ * (ver documentação oficial da bolls.life). Além do HTML livre em
+ * `definition`, a API já devolve campos estruturados e confiáveis —
+ * `lexeme`, `transliteration`, `pronunciation`, `short_definition` — que
+ * NÃO dependem de a formatação do HTML seguir um padrão de rótulos. */
+type BollsDictHit = {
+  topic: string;
+  definition: string;
+  lexeme?: string | null;
+  transliteration?: string | null;
+  pronunciation?: string | null;
+  short_definition?: string | null;
+};
 
-function buildMeaning(definitions: string[], strongsGloss: string | null): string | null {
-  const primary = definitions[0] ?? strongsGloss ?? null;
-  if (!primary) return strongsGloss ?? null;
-
-  const secondary = definitions[1];
-  if (
-    secondary &&
-    secondary.length > 0 &&
-    secondary.length <= SECOND_SENSE_MAX_LENGTH &&
-    secondary.toLowerCase() !== primary.toLowerCase()
-  ) {
-    return `${primary}; ${secondary}`;
-  }
-  return primary;
-}
-
-function parseStrongHtml(code: string, html: string): StrongEntry {
+function parseDefinitionParagraphs(html: string): string[] {
   const defBlock = html.split(/<p class="def">.*?<\/p>/i)[1] ?? "";
   const beforeOrigin = defBlock.split(/<p class="origin"/i)[0] ?? "";
-  const definitions = beforeOrigin
+  return beforeOrigin
     .split(/<\/p>/i)
     .map((p) => stripTags(p))
     .filter((p) => p.length > 1);
+}
 
+const SECOND_SENSE_MAX_LENGTH = 90;
+
+function buildMeaning(
+  shortDefinition: string | null,
+  definitions: string[],
+  strongsGloss: string | null,
+): string | null {
+  const primary = shortDefinition || definitions[0] || strongsGloss || null;
+  if (!primary) return null;
+
+  // Se o sentido principal já veio do `short_definition` oficial, o 2º
+  // sentido candidato é o próprio 1º parágrafo do léxico; caso contrário,
+  // é o 2º parágrafo (já que o 1º virou o sentido principal).
+  const candidates = shortDefinition ? definitions : definitions.slice(1);
+  const secondary = candidates.find(
+    (d) => d.length > 0 && d.length <= SECOND_SENSE_MAX_LENGTH && d.toLowerCase() !== primary.toLowerCase(),
+  );
+  return secondary ? `${primary}; ${secondary}` : primary;
+}
+
+/** Monta um StrongEntry a partir de um item bruto devolvido pela API de
+ * dicionário da bolls.life. Usa os campos estruturados (`lexeme`,
+ * `transliteration`, `pronunciation`, `short_definition`) como fonte
+ * primária — eles vêm sempre preenchidos pela API, independentemente de o
+ * HTML de `definition` seguir ou não o padrão de rótulos esperado. Os
+ * rótulos dentro do HTML ("Part(s) of speech:", "Origin:") continuam sendo
+ * lidos como complemento, quando disponíveis. */
+function buildStrongEntry(hit: BollsDictHit): StrongEntry {
+  const code = (hit.topic ?? "").toUpperCase();
+  const html = hit.definition ?? "";
+
+  const definitions = parseDefinitionParagraphs(html);
   const strongsMatch = html.match(/-\s*Strongs:\s*([\s\S]*?)(?:<p|$)/i);
   const strongsGloss = strongsMatch ? stripTags(strongsMatch[1]) : null;
+  const shortDefinition = hit.short_definition ? stripTags(hit.short_definition) : null;
 
   return {
     code,
-    original: grab(html, "Original"),
-    transliteration: grab(html, "Transliteration"),
-    phonetic: grab(html, "Phonetic"),
+    original: hit.lexeme || grab(html, "Original"),
+    transliteration: hit.transliteration || grab(html, "Transliteration"),
+    phonetic: hit.pronunciation || grab(html, "Phonetic"),
     partOfSpeech: translateGrammarTerms(grab(html, "Part\\(s\\) of speech")),
     origin: translateGrammarTerms(grab(html, "Origin")),
-    definitions,
+    definitions: definitions.length ? definitions : shortDefinition ? [shortDefinition] : [],
     strongsGloss,
-    meaning: buildMeaning(definitions, strongsGloss),
+    meaning: buildMeaning(shortDefinition, definitions, strongsGloss),
     related: Array.from(new Set((html.match(/S:([GH]\d+)/g) ?? []).map((s) => s.slice(2)))).filter(
       (c) => c !== code,
     ),
@@ -817,11 +840,12 @@ function parseStrongHtml(code: string, html: string): StrongEntry {
  * etc.) sempre tragam o sentido correto. */
 export async function fetchStrongEntry(code: string): Promise<StrongEntry | null> {
   const upperCode = code.toUpperCase();
-  // "v2" na chave: invalida automaticamente qualquer verbete que já estivesse
-  // salvo no localStorage do navegador do usuário no formato antigo (sem o
-  // campo `meaning`), evitando que fiquem "mudos" na interface até o usuário
-  // limpar o cache manualmente.
-  const cacheKey = `strong:v2:${upperCode}`;
+  // "v3" na chave: além do "v2" (que já invalidava o formato sem `meaning`),
+  // esta versão passa a montar o verbete a partir dos campos estruturados da
+  // API (lexeme/transliteration/pronunciation/short_definition), então
+  // qualquer verbete salvo no navegador nas versões anteriores precisa ser
+  // buscado de novo.
+  const cacheKey = `strong:v3:${upperCode}`;
   const override = CORE_TERMS[upperCode];
   if (override) {
     return cached(cacheKey, async () => {
@@ -845,10 +869,11 @@ export async function fetchStrongEntry(code: string): Promise<StrongEntry | null
   return cached(cacheKey, async () => {
     const res = await fetch(`${API}/dictionary-definition/BDBT/${upperCode}/`);
     if (!res.ok) return null;
-    const json = (await res.json()) as { topic: string; definition: string }[];
+    const json = (await res.json()) as BollsDictHit[];
+    if (!Array.isArray(json) || json.length === 0) return null;
     const hit = json.find((d) => d.topic?.toUpperCase() === upperCode) ?? json[0];
     if (!hit) return null;
-    return parseStrongHtml(upperCode, hit.definition ?? "");
+    return buildStrongEntry(hit);
   });
 }
 
