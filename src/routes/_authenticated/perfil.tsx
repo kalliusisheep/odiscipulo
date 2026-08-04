@@ -376,7 +376,7 @@ function PerfilPage() {
         </div>
         <button
           type="button"
-          onClick={() => toast("Bíblia de Estudos chega em breve por aqui.")}
+          onClick={() => void nav({ to: "/biblia" })}
           className="card-elevated mt-3 flex w-full items-center gap-3 p-4 text-left transition-colors hover:border-primary/40"
         >
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">

@@ -25,6 +25,7 @@ import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as AuthenticatedAdminPregerarNarracaoRouteImport } from './routes/_authenticated/admin.pregerar-narracao'
 import { Route as AuthenticatedAdminPregerarTextosRouteImport } from './routes/_authenticated/admin.pregerar-textos'
 import { Route as AuthenticatedBibliaIndexRouteImport } from './routes/_authenticated/biblia.index'
+import { Route as AuthenticatedBibliaMarcadosRouteImport } from './routes/_authenticated/biblia.marcados'
 import { Route as AuthenticatedEstudosIndexRouteImport } from './routes/_authenticated/estudos.index'
 import { Route as AuthenticatedLicaoIdRouteImport } from './routes/_authenticated/licao.$id'
 import { Route as AuthenticatedLiderArvoreRouteImport } from './routes/_authenticated/lider_.arvore'
@@ -124,6 +125,12 @@ const AuthenticatedBibliaIndexRoute =
   AuthenticatedBibliaIndexRouteImport.update({
     id: '/biblia/',
     path: '/biblia/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedBibliaMarcadosRoute =
+  AuthenticatedBibliaMarcadosRouteImport.update({
+    id: '/biblia/marcados',
+    path: '/biblia/marcados',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedEstudosIndexRoute =
@@ -234,6 +241,7 @@ export interface FileRoutesByFullPath {
   '/api/tts': typeof ApiTtsRoute
   '/admin/pregerar-narracao': typeof AuthenticatedAdminPregerarNarracaoRoute
   '/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
+  '/biblia/marcados': typeof AuthenticatedBibliaMarcadosRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/lider/arvore': typeof AuthenticatedLiderArvoreRoute
   '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
@@ -267,6 +275,7 @@ export interface FileRoutesByTo {
   '/api/tts': typeof ApiTtsRoute
   '/admin/pregerar-narracao': typeof AuthenticatedAdminPregerarNarracaoRoute
   '/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
+  '/biblia/marcados': typeof AuthenticatedBibliaMarcadosRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/lider/arvore': typeof AuthenticatedLiderArvoreRoute
   '/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
@@ -302,6 +311,7 @@ export interface FileRoutesById {
   '/api/tts': typeof ApiTtsRoute
   '/_authenticated/admin/pregerar-narracao': typeof AuthenticatedAdminPregerarNarracaoRoute
   '/_authenticated/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
+  '/_authenticated/biblia/marcados': typeof AuthenticatedBibliaMarcadosRoute
   '/_authenticated/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/_authenticated/lider_/arvore': typeof AuthenticatedLiderArvoreRoute
   '/_authenticated/mensagens/$username': typeof AuthenticatedMensagensUsernameRoute
@@ -337,6 +347,7 @@ export interface FileRouteTypes {
     | '/api/tts'
     | '/admin/pregerar-narracao'
     | '/admin/pregerar-textos'
+    | '/biblia/marcados'
     | '/licao/$id'
     | '/lider/arvore'
     | '/mensagens/$username'
@@ -370,6 +381,7 @@ export interface FileRouteTypes {
     | '/api/tts'
     | '/admin/pregerar-narracao'
     | '/admin/pregerar-textos'
+    | '/biblia/marcados'
     | '/licao/$id'
     | '/lider/arvore'
     | '/mensagens/$username'
@@ -404,6 +416,7 @@ export interface FileRouteTypes {
     | '/api/tts'
     | '/_authenticated/admin/pregerar-narracao'
     | '/_authenticated/admin/pregerar-textos'
+    | '/_authenticated/biblia/marcados'
     | '/_authenticated/licao/$id'
     | '/_authenticated/lider_/arvore'
     | '/_authenticated/mensagens/$username'
@@ -544,6 +557,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBibliaIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/biblia/marcados': {
+      id: '/_authenticated/biblia/marcados'
+      path: '/biblia/marcados'
+      fullPath: '/biblia/marcados'
+      preLoaderRoute: typeof AuthenticatedBibliaMarcadosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/estudos/': {
       id: '/_authenticated/estudos/'
       path: '/estudos'
@@ -671,6 +691,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRankingDetalhesRoute: typeof AuthenticatedRankingDetalhesRoute
   AuthenticatedAdminPregerarNarracaoRoute: typeof AuthenticatedAdminPregerarNarracaoRoute
   AuthenticatedAdminPregerarTextosRoute: typeof AuthenticatedAdminPregerarTextosRoute
+  AuthenticatedBibliaMarcadosRoute: typeof AuthenticatedBibliaMarcadosRoute
   AuthenticatedLicaoIdRoute: typeof AuthenticatedLicaoIdRoute
   AuthenticatedLiderArvoreRoute: typeof AuthenticatedLiderArvoreRoute
   AuthenticatedMensagensUsernameRoute: typeof AuthenticatedMensagensUsernameRoute
@@ -703,6 +724,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminPregerarNarracaoRoute:
     AuthenticatedAdminPregerarNarracaoRoute,
   AuthenticatedAdminPregerarTextosRoute: AuthenticatedAdminPregerarTextosRoute,
+  AuthenticatedBibliaMarcadosRoute: AuthenticatedBibliaMarcadosRoute,
   AuthenticatedLicaoIdRoute: AuthenticatedLicaoIdRoute,
   AuthenticatedLiderArvoreRoute: AuthenticatedLiderArvoreRoute,
   AuthenticatedMensagensUsernameRoute: AuthenticatedMensagensUsernameRoute,
