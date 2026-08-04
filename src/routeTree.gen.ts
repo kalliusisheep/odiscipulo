@@ -40,6 +40,7 @@ import { Route as AuthenticatedEstudosBiblicoIdRouteImport } from './routes/_aut
 import { Route as AuthenticatedEstudosMeditacaoIdRouteImport } from './routes/_authenticated/estudos.meditacao.$id'
 import { Route as AuthenticatedEstudosPlanoIdRouteImport } from './routes/_authenticated/estudos.plano.$id'
 import { Route as AuthenticatedLicaoIdAprofundarRouteImport } from './routes/_authenticated/licao.$id_.aprofundar'
+import { Route as AuthenticatedBibliaEstudoBookChapterVerseRouteImport } from './routes/_authenticated/biblia.estudo.$book.$chapter.$verse'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -211,6 +212,12 @@ const AuthenticatedLicaoIdAprofundarRoute =
     path: '/licao/$id/aprofundar',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedBibliaEstudoBookChapterVerseRoute =
+  AuthenticatedBibliaEstudoBookChapterVerseRouteImport.update({
+    id: '/biblia/estudo/$book/$chapter/$verse',
+    path: '/biblia/estudo/$book/$chapter/$verse',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -243,6 +250,7 @@ export interface FileRoutesByFullPath {
   '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
   '/licao/$id/aprofundar': typeof AuthenticatedLicaoIdAprofundarRoute
+  '/biblia/estudo/$book/$chapter/$verse': typeof AuthenticatedBibliaEstudoBookChapterVerseRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -275,6 +283,7 @@ export interface FileRoutesByTo {
   '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
   '/licao/$id/aprofundar': typeof AuthenticatedLicaoIdAprofundarRoute
+  '/biblia/estudo/$book/$chapter/$verse': typeof AuthenticatedBibliaEstudoBookChapterVerseRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -309,6 +318,7 @@ export interface FileRoutesById {
   '/_authenticated/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/_authenticated/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
   '/_authenticated/licao/$id_/aprofundar': typeof AuthenticatedLicaoIdAprofundarRoute
+  '/_authenticated/biblia/estudo/$book/$chapter/$verse': typeof AuthenticatedBibliaEstudoBookChapterVerseRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -343,6 +353,7 @@ export interface FileRouteTypes {
     | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
     | '/licao/$id/aprofundar'
+    | '/biblia/estudo/$book/$chapter/$verse'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -375,6 +386,7 @@ export interface FileRouteTypes {
     | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
     | '/licao/$id/aprofundar'
+    | '/biblia/estudo/$book/$chapter/$verse'
   id:
     | '__root__'
     | '/'
@@ -408,6 +420,7 @@ export interface FileRouteTypes {
     | '/_authenticated/estudos/meditacao/$id'
     | '/_authenticated/estudos/plano/$id'
     | '/_authenticated/licao/$id_/aprofundar'
+    | '/_authenticated/biblia/estudo/$book/$chapter/$verse'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -636,6 +649,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLicaoIdAprofundarRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/biblia/estudo/$book/$chapter/$verse': {
+      id: '/_authenticated/biblia/estudo/$book/$chapter/$verse'
+      path: '/biblia/estudo/$book/$chapter/$verse'
+      fullPath: '/biblia/estudo/$book/$chapter/$verse'
+      preLoaderRoute: typeof AuthenticatedBibliaEstudoBookChapterVerseRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -667,6 +687,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedEstudosMeditacaoIdRoute: typeof AuthenticatedEstudosMeditacaoIdRoute
   AuthenticatedEstudosPlanoIdRoute: typeof AuthenticatedEstudosPlanoIdRoute
   AuthenticatedLicaoIdAprofundarRoute: typeof AuthenticatedLicaoIdAprofundarRoute
+  AuthenticatedBibliaEstudoBookChapterVerseRoute: typeof AuthenticatedBibliaEstudoBookChapterVerseRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -698,6 +719,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedEstudosMeditacaoIdRoute: AuthenticatedEstudosMeditacaoIdRoute,
   AuthenticatedEstudosPlanoIdRoute: AuthenticatedEstudosPlanoIdRoute,
   AuthenticatedLicaoIdAprofundarRoute: AuthenticatedLicaoIdAprofundarRoute,
+  AuthenticatedBibliaEstudoBookChapterVerseRoute:
+    AuthenticatedBibliaEstudoBookChapterVerseRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
