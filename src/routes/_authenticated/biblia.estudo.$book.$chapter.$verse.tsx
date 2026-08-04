@@ -9,6 +9,7 @@ import {
   fetchStrongEntries,
   loadOccurrences,
   originalTranslationFor,
+  translateStrongEntries,
   translationByCode,
   type OriginalWord,
   type StrongEntry,
@@ -34,9 +35,15 @@ export const Route = createFileRoute("/_authenticated/biblia/estudo/$book/$chapt
   head: () => ({
     meta: [
       { title: "Estudo do versículo — Disciple" },
-      { name: "description", content: "Grego, hebraico, interlinear, léxico e referências cruzadas do versículo." },
+      {
+        name: "description",
+        content: "Grego, hebraico, interlinear, léxico e referências cruzadas do versículo.",
+      },
       { property: "og:title", content: "Estudo do versículo — Disciple" },
-      { property: "og:description", content: "Estude o versículo nas línguas originais com fontes acadêmicas." },
+      {
+        property: "og:description",
+        content: "Estude o versículo nas línguas originais com fontes acadêmicas.",
+      },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -77,7 +84,12 @@ function VerseStudy() {
     fetchOriginalVerse(book, chapter, verse)
       .then(async (w) => {
         setWords(w);
-        if (w) setEntries(await fetchStrongEntries(w.map((x) => x.strong).filter(Boolean) as string[]));
+        if (w) {
+          const codes = w.map((x) => x.strong).filter(Boolean) as string[];
+          const raw = await fetchStrongEntries(codes);
+          setEntries(raw);
+          void translateStrongEntries(raw).then(setEntries);
+        }
       })
       .catch(() => setOrigError(true));
   }, [translation, book, chapter, verse]);
@@ -86,7 +98,11 @@ function VerseStudy() {
     if (!words) return null;
     const strongs = words.map((w) => w.strong).filter(Boolean) as string[];
     const verbs = strongs.filter((s) => /verb/i.test(entries[s]?.partOfSpeech ?? ""));
-    return { count: words.length, strongs: Array.from(new Set(strongs)), verbs: Array.from(new Set(verbs)) };
+    return {
+      count: words.length,
+      strongs: Array.from(new Set(strongs)),
+      verbs: Array.from(new Set(verbs)),
+    };
   }, [words, entries]);
 
   const speak = (word: string) => {
@@ -115,7 +131,9 @@ function VerseStudy() {
             <h1 className="truncate text-lg font-bold">
               {bookNameById(book)} {chapter}:{verse}
             </h1>
-            <p className="text-[11px] text-muted-foreground">{translationByCode(translation).full}</p>
+            <p className="text-[11px] text-muted-foreground">
+              {translationByCode(translation).full}
+            </p>
           </div>
         </div>
 
@@ -167,7 +185,10 @@ function VerseStudy() {
                 {words.map((w) => w.word).join(" ")}
               </p>
               <p className="border-t border-border pt-3 text-[11px] text-muted-foreground">
-                Fonte: {lang === "grego" ? "Tischendorf 8ª ed. com Strong" : "Westminster Leningrad Codex com Strong"}
+                Fonte:{" "}
+                {lang === "grego"
+                  ? "Tischendorf 8ª ed. com Strong"
+                  : "Westminster Leningrad Codex com Strong"}
               </p>
             </div>
           )}
@@ -225,11 +246,14 @@ function VerseStudy() {
                   >
                     <div className="min-w-0 flex-1">
                       <p className="ancient-text text-lg text-ancient">{w.word}</p>
-                      <p className="text-xs text-muted-foreground">{e?.transliteration ?? UNAVAILABLE}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {e?.transliteration ?? UNAVAILABLE}
+                      </p>
                       <p className="mt-1 text-sm">{e?.meaning ?? UNAVAILABLE}</p>
                       <p className="mt-1 text-[11px] text-primary">Strong {w.strong ?? "—"}</p>
                       <p className="text-[11px] text-muted-foreground">
-                        Pronúncia (aprox. pt-BR): {approximatePtBr(e?.transliteration ?? null) ?? "—"}
+                        Pronúncia (aprox. pt-BR):{" "}
+                        {approximatePtBr(e?.transliteration ?? null) ?? "—"}
                       </p>
                     </div>
                     <span
@@ -253,10 +277,12 @@ function VerseStudy() {
                   </p>
                   <p>Palavras no original: {analysis.count}</p>
                   <p>Verbos identificados: {analysis.verbs.join(", ") || UNAVAILABLE}</p>
-                  <p className="break-words">Números de Strong: {analysis.strongs.join(", ") || UNAVAILABLE}</p>
+                  <p className="break-words">
+                    Números de Strong: {analysis.strongs.join(", ") || UNAVAILABLE}
+                  </p>
                   <p className="text-[11px] text-muted-foreground">
-                    Dados extraídos diretamente do texto original anotado. Morfologia completa não consta
-                    nesta base.
+                    Dados extraídos diretamente do texto original anotado. Morfologia completa não
+                    consta nesta base.
                   </p>
                 </div>
               )}
@@ -278,7 +304,9 @@ function VerseStudy() {
                 </Link>
               ))}
               {xrefs.length > 0 && (
-                <p className="pt-2 text-[11px] text-muted-foreground">Fonte: openbible.info (CC-BY).</p>
+                <p className="pt-2 text-[11px] text-muted-foreground">
+                  Fonte: openbible.info (CC-BY).
+                </p>
               )}
             </div>
           )}
@@ -291,7 +319,8 @@ function VerseStudy() {
               {Object.values(entries).map((e) => (
                 <details key={e.code} className="card-elevated p-4">
                   <summary className="cursor-pointer text-sm font-semibold">
-                    <span className="ancient-text text-ancient">{e.original ?? e.code}</span> · {e.code}
+                    <span className="ancient-text text-ancient">{e.original ?? e.code}</span> ·{" "}
+                    {e.code}
                   </summary>
                   <div className="mt-2 space-y-1 text-sm text-foreground/85">
                     <p className="text-xs text-muted-foreground">
@@ -303,9 +332,10 @@ function VerseStudy() {
                       <p className="text-muted-foreground">{UNAVAILABLE}</p>
                     )}
                     <p className="pt-2 text-[11px] text-muted-foreground">
-                      Definições traduzidas automaticamente para português a partir da fonte acadêmica em
-                      inglês (BDB/Thayer) — o léxico não tem edição oficial em português. A tradução
-                      automática pode conter imprecisões; classe gramatical e origem foram revisadas.
+                      Definições traduzidas automaticamente para português a partir da fonte
+                      acadêmica em inglês (BDB/Thayer) — o léxico não tem edição oficial em
+                      português. A tradução automática pode conter imprecisões; classe gramatical e
+                      origem foram revisadas.
                     </p>
                     <p className="text-[11px] text-muted-foreground">
                       Fonte: Brown-Driver-Briggs / Thayer (concordância de Strong).
@@ -319,7 +349,10 @@ function VerseStudy() {
       </div>
 
       <Sheet open={!!openWord} onOpenChange={(o) => !o && setOpenWord(null)}>
-        <SheetContent side="bottom" className="max-h-[85vh] overflow-y-auto rounded-t-3xl bg-background">
+        <SheetContent
+          side="bottom"
+          className="max-h-[85vh] overflow-y-auto rounded-t-3xl bg-background"
+        >
           {openWord && (
             <WordDetail
               word={openWord}
@@ -348,7 +381,10 @@ function WordDetail({
   const rows: [string, string][] = [
     ["Transliteração", entry?.transliteration ?? UNAVAILABLE],
     ["Fonética (Strong)", entry?.phonetic ?? UNAVAILABLE],
-    ["Pronúncia aproximada em pt-BR", approximatePtBr(entry?.transliteration ?? null) ?? UNAVAILABLE],
+    [
+      "Pronúncia aproximada em pt-BR",
+      approximatePtBr(entry?.transliteration ?? null) ?? UNAVAILABLE,
+    ],
     ["Número de Strong", word.strong ?? UNAVAILABLE],
     ["Significado", entry?.meaning ?? UNAVAILABLE],
     ["Classe gramatical", entry?.partOfSpeech ?? UNAVAILABLE],
@@ -356,11 +392,15 @@ function WordDetail({
     ["Ocorrências na Escritura", occurrence ? String(occurrence.c) : UNAVAILABLE],
     [
       "Primeira ocorrência",
-      occurrence ? `${bookNameById(occurrence.f[0])} ${occurrence.f[1]}:${occurrence.f[2]}` : UNAVAILABLE,
+      occurrence
+        ? `${bookNameById(occurrence.f[0])} ${occurrence.f[1]}:${occurrence.f[2]}`
+        : UNAVAILABLE,
     ],
     [
       "Última ocorrência",
-      occurrence ? `${bookNameById(occurrence.l[0])} ${occurrence.l[1]}:${occurrence.l[2]}` : UNAVAILABLE,
+      occurrence
+        ? `${bookNameById(occurrence.l[0])} ${occurrence.l[1]}:${occurrence.l[2]}`
+        : UNAVAILABLE,
     ],
   ];
 
@@ -386,7 +426,9 @@ function WordDetail({
       <div className="card-elevated mt-4 divide-y divide-border overflow-hidden p-0">
         {rows.map(([k, v]) => (
           <div key={k} className="px-4 py-3">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary/80">{k}</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary/80">
+              {k}
+            </p>
             <p className="mt-0.5 text-sm leading-snug text-foreground/90">{v}</p>
           </div>
         ))}
@@ -402,8 +444,8 @@ function WordDetail({
               ))}
             </div>
             <p className="mt-2 text-[11px] leading-snug text-muted-foreground">
-              Traduzido automaticamente do inglês (BDB/Thayer, sem edição oficial em português) — pode
-              conter imprecisões.
+              Traduzido automaticamente do inglês (BDB/Thayer, sem edição oficial em português) —
+              pode conter imprecisões.
             </p>
           </div>
         )}

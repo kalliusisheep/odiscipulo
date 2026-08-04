@@ -17,6 +17,8 @@
 // Se um dado não existir na fonte, a interface informa que está indisponível.
 // Nenhuma informação bíblica é inventada, estimada ou completada por IA.
 
+import { supabase } from "@/integrations/supabase/client";
+
 const API = "https://bolls.life";
 
 export type PtTranslation = {
@@ -265,10 +267,10 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     phonetic: "yeh-ho-vaw'",
     partOfSpeech: "Nome próprio",
     meaning:
-      "SENHOR — o nome pessoal e próprio de Deus, revelado a Israel (Êx 3.14-15); geralmente vertido como \"SENHOR\" em versalete nas traduções em português",
+      'SENHOR — o nome pessoal e próprio de Deus, revelado a Israel (Êx 3.14-15); geralmente vertido como "SENHOR" em versalete nas traduções em português',
     definitions: [
-      "SENHOR — o nome próprio e pessoal do Deus de Israel, ligado ao verbo \"ser/existir\" (Êx 3.14)",
-      "forma reverencial: por tradição judaica, lido em voz alta como \"Adonai\" para evitar pronunciar o Nome diretamente",
+      'SENHOR — o nome próprio e pessoal do Deus de Israel, ligado ao verbo "ser/existir" (Êx 3.14)',
+      'forma reverencial: por tradição judaica, lido em voz alta como "Adonai" para evitar pronunciar o Nome diretamente',
     ],
   },
   H136: {
@@ -276,7 +278,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Adonai",
     phonetic: "ad-o-noy'",
     partOfSpeech: "Substantivo masculino, forma plural (uso como título)",
-    meaning: "Senhor, Soberano — título de domínio e autoridade, usado como forma de tratamento para Deus",
+    meaning:
+      "Senhor, Soberano — título de domínio e autoridade, usado como forma de tratamento para Deus",
     definitions: [
       "Senhor, Soberano — título de autoridade e domínio aplicado a Deus",
       "senhor, dono, superior — usado também para autoridades humanas (uso secundário)",
@@ -287,7 +290,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Ruach",
     phonetic: "roo'-akh",
     partOfSpeech: "Substantivo comum (masculino/feminino)",
-    meaning: "Espírito, vento, fôlego — o sopro vital; usado para o Espírito de Deus, o espírito humano e o vento",
+    meaning:
+      "Espírito, vento, fôlego — o sopro vital; usado para o Espírito de Deus, o espírito humano e o vento",
     definitions: [
       "espírito — o Espírito de Deus, ou o espírito/fôlego de vida no ser humano",
       "vento, sopro — movimento de ar (uso literal, frequente em contextos não teológicos)",
@@ -298,7 +302,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Chesed",
     phonetic: "kheh'-sed",
     partOfSpeech: "Substantivo masculino",
-    meaning: "Benignidade aliançeira, misericórdia leal — o amor fiel de Deus que sustenta a aliança com o Seu povo",
+    meaning:
+      "Benignidade aliançeira, misericórdia leal — o amor fiel de Deus que sustenta a aliança com o Seu povo",
     definitions: [
       "benignidade, bondade leal e fiel — especialmente a fidelidade de Deus à Sua aliança",
       "misericórdia, favor — bondade demonstrada entre pessoas, dentro de um vínculo de lealdade",
@@ -320,7 +325,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Berith",
     phonetic: "ber-eeth'",
     partOfSpeech: "Substantivo feminino",
-    meaning: "Aliança, pacto — compromisso solene, geralmente selado por juramento ou sinal, entre Deus e o Seu povo (ou entre pessoas)",
+    meaning:
+      "Aliança, pacto — compromisso solene, geralmente selado por juramento ou sinal, entre Deus e o Seu povo (ou entre pessoas)",
     definitions: [
       "aliança, pacto — compromisso solene entre Deus e o Seu povo",
       "acordo, tratado — pacto formal entre pessoas ou nações (uso secundário)",
@@ -342,7 +348,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Torah",
     phonetic: "to-raw'",
     partOfSpeech: "Substantivo feminino",
-    meaning: "Lei, instrução — o ensino divino; refere-se tanto à Lei de Moisés quanto à instrução em sentido amplo",
+    meaning:
+      "Lei, instrução — o ensino divino; refere-se tanto à Lei de Moisés quanto à instrução em sentido amplo",
     definitions: [
       "lei — a Lei de Moisés, o corpo de mandamentos dados por Deus a Israel",
       "instrução, ensino — orientação ou direção dada (uso mais amplo, não exclusivamente legal)",
@@ -364,7 +371,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Mashiach",
     phonetic: "maw-shee'-akh",
     partOfSpeech: "Substantivo masculino",
-    meaning: "Ungido, Messias — aquele consagrado por unção; título messiânico do libertador prometido",
+    meaning:
+      "Ungido, Messias — aquele consagrado por unção; título messiânico do libertador prometido",
     definitions: [
       "ungido — pessoa consagrada por unção com óleo (rei, sacerdote ou profeta)",
       "Messias — o Ungido prometido, o libertador escatológico (sentido que se desenvolve ao longo do AT)",
@@ -375,7 +383,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Lev",
     phonetic: "labe",
     partOfSpeech: "Substantivo masculino",
-    meaning: "Coração — sede da mente, da vontade e das emoções (não apenas do sentimento, como em português)",
+    meaning:
+      "Coração — sede da mente, da vontade e das emoções (não apenas do sentimento, como em português)",
     definitions: [
       "coração — sede da mente, vontade, intenção e emoção",
       "interior, âmago — o centro íntimo da pessoa (uso figurado mais amplo)",
@@ -386,7 +395,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Nephesh",
     phonetic: "neh'-fesh",
     partOfSpeech: "Substantivo feminino",
-    meaning: "Alma, ser vivo — a pessoa viva como um todo (corpo e vida), não uma alma imaterial separada do corpo",
+    meaning:
+      "Alma, ser vivo — a pessoa viva como um todo (corpo e vida), não uma alma imaterial separada do corpo",
     definitions: [
       "alma, ser vivo — a pessoa como um todo animado pelo fôlego de vida",
       "vida, apetite, desejo — usado também para a vida física ou para desejos/apetites (usos secundários)",
@@ -400,7 +410,7 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     meaning: "Casa — a habitação; por extensão, família, linhagem ou dinastia",
     definitions: [
       "casa — a construção onde se habita",
-      "família, casa (linhagem) — descendência ou dinastia (uso figurado, ex.: \"casa de Davi\")",
+      'família, casa (linhagem) — descendência ou dinastia (uso figurado, ex.: "casa de Davi")',
     ],
   },
   H776: {
@@ -411,7 +421,7 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     meaning: "Terra — o planeta, o solo, ou um território/país específico, conforme o contexto",
     definitions: [
       "terra — o mundo, o solo, a superfície terrestre",
-      "país, território — uma região ou nação específica (ex.: \"terra de Canaã\")",
+      'país, território — uma região ou nação específica (ex.: "terra de Canaã")',
     ],
   },
   H1288: {
@@ -419,7 +429,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Barak",
     phonetic: "baw-rak'",
     partOfSpeech: "Verbo",
-    meaning: "Abençoar — invocar o favor de Deus sobre alguém; também usado no sentido de louvar a Deus",
+    meaning:
+      "Abençoar — invocar o favor de Deus sobre alguém; também usado no sentido de louvar a Deus",
     definitions: [
       "abençoar — invocar ou conceder favor e bem sobre alguém",
       "louvar, bendizer — ajoelhar-se diante de Deus em adoração (uso relacionado)",
@@ -463,10 +474,11 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Yom",
     phonetic: "yome",
     partOfSpeech: "Substantivo masculino",
-    meaning: "Dia — período de 24 horas, o período de luz, ou um tempo/época em sentido mais amplo, conforme o contexto",
+    meaning:
+      "Dia — período de 24 horas, o período de luz, ou um tempo/época em sentido mais amplo, conforme o contexto",
     definitions: [
       "dia — período de vinte e quatro horas, ou o período de luz do dia",
-      "tempo, época — período indefinido ou momento específico (ex.: \"o Dia do SENHOR\")",
+      'tempo, época — período indefinido ou momento específico (ex.: "o Dia do SENHOR")',
     ],
   },
 
@@ -476,7 +488,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Theos",
     phonetic: "theh'-os",
     partOfSpeech: "Substantivo masculino",
-    meaning: "Deus — a Divindade suprema; no Novo Testamento, usado tanto para o Pai como, em contextos específicos, para Cristo",
+    meaning:
+      "Deus — a Divindade suprema; no Novo Testamento, usado tanto para o Pai como, em contextos específicos, para Cristo",
     definitions: [
       "Deus — a Divindade suprema, o único Deus verdadeiro",
       "deus, divindade — usado também, em sentido secundário, para falsas divindades pagãs",
@@ -487,7 +500,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Kyrios",
     phonetic: "koo'-ree-os",
     partOfSpeech: "Substantivo masculino",
-    meaning: "Senhor — título de autoridade e domínio; no NT, aplicado a Deus e, centralmente, a Jesus Cristo",
+    meaning:
+      "Senhor — título de autoridade e domínio; no NT, aplicado a Deus e, centralmente, a Jesus Cristo",
     definitions: [
       "Senhor — título de soberania aplicado a Deus e a Jesus Cristo",
       "senhor, dono, mestre — forma de tratamento respeitoso usada também para pessoas (uso secundário)",
@@ -498,10 +512,11 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Christos",
     phonetic: "khris-tos'",
     partOfSpeech: "Substantivo masculino (nome/título)",
-    meaning: "Cristo, Ungido — tradução grega do hebraico Mashiach (Messias); título de Jesus como o Ungido de Deus",
+    meaning:
+      "Cristo, Ungido — tradução grega do hebraico Mashiach (Messias); título de Jesus como o Ungido de Deus",
     definitions: [
       "Cristo, Ungido — o Messias prometido, título central de Jesus no Novo Testamento",
-      "usado também como parte do nome próprio \"Jesus Cristo\" (uso onomástico)",
+      'usado também como parte do nome próprio "Jesus Cristo" (uso onomástico)',
     ],
   },
   G2424: {
@@ -509,7 +524,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Iesous",
     phonetic: "ee-ay-sooce'",
     partOfSpeech: "Substantivo masculino (nome próprio)",
-    meaning: "Jesus — forma grega do nome hebraico Yeshua (\"o SENHOR salva\"); nome próprio do Filho de Deus",
+    meaning:
+      'Jesus — forma grega do nome hebraico Yeshua ("o SENHOR salva"); nome próprio do Filho de Deus',
     definitions: [
       "Jesus — nome próprio do Filho de Deus, forma grega de Yeshua/Josué",
       "usado também, poucas vezes, para outras pessoas de nome Josué/Jesus no NT (uso secundário e raro)",
@@ -531,7 +547,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Logos",
     phonetic: "log'-os",
     partOfSpeech: "Substantivo masculino",
-    meaning: "Palavra, Verbo — a palavra falada ou a mensagem; em João 1, título de Cristo como a Palavra eterna de Deus",
+    meaning:
+      "Palavra, Verbo — a palavra falada ou a mensagem; em João 1, título de Cristo como a Palavra eterna de Deus",
     definitions: [
       "palavra, mensagem, discurso — aquilo que é dito ou comunicado",
       "Verbo (Logos) — título cristológico de Jesus como a expressão eterna de Deus (Jo 1.1, uso teológico específico)",
@@ -542,7 +559,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Agape",
     phonetic: "ag-ah'-pay",
     partOfSpeech: "Substantivo feminino",
-    meaning: "Amor — o amor de doação e benevolência, característico do amor de Deus e do amor cristão",
+    meaning:
+      "Amor — o amor de doação e benevolência, característico do amor de Deus e do amor cristão",
     definitions: [
       "amor — afeição benevolente e sacrificial, especialmente o amor de Deus",
       "amor fraternal — o amor demonstrado entre os cristãos (uso relacional secundário)",
@@ -556,7 +574,7 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     meaning: "Graça — favor imerecido; a benevolência gratuita de Deus para com o ser humano",
     definitions: [
       "graça — favor gratuito e imerecido de Deus",
-      "graciosidade, agrado — qualidade que desperta favor; também usado como \"agradecimento\" (usos secundários)",
+      'graciosidade, agrado — qualidade que desperta favor; também usado como "agradecimento" (usos secundários)',
     ],
   },
   G4102: {
@@ -586,7 +604,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Ekklesia",
     phonetic: "ek-klay-see'-ah",
     partOfSpeech: "Substantivo feminino",
-    meaning: "Igreja, assembleia — a comunidade dos convocados por Deus; a Igreja local ou universal",
+    meaning:
+      "Igreja, assembleia — a comunidade dos convocados por Deus; a Igreja local ou universal",
     definitions: [
       "igreja — a comunidade dos crentes convocados por Deus, local ou universal",
       "assembleia — reunião ou ajuntamento de pessoas em sentido geral, não necessariamente religioso (uso secundário)",
@@ -608,7 +627,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Soteria",
     phonetic: "so-tay-ree'-ah",
     partOfSpeech: "Substantivo feminino",
-    meaning: "Salvação — o livramento operado por Deus por meio de Cristo, do pecado e de suas consequências",
+    meaning:
+      "Salvação — o livramento operado por Deus por meio de Cristo, do pecado e de suas consequências",
     definitions: [
       "salvação — o livramento espiritual e eterno operado por Deus em Cristo",
       "livramento, preservação — libertação de perigo ou dano físico (uso concreto secundário)",
@@ -619,10 +639,10 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Hamartia",
     phonetic: "ham-ar-tee'-ah",
     partOfSpeech: "Substantivo feminino",
-    meaning: "Pecado — literalmente \"errar o alvo\"; transgressão da vontade de Deus",
+    meaning: 'Pecado — literalmente "errar o alvo"; transgressão da vontade de Deus',
     definitions: [
       "pecado — transgressão ou falta em relação à vontade de Deus",
-      "erro, falta — sentido mais literal de \"errar o alvo\" (uso etimológico)",
+      'erro, falta — sentido mais literal de "errar o alvo" (uso etimológico)',
     ],
   },
   G1343: {
@@ -630,7 +650,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Dikaiosyne",
     phonetic: "dik-ah-yos-oo'-nay",
     partOfSpeech: "Substantivo feminino",
-    meaning: "Justiça — retidão diante de Deus; no NT, também a justiça que vem de Deus pela fé em Cristo",
+    meaning:
+      "Justiça — retidão diante de Deus; no NT, também a justiça que vem de Deus pela fé em Cristo",
     definitions: [
       "justiça — retidão de caráter e de conduta diante de Deus",
       "justificação — o estado de ser declarado justo por Deus mediante a fé (uso teológico paulino)",
@@ -641,7 +662,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Homologeo",
     phonetic: "hom-ol-og-eh'-o",
     partOfSpeech: "Verbo",
-    meaning: "Confessar — declarar publicamente e de acordo com a verdade; confessar a fé em Cristo",
+    meaning:
+      "Confessar — declarar publicamente e de acordo com a verdade; confessar a fé em Cristo",
     definitions: [
       "confessar — declarar publicamente a fé ou a verdade sobre algo",
       "reconhecer, admitir — concordar publicamente com um fato (uso mais geral)",
@@ -652,7 +674,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Metanoia",
     phonetic: "met-an'-oy-ah",
     partOfSpeech: "Substantivo feminino",
-    meaning: "Arrependimento — mudança de mente e de rumo de vida, afastando-se do pecado e voltando-se para Deus",
+    meaning:
+      "Arrependimento — mudança de mente e de rumo de vida, afastando-se do pecado e voltando-se para Deus",
     definitions: [
       "arrependimento — mudança interior de mente e de direção de vida diante de Deus",
       "mudança de pensamento — sentido etimológico mais amplo, não restrito ao contexto religioso",
@@ -674,7 +697,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Diatheke",
     phonetic: "dee-ath-ay'-kay",
     partOfSpeech: "Substantivo feminino",
-    meaning: "Aliança, testamento — pacto solene; no NT, especialmente a nova aliança selada por Cristo",
+    meaning:
+      "Aliança, testamento — pacto solene; no NT, especialmente a nova aliança selada por Cristo",
     definitions: [
       "aliança, pacto — compromisso solene entre Deus e o Seu povo",
       "testamento — disposição de última vontade (sentido jurídico grego, uso secundário)",
@@ -696,10 +720,11 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Kosmos",
     phonetic: "kos'-mos",
     partOfSpeech: "Substantivo masculino",
-    meaning: "Mundo — a ordem criada, a humanidade, ou o sistema de valores opostos a Deus, conforme o contexto",
+    meaning:
+      "Mundo — a ordem criada, a humanidade, ou o sistema de valores opostos a Deus, conforme o contexto",
     definitions: [
       "mundo — a criação, a humanidade ou a ordem mundial",
-      "ornamento, arranjo — sentido original de \"ordem/beleza\" (uso etimológico secundário)",
+      'ornamento, arranjo — sentido original de "ordem/beleza" (uso etimológico secundário)',
     ],
   },
   G40: {
@@ -707,7 +732,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Hagios",
     phonetic: "hag'-ee-os",
     partOfSpeech: "Adjetivo",
-    meaning: "Santo — separado para Deus, puro; usado para o Espírito Santo, para Deus e para os crentes",
+    meaning:
+      "Santo — separado para Deus, puro; usado para o Espírito Santo, para Deus e para os crentes",
     definitions: [
       "santo — separado para Deus, consagrado, moralmente puro",
       "santos (substantivado) — os crentes, o povo consagrado de Deus (uso substantivado comum no NT)",
@@ -718,7 +744,8 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Angelos",
     phonetic: "ang'-el-os",
     partOfSpeech: "Substantivo masculino",
-    meaning: "Anjo, mensageiro — ser espiritual enviado por Deus; também usado para mensageiros humanos",
+    meaning:
+      "Anjo, mensageiro — ser espiritual enviado por Deus; também usado para mensageiros humanos",
     definitions: [
       "anjo — ser espiritual celestial enviado por Deus como mensageiro",
       "mensageiro — pessoa humana enviada com uma mensagem (uso secundário, mais raro)",
@@ -729,10 +756,11 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Apostolos",
     phonetic: "ap-os'-tol-os",
     partOfSpeech: "Substantivo masculino",
-    meaning: "Apóstolo — enviado com autoridade; título dos Doze e de outros enviados diretamente por Cristo",
+    meaning:
+      "Apóstolo — enviado com autoridade; título dos Doze e de outros enviados diretamente por Cristo",
     definitions: [
       "apóstolo — enviado com autoridade por Cristo, título dos Doze e de outros como Paulo",
-      "enviado, mensageiro — sentido mais geral de \"aquele que é enviado\" (uso etimológico secundário)",
+      'enviado, mensageiro — sentido mais geral de "aquele que é enviado" (uso etimológico secundário)',
     ],
   },
   G1411: {
@@ -793,7 +821,10 @@ function buildMeaning(
   // é o 2º parágrafo (já que o 1º virou o sentido principal).
   const candidates = shortDefinition ? definitions : definitions.slice(1);
   const secondary = candidates.find(
-    (d) => d.length > 0 && d.length <= SECOND_SENSE_MAX_LENGTH && d.toLowerCase() !== primary.toLowerCase(),
+    (d) =>
+      d.length > 0 &&
+      d.length <= SECOND_SENSE_MAX_LENGTH &&
+      d.toLowerCase() !== primary.toLowerCase(),
   );
   return secondary ? `${primary}; ${secondary}` : primary;
 }
@@ -885,6 +916,49 @@ export async function fetchStrongEntries(codes: string[]): Promise<Record<string
     const entry = results[i];
     if (entry) out[c] = entry;
   });
+  return out;
+}
+
+/** Traduz `meaning`, `definitions` e `strongsGloss` (léxico BDB/Thayer,
+ * originalmente em inglês) para português — cacheado para sempre por
+ * número de Strong, então cada palavra só passa pela tradução uma única
+ * vez neste dispositivo. Verbetes da lista curada (CORE_TERMS) já estão em
+ * português e não passam por aqui. */
+export async function translateStrongEntry(entry: StrongEntry): Promise<StrongEntry> {
+  if (entry.curated) return entry;
+  return cached(`xlex:v1:${entry.code}`, async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke<{
+        meaning: string | null;
+        definitions: string[];
+        strongsGloss: string | null;
+      }>("translate-lexicon", {
+        body: {
+          meaning: entry.meaning,
+          definitions: entry.definitions,
+          strongsGloss: entry.strongsGloss,
+        },
+      });
+      if (error || !data) return entry;
+      return {
+        ...entry,
+        meaning: data.meaning ?? entry.meaning,
+        definitions: data.definitions?.length ? data.definitions : entry.definitions,
+        strongsGloss: data.strongsGloss ?? entry.strongsGloss,
+      };
+    } catch {
+      return entry;
+    }
+  });
+}
+
+export async function translateStrongEntries(
+  entries: Record<string, StrongEntry>,
+): Promise<Record<string, StrongEntry>> {
+  const codes = Object.keys(entries);
+  const translated = await Promise.all(codes.map((c) => translateStrongEntry(entries[c])));
+  const out: Record<string, StrongEntry> = {};
+  codes.forEach((c, i) => (out[c] = translated[i]));
   return out;
 }
 
