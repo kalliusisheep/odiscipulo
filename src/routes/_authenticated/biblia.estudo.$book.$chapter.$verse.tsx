@@ -164,22 +164,38 @@ function VerseStudy() {
         )}
 
         {aba === "interlinear" && words && (
-          <div className="card-elevated flex flex-wrap gap-2 p-4">
-            {words.map((w) => {
-              const e = w.strong ? entries[w.strong] : null;
-              return (
-                <button
-                  key={w.index}
-                  onClick={() => setOpenWord(w)}
-                  className="min-w-[84px] flex-1 rounded-xl border border-border bg-surface p-2 text-center"
-                >
-                  <p className="ancient-text text-base text-ancient">{w.word}</p>
-                  <p className="mt-0.5 text-[10px] text-muted-foreground">{e?.transliteration ?? "—"}</p>
-                  <p className="mt-0.5 text-[11px] text-foreground/85">{e?.strongsGloss ?? "—"}</p>
-                  <p className="mt-0.5 text-[9px] text-primary">{w.strong ?? ""}</p>
-                </button>
-              );
-            })}
+          <div className="card-elevated p-4">
+            <div
+              dir={lang === "hebraico" ? "rtl" : "ltr"}
+              className={`flex gap-2.5 overflow-x-auto pb-2 ${lang === "hebraico" ? "flex-row-reverse" : "flex-row"}`}
+            >
+              {words.map((w) => {
+                const e = w.strong ? entries[w.strong] : null;
+                return (
+                  <button
+                    key={w.index}
+                    onClick={() => setOpenWord(w)}
+                    className="flex w-[92px] shrink-0 flex-col items-center gap-1 rounded-xl border border-border bg-surface px-2 py-3 text-center transition-colors hover:border-primary/40"
+                  >
+                    <span className="ancient-text text-lg leading-tight">{w.word}</span>
+                    <span className="text-[10px] italic leading-tight text-muted-foreground">
+                      {e?.transliteration ?? "—"}
+                    </span>
+                    <span className="text-[11px] leading-tight text-foreground/85">
+                      {e?.strongsGloss ?? "—"}
+                    </span>
+                    {w.strong && (
+                      <span className="mt-0.5 rounded-full bg-primary/10 px-1.5 py-0.5 text-[9px] font-semibold text-primary">
+                        {w.strong}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+            <p className="mt-3 border-t border-border pt-3 text-[11px] text-muted-foreground">
+              Deslize para o lado para ver a frase inteira · Toque em uma palavra para ver a análise completa
+            </p>
           </div>
         )}
 
@@ -274,6 +290,10 @@ function VerseStudy() {
                     <p className="text-muted-foreground">{UNAVAILABLE}</p>
                   )}
                   <p className="pt-2 text-[11px] text-muted-foreground">
+                    Definições na língua original da fonte (inglês) — BDB/Thayer não têm edição em
+                    português. Classe gramatical e origem já traduzidas.
+                  </p>
+                  <p className="text-[11px] text-muted-foreground">
                     Fonte: Brown-Driver-Briggs / Thayer (concordância de Strong).
                   </p>
                 </div>
@@ -363,6 +383,10 @@ function WordDetail({
                 <p key={i}>{d}</p>
               ))}
             </div>
+            <p className="mt-2 text-[11px] text-muted-foreground">
+              Definições na língua original da fonte (inglês) — sem edição em português do
+              BDB/Thayer.
+            </p>
           </details>
         )}
 
