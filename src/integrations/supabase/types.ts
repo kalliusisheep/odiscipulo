@@ -871,6 +871,7 @@ export type Database = {
           content_type: string
           created_at: string
           end_offset: number
+          field_key: string
           highlighted_text: string
           id: string
           start_offset: number
@@ -882,6 +883,7 @@ export type Database = {
           content_type: string
           created_at?: string
           end_offset: number
+          field_key?: string
           highlighted_text: string
           id?: string
           start_offset: number
@@ -893,6 +895,7 @@ export type Database = {
           content_type?: string
           created_at?: string
           end_offset?: number
+          field_key?: string
           highlighted_text?: string
           id?: string
           start_offset?: number
