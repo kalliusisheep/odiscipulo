@@ -189,7 +189,7 @@ function ChapterReader() {
                 }`}
               >
                 <span className="mr-1.5 align-super text-[11px] font-bold text-primary">{v.verse}</span>
-                <span className="scripture leading-relaxed" style={{ fontSize }}>
+                <span className="leading-relaxed" style={{ fontSize }}>
                   {v.text}
                 </span>
                 {favorites.includes(v.verse) && (
