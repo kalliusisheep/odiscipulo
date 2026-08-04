@@ -378,87 +378,117 @@ function WordDetail({
   occurrence?: { c: number; f: number[]; l: number[] };
   onSpeak: () => void;
 }) {
-  const rows: [string, string][] = [
-    ["Transliteração", entry?.transliteration ?? UNAVAILABLE],
-    ["Fonética (Strong)", entry?.phonetic ?? UNAVAILABLE],
-    [
-      "Pronúncia aproximada em pt-BR",
-      approximatePtBr(entry?.transliteration ?? null) ?? UNAVAILABLE,
-    ],
-    ["Número de Strong", word.strong ?? UNAVAILABLE],
-    ["Significado", entry?.meaning ?? UNAVAILABLE],
-    ["Classe gramatical", entry?.partOfSpeech ?? UNAVAILABLE],
-    ["Raiz / origem", entry?.origin ?? UNAVAILABLE],
-    ["Ocorrências na Escritura", occurrence ? String(occurrence.c) : UNAVAILABLE],
-    [
-      "Primeira ocorrência",
-      occurrence
+  // Cada item de `definitions` é um sentido/tradução possível da palavra no
+  // léxico — a maioria das palavras hebraicas/gregas tem mais de um. Se por
+  // algum motivo só existir o "significado" combinado, cai nele como único
+  // item da lista, pra nunca ficar sem nada exibido.
+  const senses = entry?.definitions?.length
+    ? entry.definitions
+    : entry?.meaning
+      ? [entry.meaning]
+      : [];
+
+  const stats: { label: string; value: string }[] = [
+    { label: "Ocorrências", value: occurrence ? String(occurrence.c) : "—" },
+    {
+      label: "1ª vez",
+      value: occurrence
         ? `${bookNameById(occurrence.f[0])} ${occurrence.f[1]}:${occurrence.f[2]}`
-        : UNAVAILABLE,
-    ],
-    [
-      "Última ocorrência",
-      occurrence
+        : "—",
+    },
+    {
+      label: "Última vez",
+      value: occurrence
         ? `${bookNameById(occurrence.l[0])} ${occurrence.l[1]}:${occurrence.l[2]}`
-        : UNAVAILABLE,
-    ],
+        : "—",
+    },
   ];
 
   return (
     <div className="pb-8">
-      <div className="flex items-center gap-3 pt-4">
+      <div className="flex items-start gap-3 pt-2">
         <div className="min-w-0 flex-1">
-          <p className="ancient-text text-2xl text-ancient">{word.word}</p>
-          <p className="text-xs text-muted-foreground">{entry?.transliteration ?? ""}</p>
+          <p className="ancient-text text-3xl leading-tight text-ancient">{word.word}</p>
+          {entry?.transliteration && (
+            <p className="mt-1 text-sm italic text-muted-foreground">{entry.transliteration}</p>
+          )}
+          {approximatePtBr(entry?.transliteration ?? null) && (
+            <p className="mt-0.5 text-xs text-muted-foreground/70">
+              soa como: {approximatePtBr(entry?.transliteration ?? null)}
+            </p>
+          )}
         </div>
         <button
           onClick={onSpeak}
           aria-label="Ouvir pronúncia"
-          className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-transform active:scale-95"
         >
           <Volume2 className="h-5 w-5" />
         </button>
       </div>
 
-      {/* Bloco único: cada linha vira uma seção separada por uma divisória
-          fina, em vez de cartões soltos — título em destaque, valor logo
-          abaixo, tudo dentro do mesmo contêiner. */}
-      <div className="card-elevated mt-4 divide-y divide-border overflow-hidden p-0">
-        {rows.map(([k, v]) => (
-          <div key={k} className="px-4 py-3">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary/80">
-              {k}
-            </p>
-            <p className="mt-0.5 text-sm leading-snug text-foreground/90">{v}</p>
-          </div>
-        ))}
+      {entry?.partOfSpeech && (
+        <span className="mt-3 inline-block rounded-full bg-surface-2 px-3 py-1 text-[11px] font-medium text-muted-foreground">
+          {entry.partOfSpeech}
+        </span>
+      )}
 
-        {entry && entry.definitions.length > 0 && (
-          <div className="px-4 py-3">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary/80">
-              Verbete do léxico
-            </p>
-            <div className="mt-1 space-y-1 text-sm leading-snug text-foreground/90">
-              {entry.definitions.map((d, i) => (
-                <p key={i}>{d}</p>
-              ))}
-            </div>
-            <p className="mt-2 text-[11px] leading-snug text-muted-foreground">
-              Traduzido automaticamente do inglês (BDB/Thayer, sem edição oficial em português) —
-              pode conter imprecisões.
-            </p>
-          </div>
+      {/* Traduções possíveis — o coração do painel. Cada sentido do léxico
+          vira um cartão numerado, em vez de uma única linha "Significado". */}
+      <div className="mt-5">
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
+          {senses.length > 1 ? "Traduções possíveis" : "Tradução"}
+        </p>
+        {senses.length > 0 ? (
+          <ol className="mt-2 space-y-2">
+            {senses.map((s, i) => (
+              <li key={i} className="flex gap-2.5 rounded-2xl bg-surface-2/70 px-3.5 py-2.5">
+                {senses.length > 1 && (
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/15 text-[11px] font-bold text-primary">
+                    {i + 1}
+                  </span>
+                )}
+                <p className="text-sm leading-snug text-foreground/90">{s}</p>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p className="mt-2 text-sm text-muted-foreground">{UNAVAILABLE}</p>
         )}
-
-        {entry && entry.related.length > 0 && (
-          <div className="px-4 py-3">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary/80">
-              Palavras relacionadas
-            </p>
-            <p className="mt-0.5 break-words text-sm text-primary">{entry.related.join(", ")}</p>
-          </div>
+        {entry && entry.definitions.length > 0 && (
+          <p className="mt-2 text-[11px] leading-snug text-muted-foreground/70">
+            Traduzido automaticamente do inglês (BDB/Thayer) — pode conter imprecisões.
+          </p>
         )}
       </div>
+
+      {/* Ocorrências — três números lado a lado, em vez de três blocos empilhados. */}
+      <div className="mt-5 grid grid-cols-3 gap-2 rounded-2xl border border-border/60 p-3">
+        {stats.map((s) => (
+          <div key={s.label} className="text-center">
+            <p className="text-sm font-semibold text-foreground">{s.value}</p>
+            <p className="mt-0.5 text-[10px] text-muted-foreground">{s.label}</p>
+          </div>
+        ))}
+      </div>
+
+      {entry && entry.related.length > 0 && (
+        <div className="mt-4">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80">
+            Palavras relacionadas
+          </p>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {entry.related.map((r) => (
+              <span
+                key={r}
+                className="rounded-full bg-surface-2 px-2.5 py-1 text-xs font-medium text-primary"
+              >
+                {r}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
