@@ -346,18 +346,18 @@ function MenuButton({
 }
 
 /**
- * Barra FIXA no rodapé da tela — não "segue" a seleção (sem cálculo de
- * getBoundingClientRect/posição), só aparece enquanto existe uma seleção
- * pendente e some quando ela é limpa. Mesmo conceito usado na barra de
- * formatação de "Minhas Notas" (NoteFormattingToolbar): posição sempre
- * igual, "congelada" no rodapé, e não fecha mais ao rolar a página — o
- * scroll simplesmente acontece por baixo dela normalmente.
+ * Barra FIXA no TOPO da tela, centralizada — não "segue" a seleção (sem
+ * cálculo de getBoundingClientRect/posição), só aparece enquanto existe
+ * uma seleção pendente e some quando ela é limpa. Mesmo conceito usado na
+ * barra de formatação de "Minhas Notas" (NoteFormattingToolbar): posição
+ * sempre igual, fixa no topo, e não fecha ao rolar a página — o scroll
+ * simplesmente acontece por baixo dela normalmente (position: fixed).
  */
 function FloatingMenu({ onClose, children }: { onClose: () => void; children: ReactNode }) {
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-popover/95 shadow-xl backdrop-blur animate-slide-up"
-      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      className="fixed inset-x-0 top-0 z-50 flex justify-center px-3 animate-in fade-in slide-in-from-top-2 duration-150"
+      style={{ paddingTop: "calc(env(safe-area-inset-top) + 0.75rem)" }}
       onMouseDown={(e) => {
         // Crítico: sem preventDefault() o navegador desfaz a seleção de
         // texto ao clicar num botão do menu (o clique "cai fora" do texto
@@ -367,12 +367,13 @@ function FloatingMenu({ onClose, children }: { onClose: () => void; children: Re
         e.stopPropagation();
       }}
     >
-      <div className="mx-auto flex max-w-lg items-center justify-between gap-1 overflow-x-auto px-3 py-2">
+      <div className="flex max-w-[calc(100vw-1.5rem)] items-center gap-1 overflow-x-auto rounded-full border border-border bg-popover/95 px-2 py-1.5 shadow-2xl shadow-black/20 backdrop-blur-md">
         <div className="flex items-center gap-1">{children}</div>
+        <div className="mx-0.5 h-5 w-px shrink-0 bg-border" />
         <button
           type="button"
           onClick={onClose}
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground"
           aria-label="Fechar"
         >
           <X className="h-4 w-4" />
