@@ -98,42 +98,45 @@ function VerseStudy() {
   const setTab = (id: TabId) => void nav({ to: ".", search: { aba: id }, replace: true });
 
   return (
-    <div className="mx-auto min-h-screen max-w-lg px-4 pt-4 pb-28 animate-slide-up">
-      <div className="flex items-center gap-2">
-        <Link
-          to="/biblia/$book/$chapter"
-          params={{ book: String(book), chapter: String(chapter) }}
-          aria-label="Voltar"
-          className="rounded-full p-2 text-muted-foreground hover:bg-surface"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </Link>
-        <div className="min-w-0">
-          <h1 className="truncate text-lg font-bold">
-            {bookNameById(book)} {chapter}:{verse}
-          </h1>
-          <p className="text-[11px] text-muted-foreground">{translationByCode(translation).full}</p>
+    <div className="mx-auto min-h-screen max-w-lg pb-28 animate-slide-up">
+      <div className="sticky top-0 z-20 border-b border-border bg-background/95 px-4 pt-4 pb-2 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+        <div className="flex items-center gap-2">
+          <Link
+            to="/biblia/$book/$chapter"
+            params={{ book: String(book), chapter: String(chapter) }}
+            aria-label="Voltar"
+            className="rounded-full p-2 text-muted-foreground hover:bg-surface"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          <div className="min-w-0">
+            <h1 className="truncate text-lg font-bold">
+              {bookNameById(book)} {chapter}:{verse}
+            </h1>
+            <p className="text-[11px] text-muted-foreground">{translationByCode(translation).full}</p>
+          </div>
+        </div>
+
+        <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              className={`shrink-0 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-all ${
+                aba === t.id
+                  ? "border-primary bg-primary/15 text-primary"
+                  : "border-border bg-surface text-muted-foreground"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
         </div>
       </div>
 
+      <div className="px-4">
       <div className="card-elevated mt-4 p-4">
         <p className="text-base leading-relaxed">{text ?? "Carregando…"}</p>
-      </div>
-
-      <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
-        {TABS.map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            className={`shrink-0 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-all ${
-              aba === t.id
-                ? "border-primary bg-primary/15 text-primary"
-                : "border-border bg-surface text-muted-foreground"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
       </div>
 
       <div className="mt-4 animate-slide-up">
@@ -164,37 +167,42 @@ function VerseStudy() {
         )}
 
         {aba === "interlinear" && words && (
-          <div className="card-elevated p-4">
-            <div
-              dir={lang === "hebraico" ? "rtl" : "ltr"}
-              className={`flex gap-2.5 overflow-x-auto pb-2 ${lang === "hebraico" ? "flex-row-reverse" : "flex-row"}`}
-            >
-              {words.map((w) => {
-                const e = w.strong ? entries[w.strong] : null;
-                return (
-                  <button
-                    key={w.index}
-                    onClick={() => setOpenWord(w)}
-                    className="flex w-[92px] shrink-0 flex-col items-center gap-1 rounded-xl border border-border bg-surface px-2 py-3 text-center transition-colors hover:border-primary/40"
+          <div className="card-elevated divide-y divide-border overflow-hidden p-0">
+            {words.map((w, i) => {
+              const e = w.strong ? entries[w.strong] : null;
+              return (
+                <button
+                  key={w.index}
+                  onClick={() => setOpenWord(w)}
+                  className="flex w-full items-center gap-3 p-3.5 text-left transition-colors hover:bg-surface"
+                >
+                  <span className="w-6 shrink-0 text-center text-[11px] font-semibold text-muted-foreground">
+                    {i + 1}
+                  </span>
+                  <span
+                    dir={lang === "hebraico" ? "rtl" : "ltr"}
+                    className="ancient-text w-20 shrink-0 text-center text-lg leading-tight text-ancient"
                   >
-                    <span className="ancient-text text-lg leading-tight">{w.word}</span>
-                    <span className="text-[10px] italic leading-tight text-muted-foreground">
+                    {w.word}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-[11px] italic leading-tight text-muted-foreground">
                       {e?.transliteration ?? "—"}
-                    </span>
-                    <span className="text-[11px] leading-tight text-foreground/85">
+                    </p>
+                    <p className="truncate text-sm leading-tight text-foreground/85">
                       {e?.strongsGloss ?? "—"}
+                    </p>
+                  </div>
+                  {w.strong && (
+                    <span className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
+                      {w.strong}
                     </span>
-                    {w.strong && (
-                      <span className="mt-0.5 rounded-full bg-primary/10 px-1.5 py-0.5 text-[9px] font-semibold text-primary">
-                        {w.strong}
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-            <p className="mt-3 border-t border-border pt-3 text-[11px] text-muted-foreground">
-              Deslize para o lado para ver a frase inteira · Toque em uma palavra para ver a análise completa
+                  )}
+                </button>
+              );
+            })}
+            <p className="p-3.5 text-[11px] text-muted-foreground">
+              Ordem conforme o texto original · Toque em uma palavra para ver a análise completa
             </p>
           </div>
         )}
@@ -301,6 +309,7 @@ function VerseStudy() {
             ))}
           </div>
         )}
+      </div>
       </div>
 
       <Sheet open={!!openWord} onOpenChange={(o) => !o && setOpenWord(null)}>
