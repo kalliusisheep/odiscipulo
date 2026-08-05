@@ -27,6 +27,13 @@ import {
   Trophy,
   Users,
   X,
+  HeartHandshake,
+  ScrollText,
+  Radio,
+  Sparkles,
+  Mic2,
+  LockKeyhole,
+  Quote,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/mural")({
@@ -35,10 +42,37 @@ export const Route = createFileRoute("/_authenticated/mural")({
 
 type Tab = "feed" | "oracoes" | "diario";
 
-const TAB_LABELS: Record<Tab, string> = {
-  feed: "Feed",
-  oracoes: "OraÃ§Ãµes",
-  diario: "Meu DiÃ¡rio",
+const TAB_META: Record<
+  Tab,
+  {
+    label: string;
+    eyebrow: string;
+    title: string;
+    description: string;
+    icon: React.ElementType;
+  }
+> = {
+  feed: {
+    label: "Feed",
+    eyebrow: "Comunidade viva",
+    title: "Caminhe junto",
+    description: "Compartilhe sua jornada e celebre cada passo de fÃ©.",
+    icon: Radio,
+  },
+  oracoes: {
+    label: "OraÃ§Ãµes",
+    eyebrow: "Mural de oraÃ§Ã£o",
+    title: "Ore em comunidade",
+    description: "Divida seus pedidos e sustente outras pessoas em oraÃ§Ã£o.",
+    icon: HeartHandshake,
+  },
+  diario: {
+    label: "Meu DiÃ¡rio",
+    eyebrow: "EspaÃ§o pessoal",
+    title: "Guarde o que Deus falou",
+    description: "Releia respostas e perceba seu crescimento ao longo da jornada.",
+    icon: ScrollText,
+  },
 };
 
 const TAB_BANNERS: Record<Tab, { src: string; alt: string }> = {
@@ -52,42 +86,76 @@ const TAB_BANNERS: Record<Tab, { src: string; alt: string }> = {
 
 function MuralPage() {
   const [tab, setTab] = useState<Tab>("feed");
+  const active = TAB_META[tab];
+  const ActiveIcon = active.icon;
+
   return (
-    <div className="mx-auto max-w-lg space-y-4 px-4 pt-6">
-      <header className="flex items-center justify-between">
-        <div>
-          <p className="text-xs text-muted-foreground">Comunidade</p>
-          <h1 className="text-xl font-semibold">{TAB_LABELS[tab]}</h1>
+    <div className="mx-auto max-w-lg space-y-5 px-3 pt-5 sm:px-4">
+      <header className="flex items-center justify-between gap-3 px-1">
+        <div className="min-w-0">
+          <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
+            <Users className="h-3.5 w-3.5" /> Comunidade
+          </div>
+          <h1 className="mt-1 text-2xl font-extrabold tracking-tight">Feed</h1>
+          <p className="text-xs text-muted-foreground">FÃ© compartilhada fortalece a caminhada</p>
         </div>
         <ThemeToggle />
       </header>
 
-      <div className="overflow-hidden rounded-2xl">
+      <section className="relative isolate min-h-[164px] overflow-hidden rounded-[30px] border border-white/10 bg-gradient-to-br from-[#2b3364] via-[#1b2344] to-[#101624] text-white shadow-2xl shadow-primary/10">
+        <div className="pointer-events-none absolute -left-14 -top-20 h-48 w-48 rounded-full bg-primary/25 blur-3xl" />
         <img
           key={tab}
           src={TAB_BANNERS[tab].src}
           alt={TAB_BANNERS[tab].alt}
-          className="aspect-[21/9] w-full object-cover object-top"
+          className="pointer-events-none absolute inset-y-0 right-0 h-full w-[62%] object-cover object-center opacity-90"
         />
-      </div>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#161d36] via-[#161d36]/90 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
+        <div className="relative flex min-h-[164px] max-w-[64%] flex-col justify-center px-5 py-5">
+          <span className="flex h-9 w-9 items-center justify-center rounded-[14px] border border-white/10 bg-white/10 text-primary-foreground backdrop-blur-sm">
+            <ActiveIcon className="h-[18px] w-[18px]" />
+          </span>
+          <p className="mt-3 text-[9px] font-extrabold uppercase tracking-[0.18em] text-primary-foreground/75">
+            {active.eyebrow}
+          </p>
+          <h2 className="mt-1 text-lg font-extrabold leading-tight">{active.title}</h2>
+          <p className="mt-1.5 text-[11px] leading-relaxed text-white/60">{active.description}</p>
+        </div>
+      </section>
 
-      <div className="relative flex rounded-full border border-border bg-surface p-1 text-sm">
-        {(Object.keys(TAB_LABELS) as Tab[]).map((key) => (
-          <button
-            key={key}
-            onClick={() => setTab(key)}
-            className={`flex-1 rounded-full py-2 font-medium transition-all ${
-              tab === key ? "bg-primary text-primary-foreground" : "text-muted-foreground"
-            }`}
-          >
-            {TAB_LABELS[key]}
-          </button>
-        ))}
-      </div>
+      <nav
+        className="grid grid-cols-3 gap-1 rounded-[22px] border border-border/70 bg-surface p-1.5 shadow-sm"
+        aria-label="Ãreas da comunidade"
+      >
+        {(Object.keys(TAB_META) as Tab[]).map((key) => {
+          const item = TAB_META[key];
+          const Icon = item.icon;
+          const selected = tab === key;
+          return (
+            <button
+              key={key}
+              type="button"
+              onClick={() => setTab(key)}
+              aria-selected={selected}
+              className={`flex min-h-12 items-center justify-center gap-1.5 rounded-[17px] px-2 text-[11px] font-bold transition-all ${
+                selected
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+                  : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
+              }`}
+            >
+              <Icon className="h-4 w-4" />
+              <span className="truncate">{item.label}</span>
+            </button>
+          );
+        })}
+      </nav>
 
-      {tab === "feed" && <Feed />}
-      {tab === "oracoes" && <Oracoes />}
-      {tab === "diario" && <Diario />}
+      <div key={tab} className="animate-slide-up">
+        {tab === "feed" && <Feed />}
+        {tab === "oracoes" && <Oracoes />}
+        {tab === "diario" && <Diario />}
+      </div>
     </div>
   );
 }
@@ -359,720 +427,6 @@ function Feed() {
     setMyCommentLikes((prev) => {
       const next = new Set(prev);
       if (has) next.delete(commentId);
-      else next.add(commentId);
-      return next;
-    });
-    setCommentLikeCounts((prev) => ({
-      ...prev,
-      [commentId]: Math.max(0, (prev[commentId] ?? 0) + (has ? -1 : 1)),
-    }));
-    if (has) {
-      await supabase
-        .from("feed_comment_likes")
-        .delete()
-        .eq("comment_id", commentId)
-        .eq("user_id", me.id);
-    } else {
-      await supabase.from("feed_comment_likes").insert({ comment_id: commentId, user_id: me.id });
-    }
-  };
-
-  const insertComposerEmoji = (emoji: string) => setComposerText((t) => t + emoji);
-
-  return (
-    <div className="space-y-5">
-      <div className="overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-surface to-surface-2 shadow-sm">
-        <div className="h-1 w-full bg-gradient-to-r from-primary via-primary-glow to-accent" />
-        <div className="flex gap-3 p-4">
-          <div className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/20 text-sm font-semibold text-primary ring-2 ring-background">
-            {me?.avatarUrl ? (
-              <img src={me.avatarUrl} alt={me.name} className="h-full w-full object-cover" />
-            ) : (
-              (me?.name?.[0] ?? "?")
-            )}
-          </div>
-          <div className="min-w-0 flex-1">
-            <textarea
-              value={composerText}
-              onChange={(e) => setComposerText(e.target.value)}
-              rows={3}
-              placeholder="Escreva algo para compartilhar com seus amigosâ€¦"
-              className="w-full resize-none rounded-xl border border-border bg-input p-3 text-sm outline-none focus:border-primary"
-            />
-            <div className="mt-2 flex items-center justify-between gap-2">
-              <EmojiPicker onSelect={insertComposerEmoji} />
-              <button
-                onClick={() => void publish()}
-                disabled={!composerText.trim() || posting}
-                className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary-glow hover:shadow-md disabled:opacity-50 disabled:shadow-none"
-              >
-                {posting ? "Publicandoâ€¦" : "Publicar"}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {items.length === 0 && (
-        <div className="flex flex-col items-center rounded-3xl border border-dashed border-border px-6 py-12 text-center">
-          <Users className="mb-3 h-10 w-10 text-primary" />
-          <h3 className="font-semibold">Seu feed estÃ¡ vazio</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Adicione amigos e comece a estudar â€” as atividades aparecem aqui.
-          </p>
-        </div>
-      )}
-
-      {items.map((item) => (
-        <FeedCard
-          key={item.id}
-          item={item}
-          liked={myLikes.has(item.id)}
-          likeCount={likeCounts[item.id] ?? 0}
-          commentCount={commentCounts[item.id] ?? 0}
-          commentsOpen={openComments.has(item.id)}
-          commentsList={comments[item.id] ?? []}
-          commentDraft={commentDraft[item.id] ?? ""}
-          pendingGif={pendingGif[item.id] ?? null}
-          commentLikeCounts={commentLikeCounts}
-          myCommentLikes={myCommentLikes}
-          onToggleLike={() => void toggleLike(item.id)}
-          onToggleComments={() => void toggleComments(item.id)}
-          onCommentDraftChange={(v) => setCommentDraft((prev) => ({ ...prev, [item.id]: v }))}
-          onPendingGifChange={(url) => setPendingGif((prev) => ({ ...prev, [item.id]: url }))}
-          onSendComment={() => void sendComment(item.id)}
-          onToggleCommentLike={(commentId) => void toggleCommentLike(commentId)}
-        />
-      ))}
-    </div>
-  );
-}
-
-function FeedCard({
-  item,
-  liked,
-  likeCount,
-  commentCount,
-  commentsOpen,
-  commentsList,
-  commentDraft,
-  pendingGif,
-  commentLikeCounts,
-  myCommentLikes,
-  onToggleLike,
-  onToggleComments,
-  onCommentDraftChange,
-  onPendingGifChange,
-  onSendComment,
-  onToggleCommentLike,
-}: {
-  item: FeedItem;
-  liked: boolean;
-  likeCount: number;
-  commentCount: number;
-  commentsOpen: boolean;
-  commentsList: FeedComment[];
-  commentDraft: string;
-  pendingGif: string | null;
-  commentLikeCounts: Record<string, number>;
-  myCommentLikes: Set<string>;
-  onToggleLike: () => void;
-  onToggleComments: () => void;
-  onCommentDraftChange: (v: string) => void;
-  onPendingGifChange: (url: string | null) => void;
-  onSendComment: () => void;
-  onToggleCommentLike: (commentId: string) => void;
-}) {
-  const Icon = FEED_KIND_ICON[item.kind];
-
-  return (
-    <article className="relative overflow-hidden rounded-3xl border border-border bg-surface pl-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg">
-      <div className={`absolute inset-y-0 left-0 w-1.5 ${FEED_KIND_ACCENT[item.kind]}`} />
-      <div className="p-4 pl-3">
-        <header className="flex items-start gap-2.5">
-          <div className="relative shrink-0">
-            <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-primary/20 text-sm font-semibold text-primary ring-2 ring-background">
-              {item.author_avatar_url ? (
-                <img
-                  src={item.author_avatar_url}
-                  alt={item.author_name}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                item.author_name[0]
-              )}
-            </div>
-            <div
-              className={`absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full ring-2 ring-surface ${FEED_KIND_STYLE[item.kind]}`}
-            >
-              <Icon className="h-3 w-3" />
-            </div>
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold leading-tight">{item.author_name}</p>
-            <p className="mt-0.5 flex items-center gap-1.5 text-[11px] text-muted-foreground">
-              <span className={`font-medium ${FEED_KIND_STYLE[item.kind].split(" ")[1]}`}>
-                {FEED_KIND_LABEL[item.kind]}
-              </span>
-              <span aria-hidden>Â·</span>
-              {formatDistanceToNow(new Date(item.created_at), { locale: ptBR, addSuffix: true })}
-            </p>
-          </div>
-        </header>
-
-        <div className="mt-3 text-sm leading-relaxed">
-          {item.kind === "post" && <p className="whitespace-pre-wrap">{item.body}</p>}
-
-          {item.kind === "avatar_changed" && (
-            <div className="flex items-center gap-3">
-              <p className="text-muted-foreground">Trocou a foto de perfil</p>
-              {item.author_avatar_url && (
-                <img
-                  src={item.author_avatar_url}
-                  alt="Nova foto de perfil"
-                  className="h-12 w-12 rounded-xl object-cover ring-1 ring-border"
-                />
-              )}
-            </div>
-          )}
-
-          {item.kind === "bio_changed" && (
-            <div>
-              <p className="text-muted-foreground">Atualizou a bio</p>
-              {item.body && (
-                <p className="mt-1 rounded-xl bg-surface-2 p-3 text-sm italic text-foreground/90">
-                  "{item.body}"
-                </p>
-              )}
-            </div>
-          )}
-
-          {(item.kind === "lesson_completed" ||
-            item.kind === "module_completed" ||
-            item.kind === "reading_plan_started" ||
-            item.kind === "bible_study_started") && <p>{item.body}</p>}
-        </div>
-
-        <div className="mt-3 flex items-center gap-2 border-t border-border pt-3">
-          <button
-            onClick={onToggleLike}
-            className={`inline-flex flex-1 items-center justify-center gap-1.5 rounded-full py-1.5 text-xs font-medium transition-all ${
-              liked ? "text-primary" : "text-muted-foreground hover:bg-surface-2"
-            }`}
-          >
-            <Heart className={`h-4 w-4 ${liked ? "fill-current" : ""}`} />
-            Curtir{likeCount > 0 && <span className="font-semibold">({likeCount})</span>}
-          </button>
-          <div className="h-4 w-px bg-border" />
-          <button
-            onClick={onToggleComments}
-            className={`inline-flex flex-1 items-center justify-center gap-1.5 rounded-full py-1.5 text-xs font-medium transition-all ${
-              commentsOpen ? "text-primary" : "text-muted-foreground hover:bg-surface-2"
-            }`}
-          >
-            <MessageCircle className="h-4 w-4" />
-            Comentar{commentCount > 0 && <span className="font-semibold">({commentCount})</span>}
-          </button>
-        </div>
-
-        {commentsOpen && (
-          <div className="mt-3 space-y-3 border-t border-border pt-3">
-            {commentsList.map((c) => {
-              const commentLiked = myCommentLikes.has(c.id);
-              const commentLikeCount = commentLikeCounts[c.id] ?? 0;
-              return (
-                <div key={c.id} className="flex items-start gap-2">
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/20 text-[11px] font-semibold text-primary">
-                    {c.author_avatar_url ? (
-                      <img
-                        src={c.author_avatar_url}
-                        alt={c.author_name}
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      c.author_name[0]
-                    )}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="inline-block max-w-full rounded-2xl bg-surface-2 px-3 py-2">
-                      <span className="text-xs font-semibold">{c.author_name}</span>
-                      {c.body && (
-                        <p className="mt-0.5 text-xs leading-relaxed text-foreground/90">
-                          {c.body}
-                        </p>
-                      )}
-                      {c.gif_url && (
-                        <img
-                          src={c.gif_url}
-                          alt="GIF enviado no comentÃ¡rio"
-                          className="mt-1.5 max-h-40 w-auto rounded-lg"
-                          loading="lazy"
-                        />
-                      )}
-                    </div>
-                    <div className="mt-1 flex items-center gap-3 px-1">
-                      <span className="text-[10px] text-muted-foreground">
-                        {formatDistanceToNow(new Date(c.created_at), {
-                          locale: ptBR,
-                          addSuffix: true,
-                        })}
-                      </span>
-                      <button
-                        onClick={() => onToggleCommentLike(c.id)}
-                        className={`inline-flex items-center gap-1 text-[10px] font-medium transition-colors ${
-                          commentLiked ? "text-primary" : "text-muted-foreground hover:text-primary"
-                        }`}
-                      >
-                        <Heart className={`h-3 w-3 ${commentLiked ? "fill-current" : ""}`} />
-                        Curtir{commentLikeCount > 0 && ` (${commentLikeCount})`}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-
-            <div className="space-y-1.5">
-              {pendingGif && (
-                <div className="relative inline-block">
-                  <img src={pendingGif} alt="GIF selecionado" className="max-h-28 rounded-lg" />
-                  <button
-                    onClick={() => onPendingGifChange(null)}
-                    aria-label="Remover GIF"
-                    className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-background text-foreground shadow ring-1 ring-border"
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
-                </div>
-              )}
-              <div className="flex items-center gap-1.5">
-                <GifPicker onSelect={(url) => onPendingGifChange(url)} />
-                <EmojiPicker
-                  onSelect={(emoji) => onCommentDraftChange(commentDraft + emoji)}
-                  className="[&>button]:h-8 [&>button]:w-8"
-                />
-                <input
-                  value={commentDraft}
-                  onChange={(e) => onCommentDraftChange(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") onSendComment();
-                  }}
-                  placeholder="Escreva um comentÃ¡rioâ€¦"
-                  className="flex-1 rounded-full border border-border bg-input px-3 py-1.5 text-xs outline-none focus:border-primary"
-                />
-                <button
-                  onClick={onSendComment}
-                  disabled={!commentDraft.trim() && !pendingGif}
-                  aria-label="Enviar comentÃ¡rio"
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-all hover:bg-primary-glow disabled:opacity-50"
-                >
-                  <Send className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </article>
-  );
-}
-
-// ============================================================
-// ORAÃ‡Ã•ES â€” mesmo sistema de "clamores" compartilhados de sempre
-// ============================================================
-
-type Post = {
-  id: string;
-  author_name: string;
-  body: string | null;
-  audio_url: string | null;
-  audio_duration_seconds: number | null;
-  is_answered: boolean;
-  amens_seed: number;
-  created_at: string;
-  user_id: string | null;
-};
-
-function Oracoes() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [myAmens, setMyAmens] = useState<Set<string>>(new Set());
-  const [counts, setCounts] = useState<Record<string, number>>({});
-  const [text, setText] = useState("");
-  const [me, setMe] = useState<{ id: string; name: string } | null>(null);
-  const [posting, setPosting] = useState(false);
-  const { say } = useMascot();
-
-  useEffect(() => {
-    let channel: ReturnType<typeof supabase.channel> | null = null;
-    let uid: string | null = null;
-    void (async () => {
-      const { data: u } = await supabase.auth.getUser();
-      if (u.user) {
-        uid = u.user.id;
-        const { data: prof } = await supabase
-          .from("profiles")
-          .select("display_name")
-          .eq("id", u.user.id)
-          .maybeSingle();
-        setMe({ id: u.user.id, name: prof?.display_name ?? u.user.email!.split("@")[0] });
-      }
-      await refresh(uid);
-
-      // Sem isso, posts e "AmÃ©m" de outras pessoas sÃ³ apareciam apÃ³s F5.
-      channel = supabase
-        .channel("mural-clamores")
-        .on(
-          "postgres_changes",
-          { event: "INSERT", schema: "public", table: "mural_posts" },
-          () => void refresh(uid),
-        )
-        .on(
-          "postgres_changes",
-          { event: "INSERT", schema: "public", table: "mural_amens" },
-          () => void refresh(uid),
-        )
-        .on(
-          "postgres_changes",
-          { event: "DELETE", schema: "public", table: "mural_amens" },
-          () => void refresh(uid),
-        )
-        .subscribe();
-    })();
-    return () => {
-      if (channel) void supabase.removeChannel(channel);
-    };
-  }, []);
-
-  const refresh = async (uid: string | null) => {
-    const { data: p } = await supabase
-      .from("mural_posts")
-      .select("*")
-      .order("created_at", { ascending: false });
-    const list = (p ?? []) as Post[];
-    setPosts(list);
-    const { data: amens } = await supabase.from("mural_amens").select("post_id, user_id");
-    const c: Record<string, number> = {};
-    const mine = new Set<string>();
-    for (const p of list) c[p.id] = p.amens_seed;
-    for (const a of amens ?? []) {
-      c[a.post_id] = (c[a.post_id] ?? 0) + 1;
-      if (uid && a.user_id === uid) mine.add(a.post_id);
-    }
-    setCounts(c);
-    setMyAmens(mine);
-  };
-
-  const clamar = async () => {
-    if (!text.trim() || !me || posting) return;
-    setPosting(true);
-    const { error } = await supabase.from("mural_posts").insert({
-      user_id: me.id,
-      author_name: me.name,
-      body: text.trim(),
-    });
-    setPosting(false);
-    if (!error) {
-      setText("");
-      await refresh(me.id);
-      const lines = muralPostLines();
-      say(lines[Math.floor(Math.random() * lines.length)]);
-    }
-  };
-
-  const clamarComAudio = async (blob: Blob, seconds: number, mimeType: string) => {
-    if (!me) return;
-    const url = await uploadMuralVoiceNote(me.id, blob, mimeType);
-    const { error } = await supabase.from("mural_posts").insert({
-      user_id: me.id,
-      author_name: me.name,
-      body: null,
-      audio_url: url,
-      audio_duration_seconds: seconds,
-    });
-    if (!error) {
-      await refresh(me.id);
-      const lines = muralPostLines();
-      say(lines[Math.floor(Math.random() * lines.length)]);
-    }
-  };
-
-  const toggleAmen = async (postId: string) => {
-    if (!me) return;
-    const has = myAmens.has(postId);
-    if (has) {
-      await supabase.from("mural_amens").delete().eq("post_id", postId).eq("user_id", me.id);
-    } else {
-      await supabase.from("mural_amens").insert({ post_id: postId, user_id: me.id });
-    }
-    await refresh(me.id);
-  };
-
-  return (
-    <div className="space-y-4">
-      <div className="card-elevated p-4">
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          rows={3}
-          placeholder="Escreva seu clamor para o muralâ€¦"
-          className="w-full resize-none rounded-xl border border-border bg-input p-3 text-sm outline-none focus:border-primary"
-        />
-        <div className="mt-2 flex items-center justify-between gap-2">
-          <VoiceRecorder onSend={clamarComAudio} maxSeconds={60} />
-          <button
-            onClick={() => void clamar()}
-            disabled={!text.trim() || posting}
-            className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary-glow disabled:opacity-50"
-          >
-            Clamar
-          </button>
-        </div>
-      </div>
-
-      {posts.map((p) => (
-        <article key={p.id} className="card-elevated p-4">
-          <header className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/20 text-sm font-semibold text-primary">
-              {p.author_name[0]}
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-semibold">{p.author_name}</p>
-              <p className="text-[11px] text-muted-foreground">
-                {formatDistanceToNow(new Date(p.created_at), { locale: ptBR, addSuffix: true })}
-              </p>
-            </div>
-            {p.is_answered && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-success/20 px-2.5 py-0.5 text-[10px] font-semibold text-success">
-                <CheckCircle2 className="h-3 w-3" /> Pedido Respondido!
-              </span>
-            )}
-          </header>
-          {p.audio_url ? (
-            <div className="mt-3">
-              <VoiceNotePlayer src={p.audio_url} />
-            </div>
-          ) : (
-            p.body && <p className="mt-3 text-sm leading-relaxed">{p.body}</p>
-          )}
-          <button
-            onClick={() => void toggleAmen(p.id)}
-            className={`mt-3 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${
-              myAmens.has(p.id)
-                ? "border-primary bg-primary/20 text-primary"
-                : "border-border bg-background text-muted-foreground hover:border-primary/40"
-            }`}
-          >
-            AmÃ©m ğŸ™ <span className="font-semibold">({counts[p.id] ?? 0})</span>
-          </button>
-        </article>
-      ))}
-    </div>
-  );
-}
-
-// ============================================================
-// MEU DIÃRIO â€” respostas de reflexÃ£o, com mÃ³dulo/trilha, ediÃ§Ã£o e exclusÃ£o
-// ============================================================
-
-type DiaryRow = {
-  id: string;
-  lesson_id: string;
-  lesson_title: string;
-  question: string;
-  answer: string;
-  created_at: string;
-  updated_at: string;
-};
-
-type TrailMeta = { moduleOrd: number; moduleTitle: string; trailOrd: number; trailTitle: string };
-
-function Diario() {
-  const [entries, setEntries] = useState<DiaryRow[]>([]);
-  const [trailMeta, setTrailMeta] = useState<Record<string, TrailMeta>>({});
-  const [loading, setLoading] = useState(true);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editDraft, setEditDraft] = useState("");
-  const [saving, setSaving] = useState(false);
-
-  const load = async () => {
-    setLoading(true);
-    const { data: u } = await supabase.auth.getUser();
-    if (!u.user) {
-      setLoading(false);
-      return;
-    }
-    const [{ data: diaryRows }, { data: trails }, { data: modules }] = await Promise.all([
-      supabase
-        .from("diary_entries")
-        .select("*")
-        .eq("user_id", u.user.id)
-        .order("created_at", { ascending: false }),
-      supabase.from("disciple_trails").select("lesson_id, module_id, ord, title"),
-      supabase.from("disciple_modules").select("id, ord, title"),
-    ]);
-
-    const moduleById = new Map((modules ?? []).map((m) => [m.id, m]));
-    const meta: Record<string, TrailMeta> = {};
-    for (const t of trails ?? []) {
-      if (!t.lesson_id) continue;
-      const mod = moduleById.get(t.module_id);
-      if (!mod) continue;
-      meta[t.lesson_id] = {
-        moduleOrd: mod.ord,
-        moduleTitle: mod.title,
-        trailOrd: t.ord,
-        trailTitle: t.title,
-      };
-    }
-    setTrailMeta(meta);
-    setEntries((diaryRows ?? []) as DiaryRow[]);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    void load();
-  }, []);
-
-  const ordered = useMemo(() => {
-    const withMeta = entries.map((e) => ({ entry: e, meta: trailMeta[e.lesson_id] }));
-    withMeta.sort((a, b) => {
-      if (a.meta && b.meta) {
-        if (a.meta.moduleOrd !== b.meta.moduleOrd) return a.meta.moduleOrd - b.meta.moduleOrd;
-        return a.meta.trailOrd - b.meta.trailOrd;
-      }
-      if (a.meta && !b.meta) return -1;
-      if (!a.meta && b.meta) return 1;
-      return new Date(a.entry.created_at).getTime() - new Date(b.entry.created_at).getTime();
-    });
-    return withMeta;
-  }, [entries, trailMeta]);
-
-  const startEdit = (entry: DiaryRow) => {
-    setEditingId(entry.id);
-    setEditDraft(entry.answer);
-  };
-
-  const cancelEdit = () => {
-    setEditingId(null);
-    setEditDraft("");
-  };
-
-  const saveEdit = async (id: string) => {
-    if (!editDraft.trim() || saving) return;
-    setSaving(true);
-    const { error } = await supabase
-      .from("diary_entries")
-      .update({ answer: editDraft.trim() })
-      .eq("id", id);
-    setSaving(false);
-    if (!error) {
-      setEntries((prev) =>
-        prev.map((e) =>
-          e.id === id
-            ? { ...e, answer: editDraft.trim(), updated_at: new Date().toISOString() }
-            : e,
-        ),
-      );
-      setEditingId(null);
-      setEditDraft("");
-    }
-  };
-
-  const remove = async (id: string) => {
-    if (!window.confirm("Apagar esta resposta do diÃ¡rio? Essa aÃ§Ã£o nÃ£o pode ser desfeita.")) return;
-    const { error } = await supabase.from("diary_entries").delete().eq("id", id);
-    if (!error) {
-      setEntries((prev) => prev.filter((e) => e.id !== id));
-    }
-  };
-
-  if (loading) {
-    return <div className="py-12 text-center text-sm text-muted-foreground">Carregandoâ€¦</div>;
-  }
-
-  if (entries.length === 0) {
-    return (
-      <div className="card-elevated flex flex-col items-center px-6 py-12 text-center">
-        <BookHeart className="mb-3 h-10 w-10 text-primary" />
-        <h3 className="font-semibold">Seu diÃ¡rio estÃ¡ aguardando</h3>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Complete uma liÃ§Ã£o â€” sua resposta de reflexÃ£o serÃ¡ salva aqui automaticamente.
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-3">
-      {ordered.map(({ entry: e, meta }) => {
-        const isEditing = editingId === e.id;
-        const wasEdited = e.updated_at && e.updated_at !== e.created_at;
-        return (
-          <article key={e.id} className="card-elevated p-4">
-            <div className="flex items-start justify-between gap-2">
-              <div className="min-w-0">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
-                  {meta
-                    ? `MÃ³dulo ${meta.moduleOrd} Â· ${meta.moduleTitle} â€” Trilha: ${meta.trailTitle}`
-                    : e.lesson_title}
-                </p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {formatDistanceToNow(new Date(e.created_at), { locale: ptBR, addSuffix: true })}
-                  {wasEdited && " Â· editado"}
-                </p>
-              </div>
-              {!isEditing && (
-                <div className="flex shrink-0 gap-1">
-                  <button
-                    onClick={() => startEdit(e)}
-                    className="rounded-full p-1.5 text-muted-foreground hover:bg-surface hover:text-primary"
-                    aria-label="Editar resposta"
-                  >
-                    <Pencil className="h-3.5 w-3.5" />
-                  </button>
-                  <button
-                    onClick={() => void remove(e.id)}
-                    className="rounded-full p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                    aria-label="Apagar resposta"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
-                </div>
-              )}
-            </div>
-            <p className="mt-3 text-sm font-medium">{e.question}</p>
-            {isEditing ? (
-              <div className="mt-2 space-y-2">
-                <textarea
-                  value={editDraft}
-                  onChange={(ev) => setEditDraft(ev.target.value)}
-                  rows={4}
-                  className="w-full resize-none rounded-xl border border-border bg-input p-3 text-sm outline-none focus:border-primary"
-                />
-                <div className="flex justify-end gap-2">
-                  <button
-                    onClick={cancelEdit}
-                    className="rounded-full border border-border px-4 py-1.5 text-xs font-medium text-muted-foreground"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    onClick={() => void saveEdit(e.id)}
-                    disabled={saving || !editDraft.trim()}
-                    className="rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-50"
-                  >
-                    Salvar
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <p className="mt-2 rounded-xl bg-surface-2 p-3 text-base leading-relaxed text-foreground/90 scripture">
-                "{e.answer}"
-              </p>
-            )}
-          </article>
-        );
-      })}
-    </div>
-  );
-}
+      else nextïmw¶‰ËkºwµçA™½ÕÌéÉ¥¹œ´Ğ™½ÕÌéÉ¥¹œµÁÉ¥µ…Éä¼ÄÀˆ(€€€€€€€€€€¼ø(€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰µĞ´È¸Ô™±•à¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ‰•Ñİ••¸…À´Èˆø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à¥Ñ•µÌµ•¹Ñ•È…À´Èˆø(€€€€€€€€€€€€€€ñY½¥•I•½É‘•È½¹M•¹õí±…µ…É½µÕ‘¥½ôµ…áM•½¹‘ÌõìØÁô€¼ø(€€€€€€€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰¡¥‘‘•¸¥Ñ•µÌµ•¹Ñ•È…À´ÄÑ•áĞµlÄÁÁátÑ•áĞµµÕÑ•µ™½É•É½Õ¹µ¥¸µlÌäÁÁáté™±•àˆø(€€€€€€€€€€€€€€€€ñ5¥ŒÈ±…ÍÍ9…µ”ô‰ ´ÌÜ´Ìˆ€¼ø½Ô•¹Ù¥”Á½ÈÙ½è(€€€€€€€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€ñ‰ÕÑÑ½¸(€€€€€€€€€€€€€ÑåÁ”ô‰‰ÕÑÑ½¸ˆ(€€€€€€€€€€€€€½¹±¥¬õì ¤€ôøÙ½¥±…µ…È ¥ô(€€€€€€€€€€€€€‘¥Í…‰±•õì…Ñ•áĞ¹ÑÉ¥´ ¤ñğÁ½ÍÑ¥¹ô(€€€€€€€€€€€€€±…ÍÍ9…µ”ô‰¥¹±¥¹”µ™±•àµ¥¸µ ´ÄÀ¥Ñ•µÌµ•¹Ñ•È…À´ÈÉ½Õ¹‘•µ™Õ±°‰œµÁÉ¥µ…ÉäÁà´ÔÑ•áĞµáÌ™½¹Ğµ•áÑÉ…‰½±Ñ•áĞµÁÉ¥µ…Éäµ™½É•É½Õ¹Í¡…‘½Üµ±œÍ¡…‘½ÜµÁÉ¥µ…Éä¼ÈÀÑÉ…¹Í¥Ñ¥½¸µ…±°¡½Ù•ÈèµÑÉ…¹Í±…Ñ”µä´À¸Ô¡½Ù•Èé‰œµÁÉ¥µ…Éäµ±½Ü‘¥Í…‰±•éÑÉ…¹Í±…Ñ”µä´À‘¥Í…‰±•é½Á…¥Ñä´ÔÀ‘¥Í…‰±•éÍ¡…‘½Üµ¹½¹”ˆ(€€€€€€€€€€€€ø(€€€€€€€€€€€€€íÁ½ÍÑ¥¹œ€ü€‰¹Ù¥…¹‘¿Š˜ˆ€è€‰A•‘¥È½É‡Ÿ¼‰ô(€€€€€€€€€€€€€ì…Á½ÍÑ¥¹œ€˜˜€ñM•¹±…ÍÍ9…µ”ô‰ ´Ì¸ÔÜ´Ì¸Ôˆ€¼ùô(€€€€€€€€€€€€ğ½‰ÕÑÑ½¸ø(€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€ğ½‘¥Øø(€€€€€€ğ½Í•Ñ¥½¸ø((€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à¥Ñ•µÌµ•¹©ÕÍÑ¥™äµ‰•Ñİ••¸…À´ÌÁà´Äˆø(€€€€€€€€ñ‘¥Øø(€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰Ñ•áĞµlÄÁÁát™½¹Ğµ•áÑÉ…‰½±ÕÁÁ•É…Í”ÑÉ…­¥¹œµlÀ¸ÄÙ•µtÑ•áĞµÁÉ¥µ…Éäˆø(€€€€€€€€€€€=É”½´…±×¥´(€€€€€€€€€€ğ½Àø(€€€€€€€€€€ñ Ì±…ÍÍ9…µ”ô‰µĞ´À¸ÔÑ•áĞµ‰…Í”™½¹Ğµ•áÑÉ…‰½±ˆùA•‘¥‘½Ì‘„½µÕ¹¥‘…‘”ğ½ Ìø(€€€€€€€€ğ½‘¥Øø(€€€€€€€íÁ½ÍÑÌ¹±•¹Ñ €ø€À€˜˜€ (€€€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰É½Õ¹‘•µ™Õ±°‰œµÍÕÉ™…”´ÈÁà´È¸ÔÁä´ÄÑ•áĞµlÄÁÁát™½¹Ğµ‰½±Ñ•áĞµµÕÑ•µ™½É•É½Õ¹ˆø(€€€€€€€€€€€íÁ½ÍÑÌ¹±•¹Ñ¡ôíÁ½ÍÑÌ¹±•¹Ñ €ôôô€Ä€ü€‰Á•‘¥‘¼ˆ€è€‰Á•‘¥‘½Ì‰ô(€€€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€¥ô(€€€€€€ğ½‘¥Øø((€€€€€íÁ½ÍÑÌ¹±•¹Ñ €ôôô€À€˜˜€ (€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰É•±…Ñ¥Ù”™±•à™±•àµ½°¥Ñ•µÌµ•¹Ñ•È½Ù•É™±½Üµ¡¥‘‘•¸É½Õ¹‘•µlÈÙÁát‰½É‘•È‰½É‘•Èµ‘…Í¡•‰½É‘•ÈµÁÉ¥µ…Éä¼ÈÔ‰œµÁÉ¥µ…Éä½lÀ¸ÀÌÕtÁà´ØÁä´ÄÈÑ•áĞµ•¹Ñ•Èˆø(€€€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰™±•à ´ÄĞÜ´ÄĞ¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÉ½Õ¹‘•µlÈÁÁát‰œµÁÉ¥µ…Éä¼ÄÀÑ•áĞµÁÉ¥µ…ÉäÉ¥¹œ´ÄÉ¥¹œµÁÉ¥µ…Éä¼ÄÔˆø(€€€€€€€€€€€€ñ!•…ÉÑ!…¹‘Í¡…­”±…ÍÍ9…µ”ô‰ ´ØÜ´Øˆ€¼ø(€€€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€€€ñ Ì±…ÍÍ9…µ”ô‰µĞ´Ğ™½¹Ğµ•áÑÉ…‰½±ˆù9•¹¡Õ´Á•‘¥‘¼Á½È…ÅÕ¤…¥¹‘„ğ½ Ìø(€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰µĞ´Äµ…àµÜµlÈàÁÁátÑ•áĞµÍ´±•…‘¥¹œµÉ•±…á•Ñ•áĞµµÕÑ•µ™½É•É½Õ¹ˆø(€€€€€€€€€€€EÕ…¹‘¼…±×¥´½µÁ…ÉÑ¥±¡…ÈÕ´±…µ½È°Ù½¨Á½‘•Ë„…Á½¥…È½´ÍÕ„½É‡Ÿ¼¸(€€€€€€€€€€ğ½Àø(€€€€€€€€ğ½‘¥Øø(€€€€€€¥ô((€€€€€íÁ½ÍÑÌ¹µ…À ¡À¤€ôø€ (€€€€€€€€ñ…ÉÑ¥±”(€€€€€€€€€­•äõíÀ¹¥‘ô(€€€€€€€€€±…ÍÍ9…µ”ô‰É•±…Ñ¥Ù”½Ù•É™±½Üµ¡¥‘‘•¸É½Õ¹‘•µlÈÙÁát‰½É‘•È‰½É‘•Èµ‰½É‘•È¼ÜÀ‰œµÍÕÉ™…”À´ĞÍ¡…‘½ÜµÍ´ÑÉ…¹Í¥Ñ¥½¸µ…±°¡½Ù•Èé‰½É‘•ÈµÁÉ¥µ…Éä¼ÈÀ¡½Ù•ÈéÍ¡…‘½Üµ±œˆ(€€€€€€€€ø(€€€€€€€€€€ñEÕ½Ñ”±…ÍÍ9…µ”ô‰Á½¥¹Ñ•Èµ•Ù•¹ÑÌµ¹½¹”…‰Í½±ÕÑ”€µÉ¥¡Ğ´ÄÑ½À´È ´ÄØÜ´ÄØÑ•áĞµÁÉ¥µ…Éä½lÀ¸ÀĞÕtˆ€¼ø(€€€€€€€€€€ñ¡•…‘•È±…ÍÍ9…µ”ô‰É•±…Ñ¥Ù”™±•à¥Ñ•µÌµ•¹Ñ•È…À´Ìˆø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à ´ÄÄÜ´ÄÄ¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÉ½Õ¹‘•µlÄÕÁát‰œµÁÉ¥µ…Éä¼ÄÔÑ•áĞµÍ´™½¹Ğµ•áÑÉ…‰½±Ñ•áĞµÁÉ¥µ…ÉäÉ¥¹œ´ÄÉ¥¹œµÁÉ¥µ…Éä¼ÄÀˆø(€€€€€€€€€€€€€íÀ¹…ÕÑ¡½É}¹…µ•lÁuô(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à´Äˆø(€€€€€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰Ñ•áĞµÍ´™½¹Ğµ•áÑÉ…‰½±ˆùíÀ¹…ÕÑ¡½É}¹…µ•ôğ½Àø(€€€€€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰Ñ•áĞµlÄÅÁátÑ•áĞµµÕÑ•µ™½É•É½Õ¹ˆø(€€€€€€€€€€€€€€€í™½Éµ…Ñ¥ÍÑ…¹•Q½9½Ü¡¹•Ü…Ñ”¡À¹É•…Ñ•‘}…Ğ¤°ì±½…±”èÁÑ	H°…‘‘MÕ™™¥àèÑÉÕ”ô¥ô(€€€€€€€€€€€€€€ğ½Àø(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€íÀ¹¥Í}…¹Íİ•É•€˜˜€ (€€€€€€€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰¥¹±¥¹”µ™±•à¥Ñ•µÌµ•¹Ñ•È…À´ÄÉ½Õ¹‘•µ™Õ±°‰œµÍÕ•ÍÌ¼ÄÔÁà´È¸ÔÁä´ÄÑ•áĞµlåÁát™½¹Ğµ•áÑÉ…‰½±Ñ•áĞµÍÕ•ÍÌÉ¥¹œ´ÄÉ¥¹œµÍÕ•ÍÌ¼ÄÔˆø(€€€€€€€€€€€€€€€€ñ¡•­¥É±”È±…ÍÍ9…µ”ô‰ ´ÌÜ´Ìˆ€¼øI•ÍÁ½¹‘¥‘¼(€€€€€€€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€€€€€¥ô(€€€€€€€€€€ğ½¡•…‘•Èø(€€€€€€€€€íÀ¹…Õ‘¥½}ÕÉ°€ü€ (€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰É•±…Ñ¥Ù”µĞ´ĞÉ½Õ¹‘•µlÄáÁát‰œµÍÕÉ™…”´È¼ØÀÀ´ÈÉ¥¹œ´ÄÉ¥¹œµ‰½É‘•È¼ÔÀˆø(€€€€€€€€€€€€€€ñY½¥•9½Ñ•A±…å•ÈÍÉŒõíÀ¹…Õ‘¥½}ÕÉ±ô€¼ø(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€¤€è€ (€€€€€€€€€€€À¹‰½‘ä€˜˜€ (€€€€€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰É•±…Ñ¥Ù”µĞ´ĞÑ•áĞµlÄÕÁát±•…‘¥¹œµÉ•±…á•Ñ•áĞµ™½É•É½Õ¹¼äÔˆø(€€€€€€€€€€€€€€€íÀ¹‰½‘åô(€€€€€€€€€€€€€€ğ½Àø(€€€€€€€€€€€€¤(€€€€€€€€€€¥ô(€€€€€€€€€€ñ‰ÕÑÑ½¸(€€€€€€€€€€€ÑåÁ”ô‰‰ÕÑÑ½¸ˆ(€€€€€€€€€€€½¹±¥¬õì ¤€ôøÙ½¥Ñ½±•µ•¸¡À¹¥¥ô(€€€€€€€€€€€±…ÍÍ9…µ”õíµĞ´Ğ¥¹±¥¹”µ™±•àµ¥¸µ ´ÄÀ¥Ñ•µÌµ•¹Ñ•È…À´ÈÉ½Õ¹‘•µlÄÕÁát‰½É‘•ÈÁà´ĞÑ•áĞµáÌ™½¹Ğµ‰½±ÑÉ…¹Í¥Ñ¥½¸µ…±°€‘ì(€€€€€€€€€€€€€µåµ•¹Ì¹¡…Ì¡À¹¥¤(€€€€€€€€€€€€€€€€ü€‰‰½É‘•ÈµÁÉ¥µ…Éä¼ÌÀ‰œµÁÉ¥µ…Éä¼ÄÔÑ•áĞµÁÉ¥µ…ÉäÍ¡…‘½ÜµÍ´ˆ(€€€€€€€€€€€€€€€€è€‰‰½É‘•Èµ‰½É‘•È¼ÜÀ‰œµ‰…­É½Õ¹¼ØÀÑ•áĞµµÕÑ•µ™½É•É½Õ¹¡½Ù•Èé‰½É‘•ÈµÁÉ¥µ…Éä¼ÌÀ¡½Ù•ÈéÑ•áĞµÁÉ¥µ…Éäˆ(€€€€€€€€€€€õô(€€€€€€€€€€ø(€€€€€€€€€€€€ñ!•…ÉÑ!…¹‘Í¡…­”±…ÍÍ9…µ”ô‰ ´ĞÜ´Ğˆ€¼ø·¥´(€€€€€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰™½¹Ğµ•áÑÉ…‰½±ˆùí½Õ¹ÑÍmÀ¹¥‘t€üü€Áôğ½ÍÁ…¸ø(€€€€€€€€€€ğ½‰ÕÑÑ½¸ø(€€€€€€€€ğ½…ÉÑ¥±”ø(€€€€€€¤¥ô(€€€€ğ½‘¥Øø(€€¤ì)ô((¼¼€ôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôô(¼¼5T'I%<ƒŠPÉ•ÍÁ½ÍÑ…Ì‘”É•™±•ã¼°½´·Í‘Õ±¼½ÑÉ¥±¡„°•‘§Ÿ¼”•á±ÕÏ¼(¼¼€ôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôôô()ÑåÁ”¥…ÉåI½Ü€ôì(€¥èÍÑÉ¥¹œì(€±•ÍÍ½¹}¥èÍÑÉ¥¹œì(€±•ÍÍ½¹}Ñ¥Ñ±”èÍÑÉ¥¹œì(€ÅÕ•ÍÑ¥½¸èÍÑÉ¥¹œì(€…¹Íİ•ÈèÍÑÉ¥¹œì(€É•…Ñ•‘}…ĞèÍÑÉ¥¹œì(€ÕÁ‘…Ñ•‘}…ĞèÍÑÉ¥¹œì)ôì()ÑåÁ”QÉ…¥±5•Ñ„€ôìµ½‘Õ±•=Éè¹Õµ‰•Èìµ½‘Õ±•Q¥Ñ±”èÍÑÉ¥¹œìÑÉ…¥±=Éè¹Õµ‰•ÈìÑÉ…¥±Q¥Ñ±”èÍÑÉ¥¹œôì()™Õ¹Ñ¥½¸¥…É¥¼ ¤ì(€½¹ÍĞm•¹ÑÉ¥•Ì°Í•Ñ¹ÑÉ¥•Ít€ôÕÍ•MÑ…Ñ”ñ¥…ÉåI½İmtø¡mt¤ì(€½¹ÍĞmÑÉ…¥±5•Ñ„°Í•ÑQÉ…¥±5•Ñ…t€ôÕÍ•MÑ…Ñ”ñI•½ÉñÍÑÉ¥¹œ°QÉ…¥±5•Ñ„øø¡íô¤ì(€½¹ÍĞm±½…‘¥¹œ°Í•Ñ1½…‘¥¹t€ôÕÍ•MÑ…Ñ”¡ÑÉÕ”¤ì(€½¹ÍĞm•‘¥Ñ¥¹%°Í•Ñ‘¥Ñ¥¹%‘t€ôÕÍ•MÑ…Ñ”ñÍÑÉ¥¹œğ¹Õ±°ø¡¹Õ±°¤ì(€½¹ÍĞm•‘¥ÑÉ…™Ğ°Í•Ñ‘¥ÑÉ…™Ñt€ôÕÍ•MÑ…Ñ” ˆˆ¤ì(€½¹ÍĞmÍ…Ù¥¹œ°Í•ÑM…Ù¥¹t€ôÕÍ•MÑ…Ñ”¡™…±Í”¤ì((€½¹ÍĞ±½…€ô…Íå¹Œ€ ¤€ôøì(€€€Í•Ñ1½…‘¥¹œ¡ÑÉÕ”¤ì(€€€½¹ÍĞì‘…Ñ„èÔô€ô…İ…¥ĞÍÕÁ…‰…Í”¹…ÕÑ ¹•ÑUÍ•È ¤ì(€€€¥˜€ …Ô¹ÕÍ•È¤ì(€€€€€Í•Ñ1½…‘¥¹œ¡™…±Í”¤ì(€€€€€É•ÑÕÉ¸ì(€€€ô(€€€½¹ÍĞmì‘…Ñ„è‘¥…ÉåI½İÌô°ì‘…Ñ„èÑÉ…¥±Ìô°ì‘…Ñ„èµ½‘Õ±•Ìõt€ô…İ…¥ĞAÉ½µ¥Í”¹…±°¡l(€€€€€ÍÕÁ…‰…Í”(€€€€€€€€¹™É½´ ‰‘¥…Éå}•¹ÑÉ¥•Ìˆ¤(€€€€€€€€¹Í•±•Ğ ˆ¨ˆ¤(€€€€€€€€¹•Ä ‰ÕÍ•É}¥ˆ°Ô¹ÕÍ•È¹¥¤(€€€€€€€€¹½É‘•È ‰É•…Ñ•‘}…Ğˆ°ì…Í•¹‘¥¹œè™…±Í”ô¤°(€€€€€ÍÕÁ…‰…Í”¹™É½´ ‰‘¥Í¥Á±•}ÑÉ…¥±Ìˆ¤¹Í•±•Ğ ‰±•ÍÍ½¹}¥°µ½‘Õ±•}¥°½É°Ñ¥Ñ±”ˆ¤°(€€€€€ÍÕÁ…‰…Í”¹™É½´ ‰‘¥Í¥Á±•}µ½‘Õ±•Ìˆ¤¹Í•±•Ğ ‰¥°½É°Ñ¥Ñ±”ˆ¤°(€€€t¤ì((€€€½¹ÍĞµ½‘Õ±•	å%€ô¹•Ü5…À ¡µ½‘Õ±•Ì€üümt¤¹µ…À ¡´¤€ôøm´¹¥°µt¤¤ì(€€€½¹ÍĞµ•Ñ„èI•½ÉñÍÑÉ¥¹œ°QÉ…¥±5•Ñ„ø€ôíôì(€€€™½È€¡½¹ÍĞĞ½˜ÑÉ…¥±Ì€üümt¤ì(€€€€€¥˜€ …Ğ¹±•ÍÍ½¹}¥¤½¹Ñ¥¹Õ”ì(€€€€€½¹ÍĞµ½€ôµ½‘Õ±•	å%¹•Ğ¡Ğ¹µ½‘Õ±•}¥¤ì(€€€€€¥˜€ …µ½¤½¹Ñ¥¹Õ”ì(€€€€€µ•Ñ…mĞ¹±•ÍÍ½¹}¥‘t€ôì(€€€€€€€µ½‘Õ±•=Éèµ½¹½É°(€€€€€€€µ½‘Õ±•Q¥Ñ±”èµ½¹Ñ¥Ñ±”°(€€€€€€€ÑÉ…¥±=ÉèĞ¹½É°(€€€€€€€ÑÉ…¥±Q¥Ñ±”èĞ¹Ñ¥Ñ±”°(€€€€€ôì(€€€ô(€€€Í•ÑQÉ…¥±5•Ñ„¡µ•Ñ„¤ì(€€€Í•Ñ¹ÑÉ¥•Ì ¡‘¥…ÉåI½İÌ€üümt¤…Ì¥…ÉåI½İmt¤ì(€€€Í•Ñ1½…‘¥¹œ¡™…±Í”¤ì(€ôì((€ÕÍ•™™•Ğ  ¤€ôøì(€€€Ù½¥±½… ¤ì(€ô°mt¤ì((€½¹ÍĞ½É‘•É•€ôÕÍ•5•µ¼  ¤€ôøì(€€€½¹ÍĞİ¥Ñ¡5•Ñ„€ô•¹ÑÉ¥•Ì¹µ…À ¡”¤€ôø€¡ì•¹ÑÉäè”°µ•Ñ„èÑÉ…¥±5•Ñ…m”¹±•ÍÍ½¹}¥‘tô¤¤ì(€€€İ¥Ñ¡5•Ñ„¹Í½ÉĞ ¡„°ˆ¤€ôøì(€€€€€¥˜€¡„¹µ•Ñ„€˜˜ˆ¹µ•Ñ„¤ì(€€€€€€€¥˜€¡„¹µ•Ñ„¹µ½‘Õ±•=É€„ôôˆ¹µ•Ñ„¹µ½‘Õ±•=É¤É•ÑÕÉ¸„¹µ•Ñ„¹µ½‘Õ±•=É€´ˆ¹µ•Ñ„¹µ½‘Õ±•=Éì(€€€€€€€É•ÑÕÉ¸„¹µ•Ñ„¹ÑÉ…¥±=É€´ˆ¹µ•Ñ„¹ÑÉ…¥±=Éì(€€€€€ô(€€€€€¥˜€¡„¹µ•Ñ„€˜˜€…ˆ¹µ•Ñ„¤É•ÑÕÉ¸€´Äì(€€€€€¥˜€ …„¹µ•Ñ„€˜˜ˆ¹µ•Ñ„¤É•ÑÕÉ¸€Äì(€€€€€É•ÑÕÉ¸¹•Ü…Ñ”¡„¹•¹ÑÉä¹É•…Ñ•‘}…Ğ¤¹•ÑQ¥µ” ¤€´¹•Ü…Ñ”¡ˆ¹•¹ÑÉä¹É•…Ñ•‘}…Ğ¤¹•ÑQ¥µ” ¤ì(€€€ô¤ì(€€€É•ÑÕÉ¸İ¥Ñ¡5•Ñ„ì(€ô°m•¹ÑÉ¥•Ì°ÑÉ…¥±5•Ñ…t¤ì((€½¹ÍĞÍÑ…ÉÑ‘¥Ğ€ô€¡•¹ÑÉäè¥…ÉåI½Ü¤€ôøì(€€€Í•Ñ‘¥Ñ¥¹%¡•¹ÑÉä¹¥¤ì(€€€Í•Ñ‘¥ÑÉ…™Ğ¡•¹ÑÉä¹…¹Íİ•È¤ì(€ôì((€½¹ÍĞ…¹•±‘¥Ğ€ô€ ¤€ôøì(€€€Í•Ñ‘¥Ñ¥¹%¡¹Õ±°¤ì(€€€Í•Ñ‘¥ÑÉ…™Ğ ˆˆ¤ì(€ôì((€½¹ÍĞÍ…Ù•‘¥Ğ€ô…Íå¹Œ€¡¥èÍÑÉ¥¹œ¤€ôøì(€€€¥˜€ …•‘¥ÑÉ…™Ğ¹ÑÉ¥´ ¤ñğÍ…Ù¥¹œ¤É•ÑÕÉ¸ì(€€€Í•ÑM…Ù¥¹œ¡ÑÉÕ”¤ì(€€€½¹ÍĞì•ÉÉ½Èô€ô…İ…¥ĞÍÕÁ…‰…Í”(€€€€€€¹™É½´ ‰‘¥…Éå}•¹ÑÉ¥•Ìˆ¤(€€€€€€¹ÕÁ‘…Ñ”¡ì…¹Íİ•Èè•‘¥ÑÉ…™Ğ¹ÑÉ¥´ ¤ô¤(€€€€€€¹•Ä ‰¥ˆ°¥¤ì(€€€Í•ÑM…Ù¥¹œ¡™…±Í”¤ì(€€€¥˜€ …•ÉÉ½È¤ì(€€€€€Í•Ñ¹ÑÉ¥•Ì ¡ÁÉ•Ø¤€ôø(€€€€€€€ÁÉ•Ø¹µ…À ¡”¤€ôø(€€€€€€€€€”¹¥€ôôô¥(€€€€€€€€€€€€üì€¸¸¹”°…¹Íİ•Èè•‘¥ÑÉ…™Ğ¹ÑÉ¥´ ¤°ÕÁ‘…Ñ•‘}…Ğè¹•Ü…Ñ” ¤¹Ñ½%M=MÑÉ¥¹œ ¤ô(€€€€€€€€€€€€è”°(€€€€€€€€¤°(€€€€€€¤ì(€€€€€Í•Ñ‘¥Ñ¥¹%¡¹Õ±°¤ì(€€€€€Í•Ñ‘¥ÑÉ…™Ğ ˆˆ¤ì(€€€ô(€ôì((€½¹ÍĞÉ•µ½Ù”€ô…Íå¹Œ€¡¥èÍÑÉ¥¹œ¤€ôøì(€€€¥˜€ …İ¥¹‘½Ü¹½¹™¥É´ ‰Á……È•ÍÑ„É•ÍÁ½ÍÑ„‘¼‘§…É¥¼üÍÍ„‡Ÿ¼»¼Á½‘”Í•È‘•Í™•¥Ñ„¸ˆ¤¤É•ÑÕÉ¸ì(€€€½¹ÍĞì•ÉÉ½Èô€ô…İ…¥ĞÍÕÁ…‰…Í”¹™É½´ ‰‘¥…Éå}•¹ÑÉ¥•Ìˆ¤¹‘•±•Ñ” ¤¹•Ä ‰¥ˆ°¥¤ì(€€€¥˜€ …•ÉÉ½È¤ì(€€€€€Í•Ñ¹ÑÉ¥•Ì ¡ÁÉ•Ø¤€ôøÁÉ•Ø¹™¥±Ñ•È ¡”¤€ôø”¹¥€„ôô¥¤¤ì(€€€ô(€ôì((€¥˜€¡±½…‘¥¹œ¤ì(€€€É•ÑÕÉ¸€ (€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰ÍÁ…”µä´Ìˆø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰ ´ÈĞ…¹¥µ…Ñ”µÁÕ±Í”É½Õ¹‘•µlÈÙÁát‰œµÍÕÉ™…”´È¼ÜÀˆ€¼ø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰ ´Ğà…¹¥µ…Ñ”µÁÕ±Í”É½Õ¹‘•µlÈÙÁát‰œµÍÕÉ™…”´È¼ÜÀˆ€¼ø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰ ´ĞÀ…¹¥µ…Ñ”µÁÕ±Í”É½Õ¹‘•µlÈÙÁát‰œµÍÕÉ™…”´È¼ÜÀˆ€¼ø(€€€€€€ğ½‘¥Øø(€€€€¤ì(€ô((€¥˜€¡•¹ÑÉ¥•Ì¹±•¹Ñ €ôôô€À¤ì(€€€É•ÑÕÉ¸€ (€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰É•±…Ñ¥Ù”™±•à™±•àµ½°¥Ñ•µÌµ•¹Ñ•È½Ù•É™±½Üµ¡¥‘‘•¸É½Õ¹‘•µlÈÙÁát‰½É‘•È‰½É‘•Èµ‘…Í¡•‰½É‘•ÈµÁÉ¥µ…Éä¼ÈÔ‰œµÁÉ¥µ…Éä½lÀ¸ÀÌÕtÁà´ØÁä´ÄÈÑ•áĞµ•¹Ñ•Èˆø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰Á½¥¹Ñ•Èµ•Ù•¹ÑÌµ¹½¹”…‰Í½±ÕÑ”€µÑ½À´ÄÈ ´ÌÈÜ´ÌÈÉ½Õ¹‘•µ™Õ±°‰œµÁÉ¥µ…Éä¼ÄÀ‰±ÕÈ´Íá°ˆ€¼ø(€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰É•±…Ñ¥Ù”™±•à ´ÄĞÜ´ÄĞ¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÉ½Õ¹‘•µlÈÁÁát‰œµÁÉ¥µ…Éä¼ÄÀÑ•áĞµÁÉ¥µ…ÉäÉ¥¹œ´ÄÉ¥¹œµÁÉ¥µ…Éä¼ÄÔˆø(€€€€€€€€€€ñ	½½­!•…ÉĞ±…ÍÍ9…µ”ô‰ ´ØÜ´Øˆ€¼ø(€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€ñ Ì±…ÍÍ9…µ”ô‰É•±…Ñ¥Ù”µĞ´Ğ™½¹Ğµ•áÑÉ…‰½±ˆùM•Ô‘§…É¥¼•ÍÓ„…Õ…É‘…¹‘¼ğ½ Ìø(€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰É•±…Ñ¥Ù”µĞ´Äµ…àµÜµlÈäÁÁátÑ•áĞµÍ´±•…‘¥¹œµÉ•±…á•Ñ•áĞµµÕÑ•µ™½É•É½Õ¹ˆø(€€€€€€€€€½µÁ±•Ñ”Õµ„±§Ÿ¼ƒŠPÍÕ„É•ÍÁ½ÍÑ„‘”É•™±•ã¼Í•Ë„Í…±Ù„…ÅÕ¤…ÕÑ½µ…Ñ¥…µ•¹Ñ”¸(€€€€€€€€ğ½Àø(€€€€€€ğ½‘¥Øø(€€€€¤ì(€ô((€É•ÑÕÉ¸€ (€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰ÍÁ…”µä´Ğˆø(€€€€€€ñÍ•Ñ¥½¸±…ÍÍ9…µ”ô‰É•±…Ñ¥Ù”½Ù•É™±½Üµ¡¥‘‘•¸É½Õ¹‘•µlÈÙÁát‰½É‘•È‰½É‘•Èµ‰½É‘•È¼ÜÀ‰œµÉ…‘¥•¹ĞµÑ¼µ‰È™É½´µÁÉ¥µ…Éä½lÀ¸ÅtÙ¥„µÍÕÉ™…”Ñ¼µÍÕÉ™…”À´ĞÍ¡…‘½ÜµÍ´ˆø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰Á½¥¹Ñ•Èµ•Ù•¹ÑÌµ¹½¹”…‰Í½±ÕÑ”€µÉ¥¡Ğ´ÄÀ€µÑ½À´ÄÈ ´ÌÈÜ´ÌÈÉ½Õ¹‘•µ™Õ±°‰œµÁÉ¥µ…Éä¼ÄÀ‰±ÕÈ´Íá°ˆ€¼ø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰É•±…Ñ¥Ù”™±•à¥Ñ•µÌµ•¹Ñ•È…À´Ìˆø(€€€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰™±•à ´ÄÈÜ´ÄÈ¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÉ½Õ¹‘•µlÄİÁát‰œµÁÉ¥µ…Éä¼ÄÔÑ•áĞµÁÉ¥µ…ÉäÉ¥¹œ´ÄÉ¥¹œµÁÉ¥µ…Éä¼ÄÔˆø(€€€€€€€€€€€€ñ1½­-•å¡½±”±…ÍÍ9…µ”ô‰ ´ÔÜ´Ôˆ€¼ø(€€€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰µ¥¸µÜ´À™±•à´Äˆø(€€€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰Ñ•áĞµÍ´™½¹Ğµ•áÑÉ…‰½±ˆùM•Ô…‘•É¹¼‘”…µ¥¹¡…‘„ğ½Àø(€€€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰µĞ´À¸ÔÑ•áĞµlÄÁÁát±•…‘¥¹œµÉ•±…á•Ñ•áĞµµÕÑ•µ™½É•É½Õ¹ˆø(€€€€€€€€€€€€€U´•ÍÁ‡¼Á•ÍÍ½…°Á…É„É•Ù•È…ÁÉ•¹‘¥é…‘½Ì”Á•É•‰•ÈÍ•ÔÉ•Í¥µ•¹Ñ¼¸(€€€€€€€€€€€€ğ½Àø(€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰™±•à ´äµ¥¸µÜ´ä¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÉ½Õ¹‘•µ™Õ±°‰œµÁÉ¥µ…Éä¼ÄÀÁà´ÈÑ•áĞµáÌ™½¹Ğµ•áÑÉ…‰½±Ñ•áĞµÁÉ¥µ…Éäˆø(€€€€€€€€€€€í•¹ÑÉ¥•Ì¹±•¹Ñ¡ô(€€€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€ğ½‘¥Øø(€€€€€€ğ½Í•Ñ¥½¸ø((€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à¥Ñ•µÌµ•¹©ÕÍÑ¥™äµ‰•Ñİ••¸…À´ÌÁà´Äˆø(€€€€€€€€ñ‘¥Øø(€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰Ñ•áĞµlÄÁÁát™½¹Ğµ•áÑÉ…‰½±ÕÁÁ•É…Í”ÑÉ…­¥¹œµlÀ¸ÄÙ•µtÑ•áĞµÁÉ¥µ…Éäˆø(€€€€€€€€€€€MÕ„¡¥ÍÓÍÉ¥„(€€€€€€€€€€ğ½Àø(€€€€€€€€€€ñ Ì±…ÍÍ9…µ”ô‰µĞ´À¸ÔÑ•áĞµ‰…Í”™½¹Ğµ•áÑÉ…‰½±ˆùI•™±•ãÕ•ÌÍ…±Ù…Ìğ½ Ìø(€€€€€€€€ğ½‘¥Øø(€€€€€€ğ½‘¥Øø((€€€€€í½É‘•É•¹µ…À ¡ì•¹ÑÉäè”°µ•Ñ„ô¤€ôøì(€€€€€€€½¹ÍĞ¥Í‘¥Ñ¥¹œ€ô•‘¥Ñ¥¹%€ôôô”¹¥ì(€€€€€€€½¹ÍĞİ…Í‘¥Ñ•€ô”¹ÕÁ‘…Ñ•‘}…Ğ€˜˜”¹ÕÁ‘…Ñ•‘}…Ğ€„ôô”¹É•…Ñ•‘}…Ğì(€€€€€€€É•ÑÕÉ¸€ (€€€€€€€€€€ñ…ÉÑ¥±”(€€€€€€€€€€€­•äõí”¹¥‘ô(€€€€€€€€€€€±…ÍÍ9…µ”ô‰É•±…Ñ¥Ù”½Ù•É™±½Üµ¡¥‘‘•¸É½Õ¹‘•µlÈÙÁát‰½É‘•È‰½É‘•Èµ‰½É‘•È¼ÜÀ‰œµÍÕÉ™…”À´ĞÍ¡…‘½ÜµÍ´ÑÉ…¹Í¥Ñ¥½¸µ…±°¡½Ù•Èé‰½É‘•ÈµÁÉ¥µ…Éä¼ÈÀ¡½Ù•ÈéÍ¡…‘½Üµ±œˆ(€€€€€€€€€€ø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…‰Í½±ÕÑ”¥¹Í•Ğµä´Ğ±•™Ğ´ÀÜ´ÄÉ½Õ¹‘•µÈµ™Õ±°‰œµÉ…‘¥•¹ĞµÑ¼µˆ™É½´µÁÉ¥µ…ÉäÑ¼µÁÉ¥µ…Éäµ±½Üˆ€¼ø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à¥Ñ•µÌµÍÑ…ÉĞ©ÕÍÑ¥™äµ‰•Ñİ••¸…À´Èˆø(€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰µ¥¸µÜ´Àˆø(€€€€€€€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰Ñ•áĞµlåÁát™½¹Ğµ•áÑÉ…‰½±ÕÁÁ•É…Í”±•…‘¥¹œµÉ•±…á•ÑÉ…­¥¹œµlÀ¸ÄÑ•µtÑ•áĞµÁÉ¥µ…Éäˆø(€€€€€€€€€€€€€€€€€íµ•Ñ„(€€€€€€€€€€€€€€€€€€€€ü7Í‘Õ±¼€‘íµ•Ñ„¹µ½‘Õ±•=É‘ôƒ
+Ü€‘íµ•Ñ„¹µ½‘Õ±•Q¥Ñ±•ôƒŠPQÉ¥±¡„è€‘íµ•Ñ„¹ÑÉ…¥±Q¥Ñ±•õ€(€€€€€€€€€€€€€€€€€€€€è”¹±•ÍÍ½¹}Ñ¥Ñ±•ô(€€€€€€€€€€€€€€€€ğ½Àø(€€€€€€€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰µĞ´ÄÑ•áĞµlÄÁÁát™½¹Ğµµ•‘¥Õ´Ñ•áĞµµÕÑ•µ™½É•É½Õ¹ˆø(€€€€€€€€€€€€€€€€€í™½Éµ…Ñ¥ÍÑ…¹•Q½9½Ü¡¹•Ü…Ñ”¡”¹É•…Ñ•‘}…Ğ¤°ì±½…±”èÁÑ	H°…‘‘MÕ™™¥àèÑÉÕ”ô¥ô(€€€€€€€€€€€€€€€€€íİ…Í‘¥Ñ•€˜˜€ˆƒ
+Ü•‘¥Ñ…‘¼‰ô(€€€€€€€€€€€€€€€€ğ½Àø(€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€€ì…¥Í‘¥Ñ¥¹œ€˜˜€ (€€€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•àÍ¡É¥¹¬´À…À´Äˆø(€€€€€€€€€€€€€€€€€€ñ‰ÕÑÑ½¸(€€€€€€€€€€€€€€€€€€€½¹±¥¬õì ¤€ôøÍÑ…ÉÑ‘¥Ğ¡”¥ô(€€€€€€€€€€€€€€€€€€€±…ÍÍ9…µ”ô‰™±•à ´àÜ´à¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÉ½Õ¹‘•µlÄÅÁátÑ•áĞµµÕÑ•µ™½É•É½Õ¹ÑÉ…¹Í¥Ñ¥½¸µ½±½ÉÌ¡½Ù•Èé‰œµÁÉ¥µ…Éä¼ÄÀ¡½Ù•ÈéÑ•áĞµÁÉ¥µ…Éäˆ(€€€€€€€€€€€€€€€€€€€…É¥„µ±…‰•°ô‰‘¥Ñ…ÈÉ•ÍÁ½ÍÑ„ˆ(€€€€€€€€€€€€€€€€€€ø(€€€€€€€€€€€€€€€€€€€€ñA•¹¥°±…ÍÍ9…µ”ô‰ ´Ì¸ÔÜ´Ì¸Ôˆ€¼ø(€€€€€€€€€€€€€€€€€€ğ½‰ÕÑÑ½¸ø(€€€€€€€€€€€€€€€€€€ñ‰ÕÑÑ½¸(€€€€€€€€€€€€€€€€€€€½¹±¥¬õì ¤€ôøÙ½¥É•µ½Ù”¡”¹¥¥ô(€€€€€€€€€€€€€€€€€€€±…ÍÍ9…µ”ô‰™±•à ´àÜ´à¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÉ½Õ¹‘•µlÄÅÁátÑ•áĞµµÕÑ•µ™½É•É½Õ¹ÑÉ…¹Í¥Ñ¥½¸µ½±½ÉÌ¡½Ù•Èé‰œµ‘•ÍÑÉÕÑ¥Ù”¼ÄÀ¡½Ù•ÈéÑ•áĞµ‘•ÍÑÉÕÑ¥Ù”ˆ(€€€€€€€€€€€€€€€€€€€…É¥„µ±…‰•°ô‰Á……ÈÉ•ÍÁ½ÍÑ„ˆ(€€€€€€€€€€€€€€€€€€ø(€€€€€€€€€€€€€€€€€€€€ñQÉ…Í È±…ÍÍ9…µ”ô‰ ´Ì¸ÔÜ´Ì¸Ôˆ€¼ø(€€€€€€€€€€€€€€€€€€ğ½‰ÕÑÑ½¸ø(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€€€¥ô(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰µĞ´Ğ™±•à¥Ñ•µÌµÍÑ…ÉĞ…À´È¸Ôˆø(€€€€€€€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰™±•à ´ÜÜ´ÜÍ¡É¥¹¬´À¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÉ½Õ¹‘•µlÄÁÁát‰œµÁÉ¥µ…Éä¼ÄÀÑ•áĞµÁÉ¥µ…Éäˆø(€€€€€€€€€€€€€€€€ñEÕ½Ñ”±…ÍÍ9…µ”ô‰ ´Ì¸ÔÜ´Ì¸Ôˆ€¼ø(€€€€€€€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰ÁĞ´À¸ÔÑ•áĞµÍ´™½¹Ğµ‰½±±•…‘¥¹œµÉ•±…á•ˆùí”¹ÅÕ•ÍÑ¥½¹ôğ½Àø(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€í¥Í‘¥Ñ¥¹œ€ü€ (€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰µĞ´ÌÍÁ…”µä´Èˆø(€€€€€€€€€€€€€€€€ñÑ•áÑ…É•„(€€€€€€€€€€€€€€€€€Ù…±Õ”õí•‘¥ÑÉ…™Ñô(€€€€€€€€€€€€€€€€€½¹¡…¹”õì¡•Ø¤€ôøÍ•Ñ‘¥ÑÉ…™Ğ¡•Ø¹Ñ…É•Ğ¹Ù…±Õ”¥ô(€€€€€€€€€€€€€€€€€É½İÌõìÑô(€€€€€€€€€€€€€€€€€±…ÍÍ9…µ”ô‰Üµ™Õ±°É•Í¥é”µ¹½¹”É½Õ¹‘•µlÄáÁát‰½É‘•È‰½É‘•Èµ‰½É‘•È¼ÜÀ‰œµ‰…­É½Õ¹¼ÜÀÀ´Ì¸ÔÑ•áĞµÍ´±•…‘¥¹œµÉ•±…á•½ÕÑ±¥¹”µ¹½¹”ÑÉ…¹Í¥Ñ¥½¸µ…±°™½ÕÌé‰½É‘•ÈµÁÉ¥µ…Éä¼ØÀ™½ÕÌéÉ¥¹œ´Ğ™½ÕÌéÉ¥¹œµÁÉ¥µ…Éä¼ÄÀˆ(€€€€€€€€€€€€€€€€¼ø(€€€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à©ÕÍÑ¥™äµ•¹…À´Èˆø(€€€€€€€€€€€€€€€€€€ñ‰ÕÑÑ½¸(€€€€€€€€€€€€€€€€€€€½¹±¥¬õí…¹•±‘¥Ñô(€€€€€€€€€€€€€€€€€€€±…ÍÍ9…µ”ô‰µ¥¸µ ´äÉ½Õ¹‘•µ™Õ±°‰½É‘•È‰½É‘•Èµ‰½É‘•ÈÁà´ĞÑ•áĞµáÌ™½¹Ğµ‰½±Ñ•áĞµµÕÑ•µ™½É•É½Õ¹ÑÉ…¹Í¥Ñ¥½¸µ½±½ÉÌ¡½Ù•Èé‰œµÍÕÉ™…”´Èˆ(€€€€€€€€€€€€€€€€€€ø(€€€€€€€€€€€€€€€€€€€…¹•±…È(€€€€€€€€€€€€€€€€€€ğ½‰ÕÑÑ½¸ø(€€€€€€€€€€€€€€€€€€ñ‰ÕÑÑ½¸(€€€€€€€€€€€€€€€€€€€½¹±¥¬õì ¤€ôøÙ½¥Í…Ù•‘¥Ğ¡”¹¥¥ô(€€€€€€€€€€€€€€€€€€€‘¥Í…‰±•õíÍ…Ù¥¹œñğ€…•‘¥ÑÉ…™Ğ¹ÑÉ¥´ ¥ô(€€€€€€€€€€€€€€€€€€€±…ÍÍ9…µ”ô‰µ¥¸µ ´äÉ½Õ¹‘•µ™Õ±°‰œµÁÉ¥µ…ÉäÁà´ĞÑ•áĞµáÌ™½¹Ğµ•áÑÉ…‰½±Ñ•áĞµÁÉ¥µ…Éäµ™½É•É½Õ¹Í¡…‘½ÜµÍ´‘¥Í…‰±•é½Á…¥Ñä´ÔÀˆ(€€€€€€€€€€€€€€€€€€ø(€€€€€€€€€€€€€€€€€€€M…±Ù…È(€€€€€€€€€€€€€€€€€€ğ½‰ÕÑÑ½¸ø(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€¤€è€ (€€€€€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰ÍÉ¥ÁÑÕÉ”µĞ´ÌÉ½Õ¹‘•µlÄáÁát‰½É‘•È‰½É‘•Èµ‰½É‘•È¼ÔÀ‰œµÍÕÉ™…”´È¼ÜÀÀ´Ì¸ÔÑ•áĞµ‰…Í”±•…‘¥¹œµÉ•±…á•Ñ•áĞµ™½É•É½Õ¹¼äÀˆø(€€€€€€€€€€€€€€€ƒŠqí”¹…¹Íİ•É÷Št(€€€€€€€€€€€€€€ğ½Àø(€€€€€€€€€€€€¥ô(€€€€€€€€€€ğ½…ÉÑ¥±”ø(€€€€€€€€¤ì(€€€€€ô¥ô(€€€€ğ½‘¥Øø(€€¤ì)ô(

@@ -7,7 +7,13 @@ import { CHARACTERS, BIBLE_VERSIONS, type BibleVersion } from "@/data/content";
 import { getLevel, xpToNextLevel, levelProgressPct, MAX_LEVEL } from "@/data/levels";
 import { toast } from "sonner";
 import { isUsernameAvailable, isValidUsername, normalizeUsername } from "@/lib/username";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { ChurchLinkDialog } from "@/components/ChurchLinkDialog";
 import type { ChurchOption } from "@/lib/church";
 
@@ -31,6 +37,11 @@ import {
   ChevronRight,
   Sparkles,
   NotebookPen,
+  ArrowUpRight,
+  Crown,
+  Settings2,
+  ShieldCheck,
+  Target,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/perfil")({
@@ -41,10 +52,22 @@ export const Route = createFileRoute("/_authenticated/perfil")({
 const PRESET_AVATARS = Array.from({ length: 10 }, (_, i) => `/avatares/avatar-${i + 1}.png`);
 
 const BIBLE_VERSION_OPTIONS: { code: BibleVersion; name: string; description: string }[] = [
-  { code: "NVI", name: "Nova VersÃ£o Internacional", description: "TraduÃ§Ã£o moderna e de leitura fluida" },
-  { code: "NAA", name: "Nova Almeida Atualizada", description: "EquilÃ­brio entre fidelidade e clareza" },
+  {
+    code: "NVI",
+    name: "Nova VersÃ£o Internacional",
+    description: "TraduÃ§Ã£o moderna e de leitura fluida",
+  },
+  {
+    code: "NAA",
+    name: "Nova Almeida Atualizada",
+    description: "EquilÃ­brio entre fidelidade e clareza",
+  },
   { code: "ACF", name: "Almeida Corrigida Fiel", description: "TraduÃ§Ã£o clÃ¡ssica e formal" },
-  { code: "NVT", name: "Nova VersÃ£o Transformadora", description: "Linguagem contemporÃ¢nea e acessÃ­vel" },
+  {
+    code: "NVT",
+    name: "Nova VersÃ£o Transformadora",
+    description: "Linguagem contemporÃ¢nea e acessÃ­vel",
+  },
 ];
 
 type Profile = {
@@ -85,7 +108,11 @@ function PerfilPage() {
     void (async () => {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user) return;
-      const { data: p } = await supabase.from("profiles").select("*").eq("id", u.user.id).maybeSingle();
+      const { data: p } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", u.user.id)
+        .maybeSingle();
       if (p) {
         setProfile(p as Profile);
         setBioDraft((p as Profile).bio ?? "");
@@ -134,7 +161,9 @@ function PerfilPage() {
         .from("avatars")
         .upload(path, file, { upsert: true, contentType: file.type });
       if (upErr) throw upErr;
-      const { data: signed } = await supabase.storage.from("avatars").createSignedUrl(path, 60 * 60 * 24 * 365);
+      const { data: signed } = await supabase.storage
+        .from("avatars")
+        .createSignedUrl(path, 60 * 60 * 24 * 365);
       const url = signed?.signedUrl ?? null;
       if (url) await update({ avatar_url: url });
     } finally {
@@ -201,514 +230,165 @@ function PerfilPage() {
   const pct = Math.round(levelProgressPct(profile.xp));
 
   return (
-    <div className="mx-auto max-w-lg space-y-4 px-4 pt-6">
-      <header className="flex items-center justify-between animate-slide-up">
-        <div>
-          <h1 className="text-xl font-bold tracking-tight">Perfil</h1>
-          <p className="text-xs text-muted-foreground">Sua jornada de fÃ©, em um sÃ³ lugar</p>
+    <div className="mx-auto max-w-lg space-y-5 px-3 pt-5 sm:px-4">
+      <header className="flex animate-slide-up items-center justify-between gap-3 px-1">
+        <div className="min-w-0">
+          <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
+            <Crown className="h-3.5 w-3.5" /> Minha caminhada
+          </div>
+          <h1 className="mt-1 text-2xl font-extrabold tracking-tight">Meu perfil</h1>
+          <p className="text-xs text-muted-foreground">
+            Sua identidade e seu progresso em um sÃ³ lugar
+          </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           <ThemeToggle />
           <ViewModeToggle />
         </div>
       </header>
 
-      {/* â”€â”€ Hero: avatar, nÃ­vel, XP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section
-        className="card-elevated animate-slide-up overflow-hidden"
+        className="relative isolate animate-slide-up overflow-hidden rounded-[30px] border border-white/10 bg-gradient-to-br from-[#2b3364] via-[#1c2445] to-[#111827] text-white shadow-2xl shadow-primary/10"
         style={{ animationDelay: "40ms", animationFillMode: "backwards" }}
       >
-        <div
-          className="relative overflow-hidden px-5 pb-6 pt-7 text-center"
-          style={{
-            backgroundImage: "url(/sheep-profile.jpeg)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          {/* overlay em degradÃª para manter texto e botÃµes legÃ­veis, com toque de cor da marca */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/60 to-black/80" />
-          <div
-            className="absolute inset-0 opacity-70"
-            style={{
-              background:
-                "radial-gradient(circle at 50% -10%, color-mix(in oklab, var(--primary) 55%, transparent), transparent 60%)",
-            }}
-          />
+        <div className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full bg-primary/25 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 -left-16 h-52 w-52 rounded-full bg-primary-glow/15 blur-3xl" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.07),transparent_45%)]" />
 
-          <div className="relative z-10">
-            {/* Avatar com anel de progresso de XP */}
-            <div className="relative mx-auto h-28 w-28">
+        <div className="relative p-5">
+          <div className="flex items-start gap-3.5">
+            <div className="relative h-[82px] w-[82px] shrink-0">
               <div
-                className="absolute inset-0 rounded-[28px] p-[3px] transition-[background] duration-700"
+                className="absolute inset-0 rounded-[24px] p-[3px]"
                 style={{
-                  background: `conic-gradient(var(--primary) ${pct * 3.6}deg, color-mix(in oklab, white 22%, transparent) 0deg)`,
+                  background: `conic-gradient(var(--primary) ${pct * 3.6}deg, rgba(255,255,255,.16) 0deg)`,
                 }}
               >
-                <div className="h-full w-full rounded-[25px] bg-black/30 backdrop-blur-sm" />
+                <div className="h-full w-full rounded-[21px] bg-[#161d36]" />
               </div>
-              <div className="absolute inset-[3px] flex items-center justify-center overflow-hidden rounded-[25px] bg-surface-2 text-5xl ring-1 ring-white/10">
+              <div className="absolute inset-[4px] flex items-center justify-center overflow-hidden rounded-[20px] bg-surface-2 text-4xl ring-1 ring-white/10">
                 {profile.avatar_url ? (
-                  <img src={profile.avatar_url} alt="Foto de perfil" className="h-full w-full object-cover" />
+                  <img
+                    src={profile.avatar_url}
+                    alt="Foto de perfil"
+                    className="h-full w-full object-cover"
+                  />
                 ) : level.avatar ? (
-                  <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
+                  <img
+                    src={level.avatar}
+                    alt={level.title}
+                    className="h-full w-full object-cover"
+                  />
                 ) : (
                   <span>{ch.emoji}</span>
                 )}
               </div>
               <button
+                type="button"
                 onClick={() => setAvatarDialogOpen(true)}
                 disabled={uploading}
-                className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-2 ring-background transition-transform hover:scale-105 active:scale-95 disabled:opacity-60"
+                className="absolute -bottom-1.5 -right-1.5 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-[3px] ring-[#1c2445] transition-transform hover:scale-105 active:scale-95 disabled:opacity-60"
                 aria-label="Trocar foto"
               >
-                {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
-              </button>
-              <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onFileChange} />
-            </div>
-
-            <h2 className="mt-3 text-lg font-bold text-white">{profile.display_name}</h2>
-
-            <div className="mt-1 flex items-center justify-center gap-1.5">
-              {editingUsername ? (
-                <div className="flex items-center gap-1.5">
-                  <div className="flex items-center rounded-full border border-primary bg-background px-2 py-1">
-                    <AtSign className="h-3.5 w-3.5 text-muted-foreground" />
-                    <input
-                      autoFocus
-                      value={usernameDraft}
-                      maxLength={24}
-                      onChange={(e) => setUsernameDraft(normalizeUsername(e.target.value))}
-                      className="w-32 bg-transparent px-1 text-xs font-semibold outline-none"
-                    />
-                  </div>
-                  <button
-                    onClick={() => void saveUsername()}
-                    disabled={savingUsername}
-                    className="rounded-full bg-primary p-1 text-primary-foreground disabled:opacity-50"
-                    aria-label="Salvar"
-                  >
-                    {savingUsername ? (
-                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                    ) : (
-                      <Check className="h-3.5 w-3.5" />
-                    )}
-                  </button>
-                  <button
-                    onClick={() => setEditingUsername(false)}
-                    className="rounded-full border border-border bg-background p-1 text-muted-foreground"
-                    aria-label="Cancelar"
-                  >
-                    <X className="h-3.5 w-3.5" />
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <span className="text-xs font-medium text-white/80">@{profile.username ?? "sem-id"}</span>
-                  {profile.username && (
-                    <button
-                      onClick={() => void copyUsername()}
-                      className="rounded-full p-1 text-white/80 transition-colors hover:bg-white/10 hover:text-primary"
-                      aria-label="Copiar ID"
-                    >
-                      {copied ? <Check className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
-                    </button>
-                  )}
-                  <button
-                    onClick={startEditUsername}
-                    className="rounded-full p-1 text-white/80 transition-colors hover:bg-white/10 hover:text-primary"
-                    aria-label="Editar ID"
-                  >
-                    <Pencil className="h-3 w-3" />
-                  </button>
-                </>
-              )}
-            </div>
-
-            {/* PÃ­lula de nÃ­vel + barra de XP */}
-            <div className="mx-auto mt-4 w-full max-w-[260px]">
-              <div className="mb-1.5 flex items-center justify-center gap-1.5">
-                <span className="inline-flex items-center gap-1 rounded-full bg-primary/90 px-3 py-1 text-xs font-bold text-primary-foreground shadow-sm">
-                  <Sparkles className="h-3 w-3" />
-                  NÃ­vel {level.level} / {MAX_LEVEL}
-                </span>
-              </div>
-              <p className="text-sm font-semibold text-white">{level.title}</p>
-              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/15">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-[width] duration-700 ease-out"
-                  style={{ width: `${pct}%` }}
-                />
-              </div>
-              <p className="mt-1.5 text-[11px] text-white/75">
-                {toNext === null ? "NÃ­vel mÃ¡ximo alcanÃ§ado ğŸ”¥" : `Faltam ${toNext} XP para o prÃ³ximo nÃ­vel`}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t border-border p-4">
-          <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Bio</label>
-          <textarea
-            value={bioDraft}
-            onChange={(e) => setBioDraft(e.target.value.slice(0, 240))}
-            onBlur={() => void saveBio()}
-            placeholder="Conte um pouco sobre sua caminhada com Cristoâ€¦"
-            rows={3}
-            className="w-full resize-none rounded-2xl border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-          />
-          <div className="mt-1.5 flex justify-between text-[10px] text-muted-foreground">
-            <span>Sua bio aparece no ranking e no perfil.</span>
-            <span>{bioDraft.length}/240</span>
-          </div>
-        </div>
-      </section>
-
-      {/* â”€â”€ EstatÃ­sticas â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="animate-slide-up" style={{ animationDelay: "90ms", animationFillMode: "backwards" }}>
-        <SectionLabel>EstatÃ­sticas</SectionLabel>
-        <div className="card-elevated flex items-center divide-x divide-border overflow-hidden">
-          <StatItem icon={Trophy} label="NÃ­vel" value={String(level.level)} tint="var(--primary)" />
-          <StatItem icon={Flame} label="Ofensiva" value={`${profile.streak}d`} tint="var(--streak)" />
-          <StatItem icon={BookOpen} label="LiÃ§Ãµes" value={String(lessonsCount)} tint="var(--success)" />
-          <StatItem icon={Clock} label="Estudo" value={`${lessonsCount * 8}m`} tint="var(--ancient)" />
-        </div>
-        <button
-          type="button"
-          onClick={() => void nav({ to: "/biblia" })}
-          className="card-elevated mt-3 flex w-full items-center gap-3 p-4 text-left transition-colors hover:border-primary/40"
-        >
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <BookOpen className="h-5 w-5" />
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="block text-sm font-semibold">BÃ­blia de Estudos</span>
-          </span>
-          <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/40" />
-        </button>
-        <button
-          type="button"
-          onClick={() => void nav({ to: "/notas" })}
-          className="card-elevated mt-3 flex w-full items-center gap-3 p-4 text-left transition-colors hover:border-primary/40"
-        >
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <NotebookPen className="h-5 w-5" />
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="block text-sm font-semibold">Minhas Notas</span>
-            <span className="block truncate text-xs text-muted-foreground">AnotaÃ§Ãµes, marcaÃ§Ãµes e trechos salvos</span>
-          </span>
-          <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/40" />
-        </button>
-      </section>
-
-      {/* â”€â”€ PreferÃªncias â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="animate-slide-up" style={{ animationDelay: "140ms", animationFillMode: "backwards" }}>
-        <SectionLabel>PreferÃªncias</SectionLabel>
-        <div className="card-elevated divide-y divide-border overflow-hidden">
-          <BibleVersionSelector
-            value={bibleVersion}
-            open={versionOpen}
-            onOpenChange={setVersionOpen}
-            onSelect={(code) => {
-              setBibleVersion(code);
-              void update({ bible_version: code });
-              setVersionOpen(false);
-            }}
-          />
-          <SettingsRow
-            icon={Church}
-            title="Comunidade"
-            subtitle={profile.church_name ?? "NÃ£o vinculado a uma igreja"}
-            action={
-              <button
-                onClick={() => setChurchDialogOpen(true)}
-                className="shrink-0 rounded-full border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:border-primary/50 hover:text-primary"
-              >
-                {profile.church_name ? "Alterar" : "Vincular"}
-              </button>
-            }
-          />
-          <SettingsRow
-            icon={Bell}
-            title="Lembrete de Devocional"
-            subtitle="MantÃ©m sua ofensiva ativa."
-            action={
-              <ToggleSwitch
-                checked={profile.notify_devocional}
-                onChange={() => void update({ notify_devocional: !profile.notify_devocional })}
-                ariaLabel="Ativar lembrete de devocional"
-              />
-            }
-          />
-        </div>
-      </section>
-
-      <ChurchLinkDialog
-        open={churchDialogOpen}
-        onOpenChange={setChurchDialogOpen}
-        userId={profile.id}
-        currentChurchId={profile.church_id}
-        currentChurchName={profile.church_name}
-        onLinked={(church: ChurchOption | null) =>
-          setProfile((p) => (p ? { ...p, church_id: church?.id ?? null, church_name: church?.name ?? null } : p))
-        }
-      />
-
-      <AvatarPickerDialog
-        open={avatarDialogOpen}
-        onOpenChange={setAvatarDialogOpen}
-        currentAvatar={profile.avatar_url}
-        uploading={uploading}
-        onSelectPreset={(src) => void selectPresetAvatar(src)}
-        onUploadClick={() => {
-          setAvatarDialogOpen(false);
-          onPickFile();
-        }}
-      />
-
-      <button
-        onClick={() => void signOut()}
-        className="flex w-full animate-slide-up items-center justify-center gap-2 rounded-2xl border border-border bg-surface py-3.5 text-sm font-medium text-muted-foreground transition-all hover:border-destructive/40 hover:bg-destructive/5 hover:text-destructive active:scale-[0.99]"
-        style={{ animationDelay: "180ms", animationFillMode: "backwards" }}
-      >
-        <LogOut className="h-4 w-4" /> Sair
-      </button>
-
-      <p
-        className="animate-slide-up pb-2 text-center text-[11px] text-muted-foreground/70"
-        style={{ animationDelay: "220ms", animationFillMode: "backwards" }}
-      >
-        O DiscÃ­pulo ğŸ‘ â€” sua caminhada, um passo de cada vez.
-      </p>
-    </div>
-  );
-}
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{children}</p>;
-}
-
-function StatItem({
-  icon: Icon,
-  label,
-  value,
-  tint,
-}: {
-  icon: React.ElementType;
-  label: string;
-  value: string;
-  tint: string;
-}) {
-  return (
-    <div className="flex flex-1 flex-col items-center gap-1 py-3">
-      <Icon className="h-5 w-5" style={{ color: tint }} />
-      <p className="text-base font-bold leading-none">{value}</p>
-      <p className="text-[9px] font-medium uppercase tracking-wider text-muted-foreground">{label}</p>
-    </div>
-  );
-}
-
-function SettingsRow({
-  icon: Icon,
-  title,
-  subtitle,
-  action,
-}: {
-  icon: React.ElementType;
-  title: string;
-  subtitle: string;
-  action: React.ReactNode;
-}) {
-  return (
-    <div className="flex items-center gap-3 p-4">
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-        <Icon className="h-5 w-5" />
-      </span>
-      <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold">{title}</p>
-        <p className="truncate text-xs text-muted-foreground">{subtitle}</p>
-      </div>
-      {action}
-    </div>
-  );
-}
-
-function ToggleSwitch({ checked, onChange, ariaLabel }: { checked: boolean; onChange: () => void; ariaLabel: string }) {
-  return (
-    <button
-      onClick={onChange}
-      role="switch"
-      aria-checked={checked}
-      aria-label={ariaLabel}
-      className={`relative h-7 w-12 shrink-0 rounded-full transition-colors duration-300 ${checked ? "bg-primary" : "bg-muted"}`}
-    >
-      <span
-        className={`absolute top-0.5 left-0.5 h-6 w-6 rounded-full bg-white shadow-md transition-transform duration-300 ease-out ${
-          checked ? "translate-x-[1.25rem]" : "translate-x-0"
-        }`}
-      />
-    </button>
-  );
-}
-
-function BibleVersionSelector({
-  value,
-  open,
-  onOpenChange,
-  onSelect,
-}: {
-  value: BibleVersion;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSelect: (code: BibleVersion) => void;
-}) {
-  const current = BIBLE_VERSION_OPTIONS.find((option) => option.code === value) ?? BIBLE_VERSION_OPTIONS[0];
-  return (
-    <>
-      <button
-        type="button"
-        onClick={() => onOpenChange(true)}
-        className="flex w-full items-center gap-3 p-4 text-left transition-colors hover:bg-surface-2"
-      >
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-          <BookOpen className="h-5 w-5" />
-        </span>
-        <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold">VersÃ£o da BÃ­blia</p>
-          <p className="truncate text-xs text-muted-foreground">{current.name}</p>
-        </div>
-        <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/40" />
-      </button>
-
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>VersÃ£o da BÃ­blia</DialogTitle>
-            <DialogDescription>Escolha a versÃ£o exibida em liÃ§Ãµes, estudos e mural.</DialogDescription>
-          </DialogHeader>
-          <div className="divide-y divide-border overflow-hidden rounded-2xl border border-border">
-            {BIBLE_VERSION_OPTIONS.map((option) => {
-              const selected = value === option.code;
-              return (
-                <button
-                  key={option.code}
-                  type="button"
-                  onClick={() => onSelect(option.code)}
-                  className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors ${
-                    selected ? "bg-primary/5" : "hover:bg-surface-2"
-                  }`}
-                >
-                  <span
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold ${
-                      selected ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground"
-                    }`}
-                  >
-                    {option.code}
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-semibold">{option.name}</span>
-                    <span className="block text-xs text-muted-foreground">{option.description}</span>
-                  </span>
-                  {selected && <Check className="h-5 w-5 shrink-0 text-primary" />}
-                  {!selected && <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/40" />}
-                </button>
-              );
-            })}
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
-  );
-}
-
-function AvatarPickerDialog({
-  open,
-  onOpenChange,
-  currentAvatar,
-  uploading,
-  onSelectPreset,
-  onUploadClick,
-}: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  currentAvatar: string | null;
-  uploading: boolean;
-  onSelectPreset: (src: string) => void;
-  onUploadClick: () => void;
-}) {
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Escolher avatar</DialogTitle>
-          <DialogDescription>Selecione um avatar pronto ou envie sua prÃ³pria foto.</DialogDescription>
-        </DialogHeader>
-        <div className="grid grid-cols-5 gap-2.5">
-          {PRESET_AVATARS.map((src) => {
-            const selected = currentAvatar === src;
-            return (
-              <button
-                key={src}
-                type="button"
-                onClick={() => onSelectPreset(src)}
-                className={`relative aspect-square overflow-hidden rounded-2xl bg-surface-2 ring-2 transition-transform hover:scale-105 active:scale-95 ${
-                  selected ? "ring-primary" : "ring-transparent"
-                }`}
-                aria-label="Selecionar avatar"
-              >
-                <img src={src} alt="Avatar" className="h-full w-full object-cover" loading="lazy" />
-                {selected && (
-                  <span className="absolute inset-0 flex items-center justify-center bg-black/30">
-                    <Check className="h-6 w-6 text-white" />
-                  </span>
+                {uploading ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Camera className="h-3.5 w-3.5" />
                 )}
               </button>
-            );
-          })}
-        </div>
-        <button
-          type="button"
-          onClick={onUploadClick}
-          disabled={uploading}
-          className="mt-1 flex w-full items-center justify-center gap-2 rounded-2xl border border-border py-2.5 text-sm font-medium transition-colors hover:border-primary/50 hover:text-primary disabled:opacity-60"
-        >
-          {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
-          Enviar do dispositivo
-        </button>
-      </DialogContent>
-    </Dialog>
-  );
-}
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={onFileChange}
+              />
+            </div>
 
-function PerfilSkeleton() {
-  return (
-    <div className="mx-auto max-w-lg space-y-4 px-4 pt-6">
-      <div className="flex items-center justify-between">
-        <div className="space-y-2">
-          <div className="h-5 w-20 animate-pulse rounded-full bg-surface-2" />
-          <div className="h-3 w-40 animate-pulse rounded-full bg-surface-2" />
-        </div>
-        <div className="h-10 w-24 animate-pulse rounded-full bg-surface-2" />
-      </div>
-      <div className="card-elevated overflow-hidden">
-        <div className="flex flex-col items-center gap-3 bg-surface-2/60 px-5 pb-6 pt-7">
-          <div className="h-28 w-28 animate-pulse rounded-[28px] bg-surface-2" />
-          <div className="h-4 w-32 animate-pulse rounded-full bg-surface-2" />
-          <div className="h-3 w-24 animate-pulse rounded-full bg-surface-2" />
-          <div className="h-2 w-full max-w-[260px] animate-pulse rounded-full bg-surface-2" />
-        </div>
-        <div className="border-t border-border p-4">
-          <div className="h-16 w-full animate-pulse rounded-2xl bg-surface-2" />
-        </div>
-      </div>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="card-elevated h-24 animate-pulse bg-surface-2/60" />
-        ))}
-      </div>
-      <div className="card-elevated h-16 animate-pulse bg-surface-2/60" />
-      <div className="card-elevated h-40 animate-pulse bg-surface-2/60" />
-    </div>
-  );
-}
+            <div className="min-w-0 flex-1 pt-0.5">
+              <p className="flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-[0.16em] text-white/55">
+                <Sparkles className="h-3 w-3 text-primary" /> Sua jornada
+              </p>
+              <h2 className="mt-1 truncate text-lg font-extrabold leading-tight">
+                {profile.display_name}
+              </h2>
+
+              <div className="mt-1.5 flex min-h-7 items-center gap-1">
+                {editingUsername ? (
+                  <>
+                    <div className="flex min-w-0 flex-1 items-center rounded-full border border-white/15 bg-black/20 px-2 py-1 backdrop-blur-sm">
+                      <AtSign className="h-3 w-3 shrink-0 text-white/45" />
+                      <input
+                        autoFocus
+                        value={usernameDraft}
+                        maxLength={24}
+                        onChange={(e) => setUsernameDraft(normalizeUsername(e.target.value))}
+                        className="min-w-0 flex-1 bg-transparent px-1 text-[11px] font-semibold text-white outline-none"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => void saveUsername()}
+                      disabled={savingUsername}
+                      className="rounded-full bg-primary p-1.5 text-primary-foreground disabled:opacity-50"
+                      aria-label="Salvar ID"
+                    >
+                      {savingUsername ? (
+                        <Loader2 className="h-3 w-3 animate-spin" />
+                      ) : (
+                        <Check className="h-3 w-3" />
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setEditingUsername(false)}
+                      className="rounded-full bg-white/10 p-1.5 text-white/70"
+                      aria-label="Cancelar ediÃ§Ã£o"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <span className="truncate text-[11px] font-semibold text-white/65">
+                      @{profile.username ?? "sem-id"}
+                    </span>
+                    {profile.username && (
+                      <button
+                        type="button"
+                        onClick={() => void copyUsername()}
+                        className="rounded-full p-1 text-white/55 transition-colors hover:bg-white/10 hover:text-white"
+                        aria-label="Copiar ID"
+                      >
+                        {copied ? (
+                          <Check className="h-3 w-3 text-emerald-300" />
+                        ) : (
+                          <Copy className="h-3 w-3" />
+                        )}
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={startEditUsername}
+                      className="rounded-full p-1 text-white/55 transition-colors hover:bg-white/10 hover:text-white"
+                      aria-label="Editar ID"
+                    >
+                      <Pencil className="h-3 w-3" />
+                    </button>
+                  </>
+                )}
+              </div>
+
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                <span className="rounded-full bg-primary/20 px-2.5 py-1 text-[10px] font-extrabold text-primary-foreground ring-1 ring-primary/30">
+                  NÃ­vel {level.level}
+                </span>
+                <span className="rounded-full bg-white/[0.08] px-2.5 py-1 text-[10px] font-bold text-white/70 ring-1 ring-white/10">
+                  {profile.xp} XP total
+                </span>
+              </div>
+            </div>
+
+            <div className="flex w-12 shrink-0 flex-col items-center rounded-[18px] border border-orange-300/25 bg-orange-400/10 px-1 py-2 text-center shadow-inner shadow-orange-300/5">
+              <Flame className="h-4 w-4 text-orange-300" />
+              <strong className="mt-0.5 text-lg leading-none text-×Î}¶‰Ëkºwµçy‘””…¹½Ñ”ˆ(€€€€€€€€€€€½¹±¥¬õì ¤€ôøÙ½¥¹…Ø¡ìÑ¼è€ˆ½‰¥‰±¥„ˆô¥ô(€€€€€€€€€€¼ø(€€€€€€€€€€ñ)½ÕÉ¹•åM¡½ÉÑÕĞ(€€€€€€€€€€€¥½¸õí9½Ñ•‰½½­A•¹ô(€€€€€€€€€€€•å•‰É½Üô‰I•±•µ‰É”ˆ(€€€€€€€€€€€Ñ¥Ñ±”ô‰5¥¹¡…Ì9½Ñ…Ìˆ(€€€€€€€€€€€‘•ÍÉ¥ÁÑ¥½¸ô‰5…É‡ŸÕ•Ì”ÑÉ•¡½ÌÍ…±Ù½Ìˆ(€€€€€€€€€€€½¹±¥¬õì ¤€ôøÙ½¥¹…Ø¡ìÑ¼è€ˆ½¹½Ñ…Ìˆô¥ô(€€€€€€€€€€¼ø(€€€€€€€€ğ½‘¥Øø(€€€€€€ğ½Í•Ñ¥½¸ø((€€€€€€ñÍ•Ñ¥½¸(€€€€€€€±…ÍÍ9…µ”ô‰…¹¥µ…Ñ”µÍ±¥‘”µÕÀˆ(€€€€€€€ÍÑå±”õíì…¹¥µ…Ñ¥½¹•±…äè€ˆÄÔÁµÌˆ°…¹¥µ…Ñ¥½¹¥±±5½‘”è€‰‰…­İ…É‘Ìˆõô(€€€€€€ø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰µˆ´È™±•à¥Ñ•µÌµ•¹Ñ•È…À´ÈÁà´Äˆø(€€€€€€€€€€ñM•ÑÑ¥¹ÌÈ±…ÍÍ9…µ”ô‰ ´Ì¸ÔÜ´Ì¸ÔÑ•áĞµÁÉ¥µ…Éäˆ€¼ø(€€€€€€€€€€ñM•Ñ¥½¹1…‰•°±…ÍÍ9…µ”ô‰µˆ´ÀÁà´ÀˆùAÉ•™•Ë©¹¥…Ìğ½M•Ñ¥½¹1…‰•°ø(€€€€€€€€ğ½‘¥Øø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…Éµ•±•Ù…Ñ•‘¥Ù¥‘”µä‘¥Ù¥‘”µ‰½É‘•È¼ÜÀ½Ù•É™±½Üµ¡¥‘‘•¸ˆø(€€€€€€€€€€ñ	¥‰±•Y•ÉÍ¥½¹M•±•Ñ½È(€€€€€€€€€€€Ù…±Õ”õí‰¥‰±•Y•ÉÍ¥½¹ô(€€€€€€€€€€€½Á•¸õíÙ•ÉÍ¥½¹=Á•¹ô(€€€€€€€€€€€½¹=Á•¹¡…¹”õíÍ•ÑY•ÉÍ¥½¹=Á•¹ô(€€€€€€€€€€€½¹M•±•Ğõì¡½‘”¤€ôøì(€€€€€€€€€€€€€Í•Ñ	¥‰±•Y•ÉÍ¥½¸¡½‘”¤ì(€€€€€€€€€€€€€Ù½¥ÕÁ‘…Ñ”¡ì‰¥‰±•}Ù•ÉÍ¥½¸è½‘”ô¤ì(€€€€€€€€€€€€€Í•ÑY•ÉÍ¥½¹=Á•¸¡™…±Í”¤ì(€€€€€€€€€€€õô(€€€€€€€€€€¼ø(€€€€€€€€€€ñM•ÑÑ¥¹ÍI½Ü(€€€€€€€€€€€¥½¸õí¡ÕÉ¡ô(€€€€€€€€€€€Ñ¥Ñ±”ô‰½µÕ¹¥‘…‘”ˆ(€€€€€€€€€€€ÍÕ‰Ñ¥Ñ±”õíÁÉ½™¥±”¹¡ÕÉ¡}¹…µ”€üü€‰;¼Ù¥¹Õ±…‘¼„Õµ„¥É•©„‰ô(€€€€€€€€€€€…Ñ¥½¸õì(€€€€€€€€€€€€€€ñ‰ÕÑÑ½¸(€€€€€€€€€€€€€€€½¹±¥¬õì ¤€ôøÍ•Ñ¡ÕÉ¡¥…±½=Á•¸¡ÑÉÕ”¥ô(€€€€€€€€€€€€€€€±…ÍÍ9…µ”ô‰µ¥¸µ ´äÍ¡É¥¹¬´ÀÉ½Õ¹‘•µ™Õ±°‰½É‘•È‰½É‘•ÈµÁÉ¥µ…Éä¼ÄÔ‰œµÁÉ¥µ…Éä½lÀ¸ÀÙtÁà´ÌÑ•áĞµáÌ™½¹Ğµ‰½±Ñ•áĞµÁÉ¥µ…ÉäÑÉ…¹Í¥Ñ¥½¸µ½±½ÉÌ¡½Ù•Èé‰œµÁÉ¥µ…Éä¼ÄÀˆ(€€€€€€€€€€€€€€ø(€€€€€€€€€€€€€€€íÁÉ½™¥±”¹¡ÕÉ¡}¹…µ”€ü€‰±Ñ•É…Èˆ€è€‰Y¥¹Õ±…È‰ô(€€€€€€€€€€€€€€ğ½‰ÕÑÑ½¸ø(€€€€€€€€€€€ô(€€€€€€€€€€¼ø(€€€€€€€€€€ñM•ÑÑ¥¹ÍI½Ü(€€€€€€€€€€€¥½¸õí	•±±ô(€€€€€€€€€€€Ñ¥Ñ±”ô‰1•µ‰É•Ñ”‘”•Ù½¥½¹…°ˆ(€€€€€€€€€€€ÍÕ‰Ñ¥Ñ±”ô‰5…¹Ó¥´ÍÕ„½™•¹Í¥Ù„…Ñ¥Ù„¸ˆ(€€€€€€€€€€€…Ñ¥½¸õì(€€€€€€€€€€€€€€ñQ½±•Mİ¥Ñ (€€€€€€€€€€€€€€€¡•­•õíÁÉ½™¥±”¹¹½Ñ¥™å}‘•Ù½¥½¹…±ô(€€€€€€€€€€€€€€€½¹¡…¹”õì ¤€ôøÙ½¥ÕÁ‘…Ñ”¡ì¹½Ñ¥™å}‘•Ù½¥½¹…°è€…ÁÉ½™¥±”¹¹½Ñ¥™å}‘•Ù½¥½¹…°ô¥ô(€€€€€€€€€€€€€€€…É¥…1…‰•°ô‰Ñ¥Ù…È±•µ‰É•Ñ”‘”‘•Ù½¥½¹…°ˆ(€€€€€€€€€€€€€€¼ø(€€€€€€€€€€€ô(€€€€€€€€€€¼ø(€€€€€€€€ğ½‘¥Øø(€€€€€€ğ½Í•Ñ¥½¸ø((€€€€€€ñ¡ÕÉ¡1¥¹­¥…±½œ(€€€€€€€½Á•¸õí¡ÕÉ¡¥…±½=Á•¹ô(€€€€€€€½¹=Á•¹¡…¹”õíÍ•Ñ¡ÕÉ¡¥…±½=Á•¹ô(€€€€€€€ÕÍ•É%õíÁÉ½™¥±”¹¥‘ô(€€€€€€€ÕÉÉ•¹Ñ¡ÕÉ¡%õíÁÉ½™¥±”¹¡ÕÉ¡}¥‘ô(€€€€€€€ÕÉÉ•¹Ñ¡ÕÉ¡9…µ”õíÁÉ½™¥±”¹¡ÕÉ¡}¹…µ•ô(€€€€€€€½¹1¥¹­•õì¡¡ÕÉ è¡ÕÉ¡=ÁÑ¥½¸ğ¹Õ±°¤€ôø(€€€€€€€€€Í•ÑAÉ½™¥±” ¡À¤€ôø(€€€€€€€€€€€À€üì€¸¸¹À°¡ÕÉ¡}¥è¡ÕÉ ü¹¥€üü¹Õ±°°¡ÕÉ¡}¹…µ”è¡ÕÉ ü¹¹…µ”€üü¹Õ±°ô€èÀ°(€€€€€€€€€€¤(€€€€€€€ô(€€€€€€¼ø((€€€€€€ñÙ…Ñ…ÉA¥­•É¥…±½œ(€€€€€€€½Á•¸õí…Ù…Ñ…É¥…±½=Á•¹ô(€€€€€€€½¹=Á•¹¡…¹”õíÍ•ÑÙ…Ñ…É¥…±½=Á•¹ô(€€€€€€€ÕÉÉ•¹ÑÙ…Ñ…ÈõíÁÉ½™¥±”¹…Ù…Ñ…É}ÕÉ±ô(€€€€€€€ÕÁ±½…‘¥¹œõíÕÁ±½…‘¥¹ô(€€€€€€€½¹M•±•ÑAÉ•Í•Ğõì¡ÍÉŒ¤€ôøÙ½¥Í•±•ÑAÉ•Í•ÑÙ…Ñ…È¡ÍÉŒ¥ô(€€€€€€€½¹UÁ±½…‘±¥¬õì ¤€ôøì(€€€€€€€€€Í•ÑÙ…Ñ…É¥…±½=Á•¸¡™…±Í”¤ì(€€€€€€€€€½¹A¥­¥±” ¤ì(€€€€€€€õô(€€€€€€¼ø((€€€€€€ñÍ•Ñ¥½¸(€€€€€€€±…ÍÍ9…µ”ô‰…¹¥µ…Ñ”µÍ±¥‘”µÕÀ½Ù•É™±½Üµ¡¥‘‘•¸É½Õ¹‘•µlÈÉÁát‰½É‘•È‰½É‘•Èµ‰½É‘•È¼ÜÀ‰œµÍÕÉ™…”ˆ(€€€€€€€ÍÑå±”õíì…¹¥µ…Ñ¥½¹•±…äè€ˆÄàÁµÌˆ°…¹¥µ…Ñ¥½¹¥±±5½‘”è€‰‰…­İ…É‘Ìˆõô(€€€€€€ø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à¥Ñ•µÌµ•¹Ñ•È…À´ÌÁà´ĞÁä´Ì¸Ôˆø(€€€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰™±•à ´ÄÀÜ´ÄÀ¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÉ½Õ¹‘•µá°‰œµÍÕ•ÍÌ¼ÄÀÑ•áĞµÍÕ•ÍÌˆø(€€€€€€€€€€€€ñM¡¥•±‘¡•¬±…ÍÍ9…µ”ô‰ ´ÔÜ´Ôˆ€¼ø(€€€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰µ¥¸µÜ´À™±•à´Äˆø(€€€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰Ñ•áĞµÍ´™½¹Ğµ‰½±ˆù½¹Ñ„ÁÉ½Ñ•¥‘„ğ½Àø(€€€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰Ñ•áĞµáÌÑ•áĞµµÕÑ•µ™½É•É½Õ¹ˆø(€€€€€€€€€€€€€M•ÕÌ‘…‘½Ì”ÁÉ•™•Ë©¹¥…Ì™¥…´Ù¥¹Õ±…‘½Ì…¼Í•Ô…•ÍÍ¼¸(€€€€€€€€€€€€ğ½Àø(€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€ğ½‘¥Øø(€€€€€€€€ñ‰ÕÑÑ½¸(€€€€€€€€€ÑåÁ”ô‰‰ÕÑÑ½¸ˆ(€€€€€€€€€½¹±¥¬õì ¤€ôøÙ½¥Í¥¹=ÕĞ ¥ô(€€€€€€€€€±…ÍÍ9…µ”ô‰™±•àÜµ™Õ±°¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ‰•Ñİ••¸‰½É‘•ÈµĞ‰½É‘•Èµ‰½É‘•È¼ÜÀÁà´ĞÁä´ÌÑ•áĞµÍ´™½¹ĞµÍ•µ¥‰½±Ñ•áĞµµÕÑ•µ™½É•É½Õ¹ÑÉ…¹Í¥Ñ¥½¸µ½±½ÉÌ¡½Ù•Èé‰œµ‘•ÍÑÉÕÑ¥Ù”¼Ô¡½Ù•ÈéÑ•áĞµ‘•ÍÑÉÕÑ¥Ù”ˆ(€€€€€€€€ø(€€€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰™±•à¥Ñ•µÌµ•¹Ñ•È…À´Èˆø(€€€€€€€€€€€€ñ1½=ÕĞ±…ÍÍ9…µ”ô‰ ´ĞÜ´Ğˆ€¼øM…¥È‘„½¹Ñ„(€€€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€€€ñ¡•ÙÉ½¹I¥¡Ğ±…ÍÍ9…µ”ô‰ ´ĞÜ´Ğ½Á…¥Ñä´ĞÀˆ€¼ø(€€€€€€€€ğ½‰ÕÑÑ½¸ø(€€€€€€ğ½Í•Ñ¥½¸ø((€€€€€€ñÀ(€€€€€€€±…ÍÍ9…µ”ô‰…¹¥µ…Ñ”µÍ±¥‘”µÕÀÁˆ´ÈÑ•áĞµ•¹Ñ•ÈÑ•áĞµlÄÅÁátÑ•áĞµµÕÑ•µ™½É•É½Õ¹¼ÜÀˆ(€€€€€€€ÍÑå±”õíì…¹¥µ…Ñ¥½¹•±…äè€ˆÈÈÁµÌˆ°…¹¥µ…Ñ¥½¹¥±±5½‘”è€‰‰…­İ…É‘Ìˆõô(€€€€€€ø(€€€€€€€<¥ÍµÁÕ±¼ƒÂ~BDƒŠPÍÕ„…µ¥¹¡…‘„°Õ´Á…ÍÍ¼‘”…‘„Ù•è¸(€€€€€€ğ½Àø(€€€€ğ½‘¥Øø(€€¤ì)ô()™Õ¹Ñ¥½¸M•Ñ¥½¹1…‰•°¡ì(€¡¥±‘É•¸°(€±…ÍÍ9…µ”€ô€ˆˆ°)ôèì(€¡¥±‘É•¸èI•…Ğ¹I•…Ñ9½‘”ì(€±…ÍÍ9…µ”üèÍÑÉ¥¹œì)ô¤ì(€É•ÑÕÉ¸€ (€€€€ñÀ(€€€€€±…ÍÍ9…µ”õíµˆ´ÈÁà´ÄÑ•áĞµlÄÁÁát™½¹Ğµ•áÑÉ…‰½±ÕÁÁ•É…Í”ÑÉ…­¥¹œµlÀ¸ÄÙ•µtÑ•áĞµµÕÑ•µ™½É•É½Õ¹€‘í±…ÍÍ9…µ•õô(€€€€ø(€€€€€í¡¥±‘É•¹ô(€€€€ğ½Àø(€€¤ì)ô()™Õ¹Ñ¥½¸MÑ…Ñ%Ñ•´¡ì(€¥½¸è%½¸°(€±…‰•°°(€Ù…±Õ”°(€Ñ¥¹Ğ°)ôèì(€¥½¸èI•…Ğ¹±•µ•¹ÑQåÁ”ì(€±…‰•°èÍÑÉ¥¹œì(€Ù…±Õ”èÍÑÉ¥¹œì(€Ñ¥¹ĞèÍÑÉ¥¹œì)ô¤ì(€É•ÑÕÉ¸€ (€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…Éµ•±•Ù…Ñ•™±•àµ¥¸µÜ´À¥Ñ•µÌµ•¹Ñ•È…À´ÌÀ´Ì¸Ôˆø(€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰™±•à ´ÄÀÜ´ÄÀÍ¡É¥¹¬´À¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÉ½Õ¹‘•µlÄÑÁát‰œµÍÕÉ™…”´Èˆø(€€€€€€€€ñ%½¸±…ÍÍ9…µ”ô‰ µlÄáÁátÜµlÄáÁátˆÍÑå±”õíì½±½ÈèÑ¥¹Ğõô€¼ø(€€€€€€ğ½ÍÁ…¸ø(€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰µ¥¸µÜ´Àˆø(€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰ÑÉÕ¹…Ñ”Ñ•áĞµ‰…Í”™½¹Ğµ•áÑÉ…‰½±±•…‘¥¹œµ¹½¹”ˆùíÙ…±Õ•ôğ½Àø(€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰µĞ´ÄÑÉÕ¹…Ñ”Ñ•áĞµlåÁát™½¹Ğµ‰½±ÕÁÁ•É…Í”ÑÉ…­¥¹œµİ¥‘•ÈÑ•áĞµµÕÑ•µ™½É•É½Õ¹ˆø(€€€€€€€€€í±…‰•±ô(€€€€€€€€ğ½Àø(€€€€€€ğ½‘¥Øø(€€€€ğ½‘¥Øø(€€¤ì)ô()™Õ¹Ñ¥½¸)½ÕÉ¹•åM¡½ÉÑÕĞ¡ì(€¥½¸è%½¸°(€•å•‰É½Ü°(€Ñ¥Ñ±”°(€‘•ÍÉ¥ÁÑ¥½¸°(€½¹±¥¬°)ôèì(€¥½¸èI•…Ğ¹±•µ•¹ÑQåÁ”ì(€•å•‰É½ÜèÍÑÉ¥¹œì(€Ñ¥Ñ±”èÍÑÉ¥¹œì(€‘•ÍÉ¥ÁÑ¥½¸èÍÑÉ¥¹œì(€½¹±¥¬è€ ¤€ôøÙ½¥ì)ô¤ì(€É•ÑÕÉ¸€ (€€€€ñ‰ÕÑÑ½¸(€€€€€ÑåÁ”ô‰‰ÕÑÑ½¸ˆ(€€€€€½¹±¥¬õí½¹±¥­ô(€€€€€±…ÍÍ9…µ”ô‰É½ÕÀ…Éµ•±•Ù…Ñ•É•±…Ñ¥Ù”µ¥¸µ µlÄÌÉÁát½Ù•É™±½Üµ¡¥‘‘•¸À´ĞÑ•áĞµ±•™ĞÑÉ…¹Í¥Ñ¥½¸µ…±°¡½Ù•ÈèµÑÉ…¹Í±…Ñ”µä´À¸Ô¡½Ù•Èé‰½É‘•ÈµÁÉ¥µ…Éä¼ÌÀ¡½Ù•ÈéÍ¡…‘½Üµ±œˆ(€€€€ø(€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰Á½¥¹Ñ•Èµ•Ù•¹ÑÌµ¹½¹”…‰Í½±ÕÑ”€µÉ¥¡Ğ´à€µÑ½À´à ´ÈĞÜ´ÈĞÉ½Õ¹‘•µ™Õ±°‰œµÁÉ¥µ…Éä¼ÄÀ‰±ÕÈ´Éá°ÑÉ…¹Í¥Ñ¥½¸µÑÉ…¹Í™½É´É½ÕÀµ¡½Ù•ÈéÍ…±”´ÄÈÔˆ€¼ø(€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰É•±…Ñ¥Ù”™±•à µ™Õ±°™±•àµ½°ˆø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à¥Ñ•µÌµÍÑ…ÉĞ©ÕÍÑ¥™äµ‰•Ñİ••¸…À´Èˆø(€€€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰™±•à ´ÄÀÜ´ÄÀ¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÉ½Õ¹‘•µlÄÑÁát‰œµÁÉ¥µ…Éä¼ÄÀÑ•áĞµÁÉ¥µ…ÉäÉ¥¹œ´ÄÉ¥¹œµÁÉ¥µ…Éä¼ÄÀˆø(€€€€€€€€€€€€ñ%½¸±…ÍÍ9…µ”ô‰ ´ÔÜ´Ôˆ€¼ø(€€€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€€€ñÉÉ½İUÁI¥¡Ğ±…ÍÍ9…µ”ô‰ ´ĞÜ´ĞÑ•áĞµµÕÑ•µ™½É•É½Õ¹¼ĞÀÑÉ…¹Í¥Ñ¥½¸µ½±½ÉÌÉ½ÕÀµ¡½Ù•ÈéÑ•áĞµÁÉ¥µ…Éäˆ€¼ø(€€€€€€€€ğ½‘¥Øø(€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰µĞ´ÌÑ•áĞµlåÁát™½¹Ğµ•áÑÉ…‰½±ÕÁÁ•É…Í”ÑÉ…­¥¹œµlÀ¸ÄÑ•µtÑ•áĞµÁÉ¥µ…Éäˆø(€€€€€€€€€í•å•‰É½İô(€€€€€€€€ğ½Àø(€€€€€€€€ñ Ì±…ÍÍ9…µ”ô‰µĞ´À¸ÔÑ•áĞµÍ´™½¹Ğµ•áÑÉ…‰½±±•…‘¥¹œµÑ¥¡ĞˆùíÑ¥Ñ±•ôğ½ Ìø(€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰µĞ´ÄÑ•áĞµlÄÁÁát±•…‘¥¹œµÍ¹ÕœÑ•áĞµµÕÑ•µ™½É•É½Õ¹ˆùí‘•ÍÉ¥ÁÑ¥½¹ôğ½Àø(€€€€€€ğ½‘¥Øø(€€€€ğ½‰ÕÑÑ½¸ø(€€¤ì)ô()™Õ¹Ñ¥½¸M•ÑÑ¥¹ÍI½Ü¡ì(€¥½¸è%½¸°(€Ñ¥Ñ±”°(€ÍÕ‰Ñ¥Ñ±”°(€…Ñ¥½¸°)ôèì(€¥½¸èI•…Ğ¹±•µ•¹ÑQåÁ”ì(€Ñ¥Ñ±”èÍÑÉ¥¹œì(€ÍÕ‰Ñ¥Ñ±”èÍÑÉ¥¹œì(€…Ñ¥½¸èI•…Ğ¹I•…Ñ9½‘”ì)ô¤ì(€É•ÑÕÉ¸€ (€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à¥Ñ•µÌµ•¹Ñ•È…À´ÌÀ´ĞÑÉ…¹Í¥Ñ¥½¸µ½±½ÉÌ¡½Ù•Èé‰œµÍÕÉ™…”´È¼ĞÀˆø(€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰™±•à ´ÄÀÜ´ÄÀÍ¡É¥¹¬´À¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÉ½Õ¹‘•µlÄÑÁát‰œµÁÉ¥µ…Éä¼ÄÀÑ•áĞµÁÉ¥µ…ÉäÉ¥¹œ´ÄÉ¥¹œµÁÉ¥µ…Éä¼ÄÀˆø(€€€€€€€€ñ%½¸±…ÍÍ9…µ”ô‰ ´ÔÜ´Ôˆ€¼ø(€€€€€€ğ½ÍÁ…¸ø(€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰µ¥¸µÜ´À™±•à´Äˆø(€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰Ñ•áĞµÍ´™½¹Ğµ‰½±ˆùíÑ¥Ñ±•ôğ½Àø(€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰µĞ´À¸ÔÑÉÕ¹…Ñ”Ñ•áĞµlÄÅÁátÑ•áĞµµÕÑ•µ™½É•É½Õ¹ˆùíÍÕ‰Ñ¥Ñ±•ôğ½Àø(€€€€€€ğ½‘¥Øø(€€€€€í…Ñ¥½¹ô(€€€€ğ½‘¥Øø(€€¤ì)ô()™Õ¹Ñ¥½¸Q½±•Mİ¥Ñ ¡ì(€¡•­•°(€½¹¡…¹”°(€…É¥…1…‰•°°)ôèì(€¡•­•è‰½½±•…¸ì(€½¹¡…¹”è€ ¤€ôøÙ½¥ì(€…É¥…1…‰•°èÍÑÉ¥¹œì)ô¤ì(€É•ÑÕÉ¸€ (€€€€ñ‰ÕÑÑ½¸(€€€€€½¹±¥¬õí½¹¡…¹•ô(€€€€€É½±”ô‰Íİ¥Ñ ˆ(€€€€€…É¥„µ¡•­•õí¡•­•‘ô(€€€€€…É¥„µ±…‰•°õí…É¥…1…‰•±ô(€€€€€±…ÍÍ9…µ”õíÉ•±…Ñ¥Ù” ´ÜÜ´ÄÈÍ¡É¥¹¬´ÀÉ½Õ¹‘•µ™Õ±°ÑÉ…¹Í¥Ñ¥½¸µ½±½ÉÌ‘ÕÉ…Ñ¥½¸´ÌÀÀ€‘í¡•­•€ü€‰‰œµÁÉ¥µ…Éäˆ€è€‰‰œµµÕÑ•‰õô(€€€€ø(€€€€€€ñÍÁ…¸(€€€€€€€±…ÍÍ9…µ”õí…‰Í½±ÕÑ”Ñ½À´À¸Ô±•™Ğ´À¸Ô ´ØÜ´ØÉ½Õ¹‘•µ™Õ±°‰œµİ¡¥Ñ”Í¡…‘½ÜµµÑÉ…¹Í¥Ñ¥½¸µÑÉ…¹Í™½É´‘ÕÉ…Ñ¥½¸´ÌÀÀ•…Í”µ½ÕĞ€‘ì(€€€€€€€€€¡•­•€ü€‰ÑÉ…¹Í±…Ñ”µàµlÄ¸ÈÕÉ•µtˆ€è€‰ÑÉ…¹Í±…Ñ”µà´Àˆ(€€€€€€€õô(€€€€€€¼ø(€€€€ğ½‰ÕÑÑ½¸ø(€€¤ì)ô()™Õ¹Ñ¥½¸	¥‰±•Y•ÉÍ¥½¹M•±•Ñ½È¡ì(€Ù…±Õ”°(€½Á•¸°(€½¹=Á•¹¡…¹”°(€½¹M•±•Ğ°)ôèì(€Ù…±Õ”è	¥‰±•Y•ÉÍ¥½¸ì(€½Á•¸è‰½½±•…¸ì(€½¹=Á•¹¡…¹”è€¡½Á•¸è‰½½±•…¸¤€ôøÙ½¥ì(€½¹M•±•Ğè€¡½‘”è	¥‰±•Y•ÉÍ¥½¸¤€ôøÙ½¥ì)ô¤ì(€½¹ÍĞÕÉÉ•¹Ğ€ô(€€€	%	1}YIM%=9}=AQ%=9L¹™¥¹ ¡½ÁÑ¥½¸¤€ôø½ÁÑ¥½¸¹½‘”€ôôôÙ…±Õ”¤€üü	%	1}YIM%=9}=AQ%=9MlÁtì(€É•ÑÕÉ¸€ (€€€€ğø(€€€€€€ñ‰ÕÑÑ½¸(€€€€€€€ÑåÁ”ô‰‰ÕÑÑ½¸ˆ(€€€€€€€½¹±¥¬õì ¤€ôø½¹=Á•¹¡…¹”¡ÑÉÕ”¥ô(€€€€€€€±…ÍÍ9…µ”ô‰™±•àÜµ™Õ±°¥Ñ•µÌµ•¹Ñ•È…À´ÌÀ´ĞÑ•áĞµ±•™ĞÑÉ…¹Í¥Ñ¥½¸µ½±½ÉÌ¡½Ù•Èé‰œµÍÕÉ™…”´È¼ĞÀˆ(€€€€€€ø(€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰™±•à ´ÄÀÜ´ÄÀÍ¡É¥¹¬´À¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÉ½Õ¹‘•µlÄÑÁát‰œµÁÉ¥µ…Éä¼ÄÀÑ•áĞµÁÉ¥µ…ÉäÉ¥¹œ´ÄÉ¥¹œµÁÉ¥µ…Éä¼ÄÀˆø(€€€€€€€€€€ñ	½½­=Á•¸±…ÍÍ9…µ”ô‰ ´ÔÜ´Ôˆ€¼ø(€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰µ¥¸µÜ´À™±•à´Äˆø(€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰Ñ•áĞµÍ´™½¹Ğµ‰½±ˆùY•ÉÏ¼‘„µ‰±¥„ğ½Àø(€€€€€€€€€€ñÀ±…ÍÍ9…µ”ô‰µĞ´À¸ÔÑÉÕ¹…Ñ”Ñ•áĞµlÄÅÁátÑ•áĞµµÕÑ•µ™½É•É½Õ¹ˆùíÕÉÉ•¹Ğ¹¹…µ•ôğ½Àø(€€€€€€€€ğ½‘¥Øø(€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰É½Õ¹‘•µ™Õ±°‰œµÁÉ¥µ…Éä½lÀ¸ÀİtÁà´È¸ÔÁä´ÄÑ•áĞµlÄÁÁát™½¹Ğµ•áÑÉ…‰½±Ñ•áĞµÁÉ¥µ…Éäˆø(€€€€€€€€€íÕÉÉ•¹Ğ¹½‘•ô(€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€ğ½‰ÕÑÑ½¸ø((€€€€€€ñ¥…±½œ½Á•¸õí½Á•¹ô½¹=Á•¹¡…¹”õí½¹=Á•¹¡…¹•ôø(€€€€€€€€ñ¥…±½½¹Ñ•¹Ğø(€€€€€€€€€€ñ¥…±½!•…‘•Èø(€€€€€€€€€€€€ñ¥…±½Q¥Ñ±”ùY•ÉÏ¼‘„µ‰±¥„ğ½¥…±½Q¥Ñ±”ø(€€€€€€€€€€€€ñ¥…±½•ÍÉ¥ÁÑ¥½¸ø(€€€€€€€€€€€€€Í½±¡„„Ù•ÉÏ¼•á¥‰¥‘„•´±§ŸÕ•Ì°•ÍÑÕ‘½Ì”µÕÉ…°¸(€€€€€€€€€€€€ğ½¥…±½•ÍÉ¥ÁÑ¥½¸ø(€€€€€€€€€€ğ½¥…±½!•…‘•Èø(€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰‘¥Ù¥‘”µä‘¥Ù¥‘”µ‰½É‘•È½Ù•É™±½Üµ¡¥‘‘•¸É½Õ¹‘•´Éá°‰½É‘•È‰½É‘•Èµ‰½É‘•Èˆø(€€€€€€€€€€€í	%	1}YIM%=9}=AQ%=9L¹µ…À ¡½ÁÑ¥½¸¤€ôøì(€€€€€€€€€€€€€½¹ÍĞÍ•±•Ñ•€ôÙ…±Õ”€ôôô½ÁÑ¥½¸¹½‘”ì(€€€€€€€€€€€€€É•ÑÕÉ¸€ (€€€€€€€€€€€€€€€€ñ‰ÕÑÑ½¸(€€€€€€€€€€€€€€€€€­•äõí½ÁÑ¥½¸¹½‘•ô(€€€€€€€€€€€€€€€€€ÑåÁ”ô‰‰ÕÑÑ½¸ˆ(€€€€€€€€€€€€€€€€€½¹±¥¬õì ¤€ôø½¹M•±•Ğ¡½ÁÑ¥½¸¹½‘”¥ô(€€€€€€€€€€€€€€€€€±…ÍÍ9…µ”õí™±•àÜµ™Õ±°¥Ñ•µÌµ•¹Ñ•È…À´ÌÁà´ĞÁä´ÌÑ•áĞµ±•™ĞÑÉ…¹Í¥Ñ¥½¸µ½±½ÉÌ€‘ì(€€€€€€€€€€€€€€€€€€€Í•±•Ñ•€ü€‰‰œµÁÉ¥µ…Éä¼Ôˆ€è€‰¡½Ù•Èé‰œµÍÕÉ™…”´Èˆ(€€€€€€€€€€€€€€€€€õô(€€€€€€€€€€€€€€€€ø(€€€€€€€€€€€€€€€€€€ñÍÁ…¸(€€€€€€€€€€€€€€€€€€€±…ÍÍ9…µ”õí™±•à ´ÄÀÜ´ÄÀÍ¡É¥¹¬´À¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•ÈÉ½Õ¹‘•µá°Ñ•áĞµáÌ™½¹Ğµ‰½±€‘ì(€€€€€€€€€€€€€€€€€€€€€Í•±•Ñ•(€€€€€€€€€€€€€€€€€€€€€€€€ü€‰‰œµÁÉ¥µ…ÉäÑ•áĞµÁÉ¥µ…Éäµ™½É•É½Õ¹ˆ(€€€€€€€€€€€€€€€€€€€€€€€€è€‰‰œµÍÕÉ™…”´ÈÑ•áĞµµÕÑ•µ™½É•É½Õ¹ˆ(€€€€€€€€€€€€€€€€€€€õô(€€€€€€€€€€€€€€€€€€ø(€€€€€€€€€€€€€€€€€€€í½ÁÑ¥½¸¹½‘•ô(€€€€€€€€€€€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€€€€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰µ¥¸µÜ´À™±•à´Äˆø(€€€€€€€€€€€€€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰‰±½¬Ñ•áĞµÍ´™½¹ĞµÍ•µ¥‰½±ˆùí½ÁÑ¥½¸¹¹…µ•ôğ½ÍÁ…¸ø(€€€€€€€€€€€€€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰‰±½¬Ñ•áĞµáÌÑ•áĞµµÕÑ•µ™½É•É½Õ¹ˆø(€€€€€€€€€€€€€€€€€€€€€í½ÁÑ¥½¸¹‘•ÍÉ¥ÁÑ¥½¹ô(€€€€€€€€€€€€€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€€€€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€€€€€€€€€€íÍ•±•Ñ•€˜˜€ñ¡•¬±…ÍÍ9…µ”ô‰ ´ÔÜ´ÔÍ¡É¥¹¬´ÀÑ•áĞµÁÉ¥µ…Éäˆ€¼ùô(€€€€€€€€€€€€€€€€€ì…Í•±•Ñ•€˜˜€ (€€€€€€€€€€€€€€€€€€€€ñ¡•ÙÉ½¹I¥¡Ğ±…ÍÍ9…µ”ô‰ ´ĞÜ´ĞÍ¡É¥¹¬´ÀÑ•áĞµµÕÑ•µ™½É•É½Õ¹¼ĞÀˆ€¼ø(€€€€€€€€€€€€€€€€€€¥ô(€€€€€€€€€€€€€€€€ğ½‰ÕÑÑ½¸ø(€€€€€€€€€€€€€€¤ì(€€€€€€€€€€€ô¥ô(€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€ğ½¥…±½½¹Ñ•¹Ğø(€€€€€€ğ½¥…±½œø(€€€€ğ¼ø(€€¤ì)ô()™Õ¹Ñ¥½¸Ù…Ñ…ÉA¥­•É¥…±½œ¡ì(€½Á•¸°(€½¹=Á•¹¡…¹”°(€ÕÉÉ•¹ÑÙ…Ñ…È°(€ÕÁ±½…‘¥¹œ°(€½¹M•±•ÑAÉ•Í•Ğ°(€½¹UÁ±½…‘±¥¬°)ôèì(€½Á•¸è‰½½±•…¸ì(€½¹=Á•¹¡…¹”è€¡½Á•¸è‰½½±•…¸¤€ôøÙ½¥ì(€ÕÉÉ•¹ÑÙ…Ñ…ÈèÍÑÉ¥¹œğ¹Õ±°ì(€ÕÁ±½…‘¥¹œè‰½½±•…¸ì(€½¹M•±•ÑAÉ•Í•Ğè€¡ÍÉŒèÍÑÉ¥¹œ¤€ôøÙ½¥ì(€½¹UÁ±½…‘±¥¬è€ ¤€ôøÙ½¥ì)ô¤ì(€É•ÑÕÉ¸€ (€€€€ñ¥…±½œ½Á•¸õí½Á•¹ô½¹=Á•¹¡…¹”õí½¹=Á•¹¡…¹•ôø(€€€€€€ñ¥…±½½¹Ñ•¹Ğø(€€€€€€€€ñ¥…±½!•…‘•Èø(€€€€€€€€€€ñ¥…±½Q¥Ñ±”ùÍ½±¡•È…Ù…Ñ…Èğ½¥…±½Q¥Ñ±”ø(€€€€€€€€€€ñ¥…±½•ÍÉ¥ÁÑ¥½¸ø(€€€€€€€€€€€M•±•¥½¹”Õ´…Ù…Ñ…ÈÁÉ½¹Ñ¼½Ô•¹Ù¥”ÍÕ„ÁËÍÁÉ¥„™½Ñ¼¸(€€€€€€€€€€ğ½¥…±½•ÍÉ¥ÁÑ¥½¸ø(€€€€€€€€ğ½¥…±½!•…‘•Èø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰É¥É¥µ½±Ì´Ô…À´È¸Ôˆø(€€€€€€€€€íAIMQ}YQIL¹µ…À ¡ÍÉŒ¤€ôøì(€€€€€€€€€€€½¹ÍĞÍ•±•Ñ•€ôÕÉÉ•¹ÑÙ…Ñ…È€ôôôÍÉŒì(€€€€€€€€€€€É•ÑÕÉ¸€ (€€€€€€€€€€€€€€ñ‰ÕÑÑ½¸(€€€€€€€€€€€€€€€­•äõíÍÉô(€€€€€€€€€€€€€€€ÑåÁ”ô‰‰ÕÑÑ½¸ˆ(€€€€€€€€€€€€€€€½¹±¥¬õì ¤€ôø½¹M•±•ÑAÉ•Í•Ğ¡ÍÉŒ¥ô(€€€€€€€€€€€€€€€±…ÍÍ9…µ”õíÉ•±…Ñ¥Ù”…ÍÁ•ĞµÍÅÕ…É”½Ù•É™±½Üµ¡¥‘‘•¸É½Õ¹‘•´Éá°‰œµÍÕÉ™…”´ÈÉ¥¹œ´ÈÑÉ…¹Í¥Ñ¥½¸µÑÉ…¹Í™½É´¡½Ù•ÈéÍ…±”´ÄÀÔ…Ñ¥Ù”éÍ…±”´äÔ€‘ì(€€€€€€€€€€€€€€€€€Í•±•Ñ•€ü€‰É¥¹œµÁÉ¥µ…Éäˆ€è€‰É¥¹œµÑÉ…¹ÍÁ…É•¹Ğˆ(€€€€€€€€€€€€€€€õô(€€€€€€€€€€€€€€€…É¥„µ±…‰•°ô‰M•±•¥½¹…È…Ù…Ñ…Èˆ(€€€€€€€€€€€€€€ø(€€€€€€€€€€€€€€€€ñ¥µœÍÉŒõíÍÉô…±Ğô‰Ù…Ñ…Èˆ±…ÍÍ9…µ”ô‰ µ™Õ±°Üµ™Õ±°½‰©•Ğµ½Ù•Èˆ±½…‘¥¹œô‰±…éäˆ€¼ø(€€€€€€€€€€€€€€€íÍ•±•Ñ•€˜˜€ (€€€€€€€€€€€€€€€€€€ñÍÁ…¸±…ÍÍ9…µ”ô‰…‰Í½±ÕÑ”¥¹Í•Ğ´À™±•à¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•È‰œµ‰±…¬¼ÌÀˆø(€€€€€€€€€€€€€€€€€€€€ñ¡•¬±…ÍÍ9…µ”ô‰ ´ØÜ´ØÑ•áĞµİ¡¥Ñ”ˆ€¼ø(€€€€€€€€€€€€€€€€€€ğ½ÍÁ…¸ø(€€€€€€€€€€€€€€€€¥ô(€€€€€€€€€€€€€€ğ½‰ÕÑÑ½¸ø(€€€€€€€€€€€€¤ì(€€€€€€€€€ô¥ô(€€€€€€€€ğ½‘¥Øø(€€€€€€€€ñ‰ÕÑÑ½¸(€€€€€€€€€ÑåÁ”ô‰‰ÕÑÑ½¸ˆ(€€€€€€€€€½¹±¥¬õí½¹UÁ±½…‘±¥­ô(€€€€€€€€€‘¥Í…‰±•õíÕÁ±½…‘¥¹ô(€€€€€€€€€±…ÍÍ9…µ”ô‰µĞ´Ä™±•àÜµ™Õ±°¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ•¹Ñ•È…À´ÈÉ½Õ¹‘•´Éá°‰½É‘•È‰½É‘•Èµ‰½É‘•ÈÁä´È¸ÔÑ•áĞµÍ´™½¹Ğµµ•‘¥Õ´ÑÉ…¹Í¥Ñ¥½¸µ½±½ÉÌ¡½Ù•Èé‰½É‘•ÈµÁÉ¥µ…Éä¼ÔÀ¡½Ù•ÈéÑ•áĞµÁÉ¥µ…Éä‘¥Í…‰±•é½Á…¥Ñä´ØÀˆ(€€€€€€€€ø(€€€€€€€€€íÕÁ±½…‘¥¹œ€ü€ (€€€€€€€€€€€€ñ1½…‘•ÈÈ±…ÍÍ9…µ”ô‰ ´ĞÜ´Ğ…¹¥µ…Ñ”µÍÁ¥¸ˆ€¼ø(€€€€€€€€€€¤€è€ (€€€€€€€€€€€€ñ…µ•É„±…ÍÍ9…µ”ô‰ ´ĞÜ´Ğˆ€¼ø(€€€€€€€€€€¥ô(€€€€€€€€€¹Ù¥…È‘¼‘¥ÍÁ½Í¥Ñ¥Ù¼(€€€€€€€€ğ½‰ÕÑÑ½¸ø(€€€€€€ğ½¥…±½½¹Ñ•¹Ğø(€€€€ğ½¥…±½œø(€€¤ì)ô()™Õ¹Ñ¥½¸A•É™¥±M­•±•Ñ½¸ ¤ì(€É•ÑÕÉ¸€ (€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰µàµ…ÕÑ¼µ…àµÜµ±œÍÁ…”µä´ĞÁà´ĞÁĞ´Øˆø(€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à¥Ñ•µÌµ•¹Ñ•È©ÕÍÑ¥™äµ‰•Ñİ••¸ˆø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰ÍÁ…”µä´Èˆø(€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰ ´ÔÜ´ÈÀ…¹¥µ…Ñ”µÁÕ±Í”É½Õ¹‘•µ™Õ±°‰œµÍÕÉ™…”´Èˆ€¼ø(€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰ ´ÌÜ´ĞÀ…¹¥µ…Ñ”µÁÕ±Í”É½Õ¹‘•µ™Õ±°‰œµÍÕÉ™…”´Èˆ€¼ø(€€€€€€€€ğ½‘¥Øø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰ ´ÄÀÜ´ÈĞ…¹¥µ…Ñ”µÁÕ±Í”É½Õ¹‘•µ™Õ±°‰œµÍÕÉ™…”´Èˆ€¼ø(€€€€€€ğ½‘¥Øø(€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…Éµ•±•Ù…Ñ•½Ù•É™±½Üµ¡¥‘‘•¸ˆø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰™±•à™±•àµ½°¥Ñ•µÌµ•¹Ñ•È…À´Ì‰œµÍÕÉ™…”´È¼ØÀÁà´ÔÁˆ´ØÁĞ´Üˆø(€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰ ´ÈàÜ´Èà…¹¥µ…Ñ”µÁÕ±Í”É½Õ¹‘•µlÈáÁát‰œµÍÕÉ™…”´Èˆ€¼ø(€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰ ´ĞÜ´ÌÈ…¹¥µ…Ñ”µÁÕ±Í”É½Õ¹‘•µ™Õ±°‰œµÍÕÉ™…”´Èˆ€¼ø(€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰ ´ÌÜ´ÈĞ…¹¥µ…Ñ”µÁÕ±Í”É½Õ¹‘•µ™Õ±°‰œµÍÕÉ™…”´Èˆ€¼ø(€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰ ´ÈÜµ™Õ±°µ…àµÜµlÈØÁÁát…¹¥µ…Ñ”µÁÕ±Í”É½Õ¹‘•µ™Õ±°‰œµÍÕÉ™…”´Èˆ€¼ø(€€€€€€€€ğ½‘¥Øø(€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰‰½É‘•ÈµĞ‰½É‘•Èµ‰½É‘•ÈÀ´Ğˆø(€€€€€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰ ´ÄØÜµ™Õ±°…¹¥µ…Ñ”µÁÕ±Í”É½Õ¹‘•´Éá°‰œµÍÕÉ™…”´Èˆ€¼ø(€€€€€€€€ğ½‘¥Øø(€€€€€€ğ½‘¥Øø(€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰É¥É¥µ½±Ì´È…À´ÌÍ´éÉ¥µ½±Ì´Ğˆø(€€€€€€€íÉÉ…ä¹™É½´¡ì±•¹Ñ è€Ğô¤¹µ…À ¡|°¤¤€ôø€ (€€€€€€€€€€ñ‘¥Ø­•äõí¥ô±…ÍÍ9…µ”ô‰…Éµ•±•Ù…Ñ• ´ÈĞ…¹¥µ…Ñ”µÁÕ±Í”‰œµÍÕÉ™…”´È¼ØÀˆ€¼ø(€€€€€€€€¤¥ô(€€€€€€ğ½‘¥Øø(€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…Éµ•±•Ù…Ñ• ´ÄØ…¹¥µ…Ñ”µÁÕ±Í”‰œµÍÕÉ™…”´È¼ØÀˆ€¼ø(€€€€€€ñ‘¥Ø±…ÍÍ9…µ”ô‰…Éµ•±•Ù…Ñ• ´ĞÀ…¹¥µ…Ñ”µÁÕ±Í”‰œµÍÕÉ™…”´È¼ØÀˆ€¼ø(€€€€ğ½‘¥Øø(€€¤ì)ô
