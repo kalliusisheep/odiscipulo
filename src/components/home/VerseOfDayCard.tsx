@@ -101,11 +101,12 @@ export function VerseOfDayCard() {
         draggable={false}
         className="pointer-events-none absolute select-none"
         style={{
-          right: "0.35rem",
-          bottom: "0.35rem",
-          width: "9.5rem",
-          height: "9.5rem",
+          right: "0.8rem",
+          bottom: "0.7rem",
+          width: "7.75rem",
+          height: "7.75rem",
           objectFit: "contain",
+          objectPosition: "center",
           mixBlendMode: "screen",
           filter: "drop-shadow(0 10px 12px rgba(0, 0, 0, 0.7))",
         }}
@@ -114,7 +115,7 @@ export function VerseOfDayCard() {
       <div
         className="relative z-10"
         style={{
-          padding: "1.25rem 9.75rem 1.25rem 1.25rem",
+          padding: "1.25rem 8.5rem 1.25rem 1.25rem",
           minHeight: "11.5rem",
         }}
       >
@@ -157,10 +158,10 @@ export function VerseOfDayCard() {
           </span>
         </div>
 
-        <div className="mt-4 flex items-center gap-3 text-[11px] text-white/65">
+        <div className="mt-4 flex items-center gap-3.5 text-sm text-white/70">
           <span className="inline-flex items-center gap-1">
             <Heart
-              className={`h-3.5 w-3.5 ${
+              className={`h-5 w-5 ${
                 counts.liked ? "fill-red-500 text-red-500" : ""
               }`}
             />
@@ -168,16 +169,16 @@ export function VerseOfDayCard() {
           </span>
 
           <span className="inline-flex items-center gap-1">
-            <MessageCircle className="h-3.5 w-3.5" />
+            <MessageCircle className="h-5 w-5" />
             {counts.commentCount}
           </span>
 
           <span className="inline-flex items-center gap-1">
-            <Share2 className="h-3.5 w-3.5" />
+            <Share2 className="h-5 w-5" />
             {counts.shareCount}
           </span>
 
-          <BookOpen className="h-3.5 w-3.5 opacity-60" />
+          <BookOpen className="h-5 w-5 opacity-60" />
         </div>
       </div>
     </Link>
