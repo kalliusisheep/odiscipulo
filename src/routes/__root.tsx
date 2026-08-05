@@ -26,7 +26,7 @@ function NotFoundComponent() {
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Go home
+            Voltar ao início
           </Link>
         </div>
       </div>
@@ -45,8 +45,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
 
     // O preview pode manter a URL de um chunk antigo depois de sincronizar
-    // uma nova versÃ£o. Um Ãºnico reload recupera o mÃ³dulo atualizado sem
-    // prender o usuÃ¡rio em uma tela em branco ou em um ciclo de recarga.
+    // uma nova versão. Um único reload recupera o módulo atualizado sem
+    // prender o usuário em uma tela em branco ou em um ciclo de recarga.
     if (!isModuleLoadError || typeof window === "undefined") return;
 
     try {
@@ -57,7 +57,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         window.location.reload();
       }
     } catch {
-      // Se o armazenamento estiver indisponÃ­vel, o botÃ£o manual permanece.
+      // Se o armazenamento estiver indisponível, o botão manual permanece.
     }
   }, [error, isModuleLoadError]);
 
@@ -65,12 +65,12 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          {isModuleLoadError ? "Atualizando o aplicativoâ€¦" : "Esta pÃ¡gina nÃ£o carregou"}
+          {isModuleLoadError ? "Atualizando o aplicativo…" : "Esta página não carregou"}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
           {isModuleLoadError
-            ? "Encontramos uma versÃ£o mais recente. Se a pÃ¡gina nÃ£o voltar sozinha, toque em recarregar."
-            : "Algo inesperado aconteceu. VocÃª pode tentar novamente ou voltar ao inÃ­cio."}
+            ? "Encontramos uma versão mais recente. Se a página não voltar sozinha, toque em recarregar."
+            : "Algo inesperado aconteceu. Você pode tentar novamente ou voltar ao início."}
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -86,7 +86,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            Voltar ao inÃ­cio
+            Go home
           </a>
         </div>
       </div>
@@ -100,10 +100,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { name: "theme-color", content: "#1c1830" },
-      { title: "Disciple â€” Discipulado cristÃ£o gamificado" },
-      { name: "description", content: "Trilhas de estudo, quizzes e um Mentor IA para crescer na fÃ© um dia por vez." },
+      { title: "Disciple — Discipulado cristão gamificado" },
+      { name: "description", content: "Trilhas de estudo, quizzes e um Mentor IA para crescer na fé um dia por vez." },
       { property: "og:title", content: "Disciple" },
-      { property: "og:description", content: "Discipulado cristÃ£o gamificado â€” um passo por dia." },
+      { property: "og:description", content: "Discipulado cristão gamificado — um passo por dia." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -140,8 +140,8 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
-  // MantÃ©m uma instÃ¢ncia estÃ¡vel no cliente. Isso evita que uma montagem
-  // antecipada de rota passe um contexto ainda nÃ£o inicializado ao provider.
+  // Mantém uma instância estável no cliente. Isso evita que uma montagem
+  // antecipada de rota passe um contexto ainda não inicializado ao provider.
   const [queryClient] = useState(() => new QueryClient());
 
   return (
@@ -151,4 +151,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-
