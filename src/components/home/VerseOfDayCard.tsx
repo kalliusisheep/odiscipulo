@@ -78,105 +78,90 @@ export function VerseOfDayCard() {
   return (
     <Link
       to="/versiculo"
+      className="group relative block overflow-hidden transition-transform duration-300 hover:scale-[1.01]"
       style={{
-        background: "linear-gradient(135deg, rgba(161, 161, 170, 0.40) 0%, rgba(39, 39, 42, 0.72) 55%, rgba(0, 0, 0, 0.92) 100%)",
-        minHeight: "11rem",
+        minHeight: "11.5rem",
+        border: "1px solid rgba(255, 255, 255, 0.18)",
+        borderRadius: "1.5rem",
+        background:
+          "linear-gradient(135deg, rgba(161, 161, 170, 0.32) 0%, rgba(63, 63, 70, 0.56) 52%, rgba(0, 0, 0, 0.82) 100%)",
+        boxShadow: "0 18px 36px -22px rgba(0, 0, 0, 0.85)",
+        backdropFilter: "blur(16px)",
       }}
-      className="
-        group
-        relative
-        min-h-44
-        overflow-hidden
-        rounded-3xl
-        border
-        border-white/20
-        bg-gradient-to-br
-        from-zinc-400/40
-        via-zinc-800/75
-        to-black/90
-        backdrop-blur-xl
-        shadow-xl
-        shadow-black/40
-        transition-all
-        duration-300
-        hover:scale-[1.01]
-        hover:bg-white/[0.06]
-        hover:border-primary/30
-      "
     >
-      {/* Glow */}
-      <div className="absolute -top-16 -right-16 h-44 w-44 rounded-full bg-zinc-100/10 blur-3xl transition-all duration-500 group-hover:bg-zinc-100/15" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{ background: "rgba(255, 255, 255, 0.025)" }}
+      />
 
-      {/* Barnabé */}
       <img
         src="/images/barnabee-reading.png"
         alt=""
         draggable={false}
-        style={{ mixBlendMode: "screen" }}
-        className="
-          pointer-events-none
-          select-none
-          absolute
-          right-1
-          bottom-1
-          h-44
-          w-44
-          object-contain
-          object-bottom
-          mix-blend-screen
-          drop-shadow-2xl
-          sm:h-48
-          sm:w-48
-          transition-all
-          duration-500
-          group-hover:opacity-100
-          group-hover:scale-105
-        "
+        className="pointer-events-none absolute select-none"
+        style={{
+          right: "0.35rem",
+          bottom: "0.35rem",
+          width: "9.5rem",
+          height: "9.5rem",
+          objectFit: "contain",
+          mixBlendMode: "screen",
+          filter: "drop-shadow(0 10px 12px rgba(0, 0, 0, 0.7))",
+        }}
       />
 
-      <div className="relative z-10 p-5 pr-36 sm:pr-40">
-
+      <div
+        className="relative z-10"
+        style={{
+          padding: "1.25rem 9.75rem 1.25rem 1.25rem",
+          minHeight: "11.5rem",
+        }}
+      >
         <div className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 backdrop-blur">
-            <Sparkles className="h-4 w-4 text-white/80" />
+          <div
+            className="flex h-9 w-9 items-center justify-center rounded-xl"
+            style={{ background: "rgba(255, 255, 255, 0.10)" }}
+          >
+            <Sparkles className="h-4 w-4 text-white/85" />
           </div>
 
-          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/70">
+          <span
+            className="text-[10px] font-bold uppercase tracking-[0.18em]"
+            style={{ color: "rgba(255, 255, 255, 0.70)" }}
+          >
             Versículo do Dia
           </span>
         </div>
 
         <p
-          className="
-            mt-4
-            font-sans
-            not-italic
-            text-sm
-            leading-7
-            font-medium
-            text-white/95
-          "
-          style={{ fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif" }}
+          className="mt-4 text-sm font-medium leading-7"
+          style={{
+            color: "rgba(255, 255, 255, 0.94)",
+            fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif",
+            fontStyle: "normal",
+          }}
         >
-          {text
-            ? `"${text}"`
-            : "Carregando..."}
+          {text ? `"${text}"` : "Carregando..."}
         </p>
 
         <div className="mt-3">
-          <span className="text-xs font-semibold text-white/75">
+          <span
+            className="text-xs font-semibold"
+            style={{
+              color: "rgba(255, 255, 255, 0.72)",
+              fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif",
+            }}
+          >
             — {verse.ref_label}
           </span>
         </div>
 
-        <div className="mt-4 flex items-center gap-4 text-[11px] text-muted-foreground">
-
+        <div className="mt-4 flex items-center gap-3 text-[11px] text-white/65">
           <span className="inline-flex items-center gap-1">
             <Heart
               className={`h-3.5 w-3.5 ${
-                counts.liked
-                  ? "fill-red-500 text-red-500"
-                  : ""
+                counts.liked ? "fill-red-500 text-red-500" : ""
               }`}
             />
             {counts.likeCount}
@@ -193,11 +178,8 @@ export function VerseOfDayCard() {
           </span>
 
           <BookOpen className="h-3.5 w-3.5 opacity-60" />
-
         </div>
-
       </div>
-
     </Link>
   );
 }
