@@ -7,11 +7,15 @@ import { useBiblePrefs } from "@/lib/bible-prefs";
 import {
   ArrowLeft,
   BookMarked,
+  BookOpen,
   Check,
   ChevronDown,
+  ChevronRight,
+  Library,
   Loader2,
   Play,
   Search,
+  Sparkles,
   X,
 } from "lucide-react";
 
@@ -107,78 +111,98 @@ function BibliaIndex() {
 
   return (
     <div className="pb-28">
-      {/* Header fixo */}
-      <div className="sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-xl">
-        <div className="mx-auto max-w-lg px-4 pt-3 pb-3">
-          <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2">
+      <div className="sticky top-0 z-30 border-b border-white/[0.06] bg-background/90 backdrop-blur-2xl">
+        <div className="mx-auto max-w-lg px-4 pb-3 pt-3">
+          <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
             <button
               onClick={() => void nav({ to: "/perfil" })}
               aria-label="Voltar"
-              className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-surface"
+              className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-surface/80 text-muted-foreground shadow-sm transition-all hover:border-primary/30 hover:text-foreground active:scale-95"
             >
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeft className="h-4.5 w-4.5" />
             </button>
-            <div className="min-w-0">
-              <h1 className="truncate text-base font-bold leading-tight">Bíblia de Estudos</h1>
-              <p className="truncate text-[10px] text-muted-foreground">
-                Grego, hebraico e léxico com fontes acadêmicas
-              </p>
+
+            <div className="flex min-w-0 items-center gap-2.5">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/20">
+                <Library className="h-4.5 w-4.5" />
+              </span>
+              <div className="min-w-0">
+                <h1 className="truncate text-base font-extrabold leading-tight">Bíblia de Estudos</h1>
+                <p className="mt-0.5 truncate text-[10px] text-muted-foreground">
+                  Leia, marque e aprofunde cada passagem
+                </p>
+              </div>
             </div>
+
             <Link
               to="/biblia/marcados"
               aria-label="Meus marcadores"
-              className="shrink-0 rounded-full border border-border bg-surface p-2.5 text-primary transition-transform active:scale-95"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary shadow-sm transition-all hover:bg-primary/15 active:scale-95"
             >
-              <BookMarked className="h-4 w-4" />
+              <BookMarked className="h-4.5 w-4.5" />
             </Link>
           </div>
 
-          {/* Busca + tradução */}
-          <div className="mt-3 flex items-center gap-2">
-            <div className="flex min-w-0 flex-1 items-center gap-2 rounded-full border border-border bg-surface px-3.5 py-2">
-              <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
+          <div className="mt-3 rounded-2xl border border-white/10 bg-surface/85 p-1.5 shadow-lg shadow-black/10">
+            <div className="flex items-center gap-2 px-2">
+              <Search className="h-4.5 w-4.5 shrink-0 text-primary" />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && void runSearch()}
-                placeholder="Livro, palavra ou frase…"
-                className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+                placeholder="Busque um livro, palavra ou frase"
+                className="min-w-0 flex-1 bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground/70"
               />
               {searching ? (
                 <Loader2 className="h-4 w-4 shrink-0 animate-spin text-primary" />
-              ) : (
-                query && (
-                  <button aria-label="Limpar busca" onClick={clearSearch} className="shrink-0">
-                    <X className="h-4 w-4 text-muted-foreground" />
-                  </button>
-                )
-              )}
-            </div>
-            <div className="relative shrink-0">
-              <select
-                aria-label="Tradução"
-                value={translation}
-                onChange={(e) => setTranslation(e.target.value)}
-                className="appearance-none rounded-full border border-primary/40 bg-primary/10 py-2 pl-3.5 pr-8 text-xs font-bold text-primary outline-none"
+              ) : query ? (
+                <button
+                  aria-label="Limpar busca"
+                  onClick={clearSearch}
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              ) : null}
+              <button
+                onClick={() => void runSearch()}
+                disabled={q.length < 3 || searching}
+                className="shrink-0 rounded-xl bg-primary px-3 py-2 text-[11px] font-bold text-primary-foreground transition-all hover:bg-primary-glow disabled:cursor-not-allowed disabled:opacity-40"
               >
-                {PT_TRANSLATIONS.map((t) => (
-                  <option key={t.code} value={t.code}>
-                    {t.label}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-primary" />
+                Buscar
+              </button>
+            </div>
+
+            <div className="mt-1 flex items-center justify-between gap-3 border-t border-white/[0.06] px-2 pb-0.5 pt-2">
+              <span className="text-[10px] text-muted-foreground">Pesquisar em toda a Bíblia</span>
+              <label className="flex items-center gap-2">
+                <span className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground">Tradução</span>
+                <span className="relative">
+                  <select
+                    aria-label="Tradução"
+                    value={translation}
+                    onChange={(e) => setTranslation(e.target.value)}
+                    className="appearance-none rounded-lg border border-primary/20 bg-primary/10 py-1.5 pl-2.5 pr-7 text-[10px] font-extrabold text-primary outline-none"
+                  >
+                    {PT_TRANSLATIONS.map((t) => (
+                      <option key={t.code} value={t.code}>
+                        {t.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-3 w-3 -translate-y-1/2 text-primary" />
+                </span>
+              </label>
             </div>
           </div>
 
-          {/* Sugestões instantâneas de livro */}
           {bookMatches.length > 0 && !hits && (
             <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
               {bookMatches.map((b) => (
                 <button
                   key={b.id}
                   onClick={() => openChapters(b.id)}
-                  className="shrink-0 rounded-full border border-border bg-surface px-3 py-1.5 text-xs font-semibold transition-colors hover:border-primary/50"
+                  className="shrink-0 rounded-full border border-white/10 bg-surface px-3 py-1.5 text-[11px] font-semibold shadow-sm transition-colors hover:border-primary/40 hover:text-primary"
                 >
                   {b.name}
                 </button>
@@ -188,159 +212,265 @@ function BibliaIndex() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-lg px-4 pt-4 animate-slide-up">
-        {searchError && <p className="text-xs text-destructive">{searchError}</p>}
+      <main className="mx-auto max-w-lg px-4 pt-4 animate-slide-up">
+        {searchError && (
+          <div className="mb-3 rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-xs text-destructive">
+            {searchError}
+          </div>
+        )}
 
         {hits && (
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
-                {hits.length} resultado(s) em {translationByCode(translation).label}
-              </p>
-              <button onClick={clearSearch} className="text-[11px] font-semibold text-primary">
-                Limpar
+          <section className="space-y-2.5">
+            <div className="flex items-end justify-between gap-3 px-1">
+              <div>
+                <p className="text-xs font-bold text-foreground">Resultados da busca</p>
+                <p className="mt-0.5 text-[10px] text-muted-foreground">
+                  {hits.length} resultado(s) · {translationByCode(translation).label}
+                </p>
+              </div>
+              <button
+                onClick={clearSearch}
+                className="rounded-full bg-primary/10 px-3 py-1.5 text-[10px] font-bold text-primary transition-colors hover:bg-primary/15"
+              >
+                Limpar busca
               </button>
             </div>
+
             {hits.map((h) => (
               <Link
                 key={`${h.book}-${h.chapter}-${h.verse}`}
                 to="/biblia/$book/$chapter"
                 params={{ book: String(h.book), chapter: String(h.chapter) }}
-                className="block rounded-2xl border border-border bg-surface p-3.5 transition-colors hover:border-primary/40"
+                className="group flex items-center gap-3 rounded-2xl border border-white/10 bg-surface/80 p-3.5 shadow-sm transition-all hover:border-primary/30 hover:bg-surface"
               >
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
-                  {bookNameById(h.book)} {h.chapter}:{h.verse}
-                </p>
-                <p className="mt-1 line-clamp-2 text-sm text-foreground/85">{h.text}</p>
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/15">
+                  <BookOpen className="h-4.5 w-4.5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-primary">
+                    {bookNameById(h.book)} {h.chapter}:{h.verse}
+                  </span>
+                  <span className="mt-1 block line-clamp-2 text-xs leading-relaxed text-foreground/75">
+                    {h.text}
+                  </span>
+                </span>
+                <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
               </Link>
             ))}
+
             {hits.length === 0 && (
-              <p className="py-10 text-center text-sm text-muted-foreground">
-                Nada encontrado para “{q}”.
-              </p>
+              <div className="rounded-3xl border border-dashed border-border px-6 py-12 text-center">
+                <Search className="mx-auto h-6 w-6 text-muted-foreground/60" />
+                <p className="mt-3 text-sm font-semibold">Nenhum resultado encontrado</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Tente outra palavra, referência ou expressão.
+                </p>
+              </div>
             )}
-          </div>
+          </section>
         )}
 
         {!hits && (
           <>
-            {/* Continuar leitura + progresso num só card */}
-            <div className="card-elevated overflow-hidden p-0">
-              {last && (
-                <Link
-                  to="/biblia/$book/$chapter"
-                  params={{ book: String(last.book), chapter: String(last.chapter) }}
-                  className="flex items-center gap-3 border-b border-border/60 p-4 transition-colors hover:bg-surface-2"
-                >
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/15 text-primary">
-                    <Play className="h-5 w-5 fill-current" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-[10px] font-semibold uppercase tracking-wider text-primary">
-                      Continuar leitura
-                    </span>
-                    <span className="block truncate text-sm font-bold">
-                      {bookNameById(last.book)} {last.chapter}
-                    </span>
-                  </span>
-                </Link>
-              )}
-              <div className="p-4">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="font-semibold">Progresso de leitura</span>
-                  <span className="text-muted-foreground">
-                    {read.length}/1189 · {progressPct}%
-                  </span>
-                </div>
-                <div className="mt-2 h-2 overflow-hidden rounded-full bg-background">
-                  <div
-                    className="h-full rounded-full bg-primary transition-all duration-500"
-                    style={{ width: `${Math.max(progressPct, 1)}%` }}
-                  />
-                </div>
-              </div>
-            </div>
+            <section
+              className="relative isolate overflow-hidden rounded-[1.75rem] border border-violet-300/15 shadow-xl shadow-black/25"
+              style={{
+                background:
+                  "linear-gradient(145deg, rgba(55, 48, 163, 0.70) 0%, rgba(30, 41, 59, 0.92) 52%, rgba(15, 23, 42, 0.98) 100%)",
+              }}
+            >
+              <div className="pointer-events-none absolute -right-12 -top-16 h-52 w-52 rounded-full bg-violet-400/20 blur-3xl" />
+              <BookOpen className="pointer-events-none absolute -bottom-7 -right-3 h-36 w-36 rotate-[-8deg] text-white/[0.035]" />
 
-            {/* Testamento */}
-            <div className="mt-5 flex rounded-full border border-border bg-surface p-1">
-              {(["AT", "NT"] as const).map((t) => (
-                <button
-                  key={t}
-                  onClick={() => setTestament(t)}
-                  className={`flex-1 rounded-full py-2 text-xs font-semibold transition-all ${
-                    testament === t
-                      ? "bg-primary text-primary-foreground shadow-sm"
-                      : "text-muted-foreground"
-                  }`}
-                >
-                  {t === "AT" ? "Antigo Testamento" : "Novo Testamento"}
-                </button>
-              ))}
-            </div>
+              <div className="relative z-10 p-5">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-3.5 w-3.5 text-violet-300" />
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-violet-100/65">
+                    Sua jornada na Palavra
+                  </p>
+                </div>
 
-            {/* Grade de livros */}
-            <div className="mt-4 grid grid-cols-2 gap-2">
-              {books.map((b) => {
-                const done = readByBook[b.id] ?? 0;
-                const complete = done >= b.chapters;
-                return (
-                  <button
-                    key={b.id}
-                    onClick={() => openChapters(b.id)}
-                    className="group flex items-center gap-2.5 rounded-2xl border border-border bg-surface p-2.5 text-left transition-all active:scale-[0.98] hover:border-primary/50"
+                {last ? (
+                  <Link
+                    to="/biblia/$book/$chapter"
+                    params={{ book: String(last.book), chapter: String(last.chapter) }}
+                    className="group mt-3 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.07] p-3.5 transition-colors hover:bg-white/[0.11]"
                   >
-                    <span
-                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-[11px] font-bold ${
-                        complete
-                          ? "bg-ancient/20 text-ancient"
-                          : "bg-primary/10 text-primary"
-                      }`}
-                    >
-                      {complete ? <Check className="h-4 w-4" /> : b.abbr}
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-white shadow-lg ring-1 ring-white/10">
+                      <Play className="ml-0.5 h-5 w-5 fill-current" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-[13px] font-semibold leading-tight">
-                        {b.name}
+                      <span className="block text-[10px] font-bold uppercase tracking-wider text-violet-200">
+                        Continuar de onde parou
                       </span>
-                      <span className="block text-[10px] text-muted-foreground">
-                        {done > 0 ? `${done}/${b.chapters} cap.` : `${b.chapters} cap.`}
+                      <span className="mt-1 block truncate text-base font-extrabold text-white">
+                        {bookNameById(last.book)} {last.chapter}
                       </span>
                     </span>
-                  </button>
-                );
-              })}
-            </div>
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10">
+                      <ChevronRight className="h-4 w-4 text-white/75 transition-transform group-hover:translate-x-0.5" />
+                    </span>
+                  </Link>
+                ) : (
+                  <div className="mt-3 rounded-2xl border border-white/10 bg-white/[0.06] p-4">
+                    <p className="text-sm font-bold text-white">Comece sua leitura hoje</p>
+                    <p className="mt-1 text-xs text-white/60">
+                      Escolha um livro abaixo e marque seu primeiro capítulo.
+                    </p>
+                  </div>
+                )}
+
+                <div className="mt-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-[10px] font-semibold text-white/55">Progresso completo</span>
+                    <span className="text-[10px] font-bold text-white/80">
+                      {read.length} de 1189 capítulos
+                    </span>
+                  </div>
+                  <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-slate-950/45 p-[2px] ring-1 ring-white/5">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-violet-500 via-primary-glow to-fuchsia-300 shadow-[0_0_12px_rgba(167,139,250,.55)] transition-all duration-700"
+                      style={{ width: `${Math.max(progressPct, 1)}%` }}
+                    />
+                  </div>
+                  <div className="mt-2 flex items-center justify-between text-[10px]">
+                    <span className="text-white/45">Toda leitura conta</span>
+                    <span className="font-extrabold text-violet-200">{progressPct}% concluído</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className="mt-6">
+              <div className="flex items-end justify-between gap-3 px-1">
+                <div>
+                  <h2 className="text-sm font-extrabold">Explore os livros</h2>
+                  <p className="mt-0.5 text-[10px] text-muted-foreground">
+                    Escolha um livro para ver seus capítulos
+                  </p>
+                </div>
+                <span className="rounded-full bg-surface px-2.5 py-1 text-[10px] font-bold text-muted-foreground ring-1 ring-border">
+                  {testament === "AT" ? "39 livros" : "27 livros"}
+                </span>
+              </div>
+
+              <div className="mt-3 grid grid-cols-2 rounded-2xl border border-white/10 bg-surface/70 p-1.5 shadow-sm">
+                {(["AT", "NT"] as const).map((t) => {
+                  const active = testament === t;
+                  return (
+                    <button
+                      key={t}
+                      onClick={() => setTestament(t)}
+                      className={`rounded-xl px-3 py-2.5 text-left transition-all ${
+                        active
+                          ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+                          : "text-muted-foreground hover:bg-white/[0.04]"
+                      }`}
+                    >
+                      <span className="block text-[10px] font-extrabold uppercase tracking-wider">
+                        {t === "AT" ? "Antigo Testamento" : "Novo Testamento"}
+                      </span>
+                      <span className={`mt-0.5 block text-[9px] ${active ? "text-primary-foreground/70" : "text-muted-foreground/65"}`}>
+                        {t === "AT" ? "39 livros · Gênesis a Malaquias" : "27 livros · Mateus a Apocalipse"}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="mt-3 grid grid-cols-2 gap-2.5">
+                {books.map((b) => {
+                  const done = readByBook[b.id] ?? 0;
+                  const complete = done >= b.chapters;
+                  const bookPct = Math.round((done / b.chapters) * 100);
+                  return (
+                    <button
+                      key={b.id}
+                      onClick={() => openChapters(b.id)}
+                      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-surface/75 p-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
+                    >
+                      <div className="flex items-start gap-2.5">
+                        <span
+                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[10px] font-extrabold ring-1 ${
+                            complete
+                              ? "bg-ancient/15 text-ancient ring-ancient/20"
+                              : testament === "AT"
+                                ? "bg-amber-400/10 text-amber-300 ring-amber-300/15"
+                                : "bg-violet-400/10 text-violet-300 ring-violet-300/15"
+                          }`}
+                        >
+                          {complete ? <Check className="h-4 w-4" /> : b.abbr}
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-[13px] font-bold leading-tight">{b.name}</span>
+                          <span className="mt-1 block text-[9px] text-muted-foreground">
+                            {done > 0 ? `${done}/${b.chapters} lidos` : `${b.chapters} capítulos`}
+                          </span>
+                        </span>
+                        <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground/45 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+                      </div>
+
+                      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-background/70">
+                        <div
+                          className={`h-full rounded-full transition-all duration-500 ${
+                            complete
+                              ? "bg-ancient"
+                              : testament === "AT"
+                                ? "bg-gradient-to-r from-amber-500 to-orange-300"
+                                : "bg-gradient-to-r from-violet-500 to-fuchsia-300"
+                          }`}
+                          style={{ width: `${bookPct}%` }}
+                        />
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
           </>
         )}
-      </div>
+      </main>
 
-      {/* Bottom sheet de capítulos */}
       {pickerOpen && picker && (
         <div
-          className="fixed inset-0 z-50 flex items-end bg-black/50 animate-fade-in"
+          className="fixed inset-0 z-50 flex items-end bg-black/65 backdrop-blur-sm animate-fade-in"
           onClick={() => setPickerOpen(false)}
         >
           <div
-            className="max-h-[75vh] w-full overflow-y-auto rounded-t-3xl border-t border-border bg-background p-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] animate-slide-up"
+            className="max-h-[82vh] w-full overflow-y-auto rounded-t-[2rem] border-t border-white/10 bg-background pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl animate-slide-up"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-border" />
-            <div className="flex items-center justify-between">
-              <div className="min-w-0">
-                <h2 className="truncate text-base font-bold">{picker.name}</h2>
-                <p className="text-[11px] text-muted-foreground">
-                  {picker.chapters} capítulos · toque para ler
-                </p>
+            <div className="sticky top-0 z-10 border-b border-white/[0.06] bg-background/95 px-5 pb-4 pt-3 backdrop-blur-xl">
+              <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-white/15" />
+              <div className="flex items-center gap-3">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/20">
+                  <BookOpen className="h-5 w-5" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <h2 className="truncate text-base font-extrabold">{picker.name}</h2>
+                  <p className="mt-0.5 text-[10px] text-muted-foreground">
+                    {picker.chapters} capítulos · {readByBook[picker.id] ?? 0} lidos
+                  </p>
+                </div>
+                <button
+                  aria-label="Fechar"
+                  onClick={() => setPickerOpen(false)}
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-surface text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <X className="h-4 w-4" />
+                </button>
               </div>
-              <button
-                aria-label="Fechar"
-                onClick={() => setPickerOpen(false)}
-                className="rounded-full p-2 text-muted-foreground hover:bg-surface"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              <div className="mt-3 flex items-center gap-4 text-[9px] text-muted-foreground">
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-primary" /> Lido
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-surface ring-1 ring-border" /> Não lido
+                </span>
+              </div>
             </div>
-            <div className="mt-4 grid grid-cols-6 gap-2">
+
+            <div className="grid grid-cols-5 gap-2.5 p-5">
               {Array.from({ length: picker.chapters }, (_, i) => i + 1).map((c) => {
                 const done = readSet.has(`${picker.id}:${c}`);
                 return (
@@ -349,13 +479,14 @@ function BibliaIndex() {
                     to="/biblia/$book/$chapter"
                     params={{ book: String(picker.id), chapter: String(c) }}
                     onClick={() => setPickerOpen(false)}
-                    className={`flex h-11 items-center justify-center rounded-xl text-sm font-semibold transition-colors active:scale-95 ${
+                    className={`relative flex h-12 items-center justify-center rounded-2xl text-sm font-bold shadow-sm transition-all active:scale-95 ${
                       done
-                        ? "bg-primary/20 text-primary"
-                        : "bg-surface text-foreground/80 hover:bg-primary/10"
+                        ? "bg-primary text-primary-foreground shadow-primary/15"
+                        : "border border-white/10 bg-surface text-foreground/80 hover:border-primary/30 hover:bg-primary/10"
                     }`}
                   >
                     {c}
+                    {done && <Check className="absolute right-1 top-1 h-2.5 w-2.5 opacity-75" />}
                   </Link>
                 );
               })}
