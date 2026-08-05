@@ -174,9 +174,6 @@ function HomePage() {
                 ) : (
                   <span className="absolute inset-0 flex items-center justify-center text-4xl">{character.emoji}</span>
                 )}
-                <div className="absolute inset-x-1 bottom-1 rounded-lg bg-slate-950/75 px-1 py-1 text-center text-[9px] font-extrabold uppercase tracking-wider text-white backdrop-blur-sm">
-                  Nível {level.level}
-                </div>
               </div>
             </div>
 
