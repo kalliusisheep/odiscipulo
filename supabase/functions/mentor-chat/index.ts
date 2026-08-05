@@ -79,6 +79,7 @@ Deno.serve(async (req) => {
       return new Response(`Gateway ${lastError}`, { status: 502, headers: corsHeaders });
     }
 
+
     return new Response(res.body, {
       headers: {
         ...corsHeaders,
