@@ -246,9 +246,10 @@ function VerseOfDayPage() {
     setSharing(true);
     try {
       const blob = await generateShareImage({
-        title: verse.ref_label,
+        title: "Versículo do dia",
         bodyText: text,
         backgroundSrc: "/share-bg-cross.jpg",
+        referenceText: verse.ref_label,
       });
       const file = new File([blob], "versiculo-do-dia.jpg", { type: "image/jpeg" });
       const nav = navigator as Navigator & {
