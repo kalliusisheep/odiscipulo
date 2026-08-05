@@ -78,6 +78,10 @@ export function VerseOfDayCard() {
   return (
     <Link
       to="/versiculo"
+      style={{
+        background: "linear-gradient(135deg, rgba(161, 161, 170, 0.40) 0%, rgba(39, 39, 42, 0.72) 55%, rgba(0, 0, 0, 0.92) 100%)",
+        minHeight: "11rem",
+      }}
       className="
         group
         relative
@@ -108,6 +112,7 @@ export function VerseOfDayCard() {
         src="/images/barnabee-reading.png"
         alt=""
         draggable={false}
+        style={{ mixBlendMode: "screen" }}
         className="
           pointer-events-none
           select-none
@@ -151,7 +156,7 @@ export function VerseOfDayCard() {
             font-medium
             text-white/95
           "
-          style={{ fontFamily: "var(--font-sans)" }}
+          style={{ fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif" }}
         >
           {text
             ? `"${text}"`
