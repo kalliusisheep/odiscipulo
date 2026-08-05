@@ -7,7 +7,7 @@ import {
   buildMemoryGreeting,
   extractAndSaveMemory,
 } from "@/lib/mentor-memory";
-import { Send, X, Loader2 } from "lucide-react";
+import { Send, X, Loader2, RotateCcw } from "lucide-react";
 import { useState, useRef, useEffect, type PointerEvent as ReactPointerEvent } from "react";
 
 const FAB_SIZE = 56;
@@ -208,7 +208,143 @@ export function MentorFAB() {
   );
 }
 
-type Msg = { role: "user" | "assistant"; content: string };
+type Msg = {
+  role: "user" | "assistant";
+  content: string;
+  isError?: boolean;
+  retryText?: string;
+};
+
+class MentorRequestError extends Error {
+  constructor(
+    message: string,
+    readonly status?: number,
+  ) {
+    super(message);
+    this.name = "MentorRequestError";
+  }
+}
+
+const MENTOR_RETRYABLE_STATUS = new Set([408, 409, 425, 429, 500, 502, 503, 504]);
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function mentorCredentials(attempt: number) {
+  const anonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
+
+  if (!anonKey || !supabaseUrl) {
+    throw new MentorRequestError("Configuração pública do Supabase ausente.");
+  }
+
+  if (attempt >= 2) return { anonKey, supabaseUrl, token: anonKey };
+
+  const { data } =
+    attempt === 1 ? await supabase.auth.refreshSession() : await supabase.auth.getSession();
+
+  return {
+    anonKey,
+    supabaseUrl,
+    token: data.session?.access_token ?? anonKey,
+  };
+}
+
+async function requestMentor(messages: Msg[], memoryContext?: string) {
+  let lastError = new MentorRequestError("Falha ao conversar com o Mentor.");
+
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      const { anonKey, supabaseUrl, token } = await mentorCredentials(attempt);
+      const res = await fetch(`${supabaseUrl}/functions/v1/mentor-chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: anonKey,
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          messages: messages.map(({ role, content }) => ({ role, content })),
+          memoryContext,
+        }),
+      });
+
+      if (res.ok && res.body) return res;
+
+      const detail = (await res.text().catch(() => "")).slice(0, 300);
+      lastError = new MentorRequestError(
+        detail || `Mentor indisponível (${res.status}).`,
+        res.status,
+      );
+
+      const canRetry =
+        res.status === 401 || (MENTOR_RETRYABLE_STATUS.has(res.status) && attempt < 2);
+      if (!canRetry) break;
+    } catch (error) {
+      lastError =
+        error instanceof MentorRequestError
+          ? error
+          : new MentorRequestError(error instanceof Error ? error.message : "Falha de conexão.");
+    }
+
+    if (attempt < 2) await wait(600 * (attempt + 1));
+  }
+
+  throw lastError;
+}
+
+async function readMentorStream(res: Response, onContent: (content: string) => void) {
+  if (!res.body) throw new MentorRequestError("Resposta vazia do Mentor.", res.status);
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let accumulated = "";
+  let buffer = "";
+
+  const consumeLine = (line: string) => {
+    const normalized = line.trim();
+    if (!normalized.startsWith("data:")) return;
+    const data = normalized.slice(5).trim();
+    if (!data || data === "[DONE]") return;
+
+    try {
+      const chunk = JSON.parse(data);
+      const delta = chunk.choices?.[0]?.delta?.content;
+      if (typeof delta === "string" && delta) {
+        accumulated += delta;
+        onContent(accumulated);
+      }
+    } catch {
+      // Um evento incompleto permanece no buffer e será processado no próximo chunk.
+    }
+  };
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split(/\r?\n/);
+    buffer = lines.pop() ?? "";
+    lines.forEach(consumeLine);
+  }
+
+  buffer += decoder.decode();
+  buffer.split(/\r?\n/).forEach(consumeLine);
+
+  if (!accumulated.trim()) {
+    throw new MentorRequestError("O Mentor encerrou a resposta sem conteúdo.");
+  }
+
+  return accumulated;
+}
+
+function mentorErrorMessage(error: unknown) {
+  if (error instanceof MentorRequestError && error.status === 429) {
+    return "Estou recebendo muitas perguntas agora. Aguarde alguns segundos e tente novamente.";
+  }
+  if (error instanceof MentorRequestError && error.status === 401) {
+    return "Sua sessão precisou ser renovada, mas não consegui concluir a resposta. Tente novamente.";
+  }
+  return "Tive uma instabilidade ao responder. Sua mensagem foi preservada — tente novamente.";
+}
 
 export function MentorChat() {
   const { mentorOpen, setMentorOpen } = useApp();
@@ -266,68 +402,43 @@ export function MentorChat() {
     setMentorOpen(false);
   };
 
-  const send = async () => {
-    const text = input.trim();
+  const send = async (retryText?: string) => {
+    const text = (retryText ?? input).trim();
     if (!text || loading) return;
-    const next: Msg[] = [...messages, { role: "user", content: text }];
+    const validMessages = messages.filter((message) => !message.isError);
+    const next: Msg[] = retryText
+      ? validMessages
+      : [...validMessages, { role: "user", content: text }];
     setMessages(next);
-    setInput("");
+    if (!retryText) setInput("");
     setLoading(true);
+    let placeholderAdded = false;
     try {
-      const { data: sessionData } = await supabase.auth.getSession();
-      const anonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
-      const res = await fetch(`${supabaseUrl}/functions/v1/mentor-chat`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: anonKey,
-          Authorization: `Bearer ${sessionData.session?.access_token ?? anonKey}`,
-        },
-        body: JSON.stringify({ messages: next, memoryContext }),
-      });
-      if (!res.ok || !res.body) throw new Error("Falha ao conversar com o Mentor.");
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let acc = "";
+      const res = await requestMentor(next, memoryContext);
       setMessages((m) => [...m, { role: "assistant", content: "" }]);
-      // read SSE-ish stream from Lovable AI (chat.completions delta chunks)
-      let buf = "";
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buf += decoder.decode(value, { stream: true });
-        const lines = buf.split("\n");
-        buf = lines.pop() ?? "";
-        for (const line of lines) {
-          const l = line.trim();
-          if (!l.startsWith("data:")) continue;
-          const data = l.slice(5).trim();
-          if (data === "[DONE]") continue;
-          try {
-            const j = JSON.parse(data);
-            const delta = j.choices?.[0]?.delta?.content ?? "";
-            if (delta) {
-              acc += delta;
-              setMessages((m) => {
-                const copy = [...m];
-                copy[copy.length - 1] = { role: "assistant", content: acc };
-                return copy;
-              });
-            }
-          } catch {
-            // ignore
-          }
-        }
-      }
+      placeholderAdded = true;
+
+      await readMentorStream(res, (content) => {
+        setMessages((current) => {
+          const copy = [...current];
+          copy[copy.length - 1] = { role: "assistant", content };
+          return copy;
+        });
+      });
     } catch (err) {
-      setMessages((m) => [
-        ...m,
-        {
-          role: "assistant",
-          content: "Perdão, tive dificuldade em responder agora. Tente novamente.",
-        },
-      ]);
+      console.warn("Mentor IA indisponível:", err instanceof Error ? err.message : err);
+      setMessages((current) => {
+        const clean = placeholderAdded ? current.slice(0, -1) : current;
+        return [
+          ...clean,
+          {
+            role: "assistant",
+            content: mentorErrorMessage(err),
+            isError: true,
+            retryText: text,
+          },
+        ];
+      });
     } finally {
       setLoading(false);
     }
@@ -368,10 +479,23 @@ export function MentorChat() {
                 className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                   m.role === "user"
                     ? "bg-primary text-primary-foreground"
-                    : "bg-surface-2 text-foreground"
+                    : m.isError
+                      ? "border border-amber-500/25 bg-amber-500/[0.08] text-foreground"
+                      : "bg-surface-2 text-foreground"
                 }`}
               >
                 {m.content || <span className="text-muted-foreground">…</span>}
+                {m.isError && m.retryText && (
+                  <button
+                    type="button"
+                    onClick={() => void send(m.retryText)}
+                    disabled={loading}
+                    className="mt-2.5 flex min-h-9 items-center gap-2 rounded-full border border-amber-500/25 bg-background/60 px-3 text-xs font-bold text-amber-500 transition-colors hover:bg-amber-500/10 disabled:opacity-50"
+                  >
+                    <RotateCcw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} />
+                    Tentar novamente
+                  </button>
+                )}
               </div>
             </div>
           ))}

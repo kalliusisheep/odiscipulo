@@ -8,9 +8,14 @@ const corsHeaders = {
 // que direto na fonte e sem cobrança. Endpoint compatível com o formato
 // OpenAI, então o streaming e o parsing no cliente continuam idênticos.
 const GATEWAY_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
-// Gemini 3.6 Flash; se a chave ainda não tiver acesso, cai para o alias
-// "flash-latest" para o mentor nunca ficar mudo.
-const MODELS = ["gemini-3.6-flash", "gemini-flash-latest"];
+// A chave gratuita deste projeto nem sempre recebe acesso imediato ao modelo
+// mais novo. Priorizamos o alias que já está disponível e mantemos dois modelos
+// gratuitos, estáveis e independentes como contingência para limite de cota ou
+// indisponibilidade temporária.
+const MODELS = ["gemini-flash-latest", "gemini-3.5-flash-lite", "gemini-3.6-flash"];
+const MAX_ATTEMPTS_PER_MODEL = 2;
+const RETRYABLE_STATUS = new Set([408, 409, 425, 429, 500, 502, 503, 504]);
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const MENTOR_SYSTEM_PROMPT = `Você é o "Mentor Espiritual" do app Disciple — um companheiro cristão para estudo bíblico gamificado. Suas regras invioláveis:
 
 1. NUNCA substitua o pastor, o discipulador, o líder de célula ou a igreja local. Sempre que a pergunta envolver decisão de vida, doutrina delicada, aconselhamento pastoral, conflito relacional ou tema polêmico, oriente o usuário a buscar sua liderança local.
@@ -61,24 +66,56 @@ Deno.serve(async (req) => {
     let res: Response | null = null;
     let lastError = "sem resposta";
     for (const model of MODELS) {
-      res = await fetch(GATEWAY_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({ model, stream: true, messages }),
-      });
-      if (res.ok && res.body) break;
-      lastError = `${res.status}: ${(await res.text().catch(() => "")).slice(0, 200)}`;
-      console.error(`mentor-chat: modelo ${model} falhou —`, lastError);
-      res = null;
+      for (let attempt = 1; attempt <= MAX_ATTEMPTS_PER_MODEL; attempt += 1) {
+        try {
+          res = await fetch(GATEWAY_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${apiKey}`,
+            },
+            body: JSON.stringify({
+              model,
+              stream: true,
+              reasoning_effort: "low",
+              messages,
+            }),
+          });
+        } catch (error) {
+          lastError = error instanceof Error ? error.message : "falha de rede";
+          console.error(`mentor-chat: modelo ${model}, tentativa ${attempt} —`, lastError);
+          res = null;
+          if (attempt < MAX_ATTEMPTS_PER_MODEL) await sleep(350 * attempt);
+          continue;
+        }
+
+        if (res.ok && res.body) break;
+
+        const status = res.status;
+        lastError = `${status}: ${(await res.text().catch(() => "")).slice(0, 240)}`;
+        console.error(`mentor-chat: modelo ${model}, tentativa ${attempt} —`, lastError);
+        res = null;
+
+        if (!RETRYABLE_STATUS.has(status) || attempt === MAX_ATTEMPTS_PER_MODEL) break;
+        await sleep(350 * attempt);
+      }
+
+      if (res?.ok && res.body) break;
     }
 
     if (!res || !res.body) {
-      return new Response(`Gateway ${lastError}`, { status: 502, headers: corsHeaders });
+      return Response.json(
+        {
+          error: "mentor_temporariamente_indisponivel",
+          message: "Não foi possível gerar a resposta agora.",
+          detail: lastError,
+        },
+        {
+          status: 503,
+          headers: { ...corsHeaders, "Retry-After": "3" },
+        },
+      );
     }
-
 
     return new Response(res.body, {
       headers: {
