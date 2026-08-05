@@ -232,6 +232,7 @@ const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const BIBLE_REFERENCE =
   /\b(?:[1-3]\s*)?(?:G[eê]nesis|[ÊE]xodo|Lev[ií]tico|N[uú]meros|Deuteron[oô]mio|Josu[eé]|Ju[ií]zes|Rute|Samuel|Reis|Cr[oô]nicas|Esdras|Neemias|Ester|J[oó]|Salmos?|Prov[eé]rbios|Eclesiastes|Cantares|Isa[ií]as|Jeremias|Lamenta[cç][oõ]es|Ezequiel|Daniel|Os[eé]ias|Joel|Am[oó]s|Obadias|Jonas|Miqu[eé]ias|Naum|Habacuque|Sofonias|Ageu|Zacarias|Malaquias|Mateus|Marcos|Lucas|Jo[aã]o|Atos|Romanos|Cor[ií]ntios|G[aá]latas|Ef[eé]sios|Filipenses|Colossenses|Tessalonicenses|Tim[oó]teo|Tito|Filemom|Hebreus|Tiago|Pedro|Judas|Apocalipse)\s+\d{1,3}(?::\d{1,3}(?:-\d{1,3})?)?\b/i;
 
+// Mantém uma resposta pastoral útil mesmo quando o provedor gratuito atinge a cota.
 function shouldUseSupportMode(error: unknown) {
   if (!(error instanceof MentorRequestError)) return true;
   return !error.status || MENTOR_RETRYABLE_STATUS.has(error.status);
