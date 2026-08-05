@@ -37,18 +37,40 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
+  const isModuleLoadError = /failed to fetch dynamically imported module|loading chunk|importing a module script failed/i.test(
+    error.message,
+  );
+
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
+
+    // O preview pode manter a URL de um chunk antigo depois de sincronizar
+    // uma nova versÃ£o. Um Ãºnico reload recupera o mÃ³dulo atualizado sem
+    // prender o usuÃ¡rio em uma tela em branco ou em um ciclo de recarga.
+    if (!isModuleLoadError || typeof window === "undefined") return;
+
+    try {
+      const retryKey = "odiscipulo:module-load-retry";
+      const retryMarker = `${window.location.pathname}:${error.message}`;
+      if (window.sessionStorage.getItem(retryKey) !== retryMarker) {
+        window.sessionStorage.setItem(retryKey, retryMarker);
+        window.location.reload();
+      }
+    } catch {
+      // Se o armazenamento estiver indisponÃ­vel, o botÃ£o manual permanece.
+    }
+  }, [error, isModuleLoadError]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+          {isModuleLoadError ? "Atualizando o aplicativoâ€¦" : "Esta pÃ¡gina nÃ£o carregou"}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+          {isModuleLoadError
+            ? "Encontramos uma versÃ£o mais recente. Se a pÃ¡gina nÃ£o voltar sozinha, toque em recarregar."
+            : "Algo inesperado aconteceu. VocÃª pode tentar novamente ou voltar ao inÃ­cio."}
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -58,13 +80,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Try again
+            {isModuleLoadError ? "Recarregar" : "Tentar novamente"}
           </button>
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            Go home
+            Voltar ao inÃ­cio
           </a>
         </div>
       </div>
@@ -78,10 +100,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { name: "theme-color", content: "#1c1830" },
-      { title: "Disciple — Discipulado cristão gamificado" },
-      { name: "description", content: "Trilhas de estudo, quizzes e um Mentor IA para crescer na fé um dia por vez." },
+      { title: "Disciple â€” Discipulado cristÃ£o gamificado" },
+      { name: "description", content: "Trilhas de estudo, quizzes e um Mentor IA para crescer na fÃ© um dia por vez." },
       { property: "og:title", content: "Disciple" },
-      { property: "og:description", content: "Discipulado cristão gamificado — um passo por dia." },
+      { property: "og:description", content: "Discipulado cristÃ£o gamificado â€” um passo por dia." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -118,8 +140,8 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
-  // Mantém uma instância estável no cliente. Isso evita que uma montagem
-  // antecipada de rota passe um contexto ainda não inicializado ao provider.
+  // MantÃ©m uma instÃ¢ncia estÃ¡vel no cliente. Isso evita que uma montagem
+  // antecipada de rota passe um contexto ainda nÃ£o inicializado ao provider.
   const [queryClient] = useState(() => new QueryClient());
 
   return (
@@ -129,3 +151,4 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
+
