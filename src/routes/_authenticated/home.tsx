@@ -145,64 +145,87 @@ function HomePage() {
         </div>
       </header>
 
-      <section className="card-elevated overflow-hidden">
-        <div className="bg-gradient-to-br from-primary/20 via-primary-glow/10 to-transparent p-5">
-          <div className="flex items-stretch gap-4">
-            <div className="relative w-20 shrink-0 overflow-hidden rounded-2xl bg-surface-2 ring-2 ring-primary/30">
+      <section
+        className="relative isolate overflow-hidden rounded-3xl border border-white/10 shadow-xl shadow-black/30"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(49, 46, 129, 0.52) 0%, rgba(30, 41, 59, 0.78) 58%, rgba(15, 23, 42, 0.92) 100%)",
+        }}
+      >
+        <div className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full bg-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-20 left-10 h-40 w-40 rounded-full bg-primary-glow/10 blur-3xl" />
+
+        <div className="relative z-10 p-5">
+          <div className="flex items-start gap-3">
+            <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-surface-2 ring-2 ring-white/15 shadow-lg shadow-black/25">
               {level.avatar ? (
                 <img src={level.avatar} alt={level.title} className="absolute inset-0 h-full w-full object-cover" />
               ) : (
                 <span className="absolute inset-0 flex items-center justify-center text-4xl">{character.emoji}</span>
               )}
+              <div className="absolute inset-x-0 bottom-0 bg-black/35 px-1 py-0.5 text-center text-[9px] font-bold text-white">
+                Nv {level.level}
+              </div>
             </div>
 
-            <div className="flex min-w-0 flex-1 items-center justify-between gap-2">
-              <div className="min-w-0">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Seu progresso</p>
-                <p className={`mt-0.5 font-bold leading-snug text-primary ${levelTitleSizeClass}`}>{levelTitleText}</p>
-                <p className="text-xs text-muted-foreground">{profile?.xp ?? 0} XP acumulados</p>
-                <p className="mt-1 truncate text-[10px] font-medium text-muted-foreground">
-                  {nextLevel ? <>Próx: <span className="text-foreground font-semibold">Nv {nextLevel.level} · {nextLevel.title}</span></> : "Nível máximo"}
-                </p>
-              </div>
-              <div className="flex shrink-0 flex-col items-end gap-1">
-                <div className="flex items-center gap-1 rounded-full bg-streak/20 px-2.5 py-1">
-                  <Flame className="h-3.5 w-3.5 text-streak" />
-                  <span className="text-xs font-bold text-streak">{profile?.streak ?? 0}</span>
-                  <span className="text-[9px] text-muted-foreground">dias</span>
-                </div>
-              </div>
+            <div className="min-w-0 flex-1 pt-0.5">
+              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/55">Seu progresso</p>
+              <p className={`mt-1 font-bold leading-snug text-white ${levelTitleSizeClass}`}>{levelTitleText}</p>
+              <p className="mt-1 text-xs text-white/65">{profile?.xp ?? 0} XP acumulados</p>
+            </div>
+
+            <div
+              className="flex shrink-0 flex-col items-center rounded-2xl px-2.5 py-2"
+              style={{ background: "rgba(251, 146, 60, 0.16)", border: "1px solid rgba(251, 146, 60, 0.22)" }}
+            >
+              <Flame className="h-4 w-4 text-streak" />
+              <span className="mt-0.5 text-sm font-extrabold text-streak">{profile?.streak ?? 0}</span>
+              <span className="text-[9px] font-medium text-orange-100/70">dias</span>
             </div>
           </div>
 
-          <div className="mt-3">
-            <div className="mb-1 flex justify-end">
-              <span className="text-[10px] font-semibold text-muted-foreground">{Math.round(levelPct)}%</span>
+          <div
+            className="mt-5 rounded-2xl p-3"
+            style={{ background: "rgba(2, 6, 23, 0.30)", border: "1px solid rgba(255, 255, 255, 0.08)" }}
+          >
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-[10px] font-semibold text-white/65">Próximo nível</span>
+              <span className="text-[11px] font-extrabold text-white">{Math.round(levelPct)}%</span>
             </div>
-            <div className="h-2.5 overflow-hidden rounded-full bg-surface-2">
-              <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all" style={{ width: `${levelPct}%` }} />
+            <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-black/30 p-[2px]">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-primary via-primary-glow to-violet-300 shadow-[0_0_12px_rgba(167,139,250,0.55)] transition-all"
+                style={{ width: `${levelPct}%` }}
+              />
             </div>
-            <div className="mt-1 flex justify-end">
-              <span className="whitespace-nowrap text-[10px] font-medium text-primary">{xpLeft === null ? "🔥 Nível máximo" : `Faltam ${xpLeft} XP`}</span>
+            <div className="mt-2 flex items-center justify-between gap-3 text-[10px]">
+              <span className="truncate font-medium text-white/55">
+                {nextLevel ? `Nv ${nextLevel.level} · ${nextLevel.title}` : "Nível máximo"}
+              </span>
+              <span className="shrink-0 font-semibold text-primary-glow">
+                {xpLeft === null ? "Nível máximo" : `Faltam ${xpLeft} XP`}
+              </span>
             </div>
           </div>
         </div>
+
         {showLevel50Checklist && (
-          <div className="border-t border-border/60 bg-ancient/10 p-4">
+          <div className="relative z-10 border-t border-white/10 bg-ancient/10 px-5 py-4">
             <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-ancient">
               <Sparkles className="h-3.5 w-3.5" /> Rumo ao Nível {GATED_LEVEL} · Discípulo
             </p>
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="mt-1 text-xs text-white/65">
               Você já tem XP suficiente. Para se tornar Discípulo, conclua todo o conteúdo.
             </p>
           </div>
         )}
-        <div className="flex justify-end border-t border-border/60 p-3">
+
+        <div className="relative z-10 flex justify-end border-t border-white/10 px-5 py-3">
           <Link
             to="/niveis"
-            className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-colors hover:bg-primary/20"
+            className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-white/15"
           >
-            Conheça os níveis
+            Ver níveis e conquistas
             <ChevronRight className="h-3.5 w-3.5" />
           </Link>
         </div>
