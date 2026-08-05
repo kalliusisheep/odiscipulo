@@ -96,7 +96,7 @@ export function VerseOfDayCard() {
       />
 
       <img
-        src="/images/barnabee-reading-closeup.png"
+        src="/images/barnabee-reading-closeup.webp"
         alt=""
         draggable={false}
         className="pointer-events-none absolute select-none"
