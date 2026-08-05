@@ -121,7 +121,7 @@ export function VerseOfDayCard() {
           sm:h-44
           transition-all
           duration-500
-          group-hover:opacity-25
+          group-hover:opacity-100
           group-hover:scale-105
         "
       />
