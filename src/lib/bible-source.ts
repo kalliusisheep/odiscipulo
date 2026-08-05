@@ -1,5 +1,3 @@
-import { supabase } from "@/integrations/supabase/client";
-
 const API = "https://bolls.life";
 
 export type PtTranslation = {
@@ -148,6 +146,9 @@ export type StrongEntry = {
   /** true quando o verbete veio da lista curada manualmente (CORE_TERMS),
    * ou seja, nÃ£o depende da heurÃ­stica de leitura do HTML da fonte. */
   curated: boolean;
+  /** Origem editorial da traduÃ§Ã£o exibida. */
+  translationStatus?: "revisado" | "automatico" | "fonte-original";
+  source?: string;
 };
 
 /**
@@ -183,6 +184,8 @@ const GRAMMAR_TERMS: [RegExp, string][] = [
   [/\bNumeral\b/gi, "Numeral"],
   [/\bCardinal\b/gi, "Cardinal"],
   [/\bOrdinal\b/gi, "Ordinal"],
+  [/\bLetter\b/gi, "Letra"],
+  [/\bCarta\b/gi, "Letra"],
   [/\bParticiple\b/gi, "ParticÃ­pio"],
   [/\bPassive\b/gi, "Passivo"],
   [/\bActive\b/gi, "Ativo"],
@@ -388,652 +391,9 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
     transliteration: "Bayith",
     phonetic: "bah'-yith",
     partOfSpeech: "Substantivo masculino",
-    meaning: "Casa â€” a habitaÃ§Ã£o; por extensÃ£o, famÃ­lia, linhagem ou dinastia",
-    definitions: [
-      "casa â€” a construÃ§Ã£o onde se habita",
-      'famÃ­lia, casa (linhagem) â€” descendÃªncia ou dinastia (uso figurado, ex.: "casa de Davi")',
-    ],
-  },
-  H776: {
-    original: "×Ö¶×¨Ö¶×¥",
-    transliteration: "Erets",
-    phonetic: "eh'-rets",
-    partOfSpeech: "Substantivo feminino",
-    meaning: "Terra â€” o planeta, o solo, ou um territÃ³rio/paÃ­s especÃ­fico, conforme o contexto",
-    definitions: [
-      "terra â€” o mundo, o solo, a superfÃ­cie terrestre",
-      'paÃ­s, territÃ³rio â€” uma regiÃ£o ou naÃ§Ã£o especÃ­fica (ex.: "terra de CanaÃ£")',
-    ],
-  },
-  H1288: {
-    original: "×‘Ö¸Ö¼×¨Ö·×šÖ°",
-    transliteration: "Barak",
-    phonetic: "baw-rak'",
-    partOfSpeech: "Verbo",
-    meaning:
-      "AbenÃ§oar â€” invocar o favor de Deus sobre alguÃ©m; tambÃ©m usado no sentido de louvar a Deus",
-    definitions: [
-      "abenÃ§oar â€” invocar ou conceder favor e bem sobre alguÃ©m",
-      "louvar, bendizer â€” ajoelhar-se diante de Deus em adoraÃ§Ã£o (uso relacionado)",
-    ],
-  },
-  H2403: {
-    original: "×—Ö·×˜Ö¸Ö¼××ª",
-    transliteration: "Chatta'ah",
-    phonetic: "khat-taw-aw'",
-    partOfSpeech: "Substantivo feminino",
-    meaning: "Pecado â€” falta, transgressÃ£o; tambÃ©m designa a oferta ritual pelo pecado",
-    definitions: [
-      "pecado â€” transgressÃ£o, falta, culpa diante de Deus",
-      "oferta pelo pecado â€” o sacrifÃ­cio ritual prescrito para expiaÃ§Ã£o (uso tÃ©cnico-cultual)",
-    ],
-  },
-  H1697: {
-    original: "×“Ö¸Ö¼×‘Ö¸×¨",
-    transliteration: "Dabar",
-    phonetic: "daw-baw'",
-    partOfSpeech: "Substantivo masculino",
-    meaning: "Palavra, coisa â€” a palavra falada; por extensÃ£o, um assunto, coisa ou acontecimento",
-    definitions: [
-      "palavra â€” o que Ã© dito ou declarado, inclusive a palavra de Deus",
-      "coisa, assunto, acontecimento â€” uso mais amplo, nÃ£o restrito Ã  fala (uso secundÃ¡rio)",
-    ],
-  },
-  H8064: {
-    original: "×©Ö¸××Ö·×™Ö´×",
-    transliteration: "Shamayim",
-    phonetic: "shaw-mah'-yim",
-    partOfSpeech: "Substantivo masculino, forma plural",
-    meaning: "CÃ©us â€” o firmamento visÃ­vel e, por extensÃ£o, a morada de Deus",
-    definitions: [
-      "cÃ©us â€” o firmamento, a abÃ³bada celeste visÃ­vel",
-      "cÃ©u (morada de Deus) â€” o lugar habitado por Deus, em sentido teolÃ³gico (uso secundÃ¡rio)",
-    ],
-  },
-  H3117: {
-    original: "×™×•Ö¹×",
-    transliteration: "Yom",
-    phonetic: "yome",
-    partOfSpeech: "Substantivo masculino",
-    meaning:
-      "Dia â€” perÃ­odo de 24 horas, o perÃ­odo de luz, ou um tempo/Ã©poca em sentido mais amplo, conforme o contexto",
-    definitions: [
-      "dia â€” perÃ­odo de vinte e quatro horas, ou o perÃ­odo de luz do dia",
-      'tempo, Ã©poca â€” perÃ­odo indefinido ou momento especÃ­fico (ex.: "o Dia do SENHOR")',
-    ],
-  },
-
-  // --- Grego (Novo Testamento) ---------------------------------------------
-  G2316: {
-    original: "Î¸ÎµÏŒÏ‚",
-    transliteration: "Theos",
-    phonetic: "theh'-os",
-    partOfSpeech: "Substantivo masculino",
-    meaning:
-      "Deus â€” a Divindade suprema; no Novo Testamento, usado tanto para o Pai como, em contextos especÃ­ficos, para Cristo",
-    definitions: [
-      "Deus â€” a Divindade suprema, o Ãºnico Deus verdadeiro",
-      "deus, divindade â€” usado tambÃ©m, em sentido secundÃ¡rio, para falsas divindades pagÃ£s",
-    ],
-  },
-  G2962: {
-    original: "ÎºÏÏÎ¹Î¿Ï‚",
-    transliteration: "Kyrios",
-    phonetic: "koo'-ree-os",
-    partOfSpeech: "Substantivo masculino",
-    meaning:
-      "Senhor â€” tÃ­tulo de autoridade e domÃ­nio; no NT, aplicado a Deus e, centralmente, a Jesus Cristo",
-    definitions: [
-      "Senhor â€” tÃ­tulo de soberania aplicado a Deus e a Jesus Cristo",
-      "senhor, dono, mestre â€” forma de tratamento respeitoso usada tambÃ©m para pessoas (uso secundÃ¡rio)",
-    ],
-  },
-  G5547: {
-    original: "Î§ÏÎ¹ÏƒÏ„ÏŒÏ‚",
-    transliteration: "Christos",
-    phonetic: "khris-tos'",
-    partOfSpeech: "Substantivo masculino (nome/tÃ­tulo)",
-    meaning:
-      "Cristo, Ungido â€” traduÃ§Ã£o grega do hebraico Mashiach (Messias); tÃ­tulo de Jesus como o Ungido de Deus",
-    definitions: [
-      "Cristo, Ungido â€” o Messias prometido, tÃ­tulo central de Jesus no Novo Testamento",
-      'usado tambÃ©m como parte do nome prÃ³prio "Jesus Cristo" (uso onomÃ¡stico)',
-    ],
-  },
-  G2424: {
-    original: "á¼¸Î·ÏƒÎ¿á¿¦Ï‚",
-    transliteration: "Iesous",
-    phonetic: "ee-ay-sooce'",
-    partOfSpeech: "Substantivo masculino (nome prÃ³prio)",
-    meaning:
-      'Jesus â€” forma grega do nome hebraico Yeshua ("o SENHOR salva"); nome prÃ³prio do Filho de Deus',
-    definitions: [
-      "Jesus â€” nome prÃ³prio do Filho de Deus, forma grega de Yeshua/JosuÃ©",
-      "usado tambÃ©m, poucas vezes, para outras pessoas de nome JosuÃ©/Jesus no NT (uso secundÃ¡rio e raro)",
-    ],
-  },
-  G4151: {
-    original: "Ï€Î½Îµá¿¦Î¼Î±",
-    transliteration: "Pneuma",
-    phonetic: "pnyoo'-mah",
-    partOfSpeech: "Substantivo neutro",
-    meaning: "EspÃ­rito â€” o EspÃ­rito Santo, o espÃ­rito humano, ou vento/fÃ´lego, conforme o contexto",
-    definitions: [
-      "espÃ­rito â€” o EspÃ­rito Santo de Deus, ou o espÃ­rito humano (imaterial)",
-      "vento, fÃ´lego, sopro â€” sentido literal, mais raro no NT (uso secundÃ¡rio)",
-    ],
-  },
-  G3056: {
-    original: "Î»ÏŒÎ³Î¿Ï‚",
-    transliteration: "Logos",
-    phonetic: "log'-os",
-    partOfSpeech: "Substantivo masculino",
-    meaning:
-      "Palavra, Verbo â€” a palavra falada ou a mensagem; em JoÃ£o 1, tÃ­tulo de Cristo como a Palavra eterna de Deus",
-    definitions: [
-      "palavra, mensagem, discurso â€” aquilo que Ã© dito ou comunicado",
-      "Verbo (Logos) â€” tÃ­tulo cristolÃ³gico de Jesus como a expressÃ£o eterna de Deus (Jo 1.1, uso teolÃ³gico especÃ­fico)",
-    ],
-  },
-  G26: {
-    original: "á¼€Î³Î¬Ï€Î·",
-    transliteration: "Agape",
-    phonetic: "ag-ah'-pay",
-    partOfSpeech: "Substantivo feminino",
-    meaning:
-      "Amor â€” o amor de doaÃ§Ã£o e benevolÃªncia, caracterÃ­stico do amor de Deus e do amor cristÃ£o",
-    definitions: [
-      "amor â€” afeiÃ§Ã£o benevolente e sacrificial, especialmente o amor de Deus",
-      "amor fraternal â€” o amor demonstrado entre os cristÃ£os (uso relacional secundÃ¡rio)",
-    ],
-  },
-  G5485: {
-    original: "Ï‡Î¬ÏÎ¹Ï‚",
-    transliteration: "Charis",
-    phonetic: "khar'-ece",
-    partOfSpeech: "Substantivo feminino",
-    meaning: "GraÃ§a â€” favor imerecido; a benevolÃªncia gratuita de Deus para com o ser humano",
-    definitions: [
-      "graÃ§a â€” favor gratuito e imerecido de Deus",
-      'graciosidade, agrado â€” qualidade que desperta favor; tambÃ©m usado como "agradecimento" (usos secundÃ¡rios)',
-    ],
-  },
-  G4102: {
-    original: "Ï€Î¯ÏƒÏ„Î¹Ï‚",
-    transliteration: "Pistis",
-    phonetic: "pis'-tis",
-    partOfSpeech: "Substantivo feminino",
-    meaning: "FÃ© â€” confianÃ§a e convicÃ§Ã£o; a fÃ© que confia em Deus e em Cristo",
-    definitions: [
-      "fÃ© â€” confianÃ§a, convicÃ§Ã£o e adesÃ£o pessoal a Deus/Cristo",
-      "fidelidade â€” qualidade de ser fiel e confiÃ¡vel (uso secundÃ¡rio, aplicado a pessoas)",
-    ],
-  },
-  G1391: {
-    original: "Î´ÏŒÎ¾Î±",
-    transliteration: "Doxa",
-    phonetic: "dox'-ah",
-    partOfSpeech: "Substantivo feminino",
-    meaning: "GlÃ³ria â€” esplendor, majestade e honra, sobretudo a glÃ³ria prÃ³pria de Deus",
-    definitions: [
-      "glÃ³ria â€” esplendor e majestade, especialmente de Deus",
-      "honra, louvor, reputaÃ§Ã£o â€” reconhecimento pÃºblico de valor (uso secundÃ¡rio)",
-    ],
-  },
-  G1577: {
-    original: "á¼ÎºÎºÎ»Î·ÏƒÎ¯Î±",
-    transliteration: "Ekklesia",
-    phonetic: "ek-klay-see'-ah",
-    partOfSpeech: "Substantivo feminino",
-    meaning:
-      "Igreja, assembleia â€” a comunidade dos convocados por Deus; a Igreja local ou universal",
-    definitions: [
-      "igreja â€” a comunidade dos crentes convocados por Deus, local ou universal",
-      "assembleia â€” reuniÃ£o ou ajuntamento de pessoas em sentido geral, nÃ£o necessariamente religioso (uso secundÃ¡rio)",
-    ],
-  },
-  G4990: {
-    original: "ÏƒÏ‰Ï„Î®Ï",
-    transliteration: "Soter",
-    phonetic: "so-tare'",
-    partOfSpeech: "Substantivo masculino",
-    meaning: "Salvador â€” aquele que salva; tÃ­tulo de Deus e de Jesus Cristo",
-    definitions: [
-      "Salvador â€” tÃ­tulo de Deus e de Jesus Cristo como aquele que salva",
-      "libertador â€” usado tambÃ©m, em sentido mais amplo, para quem livra de perigo (uso secundÃ¡rio)",
-    ],
-  },
-  G4991: {
-    original: "ÏƒÏ‰Ï„Î·ÏÎ¯Î±",
-    transliteration: "Soteria",
-    phonetic: "so-tay-ree'-ah",
-    partOfSpeech: "Substantivo feminino",
-    meaning:
-      "SalvaÃ§Ã£o â€” o livramento operado por Deus por meio de Cristo, do pecado e de suas consequÃªncias",
-    definitions: [
-      "salvaÃ§Ã£o â€” o livramento espiritual e eterno operado por Deus em Cristo",
-      "livramento, preservaÃ§Ã£o â€” libertaÃ§Ã£o de perigo ou dano fÃ­sico (uso concreto secundÃ¡rio)",
-    ],
-  },
-  G266: {
-    original: "á¼Î¼Î±ÏÏ„Î¯Î±",
-    transliteration: "Hamartia",
-    phonetic: "ham-ar-tee'-ah",
-    partOfSpeech: "Substantivo feminino",
-    meaning: 'Pecado â€” literalmente "errar o alvo"; transgressÃ£o da vontade de Deus',
-    definitions: [
-      "pecado â€” transgressÃ£o ou falta em relaÃ§Ã£o Ã  vontade de Deus",
-      'erro, falta â€” sentido mais literal de "errar o alvo" (uso etimolÃ³gico)',
-    ],
-  },
-  G1343: {
-    original: "Î´Î¹ÎºÎ±Î¹Î¿ÏƒÏÎ½Î·",
-    transliteration: "Dikaiosyne",
-    phonetic: "dik-ah-yos-oo'-nay",
-    partOfSpeech: "Substantivo feminino",
-    meaning:
-      "JustiÃ§a â€” retidÃ£o diante de Deus; no NT, tambÃ©m a justiÃ§a que vem de Deus pela fÃ© em Cristo",
-    definitions: [
-      "justiÃ§a â€” retidÃ£o de carÃ¡ter e de conduta diante de Deus",
-      "justificaÃ§Ã£o â€” o estado de ser declarado justo por Deus mediante a fÃ© (uso teolÃ³gico paulino)",
-    ],
-  },
-  G3670: {
-    original: "á½Î¼Î¿Î»Î¿Î³Î­Ï‰",
-    transliteration: "Homologeo",
-    phonetic: "hom-ol-og-eh'-o",
-    partOfSpeech: "Verbo",
-    meaning:
-      "Confessar â€” declarar publicamente e de acordo com a verdade; confessar a fÃ© em Cristo",
-    definitions: [
-      "confessar â€” declarar publicamente a fÃ© ou a verdade sobre algo",
-      "reconhecer, admitir â€” concordar publicamente com um fato (uso mais geral)",
-    ],
-  },
-  G3341: {
-    original: "Î¼ÎµÏ„Î¬Î½Î¿Î¹Î±",
-    transliteration: "Metanoia",
-    phonetic: "met-an'-oy-ah",
-    partOfSpeech: "Substantivo feminino",
-    meaning:
-      "Arrependimento â€” mudanÃ§a de mente e de rumo de vida, afastando-se do pecado e voltando-se para Deus",
-    definitions: [
-      "arrependimento â€” mudanÃ§a interior de mente e de direÃ§Ã£o de vida diante de Deus",
-      "mudanÃ§a de pensamento â€” sentido etimolÃ³gico mais amplo, nÃ£o restrito ao contexto religioso",
-    ],
-  },
-  G907: {
-    original: "Î²Î±Ï€Ï„Î¯Î¶Ï‰",
-    transliteration: "Baptizo",
-    phonetic: "bap-tid'-zo",
-    partOfSpeech: "Verbo",
-    meaning: "Batizar â€” imergir; o rito cristÃ£o do batismo",
-    definitions: [
-      "batizar â€” realizar o rito do batismo por imersÃ£o",
-      "imergir, mergulhar â€” sentido literal de mergulhar em Ã¡gua (uso etimolÃ³gico)",
-    ],
-  },
-  G1242: {
-    original: "Î´Î¹Î±Î¸Î®ÎºÎ·",
-    transliteration: "Diatheke",
-    phonetic: "dee-ath-ay'-kay",
-    partOfSpeech: "Substantivo feminino",
-    meaning:
-      "AlianÃ§a, testamento â€” pacto solene; no NT, especialmente a nova alianÃ§a selada por Cristo",
-    definitions: [
-      "alianÃ§a, pacto â€” compromisso solene entre Deus e o Seu povo",
-      "testamento â€” disposiÃ§Ã£o de Ãºltima vontade (sentido jurÃ­dico grego, uso secundÃ¡rio)",
-    ],
-  },
-  G2222: {
-    original: "Î¶Ï‰Î®",
-    transliteration: "Zoe",
-    phonetic: "dzo-ay'",
-    partOfSpeech: "Substantivo feminino",
-    meaning: "Vida â€” a vida em sentido pleno; no NT, especialmente a vida eterna dada por Deus",
-    definitions: [
-      "vida â€” existÃªncia fÃ­sica; no NT, especialmente a vida eterna e plena dada por Deus",
-      "sustento, modo de viver â€” sentido mais concreto e cotidiano (uso secundÃ¡rio)",
-    ],
-  },
-  G2889: {
-    original: "ÎºÏŒÏƒÎ¼Î¿Ï‚",
-    transliteration: "Kosmos",
-    phonetic: "kos'-mos",
-    partOfSpeech: "Substantivo masculino",
-    meaning:
-      "Mundo â€” a ordem criada, a humanidade, ou o sistema de valores opostos a Deus, conforme o contexto",
-    definitions: [
-      "mundo â€” a criaÃ§Ã£o, a humanidade ou a ordem mundial",
-      'ornamento, arranjo â€” sentido original de "ordem/beleza" (uso etimolÃ³gico secundÃ¡rio)',
-    ],
-  },
-  G40: {
-    original: "á¼…Î³Î¹Î¿Ï‚",
-    transliteration: "Hagios",
-    phonetic: "hag'-ee-os",
-    partOfSpeech: "Adjetivo",
-    meaning:
-      "Santo â€” separado para Deus, puro; usado para o EspÃ­rito Santo, para Deus e para os crentes",
-    definitions: [
-      "santo â€” separado para Deus, consagrado, moralmente puro",
-      "santos (substantivado) â€” os crentes, o povo consagrado de Deus (uso substantivado comum no NT)",
-    ],
-  },
-  G32: {
-    original: "á¼„Î³Î³ÎµÎ»Î¿Ï‚",
-    transliteration: "Angelos",
-    phonetic: "ang'-el-os",
-    partOfSpeech: "Substantivo masculino",
-    meaning:
-      "Anjo, mensageiro â€” ser espiritual enviado por Deus; tambÃ©m usado para mensageiros humanos",
-    definitions: [
-      "anjo â€” ser espiritual celestial enviado por Deus como mensageiro",
-      "mensageiro â€” pessoa humana enviada com uma mensagem (uso secundÃ¡rio, mais raro)",
-    ],
-  },
-  G652: {
-    original: "á¼€Ï€ÏŒÏƒÏ„Î¿Î»Î¿Ï‚",
-    transliteration: "Apostolos",
-    phonetic: "ap-os'-tol-os",
-    partOfSpeech: "Substantivo masculino",
-    meaning:
-      "ApÃ³stolo â€” enviado com autoridade; tÃ­tulo dos Doze e de outros enviados diretamente por Cristo",
-    definitions: [
-      "apÃ³stolo â€” enviado com autoridade por Cristo, tÃ­tulo dos Doze e de outros como Paulo",
-      'enviado, mensageiro â€” sentido mais geral de "aquele que Ã© enviado" (uso etimolÃ³gico secundÃ¡rio)',
-    ],
-  },
-  G1411: {
-    original: "Î´ÏÎ½Î±Î¼Î¹Ï‚",
-    transliteration: "Dynamis",
-    phonetic: "doo'-nam-is",
-    partOfSpeech: "Substantivo feminino",
-    meaning: "Poder â€” capacidade e forÃ§a; frequentemente o poder de Deus manifesto em milagres",
-    definitions: [
-      "poder, forÃ§a â€” capacidade de realizar, especialmente o poder de Deus",
-      "milagre, obra poderosa â€” manifestaÃ§Ã£o concreta desse poder (uso concreto no NT)",
-    ],
-  },
-};
-
-function grab(html: string, label: string): string | null {
-  const re = new RegExp(`-\\s*${label}:\\s*(?:<b>)?(.*?)(?:</b>)?\\s*<p`, "i");
-  const m = html.match(re);
-  const value = m ? stripTags(m[1]) : "";
-  return value || null;
-}
-
-/** Formato de cada item devolvido por /dictionary-definition/BDBT/<code>/
- * (ver documentaÃ§Ã£o oficial da bolls.life). AlÃ©m do HTML livre em
- * `definition`, a API jÃ¡ devolve campos estruturados e confiÃ¡veis â€”
- * `lexeme`, `transliteration`, `pronunciation`, `short_definition` â€” que
- * NÃƒO dependem de a formataÃ§Ã£o do HTML seguir um padrÃ£o de rÃ³tulos. */
-type BollsDictHit = {
-  topic: string;
-  definition: string;
-  lexeme?: string | null;
-  transliteration?: string | null;
-  pronunciation?: string | null;
-  short_definition?: string | null;
-};
-
-function parseDefinitionParagraphs(html: string): string[] {
-  const defBlock = html.split(/<p class="def">.*?<\/p>/i)[1] ?? "";
-  const beforeOrigin = defBlock.split(/<p class="origin"/i)[0] ?? "";
-  return beforeOrigin
-    .split(/<\/p>/i)
-    .map((p) => stripTags(p))
-    .filter((p) => p.length > 1);
-}
-
-const SECOND_SENSE_MAX_LENGTH = 90;
-
-function buildMeaning(
-  shortDefinition: string | null,
-  definitions: string[],
-  strongsGloss: string | null,
-): string | null {
-  const primary = shortDefinition || definitions[0] || strongsGloss || null;
-  if (!primary) return null;
-
-  // Se o sentido principal jÃ¡ veio do `short_definition` oficial, o 2Âº
-  // sentido candidato Ã© o prÃ³prio 1Âº parÃ¡grafo do lÃ©xico; caso contrÃ¡rio,
-  // Ã© o 2Âº parÃ¡grafo (jÃ¡ que o 1Âº virou o sentido principal).
-  const candidates = shortDefinition ? definitions : definitions.slice(1);
-  const secondary = candidates.find(
-    (d) =>
-      d.length > 0 &&
-      d.length <= SECOND_SENSE_MAX_LENGTH &&
-      d.toLowerCase() !== primary.toLowerCase(),
-  );
-  return secondary ? `${primary}; ${secondary}` : primary;
-}
-
-/** Monta um StrongEntry a partir de um item bruto devolvido pela API de
- * dicionÃ¡rio da bolls.life. Usa os campos estruturados (`lexeme`,
- * `transliteration`, `pronunciation`, `short_definition`) como fonte
- * primÃ¡ria â€” eles vÃªm sempre preenchidos pela API, independentemente de o
- * HTML de `definition` seguir ou nÃ£o o padrÃ£o de rÃ³tulos esperado. Os
- * rÃ³tulos dentro do HTML ("Part(s) of speech:", "Origin:") continuam sendo
- * lidos como complemento, quando disponÃ­veis. */
-function buildStrongEntry(hit: BollsDictHit): StrongEntry {
-  const code = (hit.topic ?? "").toUpperCase();
-  const html = hit.definition ?? "";
-
-  const definitions = parseDefinitionParagraphs(html);
-  const strongsMatch = html.match(/-\s*Strongs:\s*([\s\S]*?)(?:<p|$)/i);
-  const strongsGloss = strongsMatch ? stripTags(strongsMatch[1]) : null;
-  const shortDefinition = hit.short_definition ? stripTags(hit.short_definition) : null;
-
-  return {
-    code,
-    original: hit.lexeme || grab(html, "Original"),
-    transliteration: hit.transliteration || grab(html, "Transliteration"),
-    phonetic: hit.pronunciation || grab(html, "Phonetic"),
-    partOfSpeech: translateGrammarTerms(grab(html, "Part\\(s\\) of speech")),
-    origin: translateGrammarTerms(grab(html, "Origin")),
-    definitions: definitions.length ? definitions : shortDefinition ? [shortDefinition] : [],
-    strongsGloss,
-    meaning: buildMeaning(shortDefinition, definitions, strongsGloss),
-    related: Array.from(new Set((html.match(/S:([GH]\d+)/g) ?? []).map((s) => s.slice(2)))).filter(
-      (c) => c !== code,
-    ),
-    curated: false,
-  };
-}
-
-/** Verbete do lÃ©xico (BDB para hebraico, Thayer para grego).
- *
- * Para os cÃ³digos presentes em CORE_TERMS, o resultado Ã© montado
- * diretamente a partir da lista curada (conferida manualmente) e nÃ£o
- * depende da fonte externa nem de heurÃ­stica de leitura de HTML â€” garante
- * que palavras teologicamente centrais (Elohim, YHWH, Cristo, EspÃ­rito
- * etc.) sempre tragam o sentido correto. */
-export async function fetchStrongEntry(code: string): Promise<StrongEntry | null> {
-  const upperCode = code.toUpperCase();
-  // "v5" na chave: nova versÃ£o para invalidar QUALQUER cache anterior
-  // (localStorage do navegador do usuÃ¡rio) que possa ter sido salvo antes
-  // de a lista curada (CORE_TERMS) estar completa â€” sem isso, quem jÃ¡
-  // tivesse aberto um versÃ­culo antes permaneceria vendo dados antigos/
-  // incompletos para sempre, mesmo depois do deploy da correÃ§Ã£o.
-  const cacheKey = `strong:v5:${upperCode}`;
-  const override = CORE_TERMS[upperCode];
-  if (override) {
-    return cached(cacheKey, async () => {
-      const definitions = override.definitions ?? [override.meaning];
-      return {
-        code: upperCode,
-        original: override.original,
-        transliteration: override.transliteration,
-        phonetic: override.phonetic ?? null,
-        partOfSpeech: override.partOfSpeech ?? null,
-        origin: null,
-        definitions,
-        strongsGloss: override.meaning,
-        meaning: override.meaning,
-        related: [],
-        curated: true,
-      };
-    });
-  }
-
-  return cached(cacheKey, async () => {
-    const res = await fetch(`${API}/dictionary-definition/BDBT/${upperCode}/`);
-    if (!res.ok) return null;
-    const json = (await res.json()) as BollsDictHit[];
-    if (!Array.isArray(json) || json.length === 0) return null;
-    const hit = json.find((d) => d.topic?.toUpperCase() === upperCode) ?? json[0];
-    if (!hit) return null;
-    return buildStrongEntry(hit);
-  });
-}
-
-export async function fetchStrongEntries(codes: string[]): Promise<Record<string, StrongEntry>> {
-  const unique = Array.from(new Set(codes));
-  const results = await Promise.all(unique.map((c) => fetchStrongEntry(c).catch(() => null)));
-  const out: Record<string, StrongEntry> = {};
-  unique.forEach((c, i) => {
-    const entry = results[i];
-    if (entry) out[c] = entry;
-  });
-  return out;
-}
-
-/** Traduz `meaning`, `definitions` e `strongsGloss` (lÃ©xico BDB/Thayer,
- * originalmente em inglÃªs) para portuguÃªs â€” cacheado para sempre por
- * nÃºmero de Strong, entÃ£o cada palavra sÃ³ passa pela traduÃ§Ã£o uma Ãºnica
- * vez neste dispositivo. Verbetes da lista curada (CORE_TERMS) jÃ¡ estÃ£o em
- * portuguÃªs e nÃ£o passam por aqui. */
-export async function translateStrongEntry(entry: StrongEntry): Promise<StrongEntry> {
-  if (entry.curated) return entry;
-  return cached(`xlex:v1:${entry.code}`, async () => {
-    try {
-      const { data, error } = await supabase.functions.invoke<{
-        meaning: string | null;
-        definitions: string[];
-        strongsGloss: string | null;
-      }>("translate-lexicon", {
-        body: {
-          meaning: entry.meaning,
-          definitions: entry.definitions,
-          strongsGloss: entry.strongsGloss,
-        },
-      });
-      if (error || !data) return entry;
-      return {
-        ...entry,
-        meaning: data.meaning ?? entry.meaning,
-        definitions: data.definitions?.length ? data.definitions : entry.definitions,
-        strongsGloss: data.strongsGloss ?? entry.strongsGloss,
-      };
-    } catch {
-      return entry;
-    }
-  });
-}
-
-export async function translateStrongEntries(
-  entries: Record<string, StrongEntry>,
-): Promise<Record<string, StrongEntry>> {
-  const codes = Object.keys(entries);
-  const translated = await Promise.all(codes.map((c) => translateStrongEntry(entries[c])));
-  const out: Record<string, StrongEntry> = {};
-  codes.forEach((c, i) => (out[c] = translated[i]));
-  return out;
-}
-
-export type Occurrence = { c: number; f: [number, number, number]; l: [number, number, number] };
-
-let occurrencesPromise: Promise<Record<string, Occurrence>> | null = null;
-
-/** Ãndice de ocorrÃªncias por nÃºmero de Strong (contagem, primeira e Ãºltima). */
-export function loadOccurrences(): Promise<Record<string, Occurrence>> {
-  if (!occurrencesPromise) {
-    occurrencesPromise = fetch("/data/strongs-occurrences.json")
-      .then((r) => (r.ok ? r.json() : {}))
-      .catch(() => ({}));
-  }
-  return occurrencesPromise;
-}
-
-export type XrefTarget = [number, number, number];
-
-const xrefCache = new Map<number, Promise<Record<string, XrefTarget[]>>>();
-
-/** ReferÃªncias cruzadas reais (openbible.info, CC-BY) para um livro. */
-export function loadXrefs(book: number): Promise<Record<string, XrefTarget[]>> {
-  let p = xrefCache.get(book);
-  if (!p) {
-    p = fetch(`/data/xrefs/${book}.json`)
-      .then((r) => (r.ok ? r.json() : {}))
-      .catch(() => ({}));
-    xrefCache.set(book, p);
-  }
-  return p;
-}
-
-export async function crossReferencesFor(
-  book: number,
-  chapter: number,
-  verse: number,
-): Promise<XrefTarget[]> {
-  const data = await loadXrefs(book);
-  return data[`${chapter}:${verse}`] ?? [];
-}
-
-/** Busca textual no capÃ­tulo/traduÃ§Ã£o escolhidos (endpoint oficial da fonte). */
-export async function searchBible(
-  translation: string,
-  query: string,
-): Promise<{ book: number; chapter: number; verse: number; text: string }[]> {
-  const url = `${API}/v2/find/${translation}?search=${encodeURIComponent(query)}&match_case=false&match_whole=false`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error("Busca indisponÃ­vel no momento.");
-  const json = (await res.json()) as {
-    results?: { book: number; chapter: number; verse: number; text: string }[];
-  };
-  const list = json.results ?? [];
-  return list.slice(0, 60).map((r) => ({
-    book: r.book,
-    chapter: r.chapter,
-    verse: r.verse,
-    text: stripTags(r.text),
-  }));
-}
-
-/** Um Ãºnico versÃ­culo em portuguÃªs (usado nas referÃªncias cruzadas). */
-export async function fetchVerse(
-  translation: string,
-  book: number,
-  chapter: number,
-  verse: number,
-): Promise<string | null> {
-  const chap = await fetchChapter(translation, book, chapter);
-  return chap.find((v) => v.verse === verse)?.text ?? null;
-}
-
-/**
- * Leitura aproximada em portuguÃªs â€” transcriÃ§Ã£o por regras a partir da
- * transliteraÃ§Ã£o acadÃªmica. Ã‰ explicitamente rotulada como aproximaÃ§Ã£o na
- * interface (nÃ£o Ã© dado de fonte acadÃªmica).
- */
-export function approximatePtBr(transliteration: string | null): string | null {
-  if (!transliteration) return null;
-  let s = transliteration.toLowerCase();
-  const rules: [RegExp, string][] = [
-    [/ch/g, "c"],
-    [/ph/g, "f"],
-    [/th/g, "t"],
-    [/kh/g, "c"],
-    [/ts/g, "tz"],
-    [/sh/g, "ch"],
-    [/ou/g, "u"],
-    [/ei/g, "ei"],
-    [/y/g, "i"],
-    [/k/g, "c"],
-    [/h$/g, ""],
-  ];
-  for (const [re, to] of rules) s = s.replace(re, to);
-  return s;
-}
+    meaning: "Casa â€” aß:¶‰ËkºwµçIÉ•½¹¡••È°…‘µ¥Ñ¥ÈƒŠP½¹½É‘…ÈÁÕ‰±¥…µ•¹Ñ”½´Õ´™…Ñ¼€¡ÕÍ¼µ…¥Ì•É…°¤ˆ°(€€€t°(€ô°(€ÌÌĞÄèì(€€€½É¥¥¹…°è€‹:ó:×>:³:÷:ÿ:ç:Äˆ°(€€€ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸è€‰5•Ñ…¹½¥„ˆ°(€€€Á¡½¹•Ñ¥Œè€‰µ•Ğµ…¸œµ½äµ… ˆ°(€€€Á…ÉÑ=™MÁ•• è€‰MÕ‰ÍÑ…¹Ñ¥Ù¼™•µ¥¹¥¹¼ˆ°(€€€µ•…¹¥¹œè(€€€€€€‰ÉÉ•Á•¹‘¥µ•¹Ñ¼ƒŠPµÕ‘…»„‘”µ•¹Ñ””‘”ÉÕµ¼‘”Ù¥‘„°…™…ÍÑ…¹‘¼µÍ”‘¼Á•…‘¼”Ù½±Ñ…¹‘¼µÍ”Á…É„•ÕÌˆ°(€€€‘•™¥¹¥Ñ¥½¹Ìèl(€€€€€€‰…ÉÉ•Á•¹‘¥µ•¹Ñ¼ƒŠPµÕ‘…»„¥¹Ñ•É¥½È‘”µ•¹Ñ””‘”‘¥É—Ÿ¼‘”Ù¥‘„‘¥…¹Ñ”‘”•ÕÌˆ°(€€€€€€‰µÕ‘…»„‘”Á•¹Í…µ•¹Ñ¼ƒŠPÍ•¹Ñ¥‘¼•Ñ¥µ½³Í¥¼µ…¥Ì…µÁ±¼°»¼É•ÍÑÉ¥Ñ¼…¼½¹Ñ•áÑ¼É•±¥¥½Í¼ˆ°(€€€t°(€ô°(€äÀÜèì(€€€½É¥¥¹…°è€‹:Ë:Ç>>:¿:Û>$ˆ°(€€€ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸è€‰	…ÁÑ¥é¼ˆ°(€€€Á¡½¹•Ñ¥Œè€‰‰…ÀµÑ¥œµé¼ˆ°(€€€Á…ÉÑ=™MÁ•• è€‰Y•É‰¼ˆ°(€€€µ•…¹¥¹œè€‰	…Ñ¥é…ÈƒŠP¥µ•É¥Èì¼É¥Ñ¼É¥ÍÓ¼‘¼‰…Ñ¥Íµ¼ˆ°(€€€‘•™¥¹¥Ñ¥½¹Ìèl(€€€€€€‰‰…Ñ¥é…ÈƒŠPÉ•…±¥é…È¼É¥Ñ¼‘¼‰…Ñ¥Íµ¼Á½È¥µ•ÉÏ¼ˆ°(€€€€€€‰¥µ•É¥È°µ•ÉÕ±¡…ÈƒŠPÍ•¹Ñ¥‘¼±¥Ñ•É…°‘”µ•ÉÕ±¡…È•´ƒ…Õ„€¡ÕÍ¼•Ñ¥µ½³Í¥¼¤ˆ°(€€€t°(€ô°(€ÄÈĞÈèì(€€€½É¥¥¹…°è€‹:Ó:ç:Ç:ã:»:ë:Üˆ°(€€€ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸è€‰¥…Ñ¡•­”ˆ°(€€€Á¡½¹•Ñ¥Œè€‰‘•”µ…Ñ µ…äœµ­…äˆ°(€€€Á…ÉÑ=™MÁ•• è€‰MÕ‰ÍÑ…¹Ñ¥Ù¼™•µ¥¹¥¹¼ˆ°(€€€µ•…¹¥¹œè(€€€€€€‰±¥…»„°Ñ•ÍÑ…µ•¹Ñ¼ƒŠPÁ…Ñ¼Í½±•¹”ì¹¼9P°•ÍÁ•¥…±µ•¹Ñ”„¹½Ù„…±¥…»„Í•±…‘„Á½ÈÉ¥ÍÑ¼ˆ°(€€€‘•™¥¹¥Ñ¥½¹Ìèl(€€€€€€‰…±¥…»„°Á…Ñ¼ƒŠP½µÁÉ½µ¥ÍÍ¼Í½±•¹”•¹ÑÉ”•ÕÌ”¼M•ÔÁ½Ù¼ˆ°(€€€€€€‰Ñ•ÍÑ…µ•¹Ñ¼ƒŠP‘¥ÍÁ½Í§Ÿ¼‘”ƒé±Ñ¥µ„Ù½¹Ñ…‘”€¡Í•¹Ñ¥‘¼©ÕËµ‘¥¼É•¼°ÕÍ¼Í•Õ¹“…É¥¼¤ˆ°(€€€t°(€ô°(€ÈÈÈÈèì(€€€½É¥¥¹…°è€‹:Û>':¸ˆ°(€€€ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸è€‰i½”ˆ°(€€€Á¡½¹•Ñ¥Œè€‰‘é¼µ…äœˆ°(€€€Á…ÉÑ=™MÁ•• è€‰MÕ‰ÍÑ…¹Ñ¥Ù¼™•µ¥¹¥¹¼ˆ°(€€€µ•…¹¥¹œè€‰Y¥‘„ƒŠP„Ù¥‘„•´Í•¹Ñ¥‘¼Á±•¹¼ì¹¼9P°•ÍÁ•¥…±µ•¹Ñ”„Ù¥‘„•Ñ•É¹„‘…‘„Á½È•ÕÌˆ°(€€€‘•™¥¹¥Ñ¥½¹Ìèl(€€€€€€‰Ù¥‘„ƒŠP•á¥ÍÓ©¹¥„›µÍ¥„ì¹¼9P°•ÍÁ•¥…±µ•¹Ñ”„Ù¥‘„•Ñ•É¹„”Á±•¹„‘…‘„Á½È•ÕÌˆ°(€€€€€€‰ÍÕÍÑ•¹Ñ¼°µ½‘¼‘”Ù¥Ù•ÈƒŠPÍ•¹Ñ¥‘¼µ…¥Ì½¹É•Ñ¼”½Ñ¥‘¥…¹¼€¡ÕÍ¼Í•Õ¹“…É¥¼¤ˆ°(€€€t°(€ô°(€Èààäèì(€€€½É¥¥¹…°è€‹:ë>3>:ó:ÿ>ˆ°(€€€ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸è€‰-½Íµ½Ìˆ°(€€€Á¡½¹•Ñ¥Œè€‰­½Ìœµµ½Ìˆ°(€€€Á…ÉÑ=™MÁ•• è€‰MÕ‰ÍÑ…¹Ñ¥Ù¼µ…ÍÕ±¥¹¼ˆ°(€€€µ•…¹¥¹œè(€€€€€€‰5Õ¹‘¼ƒŠP„½É‘•´É¥…‘„°„¡Õµ…¹¥‘…‘”°½Ô¼Í¥ÍÑ•µ„‘”Ù…±½É•Ì½Á½ÍÑ½Ì„•ÕÌ°½¹™½Éµ”¼½¹Ñ•áÑ¼ˆ°(€€€‘•™¥¹¥Ñ¥½¹Ìèl(€€€€€€‰µÕ¹‘¼ƒŠP„É¥‡Ÿ¼°„¡Õµ…¹¥‘…‘”½Ô„½É‘•´µÕ¹‘¥…°ˆ°(€€€€€€½É¹…µ•¹Ñ¼°…ÉÉ…¹©¼ƒŠPÍ•¹Ñ¥‘¼½É¥¥¹…°‘”€‰½É‘•´½‰•±•é„ˆ€¡ÕÍ¼•Ñ¥µ½³Í¥¼Í•Õ¹“…É¥¼¤œ°(€€€t°(€ô°(€ĞÀèì(€€€½É¥¥¹…°è€‹†ò:Ï:ç:ÿ>ˆ°(€€€ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸è€‰!…¥½Ìˆ°(€€€Á¡½¹•Ñ¥Œè€‰¡…œœµ•”µ½Ìˆ°(€€€Á…ÉÑ=™MÁ•• è€‰‘©•Ñ¥Ù¼ˆ°(€€€µ•…¹¥¹œè(€€€€€€‰M…¹Ñ¼ƒŠPÍ•Á…É…‘¼Á…É„•ÕÌ°ÁÕÉ¼ìÕÍ…‘¼Á…É„¼ÍÃµÉ¥Ñ¼M…¹Ñ¼°Á…É„•ÕÌ”Á…É„½ÌÉ•¹Ñ•Ìˆ°(€€€‘•™¥¹¥Ñ¥½¹Ìèl(€€€€€€‰Í…¹Ñ¼ƒŠPÍ•Á…É…‘¼Á…É„•ÕÌ°½¹Í…É…‘¼°µ½É…±µ•¹Ñ”ÁÕÉ¼ˆ°(€€€€€€‰Í…¹Ñ½Ì€¡ÍÕ‰ÍÑ…¹Ñ¥Ù…‘¼¤ƒŠP½ÌÉ•¹Ñ•Ì°¼Á½Ù¼½¹Í…É…‘¼‘”•ÕÌ€¡ÕÍ¼ÍÕ‰ÍÑ…¹Ñ¥Ù…‘¼½µÕ´¹¼9P¤ˆ°(€€€t°(€ô°(€ÌÈèì(€€€½É¥¥¹…°è€‹†ò:Ï:Ï:×:ï:ÿ>ˆ°(€€€ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸è€‰¹•±½Ìˆ°(€€€Á¡½¹•Ñ¥Œè€‰…¹œœµ•°µ½Ìˆ°(€€€Á…ÉÑ=™MÁ•• è€‰MÕ‰ÍÑ…¹Ñ¥Ù¼µ…ÍÕ±¥¹¼ˆ°(€€€µ•…¹¥¹œè(€€€€€€‰¹©¼°µ•¹Í…•¥É¼ƒŠPÍ•È•ÍÁ¥É¥ÑÕ…°•¹Ù¥…‘¼Á½È•ÕÌìÑ…µ‹¥´ÕÍ…‘¼Á…É„µ•¹Í…•¥É½Ì¡Õµ…¹½Ìˆ°(€€€‘•™¥¹¥Ñ¥½¹Ìèl(€€€€€€‰…¹©¼ƒŠPÍ•È•ÍÁ¥É¥ÑÕ…°•±•ÍÑ¥…°•¹Ù¥…‘¼Á½È•ÕÌ½µ¼µ•¹Í…•¥É¼ˆ°(€€€€€€‰µ•¹Í…•¥É¼ƒŠPÁ•ÍÍ½„¡Õµ…¹„•¹Ù¥…‘„½´Õµ„µ•¹Í…•´€¡ÕÍ¼Í•Õ¹“…É¥¼°µ…¥ÌÉ…É¼¤ˆ°(€€€t°(€ô°(€ØÔÈèì(€€€½É¥¥¹…°è€‹†ò>>3>>:ÿ:ï:ÿ>ˆ°(€€€ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸è€‰Á½ÍÑ½±½Ìˆ°(€€€Á¡½¹•Ñ¥Œè€‰…Àµ½ÌœµÑ½°µ½Ìˆ°(€€€Á…ÉÑ=™MÁ•• è€‰MÕ‰ÍÑ…¹Ñ¥Ù¼µ…ÍÕ±¥¹¼ˆ°(€€€µ•…¹¥¹œè(€€€€€€‰ÃÍÍÑ½±¼ƒŠP•¹Ù¥…‘¼½´…ÕÑ½É¥‘…‘”ìÓµÑÕ±¼‘½Ì½é””‘”½ÕÑÉ½Ì•¹Ù¥…‘½Ì‘¥É•Ñ…µ•¹Ñ”Á½ÈÉ¥ÍÑ¼ˆ°(€€€‘•™¥¹¥Ñ¥½¹Ìèl(€€€€€€‰…ÃÍÍÑ½±¼ƒŠP•¹Ù¥…‘¼½´…ÕÑ½É¥‘…‘”Á½ÈÉ¥ÍÑ¼°ÓµÑÕ±¼‘½Ì½é””‘”½ÕÑÉ½Ì½µ¼A…Õ±¼ˆ°(€€€€€€•¹Ù¥…‘¼°µ•¹Í…•¥É¼ƒŠPÍ•¹Ñ¥‘¼µ…¥Ì•É…°‘”€‰…ÅÕ•±”ÅÕ”ƒ¤•¹Ù¥…‘¼ˆ€¡ÕÍ¼•Ñ¥µ½³Í¥¼Í•Õ¹“…É¥¼¤œ°(€€€t°(€ô°(€ÄĞÄÄèì(€€€½É¥¥¹…°è€‹:Ó>7:÷:Ç:ó:ç>ˆ°(€€€ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸è€‰å¹…µ¥Ìˆ°(€€€Á¡½¹•Ñ¥Œè€‰‘½¼œµ¹…´µ¥Ìˆ°(€€€Á…ÉÑ=™MÁ•• è€‰MÕ‰ÍÑ…¹Ñ¥Ù¼™•µ¥¹¥¹¼ˆ°(€€€µ•…¹¥¹œè€‰A½‘•ÈƒŠP…Á…¥‘…‘””™½Ë„ì™É•ÅÕ•¹Ñ•µ•¹Ñ”¼Á½‘•È‘”•ÕÌµ…¹¥™•ÍÑ¼•´µ¥±…É•Ìˆ°(€€€‘•™¥¹¥Ñ¥½¹Ìèl(€€€€€€‰Á½‘•È°™½Ë„ƒŠP…Á…¥‘…‘”‘”É•…±¥é…È°•ÍÁ•¥…±µ•¹Ñ”¼Á½‘•È‘”•ÕÌˆ°(€€€€€€‰µ¥±…É”°½‰É„Á½‘•É½Í„ƒŠPµ…¹¥™•ÍÑ‡Ÿ¼½¹É•Ñ„‘•ÍÍ”Á½‘•È€¡ÕÍ¼½¹É•Ñ¼¹¼9P¤ˆ°(€€€t°(€ô°)ôì()™Õ¹Ñ¥½¸É…ˆ¡¡Ñµ°èÍÑÉ¥¹œ°±…‰•°èÍÑÉ¥¹œ¤èÍÑÉ¥¹œğ¹Õ±°ì(€½¹ÍĞÉ”€ô¹•ÜI•áÀ¡€µqqÌ¨‘í±…‰•±ôéqqÌ¨ üèñˆø¤ü ¸¨ü¤ üèğ½ˆø¤ıqqÌ¨ñÁ€°€‰¤ˆ¤ì(€½¹ÍĞ´€ô¡Ñµ°¹µ…Ñ ¡É”¤ì(€½¹ÍĞÙ…±Õ”€ô´€üÍÑÉ¥ÁQ…Ì¡µlÅt¤€è€ˆˆì(€É•ÑÕÉ¸Ù…±Õ”ñğ¹Õ±°ì)ô((¼¨¨½Éµ…Ñ¼‘”…‘„¥Ñ•´‘•Ù½±Ù¥‘¼Á½È€½‘¥Ñ¥½¹…Éäµ‘•™¥¹¥Ñ¥½¸½		P¼ñ½‘”ø¼(€¨€¡Ù•È‘½Õµ•¹Ñ‡Ÿ¼½™¥¥…°‘„‰½±±Ì¹±¥™”¤¸³¥´‘¼!Q50±¥ÙÉ”•´(€¨‘•™¥¹¥Ñ¥½¹€°„A$«„‘•Ù½±Ù”…µÁ½Ì•ÍÑÉÕÑÕÉ…‘½Ì”½¹™§…Ù•¥ÌƒŠP(€¨±•á•µ•€°ÑÉ…¹Í±¥Ñ•É…Ñ¥½¹€°ÁÉ½¹Õ¹¥…Ñ¥½¹€°Í¡½ÉÑ}‘•™¥¹¥Ñ¥½¹€ƒŠPÅÕ”(€¨;<‘•Á•¹‘•´‘”„™½Éµ…Ñ‡Ÿ¼‘¼!Q50Í•Õ¥ÈÕ´Á…‘Ë¼‘”ËÍÑÕ±½Ì¸€¨¼)ÑåÁ”	½±±Í¥Ñ!¥Ğ€ôì(€Ñ½Á¥ŒèÍÑÉ¥¹œì(€‘•™¥¹¥Ñ¥½¸èÍÑÉ¥¹œì(€±•á•µ”üèÍÑÉ¥¹œğ¹Õ±°ì(€ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸üèÍÑÉ¥¹œğ¹Õ±°ì(€ÁÉ½¹Õ¹¥…Ñ¥½¸üèÍÑÉ¥¹œğ¹Õ±°ì(€Í¡½ÉÑ}‘•™¥¹¥Ñ¥½¸üèÍÑÉ¥¹œğ¹Õ±°ì)ôì()™Õ¹Ñ¥½¸Á…ÉÍ••™¥¹¥Ñ¥½¹A…É…É…Á¡Ì¡¡Ñµ°èÍÑÉ¥¹œ¤èÍÑÉ¥¹mtì(€½¹ÍĞ‘•™	±½¬€ô¡Ñµ°¹ÍÁ±¥Ğ ¼ñÀ±…ÍÌô‰‘•˜ˆø¸¨üñp½Àø½¤¥lÅt€üü€ˆˆì(€½¹ÍĞ‰•™½É•=É¥¥¸€ô‘•™	±½¬¹ÍÁ±¥Ğ ¼ñÀ±…ÍÌô‰½É¥¥¸ˆ½¤¥lÁt€üü€ˆˆì(€É•ÑÕÉ¸‰•™½É•=É¥¥¸(€€€€¹ÍÁ±¥Ğ ¼ñp½Àø½¤¤(€€€€¹µ…À ¡À¤€ôøÍÑÉ¥ÁQ…Ì¡À¤¤(€€€€¹™¥±Ñ•È ¡À¤€ôøÀ¹±•¹Ñ €ø€Ä¤ì)ô()½¹ÍĞM=9}M9M}5a}19Q €ô€äÀì()™Õ¹Ñ¥½¸‰Õ¥±‘5•…¹¥¹œ (€Í¡½ÉÑ•™¥¹¥Ñ¥½¸èÍÑÉ¥¹œğ¹Õ±°°(€‘•™¥¹¥Ñ¥½¹ÌèÍÑÉ¥¹mt°(€ÍÑÉ½¹Í±½ÍÌèÍÑÉ¥¹œğ¹Õ±°°(¤èÍÑÉ¥¹œğ¹Õ±°ì(€½¹ÍĞÁÉ¥µ…Éä€ôÍ¡½ÉÑ•™¥¹¥Ñ¥½¸ñğ‘•™¥¹¥Ñ¥½¹ÍlÁtñğÍÑÉ½¹Í±½ÍÌñğ¹Õ±°ì(€¥˜€ …ÁÉ¥µ…Éä¤É•ÑÕÉ¸¹Õ±°ì((€€¼¼M”¼Í•¹Ñ¥‘¼ÁÉ¥¹¥Á…°«„Ù•¥¼‘¼Í¡½ÉÑ}‘•™¥¹¥Ñ¥½¹€½™¥¥…°°¼€Ë
+è(€€¼¼Í•¹Ñ¥‘¼…¹‘¥‘…Ñ¼ƒ¤¼ÁËÍÁÉ¥¼€Ç
+èÁ…Ë…É…™¼‘¼³¥á¥¼ì…Í¼½¹ÑË…É¥¼°(€€¼¼ƒ¤¼€Ë
+èÁ…Ë…É…™¼€¡«„ÅÕ”¼€Ç
+èÙ¥É½Ô¼Í•¹Ñ¥‘¼ÁÉ¥¹¥Á…°¤¸(€½¹ÍĞ…¹‘¥‘…Ñ•Ì€ôÍ¡½ÉÑ•™¥¹¥Ñ¥½¸€ü‘•™¥¹¥Ñ¥½¹Ì€è‘•™¥¹¥Ñ¥½¹Ì¹Í±¥” Ä¤ì(€½¹ÍĞÍ•½¹‘…Éä€ô…¹‘¥‘…Ñ•Ì¹™¥¹ (€€€€¡¤€ôø(€€€€€¹±•¹Ñ €ø€À€˜˜(€€€€€¹±•¹Ñ €ğôM=9}M9M}5a}19Q €˜˜(€€€€€¹Ñ½1½İ•É…Í” ¤€„ôôÁÉ¥µ…Éä¹Ñ½1½İ•É…Í” ¤°(€€¤ì(€É•ÑÕÉ¸Í•½¹‘…Éä€ü€‘íÁÉ¥µ…Éåôì€‘íÍ•½¹‘…Éåõ€€èÁÉ¥µ…Éäì)ô((¼¨¨5½¹Ñ„Õ´MÑÉ½¹¹ÑÉä„Á…ÉÑ¥È‘”Õ´¥Ñ•´‰ÉÕÑ¼‘•Ù½±Ù¥‘¼Á•±„A$‘”(€¨‘¥¥½»…É¥¼‘„‰½±±Ì¹±¥™”¸UÍ„½Ì…µÁ½Ì•ÍÑÉÕÑÕÉ…‘½Ì€¡±•á•µ•€°(€¨ÑÉ…¹Í±¥Ñ•É…Ñ¥½¹€°ÁÉ½¹Õ¹¥…Ñ¥½¹€°Í¡½ÉÑ}‘•™¥¹¥Ñ¥½¹€¤½µ¼™½¹Ñ”(€¨ÁÉ¥·…É¥„ƒŠP•±•ÌÛ©´Í•µÁÉ”ÁÉ••¹¡¥‘½ÌÁ•±„A$°¥¹‘•Á•¹‘•¹Ñ•µ•¹Ñ”‘”¼(€¨!Q50‘”‘•™¥¹¥Ñ¥½¹€Í•Õ¥È½Ô»¼¼Á…‘Ë¼‘”ËÍÑÕ±½Ì•ÍÁ•É…‘¼¸=Ì(€¨ËÍÑÕ±½Ì‘•¹ÑÉ¼‘¼!Q50€ ‰A…ÉĞ¡Ì¤½˜ÍÁ•• èˆ°€‰=É¥¥¸èˆ¤½¹Ñ¥¹Õ…´Í•¹‘¼(€¨±¥‘½Ì½µ¼½µÁ±•µ•¹Ñ¼°ÅÕ…¹‘¼‘¥ÍÁ½»µÙ•¥Ì¸€¨¼)™Õ¹Ñ¥½¸‰Õ¥±‘MÑÉ½¹¹ÑÉä¡¡¥Ğè	½±±Í¥Ñ!¥Ğ¤èMÑÉ½¹¹ÑÉäì(€½¹ÍĞ½‘”€ô€¡¡¥Ğ¹Ñ½Á¥Œ€üü€ˆˆ¤¹Ñ½UÁÁ•É…Í” ¤ì(€½¹ÍĞ¡Ñµ°€ô¡¥Ğ¹‘•™¥¹¥Ñ¥½¸€üü€ˆˆì((€½¹ÍĞ‘•™¥¹¥Ñ¥½¹Ì€ôÁ…ÉÍ••™¥¹¥Ñ¥½¹A…É…É…Á¡Ì¡¡Ñµ°¤ì(€½¹ÍĞÍÑÉ½¹Í5…Ñ €ô¡Ñµ°¹µ…Ñ  ¼µqÌ©MÑÉ½¹ÌéqÌ¨¡mqÍqMt¨ü¤ üèñÁğ¤½¤¤ì(€½¹ÍĞÍÑÉ½¹Í±½ÍÌ€ôÍÑÉ½¹Í5…Ñ €üÍÑÉ¥ÁQ…Ì¡ÍÑÉ½¹Í5…Ñ¡lÅt¤€è¹Õ±°ì(€½¹ÍĞÍ¡½ÉÑ•™¥¹¥Ñ¥½¸€ô¡¥Ğ¹Í¡½ÉÑ}‘•™¥¹¥Ñ¥½¸€üÍÑÉ¥ÁQ…Ì¡¡¥Ğ¹Í¡½ÉÑ}‘•™¥¹¥Ñ¥½¸¤€è¹Õ±°ì((€É•ÑÕÉ¸ì(€€€½‘”°(€€€½É¥¥¹…°è¡¥Ğ¹±•á•µ”ñğÉ…ˆ¡¡Ñµ°°€‰=É¥¥¹…°ˆ¤°(€€€ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸è¡¥Ğ¹ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸ñğÉ…ˆ¡¡Ñµ°°€‰QÉ…¹Í±¥Ñ•É…Ñ¥½¸ˆ¤°(€€€Á¡½¹•Ñ¥Œè¡¥Ğ¹ÁÉ½¹Õ¹¥…Ñ¥½¸ñğÉ…ˆ¡¡Ñµ°°€‰A¡½¹•Ñ¥Œˆ¤°(€€€Á…ÉÑ=™MÁ•• èÑÉ…¹Í±…Ñ•É…µµ…ÉQ•ÉµÌ¡É…ˆ¡¡Ñµ°°€‰A…ÉÑqp¡Íqp¤½˜ÍÁ•• ˆ¤¤°(€€€½É¥¥¸èÑÉ…¹Í±…Ñ•É…µµ…ÉQ•ÉµÌ¡É…ˆ¡¡Ñµ°°€‰=É¥¥¸ˆ¤¤°(€€€‘•™¥¹¥Ñ¥½¹Ìè‘•™¥¹¥Ñ¥½¹Ì¹±•¹Ñ €ü‘•™¥¹¥Ñ¥½¹Ì€èÍ¡½ÉÑ•™¥¹¥Ñ¥½¸€ümÍ¡½ÉÑ•™¥¹¥Ñ¥½¹t€èmt°(€€€ÍÑÉ½¹Í±½ÍÌ°(€€€µ•…¹¥¹œè‰Õ¥±‘5•…¹¥¹œ¡Í¡½ÉÑ•™¥¹¥Ñ¥½¸°‘•™¥¹¥Ñ¥½¹Ì°ÍÑÉ½¹Í±½ÍÌ¤°(€€€É•±…Ñ•èÉÉ…ä¹™É½´¡¹•ÜM•Ğ ¡¡Ñµ°¹µ…Ñ  ½Lè¡m!uq¬¤½œ¤€üümt¤¹µ…À ¡Ì¤€ôøÌ¹Í±¥” È¤¤¤¤¹™¥±Ñ•È (€€€€€€¡Œ¤€ôøŒ€„ôô½‘”°(€€€€¤°(€€€ÕÉ…Ñ•è™…±Í”°(€€€ÑÉ…¹Í±…Ñ¥½¹MÑ…ÑÕÌè€‰™½¹Ñ”µ½É¥¥¹…°ˆ°(€€€Í½ÕÉ”è€‰	É½İ¸µÉ¥Ù•Èµ	É¥Ì€¼Q¡…å•ÈÙ¥„‰½±±Ì¹±¥™”ˆ°(€ôì)ô()ÑåÁ”=Á•¹AÑ1•á¥½¹I•½É€ôì(€¼èÍÑÉ¥¹œğ¹Õ±°ì(€ĞèÍÑÉ¥¹œğ¹Õ±°ì(€ÀèÍÑÉ¥¹œğ¹Õ±°ì(€œèÍÑÉ¥¹œì(€”èÍÑÉ¥¹œì(€èÍÑÉ¥¹mtì(€ÈèÍÑÉ¥¹mtì)ôì()½¹ÍĞ½Á•¹AÑ	Õ­•ÑÌ€ô¹•Ü5…ÀñÍÑÉ¥¹œ°AÉ½µ¥Í”ñI•½ÉñÍÑÉ¥¹œ°=Á•¹AÑ1•á¥½¹I•½Éøøø ¤ì()™Õ¹Ñ¥½¸½Á•¹AÑ	Õ­•Ñ½È¡½‘”èÍÑÉ¥¹œ¤èÍÑÉ¥¹œğ¹Õ±°ì(€½¹ÍĞµ…Ñ €ô½‘”¹Ñ½UÁÁ•É…Í” ¤¹µ…Ñ  ½x¡m!t¤¡q¬¤¼¤ì(€É•ÑÕÉ¸µ…Ñ €ü€‘íµ…Ñ¡lÅuô‘í5…Ñ ¹™±½½È¡9Õµ‰•È¡µ…Ñ¡lÉt¤€¼€ÄÀÀ¥õ€€è¹Õ±°ì)ô()™Õ¹Ñ¥½¸±½…‘=Á•¹AÑ	Õ­•Ğ¡‰Õ­•ĞèÍÑÉ¥¹œ¤èAÉ½µ¥Í”ñI•½ÉñÍÑÉ¥¹œ°=Á•¹AÑ1•á¥½¹I•½Éøøì(€±•ĞÁÉ½µ¥Í”€ô½Á•¹AÑ	Õ­•ÑÌ¹•Ğ¡‰Õ­•Ğ¤ì(€¥˜€ …ÁÉ½µ¥Í”¤ì(€€€ÁÉ½µ¥Í”€ô™•Ñ ¡€½‘…Ñ„½±•á¥½¸µÁĞ¼‘í‰Õ­•Ñô¹©Í½¹€¤(€€€€€€¹Ñ¡•¸ ¡É•ÍÁ½¹Í”¤€ôø€¡É•ÍÁ½¹Í”¹½¬€üÉ•ÍÁ½¹Í”¹©Í½¸ ¤€èíô¤¤(€€€€€€¹…Ñ   ¤€ôø€¡íô¤¤ì(€€€½Á•¹AÑ	Õ­•ÑÌ¹Í•Ğ¡‰Õ­•Ğ°ÁÉ½µ¥Í”¤ì(€ô(€É•ÑÕÉ¸ÁÉ½µ¥Í”ì)ô()…Íå¹Œ™Õ¹Ñ¥½¸™•Ñ¡=Á•¹AÑ¹ÑÉä¡½‘”èÍÑÉ¥¹œ¤èAÉ½µ¥Í”ñMÑÉ½¹¹ÑÉäğ¹Õ±°øì(€½¹ÍĞ‰Õ­•Ğ€ô½Á•¹AÑ	Õ­•Ñ½È¡½‘”¤ì(€¥˜€ …‰Õ­•Ğ¤É•ÑÕÉ¸¹Õ±°ì(€½¹ÍĞÉ•½É€ô€¡…İ…¥Ğ±½…‘=Á•¹AÑ	Õ­•Ğ¡‰Õ­•Ğ¤¥m½‘•tì(€¥˜€ …É•½É¤É•ÑÕÉ¸¹Õ±°ì(€½¹ÍĞ‘•™¥¹¥Ñ¥½¹Ì€ôÉ•½É¹¹™¥±Ñ•È¡	½½±•…¸¤¹Í±¥” À°€Ì¤ì(€É•ÑÕÉ¸ì(€€€½‘”°(€€€½É¥¥¹…°èÉ•½É¹¼°(€€€ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸èÉ•½É¹Ğ°(€€€Á¡½¹•Ñ¥ŒèÉ•½É¹À°(€€€Á…ÉÑ=™MÁ•• èÑÉ…¹Í±…Ñ•É…µµ…ÉQ•ÉµÌ¡É•½É¹œ¤°(€€€½É¥¥¸èÑÉ…¹Í±…Ñ•É…µµ…ÉQ•ÉµÌ¡É•½É¹”¤°(€€€‘•™¥¹¥Ñ¥½¹Ì°(€€€ÍÑÉ½¹Í±½ÍÌè‘•™¥¹¥Ñ¥½¹Ì¹©½¥¸ ˆì€ˆ¤ñğ¹Õ±°°(€€€µ•…¹¥¹œè‰Õ¥±‘5•…¹¥¹œ¡‘•™¥¹¥Ñ¥½¹ÍlÁt€üü¹Õ±°°‘•™¥¹¥Ñ¥½¹Ì¹Í±¥” Ä¤°¹Õ±°¤°(€€€É•±…Ñ•èÉ•½É¹È°(€€€ÕÉ…Ñ•è™…±Í”°(€€€ÑÉ…¹Í±…Ñ¥½¹MÑ…ÑÕÌè€‰…ÕÑ½µ…Ñ¥¼ˆ°(€€€Í½ÕÉ”è€‰	½Q¡…å•Èƒ
+ÜÑÉ…‘×Ÿ¼½™™±¥¹”…‰•ÉÑ„Á…É„Á½ÉÑÕ×©Ìˆ°(€ôì)ô((¼¨¨Y•É‰•Ñ”‘¼³¥á¥¼€¡	Á…É„¡•‰É…¥¼°Q¡…å•ÈÁ…É„É•¼¤¸(€¨(€¨A…É„½ÌÍ‘¥½ÌÁÉ•Í•¹Ñ•Ì•´=I}QI5L°¼É•ÍÕ±Ñ…‘¼ƒ¤µ½¹Ñ…‘¼(€¨‘¥É•Ñ…µ•¹Ñ”„Á…ÉÑ¥È‘„±¥ÍÑ„ÕÉ…‘„€¡½¹™•É¥‘„µ…¹Õ…±µ•¹Ñ”¤”»¼(€¨‘•Á•¹‘”‘„™½¹Ñ”•áÑ•É¹„¹•´‘”¡•ÕËµÍÑ¥„‘”±•¥ÑÕÉ„‘”!Q50ƒŠP…É…¹Ñ”(€¨ÅÕ”Á…±…ÙÉ…ÌÑ•½±½¥…µ•¹Ñ”•¹ÑÉ…¥Ì€¡±½¡¥´°e!] °É¥ÍÑ¼°ÍÃµÉ¥Ñ¼(€¨•ÑŒ¸¤Í•µÁÉ”ÑÉ……´¼Í•¹Ñ¥‘¼½ÉÉ•Ñ¼¸€¨¼)•áÁ½ÉĞ…Íå¹Œ™Õ¹Ñ¥½¸™•Ñ¡MÑÉ½¹¹ÑÉä¡½‘”èÍÑÉ¥¹œ¤èAÉ½µ¥Í”ñMÑÉ½¹¹ÑÉäğ¹Õ±°øì(€½¹ÍĞÕÁÁ•É½‘”€ô½‘”¹Ñ½UÁÁ•É…Í” ¤ì(€€¼¼€‰ØÔˆ¹„¡…Ù”è¹½Ù„Ù•ÉÏ¼Á…É„¥¹Ù…±¥‘…ÈEU1EUH…¡”…¹Ñ•É¥½È(€€¼¼€¡±½…±MÑ½É…”‘¼¹…Ù•…‘½È‘¼ÕÍ×…É¥¼¤ÅÕ”Á½ÍÍ„Ñ•ÈÍ¥‘¼Í…±Ù¼…¹Ñ•Ì(€€¼¼‘”„±¥ÍÑ„ÕÉ…‘„€¡=I}QI5L¤•ÍÑ…È½µÁ±•Ñ„ƒŠPÍ•´¥ÍÍ¼°ÅÕ•´«„(€€¼¼Ñ¥Ù•ÍÍ”…‰•ÉÑ¼Õ´Ù•ÉÏµÕ±¼…¹Ñ•ÌÁ•Éµ…¹••É¥„Ù•¹‘¼‘…‘½Ì…¹Ñ¥½Ì¼(€€¼¼¥¹½µÁ±•Ñ½ÌÁ…É„Í•µÁÉ”°µ•Íµ¼‘•Á½¥Ì‘¼‘•Á±½ä‘„½ÉÉ—Ÿ¼¸(€½¹ÍĞ…¡•-•ä€ôÍÑÉ½¹œéØØè‘íÕÁÁ•É½‘•õ€ì(€½¹ÍĞ½Ù•ÉÉ¥‘”€ô=I}QI5MmÕÁÁ•É½‘•tì(€¥˜€¡½Ù•ÉÉ¥‘”¤ì(€€€É•ÑÕÉ¸…¡•¡…¡•-•ä°…Íå¹Œ€ ¤€ôøì(€€€€€½¹ÍĞ‘•™¥¹¥Ñ¥½¹Ì€ô½Ù•ÉÉ¥‘”¹‘•™¥¹¥Ñ¥½¹Ì€üüm½Ù•ÉÉ¥‘”¹µ•…¹¥¹tì(€€€€€É•ÑÕÉ¸ì(€€€€€€€½‘”èÕÁÁ•É½‘”°(€€€€€€€½É¥¥¹…°è½Ù•ÉÉ¥‘”¹½É¥¥¹…°°(€€€€€€€ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸è½Ù•ÉÉ¥‘”¹ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸°(€€€€€€€Á¡½¹•Ñ¥Œè½Ù•ÉÉ¥‘”¹Á¡½¹•Ñ¥Œ€üü¹Õ±°°(€€€€€€€Á…ÉÑ=™MÁ•• è½Ù•ÉÉ¥‘”¹Á…ÉÑ=™MÁ•• €üü¹Õ±°°(€€€€€€€½É¥¥¸è¹Õ±°°(€€€€€€€‘•™¥¹¥Ñ¥½¹Ì°(€€€€€€€ÍÑÉ½¹Í±½ÍÌè½Ù•ÉÉ¥‘”¹µ•…¹¥¹œ°(€€€€€€€µ•…¹¥¹œè½Ù•ÉÉ¥‘”¹µ•…¹¥¹œ°(€€€€€€€É•±…Ñ•èmt°(€€€€€€€ÕÉ…Ñ•èÑÉÕ”°(€€€€€€€ÑÉ…¹Í±…Ñ¥½¹MÑ…ÑÕÌè€‰É•Ù¥Í…‘¼ˆ°(€€€€€€€Í½ÕÉ”è€‰Y•É‰•Ñ”É•Ù¥Í…‘¼µ…¹Õ…±µ•¹Ñ”„Á…ÉÑ¥È‘¼³¥á¥¼”‘¼½¹Ñ•áÑ¼‹µ‰±¥¼ˆ°(€€€€€ôì(€€€ô¤ì(€ô((€É•ÑÕÉ¸…¡•¡…¡•-•ä°…Íå¹Œ€ ¤€ôøì(€€€½¹ÍĞ±½…±¹ÑÉä€ô…İ…¥Ğ™•Ñ¡=Á•¹AÑ¹ÑÉä¡ÕÁÁ•É½‘”¤ì(€€€¥˜€¡±½…±¹ÑÉä¤É•ÑÕÉ¸±½…±¹ÑÉäì((€€€½¹ÍĞÉ•Ì€ô…İ…¥Ğ™•Ñ ¡€‘íA%ô½‘¥Ñ¥½¹…Éäµ‘•™¥¹¥Ñ¥½¸½		P¼‘íÕÁÁ•É½‘•ô½€¤ì(€€€¥˜€ …É•Ì¹½¬¤É•ÑÕÉ¸¹Õ±°ì(€€€½¹ÍĞ©Í½¸€ô€¡…İ…¥ĞÉ•Ì¹©Í½¸ ¤¤…Ì	½±±Í¥Ñ!¥Ñmtì(€€€¥˜€ …ÉÉ…ä¹¥ÍÉÉ…ä¡©Í½¸¤ñğ©Í½¸¹±•¹Ñ €ôôô€À¤É•ÑÕÉ¸¹Õ±°ì(€€€½¹ÍĞ¡¥Ğ€ô©Í½¸¹™¥¹ ¡¤€ôø¹Ñ½Á¥Œü¹Ñ½UÁÁ•É…Í” ¤€ôôôÕÁÁ•É½‘”¤€üü©Í½¹lÁtì(€€€¥˜€ …¡¥Ğ¤É•ÑÕÉ¸¹Õ±°ì(€€€É•ÑÕÉ¸‰Õ¥±‘MÑÉ½¹¹ÑÉä¡¡¥Ğ¤ì(€ô¤ì)ô()•áÁ½ÉĞ…Íå¹Œ™Õ¹Ñ¥½¸™•Ñ¡MÑÉ½¹¹ÑÉ¥•Ì¡½‘•ÌèÍÑÉ¥¹mt¤èAÉ½µ¥Í”ñI•½ÉñÍÑÉ¥¹œ°MÑÉ½¹¹ÑÉäøøì(€½¹ÍĞÕ¹¥ÅÕ”€ôÉÉ…ä¹™É½´¡¹•ÜM•Ğ¡½‘•Ì¤¤ì(€½¹ÍĞÉ•ÍÕ±ÑÌ€ô…İ…¥ĞAÉ½µ¥Í”¹…±°¡Õ¹¥ÅÕ”¹µ…À ¡Œ¤€ôø™•Ñ¡MÑÉ½¹¹ÑÉä¡Œ¤¹…Ñ   ¤€ôø¹Õ±°¤¤¤ì(€½¹ÍĞ½ÕĞèI•½ÉñÍÑÉ¥¹œ°MÑÉ½¹¹ÑÉäø€ôíôì(€Õ¹¥ÅÕ”¹™½É…  ¡Œ°¤¤€ôøì(€€€½¹ÍĞ•¹ÑÉä€ôÉ•ÍÕ±ÑÍm¥tì(€€€¥˜€¡•¹ÑÉä¤½ÕÑmt€ô•¹ÑÉäì(€ô¤ì(€É•ÑÕÉ¸½ÕĞì)ô()•áÁ½ÉĞÑåÁ”=ÕÉÉ•¹”€ôìŒè¹Õµ‰•Èì˜èm¹Õµ‰•È°¹Õµ‰•È°¹Õµ‰•Étì°èm¹Õµ‰•È°¹Õµ‰•È°¹Õµ‰•Étôì()±•Ğ½ÕÉÉ•¹•ÍAÉ½µ¥Í”èAÉ½µ¥Í”ñI•½ÉñÍÑÉ¥¹œ°=ÕÉÉ•¹”øøğ¹Õ±°€ô¹Õ±°ì((¼¨¨ƒ5¹‘¥”‘”½½ÉË©¹¥…ÌÁ½È»éµ•É¼‘”MÑÉ½¹œ€¡½¹Ñ…•´°ÁÉ¥µ•¥É„”ƒé±Ñ¥µ„¤¸€¨¼)•áÁ½ÉĞ™Õ¹Ñ¥½¸±½…‘=ÕÉÉ•¹•Ì ¤èAÉ½µ¥Í”ñI•½ÉñÍÑÉ¥¹œ°=ÕÉÉ•¹”øøì(€¥˜€ …½ÕÉÉ•¹•ÍAÉ½µ¥Í”¤ì(€€€½ÕÉÉ•¹•ÍAÉ½µ¥Í”€ô™•Ñ  ˆ½‘…Ñ„½ÍÑÉ½¹Ìµ½ÕÉÉ•¹•Ì¹©Í½¸ˆ¤(€€€€€€¹Ñ¡•¸ ¡È¤€ôø€¡È¹½¬€üÈ¹©Í½¸ ¤€èíô¤¤(€€€€€€¹…Ñ   ¤€ôø€¡íô¤¤ì(€ô(€É•ÑÕÉ¸½ÕÉÉ•¹•ÍAÉ½µ¥Í”ì)ô()•áÁ½ÉĞÑåÁ”aÉ•™Q…É•Ğ€ôm¹Õµ‰•È°¹Õµ‰•È°¹Õµ‰•Étì()½¹ÍĞáÉ•™…¡”€ô¹•Ü5…Àñ¹Õµ‰•È°AÉ½µ¥Í”ñI•½ÉñÍÑÉ¥¹œ°aÉ•™Q…É•Ñmtøøø ¤ì((¼¨¨I•™•Ë©¹¥…ÌÉÕé…‘…ÌÉ•…¥Ì€¡½Á•¹‰¥‰±”¹¥¹™¼°µ	d¤Á…É„Õ´±¥ÙÉ¼¸€¨¼)•áÁ½ÉĞ™Õ¹Ñ¥½¸±½…‘aÉ•™Ì¡‰½½¬è¹Õµ‰•È¤èAÉ½µ¥Í”ñI•½ÉñÍÑÉ¥¹œ°aÉ•™Q…É•Ñmtøøì(€±•ĞÀ€ôáÉ•™…¡”¹•Ğ¡‰½½¬¤ì(€¥˜€ …À¤ì(€€€À€ô™•Ñ ¡€½‘…Ñ„½áÉ•™Ì¼‘í‰½½­ô¹©Í½¹€¤(€€€€€€¹Ñ¡•¸ ¡È¤€ôø€¡È¹½¬€üÈ¹©Í½¸ ¤€èíô¤¤(€€€€€€¹…Ñ   ¤€ôø€¡íô¤¤ì(€€€áÉ•™…¡”¹Í•Ğ¡‰½½¬°À¤ì(€ô(€É•ÑÕÉ¸Àì)ô()•áÁ½ÉĞ…Íå¹Œ™Õ¹Ñ¥½¸É½ÍÍI•™•É•¹•Í½È (€‰½½¬è¹Õµ‰•È°(€¡…ÁÑ•Èè¹Õµ‰•È°(€Ù•ÉÍ”è¹Õµ‰•È°(¤èAÉ½µ¥Í”ñaÉ•™Q…É•Ñmtøì(€½¹ÍĞ‘…Ñ„€ô…İ…¥Ğ±½…‘aÉ•™Ì¡‰½½¬¤ì(€É•ÑÕÉ¸‘…Ñ…m€‘í¡…ÁÑ•Éôè‘íÙ•ÉÍ•õt€üümtì)ô((¼¨¨	ÕÍ„Ñ•áÑÕ…°¹¼…ÃµÑÕ±¼½ÑÉ…‘×Ÿ¼•Í½±¡¥‘½Ì€¡•¹‘Á½¥¹Ğ½™¥¥…°‘„™½¹Ñ”¤¸€¨¼)•áÁ½ÉĞ…Íå¹Œ™Õ¹Ñ¥½¸Í•…É¡	¥‰±” (€ÑÉ…¹Í±…Ñ¥½¸èÍÑÉ¥¹œ°(€ÅÕ•ÉäèÍÑÉ¥¹œ°(¤èAÉ½µ¥Í”ñì‰½½¬è¹Õµ‰•Èì¡…ÁÑ•Èè¹Õµ‰•ÈìÙ•ÉÍ”è¹Õµ‰•ÈìÑ•áĞèÍÑÉ¥¹œõmtøì(€½¹ÍĞÕÉ°€ô€‘íA%ô½ØÈ½™¥¹¼‘íÑÉ…¹Í±…Ñ¥½¹ôıÍ•…É ô‘í•¹½‘•UI%½µÁ½¹•¹Ğ¡ÅÕ•Éä¥ô™µ…Ñ¡}…Í”õ™…±Í”™µ…Ñ¡}İ¡½±”õ™…±Í•€ì(€½¹ÍĞÉ•Ì€ô…İ…¥Ğ™•Ñ ¡ÕÉ°¤ì(€¥˜€ …É•Ì¹½¬¤Ñ¡É½Ü¹•ÜÉÉ½È ‰	ÕÍ„¥¹‘¥ÍÁ½»µÙ•°¹¼µ½µ•¹Ñ¼¸ˆ¤ì(€½¹ÍĞ©Í½¸€ô€¡…İ…¥ĞÉ•Ì¹©Í½¸ ¤¤…Ìì(€€€É•ÍÕ±ÑÌüèì‰½½¬è¹Õµ‰•Èì¡…ÁÑ•Èè¹Õµ‰•ÈìÙ•ÉÍ”è¹Õµ‰•ÈìÑ•áĞèÍÑÉ¥¹œõmtì(€ôì(€½¹ÍĞ±¥ÍĞ€ô©Í½¸¹É•ÍÕ±ÑÌ€üümtì(€É•ÑÕÉ¸±¥ÍĞ¹Í±¥” À°€ØÀ¤¹µ…À ¡È¤€ôø€¡ì(€€€‰½½¬èÈ¹‰½½¬°(€€€¡…ÁÑ•ÈèÈ¹¡…ÁÑ•È°(€€€Ù•ÉÍ”èÈ¹Ù•ÉÍ”°(€€€Ñ•áĞèÍÑÉ¥ÁQ…Ì¡È¹Ñ•áĞ¤°(€ô¤¤ì)ô((¼¨¨U´ƒé¹¥¼Ù•ÉÏµÕ±¼•´Á½ÉÑÕ×©Ì€¡ÕÍ…‘¼¹…ÌÉ•™•Ë©¹¥…ÌÉÕé…‘…Ì¤¸€¨¼)•áÁ½ÉĞ…Íå¹Œ™Õ¹Ñ¥½¸™•Ñ¡Y•ÉÍ” (€ÑÉ…¹Í±…Ñ¥½¸èÍÑÉ¥¹œ°(€‰½½¬è¹Õµ‰•È°(€¡…ÁÑ•Èè¹Õµ‰•È°(€Ù•ÉÍ”è¹Õµ‰•È°(¤èAÉ½µ¥Í”ñÍÑÉ¥¹œğ¹Õ±°øì(€½¹ÍĞ¡…À€ô…İ…¥Ğ™•Ñ¡¡…ÁÑ•È¡ÑÉ…¹Í±…Ñ¥½¸°‰½½¬°¡…ÁÑ•È¤ì(€É•ÑÕÉ¸¡…À¹™¥¹ ¡Ø¤€ôøØ¹Ù•ÉÍ”€ôôôÙ•ÉÍ”¤ü¹Ñ•áĞ€üü¹Õ±°ì)ô((¼¨¨(€¨1•¥ÑÕÉ„…ÁÉ½á¥µ…‘„•´Á½ÉÑÕ×©ÌƒŠPÑÉ…¹ÍÉ§Ÿ¼Á½ÈÉ•É…Ì„Á…ÉÑ¥È‘„(€¨ÑÉ…¹Í±¥Ñ•É‡Ÿ¼……“©µ¥„¸ƒ$•áÁ±¥¥Ñ…µ•¹Ñ”É½ÑÕ±…‘„½µ¼…ÁÉ½á¥µ‡Ÿ¼¹„(€¨¥¹Ñ•É™…”€¡»¼ƒ¤‘…‘¼‘”™½¹Ñ”……“©µ¥„¤¸(€¨¼)•áÁ½ÉĞ™Õ¹Ñ¥½¸…ÁÁÉ½á¥µ…Ñ•AÑ	È¡ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸èÍÑÉ¥¹œğ¹Õ±°¤èÍÑÉ¥¹œğ¹Õ±°ì(€¥˜€ …ÑÉ…¹Í±¥Ñ•É…Ñ¥½¸¤É•ÑÕÉ¸¹Õ±°ì(€±•ĞÌ€ôÑÉ…¹Í±¥Ñ•É…Ñ¥½¸¹Ñ½1½İ•É…Í” ¤ì(€½¹ÍĞÉÕ±•ÌèmI•áÀ°ÍÑÉ¥¹umt€ôl(€€€l½ ½œ°€‰Œ‰t°(€€€l½Á ½œ°€‰˜‰t°(€€€l½Ñ ½œ°€‰Ğ‰t°(€€€l½­ ½œ°€‰Œ‰t°(€€€l½ÑÌ½œ°€‰Ñè‰t°(€€€l½Í ½œ°€‰ ‰t°(€€€l½½Ô½œ°€‰Ô‰t°(€€€l½•¤½œ°€‰•¤‰t°(€€€l½ä½œ°€‰¤‰t°(€€€l½¬½œ°€‰Œ‰t°(€€€l½ ½œ°€ˆ‰t°(€tì(€™½È€¡½¹ÍĞmÉ”°Ñ½t½˜ÉÕ±•Ì¤Ì€ôÌ¹É•Á±…”¡É”°Ñ¼¤ì(€É•ÑÕÉ¸Ìì)ô
