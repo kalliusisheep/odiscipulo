@@ -852,9 +852,12 @@ function buildStrongEntry(hit: BollsDictHit): StrongEntry {
  * etc.) sempre tragam o sentido correto. */
 export async function fetchStrongEntry(code: string): Promise<StrongEntry | null> {
   const upperCode = code.toUpperCase();
-  // "v4" na chave: além do "v3" (que já invalidava o formato anterior),
-  // esta versão atualiza a chave de cache conforme solicitado.
-  const cacheKey = `strong:v4:${upperCode}`;
+  // "v5" na chave: nova versão para invalidar QUALQUER cache anterior
+  // (localStorage do navegador do usuário) que possa ter sido salvo antes
+  // de a lista curada (CORE_TERMS) estar completa — sem isso, quem já
+  // tivesse aberto um versículo antes permaneceria vendo dados antigos/
+  // incompletos para sempre, mesmo depois do deploy da correção.
+  const cacheKey = `strong:v5:${upperCode}`;
   const override = CORE_TERMS[upperCode];
   if (override) {
     return cached(cacheKey, async () => {
