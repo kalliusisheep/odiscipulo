@@ -146,63 +146,105 @@ function HomePage() {
       </header>
 
       <section
-        className="relative isolate overflow-hidden rounded-3xl border border-white/10 shadow-xl shadow-black/30"
+        className="relative isolate overflow-hidden rounded-[1.75rem] border border-violet-300/15 shadow-2xl shadow-black/35"
         style={{
           background:
-            "linear-gradient(135deg, rgba(49, 46, 129, 0.52) 0%, rgba(30, 41, 59, 0.78) 58%, rgba(15, 23, 42, 0.92) 100%)",
+            "linear-gradient(145deg, rgba(55, 48, 163, 0.64) 0%, rgba(30, 41, 59, 0.90) 48%, rgba(15, 23, 42, 0.98) 100%)",
         }}
       >
-        <div className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full bg-primary/20 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-20 left-10 h-40 w-40 rounded-full bg-primary-glow/10 blur-3xl" />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.08]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,.18) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.18) 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+            maskImage: "linear-gradient(to bottom, black, transparent 72%)",
+          }}
+        />
+        <div className="pointer-events-none absolute -right-14 -top-20 h-60 w-60 rounded-full bg-violet-400/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 -left-8 h-52 w-52 rounded-full bg-blue-500/10 blur-3xl" />
 
         <div className="relative z-10 p-5">
-          <div className="flex items-start gap-3">
-            <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-surface-2 ring-2 ring-white/15 shadow-lg shadow-black/25">
-              {level.avatar ? (
-                <img src={level.avatar} alt={level.title} className="absolute inset-0 h-full w-full object-cover" />
-              ) : (
-                <span className="absolute inset-0 flex items-center justify-center text-4xl">{character.emoji}</span>
-              )}
-              <div className="absolute inset-x-0 bottom-0 bg-black/35 px-1 py-0.5 text-center text-[9px] font-bold text-white">
-                Nv {level.level}
+          <div className="flex items-start gap-3.5">
+            <div className="relative shrink-0">
+              <div className="absolute -inset-1 rounded-[1.4rem] bg-gradient-to-br from-violet-300/60 via-primary/35 to-transparent blur-[1px]" />
+              <div className="relative h-[4.75rem] w-[4.75rem] overflow-hidden rounded-[1.2rem] bg-surface-2 ring-1 ring-white/25 shadow-xl shadow-black/30">
+                {level.avatar ? (
+                  <img src={level.avatar} alt={level.title} className="absolute inset-0 h-full w-full object-cover" />
+                ) : (
+                  <span className="absolute inset-0 flex items-center justify-center text-4xl">{character.emoji}</span>
+                )}
+                <div className="absolute inset-x-1 bottom-1 rounded-lg bg-slate-950/75 px-1 py-1 text-center text-[9px] font-extrabold uppercase tracking-wider text-white backdrop-blur-sm">
+                  Nível {level.level}
+                </div>
               </div>
             </div>
 
             <div className="min-w-0 flex-1 pt-0.5">
-              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/55">Seu progresso</p>
-              <p className={`mt-1 font-bold leading-snug text-white ${levelTitleSizeClass}`}>{levelTitleText}</p>
-              <p className="mt-1 text-xs text-white/65">{profile?.xp ?? 0} XP acumulados</p>
+              <div className="flex items-center gap-1.5">
+                <Sparkles className="h-3.5 w-3.5 text-violet-300" />
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-violet-100/65">Sua jornada</p>
+              </div>
+              <p className={`mt-1.5 font-extrabold leading-tight text-white ${levelTitleSizeClass}`}>{levelTitleText}</p>
+              <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                <span className="rounded-full bg-white/10 px-2 py-1 text-[10px] font-bold text-white/80 ring-1 ring-white/10">
+                  {xp} XP total
+                </span>
+                {nextLevel && (
+                  <span className="rounded-full bg-violet-400/10 px-2 py-1 text-[10px] font-semibold text-violet-200 ring-1 ring-violet-300/15">
+                    Meta: Nv {nextLevel.level}
+                  </span>
+                )}
+              </div>
             </div>
 
             <div
-              className="flex shrink-0 flex-col items-center rounded-2xl px-2.5 py-2"
-              style={{ background: "rgba(251, 146, 60, 0.16)", border: "1px solid rgba(251, 146, 60, 0.22)" }}
+              className="flex min-w-[3.45rem] shrink-0 flex-col items-center rounded-2xl px-2.5 py-2.5 shadow-lg shadow-orange-950/20"
+              style={{
+                background: "linear-gradient(180deg, rgba(251, 146, 60, 0.22), rgba(124, 45, 18, 0.16))",
+                border: "1px solid rgba(251, 146, 60, 0.28)",
+              }}
             >
-              <Flame className="h-4 w-4 text-streak" />
-              <span className="mt-0.5 text-sm font-extrabold text-streak">{profile?.streak ?? 0}</span>
-              <span className="text-[9px] font-medium text-orange-100/70">dias</span>
+              <Flame className="h-[1.1rem] w-[1.1rem] text-orange-300 drop-shadow-[0_0_8px_rgba(251,146,60,.6)]" />
+              <span className="mt-0.5 text-base font-black leading-none text-orange-200">{profile?.streak ?? 0}</span>
+              <span className="mt-1 text-[8px] font-bold uppercase tracking-wider text-orange-100/60">dias</span>
             </div>
           </div>
 
           <div
-            className="mt-5 rounded-2xl p-3"
-            style={{ background: "rgba(2, 6, 23, 0.30)", border: "1px solid rgba(255, 255, 255, 0.08)" }}
+            className="mt-5 rounded-[1.25rem] p-3.5 shadow-inner"
+            style={{
+              background: "linear-gradient(180deg, rgba(2, 6, 23, 0.42), rgba(2, 6, 23, 0.24))",
+              border: "1px solid rgba(255, 255, 255, 0.09)",
+            }}
           >
             <div className="flex items-center justify-between gap-3">
-              <span className="text-[10px] font-semibold text-white/65">Próximo nível</span>
-              <span className="text-[11px] font-extrabold text-white">{Math.round(levelPct)}%</span>
+              <div className="min-w-0">
+                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-white/45">Rumo ao próximo nível</p>
+                <p className="mt-1 truncate text-xs font-bold text-white/90">
+                  {nextLevel ? `Nv ${nextLevel.level} · ${nextLevel.title}` : "Você alcançou o nível máximo"}
+                </p>
+              </div>
+              <div className="shrink-0 rounded-xl bg-white/10 px-2.5 py-1.5 text-sm font-black text-white ring-1 ring-white/10">
+                {Math.round(levelPct)}%
+              </div>
             </div>
-            <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-black/30 p-[2px]">
+
+            <div className="relative mt-3 h-3 overflow-hidden rounded-full bg-slate-950/55 p-[2px] ring-1 ring-white/5">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-primary via-primary-glow to-violet-300 shadow-[0_0_12px_rgba(167,139,250,0.55)] transition-all"
+                className="relative h-full rounded-full bg-gradient-to-r from-violet-500 via-primary-glow to-fuchsia-300 shadow-[0_0_14px_rgba(167,139,250,0.6)] transition-all duration-700"
                 style={{ width: `${levelPct}%` }}
-              />
+              >
+                <div className="absolute inset-0 bg-gradient-to-b from-white/35 to-transparent" />
+              </div>
+              {levelPct === 0 && <div className="absolute left-[3px] top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-violet-300/55" />}
             </div>
-            <div className="mt-2 flex items-center justify-between gap-3 text-[10px]">
-              <span className="truncate font-medium text-white/55">
-                {nextLevel ? `Nv ${nextLevel.level} · ${nextLevel.title}` : "Nível máximo"}
+
+            <div className="mt-2.5 flex items-center justify-between gap-3 text-[10px]">
+              <span className="font-medium text-white/45">
+                {xpLeft === null ? "Jornada concluída" : `${xp} de ${xp + xpLeft} XP`}
               </span>
-              <span className="shrink-0 font-semibold text-primary-glow">
+              <span className="shrink-0 font-bold text-violet-200">
                 {xpLeft === null ? "Nível máximo" : `Faltam ${xpLeft} XP`}
               </span>
             </div>
@@ -220,15 +262,18 @@ function HomePage() {
           </div>
         )}
 
-        <div className="relative z-10 flex justify-end border-t border-white/10 px-5 py-3">
-          <Link
-            to="/niveis"
-            className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-white/15"
-          >
-            Ver níveis e conquistas
-            <ChevronRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
+        <Link
+          to="/niveis"
+          className="group relative z-10 flex items-center justify-between gap-3 border-t border-white/10 bg-white/[0.045] px-5 py-3.5 transition-colors hover:bg-white/[0.08]"
+        >
+          <div>
+            <p className="text-xs font-bold text-white">Mapa da jornada</p>
+            <p className="mt-0.5 text-[10px] text-white/50">Explore níveis, títulos e conquistas</p>
+          </div>
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/10 transition-transform group-hover:translate-x-0.5">
+            <ChevronRight className="h-4 w-4 text-white/80" />
+          </span>
+        </Link>
       </section>
 
       {userId && <ChallengePanel myId={userId} />}
