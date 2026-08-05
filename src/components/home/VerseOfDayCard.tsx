@@ -81,17 +81,18 @@ export function VerseOfDayCard() {
       className="
         group
         relative
+        min-h-44
         overflow-hidden
         rounded-3xl
         border
-        border-white/15
+        border-white/20
         bg-gradient-to-br
-        from-zinc-300/25
-        via-zinc-700/40
-        to-black/80
+        from-zinc-400/40
+        via-zinc-800/75
+        to-black/90
         backdrop-blur-xl
         shadow-xl
-        shadow-black/30
+        shadow-black/40
         transition-all
         duration-300
         hover:scale-[1.01]
@@ -100,7 +101,7 @@ export function VerseOfDayCard() {
       "
     >
       {/* Glow */}
-      <div className="absolute -top-16 -right-16 h-44 w-44 rounded-full bg-primary/20 blur-3xl transition-all duration-500 group-hover:bg-primary/30" />
+      <div className="absolute -top-16 -right-16 h-44 w-44 rounded-full bg-zinc-100/10 blur-3xl transition-all duration-500 group-hover:bg-zinc-100/15" />
 
       {/* Barnabé */}
       <img
@@ -111,14 +112,16 @@ export function VerseOfDayCard() {
           pointer-events-none
           select-none
           absolute
-          right-0
-          bottom-0
-          h-40
+          right-1
+          bottom-1
+          h-44
+          w-44
           object-contain
           object-bottom
-          opacity-95
+          mix-blend-screen
           drop-shadow-2xl
-          sm:h-44
+          sm:h-48
+          sm:w-48
           transition-all
           duration-500
           group-hover:opacity-100
@@ -126,14 +129,14 @@ export function VerseOfDayCard() {
         "
       />
 
-      <div className="relative z-10 p-5 pr-32">
+      <div className="relative z-10 p-5 pr-36 sm:pr-40">
 
         <div className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/15 backdrop-blur">
-            <Sparkles className="h-4 w-4 text-primary" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 backdrop-blur">
+            <Sparkles className="h-4 w-4 text-white/80" />
           </div>
 
-          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary/90">
+          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/70">
             Versículo do Dia
           </span>
         </div>
@@ -142,11 +145,13 @@ export function VerseOfDayCard() {
           className="
             mt-4
             font-sans
+            not-italic
             text-sm
             leading-7
             font-medium
-            text-white/90
+            text-white/95
           "
+          style={{ fontFamily: "var(--font-sans)" }}
         >
           {text
             ? `"${text}"`
@@ -154,7 +159,7 @@ export function VerseOfDayCard() {
         </p>
 
         <div className="mt-3">
-          <span className="text-xs font-semibold text-primary">
+          <span className="text-xs font-semibold text-white/75">
             — {verse.ref_label}
           </span>
         </div>
