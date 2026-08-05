@@ -369,6 +369,143 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_verse_comment_likes: {
+        Row: {
+          comment_id: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          comment_id: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          comment_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_verse_comment_likes_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "daily_verse_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      daily_verse_comments: {
+        Row: {
+          author_avatar_url: string | null
+          author_name: string
+          body: string | null
+          created_at: string
+          gif_url: string | null
+          id: string
+          user_id: string
+          verse_date: string
+        }
+        Insert: {
+          author_avatar_url?: string | null
+          author_name: string
+          body?: string | null
+          created_at?: string
+          gif_url?: string | null
+          id?: string
+          user_id: string
+          verse_date: string
+        }
+        Update: {
+          author_avatar_url?: string | null
+          author_name?: string
+          body?: string | null
+          created_at?: string
+          gif_url?: string | null
+          id?: string
+          user_id?: string
+          verse_date?: string
+        }
+        Relationships: []
+      }
+      daily_verse_likes: {
+        Row: {
+          created_at: string
+          id: string
+          user_id: string
+          verse_date: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_id: string
+          verse_date: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_id?: string
+          verse_date?: string
+        }
+        Relationships: []
+      }
+      daily_verse_shares: {
+        Row: {
+          created_at: string
+          id: string
+          user_id: string
+          verse_date: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_id: string
+          verse_date: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_id?: string
+          verse_date?: string
+        }
+        Relationships: []
+      }
+      daily_verses: {
+        Row: {
+          book: number
+          chapter: number
+          created_at: string
+          id: string
+          ord: number
+          ref_label: string
+          verse_end: number | null
+          verse_start: number
+        }
+        Insert: {
+          book: number
+          chapter: number
+          created_at?: string
+          id?: string
+          ord: number
+          ref_label: string
+          verse_end?: number | null
+          verse_start: number
+        }
+        Update: {
+          book?: number
+          chapter?: number
+          created_at?: string
+          id?: string
+          ord?: number
+          ref_label?: string
+          verse_end?: number | null
+          verse_start?: number
+        }
+        Relationships: []
+      }
       demo_users: {
         Row: {
           avatar_char: string
