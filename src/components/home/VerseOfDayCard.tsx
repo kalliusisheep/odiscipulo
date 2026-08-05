@@ -96,18 +96,17 @@ export function VerseOfDayCard() {
       />
 
       <img
-        src="/images/barnabee-reading.png"
+        src="/images/barnabee-reading-cutout.png"
         alt=""
         draggable={false}
         className="pointer-events-none absolute select-none"
         style={{
-          right: "0.8rem",
-          bottom: "0.7rem",
+          right: "0",
+          bottom: "0",
           width: "7.75rem",
           height: "7.75rem",
           objectFit: "contain",
           objectPosition: "center",
-          mixBlendMode: "screen",
           filter: "drop-shadow(0 10px 12px rgba(0, 0, 0, 0.7))",
         }}
       />
