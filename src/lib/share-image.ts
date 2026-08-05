@@ -137,10 +137,12 @@ export async function generateShareImage({
   title,
   bodyText,
   backgroundSrc,
+  referenceText,
 }: {
   title: string;
   bodyText: string;
   backgroundSrc: string;
+  referenceText?: string;
 }): Promise<Blob> {
   await ensureFontsReady();
 
@@ -208,7 +210,8 @@ export async function generateShareImage({
     ctx.font = `400 ${fontSize}px "Inter", sans-serif`;
     const lines = wrapParagraphs(ctx, bodyText, bodyMaxWidth);
     const lineHeight = Math.round(fontSize * 1.42);
-    const panelHeight = lines.length * lineHeight + panelPaddingY * 2;
+    const referenceReserve = referenceText ? lineHeight * 2 + 42 : 0;
+    const panelHeight = lines.length * lineHeight + panelPaddingY * 2 + referenceReserve;
     if (panelHeight <= availableHeight || fontSize === BODY_FONT_SIZES[BODY_FONT_SIZES.length - 1]) {
       chosenFontSize = fontSize;
       chosenLines = lines;
@@ -220,10 +223,15 @@ export async function generateShareImage({
 
   // Se mesmo no menor tamanho o texto não coube, corta o excesso de linhas
   // (proteção extra — na prática o limite de 700 caracteres já evita isso).
-  const maxLinesThatFit = Math.max(1, Math.floor((availableHeight - panelPaddingY * 2) / chosenLineHeight));
+  const referenceReserve = referenceText ? chosenLineHeight * 2 + 42 : 0;
+  const maxLinesThatFit = Math.max(
+    1,
+    Math.floor((availableHeight - panelPaddingY * 2 - referenceReserve) / chosenLineHeight),
+  );
   if (chosenLines.length > maxLinesThatFit) {
     chosenLines = chosenLines.slice(0, maxLinesThatFit);
-    chosenPanelHeight = chosenLines.length * chosenLineHeight + panelPaddingY * 2;
+    chosenPanelHeight =
+      chosenLines.length * chosenLineHeight + panelPaddingY * 2 + referenceReserve;
   }
 
   ctx.fillStyle = "rgba(12,10,24,0.60)";
@@ -238,6 +246,15 @@ export async function generateShareImage({
     drawParagraphLine(ctx, line.text, textX, bodyY, bodyMaxWidth, !line.isParagraphEnd);
     bodyY += chosenLineHeight;
   });
+
+  if (referenceText) {
+    // A referência fica duas linhas abaixo do último verso e em negrito.
+    const referenceY = bodyY + chosenLineHeight;
+    ctx.font = '700 34px "Inter", sans-serif';
+    ctx.fillStyle = "#ffffff";
+    ctx.textAlign = "left";
+    ctx.fillText(referenceText, textX, referenceY);
+  }
 
   return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(
