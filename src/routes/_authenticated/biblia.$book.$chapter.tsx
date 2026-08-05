@@ -14,7 +14,7 @@ import {
   type BibleNote,
   type HighlightColor,
 } from "@/lib/bible-user-data";
-import { useBiblePrefs } from "@/lib/bible-prefs";
+import { useBiblePrefs, BIBLE_FONT_SCALES } from "@/lib/bible-prefs";
 import { VerseActionSheet } from "@/components/bible/VerseActionSheet";
 import {
   ArrowLeft,
@@ -25,6 +25,8 @@ import {
   Plus,
   Star,
   StickyNote,
+  Type,
+  X,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/biblia/$book/$chapter")({
@@ -56,6 +58,8 @@ function ChapterReader() {
   const [selected, setSelected] = useState<number | null>(null);
   const [noteFor, setNoteFor] = useState<number | null>(null);
   const [noteText, setNoteText] = useState("");
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [chapterPicker, setChapterPicker] = useState(false);
 
   const meta = bookById(book);
 
@@ -123,119 +127,245 @@ function ChapterReader() {
   };
 
   return (
-    <div className="mx-auto max-w-lg px-4 pt-4 pb-28 animate-slide-up">
-      <div className="flex items-center gap-2">
-        <Link to="/biblia" aria-label="Voltar" className="rounded-full p-2 text-muted-foreground hover:bg-surface">
-          <ArrowLeft className="h-5 w-5" />
-        </Link>
-        <div className="min-w-0 flex-1">
-          <h1 className="truncate text-lg font-bold">
-            {bookNameById(book)} {chapter}
-          </h1>
-          <p className="text-[11px] text-muted-foreground">{translationByCode(translation).full}</p>
-        </div>
-        <div className="flex shrink-0 items-center gap-1 rounded-full border border-border bg-surface p-1">
-          <button
-            onClick={() => setFont(fontIndex - 1)}
-            aria-label="Diminuir fonte"
-            className="flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground hover:bg-background"
+    <div className="pb-32">
+      {/* Barra superior fixa */}
+      <div className="sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-xl">
+        <div className="mx-auto grid max-w-lg grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-4 py-2.5">
+          <Link
+            to="/biblia"
+            aria-label="Voltar"
+            className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-surface"
           >
-            <Minus className="h-3.5 w-3.5" />
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          <button
+            onClick={() => setChapterPicker(true)}
+            className="min-w-0 rounded-xl px-2 py-1 text-left transition-colors hover:bg-surface"
+          >
+            <span className="block truncate text-[15px] font-bold leading-tight">
+              {bookNameById(book)} {chapter}
+            </span>
+            <span className="block truncate text-[10px] text-muted-foreground">
+              Toque para trocar de capítulo · {label}
+            </span>
           </button>
-          <span className="text-[11px] font-bold text-muted-foreground">A</span>
           <button
-            onClick={() => setFont(fontIndex + 1)}
-            aria-label="Aumentar fonte"
-            className="flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground hover:bg-background"
+            onClick={() => setSettingsOpen(true)}
+            aria-label="Ajustes de leitura"
+            className="shrink-0 rounded-full border border-border bg-surface p-2.5 text-primary transition-transform active:scale-95"
           >
-            <Plus className="h-3.5 w-3.5" />
+            <Type className="h-4 w-4" />
           </button>
         </div>
       </div>
 
-      <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
-        {PT_TRANSLATIONS.map((t) => (
-          <button
-            key={t.code}
-            onClick={() => setTranslation(t.code)}
-            className={`shrink-0 rounded-full border px-3 py-1 text-[11px] font-semibold transition-all ${
-              translation === t.code
-                ? "border-primary bg-primary/15 text-primary"
-                : "border-border bg-surface text-muted-foreground"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
+      <div className="mx-auto max-w-lg px-4 pt-4 animate-slide-up">
+        {!verses && !error && (
+          <div className="mt-16 flex justify-center">
+            <Loader2 className="h-6 w-6 animate-spin text-primary" />
+          </div>
+        )}
+        {error && <p className="mt-10 text-center text-sm text-destructive">{error}</p>}
+
+        {verses && (
+          <div className="space-y-1">
+            {verses.map((v) => {
+              const color = highlightMap[v.verse];
+              return (
+                <button
+                  key={v.verse}
+                  onClick={() => setSelected(v.verse)}
+                  className={`block w-full rounded-xl px-2 py-1.5 text-left transition-colors ${
+                    color ? highlightClass(color) : "hover:bg-surface"
+                  }`}
+                >
+                  <span className="mr-1.5 align-super text-[11px] font-bold text-primary">{v.verse}</span>
+                  <span className="leading-relaxed" style={{ fontSize }}>
+                    {v.text}
+                  </span>
+                  {favorites.includes(v.verse) && (
+                    <Star className="ml-1 inline h-3.5 w-3.5 fill-current text-ancient" />
+                  )}
+                  {notesByVerse[v.verse] && (
+                    <StickyNote className="ml-1 inline h-3.5 w-3.5 text-primary" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {notes.length > 0 && (
+          <div className="mt-8 space-y-2">
+            <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
+              Suas anotações neste capítulo
+            </p>
+            {notes.map((n) => (
+              <div key={n.id} className="rounded-2xl border border-border bg-surface p-3.5">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+                  v. {n.verse}
+                </p>
+                <p className="mt-1 text-sm text-foreground/85">{n.content}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {!verses && !error && (
-        <div className="mt-16 flex justify-center">
-          <Loader2 className="h-6 w-6 animate-spin text-primary" />
-        </div>
-      )}
-      {error && <p className="mt-10 text-center text-sm text-destructive">{error}</p>}
-
+      {/* Navegação flutuante */}
       {verses && (
-        <div className="mt-5 space-y-1">
-          {verses.map((v) => {
-            const color = highlightMap[v.verse];
-            return (
+        <div className="fixed inset-x-0 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-20 flex justify-center px-4">
+          <div className="flex items-center gap-1 rounded-full border border-border bg-background/90 p-1.5 shadow-lg backdrop-blur-xl">
+            <button
+              onClick={() => go(-1)}
+              disabled={chapter <= 1}
+              aria-label="Capítulo anterior"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-surface disabled:opacity-30"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              onClick={() => setChapterPicker(true)}
+              className="px-3 text-xs font-bold"
+            >
+              {meta?.abbr} {chapter}
+              <span className="ml-1 text-muted-foreground">/ {meta?.chapters}</span>
+            </button>
+            <button
+              onClick={() => go(1)}
+              disabled={!meta || chapter >= meta.chapters}
+              aria-label="Próximo capítulo"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform active:scale-95 disabled:opacity-30"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Sheet de ajustes */}
+      {settingsOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-end bg-black/50 animate-fade-in"
+          onClick={() => setSettingsOpen(false)}
+        >
+          <div
+            className="w-full rounded-t-3xl border-t border-border bg-background p-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] animate-slide-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-border" />
+            <div className="flex items-center justify-between">
+              <h2 className="text-base font-bold">Ajustes de leitura</h2>
               <button
-                key={v.verse}
-                onClick={() => setSelected(v.verse)}
-                className={`block w-full rounded-xl px-2 py-1.5 text-left transition-colors ${
-                  color ? highlightClass(color) : "hover:bg-surface"
-                }`}
+                aria-label="Fechar"
+                onClick={() => setSettingsOpen(false)}
+                className="rounded-full p-2 text-muted-foreground hover:bg-surface"
               >
-                <span className="mr-1.5 align-super text-[11px] font-bold text-primary">{v.verse}</span>
-                <span className="leading-relaxed" style={{ fontSize }}>
-                  {v.text}
-                </span>
-                {favorites.includes(v.verse) && (
-                  <Star className="ml-1 inline h-3.5 w-3.5 fill-current text-ancient" />
-                )}
-                {notesByVerse[v.verse] && (
-                  <StickyNote className="ml-1 inline h-3.5 w-3.5 text-primary" />
-                )}
+                <X className="h-4 w-4" />
               </button>
-            );
-          })}
-        </div>
-      )}
-
-      {notes.length > 0 && (
-        <div className="mt-8 space-y-2">
-          <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
-            Suas anotações neste capítulo
-          </p>
-          {notes.map((n) => (
-            <div key={n.id} className="rounded-2xl border border-border bg-surface p-3.5">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
-                v. {n.verse}
-              </p>
-              <p className="mt-1 text-sm text-foreground/85">{n.content}</p>
             </div>
-          ))}
+
+            <p className="mt-4 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Tamanho do texto
+            </p>
+            <div className="mt-2 flex items-center gap-3">
+              <button
+                onClick={() => setFont(fontIndex - 1)}
+                aria-label="Diminuir fonte"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface disabled:opacity-40"
+                disabled={fontIndex <= 0}
+              >
+                <Minus className="h-4 w-4" />
+              </button>
+              <div className="flex flex-1 gap-1">
+                {BIBLE_FONT_SCALES.map((_, i) => (
+                  <span
+                    key={i}
+                    className={`h-1.5 flex-1 rounded-full ${i <= fontIndex ? "bg-primary" : "bg-surface-2"}`}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={() => setFont(fontIndex + 1)}
+                aria-label="Aumentar fonte"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface disabled:opacity-40"
+                disabled={fontIndex >= BIBLE_FONT_SCALES.length - 1}
+              >
+                <Plus className="h-4 w-4" />
+              </button>
+            </div>
+
+            <p className="mt-5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Tradução
+            </p>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              {PT_TRANSLATIONS.map((t) => (
+                <button
+                  key={t.code}
+                  onClick={() => {
+                    setTranslation(t.code);
+                    setSettingsOpen(false);
+                  }}
+                  className={`rounded-2xl border p-3 text-left transition-colors ${
+                    translation === t.code
+                      ? "border-primary bg-primary/10"
+                      : "border-border bg-surface"
+                  }`}
+                >
+                  <span
+                    className={`block text-xs font-bold ${
+                      translation === t.code ? "text-primary" : "text-foreground"
+                    }`}
+                  >
+                    {t.label}
+                  </span>
+                  <span className="mt-0.5 block text-[10px] leading-tight text-muted-foreground">
+                    {t.full}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       )}
 
-      <div className="mt-8 flex items-center justify-between gap-3">
-        <button
-          onClick={() => go(-1)}
-          disabled={chapter <= 1}
-          className="flex items-center gap-1.5 rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm font-medium disabled:opacity-40"
+      {/* Sheet de capítulos */}
+      {chapterPicker && meta && (
+        <div
+          className="fixed inset-0 z-50 flex items-end bg-black/50 animate-fade-in"
+          onClick={() => setChapterPicker(false)}
         >
-          <ChevronLeft className="h-4 w-4" /> Anterior
-        </button>
-        <button
-          onClick={() => go(1)}
-          disabled={!meta || chapter >= meta.chapters}
-          className="flex items-center gap-1.5 rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground disabled:opacity-40"
-        >
-          Próximo <ChevronRight className="h-4 w-4" />
-        </button>
-      </div>
+          <div
+            className="max-h-[70vh] w-full overflow-y-auto rounded-t-3xl border-t border-border bg-background p-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] animate-slide-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-border" />
+            <div className="flex items-center justify-between">
+              <h2 className="text-base font-bold">{meta.name}</h2>
+              <Link to="/biblia" className="text-[11px] font-semibold text-primary">
+                Todos os livros
+              </Link>
+            </div>
+            <div className="mt-4 grid grid-cols-6 gap-2">
+              {Array.from({ length: meta.chapters }, (_, i) => i + 1).map((c) => (
+                <Link
+                  key={c}
+                  to="/biblia/$book/$chapter"
+                  params={{ book: String(book), chapter: String(c) }}
+                  onClick={() => setChapterPicker(false)}
+                  className={`flex h-11 items-center justify-center rounded-xl text-sm font-semibold transition-colors active:scale-95 ${
+                    c === chapter
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-surface text-foreground/80 hover:bg-primary/10"
+                  }`}
+                >
+                  {c}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {selected !== null && (
         <VerseActionSheet
