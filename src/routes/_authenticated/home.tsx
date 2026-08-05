@@ -20,6 +20,7 @@ import {
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { MessagesLinkButton } from "@/components/MessagesLinkButton";
 import { PushNotifications } from "@/components/PushNotifications";
+import { VerseOfDayCard } from "@/components/home/VerseOfDayCard";
 import { useApp } from "@/lib/app-context";
 import { Flame, Check, ChevronRight, Sparkles, BookOpen } from "lucide-react";
 import { ChallengePanel } from "@/components/ChallengeProgressBar";
@@ -209,8 +210,7 @@ function HomePage() {
 
       {userId && <ChallengePanel myId={userId} />}
 
-
-
+      <VerseOfDayCard />
 
       <section className="space-y-3">
         <h2 className="text-sm font-semibold text-muted-foreground">Módulos de Discipulado</h2>
