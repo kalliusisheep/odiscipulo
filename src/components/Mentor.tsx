@@ -210,6 +210,29 @@ export function MentorFAB() {
 
 type Msg = { role: "user" | "assistant"; content: string };
 
+function buildMentorFallback(text: string): string {
+  const normalized = text.toLocaleLowerCase("pt-BR");
+
+  if (
+    normalized.includes("versículo") ||
+    normalized.includes("versiculo") ||
+    normalized.includes("passagem") ||
+    normalized.includes("explicar")
+  ) {
+    return "Claro! Envie o livro, o capítulo e o versículo, por exemplo: João 3:16. Vou ajudar você a observar o contexto, a mensagem central e uma aplicação prática.";
+  }
+
+  if (
+    normalized.includes("oração") ||
+    normalized.includes("oracao") ||
+    normalized.includes("orar")
+  ) {
+    return "Posso ajudar você a organizar esse momento de oração. Conte em poucas palavras pelo que deseja orar, e vamos começar com gratidão, entrega e confiança em Deus.";
+  }
+
+  return "Estou aqui com você. Posso ajudar a estudar uma passagem, montar um plano de leitura, criar perguntas de reflexão ou organizar uma oração. Qual caminho você quer seguir?";
+}
+
 export function MentorChat() {
   const { mentorOpen, setMentorOpen } = useApp();
   const [messages, setMessages] = useState<Msg[]>([
@@ -320,12 +343,12 @@ export function MentorChat() {
           }
         }
       }
-    } catch (err) {
+    } catch {
       setMessages((m) => [
         ...m,
         {
           role: "assistant",
-          content: "Perdão, tive dificuldade em responder agora. Tente novamente.",
+          content: buildMentorFallback(text),
         },
       ]);
     } finally {
