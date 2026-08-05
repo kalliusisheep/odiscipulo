@@ -84,10 +84,14 @@ export function VerseOfDayCard() {
         overflow-hidden
         rounded-3xl
         border
-        border-white/10
-        bg-white/[0.035]
-        backdrop-blur-2xl
+        border-white/15
+        bg-gradient-to-br
+        from-zinc-300/25
+        via-zinc-700/40
+        to-black/80
+        backdrop-blur-xl
         shadow-xl
+        shadow-black/30
         transition-all
         duration-300
         hover:scale-[1.01]
@@ -107,10 +111,14 @@ export function VerseOfDayCard() {
           pointer-events-none
           select-none
           absolute
-          -right-10
-          -bottom-10
-          h-52
-          opacity-20
+          right-0
+          bottom-0
+          h-40
+          object-contain
+          object-bottom
+          opacity-95
+          drop-shadow-2xl
+          sm:h-44
           transition-all
           duration-500
           group-hover:opacity-25
@@ -133,6 +141,7 @@ export function VerseOfDayCard() {
         <p
           className="
             mt-4
+            font-sans
             text-sm
             leading-7
             font-medium
