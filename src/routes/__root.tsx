@@ -118,9 +118,9 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
-  const { queryClient: contextualQueryClient } = Route.useRouteContext();
-  const [fallbackQueryClient] = useState(() => new QueryClient());
-  const queryClient = contextualQueryClient ?? fallbackQueryClient;
+  // Mantém uma instância estável no cliente. Isso evita que uma montagem
+  // antecipada de rota passe um contexto ainda não inicializado ao provider.
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
     <QueryClientProvider client={queryClient}>
