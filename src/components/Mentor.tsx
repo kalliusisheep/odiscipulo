@@ -7,6 +7,7 @@ import {
   buildMemoryGreeting,
   extractAndSaveMemory,
 } from "@/lib/mentor-memory";
+import { fetchPassage } from "@/lib/bible";
 import { Send, X, Loader2, RotateCcw } from "lucide-react";
 import { useState, useRef, useEffect, type PointerEvent as ReactPointerEvent } from "react";
 
@@ -228,6 +229,42 @@ class MentorRequestError extends Error {
 const MENTOR_RETRYABLE_STATUS = new Set([408, 409, 425, 429, 500, 502, 503, 504]);
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+const BIBLE_REFERENCE =
+  /\b(?:[1-3]\s*)?(?:G[eê]nesis|[ÊE]xodo|Lev[ií]tico|N[uú]meros|Deuteron[oô]mio|Josu[eé]|Ju[ií]zes|Rute|Samuel|Reis|Cr[oô]nicas|Esdras|Neemias|Ester|J[oó]|Salmos?|Prov[eé]rbios|Eclesiastes|Cantares|Isa[ií]as|Jeremias|Lamenta[cç][oõ]es|Ezequiel|Daniel|Os[eé]ias|Joel|Am[oó]s|Obadias|Jonas|Miqu[eé]ias|Naum|Habacuque|Sofonias|Ageu|Zacarias|Malaquias|Mateus|Marcos|Lucas|Jo[aã]o|Atos|Romanos|Cor[ií]ntios|G[aá]latas|Ef[eé]sios|Filipenses|Colossenses|Tessalonicenses|Tim[oó]teo|Tito|Filemom|Hebreus|Tiago|Pedro|Judas|Apocalipse)\s+\d{1,3}(?::\d{1,3}(?:-\d{1,3})?)?\b/i;
+
+function shouldUseSupportMode(error: unknown) {
+  if (!(error instanceof MentorRequestError)) return true;
+  return !error.status || MENTOR_RETRYABLE_STATUS.has(error.status);
+}
+
+async function buildSupportReply(text: string) {
+  const normalized = text.toLocaleLowerCase("pt-BR");
+  const reference = text.match(BIBLE_REFERENCE)?.[0];
+
+  if (reference) {
+    const passage = await fetchPassage(reference, "NVI").catch(() => "");
+    const biblicalText = passage
+      ? `\n\n${reference}: “${passage.replace(/\s+/g, " ").trim()}”`
+      : "";
+
+    return `Claro — vamos começar por ${reference}.${biblicalText}\n\nPara compreender essa passagem com segurança, observe três pontos: o que acontece antes e depois, o que o texto revela sobre Deus e qual resposta prática ele pede de nós. Qual palavra ou parte de ${reference} gerou sua dúvida? Assim eu sigo com você sem tirar o versículo do contexto.`;
+  }
+
+  if (/entend|explic|vers[ií]culo|passagem|texto b[ií]blico/.test(normalized)) {
+    return "Claro! Envie o livro, o capítulo e o versículo — por exemplo, João 3:16. Eu vou ajudar você a observar o contexto, a mensagem central e uma aplicação prática, sempre incentivando a leitura direta da Bíblia.";
+  }
+
+  if (/ora[cç][aã]o|orar|ore por mim/.test(normalized)) {
+    return "Posso ajudar você a organizar esse momento de oração. Conte, em poucas palavras, pelo que deseja orar; então vamos separar a oração em gratidão, entrega do pedido e confiança em Deus. Em uma situação sensível, procure também seu pastor ou uma liderança de confiança.";
+  }
+
+  if (/ansied|medo|triste|desanim|ang[uú]st|sozinh|luto/.test(normalized)) {
+    return "Sinto muito que você esteja passando por isso. Podemos olhar juntos para uma passagem bíblica e transformar o que você está sentindo em uma oração sincera. O que aconteceu hoje? Se houver risco imediato para você ou outra pessoa, busque ajuda presencial e um serviço de emergência agora.";
+  }
+
+  return "Estou aqui com você. Posso ajudar a estudar uma passagem, montar um plano de leitura, criar perguntas de reflexão ou organizar uma oração. Diga qual desses caminhos você quer seguir e, se for um texto bíblico, envie também a referência.";
+}
+
 async function mentorCredentials(attempt: number) {
   const anonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
   const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
@@ -427,6 +464,14 @@ export function MentorChat() {
       });
     } catch (err) {
       console.warn("Mentor IA indisponível:", err instanceof Error ? err.message : err);
+      if (shouldUseSupportMode(err)) {
+        const supportReply = await buildSupportReply(text);
+        setMessages((current) => {
+          const clean = placeholderAdded ? current.slice(0, -1) : current;
+          return [...clean, { role: "assistant", content: supportReply }];
+        });
+        return;
+      }
       setMessages((current) => {
         const clean = placeholderAdded ? current.slice(0, -1) : current;
         return [
