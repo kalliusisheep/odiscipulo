@@ -307,25 +307,73 @@ function VerseOfDayPage() {
         </div>
       ) : (
         <>
-          <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-primary/15 via-primary-glow/5 to-transparent p-6 backdrop-blur-md">
-            <div className="absolute -top-12 -right-12 h-40 w-40 rounded-full bg-primary/20 blur-3xl" />
-            <span className="relative inline-flex items-center gap-1.5 rounded-full bg-primary/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-primary">
-              <Sparkles className="h-3 w-3" /> Palavra para hoje
-            </span>
+          <section
+            className="relative overflow-hidden rounded-3xl"
+            style={{
+              minHeight: "17rem",
+              border: "1px solid rgba(255, 255, 255, 0.18)",
+              background:
+                "linear-gradient(135deg, rgba(161, 161, 170, 0.32) 0%, rgba(63, 63, 70, 0.56) 52%, rgba(0, 0, 0, 0.82) 100%)",
+              boxShadow: "0 18px 36px -22px rgba(0, 0, 0, 0.85)",
+              backdropFilter: "blur(16px)",
+            }}
+          >
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0"
+              style={{ background: "rgba(255, 255, 255, 0.025)" }}
+            />
+            <img
+              src="/images/barnabee-reading-closeup.webp"
+              alt=""
+              draggable={false}
+              className="pointer-events-none absolute select-none"
+              style={{
+                right: "0",
+                bottom: "0",
+                width: "13.5rem",
+                height: "auto",
+                objectFit: "contain",
+                objectPosition: "right bottom",
+                filter: "drop-shadow(0 12px 16px rgba(0, 0, 0, 0.7))",
+              }}
+            />
 
-            {textError ? (
-              <p className="relative mt-4 text-sm text-muted-foreground">
-                Não foi possível carregar o texto agora. Tente novamente em instantes.
-              </p>
-            ) : (
-              <p className="scripture relative mt-4 text-lg leading-relaxed text-foreground">
-                {text ? `"${text}"` : "Carregando…"}
-              </p>
-            )}
+            <div
+              className="relative z-10"
+              style={{ padding: "1.75rem 12rem 1.75rem 1.75rem", minHeight: "17rem" }}
+            >
+              <span
+                className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest"
+                style={{ background: "rgba(255, 255, 255, 0.10)", color: "rgba(255, 255, 255, 0.75)" }}
+              >
+                <Sparkles className="h-3.5 w-3.5" /> Palavra para hoje
+              </span>
 
-            <p className="relative mt-4 text-right text-sm font-semibold text-primary">
-              — {verse.ref_label}
-            </p>
+              {textError ? (
+                <p className="mt-6 text-base text-white/70">
+                  Não foi possível carregar o texto agora. Tente novamente em instantes.
+                </p>
+              ) : (
+                <p
+                  className="mt-6 text-xl font-semibold leading-relaxed sm:text-2xl"
+                  style={{
+                    color: "rgba(255, 255, 255, 0.96)",
+                    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif",
+                    fontStyle: "normal",
+                  }}
+                >
+                  {text ? `"${text}"` : "Carregando…"}
+                </p>
+              )}
+
+              <p
+                className="mt-5 text-sm font-semibold"
+                style={{ color: "rgba(255, 255, 255, 0.74)", fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif" }}
+              >
+                — {verse.ref_label}
+              </p>
+            </div>
           </section>
 
           <div className="flex items-center gap-2 rounded-2xl border border-border bg-surface p-1.5">
