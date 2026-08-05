@@ -29,7 +29,6 @@ import {
   Pencil,
   X,
   ChevronRight,
-  ShieldCheck,
   Sparkles,
   NotebookPen,
 } from "lucide-react";
@@ -439,18 +438,6 @@ function PerfilPage() {
                 checked={profile.notify_devocional}
                 onChange={() => void update({ notify_devocional: !profile.notify_devocional })}
                 ariaLabel="Ativar lembrete de devocional"
-              />
-            }
-          />
-          <SettingsRow
-            icon={ShieldCheck}
-            title="Sou líder / discipulador"
-            subtitle="Habilita o Modo Líder."
-            action={
-              <ToggleSwitch
-                checked={profile.is_leader}
-                onChange={() => void update({ is_leader: !profile.is_leader })}
-                ariaLabel="Habilitar modo líder"
               />
             }
           />
