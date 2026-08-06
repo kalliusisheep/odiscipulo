@@ -84,6 +84,8 @@ const RAW_BIBLICAL_CHARACTERS: BiblicalCharacter[] = [
 
 
 const NON_CHARACTER_FACT_IDS = new Set([
+  // Eventos, lugares, respostas abstratas e conceitos que nunca devem
+  // aparecer como se fossem nomes de personagens.
   "dez-mandamentos", "jerico", "jesus-belem", "cana", "pedro-negacao",
   "paulo-conversao", "samaritano", "filho-prodigo", "manna", "mar-vermelho",
   "gideao", "samuel-chamado", "salomao-sabedoria", "miqueias-justica",
