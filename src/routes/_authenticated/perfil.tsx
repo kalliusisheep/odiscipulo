@@ -37,6 +37,7 @@ import {
   Settings2,
   ShieldCheck,
   Trophy,
+  MessageCircle,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/perfil")({
@@ -401,15 +402,8 @@ function PerfilPage() {
         className="animate-slide-up"
         style={{ animationDelay: "125ms", animationFillMode: "backwards" }}
       >
-        <SectionLabel>Continue sua jornada</SectionLabel>
-        <div className="grid grid-cols-2 gap-2.5">
-          <JourneyShortcut
-            icon={BookOpen}
-            eyebrow="Explore"
-            title="Bíblia de Estudos"
-            description="Leia, aprofunde e anote"
-            onClick={() => void nav({ to: "/biblia" })}
-          />
+        <SectionLabel>Atalhos pessoais</SectionLabel>
+        <div className="grid grid-cols-1 gap-2.5">
           <JourneyShortcut
             icon={NotebookPen}
             eyebrow="Relembre"
@@ -427,23 +421,52 @@ function PerfilPage() {
         <SectionLabel>Comunidade</SectionLabel>
         <button
           type="button"
-          onClick={() => void nav({ to: "/ranking" })}
-          className="group card-elevated flex w-full items-center gap-3.5 p-4 text-left transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg"
-        >
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-primary/10 text-primary ring-1 ring-primary/10 transition-colors group-hover:bg-primary/15">
-            <Trophy className="h-5 w-5" />
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="block text-[9px] font-extrabold uppercase tracking-[0.14em] text-primary">
-              Conexão
+          onClick={()       <section
+        className="animate-slide-up"
+        style={{ animationDelay: "145ms", animationFillMode: "backwards" }}
+      >
+        <SectionLabel>Comunidade</SectionLabel>
+        <div className="space-y-2.5">
+          <button
+            type="button"
+            onClick={() => void nav({ to: "/ranking" })}
+            className="group card-elevated flex w-full items-center gap-3.5 p-4 text-left transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg"
+          >
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-primary/10 text-primary ring-1 ring-primary/10 transition-colors group-hover:bg-primary/15">
+              <Trophy className="h-5 w-5" />
             </span>
-            <span className="mt-0.5 block text-sm font-extrabold">Ranking da comunidade</span>
-            <span className="mt-1 block text-[10px] leading-snug text-muted-foreground">
-              Veja pessoas próximas, convide amigos e acompanhe a caminhada juntos.
+            <span className="min-w-0 flex-1">
+              <span className="block text-[9px] font-extrabold uppercase tracking-[0.14em] text-primary">
+                Conexão
+              </span>
+              <span className="mt-0.5 block text-sm font-extrabold">Ranking da comunidade</span>
+              <span className="mt-1 block text-[10px] leading-snug text-muted-foreground">
+                Veja pessoas próximas, convide amigos e acompanhe a caminhada juntos.
+              </span>
             </span>
-          </span>
-          <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground/40 transition-colors group-hover:text-primary" />
-        </button>
+            <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground/40 transition-colors group-hover:text-primary" />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => void nav({ to: "/mensagens" })}
+            className="group card-elevated flex w-full items-center gap-3.5 p-4 text-left transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg"
+          >
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-success/10 text-success ring-1 ring-success/10 transition-colors group-hover:bg-success/15">
+              <MessageCircle className="h-5 w-5" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[9px] font-extrabold uppercase tracking-[0.14em] text-success">
+                Converse
+              </span>
+              <span className="mt-0.5 block text-sm font-extrabold">Meus Irmãos</span>
+              <span className="mt-1 block text-[10px] leading-snug text-muted-foreground">
+                Encontre seus irmãos e continue a conversa.
+              </span>
+            </span>
+            <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground/40 transition-colors group-hover:text-success" />
+          </button>
+        </div>
       </section>
 
       <section
