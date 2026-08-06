@@ -7,7 +7,7 @@ import { getLevel } from "@/data/levels";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { normalizeUsername } from "@/lib/username";
-import { Flame, Users, UserPlus, Share2, Copy, Search, Link2, Check, Crown, AtSign } from "lucide-react";
+import { Flame, Users, UserPlus, Share2, Copy, Search, Link2, Check, Crown, AtSign, Trophy } from "lucide-react";
 import { getMyChallengePartnerIds } from "@/lib/challenges";
 import { fetchGameLeaderboard, type GameKey, type GameLeaderboardRow } from "@/lib/game-leaderboard";
 
