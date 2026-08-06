@@ -116,8 +116,8 @@ function EstudoBiblicoPage() {
   };
 
   return (
-    <div className="mx-auto max-w-lg px-4 pb-28 pt-5 animate-slide-up">
-      <div className="sticky top-0 z-20 -mx-4 mb-5 flex items-center gap-3 border-b border-border/70 bg-background/90 px-4 py-3 backdrop-blur-xl">
+    <div className="mx-auto min-h-[100dvh] max-w-lg bg-gradient-to-b from-background via-background to-surface/25 px-4 pb-28 pt-5 animate-slide-up">
+      <div className="sticky top-0 z-20 -mx-4 mb-6 flex items-center gap-3 border-b border-border/70 bg-background/95 px-4 py-3.5 shadow-sm backdrop-blur-xl">
         <button onClick={() => nav({ to: "/estudos" })} className="rounded-full p-2 text-muted-foreground hover:bg-surface">
           <ArrowLeft className="h-5 w-5" />
         </button>
@@ -137,13 +137,13 @@ function EstudoBiblicoPage() {
       {step === "estudo" && (
         <div style={contentZoomStyle} className="space-y-5">
           <div>
-            <span className="inline-block rounded-full bg-primary/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">
               Estudo Bíblico
             </span>
-            <div className="mt-2 flex items-center justify-between gap-2">
+            <div className="mt-3 flex items-center justify-between gap-3">
               <div className="flex min-w-0 items-center gap-2">
-                <BookOpen className="h-5 w-5 shrink-0 text-primary" />
-                <h1 className="truncate text-2xl font-bold">{study.title}</h1>
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary/12 ring-1 ring-primary/20"><BookOpen className="h-5 w-5 text-primary" /></span>
+                <h1 className="truncate text-[1.75rem] font-extrabold tracking-tight">{study.title}</h1>
               </div>
               <FontSizeControls scaleIndex={scaleIndex} onIncrease={increase} onDecrease={decrease} />
             </div>
@@ -151,14 +151,17 @@ function EstudoBiblicoPage() {
           </div>
 
           {study.sections.map((sec, si) => (
-            <section key={si} className="rounded-3xl border border-border bg-surface/70 p-5 shadow-sm">
-              <h2 className="text-base font-semibold">{sec.heading}</h2>
-              {sec.body.map((p, i) => (
-                <p key={i} className="text-sm leading-relaxed text-foreground/90">{p}</p>
-              ))}
+            <section key={si} className="relative overflow-hidden rounded-[1.75rem] border border-primary/15 bg-gradient-to-br from-surface via-surface/90 to-primary/5 p-5 shadow-sm shadow-primary/5">
+              <div className="mb-4 h-1 w-12 rounded-full bg-primary/70" />
+              <h2 className="text-lg font-extrabold tracking-tight">{sec.heading}</h2>
+              <div className="mt-3 space-y-3">
+                {sec.body.map((p, i) => (
+                  <p key={i} className="text-base leading-7 text-foreground/90">{p}</p>
+                ))}
+              </div>
 
               {sec.verses?.map((v) => (
-                <div key={v.ref} className="rounded-2xl border border-ancient/30 bg-ancient/5 p-4">
+                <div key={v.ref} className="rounded-2xl border border-ancient/30 bg-ancient/8 p-4 shadow-sm">
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
                     {v.ref} · {bibleVersion}
                   </p>
@@ -166,7 +169,7 @@ function EstudoBiblicoPage() {
                   {v.originals && v.originals.length > 0 && (
                     <div className="mt-3 space-y-1.5 border-t border-ancient/20 pt-3">
                       {v.originals.map((o, oi) => (
-                        <div key={oi} className="text-xs">
+                        <div key={oi} className="text-sm leading-6">
                           <span className="ancient-text text-ancient">{o.word}</span>
                           <span className="text-muted-foreground"> ({o.translit}, {o.lang}) — </span>
                           <span className="text-foreground/80">{o.meaning}</span>
@@ -178,7 +181,7 @@ function EstudoBiblicoPage() {
               ))}
 
               {sec.originals && sec.originals.length > 0 && (
-                <div className="rounded-2xl border border-ancient/30 bg-ancient/5 p-3">
+                <div className="rounded-2xl border border-ancient/30 bg-ancient/5 p-4 shadow-sm">
                   <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-ancient">
                     Línguas originais
                   </p>
