@@ -117,6 +117,7 @@ function MensagensListPage() {
           const m = payload.new as { sender_id: string; recipient_id: string };
           if (m.sender_id === myId || m.recipient_id === myId) void load();
         })
+        .on("postgres_changes", { event: "UPDATE", schema: "public", table: "profiles" }, () => void load())
         .on("postgres_changes", { event: "*", schema: "public", table: "challenges" }, () => void load())
         .subscribe();
     })();
