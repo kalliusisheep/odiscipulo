@@ -39,6 +39,7 @@ import {
   ShieldCheck,
   Trophy,
   MessageCircle,
+  Gamepad2,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/perfil")({
@@ -495,6 +496,26 @@ function PerfilPage() {
               </span>
             </span>
             <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground/40 transition-colors group-hover:text-primary" />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => void nav({ to: "/jogos" })}
+            className="group card-elevated flex w-full items-center gap-3.5 p-4 text-left transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg"
+          >
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-ancient/10 text-ancient ring-1 ring-ancient/10 transition-colors group-hover:bg-ancient/15">
+              <Gamepad2 className="h-5 w-5" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[9px] font-extrabold uppercase tracking-[0.14em] text-ancient">
+                Comunidade
+              </span>
+              <span className="mt-0.5 block text-sm font-extrabold">Jogos</span>
+              <span className="mt-1 block text-[10px] leading-snug text-muted-foreground">
+                Desafie seus irmãos com personagens e histórias da Bíblia.
+              </span>
+            </span>
+            <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground/40 transition-colors group-hover:text-ancient" />
           </button>
 
           <button

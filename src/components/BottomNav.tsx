@@ -6,7 +6,7 @@ const tabs = [
   { to: "/estudos", label: "Estudos", icon: GraduationCap },
   { to: "/biblia", label: "Bíblia", icon: BookOpen },
   { to: "/mural", label: "Feed", icon: MessageSquareHeart },
-  { to: "/perfil", label: "Perfil", icon: User },
+  { to: "/perfil", label: "Você", icon: User },
 ] as const;
 
 export function BottomNav() {
