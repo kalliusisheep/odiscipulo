@@ -41,49 +41,58 @@ function AprofundarPage() {
   const deepen = lesson.deepen!;
 
   return (
-    <div className="mx-auto max-w-lg pb-24 animate-slide-up">
-      <div className="px-4">
+    <div className="mx-auto max-w-lg px-4 pb-28 pt-4 animate-slide-up">
         {/* Banner no topo da tela de Aprofundar (compartilhado por todas as trilhas) */}
-        <div className="mt-3 mb-4 h-28 w-full overflow-hidden rounded-2xl sm:h-36">
+        <section className="relative mb-4 h-40 w-full overflow-hidden rounded-[2rem] border border-primary/20 shadow-xl shadow-black/20 sm:h-48">
           <img
             src="/aprofundar-banner.jpg"
             alt=""
             className="h-full w-full object-cover object-[center_28%]"
           />
-        </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/10 to-transparent" />
+          <div className="absolute bottom-4 left-5">
+            <span className="rounded-full bg-ancient/90 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.16em] text-slate-950">
+              Conteúdo complementar
+            </span>
+            <p className="mt-2 text-lg font-extrabold text-white">Vá além da primeira leitura</p>
+          </div>
+        </section>
 
-        <div className="mb-4 flex items-center gap-3">
+        <header className="mb-5 flex items-center gap-2 rounded-2xl border border-border bg-surface/70 p-2 shadow-sm">
           <button
             type="button"
             onClick={goBack}
-            className="rounded-full p-2 text-muted-foreground hover:bg-surface"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-surface hover:text-primary"
             aria-label="Voltar"
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
-          <div className="flex min-w-0 flex-1 items-center gap-2">
-            <Layers className="h-4 w-4 shrink-0 text-ancient" />
-            <h1 className="truncate text-sm font-bold text-ancient" data-narrate>
-              Aprofundar
-            </h1>
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ancient">Aprofundar</p>
+            <h1 className="truncate text-base font-extrabold" data-narrate>{lesson.title}</h1>
           </div>
-          <NarrationButton containerSelector='[data-tts-scope="aprofundar"]' />
-          <FontSizeControls scaleIndex={scaleIndex} onIncrease={increase} onDecrease={decrease} />
-        </div>
+          <div className="flex shrink-0 items-center gap-1.5">
+            <NarrationButton containerSelector='[data-tts-scope="aprofundar"]' />
+            <FontSizeControls scaleIndex={scaleIndex} onIncrease={increase} onDecrease={decrease} />
+          </div>
+        </header>
 
         <div style={contentZoomStyle} className="space-y-4" data-tts-scope="aprofundar">
-          <p
-            className="px-1 text-[10px] uppercase tracking-wider text-muted-foreground"
-            data-narrate
-          >
-            {lesson.title} · contexto, exegese e mais
-          </p>
+          <div className="rounded-[1.75rem] border border-primary/20 bg-gradient-to-br from-primary/10 via-surface to-surface p-5 shadow-lg shadow-primary/5">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">Estudo complementar</p>
+            <h2 className="mt-2 text-2xl font-extrabold leading-tight tracking-tight" data-narrate>
+              Contexto, exegese e mais
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              Entenda o cenário, as palavras e as interpretações que ajudam a enxergar esta lição com mais profundidade.
+            </p>
+          </div>
 
-          <div className="space-y-4 rounded-2xl border border-ancient/30 bg-ancient/5 p-4">
+          <div className="space-y-6 rounded-[1.75rem] border border-ancient/30 bg-gradient-to-br from-ancient/10 to-surface p-5 shadow-lg shadow-ancient/5">
             {deepen.historicalContext && (
-              <div>
+              <section className="border-b border-ancient/15 pb-5">
                 <p
-                  className="text-[10px] font-semibold uppercase tracking-wider text-ancient"
+                  className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ancient"
                   data-narrate
                 >
                   Contexto histórico e cultural
@@ -91,12 +100,12 @@ function AprofundarPage() {
                 <p className="mt-1.5 text-base leading-relaxed" data-narrate>
                   {deepen.historicalContext}
                 </p>
-              </div>
+              </section>
             )}
 
             {deepen.additionalVerses && deepen.additionalVerses.length > 0 && (
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ancient">
                   <span data-narrate>Passagens de apoio</span> ({bibleVersion})
                 </p>
                 <div className="mt-1.5 space-y-2">
@@ -197,7 +206,6 @@ function AprofundarPage() {
             <ArrowLeft className="h-4 w-4" /> Voltar à lição
           </button>
         </div>
-      </div>
     </div>
   );
 }
