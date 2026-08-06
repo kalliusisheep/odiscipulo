@@ -35,7 +35,7 @@ export const Route = createFileRoute("/_authenticated/mural")({
 
 type Tab = "feed" | "oracoes" | "diario";
 
-const TAB_LABELS: Record<Tab, string> = 
+const TAB_LABELS: Record<Tab, string> = {
   feed: "Feed",
   oracoes: "Orações",
   diario: "Meu Diário",
