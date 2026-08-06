@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { normalizeUsername } from "@/lib/username";
 import { Flame, Users, UserPlus, Share2, Copy, Search, Link2, Check, Crown, AtSign } from "lucide-react";
 import { getMyChallengePartnerIds } from "@/lib/challenges";
+import { fetchGameLeaderboard, type GameKey, type GameLeaderboardRow } from "@/lib/game-leaderboard";
 
 export const Route = createFileRoute("/_authenticated/ranking")({
   component: RankingPage,
@@ -38,6 +39,9 @@ function RankingPage() {
   const [alreadyFriend, setAlreadyFriend] = useState(false);
   const [adding, setAdding] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [selectedGame, setSelectedGame] = useState<GameKey>("milhao");
+  const [gameRows, setGameRows] = useState<GameLeaderboardRow[]>([]);
+  const [gameRankingLoading, setGameRankingLoading] = useState(true);
   const meRowRef = useRef<HTMLDivElement | null>(null);
 
   const load = async () => {
@@ -79,6 +83,19 @@ function RankingPage() {
   useEffect(() => {
     void load();
   }, []);
+
+  useEffect(() => {
+    let active = true;
+    setGameRankingLoading(true);
+    void fetchGameLeaderboard(selectedGame).then((result) => {
+      if (!active) return;
+      setGameRows(result.data);
+      setGameRankingLoading(false);
+    });
+    return () => {
+      active = false;
+    };
+  }, [selectedGame]);
 
   const myIndex = useMemo(() => rows.findIndex((r) => r.isMe), [rows]);
   const total = rows.length;
@@ -191,6 +208,13 @@ function RankingPage() {
         </div>
         <ThemeToggle />
       </header>
+
+      <GameRankingSection
+        selectedGame={selectedGame}
+        setSelectedGame={setSelectedGame}
+        rows={gameRows}
+        loading={gameRankingLoading}
+      />
 
      {/* Podium */}
       {top3.length > 0 && (
@@ -382,6 +406,34 @@ function RankingPage() {
       </Dialog>
     </div>
   );
+}
+
+
+const GAME_RANKING_TABS: { key: GameKey; label: string }[] = [
+  { key: "milhao", label: "Milhão" },
+  { key: "personagem", label: "Personagem" },
+  { key: "versiculo", label: "Versículo" },
+  { key: "cruzadas", label: "Cruzadas" },
+];
+
+function GameRankingSection({ selectedGame, setSelectedGame, rows, loading }: { selectedGame: GameKey; setSelectedGame: (value: GameKey) => void; rows: GameLeaderboardRow[]; loading: boolean }) {
+  return (
+    <section className="rounded-[1.75rem] border border-primary/20 bg-gradient-to-br from-primary/10 via-surface to-surface p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div><p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary">Arena global</p><h2 className="mt-1 text-lg font-black">Ranking dos jogos</h2><p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">Todos os jogadores do app, com ou sem amizade.</p></div>
+        <Trophy className="mt-1 h-5 w-5 text-ancient" />
+      </div>
+      <div className="mt-4 grid grid-cols-4 gap-1 rounded-2xl bg-background/60 p-1">
+        {GAME_RANKING_TABS.map((tab) => <button key={tab.key} type="button" onClick={() => setSelectedGame(tab.key)} className={`rounded-xl px-1 py-2 text-[10px] font-extrabold transition ${selectedGame === tab.key ? "bg-primary text-primary-foreground shadow-md" : "text-muted-foreground hover:text-foreground"}`}>{tab.label}</button>)}
+      </div>
+      {loading ? <p className="py-8 text-center text-xs text-muted-foreground">Carregando placar global...</p> : rows.length === 0 ? <p className="py-8 text-center text-xs text-muted-foreground">Ainda não há partidas registradas neste jogo.</p> : <div className="mt-3 space-y-2">{rows.slice(0, 5).map((row) => <GameRankingRow key={row.user_id} row={row} />)}<Link to="/ranking" className="block pt-2 text-center text-[11px] font-extrabold text-primary">Ver todos os jogadores</Link></div>}
+    </section>
+  );
+}
+
+function GameRankingRow({ row }: { row: GameLeaderboardRow }) {
+  const content = <><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-[10px] font-black text-primary">{row.avatar_url ? <img src={row.avatar_url} alt="" className="h-full w-full rounded-xl object-cover" /> : row.avatar_char?.slice(0, 1).toUpperCase() ?? "?"}</span><span className="min-w-0 flex-1"><span className="block truncate text-xs font-extrabold">{row.position}º · {row.display_name}</span><span className="block text-[10px] text-muted-foreground">{row.games_played} partidas · {row.best_streak} melhor combo</span></span><span className="text-sm font-black text-ancient">{row.best_score}</span></>;
+  return row.username ? <Link to="/perfil/$username" params={{ username: row.username }} className="flex items-center gap-2 rounded-2xl border border-border/70 bg-background/45 p-2.5 hover:border-primary/40">{content}</Link> : <div className="flex items-center gap-2 rounded-2xl border border-border/70 bg-background/45 p-2.5">{content}</div>;
 }
 
 function PodiumSpot({ row, place, flame }: { row: Row; place: 1 | 2 | 3; flame?: boolean }) {
