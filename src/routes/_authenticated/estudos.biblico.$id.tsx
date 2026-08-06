@@ -116,8 +116,8 @@ function EstudoBiblicoPage() {
   };
 
   return (
-    <div className="mx-auto max-w-lg px-4 pt-4 pb-24 animate-slide-up">
-      <div className="mb-4 flex items-center gap-3">
+    <div className="mx-auto max-w-lg px-4 pb-28 pt-5 animate-slide-up">
+      <div className="sticky top-0 z-20 -mx-4 mb-5 flex items-center gap-3 border-b border-border/70 bg-background/90 px-4 py-3 backdrop-blur-xl">
         <button onClick={() => nav({ to: "/estudos" })} className="rounded-full p-2 text-muted-foreground hover:bg-surface">
           <ArrowLeft className="h-5 w-5" />
         </button>
@@ -151,7 +151,7 @@ function EstudoBiblicoPage() {
           </div>
 
           {study.sections.map((sec, si) => (
-            <section key={si} className="card-elevated space-y-3 p-5">
+            <section key={si} className="rounded-3xl border border-border bg-surface/70 p-5 shadow-sm">
               <h2 className="text-base font-semibold">{sec.heading}</h2>
               {sec.body.map((p, i) => (
                 <p key={i} className="text-sm leading-relaxed text-foreground/90">{p}</p>
@@ -219,7 +219,7 @@ function EstudoBiblicoPage() {
             const answered = chosen !== undefined;
             const isCorrect = answered && chosen === q.correctIndex;
             return (
-              <div key={qi} className="card-elevated p-5">
+              <div key={qi} className="rounded-3xl border border-border bg-surface/70 p-5 shadow-sm">
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                   Pergunta {qi + 1} de {total}
                 </p>
@@ -295,7 +295,7 @@ function EstudoBiblicoPage() {
             <p className="mt-2 scripture text-base leading-relaxed">{study.prayer}</p>
           </div>
 
-          <div className="card-elevated border-l-4 border-l-ancient p-5">
+          <div className="rounded-3xl border border-ancient/25 bg-ancient/5 p-5 shadow-sm">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">Desafio da semana</p>
             <p className="mt-2 text-sm leading-relaxed">{study.weeklyChallenge}</p>
           </div>
