@@ -140,8 +140,8 @@ function LicaoPage() {
   };
 
   return (
-    <div className="mx-auto max-w-lg px-4 pt-4 pb-24 animate-slide-up">
-      <div className="mb-4 flex items-center gap-3">
+    <div className="mx-auto max-w-lg px-4 pb-28 pt-5 animate-slide-up">
+      <div className="sticky top-0 z-20 -mx-4 mb-5 flex items-center gap-3 border-b border-border/70 bg-background/90 px-4 py-3 backdrop-blur-xl">
         <button
           type="button"
           onClick={goBack}
@@ -160,7 +160,7 @@ function LicaoPage() {
             <span className={step === "aplicar" ? "font-bold text-primary" : ""}>Aplicar</span>
           </div>
         </div>
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+        <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
           +{lesson.xp} XP
         </span>
       </div>
@@ -187,7 +187,7 @@ function LicaoPage() {
               </div>
             </div>
 
-            <div className="card-elevated space-y-3 p-5">
+            <div className="rounded-3xl border border-border bg-surface/70 p-5 shadow-sm">
               {lesson.intro.map((p, i) => (
                 <HighlightedText
                   key={i}
@@ -200,7 +200,7 @@ function LicaoPage() {
             </div>
 
             {lesson.verses.map((v, vi) => (
-              <div key={v.ref} className="rounded-2xl border border-ancient/30 bg-ancient/5 p-4">
+              <div key={v.ref} className="rounded-3xl border border-ancient/25 bg-ancient/5 p-5 shadow-sm">
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
                   <span data-narrate>{v.ref}</span> · {bibleVersion}
                 </p>
@@ -227,7 +227,7 @@ function LicaoPage() {
               </div>
             ))}
 
-            <div className="card-elevated p-5">
+            <div className="rounded-3xl border border-border bg-surface/70 p-5 shadow-sm">
               <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
                 Explicação
               </p>
@@ -239,7 +239,7 @@ function LicaoPage() {
               />
             </div>
 
-            <blockquote className="card-elevated border-l-4 border-l-ancient p-5">
+            <blockquote className="rounded-3xl border border-ancient/25 bg-ancient/5 p-5 shadow-sm">
               <Quote className="h-4 w-4 text-ancient" />
               <HighlightedText
                 fieldKey="citacao"
