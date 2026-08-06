@@ -36,6 +36,7 @@ export function VersionCompareSheet({
   const [chapters, setChapters] = useState<Record<string, Verse[]>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [failedVersions, setFailedVersions] = useState<string[]>([]);
   const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
@@ -53,15 +54,27 @@ export function VersionCompareSheet({
     let cancelled = false;
     setLoading(true);
     setError(false);
+    setChapters({});
+    setFailedVersions([]);
 
     Promise.all(
-      selected.map(async (code) => [code, await fetchChapter(code, book, chapter)] as const),
+      selected.map(async (code) => {
+        try {
+          return { code, verses: await fetchChapter(code, book, chapter) };
+        } catch {
+          return { code, verses: null };
+        }
+      }),
     )
-      .then((entries) => {
-        if (!cancelled) setChapters(Object.fromEntries(entries));
-      })
-      .catch(() => {
-        if (!cancelled) setError(true);
+      .then((results) => {
+        if (cancelled) return;
+        const available = results
+          .filter((result): result is { code: string; verses: Verse[] } => result.verses !== null)
+          .map((result) => [result.code, result.verses] as const);
+        const failed = results.filter((result) => result.verses === null).map((result) => result.code);
+        setChapters(Object.fromEntries(available));
+        setFailedVersions(failed);
+        setError(available.length === 0);
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -182,6 +195,12 @@ export function VersionCompareSheet({
             </div>
           )}
 
+          {!loading && !error && failedVersions.length > 0 && (
+            <div className="mt-6 rounded-2xl border border-amber-400/25 bg-amber-400/5 px-4 py-3 text-xs text-muted-foreground">
+              Algumas versões não responderam agora. As demais continuam disponíveis para comparação.
+            </div>
+          )}
+
           {!loading && !error && verseNumbers.length > 0 && (
             <div className="mt-6 space-y-3">
               {verseNumbers.map((number) => (
@@ -202,7 +221,7 @@ export function VersionCompareSheet({
                             </span>
                           </div>
                           <p className="mt-2 text-sm leading-7 text-foreground/90">
-                            {verse?.text ?? "Este versículo não está disponível nesta versão."}
+                            {verse?.text ?? "Esta versão não retornou este versículo agora."}
                           </p>
                         </div>
                       );
