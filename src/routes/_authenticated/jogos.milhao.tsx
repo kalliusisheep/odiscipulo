@@ -113,14 +113,15 @@ function MillionPage() {
     setUsedLifelines((current) => [...current, lifeline]);
   };
 
-  if (phase === "setup" && !modeSelected) return <GameModeChooser title="Quiz do Milhão" heroImage="/game-quiz-do-milhao.jpeg" heroImageAlt="Ovelha apresentando o Quiz do Milhão em uma arena bíblica" description="Suba pelos níveis do conhecimento bíblico sozinho ou desafie outros jogadores em uma sala competitiva." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=milhao"; }} />;
-  if (phase === "setup") return <Setup difficulty={difficulty} onDifficultyChange={setDifficulty} onStart={start} />;
   const scoreSaved = useRef(false);
   useEffect(() => {
     if (phase !== "finished" || scoreSaved.current) return;
     scoreSaved.current = true;
     void recordGameResult({ gameKey: "milhao", score, correctAnswers, rounds, bestStreak });
   }, [bestStreak, correctAnswers, phase, rounds, score]);
+  if (phase === "setup" && !modeSelected) return <GameModeChooser title="Quiz do Milhão" heroImage="/game-quiz-do-milhao.jpeg" heroImageAlt="Ovelha apresentando o Quiz do Milhão em uma arena bíblica" description="Suba pelos níveis do conhecimento bíblico sozinho ou desafie outros jogadores em uma sala competitiva." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=milhao"; }} />;
+  if (phase === "setup") return <Setup difficulty={difficulty} onDifficultyChange={setDifficulty} onStart={start} />;
+
 
   if (phase === "finished") return <Results score={score} correct={correctAnswers} rounds={rounds} bestStreak={bestStreak} weakness={weakness} onRestart={() => setPhase("setup")} />;
   if (!question) return null;
