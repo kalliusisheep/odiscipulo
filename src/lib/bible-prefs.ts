@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useApp } from "@/lib/app-context";
-import {
-  defaultBibleTranslationForLanguage,
-  translationsForLanguage,
-} from "@/lib/bible-source";
+import { translationsForLanguage } from "@/lib/bible-source";
+import { defaultBibleTranslationForLanguage } from "@/lib/i18n";
 
 const TRANSLATION_KEY = "disciple.bible.translation";
 const FONT_KEY = "disciple.bible.fontScale";
