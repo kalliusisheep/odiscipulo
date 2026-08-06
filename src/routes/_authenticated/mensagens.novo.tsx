@@ -159,24 +159,33 @@ function NovaMensagemPage() {
   );
 
   return (
-    <div className="mx-auto max-w-lg space-y-4 px-4 pt-6 pb-24">
-      <header className="flex items-center gap-3">
-        <Link to="/mensagens" className="text-muted-foreground hover:text-primary">
-          <ArrowLeft className="h-5 w-5" />
-        </Link>
-        <div>
-          <p className="text-xs text-muted-foreground">Iniciar conversa</p>
-          <h1 className="text-xl font-semibold">Novo Contato</h1>
+    <div className="mx-auto min-h-[100dvh] max-w-lg space-y-5 px-4 pb-28 pt-5">
+      <header className="rounded-[1.75rem] border border-primary/20 bg-gradient-to-br from-primary/12 via-surface to-surface p-4 shadow-lg shadow-primary/5">
+        <div className="flex items-start gap-3">
+          <Link
+            to="/mensagens"
+            aria-label="Voltar para mensagens"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-border bg-background/50 text-muted-foreground transition-colors hover:text-primary"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          <div className="min-w-0">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">Comunhão</p>
+            <h1 className="mt-1 text-2xl font-extrabold tracking-tight">Novo contato</h1>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+              Encontre um irmão da comunidade e comece uma conversa.
+            </p>
+          </div>
         </div>
       </header>
 
-      <div className="relative">
-        <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      <div className="relative rounded-2xl border border-border bg-surface/80 p-1.5 shadow-sm">
+        <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Buscar pelo ID do seu irmão(ã)…"
-          className="w-full rounded-full border border-border bg-input py-2.5 pl-10 pr-4 text-sm outline-none focus:border-primary"
+          className="w-full rounded-xl bg-transparent py-3 pl-10 pr-4 text-sm outline-none placeholder:text-muted-foreground focus:bg-background/40"
         />
       </div>
 
