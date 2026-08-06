@@ -164,7 +164,7 @@ function PlanoPage() {
   const pct = Math.round((done.size / plan.total_days) * 100);
 
   return (
-    <div className="mx-auto max-w-lg space-y-5 px-4 pt-6 pb-24">
+    <div className="mx-auto max-w-lg space-y-5 px-4 pb-28 pt-5">
       <Link
         to="/estudos"
         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
@@ -172,7 +172,7 @@ function PlanoPage() {
         <ArrowLeft className="h-4 w-4" /> Estudos
       </Link>
 
-      <header className="space-y-2">
+      <header className="rounded-3xl border border-border bg-surface/70 p-5 shadow-sm">
         <span className="inline-block rounded-full bg-success/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-success">
           Plano de Leitura
         </span>
@@ -193,7 +193,7 @@ function PlanoPage() {
       </header>
 
       {plan.intro && (
-        <div className="card-elevated border-l-4 border-l-success p-4">
+        <div className="rounded-3xl border border-success/25 bg-success/5 p-5 shadow-sm">
           <p className="scripture text-base leading-relaxed text-foreground/90">{plan.intro}</p>
         </div>
       )}
@@ -301,7 +301,7 @@ function DayDetails({
   version: BibleVersion;
 }) {
   return (
-    <div className="space-y-4 border-t border-border/60 bg-surface/40 p-4" data-tts-scope="plano-dia">
+    <div className="space-y-5 border-t border-border/60 bg-surface/50 p-5" data-tts-scope="plano-dia">
       <div className="flex items-center justify-end">
         <NarrationButton containerSelector='[data-tts-scope="plano-dia"]' />
       </div>
