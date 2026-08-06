@@ -19,7 +19,6 @@ import {
 } from "@/data/module-visuals";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { MessagesLinkButton } from "@/components/MessagesLinkButton";
-import { PushNotifications } from "@/components/PushNotifications";
 import { VerseOfDayCard } from "@/components/home/VerseOfDayCard";
 import { useApp } from "@/lib/app-context";
 import { ArrowUpRight, BookOpen, BookOpenCheck, Check, ChevronRight, Crown, Flame, HeartHandshake, MessageCircle, Sparkles, UsersRound } from "lucide-react";
@@ -173,7 +172,6 @@ function HomePage() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <PushNotifications />
           <MessagesLinkButton />
           <ThemeToggle />
         </div>
