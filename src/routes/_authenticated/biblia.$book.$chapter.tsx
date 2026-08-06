@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { bookById, bookNameById } from "@/data/bible-books";
 import { fetchChapter, translationByCode, PT_TRANSLATIONS, type Verse } from "@/lib/bible-source";
@@ -16,14 +16,19 @@ import {
 } from "@/lib/bible-user-data";
 import { useBiblePrefs, BIBLE_FONT_SCALES } from "@/lib/bible-prefs";
 import { VerseActionSheet } from "@/components/bible/VerseActionSheet";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   ArrowLeft,
   ChevronLeft,
   ChevronRight,
   Loader2,
   Minus,
+  Pause,
+  Play,
   Plus,
+  Square,
   Star,
+  Volume2,
   StickyNote,
   Type,
   X,
@@ -48,7 +53,7 @@ function ChapterReader() {
   const book = Number(params.book);
   const chapter = Number(params.chapter);
   const nav = useNavigate();
-  const { translation, setTranslation, fontIndex, setFont, fontSize } = useBiblePrefs();
+  const { translation, setTranslation, fontIndex, setFont, fontSize, theme } = useBiblePrefs();
 
   const [verses, setVerses] = useState<Verse[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -60,8 +65,96 @@ function ChapterReader() {
   const [noteText, setNoteText] = useState("");
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [chapterPicker, setChapterPicker] = useState(false);
+  const [narrationIndex, setNarrationIndex] = useState<number | null>(null);
+  const [narrationPaused, setNarrationPaused] = useState(false);
+  const [narrationRate, setNarrationRate] = useState(1);
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const speechTokenRef = useRef(0);
+  const speakVerseRef = useRef<(index: number, token: number) => void>(() => undefined);
+  const verseRefs = useRef<Record<number, HTMLButtonElement | null>>({});
 
   const meta = bookById(book);
+ 
+  const stopNarration = useCallback(() => {
+    speechTokenRef.current += 1;
+    if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
+    utteranceRef.current = null;
+    setNarrationIndex(null);
+    setNarrationPaused(false);
+  }, []);
+
+  const speakVerse = useCallback(
+    (index: number, token: number) => {
+      if (!verses || token !== speechTokenRef.current) return;
+      if (index >= verses.length) {
+        stopNarration();
+        return;
+      }
+      const verse = verses[index];
+      const utterance = new SpeechSynthesisUtterance(verse.text);
+      utterance.lang = "pt-BR";
+      utterance.rate = narrationRate;
+      utterance.pitch = 1;
+      utterance.onstart = () => {
+        if (token !== speechTokenRef.current) return;
+        setNarrationIndex(index);
+        setNarrationPaused(false);
+      };
+      utterance.onend = () => {
+        if (token === speechTokenRef.current) speakVerseRef.current(index + 1, token);
+      };
+      utterance.onerror = () => {
+        if (token !== speechTokenRef.current) return;
+        stopNarration();
+        toast.error("Não foi possível iniciar a narração neste aparelho.");
+      };
+      utteranceRef.current = utterance;
+      window.speechSynthesis.speak(utterance);
+    },
+    [narrationRate, stopNarration, verses],
+  );
+
+  speakVerseRef.current = speakVerse;
+
+  const startNarration = useCallback(
+    (index = 0) => {
+      if (!verses || typeof window === "undefined" || !("speechSynthesis" in window)) {
+        toast.error("A narração não é compatível com este navegador.");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const token = speechTokenRef.current + 1;
+      speechTokenRef.current = token;
+      setNarrationPaused(false);
+      speakVerseRef.current(index, token);
+    },
+    [verses],
+  );
+
+  const toggleNarrationPause = () => {
+    if (narrationIndex === null || typeof window === "undefined") return;
+    if (narrationPaused) {
+      window.speechSynthesis.resume();
+      setNarrationPaused(false);
+    } else {
+      window.speechSynthesis.pause();
+      setNarrationPaused(true);
+    }
+  };
+
+  useEffect(() => {
+    stopNarration();
+  }, [book, chapter, translation, stopNarration]);
+
+  useEffect(() => {
+    if (narrationIndex === null || !verses) return;
+    verseRefs.current[verses[narrationIndex]?.verse ?? -1]?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  }, [narrationIndex, verses]);
+
+  useEffect(() => () => stopNarration(), [stopNarration]);
 
   useEffect(() => {
     let alive = true;
@@ -127,10 +220,10 @@ function ChapterReader() {
   };
 
   return (
-    <div className="pb-32">
+    <div className={`min-h-screen pb-32 transition-colors ${theme === "light" ? "bg-[#fbfaf7] text-slate-900" : "bg-background text-foreground"}`}>
       {/* Barra superior fixa */}
       <div className="sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-xl">
-        <div className="mx-auto grid max-w-lg grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-4 py-2.5">
+        <div className="mx-auto grid max-w-lg grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-2 px-4 py-2.5">
           <Link
             to="/biblia"
             aria-label="Voltar"
@@ -149,6 +242,7 @@ function ChapterReader() {
               Toque para trocar de capítulo · {label}
             </span>
           </button>
+          <ThemeToggle className="h-9 w-9 border-border bg-surface" />
           <button
             onClick={() => setSettingsOpen(true)}
             aria-label="Ajustes de leitura"
@@ -174,9 +268,16 @@ function ChapterReader() {
               return (
                 <button
                   key={v.verse}
+                  ref={(element) => {
+                    verseRefs.current[v.verse] = element;
+                  }}
                   onClick={() => setSelected(v.verse)}
-                  className={`block w-full rounded-xl px-2 py-1.5 text-left transition-colors ${
-                    color ? highlightClass(color) : "hover:bg-surface"
+                  className={`block w-full rounded-xl px-2 py-1.5 text-left transition-all ${
+                    narrationIndex === verses.findIndex((item) => item.verse === v.verse)
+                      ? "bg-primary/[0.08] shadow-[inset_3px_0_0_hsl(var(--primary)),0_0_22px_hsl(var(--primary)/0.10)]"
+                      : color
+                        ? highlightClass(color)
+                        : "hover:bg-surface"
                   }`}
                 >
                   <span className="mr-1.5 align-super text-[11px] font-bold text-primary">{v.verse}</span>
@@ -212,6 +313,36 @@ function ChapterReader() {
         )}
       </div>
 
+      
+      {verses && (
+        <div className="fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-20 px-4">
+          <div className="mx-auto flex max-w-lg items-center gap-3 rounded-2xl border border-border bg-background/95 px-3 py-2.5 shadow-xl backdrop-blur-xl">
+            <button
+              onClick={() => narrationIndex === null ? startNarration() : toggleNarrationPause()}
+              aria-label={narrationIndex === null ? "Iniciar narração" : narrationPaused ? "Continuar narração" : "Pausar narração"}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform active:scale-95"
+            >
+              {narrationIndex !== null && !narrationPaused ? <Pause className="h-4 w-4" /> : <Play className="ml-0.5 h-4 w-4 fill-current" />}
+            </button>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5">
+                <Volume2 className="h-3.5 w-3.5 shrink-0 text-primary" />
+                <span className="truncate text-[11px] font-bold">
+                  {narrationIndex === null ? "Ouvir capítulo" : narrationPaused ? "Narração pausada" : "Narrando versículo"}
+                </span>
+                {narrationIndex !== null && <span className="ml-auto shrink-0 text-[10px] font-semibold text-muted-foreground">{narrationIndex + 1}/{verses.length}</span>}
+              </div>
+              <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-surface-2">
+                <div className="h-full rounded-full bg-primary transition-all duration-300" style={{ width: `${narrationIndex === null ? 0 : ((narrationIndex + 1) / verses.length) * 100}%` }} />
+              </div>
+            </div>
+            <select aria-label="Velocidade da narração" value={narrationRate} onChange={(event) => setNarrationRate(Number(event.target.value))} className="rounded-lg border border-border bg-surface px-1.5 py-1 text-[10px] font-bold text-foreground outline-none">
+              {[0.8, 1, 1.2, 1.5].map((rate) => <option key={rate} value={rate}>{rate}x</option>)}
+            </select>
+            {narrationIndex !== null && <button onClick={stopNarration} aria-label="Parar narração" className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-surface hover:text-foreground"><Square className="h-3.5 w-3.5 fill-current" /></button>}
+          </div>
+        </div>
+      )}
       {/* Navegação flutuante */}
       {verses && (
         <div className="fixed inset-x-0 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-20 flex justify-center px-4">
