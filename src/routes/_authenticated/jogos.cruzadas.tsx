@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowDown, ArrowLeft, ArrowRight, Check, Clock3, Eye, Flame, Lightbulb, RotateCcw, Sparkles, Trophy, X } from "lucide-react";
-import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import type { GameDifficulty } from "@/data/biblical-characters";
 import { CROSSWORD_DIFFICULTY, CROSSWORD_THEMES, crosswordWordsFor, type CrosswordTheme, type CrosswordWord } from "@/data/biblical-crosswords";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
@@ -270,7 +270,7 @@ function CrosswordPage() {
     setLetters(nextLetters); updateCompleted(nextLetters); setHints((value) => value + 1); setScore((value) => Math.max(0, value - 25)); setSelectedCell(empty); tone(true); navigator.vibrate?.(20);
   };
   const finish = completed.length === puzzle.placements.length && puzzle.placements.length > 0;
-  const startNextRound = () => {
+  const startNextRound = useCallback(() => {
     const nextIndex = roundIndex + 1;
     const nextSeed = seed === undefined ? undefined : seed + nextIndex * 104729;
     const nextPuzzle = generatePuzzle(difficulty, theme, nextSeed);
@@ -285,7 +285,7 @@ function CrosswordPage() {
     setSeconds(0);
     setPhase("playing");
     playGameSfx("tap");
-  };
+  }, [difficulty, roundIndex, seed, theme]);
   useEffect(() => {
     if (!finish || phase !== "playing") return;
     if (roundIndex + 1 >= rounds) {
@@ -294,14 +294,14 @@ function CrosswordPage() {
     }
     const timer = window.setTimeout(startNextRound, 1200);
     return () => window.clearTimeout(timer);
-  }, [finish, phase, roundIndex, rounds]);
+  }, [finish, phase, roundIndex, rounds, startNextRound]);
 
   const scoreSaved = useRef(false);
   useEffect(() => {
     if (phase !== "finished" || scoreSaved.current) return;
     scoreSaved.current = true;
-    void recordGameResult({ gameKey: "cruzadas", score, correctAnswers: completed.length, rounds: puzzle.placements.length });
-  }, [completed.length, phase, puzzle.placements.length, score]);
+    void recordGameResult({ gameKey: "cruzadas", score, correctAnswers: completed.length, rounds });
+  }, [completed.length, phase, rounds, score]);
   if (phase === "setup" && !modeSelected) return <GameModeChooser title="Palavras Cruzadas" description="Escolha uma grade para resolver sozinho ou reúna seus amigos para um desafio bíblico em sala." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=cruzadas"; }} />;
   if (phase === "setup") return <Setup difficulty={difficulty} setDifficulty={setDifficulty} theme={theme} setTheme={setTheme} rounds={rounds} setRounds={setRounds} onStart={start} />;
 
