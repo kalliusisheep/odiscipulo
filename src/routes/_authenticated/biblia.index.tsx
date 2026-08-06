@@ -64,7 +64,7 @@ function BibliaIndex() {
 
   const readSet = useMemo(() => new Set(read.map((r) => `${r.book}:${r.chapter}`)), [read]);
   const last = read[read.length - 1];
-  const progressPct = Math.round((read.length / 1189) * 100);
+  const progressPct = Math.min(100, Math.round((read.length / 1189) * 100));
 
   const q = query.trim();
   const bookMatches = useMemo(() => {
@@ -332,7 +332,7 @@ function BibliaIndex() {
                   <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-slate-950/45 p-[2px] ring-1 ring-white/5">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-violet-500 via-primary-glow to-fuchsia-300 shadow-[0_0_12px_rgba(167,139,250,.55)] transition-all duration-700"
-                      style={{ width: `${Math.max(progressPct, 1)}%` }}
+                      style={{ width: `${progressPct}%` }}
                     />
                   </div>
                   <div className="mt-2 flex items-center justify-between text-[10px]">
@@ -344,7 +344,7 @@ function BibliaIndex() {
                 <div className="mt-4 grid grid-cols-3 gap-2 border-t border-white/10 pt-4">
                   <div className="rounded-2xl bg-white/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Lidos</p><p className="mt-1 text-sm font-extrabold text-white">{read.length}</p></div>
                   <div className="rounded-2xl bg-white/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Livros</p><p className="mt-1 text-sm font-extrabold text-white">{new Set(read.map((item) => item.book)).size}/66</p></div>
-                  <div className="rounded-2xl bg-white/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Versão</p><p className="mt-1 text-sm font-extrabold text-violet-200">{translation}</p></div>
+                  <div className="rounded-2xl bg-white/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Versão</p><p className="mt-1 truncate text-sm font-extrabold text-violet-200">{translationByCode(translation).label}</p></div>
                 </div>
               </div>
             </section>
