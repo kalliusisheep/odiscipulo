@@ -413,20 +413,20 @@ export function MentorChat() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-0 backdrop-blur-sm sm:items-center sm:p-4">
-      <div className="flex h-[min(760px,92vh)] w-full max-w-lg flex-col overflow-hidden rounded-t-[2rem] border border-primary/20 bg-background shadow-2xl sm:rounded-[2rem] animate-slide-up">
-        <header className="flex items-center justify-between border-b border-border bg-gradient-to-r from-primary/20 to-primary-glow/20 px-4 py-3">
-          <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-glow">
+      <div className="flex h-[min(760px,92vh)] w-full max-w-lg flex-col overflow-hidden rounded-t-[2rem] border border-primary/25 bg-background shadow-2xl shadow-primary/20 sm:rounded-[2rem] animate-slide-up">
+        <header className="relative flex items-center justify-between overflow-hidden border-b border-primary/20 bg-gradient-to-br from-primary/35 via-primary/15 to-indigo-500/20 px-5 py-4">
+          <div className="relative z-10 flex items-center gap-3">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary-glow p-0.5 shadow-lg shadow-primary/35 ring-2 ring-white/20">
               <img
                 src="/isheep-img.png"
                 alt="Barnabéé, Mentor IA"
-                className="h-full w-full object-cover"
+                className="h-full w-full rounded-[0.85rem] object-cover"
               />
             </div>
             <div>
-              <h2 className="text-sm font-semibold">Barnabéé</h2>
-              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
-                <History className="h-3 w-3 text-primary" />
+              <h2 className="text-base font-extrabold tracking-tight">Barnabéé</h2>
+              <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                <History className="h-3.5 w-3.5 text-primary" />
                 <span>Histórico salvo · não substitui o cuidado pastoral</span>
               </div>
             </div>
@@ -434,7 +434,7 @@ export function MentorChat() {
           <button
             onClick={closeChat}
             aria-label="Fechar"
-            className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            className="relative z-10 rounded-full border border-white/10 bg-black/10 p-2.5 text-muted-foreground transition-colors hover:bg-white/10 hover:text-foreground"
           >
             <X className="h-4 w-4" />
           </button>
