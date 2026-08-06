@@ -230,13 +230,14 @@ function PerfilPage() {
         <div className="pointer-events-none absolute -bottom-24 -left-16 h-52 w-52 rounded-full bg-primary-glow/15 blur-3xl" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.07),transparent_45%)]" />
 
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-[68%] overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <img
             src="/sheep-profile.jpeg"
             alt=""
             aria-hidden="true"
-            className="h-full w-full object-cover object-center saturate-[0.9]"
+            className="h-full w-full object-cover object-center brightness-[0.72] saturate-[0.9]"
           />
+          <div className="absolute inset-0 bg-[#111827]/15" />
         </div>
 
         <div className="relative z-10 p-5">
