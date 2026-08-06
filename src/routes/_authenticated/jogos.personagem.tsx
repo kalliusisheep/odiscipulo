@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, Flame, Lightbulb, RotateCcw, Sparkles, Trophy, X, Zap } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
+import { SharedQuestionGame } from "@/components/games/SharedQuestionGame";
 import { BIBLICAL_CHARACTERS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { shuffleWithSeed } from "@/lib/seeded-random";
@@ -45,7 +46,6 @@ function PersonagemPage() {
   const [roundScore, setRoundScore] = useState(0);
   const [streak, setStreak] = useState(0);
   const [correct, setCorrect] = useState<boolean | null>(null);
-  const autoStarted = useRef(false);
   const sessionSeenRef = useRef<Set<string>>(new Set());
   const character = queue[round];
   const difficultyData = CHARACTER_DIFFICULTY[difficulty];
@@ -83,13 +83,6 @@ function PersonagemPage() {
     setCorrect(null);
     setPhase("playing");
   };
-
-  useEffect(() => {
-    if (mode === "multi" && roomId && !autoStarted.current) {
-      autoStarted.current = true;
-      start();
-    }
-  }, [mode, roomId]);
 
   const revealHint = (hintIndex: number) => {
     if (revealed.includes(hintIndex)) return;
@@ -134,6 +127,10 @@ function PersonagemPage() {
 
   if (phase === "setup" && !modeSelected) {
     return <GameModeChooser title="Quem é o personagem?" heroImage="/game-quem-e-o-personagem.jpeg" heroImageAlt="Ovelha apresentando o jogo Quem é o personagem?" description="Escolha uma experiência rápida para testar sua memória bíblica ou reúna seus amigos para uma disputa em sala." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=personagem"; }} />;
+  }
+
+  if (mode === "multi" && roomId) {
+    return <SharedQuestionGame gameType="personagem" roomId={roomId} seed={seed} difficulty={difficulty} rounds={rounds} />;
   }
 
   if (phase === "setup") {
@@ -188,5 +185,5 @@ function Setup({ difficulty, setDifficulty, rounds, setRounds, onStart }: { diff
 }
 
 function Finished({ score, rounds, onRestart }: { score: number; rounds: number; onRestart: () => void }) {
-  return <main className="min-h-screen bg-background"><div className="mx-auto max-w-lg px-4 pb-28 pt-12 text-center"><span className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-ancient/15 text-ancient"><Trophy className="h-10 w-10" /></span><p className="mt-7 text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">Desafio concluído</p><h1 className="mt-2 text-3xl font-extrabold">Boa caminhada!</h1><p className="mt-3 text-sm text-muted-foreground">Você completou {rounds} rodadas.</p><div className="mt-8 rounded-[1.75rem] border border-border bg-surface p-6"><p className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">Pontuação final</p><p className="mt-2 text-5xl font-black text-ancient">{score}</p><p className="mt-2 text-xs text-muted-foreground">Continue estudando e tente superar sua marca.</p></div><div className="mt-6 flex gap-3"><Link to="/jogos" className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-border px-4 py-3 text-sm font-bold"><ArrowLeft className="h-4 w-4" /> Jogos</Link><button type="button" onClick={onRestart} className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-extrabold text-primary-foreground"><RotateCcw className="h-4 w-4" /> Jogar de novo</button></div></div></main>;
+  return <main className="min-h-screen bg-background"><div className="mx-auto max-w-lg px-4 pb-28 pt-12 text-center"><span className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-ancient/15 text-ancient"><Trophy className="h-10 w-10" /></span><p className="mt-7 text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">Desafio concluído</p><h1 className="mt-2 text-3xl font-extrabold">Boa caminhada!</h1><p className="mt-3 text-sm text-muted-foreground">Você completou {rounds} rodadas.</p><div className="mt-8 rounded-[1.75rem] border border-border bg-surface p-6"><p className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">Pontuação final</p><p className="mt-2 text-5xl font-black text-ancient">{score}</p><p className="mt-2 text-xs text-muted-foreground">Continue estudando e tente superar sua marca.</p></div><div className="mt-6 flex gap-3"><Link to="/jogos/personagem" className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-border px-4 py-3 text-sm font-bold"><ArrowLeft className="h-4 w-4" /> Tela inicial</Link><button type="button" onClick={onRestart} className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-extrabold text-primary-foreground"><RotateCcw className="h-4 w-4" /> Jogar de novo</button></div></div></main>;
 }
