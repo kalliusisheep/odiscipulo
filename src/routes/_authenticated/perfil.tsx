@@ -255,7 +255,17 @@ function PerfilPage() {
         <div className="pointer-events-none absolute -bottom-24 -left-16 h-52 w-52 rounded-full bg-primary-glow/15 blur-3xl" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.07),transparent_45%)]" />
 
-        <div className="relative p-5">
+        <div className="pointer-events-none absolute -left-10 -top-14 h-56 w-56 overflow-hidden rounded-full border border-white/10 opacity-30 shadow-2xl shadow-primary/20 mix-blend-screen">
+          <img
+            src="/sheep-profile.jpeg"
+            alt=""
+            aria-hidden="true"
+            className="h-full w-full object-cover object-center saturate-[0.7]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/50 via-transparent to-[#111827]/95" />
+        </div>
+
+        <div className="relative z-10 p-5">
           <div className="flex items-start gap-3.5">
             <div className="relative h-[82px] w-[82px] shrink-0">
               <div
