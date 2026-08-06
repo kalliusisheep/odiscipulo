@@ -60,7 +60,8 @@ function MessagesPage() {
             .maybeSingle()).data
         : withPresence.data;
       if (!p) return;
-      setPeer({ ...p, last_seen_at: p.last_seen_at ?? p.updated_at ?? null } as Peer);
+      const row = p as { id: string; last_seen_at?: string | null; updated_at?: string | null };
+      setPeer({ ...p, last_seen_at: row.last_seen_at ?? row.updated_at ?? null } as Peer);
       const { data: msgs } = await supabase
         .from("messages")
         .select("*")
