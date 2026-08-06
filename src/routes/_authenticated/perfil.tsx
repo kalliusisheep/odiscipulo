@@ -471,7 +471,7 @@ function PerfilPage() {
           />
           <SettingsRow
             icon={Church}
-            title="Comunidade"
+            title="Minha Igreja"
             subtitle={profile.church_name ?? "Não vinculado a uma igreja"}
             action={
               <button
