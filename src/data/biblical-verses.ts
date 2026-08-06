@@ -35,7 +35,24 @@ const RAW_BIBLICAL_VERSES: VerseQuestion[] = [
   { id: "ob-1-3", text: "A arrogância do seu coração o tem enganado, você que vive nas alturas das rochas.", reference: "Obadias 1:3", alternatives: ["Provérbios 16:18", "Jeremias 49:16"], context: "Obadias denuncia a falsa segurança de Edom e sua confiança em uma posição aparentemente impossível de alcançar.", difficulty: "bereano" },
 ];
 
-const VERSE_CHALLENGE_VARIATIONS = ["Reconheça a referência deste versículo.","Escolha o livro correto para esta passagem.","Identifique onde esta promessa foi registrada.","Encontre o capítulo e versículo correspondentes.","Qual passagem contém exatamente este texto?","Relacione o texto ao seu contexto bíblico.","Teste sua memória da Palavra.","Em qual parte das Escrituras está este versículo?","Identifique a referência sem consultar a Bíblia.","Qual é a localização correta desta passagem?","Lembre-se de quem escreveu ou pronunciou este texto.","Conecte a promessa à sua referência.","Qual alternativa aponta para o texto apresentado?","Examine as opções e encontre a referência bíblica.","Onde este ensinamento aparece nas Escrituras?","Qual referência completa corresponde ao versículo?"];
+const VERSE_CHALLENGE_VARIATIONS = [
+  "Que acontecimento ou promessa está sendo apresentado neste trecho?",
+  "Quem está falando e a quem estas palavras são dirigidas?",
+  "Qual situação ajuda a entender a mensagem deste versículo?",
+  "Que tema central aparece nestas palavras?",
+  "Que resposta de fé este texto convida a oferecer?",
+  "Qual imagem ou ensinamento dá sentido a esta passagem?",
+  "Que momento da narrativa bíblica combina com este texto?",
+  "Que promessa ou advertência é apresentada aqui?",
+  "Qual personagem ou comunidade está no centro deste trecho?",
+  "Que relação este versículo estabelece entre Deus e seu povo?",
+  "Que atitude este texto recomenda ao leitor?",
+  "Qual contraste aparece nestas palavras?",
+  "Que necessidade humana é respondida por este ensinamento?",
+  "Que esperança é anunciada nesta passagem?",
+  "Que decisão ou mudança de vida este texto inspira?",
+  "Que detalhe do contexto ajuda a compreender este versículo?",
+];
 
 const EXPANDED_BIBLICAL_VERSES: VerseQuestion[] = RAW_BIBLICAL_VERSES.flatMap((verse) =>
   VERSE_CHALLENGE_VARIATIONS.map((challenge, index) => ({
