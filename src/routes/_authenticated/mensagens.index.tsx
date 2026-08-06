@@ -5,13 +5,14 @@ import { ArrowLeft, MessageCircle, Plus, Search, Flame } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { listMyChallenges, getChallengeProgressPct, checkFinishChallenges } from "@/lib/challenges";
+import { formatPresence } from "@/lib/presence";
 
 export const Route = createFileRoute("/_authenticated/mensagens/")({
   component: MensagensListPage,
 });
 
 type Conversation = {
-  peer: { id: string; display_name: string; username: string; avatar_url: string | null };
+  peer: { id: string; display_name: string; username: string; avatar_url: string | null; last_seen_at: string | null };
   lastBody: string;
   lastAt: string;
   lastFromMe: boolean;
@@ -84,13 +85,13 @@ function MensagensListPage() {
         }
         const { data: peers } = await supabase
           .from("profiles")
-          .select("id, display_name, username, avatar_url")
+          .select("id, display_name, username, avatar_url, last_seen_at")
           .in("id", Array.from(byPeer.keys()));
         const list: Conversation[] = (peers ?? [])
           .map((p) => {
             const last = byPeer.get(p.id)!;
             return {
-              peer: { id: p.id, display_name: p.display_name, username: p.username ?? "", avatar_url: p.avatar_url },
+              peer: { id: p.id, display_name: p.display_name, username: p.username ?? "", avatar_url: p.avatar_url, last_seen_at: p.last_seen_at },
               lastBody: last.body,
               lastAt: last.at,
               lastFromMe: last.fromMe,
@@ -220,7 +221,12 @@ function MensagensListPage() {
                     className="min-w-0 flex-1"
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <p className="truncate text-sm font-semibold">{c.peer.display_name}</p>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold">{c.peer.display_name}</p>
+                        <p className={`truncate text-[10px] ${formatPresence(c.peer.last_seen_at) === "Online agora" ? "font-semibold text-emerald-400" : "text-muted-foreground"}`}>
+                          {formatPresence(c.peer.last_seen_at)}
+                        </p>
+                      </div>
                       <span className={`shrink-0 text-[10px] ${c.unread ? "font-bold text-primary" : "text-muted-foreground"}`}>
                         {formatDistanceToNow(new Date(c.lastAt), { locale: ptBR, addSuffix: true })}
                       </span>
