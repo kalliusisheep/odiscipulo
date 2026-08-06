@@ -628,31 +628,44 @@ function ChapterReader() {
       {/* Sheet de capítulos */}
       {chapterPicker && meta && (
         <div
-          className="fixed inset-0 z-50 flex items-end bg-black/50 animate-fade-in"
+          className="fixed inset-0 z-50 flex items-end bg-black/60 p-0 backdrop-blur-[2px] animate-fade-in"
           onClick={() => setChapterPicker(false)}
         >
           <div
-            className="max-h-[70vh] w-full overflow-y-auto rounded-t-3xl border-t border-border bg-background p-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] animate-slide-up"
+            className="max-h-[82vh] w-full overflow-y-auto overflow-x-visible rounded-t-3xl border-t border-border bg-background/95 p-5 pt-[calc(1rem+env(safe-area-inset-top))] pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-[0_-20px_80px_rgba(0,0,0,0.45)] backdrop-blur-xl animate-slide-up"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-border" />
-            <div className="flex items-center justify-between">
-              <h2 className="text-base font-bold">{meta.name}</h2>
-              <Link to="/biblia" className="text-[11px] font-semibold text-primary">
-                Todos os livros
-              </Link>
+            <div className="flex items-start justify-between gap-4">
+              <div className="min-w-0">
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">Escolha o capítulo</p>
+                <h2 className="mt-1 truncate text-lg font-extrabold">{meta.name}</h2>
+                <p className="mt-1 text-xs text-muted-foreground">{meta.chapters} capítulos · toque para abrir</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setChapterPicker(false)}
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-muted-foreground shadow-sm transition-colors hover:bg-surface-2 hover:text-foreground"
+                aria-label="Fechar seletor de capítulos"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
-            <div className="mt-4 grid grid-cols-6 gap-2">
+            <Link to="/biblia" className="mt-4 inline-flex text-xs font-semibold text-primary">
+              Todos os livros
+            </Link>
+            <div className="mt-4 grid grid-cols-5 gap-2 sm:grid-cols-6">
               {Array.from({ length: meta.chapters }, (_, i) => i + 1).map((c) => (
                 <Link
                   key={c}
                   to="/biblia/$book/$chapter"
                   params={{ book: String(book), chapter: String(c) }}
                   onClick={() => setChapterPicker(false)}
-                  className={`flex h-11 items-center justify-center rounded-xl text-sm font-semibold transition-colors active:scale-95 ${
+                  aria-current={c === chapter ? "page" : undefined}
+                  className={`flex h-11 items-center justify-center rounded-2xl border text-sm font-bold transition-all active:scale-95 ${
                     c === chapter
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-surface text-foreground/80 hover:bg-primary/10"
+                      ? "border-primary bg-primary text-primary-foreground shadow-[0_0_18px_hsl(var(--primary)/0.35)]"
+                      : "border-border bg-surface text-foreground/80 hover:border-primary/40 hover:bg-primary/10"
                   }`}
                 >
                   {c}
