@@ -24,7 +24,7 @@ webpush.setVapidDetails(subject, publicKey, privateKey);
 Deno.serve(async () => {
   const { data: notifications, error } = await admin
     .from("app_notifications")
-    .select("id, user_id, title, body, url, data")
+    .select("id, user_id, kind, title, body, url, data")
     .is("delivered_at", null)
     .order("created_at")
     .limit(100);
