@@ -305,7 +305,7 @@ function DayDetails({
   const { scaleIndex, increase, decrease, contentZoomStyle } = useReadingFontScale();
 
   return (
-    <div className="space-y-5 border-t border-border/60 bg-surface/50 p-4" data-tts-scope="plano-dia">
+    <div className="space-y-5 border-t border-border/60 bg-surface/50 p-4 font-sans" data-tts-scope="plano-dia">
       <div className="rounded-[1.75rem] border border-primary/20 bg-gradient-to-br from-primary/12 via-surface to-surface p-4 shadow-sm">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
@@ -361,7 +361,7 @@ function DayDetails({
         </Section>
 
         <Section title="Oração">
-          <p className="scripture text-base italic leading-relaxed text-foreground/90" data-narrate>
+          <p className="!font-sans text-base font-normal leading-relaxed text-foreground/90 !not-italic" data-narrate>
             {day.prayer}
           </p>
         </Section>
@@ -454,7 +454,7 @@ function PassageBlock({
       )}
       {text && (
         <p
-          className="font-sans text-[15px] font-normal leading-7 text-foreground/90 not-italic"
+          className="!font-sans text-base font-normal leading-7 text-foreground/90 !not-italic"
           data-narrate
           data-narrate-text={stripVerseNumbers(text)}
         >
