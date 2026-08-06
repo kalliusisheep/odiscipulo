@@ -85,6 +85,17 @@ function MessagesPage() {
               setMessages((prev) => (prev.some((x) => x.id === m.id) ? prev : [...prev, m]));
           },
         )
+        .on(
+          "postgres_changes",
+          { event: "UPDATE", schema: "public", table: "profiles", filter: `id=eq.${p.id}` },
+          (payload) => {
+            const profile = payload.new as { last_seen_at?: string | null; updated_at?: string | null };
+            setPeer((current) => current ? {
+              ...current,
+              last_seen_at: profile.last_seen_at ?? profile.updated_at ?? current.last_seen_at,
+            } : current);
+          },
+        )
         .subscribe();
     })();
     return () => {
