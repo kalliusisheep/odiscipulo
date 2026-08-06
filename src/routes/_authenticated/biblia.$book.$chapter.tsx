@@ -69,6 +69,7 @@ function ChapterReader() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [chapterPicker, setChapterPicker] = useState(false);
   const [narrationIndex, setNarrationIndex] = useState<number | null>(null);
+  const [narrationStarted, setNarrationStarted] = useState(false);
   const [narrationPaused, setNarrationPaused] = useState(false);
   const [narrationLoading, setNarrationLoading] = useState(false);
   const [narrationRate, setNarrationRate] = useState(1);
@@ -89,6 +90,7 @@ function ChapterReader() {
     if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
     audioUrlRef.current = null;
     setNarrationIndex(null);
+    setNarrationStarted(false);
     setNarrationPaused(false);
     setNarrationLoading(false);
   }, []);
@@ -144,6 +146,7 @@ function ChapterReader() {
       stopNarration();
       const token = speechTokenRef.current + 1;
       speechTokenRef.current = token;
+      setNarrationStarted(true);
       setNarrationPaused(false);
       speakVerseRef.current(index, token);
     },
@@ -275,6 +278,33 @@ function ChapterReader() {
           </button>
           <ThemeToggle className="h-9 w-9 border-border bg-surface" />
           <button
+            onClick={() => {
+              if (narrationIndex === null && !narrationLoading) startNarration();
+              else if (narrationIndex !== null) toggleNarrationPause();
+            }}
+            aria-label={
+              narrationLoading
+                ? "Carregando narração"
+                : narrationIndex !== null && !narrationPaused
+                  ? "Pausar narração"
+                  : "Iniciar narração"
+            }
+            disabled={narrationLoading}
+            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-all active:scale-95 disabled:cursor-wait disabled:opacity-70 ${
+              narrationIndex !== null && !narrationPaused
+                ? "border-primary bg-primary text-primary-foreground shadow-lg shadow-primary/25"
+                : "border-border bg-surface text-primary hover:bg-primary/10"
+            }`}
+          >
+            {narrationLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : narrationIndex !== null && !narrationPaused ? (
+              <Pause className="h-4 w-4" />
+            ) : (
+              <Play className="ml-0.5 h-4 w-4 fill-current" />
+            )}
+          </button>
+          <button
             onClick={() => setSettingsOpen(true)}
             aria-label="Ajustes de leitura"
             className="shrink-0 rounded-full border border-border bg-surface p-2.5 text-primary transition-transform active:scale-95"
@@ -347,13 +377,14 @@ function ChapterReader() {
       </div>
 
       
-      {verses && (
+      {verses && narrationStarted && (
         <div className="fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-20 px-4">
           <div className="mx-auto flex max-w-lg items-center gap-3 rounded-2xl border border-border bg-background/95 px-3 py-2.5 shadow-xl backdrop-blur-xl">
             <button
-              onClick={() => narrationIndex === null ? startNarration() : toggleNarrationPause()}
-              aria-label={narrationIndex === null ? "Iniciar narração" : narrationPaused ? "Continuar narração" : "Pausar narração"}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform active:scale-95"
+              onClick={() => narrationIndex !== null && toggleNarrationPause()}
+              aria-label={narrationLoading ? "Carregando narração" : narrationPaused ? "Continuar narração" : "Pausar narração"}
+              disabled={narrationLoading || narrationIndex === null}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform active:scale-95 disabled:cursor-wait disabled:opacity-70"
             >
               {narrationLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : narrationIndex !== null && !narrationPaused ? <Pause className="h-4 w-4" /> : <Play className="ml-0.5 h-4 w-4 fill-current" />}
             </button>
