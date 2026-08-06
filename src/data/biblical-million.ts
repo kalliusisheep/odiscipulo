@@ -42,11 +42,13 @@ type BibleFact = {
   completion: string;
   reference: string;
   referenceChoices: [string, string];
+  completionAnswer?: string;
+  completionDistractors?: [string, string, string];
   explanation: string;
 };
 
 const BIBLE_FACTS: BibleFact[] = [
-  { id: "arca", difficulty: "facil", category: "Gênesis", prompt: "Quem construiu a arca por ordem de Deus?", answer: "Noé", distractors: ["Abraão", "Moisés", "Josué"], statement: "Noé construiu uma arca por ordem de Deus antes do dilúvio.", completion: "Noé construiu a ___ antes do dilúvio.", reference: "Gênesis 6:14-22", referenceChoices: ["Êxodo 12:1-13", "Josué 3:1-17"], explanation: "Deus instruiu Noé a construir a arca para preservar sua família e os animais durante o juízo do dilúvio." },
+  { id: "arca", difficulty: "facil", category: "Gênesis", prompt: "Quem construiu a arca por ordem de Deus?", answer: "Noé", distractors: ["Abraão", "Moisés", "Josué"], statement: "Noé construiu uma arca por ordem de Deus antes do dilúvio.", completion: "Noé construiu a ___ antes do dilúvio.", completionAnswer: "Arca", completionDistractors: ["Tenda", "Torre", "Cidade"], reference: "Gênesis 6:14-22", referenceChoices: ["Êxodo 12:1-13", "Josué 3:1-17"], explanation: "Deus instruiu Noé a construir a arca para preservar sua família e os animais durante o juízo do dilúvio." },
   { id: "abraham-isaque", difficulty: "facil", category: "Patriarcas", prompt: "Qual era o nome do filho da promessa de Abraão e Sara?", answer: "Isaque", distractors: ["Ismael", "Jacó", "Esaú"], statement: "Isaque foi o filho da promessa de Abraão e Sara.", completion: "O filho da promessa de Abraão e Sara foi ___." , reference: "Gênesis 21:1-7", referenceChoices: ["Gênesis 16:1-16", "Gênesis 25:19-34"], explanation: "Isaque nasceu conforme a promessa de Deus, quando Abraão e Sara já eram idosos." },
   { id: "jose-sonhos", difficulty: "facil", category: "Gênesis", prompt: "Qual personagem recebeu sonhos que apontavam para sua futura liderança?", answer: "José", distractors: ["Samuel", "Daniel", "Salomão"], statement: "José recebeu sonhos que apontavam para sua futura liderança sobre sua família.", completion: "Os sonhos sobre a futura liderança foram recebidos por ___." , reference: "Gênesis 37:5-11", referenceChoices: ["Daniel 2:1-45", "1 Samuel 3:1-10"], explanation: "Os sonhos de José provocaram a inveja de seus irmãos, mas depois se relacionaram com a forma como Deus o usou para preservar sua família." },
   { id: "davi-golias", difficulty: "facil", category: "Reis", prompt: "Quem derrotou Golias usando uma funda e uma pedra?", answer: "Davi", distractors: ["Saul", "Jônatas", "Samuel"], statement: "Davi derrotou Golias usando uma funda e uma pedra.", completion: "Golias foi derrotado por ___ com uma funda." , reference: "1 Samuel 17:45-50", referenceChoices: ["Juízes 7:19-25", "2 Samuel 5:1-10"], explanation: "Davi confiou no Senhor e enfrentou o guerreiro filisteu sem usar a armadura de Saul." },
@@ -131,15 +133,25 @@ const shuffle = <T,>(items: T[]) => [...items].sort(() => Math.random() - 0.5);
 
 function createQuestions(fact: BibleFact): MillionQuestion[] {
   const answerOptions = [fact.answer, ...fact.distractors];
+  const completionAnswer = fact.completionAnswer ?? fact.answer;
+  const completionOptions = fact.completionAnswer ? [completionAnswer, ...(fact.completionDistractors ?? [])] : answerOptions;
   return [
     { id: `${fact.id}-multiple`, type: "multiple", prompt: fact.prompt, options: answerOptions, answer: fact.answer, explanation: fact.explanation, reference: fact.reference, category: fact.category, difficulty: fact.difficulty },
     { id: `${fact.id}-true-false`, type: "true-false", prompt: `Verdadeiro ou falso: ${fact.statement}`, options: ["Verdadeiro", "Falso"], answer: "Verdadeiro", explanation: fact.explanation, reference: fact.reference, category: fact.category, difficulty: fact.difficulty },
-    { id: `${fact.id}-complete`, type: "complete", prompt: `Complete: “${fact.completion}”`, options: answerOptions, answer: fact.answer, explanation: fact.explanation, reference: fact.reference, category: fact.category, difficulty: fact.difficulty },
+    { id: `${fact.id}-complete`, type: "complete", prompt: `Complete: “${fact.completion}”`, options: completionOptions, answer: completionAnswer, explanation: fact.explanation, reference: fact.reference, category: fact.category, difficulty: fact.difficulty },
     { id: `${fact.id}-reference`, type: "reference", prompt: `Qual referência registra este fato: ${fact.prompt}`, options: [fact.reference, ...fact.referenceChoices], answer: fact.reference, explanation: fact.explanation, reference: fact.reference, category: fact.category, difficulty: fact.difficulty },
   ];
 }
 
-export const MILLION_QUESTIONS = BIBLE_FACTS.flatMap(createQuestions);
+const isValidQuestion = (question: MillionQuestion) => {
+  const options = question.options.map((option) => option.trim()).filter(Boolean);
+  return Boolean(question.prompt.trim() && question.answer.trim() && question.reference.trim())
+    && options.length >= 2
+    && new Set(options).size === options.length
+    && options.includes(question.answer);
+};
+
+export const MILLION_QUESTIONS = BIBLE_FACTS.flatMap(createQuestions).filter(isValidQuestion);
 export const millionQuestionsForDifficulty = (difficulty: MillionDifficulty) => MILLION_QUESTIONS.filter((question) => question.difficulty === difficulty);
 export const randomMillionQuestions = (difficulty: MillionDifficulty, amount: number) => shuffle(millionQuestionsForDifficulty(difficulty)).slice(0, amount).map((question) => ({ ...question, options: shuffle(question.options) }));
 export const randomMillionQuestionsWithSeed = (difficulty: MillionDifficulty, amount: number, seed: number) => shuffleWithSeed(millionQuestionsForDifficulty(difficulty), seed).slice(0, amount).map((question, index) => ({ ...question, options: shuffleWithSeed(question.options, seed + index + 1) }));
