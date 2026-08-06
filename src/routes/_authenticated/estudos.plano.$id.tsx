@@ -343,13 +343,13 @@ function DayDetails({
         </Section>
 
         <Section title="Contexto">
-          <p className="text-sm leading-relaxed text-foreground/85" data-narrate>{day.context}</p>
+          <p className="text-base leading-7 text-foreground/90" data-narrate>{day.context}</p>
         </Section>
 
         <Section title="Reflexão devocional">
           <div className="space-y-2">
             {day.reflection.split("\n").filter(Boolean).map((p, i) => (
-              <p key={i} className="text-sm leading-relaxed text-foreground/85" data-narrate>
+              <p key={i} className="text-base leading-7 text-foreground/90" data-narrate>
                 {p}
               </p>
             ))}
@@ -357,7 +357,7 @@ function DayDetails({
         </Section>
 
         <Section title="Aplicação prática">
-          <p className="text-sm leading-relaxed text-foreground/85" data-narrate>{day.application}</p>
+          <p className="text-base leading-7 text-foreground/90" data-narrate>{day.application}</p>
         </Section>
 
         <Section title="Oração">
