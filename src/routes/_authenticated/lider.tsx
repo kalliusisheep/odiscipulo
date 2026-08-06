@@ -196,16 +196,28 @@ function LiderPage() {
   });
 
   return (
-    <div className="mx-auto max-w-lg space-y-5 px-4 pb-24 pt-6">
-      <header className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <Link to="/home" className="rounded-full p-2 hover:bg-surface"><ArrowLeft className="h-5 w-5" /></Link>
-          <div><p className="text-xs text-muted-foreground">Painel</p><h1 className="text-xl font-semibold">Modo Líder</h1></div>
+    <div className="mx-auto max-w-lg space-y-6 px-4 pb-24 pt-5">
+      <header className="flex items-start justify-between gap-3">
+        <div className="flex min-w-0 items-start gap-2.5">
+          <Link
+            to="/home"
+            className="mt-0.5 rounded-full p-2 text-muted-foreground transition-colors hover:bg-surface hover:text-foreground"
+            aria-label="Voltar para a página inicial"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          <div className="min-w-0">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary">Espaço de liderança</p>
+            <h1 className="mt-1 text-2xl font-extrabold tracking-tight">Modo Líder</h1>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+              Acompanhe pessoas e cuide de cada passo do discipulado.
+            </p>
+          </div>
         </div>
         <ThemeToggle />
       </header>
 
-      <section className="card-elevated overflow-hidden">
+      <section className="card-elevated overflow-hidden border-primary/10 bg-gradient-to-b from-surface to-surface/80">
         <div className="flex items-center gap-2 border-b border-border px-5 py-3"><Building2 className="h-4 w-4 text-primary" /><h2 className="text-sm font-semibold">Painel da Igreja</h2></div>
         <div className="grid grid-cols-3 divide-x divide-border">
           <Metric value={loading ? "—" : discipulos.length} label="Discípulos" />
@@ -214,14 +226,14 @@ function LiderPage() {
         </div>
       </section>
 
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 gap-2.5">
         <ActionBtn icon={Plus} label="Adicionar Discípulo" onClick={() => setDialog("disciple")} />
         <ActionBtn icon={Users} label="Novo grupo" onClick={() => setDialog("group")} />
         <ActionBtn icon={MessageCircle} label="Mensagem" onClick={() => void navigate({ to: "/mensagens" })} />
         <ActionBtn icon={Calendar} label="Encontro" onClick={() => setDialog("meeting")} />
       </div>
 
-      <Link to="/lider/arvore" className="card-elevated flex items-center gap-3 p-4 transition-all hover:border-primary/50">
+      <Link to="/lider/arvore" className="group card-elevated flex items-center gap-3 p-4 transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-lg">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary"><Network className="h-5 w-5" /></div>
         <div className="min-w-0 flex-1"><p className="text-sm font-semibold">Árvore de Discipulado</p><p className="text-xs text-muted-foreground">Veja sua linha de discipulado, de cima a baixo</p></div>
         <ChevronRight className="h-4 w-4 text-muted-foreground" />
@@ -256,10 +268,42 @@ function LiderPage() {
   );
 }
 
-function Metric({ value, label, color = "text-primary" }: { value: string | number; label: string; color?: string }) { return <div className="p-4 text-center"><p className={`text-2xl font-bold ${color}`}>{value}</p><p className="text-[10px] uppercase text-muted-foreground">{label}</p></div>; }
-function ActionBtn({ icon: Icon, label, onClick }: { icon: React.ElementType; label: string; onClick: () => void }) { return <button onClick={onClick} className="card-elevated flex items-center gap-2 p-3 text-left text-sm font-medium transition-all hover:border-primary/50"><Icon className="h-4 w-4 text-primary" />{label}</button>; }
-function Empty({ text }: { text: string }) { return <p className="card-elevated p-4 text-center text-xs text-muted-foreground">{text}</p>; }
+function Metric({ value, label, color = "text-primary" }: { value: string | number; label: string; color?: string }) {
+  return (
+    <div className="p-4 text-center">
+      <p className={`text-2xl font-black ${color}`}>{value}</p>
+      <p className="mt-1 text-[9px] font-extrabold uppercase tracking-wider text-muted-foreground">{label}</p>
+    </div>
+  );
+}
+function ActionBtn({ icon: Icon, label, onClick }: { icon: React.ElementType; label: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="card-elevated flex min-h-[52px] items-center gap-2.5 rounded-2xl p-3 text-left text-xs font-bold transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-md"
+    >
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <Icon className="h-4 w-4" />
+      </span>
+      <span className="leading-tight">{label}</span>
+    </button>
+  );
+}
+function Empty({ text }: { text: string }) {
+  return <p className="card-elevated border-dashed p-4 text-center text-xs text-muted-foreground">{text}</p>; }
 function Avatar({ person }: { person: Person }) { return <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/15 text-sm font-semibold text-primary">{person.avatar_url ? <img src={person.avatar_url} alt="" className="h-full w-full object-cover" /> : person.display_name[0]}</div>; }
-function PersonCard({ person }: { person: Person }) { return <div className="card-elevated flex items-center gap-3 p-4"><Avatar person={person} /><div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold">{person.display_name}</p><p className="text-[11px] text-muted-foreground">@{person.username ?? "sem ID"} · {person.streak ?? 0} dias de ofensiva</p></div><ChevronRight className="h-4 w-4 text-muted-foreground" /></div>; }
+function PersonCard({ person }: { person: Person }) {
+  return (
+    <div className="group card-elevated flex items-center gap-3 p-3.5 transition-all hover:-translate-y-0.5 hover:border-primary/30">
+      <Avatar person={person} />
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-semibold">{person.display_name}</p>
+        <p className="text-[11px] text-muted-foreground">@{person.username ?? "sem ID"} · {person.streak ?? 0} dias de ofensiva</p>
+      </div>
+      <ChevronRight className="h-4 w-4 text-muted-foreground/60 transition-transform group-hover:translate-x-0.5" />
+    </div>
+  );
+}
 function SearchInput({ value, onChange, placeholder }: { value: string; onChange: (value: string) => void; placeholder: string }) { return <div className="relative"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className="w-full rounded-lg border border-border bg-input py-2 pl-9 pr-3 text-sm outline-none focus:border-primary" /></div>; }
 function PersonList({ people, existingIds, onChoose, saving, empty = "Nenhum usuário encontrado com este ID." }: { people: Person[]; existingIds: Set<string>; onChoose: (person: Person) => Promise<void>; saving: boolean; empty?: string }) { if (!people.length) return <Empty text={empty} />; return <div className="space-y-2">{people.map((person) => { const exists = existingIds.has(person.id); return <div key={person.id} className="flex items-center gap-3 rounded-lg border border-border p-3"><Avatar person={person} /><div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold">{person.display_name}</p><p className="truncate text-xs text-muted-foreground">@{person.username ?? "sem ID"}</p></div>{exists ? <span className="flex items-center gap-1 text-xs font-medium text-success"><Check className="h-4 w-4" /> Adicionado</span> : <button disabled={saving} onClick={() => void onChoose(person)} className="rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground disabled:opacity-60">Adicionar</button>}</div>; })}</div>; }
