@@ -790,23 +790,17 @@ function PerfilSkeleton() {
         <div className="h-10 w-24 animate-pulse rounded-full bg-surface-2" />
       </div>
       <div className="card-elevated overflow-hidden">
-        <div className="flex flex-col items-center gap-3 bg-surface-2/60 px-5 pb-6 pt-7">
-          <div className="h-28 w-28 animate-pulse rounded-[28px] bg-surface-2" />
-          <div className="h-4 w-32 animate-pulse rounded-full bg-surface-2" />
-          <div className="h-3 w-24 animate-pulse rounded-full bg-surface-2" />
-          <div className="h-2 w-full max-w-[260px] animate-pulse rounded-full bg-surface-2" />
-        </div>
-        <div className="border-t border-border p-4">
-          <div className="h-16 w-full animate-pulse rounded-2xl bg-surface-2" />
+        <div className="flex items-center gap-4 bg-surface-2/60 p-5">
+          <div className="h-24 w-24 shrink-0 animate-pulse rounded-[28px] bg-surface-2" />
+          <div className="min-w-0 flex-1 space-y-3">
+            <div className="h-3 w-20 animate-pulse rounded-full bg-surface-2" />
+            <div className="h-5 w-36 animate-pulse rounded-full bg-surface-2" />
+            <div className="h-3 w-24 animate-pulse rounded-full bg-surface-2" />
+          </div>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="card-elevated h-24 animate-pulse bg-surface-2/60" />
-        ))}
-      </div>
-      <div className="card-elevated h-16 animate-pulse bg-surface-2/60" />
       <div className="card-elevated h-40 animate-pulse bg-surface-2/60" />
+      <div className="card-elevated h-56 animate-pulse bg-surface-2/60" />
     </div>
   );
 }
