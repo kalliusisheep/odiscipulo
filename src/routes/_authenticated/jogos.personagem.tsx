@@ -5,6 +5,7 @@ import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { BIBLICAL_CHARACTERS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { shuffleWithSeed } from "@/lib/seeded-random";
+import { recordGameResult } from "@/lib/game-leaderboard";
 
 export const Route = createFileRoute("/_authenticated/jogos/personagem")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -120,6 +121,13 @@ function PersonagemPage() {
   if (phase === "setup") {
     return <Setup difficulty={difficulty} setDifficulty={setDifficulty} rounds={rounds} setRounds={setRounds} onStart={start} />;
   }
+
+  const scoreSaved = useRef(false);
+  useEffect(() => {
+    if (phase !== "finished" || scoreSaved.current) return;
+    scoreSaved.current = true;
+    void recordGameResult({ gameKey: "personagem", score, rounds });
+  }, [phase, rounds, score]);
 
   if (phase === "finished") {
     return <Finished score={score} rounds={rounds} onRestart={() => { setModeSelected(false); setPhase("setup"); }} />;
