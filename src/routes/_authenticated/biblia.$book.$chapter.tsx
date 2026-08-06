@@ -376,9 +376,9 @@ function ChapterReader() {
           </div>
         </div>
       )}
-      {/* Navegação flutuante */}
-      {verses && (
-        <div className="fixed inset-x-0 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-20 flex justify-center px-4">
+      {/* Navegação contextual no fim do capítulo */}
+      {verses && chapterEndVisible && (
+        <div className="fixed inset-x-0 bottom-[calc(9rem+env(safe-area-inset-bottom))] z-20 flex justify-center px-4 animate-slide-up">
           <div className="flex items-center gap-2 rounded-2xl border border-primary/20 bg-background/95 p-2 shadow-2xl shadow-primary/10 backdrop-blur-xl">
             <button
               onClick={() => go(-1)}
