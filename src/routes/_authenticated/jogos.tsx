@@ -32,6 +32,8 @@ function JogosPage() {
           <span className="mt-8 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary"><Gamepad2 className="h-6 w-6" /></span>
         </header>
 
+        <Link to="/ranking" className="mt-5 flex items-center justify-between rounded-2xl border border-ancient/25 bg-ancient/10 px-4 py-3 text-sm font-extrabold text-ancient"><span className="flex items-center gap-2"><Trophy className="h-4 w-4" /> Ranking global dos jogos</span><ArrowRight className="h-4 w-4" /></Link>
+
         <section className="relative mt-7 h-40 overflow-hidden rounded-[1.75rem] border border-white/10 bg-surface shadow-xl shadow-black/20" aria-label="Comunidade jogando">
           <img src="/jogos-hero.jpeg" alt="Ovelhas jogando juntas" className="absolute inset-0 h-full w-full object-cover object-center" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#080b18]/95 via-[#080b18]/55 to-[#080b18]/10" />
