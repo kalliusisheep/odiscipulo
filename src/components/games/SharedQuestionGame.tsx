@@ -80,13 +80,16 @@ function answerHash(value: string | null) {
 function firstCharacterHint(value: string) {
   const text = value.trim();
   if (/^esse personagem/i.test(text)) return text;
+  if (/^essa personagem/i.test(text)) return text.replace(/^essa personagem/i, "Esse personagem");
+  if (/^a personagem/i.test(text)) return text.replace(/^a personagem/i, "Esse personagem");
   return "Esse personagem... " + text.charAt(0).toLowerCase() + text.slice(1);
 }
 
 function buildQuestions(gameType: SharedGameType, difficulty: GameDifficulty, seed: number) {
   if (gameType === "personagem") {
     const characters = BIBLICAL_CHARACTERS.filter((item) => item.difficulty === difficulty);
-    const shuffled = seed ? shuffleWithSeed(characters, seed) : [...characters];
+    const source = characters.length > 0 ? characters : BIBLICAL_CHARACTERS;
+    const shuffled = seed ? shuffleWithSeed(source, seed) : [...source];
     return shuffled.map((item: BiblicalCharacter): SharedQuestion => {
       const order = difficulty === "bereano" ? [2, 3, 1, 0] : difficulty === "dificil" ? [1, 2, 3, 0] : [0, 1, 2, 3];
       const hints = order.map((index) => item.hints[index]);
@@ -194,7 +197,7 @@ export function SharedQuestionGame({
     const profiles = ids.length
       ? (await gameDb.from("profiles").select("id,display_name,avatar_url").in("id", ids)).data ?? []
       : [];
-    const profileMap = new Map(profiles.map((profile: { id: string }) => [profile.id, profile]));
+    const profileMap = new Map(profiles.map((profile: { id: string; display_name: string; avatar_url: string | null }) => [profile.id, profile] as const));
     const nextPlayers = rows.map((row: RoomPlayer) => ({
       ...row,
       score: Number(row.score ?? 0),
