@@ -191,7 +191,7 @@ function LiderPage() {
 
   const toggleMember = (id: string) => setSelectedIds((current) => {
     const next = new Set(current);
-    next.has(id) ? next.delete(id) : next.add(id);
+    if (next.has(id)) next.delete(id);\n    else next.add(id);
     return next;
   });
 
