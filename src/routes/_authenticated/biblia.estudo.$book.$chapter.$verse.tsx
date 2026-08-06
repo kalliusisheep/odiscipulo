@@ -15,6 +15,7 @@ import {
   type StrongEntry,
 } from "@/lib/bible-source";
 import { useBiblePrefs } from "@/lib/bible-prefs";
+import { useApp } from "@/lib/app-context";
 import { supabase } from "@/integrations/supabase/client";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import {
@@ -879,19 +880,20 @@ function WordDetail({
       ? [entry.meaning]
       : [];
   const pronunciation = approximatePtBr(entry?.transliteration ?? null);
+  const { t } = useApp();
 
   const [occurrencesOpen, setOccurrencesOpen] = useState(false);
 
   const occurrenceRefs = occurrence
     ? [
         {
-          label: "Primeira ocorrência",
+          label: t("bible.firstOccurrence"),
           book: occurrence.f[0],
           chapter: occurrence.f[1],
           verse: occurrence.f[2],
         },
         {
-          label: "Última ocorrência",
+          label: t("bible.lastOccurrence"),
           book: occurrence.l[0],
           chapter: occurrence.l[1],
           verse: occurrence.l[2],
@@ -906,7 +908,7 @@ function WordDetail({
     : [];
 
   const stats: { label: string; value: string }[] = [
-    { label: "Ocorrências", value: occurrence ? String(occurrence.c) : "—" },
+    { label: t("bible.occurrences"), value: occurrence ? String(occurrence.c) : "—" },
     {
       label: "Primeira vez",
       value: occurrence
@@ -929,7 +931,7 @@ function WordDetail({
         <ScrollText className="absolute -right-3 -top-4 h-24 w-24 rotate-12 text-primary/[0.06]" />
         <div className="relative pr-8">
           <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
-            Análise da palavra
+            {t("bible.wordAnalysis")}
           </p>
           <div className="mt-2 flex items-start gap-3">
             <div className="min-w-0 flex-1">
@@ -974,7 +976,7 @@ function WordDetail({
       <div className="space-y-5 px-5 pt-5">
         <section>
           <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
-            {senses.length > 1 ? "Sentidos possíveis" : "Sentido"}
+            {senses.length > 1 ? t("bible.possibleSenses") : t("bible.sense")}
           </p>
           {senses.length > 0 ? (
             <ol className="mt-2 space-y-2">
@@ -997,7 +999,7 @@ function WordDetail({
 
         <section>
           <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
-            Uso nas Escrituras
+            {t("bible.scriptureUse")}
           </p>
           <div className="mt-2 grid grid-cols-3 gap-2">
             <button
@@ -1007,7 +1009,7 @@ function WordDetail({
               aria-expanded={occurrencesOpen}
             >
               <p className="break-words text-xs font-extrabold leading-snug text-foreground">{stats[0].value}</p>
-              <p className="mt-1 text-[9px] font-semibold text-primary">Ver ocorrências</p>
+              <p className="mt-1 text-[9px] font-semibold text-primary">{t("bible.viewOccurrences")}</p>
             </button>
             {stats.slice(1).map((stat) => (
               <div
@@ -1028,10 +1030,10 @@ function WordDetail({
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
-                  Referências encontradas
+                  {t("bible.referencesFound")}
                 </p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {occurrence.c} ocorrências no índice bíblico
+                  {occurrence.c} {t("bible.indexOccurrences")}
                 </p>
               </div>
               <button
@@ -1061,7 +1063,7 @@ function WordDetail({
               ))}
             </div>
             <p className="mt-3 text-[10px] leading-relaxed text-muted-foreground">
-              O índice mantém a contagem e as referências inicial e final para abrir o contexto com rapidez.
+              {t("bible.indexNote")}
             </p>
           </section>
         )}
