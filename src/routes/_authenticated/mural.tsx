@@ -99,13 +99,13 @@ function MuralPage() {
           <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
             <Users className="h-3.5 w-3.5" /> Comunidade
           </div>
-          <h1 className="mt-1 text-2xl font-extrabold tracking-tight">{active.label}</h1>
-          <p className="text-xs text-muted-foreground">Fé compartilhada fortalece a caminhada</p>
+          <h1 className="mt-1 text-2xl font-extrabold tracking-tight">Mural</h1>
+          <p className="text-xs text-muted-foreground">Um espaço para compartilhar, orar e guardar o que importa</p>
         </div>
         <ThemeToggle />
       </header>
 
-      <section className="relative isolate min-h-[164px] overflow-hidden rounded-[30px] border border-white/10 bg-gradient-to-br from-[#2b3364] via-[#1b2344] to-[#101624] text-white shadow-2xl shadow-primary/10">
+      <section aria-live="polite" className="relative isolate min-h-[164px] overflow-hidden rounded-[30px] border border-white/10 bg-gradient-to-br from-[#2b3364] via-[#1b2344] to-[#101624] text-white shadow-2xl shadow-primary/10">
         <div className="pointer-events-none absolute -left-14 -top-20 h-48 w-48 rounded-full bg-primary/25 blur-3xl" />
         <img
           key={tab}
@@ -128,7 +128,8 @@ function MuralPage() {
       </section>
 
       <nav
-        className="grid grid-cols-3 gap-1 rounded-[22px] border border-border/70 bg-surface p-1.5 shadow-sm"
+        className="grid grid-cols-3 gap-1 rounded-[24px] border border-border/70 bg-surface/90 p-1.5 shadow-lg shadow-black/5 backdrop-blur-sm"
+        role="tablist"
         aria-label="Áreas da comunidade"
       >
         {(Object.keys(TAB_META) as Tab[]).map((key) => {
@@ -140,8 +141,12 @@ function MuralPage() {
               key={key}
               type="button"
               onClick={() => setTab(key)}
+              id={`mural-tab-${key}`}
+              role="tab"
+              aria-controls={`mural-panel-${key}`}
               aria-selected={selected}
-              className={`flex min-h-12 items-center justify-center gap-1.5 rounded-[17px] px-2 text-[11px] font-bold transition-all duration-200 ${
+              tabIndex={selected ? 0 : -1}
+              className={`relative flex min-h-12 items-center justify-center gap-1.5 rounded-[18px] px-2 text-[11px] font-bold transition-all duration-200 ${
                 selected
                   ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
                   : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
@@ -149,12 +154,19 @@ function MuralPage() {
             >
               <Icon className="h-4 w-4" />
               <span className="truncate">{item.label}</span>
+              {selected && <span className="absolute bottom-1 h-1 w-1 rounded-full bg-primary-foreground/90" />}
             </button>
           );
         })}
       </nav>
 
-      <div key={tab} className="animate-slide-up pb-6">
+      <div
+        key={tab}
+        id={`mural-panel-${tab}`}
+        role="tabpanel"
+        aria-labelledby={`mural-tab-${tab}`}
+        className="animate-slide-up pb-6"
+      >
         {tab === "feed" && <Feed />}
         {tab === "oracoes" && <Oracoes />}
         {tab === "diario" && <Diario />}
@@ -341,6 +353,7 @@ function FullActions({ liked, likeCount, commentCount, onToggleLike, onToggleCom
       <button
         type="button"
         onClick={onToggleLike}
+        aria-pressed={liked}
         className={`inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-bold transition-all ${
           liked
             ? "bg-destructive/10 text-destructive"
@@ -353,6 +366,7 @@ function FullActions({ liked, likeCount, commentCount, onToggleLike, onToggleCom
       <button
         type="button"
         onClick={onToggleComments}
+        aria-expanded={commentsOpen}
         className="inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-bold text-muted-foreground transition-all hover:bg-surface-2 hover:text-foreground"
       >
         <MessageCircle className="h-4 w-4" />
@@ -937,6 +951,7 @@ function Feed() {
             onChange={(e) => setComposerText(e.target.value)}
             rows={3}
             maxLength={600}
+            aria-label="Texto da publicação"
             placeholder="O que você gostaria de compartilhar hoje?"
             className="w-full resize-none rounded-[18px] border border-border/70 bg-background/70 p-3.5 text-sm leading-relaxed outline-none transition-all placeholder:text-muted-foreground focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
           />
@@ -1203,6 +1218,7 @@ function Oracoes() {
             onChange={(e) => setText(e.target.value)}
             rows={3}
             maxLength={600}
+            aria-label="Pedido de oração"
             placeholder="Como podemos orar por você hoje?"
             className="w-full resize-none rounded-[18px] border border-border/70 bg-background/70 p-3.5 text-sm leading-relaxed outline-none transition-all placeholder:text-muted-foreground focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
           />
