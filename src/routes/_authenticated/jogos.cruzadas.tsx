@@ -49,11 +49,11 @@ function canPlace(grid: string[][], word: string, row: number, col: number, dire
   return !(grid[beforeRow]?.[beforeCol] || grid[afterRow]?.[afterCol]);
 }
 
-function generatePuzzle(difficulty: GameDifficulty, theme: CrosswordTheme | "todos", seed?: number) {
+function generatePuzzleAttempt(difficulty: GameDifficulty, theme: CrosswordTheme | "todos", seed?: number) {
   const config = CROSSWORD_DIFFICULTY[difficulty];
   const pool = crosswordWordsFor(difficulty, theme).length >= config.words ? crosswordWordsFor(difficulty, theme) : crosswordWordsFor(difficulty, "todos");
   const eligiblePool = pool.filter((entry) => entry.word.length <= config.size);
-  const randomizedPool = seed ? shuffleWithSeed(eligiblePool, seed) : [...eligiblePool].sort(() => Math.random() - 0.5);
+  const randomizedPool = seed !== undefined ? shuffleWithSeed(eligiblePool, seed) : [...eligiblePool].sort(() => Math.random() - 0.5);
   const words = randomizedPool.slice(0, config.words).sort((a, b) => b.word.length - a.word.length);
   const grid = Array.from({ length: config.size }, () => Array<string>(config.size).fill(""));
   const placements: Placement[] = [];
@@ -108,6 +108,19 @@ function generatePuzzle(difficulty: GameDifficulty, theme: CrosswordTheme | "tod
   return { size: config.size, cells: [...placedCells.values()], placements };
 }
 
+function generatePuzzle(difficulty: GameDifficulty, theme: CrosswordTheme | "todos", seed?: number) {
+  const target = CROSSWORD_DIFFICULTY[difficulty].words;
+  let best = generatePuzzleAttempt(difficulty, theme, seed);
+
+  for (let attempt = 1; attempt < 8 && best.placements.length < target; attempt += 1) {
+    const attemptSeed = seed === undefined ? undefined : seed + attempt * 7919;
+    const candidate = generatePuzzleAttempt(difficulty, theme, attemptSeed);
+    if (candidate.placements.length > best.placements.length) best = candidate;
+  }
+
+  return best;
+}
+
 function tone(success: boolean) {
   playGameSfx(success ? "success" : "error");
   return;
@@ -137,7 +150,7 @@ function CrosswordPage() {
   const activePlacement = puzzle.placements.find((placement) => placement.word.id === activeWordId);
   const activeWord = activePlacement?.word;
 
-  const start = () => { startGameMusic(); playGameSfx("start"); setPuzzle(generatePuzzle(difficulty, theme, seed)); setLetters({}); setSelectedCell(null); setActiveWordId(null); setCompleted([]); setErrors(0); setHints(0); setSeconds(0); setScore(0); setPhase("playing"); };
+  const start = () => { scoreSaved.current = false; startGameMusic(); playGameSfx("start"); setPuzzle(generatePuzzle(difficulty, theme, seed)); setLetters({}); setSelectedCell(null); setActiveWordId(null); setCompleted([]); setErrors(0); setHints(0); setSeconds(0); setScore(0); setPhase("playing"); };
 
   useEffect(() => {
     if (mode === "multi" && roomId && !autoStarted.current) {
@@ -147,7 +160,7 @@ function CrosswordPage() {
   }, [mode, roomId]);
   useEffect(() => { if (phase !== "playing") return; const timer = window.setInterval(() => setSeconds((value) => value + 1), 1000); return () => window.clearInterval(timer); }, [phase]);
 
-  const selectCell = (cell: Cell) => { setSelectedCell(key(cell.row, cell.col)); setActiveWordId((current) => current && cell.wordIds.includes(current) ? current : cell.wordIds[0]); inputRef.current?.focus(); };
+  const selectCell = (cell: Cell) => { const cellKey = key(cell.row, cell.col); setSelectedCell(cellKey); setActiveWordId((current) => { if (cell.wordIds.length < 2) return cell.wordIds[0]; const currentIndex = current ? cell.wordIds.indexOf(current) : -1; return cell.wordIds[(currentIndex + 1) % cell.wordIds.length]; }); inputRef.current?.focus(); };
   const moveToNext = (placement: Placement, row: number, col: number) => {
     const cells = placement.word.word.split("").map((_, index) => key(placement.row + (placement.direction === "down" ? index : 0), placement.col + (placement.direction === "across" ? index : 0)));
     const currentIndex = cells.indexOf(key(row, col));
