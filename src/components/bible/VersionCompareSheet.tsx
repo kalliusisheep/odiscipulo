@@ -3,11 +3,12 @@ import { Check, GitCompareArrows, Loader2, RefreshCw } from "lucide-react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import {
   fetchChapter,
-  PT_TRANSLATIONS,
+  translationsForLanguage,
   translationByCode,
   type Verse,
 } from "@/lib/bible-source";
 import { bookNameById } from "@/data/bible-books";
+import { useApp } from "@/lib/app-context";
 
 type Props = {
   open: boolean;
@@ -17,12 +18,15 @@ type Props = {
   currentTranslation: string;
 };
 
-function initialSelection(currentTranslation: string) {
+function initialSelection(currentTranslation: string, translations: ReturnType<typeof translationsForLanguage>) {
+  const availableCurrent = translations.some((translation) => translation.code === currentTranslation)
+    ? currentTranslation
+    : translations[0].code;
   const second =
-    PT_TRANSLATIONS.find((translation) => translation.code !== currentTranslation)?.code ??
-    PT_TRANSLATIONS[1]?.code ??
-    PT_TRANSLATIONS[0].code;
-  return [currentTranslation, second];
+    translations.find((translation) => translation.code !== availableCurrent)?.code ??
+    translations[1]?.code ??
+    translations[0].code;
+  return [availableCurrent, second];
 }
 
 export function VersionCompareSheet({
@@ -32,7 +36,9 @@ export function VersionCompareSheet({
   chapter,
   currentTranslation,
 }: Props) {
-  const [selected, setSelected] = useState(() => initialSelection(currentTranslation));
+  const { language } = useApp();
+  const translations = useMemo(() => translationsForLanguage(language), [language]);
+  const [selected, setSelected] = useState(() => initialSelection(currentTranslation, translations));
   const [chapters, setChapters] = useState<Record<string, Verse[]>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -43,11 +49,11 @@ export function VersionCompareSheet({
     if (!open) return;
     setSelected((current) => {
       const valid = current.filter((code) =>
-        PT_TRANSLATIONS.some((translation) => translation.code === code),
+        translations.some((translation) => translation.code === code),
       );
-      return valid.length >= 2 ? valid : initialSelection(currentTranslation);
+      return valid.length >= 2 ? valid : initialSelection(currentTranslation, translations);
     });
-  }, [open, currentTranslation]);
+  }, [open, currentTranslation, translations]);
 
   useEffect(() => {
     if (!open || selected.length < 2) return;
@@ -133,7 +139,7 @@ export function VersionCompareSheet({
               Versões selecionadas
             </p>
             <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-              {PT_TRANSLATIONS.map((translation) => {
+              {translations.map((translation) => {
                 const active = selected.includes(translation.code);
                 const locked = active && selected.length === 2;
                 return (
