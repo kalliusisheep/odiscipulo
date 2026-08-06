@@ -208,23 +208,25 @@ function MensagensListPage() {
                     to="/perfil/$username"
                     params={{ username: c.peer.username }}
                     aria-label={`Ver perfil de ${c.peer.display_name}`}
-                    className={`relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-surface transition-transform hover:scale-105 ${
+                    className={\`relative h-12 w-12 shrink-0 overflow-visible rounded-full bg-surface transition-transform hover:scale-105 \${ 
                       inChallenge ? "avatar-ring-flame" : "ring-2 ring-border"
-                    }`}
+                    }\`}
                   >
-                    {c.peer.avatar_url ? (
-                      <img src={c.peer.avatar_url} alt="" className="h-full w-full object-cover" />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center text-sm font-bold text-muted-foreground">
-                        {c.peer.display_name[0]?.toUpperCase() ?? "?"}
-                      </div>
-                    )}
+                    <div className="absolute inset-0 overflow-hidden rounded-full">
+                      {c.peer.avatar_url ? (
+                        <img src={c.peer.avatar_url} alt="" className="h-full w-full object-cover" />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-sm font-bold text-muted-foreground">
+                          {c.peer.display_name[0]?.toUpperCase() ?? "?"}
+                        </div>
+                      )}
+                    </div>
                     <span
-                      className={`absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-surface-2 ${
+                      className={\`absolute -bottom-1 -right-1 z-10 h-4 w-4 rounded-full border-2 border-background \${ 
                         formatPresence(c.peer.last_seen_at) === "Online agora"
-                          ? "bg-emerald-400 shadow-[0_0_7px_rgba(52,211,153,0.8)]"
-                          : "bg-rose-400 shadow-[0_0_7px_rgba(251,113,133,0.65)]"
-                      }`}
+                          ? "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.85)]"
+                          : "bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.7)]"
+                      }\`}
                       aria-label={formatPresence(c.peer.last_seen_at) === "Online agora" ? "Online" : "Offline"}
                     />
                   </Link>
