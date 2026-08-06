@@ -6,6 +6,7 @@ import { CHARACTERS } from "@/data/content";
 import { toast } from "sonner";
 import { ArrowLeft, MessageCircle, Flame, Trophy, BookOpen, Clock, UserPlus, Check, Copy, Sparkles, Church } from "lucide-react";
 import { ChallengeButton } from "@/components/ChallengeButton";
+import { formatPresence } from "@/lib/presence";
 
 export const Route = createFileRoute("/_authenticated/perfil_/$username")({
   component: PublicProfilePage,
@@ -27,6 +28,7 @@ type Profile = {
   xp: number;
   streak: number;
   church_name: string | null;
+  last_seen_at: string | null;
 };
 
 function PublicProfilePage() {
@@ -46,7 +48,7 @@ function PublicProfilePage() {
       setMyId(u.user?.id ?? null);
       const { data: p } = await supabase
         .from("profiles")
-        .select("id, display_name, username, avatar_char, avatar_url, bio, xp, streak, church_name")
+        .select("id, display_name, username, avatar_char, avatar_url, bio, xp, streak, church_name, last_seen_at")
         .ilike("username", username)
         .maybeSingle();
       if (!p) {
@@ -101,6 +103,8 @@ function PublicProfilePage() {
   const level = getLevel(profile.xp);
   const ch = CHARACTERS.find((c) => c.id === profile.avatar_char) ?? CHARACTERS[0];
   const isSelf = myId === profile.id;
+  const presence = formatPresence(profile.last_seen_at);
+  const isOnline = presence === "Online agora";
 
   const currentLevelXp = xpForLevel(level.level);
   const nextLevelXp = xpForLevel(level.level + 1);
@@ -109,9 +113,9 @@ function PublicProfilePage() {
   const xpPct = Math.min(100, Math.round((xpInLevel / xpNeeded) * 100));
 
   return (
-    <div className="mx-auto max-w-lg pb-24">
+    <div className="mx-auto max-w-lg px-4 pb-28 pt-4">
       {/* Hero */}
-      <div className="relative overflow-hidden rounded-b-[2.5rem] bg-gradient-to-br from-primary via-primary/85 to-indigo-600 px-5 pb-10 pt-6 text-primary-foreground shadow-xl">
+      <section className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary via-primary/85 to-indigo-600 px-5 pb-9 pt-5 text-primary-foreground shadow-xl shadow-primary/15">
         <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
         <div className="absolute -bottom-20 -left-16 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
 
@@ -133,11 +137,11 @@ function PublicProfilePage() {
           </button>
         </div>
 
-        <div className="relative mt-6 flex flex-col items-center text-center">
+        <div className="relative mt-7 flex flex-col items-center text-center">
           <div className="relative">
             {/* Anel */}
             <div className="absolute -inset-1.5 rounded-full bg-gradient-to-br from-yellow-300 via-white to-yellow-300 blur-md opacity-70" />
-            <div className="relative flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-white ring-4 ring-white/60 text-6xl">
+            <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-full bg-white ring-4 ring-white/60 text-6xl shadow-2xl">
               {profile.avatar_url ? (
                 <img src={profile.avatar_url} alt="Foto" className="h-full w-full object-cover" />
               ) : level.avatar ? (
@@ -151,7 +155,13 @@ function PublicProfilePage() {
             </div>
           </div>
 
-          <h1 className="mt-6 text-2xl font-bold leading-tight">{profile.display_name}</h1>
+          <h1 className="mt-6 text-2xl font-extrabold leading-tight tracking-tight">{profile.display_name}</h1>
+          <div className="mt-2 flex items-center gap-1.5 text-[11px] font-semibold">
+            <span className={`h-2 w-2 rounded-full ${isOnline ? "bg-emerald-300 shadow-[0_0_8px_rgba(110,231,183,0.85)]" : "bg-white/45"}`} />
+            <span className={isOnline ? "text-emerald-100" : "text-white/70"}>
+              {isOnline ? "Online agora" : `Offline · ${presence.replace("Visto ", "")}`}
+            </span>
+          </div>
           <div className="mt-1.5 flex flex-wrap items-center justify-center gap-1.5">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur">
               <Sparkles className="h-3 w-3" /> {level.title}
@@ -183,13 +193,14 @@ function PublicProfilePage() {
             </p>
           )}
         </div>
-      </div>
+      </section>
 
-      <div className="space-y-4 px-4 pt-5">
+      <div className="space-y-5 pt-5">
         {/* Ações */}
         {!isSelf && (
           <>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="rounded-[1.75rem] border border-border bg-surface/60 p-2.5">
+              <div className="grid grid-cols-2 gap-2">
               <Link
                 to="/mensagens/$username"
                 params={{ username: profile.username }}
@@ -210,6 +221,7 @@ function PublicProfilePage() {
                   <UserPlus className="h-4 w-4" /> {adding ? "Adicionando…" : "Adicionar"}
                 </button>
               )}
+              </div>
             </div>
             <ChallengeButton targetId={profile.id} targetName={profile.display_name} />
           </>
@@ -217,7 +229,13 @@ function PublicProfilePage() {
 
         {/* Estatísticas */}
         <section>
-          <p className="mb-2 px-1 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Estatísticas</p>
+          <div className="mb-3 flex items-end justify-between px-1">
+            <div>
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary">Visão geral</p>
+              <p className="mt-1 text-sm font-extrabold">Estatísticas da caminhada</p>
+            </div>
+            <Trophy className="h-4 w-4 text-primary/70" />
+          </div>
           <div className="grid grid-cols-2 gap-3">
             <StatCard
               icon={Trophy}
