@@ -12,6 +12,8 @@ export const Route = createFileRoute("/_authenticated/jogos/versiculo")({
     mode: search.mode === "multi" ? "multi" : "single",
     roomId: typeof search.roomId === "string" ? search.roomId : undefined,
     seed: typeof search.seed === "string" && Number.isFinite(Number(search.seed)) ? Number(search.seed) : undefined,
+    difficulty: ["facil", "medio", "dificil", "bereano"].includes(String(search.difficulty)) ? String(search.difficulty) : "medio",
+    rounds: typeof search.rounds === "string" && Number.isFinite(Number(search.rounds)) ? Number(search.rounds) : 10,
   }),
   component: VersiculoPage,
 });
@@ -44,11 +46,11 @@ function playTone(success: boolean) {
 function shuffle<T>(items: T[]) { return [...items].sort(() => Math.random() - 0.5); }
 
 function VersiculoPage() {
-  const { mode, roomId, seed } = Route.useSearch();
+  const { mode, roomId, seed, difficulty: initialDifficulty, rounds: initialRounds } = Route.useSearch();
   const [phase, setPhase] = useState<Phase>("setup");
   const [modeSelected, setModeSelected] = useState(mode === "multi");
-  const [difficulty, setDifficulty] = useState<GameDifficulty>("medio");
-  const [rounds, setRounds] = useState(10);
+  const [difficulty, setDifficulty] = useState<GameDifficulty>(initialDifficulty as GameDifficulty);
+  const [rounds, setRounds] = useState(initialRounds);
   const [questions, setQuestions] = useState<typeof BIBLICAL_VERSES>([]);
   const [round, setRound] = useState(0);
   const [options, setOptions] = useState<string[]>([]);

@@ -185,7 +185,7 @@ function MultiplayerPage() {
       const { error } = await gameDb.from("character_game_rooms").update({ status: "playing", started_at: new Date().toISOString(), round_seed: roundSeed }).eq("id", roomId).eq("host_id", myId);
       if (error) throw error;
       toast.success("Partida iniciada!");
-      window.location.href = `/jogos/${gameType}?mode=multi&roomId=${roomId}&seed=${roundSeed}`;
+      window.location.href = `/jogos/${gameType}?mode=multi&roomId=${roomId}&seed=${roundSeed}&difficulty=${room?.difficulty ?? difficulty}&rounds=${room?.rounds ?? rounds}`;
     } catch {
       toast.error("A partida precisa de dois jogadores prontos.");
     } finally {
@@ -222,7 +222,7 @@ function MultiplayerPage() {
 
   useEffect(() => {
     if (room?.status !== "playing" || !roomId) return;
-    window.location.href = `/jogos/${gameType}?mode=multi&roomId=${roomId}&seed=${room?.round_seed ?? 0}`;
+    window.location.href = `/jogos/${gameType}?mode=multi&roomId=${roomId}&seed=${room?.round_seed ?? 0}&difficulty=${room?.difficulty ?? difficulty}&rounds=${room?.rounds ?? rounds}`;
   }, [gameType, room?.status, roomId]);
 
   const copyInvite = async () => {

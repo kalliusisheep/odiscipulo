@@ -10,6 +10,8 @@ export const Route = createFileRoute("/_authenticated/jogos/milhao")({
     mode: search.mode === "multi" ? "multi" : "single",
     roomId: typeof search.roomId === "string" ? search.roomId : undefined,
     seed: typeof search.seed === "string" && Number.isFinite(Number(search.seed)) ? Number(search.seed) : undefined,
+    difficulty: ["facil", "medio", "dificil", "bereano"].includes(String(search.difficulty)) ? String(search.difficulty) : "medio",
+    rounds: typeof search.rounds === "string" && Number.isFinite(Number(search.rounds)) ? Number(search.rounds) : 8,
   }),
   component: MillionPage,
 });
@@ -18,7 +20,6 @@ type Phase = "setup" | "playing" | "answered" | "finished";
 type Lifeline = "eliminar" | "contexto" | "consultar";
 type Consultation = { name: string; role: string; answer: string; confidence: string; tone: string };
 
-const ROUND_COUNT = 8;
 const ROUND_SECONDS = 22;
 const consultants = [
   { name: "Pedro", role: "testemunha dos Evangelhos", tone: "text-sky-300" },
@@ -38,10 +39,11 @@ function consultCharacters(question: MillionQuestion): Consultation[] {
 }
 
 function MillionPage() {
-  const { mode, roomId, seed } = Route.useSearch();
+  const { mode, roomId, seed, difficulty: initialDifficulty, rounds: initialRounds } = Route.useSearch();
   const [phase, setPhase] = useState<Phase>("setup");
   const [modeSelected, setModeSelected] = useState(mode === "multi");
-  const [difficulty, setDifficulty] = useState<MillionDifficulty>("medio");
+  const [difficulty, setDifficulty] = useState<MillionDifficulty>(initialDifficulty as MillionDifficulty);
+  const [rounds] = useState(initialRounds);
   const [questions, setQuestions] = useState<MillionQuestion[]>([]);
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
@@ -70,8 +72,8 @@ function MillionPage() {
     const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
     const candidates = seed ? randomMillionQuestionsWithSeed(difficulty, 999, seed) : randomMillionQuestions(difficulty, 999);
     const fresh = candidates.filter((candidate) => !recentIds.includes(candidate.id));
-    const selectedQuestions = [...fresh, ...candidates].slice(0, ROUND_COUNT);
-    window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...selectedQuestions.map((question) => question.id)])].slice(-Math.max(ROUND_COUNT * 5, 40))));
+    const selectedQuestions = [...fresh, ...candidates].slice(0, rounds);
+    window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...selectedQuestions.map((question) => question.id)])].slice(-Math.max(rounds * 5, 40))));
     setQuestions(selectedQuestions); setScore(0); setStreak(0); setBestStreak(0); setUsedLifelines([]); setCorrectAnswers(0); setWeakness({}); setTimeLeft(ROUND_SECONDS); setConsultations(null); startedAt.current = Date.now(); setPhase("playing");
   };
 
@@ -112,7 +114,7 @@ function MillionPage() {
 
   if (phase === "setup" && !modeSelected) return <GameModeChooser title="Quiz do Milhão" description="Suba pelos níveis do conhecimento bíblico sozinho ou desafie outros jogadores em uma sala competitiva." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=milhao"; }} />;
   if (phase === "setup") return <Setup difficulty={difficulty} onDifficultyChange={setDifficulty} onStart={start} />;
-  if (phase === "finished") return <Results score={score} correct={correctAnswers} bestStreak={bestStreak} weakness={weakness} onRestart={() => setPhase("setup")} />;
+  if (phase === "finished") return <Results score={score} correct={correctAnswers} rounds={rounds} bestStreak={bestStreak} weakness={weakness} onRestart={() => setPhase("setup")} />;
   if (!question) return null;
   const isCorrect = selected === question.answer;
 
@@ -121,4 +123,4 @@ function MillionPage() {
 
 function Setup({ difficulty, onDifficultyChange, onStart }: { difficulty: MillionDifficulty; onDifficultyChange: (value: MillionDifficulty) => void; onStart: () => void }) { return <main className="min-h-screen bg-background"><div className="mx-auto max-w-lg px-4 pb-28 pt-5"><Link to="/jogos" className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground"><ArrowLeft className="h-4 w-4" /> Jogos</Link><header className="mt-8"><p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">Conhecimento em progressão</p><h1 className="mt-1 text-3xl font-extrabold">Quiz do Milhão</h1><p className="mt-3 text-sm leading-relaxed text-muted-foreground">Suba pelos títulos do conhecimento bíblico, preserve seu combo e enfrente o Desafio Bereano.</p></header><section className="mt-8 rounded-[1.75rem] border border-border bg-surface p-5"><p className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">Escolha seu nível</p><div className="mt-3 grid grid-cols-2 gap-2">{(Object.entries(MILLION_DIFFICULTY) as [MillionDifficulty, { label: string; description: string }][]).map(([key, item]) => <button type="button" key={key} onClick={() => onDifficultyChange(key)} className={`rounded-2xl border p-3 text-left transition-all ${difficulty === key ? "border-primary bg-primary/10 text-primary" : "border-border bg-background/40"}`}><span className="block text-sm font-extrabold">{item.label}</span><span className="mt-1 block text-[10px] leading-relaxed text-muted-foreground">{item.description}</span></button>)}</div><div className="mt-6 space-y-3">{MILLION_LEVELS.map((item, index) => <div key={item.title} className="flex items-center gap-3"><span className={`flex h-9 w-9 items-center justify-center rounded-xl ${index === MILLION_LEVELS.length - 1 ? "bg-ancient/15 text-ancient" : "bg-primary/10 text-primary"}`}><Trophy className="h-4 w-4" /></span><span className="flex-1 text-sm font-extrabold">{item.title}</span><span className="text-[10px] font-bold text-muted-foreground">{item.points} pts</span></div>)}</div><button type="button" onClick={onStart} className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-4 text-sm font-extrabold text-primary-foreground shadow-lg shadow-primary/20">Começar desafio <ArrowRight className="h-4 w-4" /></button></section></div></main>; }
 
-function Results({ score, correct, bestStreak, weakness, onRestart }: { score: number; correct: number; bestStreak: number; weakness: Record<string, { correct: number; total: number }>; onRestart: () => void }) { const weakCategory = Object.entries(weakness).sort(([, first], [, second]) => first.correct / first.total - second.correct / second.total)[0]?.[0]; return <main className="min-h-screen bg-background"><div className="mx-auto max-w-lg px-4 pb-28 pt-10 text-center"><span className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-ancient/15 text-ancient"><Trophy className="h-10 w-10" /></span><p className="mt-7 text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">Desafio concluído</p><h1 className="mt-2 text-3xl font-extrabold">Conhecimento acumulado</h1><div className="mt-7 rounded-[1.75rem] border border-border bg-surface p-6"><p className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">Pontuação final</p><p className="mt-2 text-5xl font-black text-ancient">{score}</p><div className="mt-6 grid grid-cols-2 gap-3"><div><p className="text-xl font-black">{correct}/8</p><p className="text-[10px] text-muted-foreground">acertos</p></div><div><p className="text-xl font-black">{bestStreak}</p><p className="text-[10px] text-muted-foreground">maior combo</p></div></div></div>{weakCategory && <p className="mt-4 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-left text-xs leading-relaxed text-muted-foreground">Seu próximo desafio vai reforçar <span className="font-bold text-foreground">{weakCategory}</span> sem deixar de testar seus pontos fortes.</p>}<div className="mt-6 flex gap-3"><Link to="/jogos" className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-border px-4 py-3 text-sm font-bold"><ArrowLeft className="h-4 w-4" /> Jogos</Link><button type="button" onClick={onRestart} className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-extrabold text-primary-foreground"><RotateCcw className="h-4 w-4" /> Jogar de novo</button></div></div></main>; }
+function Results({ score, correct, rounds, bestStreak, weakness, onRestart }: { score: number; correct: number; rounds: number; bestStreak: number; weakness: Record<string, { correct: number; total: number }>; onRestart: () => void }) { const weakCategory = Object.entries(weakness).sort(([, first], [, second]) => first.correct / first.total - second.correct / second.total)[0]?.[0]; return <main className="min-h-screen bg-background"><div className="mx-auto max-w-lg px-4 pb-28 pt-10 text-center"><span className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-ancient/15 text-ancient"><Trophy className="h-10 w-10" /></span><p className="mt-7 text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">Desafio concluído</p><h1 className="mt-2 text-3xl font-extrabold">Conhecimento acumulado</h1><div className="mt-7 rounded-[1.75rem] border border-border bg-surface p-6"><p className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">Pontuação final</p><p className="mt-2 text-5xl font-black text-ancient">{score}</p><div className="mt-6 grid grid-cols-2 gap-3"><div><p className="text-xl font-black">{correct}/{rounds}</p><p className="text-[10px] text-muted-foreground">acertos</p></div><div><p className="text-xl font-black">{bestStreak}</p><p className="text-[10px] text-muted-foreground">maior combo</p></div></div></div>{weakCategory && <p className="mt-4 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-left text-xs leading-relaxed text-muted-foreground">Seu próximo desafio vai reforçar <span className="font-bold text-foreground">{weakCategory}</span> sem deixar de testar seus pontos fortes.</p>}<div className="mt-6 flex gap-3"><Link to="/jogos" className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-border px-4 py-3 text-sm font-bold"><ArrowLeft className="h-4 w-4" /> Jogos</Link><button type="button" onClick={onRestart} className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-extrabold text-primary-foreground"><RotateCcw className="h-4 w-4" /> Jogar de novo</button></div></div></main>; }

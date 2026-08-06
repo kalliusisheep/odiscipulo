@@ -12,6 +12,7 @@ export const Route = createFileRoute("/_authenticated/jogos/cruzadas")({
     mode: search.mode === "multi" ? "multi" : "single",
     roomId: typeof search.roomId === "string" ? search.roomId : undefined,
     seed: typeof search.seed === "string" && Number.isFinite(Number(search.seed)) ? Number(search.seed) : undefined,
+    difficulty: ["facil", "medio", "dificil", "bereano"].includes(String(search.difficulty)) ? String(search.difficulty) : "medio",
   }),
   component: CrosswordPage,
 });
@@ -109,10 +110,10 @@ function tone(success: boolean) {
 }
 
 function CrosswordPage() {
-  const { mode, roomId } = Route.useSearch();
+  const { mode, roomId, seed, difficulty: initialDifficulty } = Route.useSearch();
   const [phase, setPhase] = useState<Phase>("setup");
   const [modeSelected, setModeSelected] = useState(mode === "multi");
-  const [difficulty, setDifficulty] = useState<GameDifficulty>("medio");
+  const [difficulty, setDifficulty] = useState<GameDifficulty>(initialDifficulty as GameDifficulty);
   const [theme, setTheme] = useState<CrosswordTheme | "todos">("todos");
   const [puzzle, setPuzzle] = useState(() => generatePuzzle("medio", "todos"));
   const [letters, setLetters] = useState<Record<string, string>>({});

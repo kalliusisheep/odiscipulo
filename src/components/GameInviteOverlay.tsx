@@ -7,6 +7,9 @@ type GameInvite = {
   roomId: string;
   inviterName: string;
   gameType: "personagem" | "versiculo" | "cruzadas" | "milhao";
+  difficulty: "facil" | "medio" | "dificil" | "bereano";
+  rounds: number;
+  seed: number;
 };
 
 const gameDb = supabase as any;
@@ -20,13 +23,16 @@ function notificationToInvite(value: unknown): GameInvite | null {
     roomId: data.room_id,
     inviterName: typeof data.inviter_name === "string" ? data.inviter_name : "Um amigo",
     gameType: "personagem",
+    difficulty: "medio",
+    rounds: 10,
+    seed: 0,
   };
 }
 
 async function resolveInvite(roomId: string, fallbackName = "Um amigo"): Promise<GameInvite | null> {
   const { data: room } = await gameDb
     .from("character_game_rooms")
-    .select("id,host_id,game_type")
+    .select("id,host_id,game_type,difficulty,rounds,round_seed")
     .eq("id", roomId)
     .maybeSingle();
   if (!room) return null;
@@ -36,6 +42,9 @@ async function resolveInvite(roomId: string, fallbackName = "Um amigo"): Promise
     roomId,
     inviterName: profile?.display_name || fallbackName,
     gameType,
+    difficulty: ["facil", "medio", "dificil", "bereano"].includes(room.difficulty) ? room.difficulty : "medio",
+    rounds: Number.isFinite(Number(room.rounds)) ? Number(room.rounds) : 10,
+    seed: Number.isFinite(Number(room.round_seed)) ? Number(room.round_seed) : 0,
   };
 }
 
@@ -111,7 +120,7 @@ export function GameInviteOverlay() {
       const roomId = invite.roomId;
       setInvite(null);
       if (accept) {
-        window.location.href = `/jogos/${invite.gameType}?mode=multi&roomId=${roomId}`;
+        window.location.href = `/jogos/${invite.gameType}?mode=multi&roomId=${roomId}&seed=${invite.seed}&difficulty=${invite.difficulty}&rounds=${invite.rounds}`;
       } else {
         toast.success("Convite recusado");
       }
