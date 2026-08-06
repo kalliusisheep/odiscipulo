@@ -441,9 +441,9 @@ function NotaEditorPage() {
   }
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-lg flex-col px-4 pb-10">
+    <div className="mx-auto flex min-h-screen max-w-lg flex-col px-4 pb-32">
       {/* ── Header fixo ─────────────────────────────────────────── */}
-      <header className="sticky top-0 z-40 -mx-4 flex items-center gap-2 border-b border-border bg-background/95 px-4 py-3 backdrop-blur">
+      <header className="sticky top-0 z-40 -mx-4 flex items-center gap-2 border-b border-border/70 bg-background/95 px-4 py-3 backdrop-blur-xl">
         <button
           type="button"
           onClick={() => void persist().then(() => nav({ to: "/notas" }))}
@@ -453,7 +453,7 @@ function NotaEditorPage() {
           <ArrowLeft className="h-5 w-5" />
         </button>
 
-        <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
+        <span className="min-w-0 flex-1 truncate rounded-full bg-surface px-3 py-1.5 text-[10px] font-medium text-muted-foreground">
           {saveState === "salvando" ? (
             <span className="inline-flex items-center gap-1">
               <Loader2 className="h-3 w-3 animate-spin" /> Salvando…
@@ -507,19 +507,19 @@ function NotaEditorPage() {
       )}
 
       {/* ── Título ───────────────────────────────────────────────── */}
-      <div className="mt-4 flex items-start gap-2">
+      <div className="mt-6 rounded-3xl border border-border bg-surface/55 p-4 shadow-sm">
         <input
           value={title}
           onChange={(e) => handleTitleChange(e.target.value)}
           placeholder="Escreva aqui seu título"
-          className="w-full flex-1 border-none bg-transparent text-2xl font-bold text-foreground outline-none placeholder:text-muted-foreground/50"
+          className="w-full flex-1 border-none bg-transparent text-2xl font-extrabold tracking-tight text-foreground outline-none placeholder:text-muted-foreground/50"
         />
         <button
           type="button"
           onClick={() => void handleGenerateTitle()}
           disabled={titleGenerating}
           title="Sugerir título com IA"
-          className="mt-1.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/10 disabled:opacity-50"
+          className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors hover:bg-primary/15 disabled:opacity-50"
         >
           {titleGenerating ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -530,7 +530,11 @@ function NotaEditorPage() {
       </div>
 
       {/* ── Corpo do editor ──────────────────────────────────────── */}
-      <div className="mt-4 flex-1">
+      <div className="mt-3 flex-1 rounded-3xl border border-border/80 bg-surface/25 px-4 py-5 shadow-sm">
+        <div className="mb-4 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/70">
+          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+          Escreva sua reflexão
+        </div>
         <EditorContent editor={editor} />
       </div>
       <NoteFormattingToolbar editor={editor} onActiveChange={setFormattingActive} />
@@ -539,13 +543,13 @@ function NotaEditorPage() {
            Escondidas enquanto a barra de formatação estiver visível
            (há um texto selecionado), pra não sobrepor no rodapé. ── */}
       {!formattingActive && (
-        <div className="sticky bottom-4 mt-6 flex justify-center gap-2">
-          <div className="flex items-center gap-1 rounded-full border border-border bg-popover p-1 shadow-lg">
+        <div className="sticky bottom-4 z-20 mt-6 flex justify-center gap-2">
+          <div className="flex items-center gap-1 rounded-2xl border border-border bg-popover/95 p-1.5 shadow-xl backdrop-blur-xl">
             <button
               type="button"
               onClick={() => void handleAiAction("reescrever")}
               disabled={aiLoading !== null}
-              className="flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 disabled:opacity-50"
             >
               {aiLoading === "reescrever" ? (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
