@@ -168,14 +168,20 @@ function MessagesPage() {
             className="flex min-w-0 flex-1 items-center gap-3 rounded-xl px-1 py-1 transition-colors hover:bg-surface-2"
             aria-label={`Ver perfil de ${peer.display_name}`}
           >
-            <div className={`relative h-11 w-11 shrink-0 overflow-hidden rounded-full bg-surface-2 ring-2 ${peerOnline ? "ring-emerald-400/70" : "ring-border"}`}>
-              {peer.avatar_url ? (
-                <img src={peer.avatar_url} alt="" className="h-full w-full object-cover" />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center text-xs font-bold text-muted-foreground">
-                  {peer.display_name[0]?.toUpperCase() ?? "?"}
-                </div>
-              )}
+            <div className={`relative h-11 w-11 shrink-0 overflow-visible rounded-full bg-surface-2 ring-2 ${peerOnline ? "ring-emerald-400/70" : "ring-border"}`}>
+              <div className="absolute inset-0 overflow-hidden rounded-full">
+                {peer.avatar_url ? (
+                  <img src={peer.avatar_url} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-xs font-bold text-muted-foreground">
+                    {peer.display_name[0]?.toUpperCase() ?? "?"}
+                  </div>
+                )}
+              </div>
+              <span
+                className={`absolute -bottom-1 -right-1 z-10 h-4 w-4 rounded-full border-2 border-background ${peerOnline ? "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.85)]" : "bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.7)]"}`}
+                aria-label={peerOnline ? "Online" : "Offline"}
+              />
             </div>
             <div className="min-w-0">
               <p className="truncate text-sm font-extrabold">{peer.display_name}</p>
