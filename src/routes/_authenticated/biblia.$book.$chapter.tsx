@@ -17,6 +17,7 @@ import {
 } from "@/lib/bible-user-data";
 import { useBiblePrefs, BIBLE_FONT_SCALES } from "@/lib/bible-prefs";
 import { VerseActionSheet } from "@/components/bible/VerseActionSheet";
+import { VersionCompareSheet } from "@/components/bible/VersionCompareSheet";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useApp } from "@/lib/app-context";
 import {
@@ -35,6 +36,7 @@ import {
   StickyNote,
   Type,
   X,
+  GitCompareArrows,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/biblia/$book/$chapter")({
@@ -68,6 +70,7 @@ function ChapterReader() {
   const [noteFor, setNoteFor] = useState<number | null>(null);
   const [noteText, setNoteText] = useState("");
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [compareOpen, setCompareOpen] = useState(false);
   const [chapterPicker, setChapterPicker] = useState(false);
   const [narrationIndex, setNarrationIndex] = useState<number | null>(null);
   const [narrationStarted, setNarrationStarted] = useState(false);
@@ -308,6 +311,13 @@ function ChapterReader() {
             className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-surface text-muted-foreground transition-all hover:border-primary/30 hover:text-primary active:scale-95"
           >
             <Type className="h-4 w-4" />
+          </button>
+          <button
+            onClick={() => setCompareOpen(true)}
+            aria-label="Comparar versões"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-surface text-muted-foreground transition-all hover:border-primary/30 hover:text-primary active:scale-95"
+          >
+            <GitCompareArrows className="h-4 w-4" />
           </button>
           <ThemeToggle className="h-9 w-9 border-border bg-surface" />
         </div>
@@ -639,6 +649,14 @@ function ChapterReader() {
           </div>
         </div>
       )}
+
+      <VersionCompareSheet
+        open={compareOpen}
+        onOpenChange={setCompareOpen}
+        book={book}
+        chapter={chapter}
+        currentTranslation={translation}
+      />
 
       {selected !== null && (
         <VerseActionSheet
