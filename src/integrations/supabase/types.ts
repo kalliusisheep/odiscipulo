@@ -1232,6 +1232,36 @@ export type Database = {
         }
         Relationships: []
       }
+      mentor_messages: {
+        Row: {
+          audio_duration_seconds: number | null
+          audio_url: string | null
+          content: string | null
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          audio_duration_seconds?: number | null
+          audio_url?: string | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          audio_duration_seconds?: number | null
+          audio_url?: string | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           audio_duration_seconds: number | null
@@ -1416,6 +1446,7 @@ export type Database = {
           is_leader: boolean
           last_activity_date: string | null
           last_name: string | null
+          last_seen_at: string | null
           notify_devocional: boolean
           onboarded: boolean
           streak: number
@@ -1437,6 +1468,7 @@ export type Database = {
           is_leader?: boolean
           last_activity_date?: string | null
           last_name?: string | null
+          last_seen_at?: string | null
           notify_devocional?: boolean
           onboarded?: boolean
           streak?: number
@@ -1458,6 +1490,7 @@ export type Database = {
           is_leader?: boolean
           last_activity_date?: string | null
           last_name?: string | null
+          last_seen_at?: string | null
           notify_devocional?: boolean
           onboarded?: boolean
           streak?: number
@@ -1631,6 +1664,7 @@ export type Database = {
         }[]
       }
       normalize_church_name: { Args: { _name: string }; Returns: string }
+      touch_last_seen: { Args: never; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
