@@ -305,14 +305,27 @@ function DayDetails({
   const { scaleIndex, increase, decrease, contentZoomStyle } = useReadingFontScale();
 
   return (
-    <div className="space-y-5 border-t border-border/60 bg-surface/50 p-5" data-tts-scope="plano-dia">
-      <div className="flex items-center justify-end gap-2">
-        <NarrationButton containerSelector='[data-tts-scope="plano-dia"]' />
-        <FontSizeControls
-          scaleIndex={scaleIndex}
-          onIncrease={increase}
-          onDecrease={decrease}
-        />
+    <div className="space-y-5 border-t border-border/60 bg-surface/50 p-4" data-tts-scope="plano-dia">
+      <div className="rounded-[1.75rem] border border-primary/20 bg-gradient-to-br from-primary/12 via-surface to-surface p-4 shadow-sm">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary">Leitura do dia</p>
+            <h2 className="mt-1 text-xl font-extrabold tracking-tight">Dia {day.day}</h2>
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{day.focus}</p>
+          </div>
+          <div className="flex shrink-0 items-center gap-1.5">
+            <NarrationButton containerSelector='[data-tts-scope="plano-dia"]' />
+            <FontSizeControls
+              scaleIndex={scaleIndex}
+              onIncrease={increase}
+              onDecrease={decrease}
+            />
+          </div>
+        </div>
+        <div className="mt-4 flex items-center gap-2 text-[11px] text-muted-foreground">
+          <BookOpen className="h-3.5 w-3.5 text-primary" />
+          <span>{day.passage_api_refs.length} {day.passage_api_refs.length === 1 ? "passagem" : "passagens"} para ler com calma</span>
+        </div>
       </div>
 
       <div style={contentZoomStyle} className="space-y-3">
@@ -420,10 +433,15 @@ function PassageBlock({
   }, [apiRef, version]);
 
   return (
-    <div className="rounded-xl border-l-2 border-l-primary/60 bg-surface-2/50 p-3">
-      <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-        <span data-narrate>{label}</span> · {bibleLabelFor(version)}
-      </p>
+    <div className="rounded-[1.5rem] border border-border bg-surface-2/70 p-4 shadow-sm">
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">
+          <span data-narrate>{label}</span>
+        </span>
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          {bibleLabelFor(version)}
+        </span>
+      </div>
       {loading && (
         <p className="flex items-center gap-2 text-xs text-muted-foreground">
           <Loader2 className="h-3 w-3 animate-spin" /> Carregando passagem…
@@ -436,7 +454,7 @@ function PassageBlock({
       )}
       {text && (
         <p
-          className="font-sans text-base font-normal leading-7 text-foreground/90 not-italic"
+          className="font-sans text-[15px] font-normal leading-7 text-foreground/90 not-italic"
           data-narrate
           data-narrate-text={stripVerseNumbers(text)}
         >
