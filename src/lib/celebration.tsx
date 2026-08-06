@@ -3,6 +3,7 @@ import confetti from "canvas-confetti";
 import { getLevel, type LevelEntry } from "@/data/levels";
 import { PartyPopper, Sparkles, X } from "lucide-react";
 import { useMascot } from "@/lib/mascot";
+import { getGameAudioState } from "@/lib/game-audio";
 
 type CelebrationCtx = {
   celebrateActivity: (opts: { prevXp: number; newXp: number; xp?: number; level50Unlocked?: boolean }) => void;
@@ -58,7 +59,7 @@ function note(ctx: AudioContext, out: AudioNode, o: NoteOpts) {
 /** Cria um "reverb" barato (delay curto realimentado) — dá o ar épico de masmorra. */
 function makeBus(ctx: AudioContext) {
   const master = ctx.createGain();
-  master.gain.value = 0.9;
+  master.gain.value = 1;
   const delay = ctx.createDelay(1);
   delay.delayTime.value = 0.12;
   const feedback = ctx.createGain();
@@ -81,6 +82,7 @@ function closeSoon(ctx: AudioContext, afterSec: number) {
  * brilhante com sino final — curto, marcante e com a cara do app.
  */
 function successChime() {
+  if (!getGameAudioState().sfxEnabled) return;
   const ctx = getAudioCtx();
   if (!ctx) return;
   try {
@@ -109,6 +111,7 @@ function successChime() {
  * metais em acorde e brilho cintilante no fim.
  */
 function levelUpFanfare() {
+  if (!getGameAudioState().sfxEnabled) return;
   const ctx = getAudioCtx();
   if (!ctx) return;
   try {
