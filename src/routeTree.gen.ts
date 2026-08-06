@@ -21,6 +21,7 @@ import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedPreview_niveisRouteImport } from './routes/_authenticated/preview_niveis'
 import { Route as AuthenticatedRankingRouteImport } from './routes/_authenticated/ranking'
 import { Route as AuthenticatedRankingDetalhesRouteImport } from './routes/_authenticated/ranking-detalhes'
+import { Route as AuthenticatedVersiculoRouteImport } from './routes/_authenticated/versiculo'
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as AuthenticatedAdminPregerarNarracaoRouteImport } from './routes/_authenticated/admin.pregerar-narracao'
 import { Route as AuthenticatedAdminPregerarTextosRouteImport } from './routes/_authenticated/admin.pregerar-textos'
@@ -104,6 +105,11 @@ const AuthenticatedRankingDetalhesRoute =
     path: '/ranking-detalhes',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedVersiculoRoute = AuthenticatedVersiculoRouteImport.update({
+  id: '/versiculo',
+  path: '/versiculo',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const ApiTtsRoute = ApiTtsRouteImport.update({
   id: '/api/tts',
   path: '/api/tts',
@@ -238,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/preview_niveis': typeof AuthenticatedPreview_niveisRoute
   '/ranking': typeof AuthenticatedRankingRoute
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
+  '/versiculo': typeof AuthenticatedVersiculoRoute
   '/api/tts': typeof ApiTtsRoute
   '/admin/pregerar-narracao': typeof AuthenticatedAdminPregerarNarracaoRoute
   '/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
@@ -272,6 +279,7 @@ export interface FileRoutesByTo {
   '/preview_niveis': typeof AuthenticatedPreview_niveisRoute
   '/ranking': typeof AuthenticatedRankingRoute
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
+  '/versiculo': typeof AuthenticatedVersiculoRoute
   '/api/tts': typeof ApiTtsRoute
   '/admin/pregerar-narracao': typeof AuthenticatedAdminPregerarNarracaoRoute
   '/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
@@ -308,6 +316,7 @@ export interface FileRoutesById {
   '/_authenticated/preview_niveis': typeof AuthenticatedPreview_niveisRoute
   '/_authenticated/ranking': typeof AuthenticatedRankingRoute
   '/_authenticated/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
+  '/_authenticated/versiculo': typeof AuthenticatedVersiculoRoute
   '/api/tts': typeof ApiTtsRoute
   '/_authenticated/admin/pregerar-narracao': typeof AuthenticatedAdminPregerarNarracaoRoute
   '/_authenticated/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
@@ -344,6 +353,7 @@ export interface FileRouteTypes {
     | '/preview_niveis'
     | '/ranking'
     | '/ranking-detalhes'
+    | '/versiculo'
     | '/api/tts'
     | '/admin/pregerar-narracao'
     | '/admin/pregerar-textos'
@@ -378,6 +388,7 @@ export interface FileRouteTypes {
     | '/preview_niveis'
     | '/ranking'
     | '/ranking-detalhes'
+    | '/versiculo'
     | '/api/tts'
     | '/admin/pregerar-narracao'
     | '/admin/pregerar-textos'
@@ -413,6 +424,7 @@ export interface FileRouteTypes {
     | '/_authenticated/preview_niveis'
     | '/_authenticated/ranking'
     | '/_authenticated/ranking-detalhes'
+    | '/_authenticated/versiculo'
     | '/api/tts'
     | '/_authenticated/admin/pregerar-narracao'
     | '/_authenticated/admin/pregerar-textos'
@@ -527,6 +539,13 @@ declare module '@tanstack/react-router' {
       path: '/ranking-detalhes'
       fullPath: '/ranking-detalhes'
       preLoaderRoute: typeof AuthenticatedRankingDetalhesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/versiculo': {
+      id: '/_authenticated/versiculo'
+      path: '/versiculo'
+      fullPath: '/versiculo'
+      preLoaderRoute: typeof AuthenticatedVersiculoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/api/tts': {
@@ -689,6 +708,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPreview_niveisRoute: typeof AuthenticatedPreview_niveisRoute
   AuthenticatedRankingRoute: typeof AuthenticatedRankingRoute
   AuthenticatedRankingDetalhesRoute: typeof AuthenticatedRankingDetalhesRoute
+  AuthenticatedVersiculoRoute: typeof AuthenticatedVersiculoRoute
   AuthenticatedAdminPregerarNarracaoRoute: typeof AuthenticatedAdminPregerarNarracaoRoute
   AuthenticatedAdminPregerarTextosRoute: typeof AuthenticatedAdminPregerarTextosRoute
   AuthenticatedBibliaMarcadosRoute: typeof AuthenticatedBibliaMarcadosRoute
@@ -721,6 +741,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPreview_niveisRoute: AuthenticatedPreview_niveisRoute,
   AuthenticatedRankingRoute: AuthenticatedRankingRoute,
   AuthenticatedRankingDetalhesRoute: AuthenticatedRankingDetalhesRoute,
+  AuthenticatedVersiculoRoute: AuthenticatedVersiculoRoute,
   AuthenticatedAdminPregerarNarracaoRoute:
     AuthenticatedAdminPregerarNarracaoRoute,
   AuthenticatedAdminPregerarTextosRoute: AuthenticatedAdminPregerarTextosRoute,
@@ -757,3 +778,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
