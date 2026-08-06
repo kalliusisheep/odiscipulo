@@ -73,7 +73,12 @@ function VersiculoPage() {
     playGameSfx("start");
     const pool = versesForDifficulty(difficulty);
     const fallbackPool = pool.length >= rounds ? pool : [...pool, ...BIBLICAL_VERSES.filter((item) => item.difficulty !== "bereano")];
-    const list = Array.from({ length: rounds }, (_, index) => shuffle(fallbackPool)[index % fallbackPool.length]);
+    const recentKey = `verse_recent_questions_${difficulty}`;
+    const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
+    const shuffled = shuffle(fallbackPool);
+    const fresh = shuffled.filter((item) => !recentIds.includes(item.id));
+    const list = [...fresh, ...shuffled].slice(0, rounds);
+    window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...list.map((item) => item.id)])].slice(-Math.max(rounds * 5, 40))));
     setQuestions(list); setRound(0); setScore(0); setStreak(0); setBestStreak(0); setResults([]); setLastPoints(0);
     setOptions(shuffle([list[0].reference, ...list[0].alternatives])); setSelected(null); setTimeLeft(ROUND_SECONDS); startedAtRef.current = Date.now(); setPhase("answering");
   };

@@ -45,7 +45,11 @@ function PersonagemPage() {
     startGameMusic("character");
     playGameSfx("start");
     const shuffled = [...filteredCharacters].sort(() => Math.random() - 0.5);
-    const selected = Array.from({ length: rounds }, (_, index) => shuffled[index % shuffled.length]);
+    const recentKey = `character_recent_questions_${difficulty}`;
+    const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
+    const fresh = shuffled.filter((item) => !recentIds.includes(item.id));
+    const selected = [...fresh, ...shuffled].slice(0, rounds);
+    window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...selected.map((item) => item.id)])].slice(-Math.max(rounds * 5, 40))));
     setQueue(selected);
     setRound(0);
     setScore(0);
