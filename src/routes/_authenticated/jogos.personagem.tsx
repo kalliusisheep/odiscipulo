@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, Eye, Flame, Lightbulb, RotateCcw, Sparkles, Trophy, X, Zap } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Flame, Lightbulb, RotateCcw, Sparkles, Trophy, X, Zap } from "lucide-react";
 import { useMemo, useState } from "react";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { BIBLICAL_CHARACTERS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
@@ -26,7 +26,6 @@ function PersonagemPage() {
   const [queue, setQueue] = useState<BiblicalCharacter[]>([]);
   const [round, setRound] = useState(0);
   const [revealed, setRevealed] = useState<number[]>([]);
-  const [pendingHint, setPendingHint] = useState<number | null>(null);
   const [answer, setAnswer] = useState("");
   const [score, setScore] = useState(0);
   const [roundScore, setRoundScore] = useState(0);
@@ -54,10 +53,9 @@ function PersonagemPage() {
     setPhase("playing");
   };
 
-  const revealHint = () => {
-    if (pendingHint === null || revealed.includes(pendingHint)) return;
-    setRevealed((items) => [...items, pendingHint]);
-    setPendingHint(null);
+  const revealHint = (hintIndex: number) => {
+    if (revealed.includes(hintIndex)) return;
+    setRevealed((items) => [...items, hintIndex]);
   };
 
   const submit = () => {
@@ -125,7 +123,7 @@ function PersonagemPage() {
 
         <section className="mt-4 rounded-[1.75rem] border border-border bg-surface p-5 shadow-lg shadow-black/10">
           <div className="flex items-center justify-between"><div><p className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">Desbloqueie mais pistas</p><p className="mt-1 text-xs text-muted-foreground">Quanto menos ajuda, maior o desafio.</p></div><span className={`rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-extrabold uppercase ${difficultyData.tone}`}>{difficultyData.label} · {difficultyData.multiplier}x</span></div>
-          <div className="mt-4 space-y-3">{character.hints.slice(1).map((hint, offset) => { const index = offset + 1; const isRevealed = revealed.includes(index); return <div key={hint} className={`rounded-2xl border p-4 transition-colors ${isRevealed ? "border-primary/30 bg-primary/5" : "border-border/70 bg-background/50"}`}>{isRevealed ? <div className="flex gap-3"><span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary"><Check className="h-4 w-4" /></span><p className="text-sm leading-relaxed">{hint}</p></div> : <button type="button" onClick={() => setPendingHint(index)} className="flex w-full items-center gap-3 text-left text-sm font-bold text-muted-foreground hover:text-foreground"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary"><Lightbulb className="h-4 w-4" /></span><span>Pista {index + 1}</span><span className="ml-auto inline-flex items-center gap-1 text-xs font-medium text-primary">Revelar <ArrowRight className="h-3.5 w-3.5" /></span></button>}</div>; })}</div>
+          <div className="mt-4 space-y-3">{character.hints.slice(1).map((hint, offset) => { const index = offset + 1; const isRevealed = revealed.includes(index); return <div key={hint} className={`rounded-2xl border p-4 transition-colors ${isRevealed ? "border-primary/30 bg-primary/5" : "border-border/70 bg-background/50"}`}>{isRevealed ? <div className="flex gap-3"><span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary"><Check className="h-4 w-4" /></span><p className="text-sm leading-relaxed">{hint}</p></div> : <button type="button" onClick={() => revealHint(index)} className="flex w-full items-center gap-3 text-left text-sm font-bold text-muted-foreground hover:text-foreground"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary"><Lightbulb className="h-4 w-4" /></span><span>Pista {index + 1}</span><span className="ml-auto inline-flex items-center gap-1 text-xs font-medium text-primary">Revelar <ArrowRight className="h-3.5 w-3.5" /></span></button>}</div>; })}</div>
         </section>
 
         <section className="mt-4 rounded-[1.5rem] border border-border bg-surface/70 p-4"><label className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground" htmlFor="answer">Sua resposta</label><div className="mt-2 flex gap-2"><input id="answer" value={answer} onChange={(event) => setAnswer(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") submit(); }} disabled={phase !== "playing"} placeholder="Digite o nome do personagem" className="min-w-0 flex-1 rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10" /><button type="button" onClick={submit} disabled={!answer.trim()} className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 disabled:opacity-50"><Check className="h-5 w-5" /></button></div><p className="mt-3 text-[11px] text-muted-foreground">Digite e confirme. A resposta certa encerra a rodada.</p></section>
@@ -133,7 +131,6 @@ function PersonagemPage() {
         {phase === "round-result" && <section className={`mt-4 rounded-3xl border p-5 shadow-lg ${correct ? "border-success/40 bg-success/10 shadow-success/5" : "border-ancient/40 bg-ancient/10 shadow-ancient/5"}`}><div className="flex items-start gap-3"><span className={`flex h-10 w-10 items-center justify-center rounded-2xl ${correct ? "bg-success/15 text-success" : "bg-ancient/15 text-ancient"}`}>{correct ? <Check /> : <X />}</span><div className="min-w-0 flex-1"><p className="font-extrabold">{correct ? `Acertou! +${roundScore} pontos` : `A resposta era ${character.name}`}</p><p className="mt-1 text-xs leading-relaxed text-muted-foreground">{character.summary}</p><p className="mt-3 text-[11px] font-bold text-muted-foreground">Referências: {character.references.join(" · ")}</p></div></div><button type="button" onClick={next} className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-extrabold text-primary-foreground">{round + 1 >= rounds ? "Ver resultado" : "Próxima rodada"}<ArrowRight className="h-4 w-4" /></button></section>}
       </div>
 
-      {pendingHint !== null && <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-4 sm:items-center"><div className="w-full max-w-md rounded-[1.75rem] border border-border bg-surface p-6 shadow-2xl"><div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary"><Eye className="h-5 w-5" /></span><div><h2 className="font-extrabold">Revelar esta pista?</h2><p className="text-xs text-muted-foreground">A pontuação máxima desta rodada vai diminuir.</p></div></div><div className="mt-5 flex gap-3"><button type="button" onClick={() => setPendingHint(null)} className="flex-1 rounded-2xl border border-border px-4 py-3 text-sm font-bold">Agora não</button><button type="button" onClick={revealHint} className="flex-1 rounded-2xl bg-primary px-4 py-3 text-sm font-extrabold text-primary-foreground">Revelar pista</button></div></div></div>}
     </main>
   );
 }
