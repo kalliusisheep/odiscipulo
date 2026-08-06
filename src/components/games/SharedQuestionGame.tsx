@@ -1,7 +1,7 @@
-import { ArrowLeft, ArrowRight, Check, Clock3, Crown, Flame, Lightbulb, Sparkles, Trophy, Users, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Clock3, Crown, Flame, Lightbulb, RotateCcw, Sparkles, Trophy, Users, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BIBLICAL_CHARACTERS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
-import { BIBLICAL_VERSES, VERSE_DIFFICULTY, versesForDifficulty } from "@/data/biblical-verses";
+import { VERSE_DIFFICULTY, versesForDifficulty } from "@/data/biblical-verses";
 import { MILLION_DIFFICULTY, randomMillionQuestions, randomMillionQuestionsWithSeed, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { recordGameResult, type GameKey } from "@/lib/game-leaderboard";
@@ -408,9 +408,8 @@ export function SharedQuestionGame({
   }
 
   const roundClosed = remoteRound.status !== "active";
-  const localCorrect = Boolean(selected) && (gameType === "personagem" ? Boolean(currentQuestion.character && isCorrectCharacterAnswer(currentQuestion.character, selected)) : normalize(selected) === normalize(currentQuestion.answer));
   const revealed = new Set([0, ...(remoteRound.revealed_hint_indexes ?? [])]);
-  const winningName = currentWinner?.display_name ?? "Um jogador";
+  const winningName = winner?.display_name ?? "Um jogador";
   const showWaiting = answered && !roundClosed;
 
   return (
