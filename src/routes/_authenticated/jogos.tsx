@@ -1,13 +1,13 @@
 import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, CheckCircle2, Gamepad2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpenText, CheckCircle2, Gamepad2, Grid2X2, Trophy, UserRound } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/jogos")({ component: JogosPage });
 
 const games = [
-  { title: "Quem é o personagem?", description: "Descubra personagens bíblicos usando três pistas da Palavra.", to: "/jogos/personagem" as const, symbol: "✦", tone: "from-violet-500/30 via-primary/10 to-surface", accent: "text-violet-200" },
-  { title: "Qual é o versículo?", description: "Reconheça o contexto e encontre a passagem certa.", to: "/jogos/versiculo" as const, symbol: "⌁", tone: "from-emerald-500/25 via-teal-500/10 to-surface", accent: "text-emerald-200" },
-  { title: "Palavras cruzadas", description: "Complete o desafio com termos e histórias bíblicas.", to: "/jogos/cruzadas" as const, symbol: "╳", tone: "from-amber-500/25 via-orange-500/10 to-surface", accent: "text-amber-200" },
-  { title: "Quiz do milhão", description: "Suba a escada de perguntas e teste seu conhecimento.", to: "/jogos/milhao" as const, symbol: "◆", tone: "from-fuchsia-500/25 via-purple-500/10 to-surface", accent: "text-fuchsia-200" },
+  { title: "Quem é o personagem?", description: "Descubra personagens bíblicos usando três pistas da Palavra.", to: "/jogos/personagem" as const, icon: UserRound, tone: "from-violet-500/30 via-primary/10 to-surface", accent: "text-violet-200" },
+  { title: "Qual é o versículo?", description: "Reconheça o contexto e encontre a passagem certa.", to: "/jogos/versiculo" as const, icon: BookOpenText, tone: "from-emerald-500/25 via-teal-500/10 to-surface", accent: "text-emerald-200" },
+  { title: "Palavras cruzadas", description: "Complete o desafio com termos e histórias bíblicas.", to: "/jogos/cruzadas" as const, icon: Grid2X2, tone: "from-amber-500/25 via-orange-500/10 to-surface", accent: "text-amber-200" },
+  { title: "Quiz do milhão", description: "Suba a escada de perguntas e teste seu conhecimento.", to: "/jogos/milhao" as const, icon: Trophy, tone: "from-fuchsia-500/25 via-purple-500/10 to-surface", accent: "text-fuchsia-200" },
 ];
 
 function JogosPage() {
@@ -40,7 +40,8 @@ function JogosPage() {
         <section className="mt-8 space-y-3">
           <div className="px-1"><p className="text-xs font-extrabold uppercase tracking-[0.16em] text-muted-foreground">Escolha um desafio</p></div>
           {games.map((game) => {
-            return <Link key={game.title} to={game.to} className={`group flex min-h-[112px] items-center gap-4 rounded-[1.75rem] border border-white/10 bg-gradient-to-br ${game.tone} p-4 shadow-lg shadow-black/10 transition-all hover:-translate-y-0.5 hover:border-white/25 hover:shadow-primary/10`}><span className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-background/40 text-3xl font-black leading-none ring-1 ring-white/10 ${game.accent}`} aria-hidden="true">{game.symbol}</span><span className="min-w-0 flex-1"><span className="block text-base font-extrabold tracking-tight">{game.title}</span><span className="mt-1 block text-xs leading-relaxed text-muted-foreground">{game.description}</span></span><ArrowRight className="h-5 w-5 shrink-0 text-foreground/70 transition-transform group-hover:translate-x-1" /></Link>;
+            const Icon = game.icon;
+            return <Link key={game.title} to={game.to} className={`group flex min-h-[112px] items-center gap-4 rounded-[1.75rem] border border-white/10 bg-gradient-to-br ${game.tone} p-4 shadow-lg shadow-black/10 transition-all hover:-translate-y-0.5 hover:border-white/25 hover:shadow-primary/10`}><span className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-background/40 ring-1 ring-white/10 ${game.accent}`} aria-hidden="true"><Icon className="h-7 w-7" strokeWidth={2.2} /></span><span className="min-w-0 flex-1"><span className="block text-base font-extrabold tracking-tight">{game.title}</span><span className="mt-1 block text-xs leading-relaxed text-muted-foreground">{game.description}</span></span><ArrowRight className="h-5 w-5 shrink-0 text-foreground/70 transition-transform group-hover:translate-x-1" /></Link>;
           })}
         </section>
         <p className="mt-6 flex items-center justify-center gap-2 text-center text-[11px] text-muted-foreground"><CheckCircle2 className="h-3.5 w-3.5 text-success" /> Conteúdo revisado com referências bíblicas.</p>
