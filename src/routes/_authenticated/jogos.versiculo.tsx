@@ -23,7 +23,7 @@ type Phase = "setup" | "answering" | "answered" | "finished";
 type RoundResult = { correct: boolean; points: number; elapsed: number };
 const difficultyOptions: GameDifficulty[] = ["facil", "medio", "dificil", "bereano"];
 const roundOptions = [5, 10, 20, 30];
-const ROUND_SECONDS = 18;
+
 
 function playTone(success: boolean) {
   playGameSfx(success ? "success" : "error");
@@ -56,7 +56,7 @@ function VersiculoPage() {
   const [round, setRound] = useState(0);
   const [options, setOptions] = useState<string[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
-  const [timeLeft, setTimeLeft] = useState(ROUND_SECONDS);
+  const [timeLeft, setTimeLeft] = useState(VERSE_DIFFICULTY[initialDifficulty as GameDifficulty].timeLimit);
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
@@ -72,7 +72,7 @@ function VersiculoPage() {
     const current = list[index];
     if (!current) return;
     setOptions(seed ? shuffleWithSeed([current.reference, ...current.alternatives], seed + index) : shuffle([current.reference, ...current.alternatives]));
-    setSelected(null); setTimeLeft(ROUND_SECONDS); startedAtRef.current = Date.now(); setPhase("answering");
+    setSelected(null); setTimeLeft(meta.timeLimit); startedAtRef.current = Date.now(); setPhase("answering");
   }, [questions, seed]);
 
   const start = () => {
@@ -92,7 +92,7 @@ function VersiculoPage() {
     list.forEach((item) => sessionSeenRef.current.add(item.id));
     window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...list.map((item) => item.id)])].slice(-Math.max(rounds * 5, 40))));
     setQuestions(list); setRound(0); setScore(0); setStreak(0); setBestStreak(0); setResults([]); setLastPoints(0);
-    setOptions(seed ? shuffleWithSeed([list[0].reference, ...list[0].alternatives], seed) : shuffle([list[0].reference, ...list[0].alternatives])); setSelected(null); setTimeLeft(ROUND_SECONDS); startedAtRef.current = Date.now(); setPhase("answering");
+    setOptions(seed ? shuffleWithSeed([list[0].reference, ...list[0].alternatives], seed) : shuffle([list[0].reference, ...list[0].alternatives])); setSelected(null); setTimeLeft(VERSE_DIFFICULTY[difficulty].timeLimit); startedAtRef.current = Date.now(); setPhase("answering");
   };
 
   useEffect(() => {
@@ -105,7 +105,7 @@ function VersiculoPage() {
   const answer = useCallback((value: string | null) => {
     if (phase !== "answering" || !question) return;
     const correct = value === question.reference;
-    const elapsed = Math.min(ROUND_SECONDS, Math.max(0, Math.round((Date.now() - startedAtRef.current) / 1000)));
+    const elapsed = Math.min(meta.timeLimit, Math.max(0, Math.round((Date.now() - startedAtRef.current) / 1000)));
     const nextStreak = correct ? streak + 1 : 0;
     const speedBonus = correct ? Math.max(0, timeLeft * 6) : 0;
     const comboBonus = correct ? Math.min(100, streak * 20) : 0;
