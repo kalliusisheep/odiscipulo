@@ -15,11 +15,11 @@ export type MillionQuestion = {
   difficulty: MillionDifficulty;
 };
 
-export const MILLION_DIFFICULTY: Record<MillionDifficulty, { label: string; description: string; multiplier: number }> = {
-  facil: { label: "Fácil", description: "Fatos centrais e personagens muito conhecidos.", multiplier: 1 },
-  medio: { label: "Médio", description: "Contextos conhecidos com alternativas próximas.", multiplier: 1.25 },
-  dificil: { label: "Difícil", description: "Detalhes que exigem atenção ao contexto bíblico.", multiplier: 1.5 },
-  bereano: { label: "Bereano Supremo", description: "Passagens menos lembradas para quem examina tudo.", multiplier: 2 },
+export const MILLION_DIFFICULTY: Record<MillionDifficulty, { label: string; description: string; multiplier: number; timeLimit: number }> = {
+  facil: { label: "Fácil", description: "Fatos centrais e personagens muito conhecidos.", multiplier: 1, timeLimit: 24 },
+  medio: { label: "Médio", description: "Contextos conhecidos com alternativas próximas.", multiplier: 1.25, timeLimit: 20 },
+  dificil: { label: "Difícil", description: "Detalhes de contexto, referências próximas e menos pistas.", multiplier: 1.5, timeLimit: 16 },
+  bereano: { label: "Bereano Supremo", description: "Passagens raras, alternativas muito próximas e pressão máxima.", multiplier: 2, timeLimit: 12 },
 };
 
 export const MILLION_LEVELS = [
@@ -152,6 +152,6 @@ const isValidQuestion = (question: MillionQuestion) => {
 };
 
 export const MILLION_QUESTIONS = BIBLE_FACTS.flatMap(createQuestions).filter(isValidQuestion);
-export const millionQuestionsForDifficulty = (difficulty: MillionDifficulty) => MILLION_QUESTIONS.filter((question) => question.difficulty === difficulty);
+export const millionQuestionsForDifficulty = (difficulty: MillionDifficulty) => MILLION_QUESTIONS.filter((question) => question.difficulty === difficulty && !(difficulty === "dificil" || difficulty === "bereano") || (question.difficulty === difficulty && question.type !== "true-false"));
 export const randomMillionQuestions = (difficulty: MillionDifficulty, amount: number) => shuffle(millionQuestionsForDifficulty(difficulty)).slice(0, amount).map((question) => ({ ...question, options: shuffle(question.options) }));
 export const randomMillionQuestionsWithSeed = (difficulty: MillionDifficulty, amount: number, seed: number) => shuffleWithSeed(millionQuestionsForDifficulty(difficulty), seed).slice(0, amount).map((question, index) => ({ ...question, options: shuffleWithSeed(question.options, seed + index + 1) }));
