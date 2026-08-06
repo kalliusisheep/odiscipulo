@@ -3,7 +3,21 @@ import { ptBR } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
 
 export async function touchLastSeen() {
-  await supabase.rpc("touch_last_seen");
+  const now = new Date().toISOString();
+  const { error } = await supabase.rpc("touch_last_seen");
+  if (!error) return;
+
+  const { data } = await supabase.auth.getUser();
+  if (!data.user) return;
+
+  // Compatibilidade com ambientes onde a migração ainda não foi aplicada.
+  const fallback = await supabase
+    .from("profiles")
+    .update({ last_seen_at: now })
+    .eq("id", data.user.id);
+  if (fallback.error) {
+    await supabase.from("profiles").update({ updated_at: now }).eq("id", data.user.id);
+  }
 }
 
 export function formatPresence(lastSeenAt: string | null | undefined) {
