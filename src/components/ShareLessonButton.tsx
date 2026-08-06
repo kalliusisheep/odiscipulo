@@ -1,8 +1,20 @@
 import { useState } from "react";
-import { Loader2, Share2 } from "lucide-react";
+import { Check, Loader2, Share2, X } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { generateShareImage } from "@/lib/share-image";
+
+const SHARE_BACKGROUNDS = [
+  { src: "/share-backgrounds/design-sem-nome.jpg", label: "Horizonte" },
+  { src: "/share-backgrounds/design-sem-nome-1.jpg", label: "Caminho dourado" },
+  { src: "/share-backgrounds/design-sem-nome-2.jpg", label: "Montanhas" },
+  { src: "/share-backgrounds/design-sem-nome-3.jpg", label: "Árvore no deserto" },
+  { src: "/share-backgrounds/design-sem-nome-4.jpg", label: "Noite serena" },
+  { src: "/share-backgrounds/design-sem-nome-5.jpg", label: "Floresta" },
+  { src: "/share-backgrounds/design-sem-nome-6.jpg", label: "Mesa no cânion" },
+  { src: "/share-backgrounds/design-sem-nome-7.jpg", label: "Mar e cruz" },
+  { src: "/share-backgrounds/design-sem-nome-8.jpg", label: "Novo horizonte" },
+] as const;
 
 type ShareLessonButtonProps = {
   /** Identificador estável do conteúdo (lesson.id, ou "bible:<id>" etc.) — usado para cache do texto de IA. */
@@ -43,9 +55,12 @@ export function ShareLessonButton({
   className,
 }: ShareLessonButtonProps) {
   const [sharing, setSharing] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [selectedBackground, setSelectedBackground] = useState(backgroundSrc);
 
   const handleShare = async () => {
     if (sharing) return;
+    setPickerOpen(false);
     setSharing(true);
     try {
       let shareText = fallbackShareText(title);
@@ -60,7 +75,7 @@ export function ShareLessonButton({
         console.error("Não foi possível gerar o texto de compartilhamento, usando texto padrão:", fnError);
       }
 
-      const blob = await generateShareImage({ title, bodyText: shareText, backgroundSrc });
+      const blob = await generateShareImage({ title, bodyText: shareText, backgroundSrc: selectedBackground });
       const fileName = `${slugify(title)}.jpg`;
       const file = new File([blob], fileName, { type: "image/jpeg" });
 
@@ -101,7 +116,9 @@ export function ShareLessonButton({
   return (
     <button
       type="button"
-      onClick={() => void handleShare()}
+      onClick={() => {
+        if (!sharing) setPickerOpen(true);
+      }}
       disabled={sharing}
       className={
         className ??
@@ -111,5 +128,102 @@ export function ShareLessonButton({
       {sharing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Share2 className="h-4 w-4" />}
       {sharing ? "Preparando…" : "Compartilhar"}
     </button>
+  );
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => {
+          if (!sharing) setPickerOpen(true);
+        }}
+        disabled={sharing}
+        className={
+          className ??
+          "inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary-glow disabled:opacity-60"
+        }
+      >
+        {sharing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Share2 className="h-4 w-4" />}
+        {sharing ? "Preparando…" : "Compartilhar"}
+      </button>
+
+      {pickerOpen && (
+        <div className="fixed inset-0 z-[80] overflow-y-auto bg-background/98 px-4 py-5 backdrop-blur-xl">
+          <div className="mx-auto flex min-h-full max-w-3xl flex-col">
+            <header className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">
+                  Compartilhar
+                </p>
+                <h2 className="mt-1 text-2xl font-extrabold tracking-tight">
+                  Escolha um fundo
+                </h2>
+                <p className="mt-1 max-w-xl text-sm text-muted-foreground">
+                  Selecione a imagem que vai receber seu texto. A imagem final será preparada para compartilhar.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setPickerOpen(false)}
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-border bg-surface text-muted-foreground transition-colors hover:text-foreground"
+                aria-label="Fechar seleção de fundo"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </header>
+
+            <div className="mt-6 grid flex-1 grid-cols-2 gap-3 pb-28 sm:grid-cols-3">
+              {SHARE_BACKGROUNDS.map((background) => {
+                const selected = selectedBackground === background.src;
+                return (
+                  <button
+                    key={background.src}
+                    type="button"
+                    onClick={() => setSelectedBackground(background.src)}
+                    className={`group relative aspect-[3/4] overflow-hidden rounded-2xl border-2 text-left transition-all hover:-translate-y-0.5 ${
+                      selected
+                        ? "border-primary ring-4 ring-primary/20"
+                        : "border-border/70 hover:border-primary/50"
+                    }`}
+                  >
+                    <img
+                      src={background.src}
+                      alt={`Fundo ${background.label}`}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-3 pb-3 pt-10">
+                      <span className="text-xs font-bold text-white">{background.label}</span>
+                    </div>
+                    {selected && (
+                      <span className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg">
+                        <Check className="h-4 w-4" />
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="fixed inset-x-0 bottom-0 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-xl">
+              <div className="mx-auto flex max-w-3xl items-center gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-xs font-semibold">
+                    {SHARE_BACKGROUNDS.find((background) => background.src === selectedBackground)?.label}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground">Fundo selecionado</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => void handleShare()}
+                  className="rounded-2xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/25 transition-transform active:scale-95"
+                >
+                  Usar este fundo
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
