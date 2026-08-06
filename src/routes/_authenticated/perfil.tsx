@@ -239,7 +239,7 @@ function PerfilPage() {
         </div>
 
         <div className="relative z-10 p-5">
-          <div className="flex items-start gap-3.5">
+          <div className="flex items-center gap-4">
             <div className="relative h-[92px] w-[92px] shrink-0">
               <div className="absolute inset-0 rounded-[28px] bg-gradient-to-br from-primary via-primary-glow to-white/20 p-[3px]">
                 <div className="h-full w-full rounded-[25px] bg-[#161d36]" />
@@ -249,12 +249,6 @@ function PerfilPage() {
                   <img
                     src={profile.avatar_url}
                     alt="Foto de perfil"
-                    className="h-full w-full object-cover"
-                  />
-                ) : level.avatar ? (
-                  <img
-                    src={level.avatar}
-                    alt={level.title}
                     className="h-full w-full object-cover"
                   />
                 ) : (
@@ -283,7 +277,7 @@ function PerfilPage() {
               />
             </div>
 
-            <div className="min-w-0 flex-1 pt-0.5">
+            <div className="min-w-0 flex-1">
               <p className="flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-[0.16em] text-white/55">
                 <Sparkles className="h-3 w-3 text-primary" /> Seu perfil
               </p>
@@ -357,16 +351,18 @@ function PerfilPage() {
                 )}
               </div>
 
-            <div className="flex w-12 shrink-0 flex-col items-center rounded-[18px] border border-orange-300/25 bg-orange-400/10 px-1 py-2 text-center shadow-inner shadow-orange-300/5">
-              <Flame className="h-4 w-4 text-orange-300" />
-              <strong className="mt-0.5 text-lg leading-none text-orange-200">
-                {profile.streak}
-              </strong>
-              <span className="mt-1 text-[7px] font-extrabold uppercase tracking-wider text-orange-200/70">
-                dias
-              </span>
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                <span className="rounded-full bg-primary/20 px-2.5 py-1 text-[10px] font-extrabold text-primary-foreground ring-1 ring-primary/30">
+                  Perfil pessoal
+                </span>
+                {profile.church_name && (
+                  <span className="max-w-full truncate rounded-full bg-white/[0.08] px-2.5 py-1 text-[10px] font-semibold text-white/70 ring-1 ring-white/10">
+                    {profile.church_name}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
-
         </div>
 
       </section>
