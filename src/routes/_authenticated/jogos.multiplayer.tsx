@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_authenticated/jogos/multiplayer")({
 type Friend = { id: string; display_name: string; avatar_url: string | null };
 type Player = { user_id: string; role: "host" | "player"; state: string; display_name: string; avatar_url: string | null; last_seen_at: string };
 type GameType = "personagem" | "versiculo" | "cruzadas" | "milhao";
-type Room = { id: string; host_id: string; max_players: number; difficulty: string; rounds: number; status: string; game_type: GameType };
+type Room = { id: string; host_id: string; max_players: number; difficulty: string; rounds: number; status: string; game_type: GameType; round_seed: number };
 
 const gameDb = supabase as any;
 const gameLabels: Record<GameType, string> = {
@@ -56,7 +56,7 @@ function MultiplayerPage() {
 
   const loadRoom = async (nextRoomId: string, userId: string) => {
     const [{ data: nextRoom, error: roomError }, { data: roomPlayers }] = await Promise.all([
-      gameDb.from("character_game_rooms").select("id,host_id,max_players,difficulty,rounds,status,game_type").eq("id", nextRoomId).maybeSingle(),
+      gameDb.from("character_game_rooms").select("id,host_id,max_players,difficulty,rounds,status,game_type,round_seed").eq("id", nextRoomId).maybeSingle(),
       gameDb.from("character_game_room_players").select("user_id,role,state,last_seen_at").eq("room_id", nextRoomId),
     ]);
     if (roomError || !nextRoom) {
@@ -181,10 +181,11 @@ function MultiplayerPage() {
     if (!roomId || !canStart || busy) return;
     setBusy(true);
     try {
-      const { error } = await gameDb.from("character_game_rooms").update({ status: "playing", started_at: new Date().toISOString() }).eq("id", roomId).eq("host_id", myId);
+      const roundSeed = Math.floor(Math.random() * 2_147_483_647);
+      const { error } = await gameDb.from("character_game_rooms").update({ status: "playing", started_at: new Date().toISOString(), round_seed: roundSeed }).eq("id", roomId).eq("host_id", myId);
       if (error) throw error;
       toast.success("Partida iniciada!");
-      window.location.href = `/jogos/${gameType}?mode=multi&roomId=${roomId}`;
+      window.location.href = `/jogos/${gameType}?mode=multi&roomId=${roomId}&seed=${roundSeed}`;
     } catch {
       toast.error("A partida precisa de dois jogadores prontos.");
     } finally {
@@ -221,7 +222,7 @@ function MultiplayerPage() {
 
   useEffect(() => {
     if (room?.status !== "playing" || !roomId) return;
-    window.location.href = `/jogos/${gameType}?mode=multi&roomId=${roomId}`;
+    window.location.href = `/jogos/${gameType}?mode=multi&roomId=${roomId}&seed=${room?.round_seed ?? 0}`;
   }, [gameType, room?.status, roomId]);
 
   const copyInvite = async () => {

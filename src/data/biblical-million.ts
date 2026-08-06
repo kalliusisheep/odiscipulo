@@ -1,3 +1,5 @@
+import { shuffleWithSeed } from "@/lib/seeded-random";
+
 export type MillionQuestionType = "multiple" | "true-false" | "complete" | "reference";
 export type MillionDifficulty = "facil" | "medio" | "dificil" | "bereano";
 
@@ -140,3 +142,4 @@ function createQuestions(fact: BibleFact): MillionQuestion[] {
 export const MILLION_QUESTIONS = BIBLE_FACTS.flatMap(createQuestions);
 export const millionQuestionsForDifficulty = (difficulty: MillionDifficulty) => MILLION_QUESTIONS.filter((question) => question.difficulty === difficulty);
 export const randomMillionQuestions = (difficulty: MillionDifficulty, amount: number) => shuffle(millionQuestionsForDifficulty(difficulty)).slice(0, amount).map((question) => ({ ...question, options: shuffle(question.options) }));
+export const randomMillionQuestionsWithSeed = (difficulty: MillionDifficulty, amount: number, seed: number) => shuffleWithSeed(millionQuestionsForDifficulty(difficulty), seed).slice(0, amount).map((question, index) => ({ ...question, options: shuffleWithSeed(question.options, seed + index + 1) }));

@@ -5,11 +5,13 @@ import { BIBLICAL_VERSES, VERSE_DIFFICULTY, versesForDifficulty } from "@/data/b
 import type { GameDifficulty } from "@/data/biblical-characters";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
+import { shuffleWithSeed } from "@/lib/seeded-random";
 
 export const Route = createFileRoute("/_authenticated/jogos/versiculo")({
   validateSearch: (search: Record<string, unknown>) => ({
     mode: search.mode === "multi" ? "multi" : "single",
     roomId: typeof search.roomId === "string" ? search.roomId : undefined,
+    seed: typeof search.seed === "string" && Number.isFinite(Number(search.seed)) ? Number(search.seed) : undefined,
   }),
   component: VersiculoPage,
 });
@@ -42,7 +44,7 @@ function playTone(success: boolean) {
 function shuffle<T>(items: T[]) { return [...items].sort(() => Math.random() - 0.5); }
 
 function VersiculoPage() {
-  const { mode, roomId } = Route.useSearch();
+  const { mode, roomId, seed } = Route.useSearch();
   const [phase, setPhase] = useState<Phase>("setup");
   const [modeSelected, setModeSelected] = useState(mode === "multi");
   const [difficulty, setDifficulty] = useState<GameDifficulty>("medio");
@@ -65,9 +67,9 @@ function VersiculoPage() {
   const prepareRound = useCallback((index: number, list = questions) => {
     const current = list[index];
     if (!current) return;
-    setOptions(shuffle([current.reference, ...current.alternatives]));
+    setOptions(seed ? shuffleWithSeed([current.reference, ...current.alternatives], seed + index) : shuffle([current.reference, ...current.alternatives]));
     setSelected(null); setTimeLeft(ROUND_SECONDS); startedAtRef.current = Date.now(); setPhase("answering");
-  }, [questions]);
+  }, [questions, seed]);
 
   const start = () => {
     startGameMusic("verse");
@@ -81,7 +83,7 @@ function VersiculoPage() {
     const list = [...fresh, ...shuffled].slice(0, rounds);
     window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...list.map((item) => item.id)])].slice(-Math.max(rounds * 5, 40))));
     setQuestions(list); setRound(0); setScore(0); setStreak(0); setBestStreak(0); setResults([]); setLastPoints(0);
-    setOptions(shuffle([list[0].reference, ...list[0].alternatives])); setSelected(null); setTimeLeft(ROUND_SECONDS); startedAtRef.current = Date.now(); setPhase("answering");
+    setOptions(seed ? shuffleWithSeed([list[0].reference, ...list[0].alternatives], seed) : shuffle([list[0].reference, ...list[0].alternatives])); setSelected(null); setTimeLeft(ROUND_SECONDS); startedAtRef.current = Date.now(); setPhase("answering");
   };
 
   useEffect(() => {

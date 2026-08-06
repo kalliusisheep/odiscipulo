@@ -2,13 +2,14 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, Clock3, Flame, HelpCircle, Lightbulb, RotateCcw, Sparkles, Trophy, UsersRound, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
-import { MILLION_DIFFICULTY, MILLION_LEVELS, randomMillionQuestions, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
+import { MILLION_DIFFICULTY, MILLION_LEVELS, randomMillionQuestions, randomMillionQuestionsWithSeed, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 
 export const Route = createFileRoute("/_authenticated/jogos/milhao")({
   validateSearch: (search: Record<string, unknown>) => ({
     mode: search.mode === "multi" ? "multi" : "single",
     roomId: typeof search.roomId === "string" ? search.roomId : undefined,
+    seed: typeof search.seed === "string" && Number.isFinite(Number(search.seed)) ? Number(search.seed) : undefined,
   }),
   component: MillionPage,
 });
@@ -37,7 +38,7 @@ function consultCharacters(question: MillionQuestion): Consultation[] {
 }
 
 function MillionPage() {
-  const { mode, roomId } = Route.useSearch();
+  const { mode, roomId, seed } = Route.useSearch();
   const [phase, setPhase] = useState<Phase>("setup");
   const [modeSelected, setModeSelected] = useState(mode === "multi");
   const [difficulty, setDifficulty] = useState<MillionDifficulty>("medio");
@@ -67,7 +68,7 @@ function MillionPage() {
     startGameMusic("million"); playGameSfx("start");
     const recentKey = `million_recent_questions_${difficulty}`;
     const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
-    const candidates = randomMillionQuestions(difficulty, 999);
+    const candidates = seed ? randomMillionQuestionsWithSeed(difficulty, 999, seed) : randomMillionQuestions(difficulty, 999);
     const fresh = candidates.filter((candidate) => !recentIds.includes(candidate.id));
     const selectedQuestions = [...fresh, ...candidates].slice(0, ROUND_COUNT);
     window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...selectedQuestions.map((question) => question.id)])].slice(-Math.max(ROUND_COUNT * 5, 40))));

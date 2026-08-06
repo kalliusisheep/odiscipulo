@@ -4,11 +4,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { BIBLICAL_CHARACTERS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
+import { shuffleWithSeed } from "@/lib/seeded-random";
 
 export const Route = createFileRoute("/_authenticated/jogos/personagem")({
   validateSearch: (search: Record<string, unknown>) => ({
     mode: search.mode === "multi" ? "multi" : "single",
     roomId: typeof search.roomId === "string" ? search.roomId : undefined,
+    seed: typeof search.seed === "string" && Number.isFinite(Number(search.seed)) ? Number(search.seed) : undefined,
   }),
   component: PersonagemPage,
 });
@@ -26,7 +28,7 @@ const formatFirstHint = (hint: string) => {
 };
 
 function PersonagemPage() {
-  const { mode, roomId } = Route.useSearch();
+  const { mode, roomId, seed } = Route.useSearch();
   const [phase, setPhase] = useState<Phase>("setup");
   const [modeSelected, setModeSelected] = useState(mode === "multi");
   const [difficulty, setDifficulty] = useState<GameDifficulty>("medio");
@@ -52,7 +54,7 @@ function PersonagemPage() {
   const start = () => {
     startGameMusic("character");
     playGameSfx("start");
-    const shuffled = [...filteredCharacters].sort(() => Math.random() - 0.5);
+    const shuffled = seed ? shuffleWithSeed(filteredCharacters, seed) : [...filteredCharacters].sort(() => Math.random() - 0.5);
     const recentKey = `character_recent_questions_${difficulty}`;
     const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
     const fresh = shuffled.filter((item) => !recentIds.includes(item.id));

@@ -5,11 +5,13 @@ import type { GameDifficulty } from "@/data/biblical-characters";
 import { CROSSWORD_DIFFICULTY, CROSSWORD_THEMES, crosswordWordsFor, type CrosswordTheme, type CrosswordWord } from "@/data/biblical-crosswords";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
+import { shuffleWithSeed } from "@/lib/seeded-random";
 
 export const Route = createFileRoute("/_authenticated/jogos/cruzadas")({
   validateSearch: (search: Record<string, unknown>) => ({
     mode: search.mode === "multi" ? "multi" : "single",
     roomId: typeof search.roomId === "string" ? search.roomId : undefined,
+    seed: typeof search.seed === "string" && Number.isFinite(Number(search.seed)) ? Number(search.seed) : undefined,
   }),
   component: CrosswordPage,
 });
@@ -45,10 +47,10 @@ function canPlace(grid: string[][], word: string, row: number, col: number, dire
   return !(grid[beforeRow]?.[beforeCol] || grid[afterRow]?.[afterCol]);
 }
 
-function generatePuzzle(difficulty: GameDifficulty, theme: CrosswordTheme | "todos") {
+function generatePuzzle(difficulty: GameDifficulty, theme: CrosswordTheme | "todos", seed?: number) {
   const config = CROSSWORD_DIFFICULTY[difficulty];
   const pool = crosswordWordsFor(difficulty, theme).length >= config.words ? crosswordWordsFor(difficulty, theme) : crosswordWordsFor(difficulty, "todos");
-  const words = [...pool].sort(() => Math.random() - 0.5).sort((a, b) => b.word.length - a.word.length).slice(0, config.words);
+  const words = (seed ? shuffleWithSeed(pool, seed) : [...pool].sort(() => Math.random() - 0.5)).sort((a, b) => b.word.length - a.word.length).slice(0, config.words);
   const grid = Array.from({ length: config.size }, () => Array<string>(config.size).fill(""));
   const placements: Placement[] = [];
   const first = words[0];
@@ -129,7 +131,7 @@ function CrosswordPage() {
   const activePlacement = puzzle.placements.find((placement) => placement.word.id === activeWordId);
   const activeWord = activePlacement?.word;
 
-  const start = () => { startGameMusic(); playGameSfx("start"); setPuzzle(generatePuzzle(difficulty, theme)); setLetters({}); setSelectedCell(null); setActiveWordId(null); setCompleted([]); setErrors(0); setHints(0); setSeconds(0); setScore(0); setPhase("playing"); };
+  const start = () => { startGameMusic(); playGameSfx("start"); setPuzzle(generatePuzzle(difficulty, theme, seed)); setLetters({}); setSelectedCell(null); setActiveWordId(null); setCompleted([]); setErrors(0); setHints(0); setSeconds(0); setScore(0); setPhase("playing"); };
 
   useEffect(() => {
     if (mode === "multi" && roomId && !autoStarted.current) {
