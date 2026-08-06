@@ -196,6 +196,7 @@ export type StrongEntry = {
   /** true quando o verbete veio da lista curada manualmente (CORE_TERMS),
    * ou seja, não depende da heurística de leitura do HTML da fonte. */
   curated: boolean;
+  translationSource?: "curated" | "local" | "ai" | "source";
 };
 
 /**
@@ -896,7 +897,7 @@ function translateLocalLexiconText(text: string | null | undefined): string | nu
 }
 
 const ENGLISH_LEXICON_MARKERS =
-  /\\b(?:part(?:s)? of speech|primitive root|proper noun|place noun|masculine|feminine|neuter|a root|from the|of the|to be|to do|the place|the name|used of|denotes the)\\b/i;
+  /\b(?:part(?:s)? of speech|primitive root|proper noun|place noun|masculine|feminine|neuter|a root|from the|of the|to be|to do|the place|the name|used of|denotes the)\b/i;
 
 function containsEnglishLexicon(text: string | null | undefined): boolean {
   return Boolean(text && ENGLISH_LEXICON_MARKERS.test(text));
@@ -1002,6 +1003,87 @@ function buildStrongEntry(hit: BollsDictHit): StrongEntry {
   };
 }
 
+export async function fetchStrongEntry(code: string): Promise<StrongEntry | null> {
+  const upperCode = code.toUpperCase();
+  const cacheKey = `strong:v6:${upperCode}`;
+  const override = CORE_TERMS[upperCode];
+
+  if (override) {
+    return cached(cacheKey, async () => {
+      const definitions = override.definitions ?? [override.meaning];
+      return {
+        code: upperCode,
+        original: override.original,
+        transliteration: override.transliteration,
+        phonetic: override.phonetic ?? null,
+        partOfSpeech: override.partOfSpeech ?? null,
+        origin: null,
+        definitions,
+        strongsGloss: override.meaning,
+        meaning: override.meaning,
+        related: [],
+        curated: true,
+        translationSource: "curated",
+      };
+    });
+  }
+
+  return cached(cacheKey, async () => {
+    const local = await fetchLocalLexiconEntry(upperCode);
+    const response = await fetch(`${API}/dictionary-definition/BDBT/${upperCode}/`);
+
+    if (!response.ok) {
+      if (!local) return null;
+      return buildLocalStrongEntry(
+        {
+          code: upperCode,
+          original: local.o ?? null,
+          transliteration: local.t ?? null,
+          phonetic: local.p ?? null,
+          partOfSpeech: translateLocalLexiconText(local.g),
+          origin: translateLocalLexiconText(local.e),
+          definitions: [],
+          strongsGloss: null,
+          meaning: null,
+          related: local.r ?? [],
+          curated: false,
+          translationSource: "source",
+        },
+        local,
+      );
+    }
+
+    const json = (await response.json()) as BollsDictHit[];
+    if (!Array.isArray(json) || json.length === 0) {
+      return local
+        ? buildLocalStrongEntry(
+            {
+              code: upperCode,
+              original: local.o ?? null,
+              transliteration: local.t ?? null,
+              phonetic: local.p ?? null,
+              partOfSpeech: translateLocalLexiconText(local.g),
+              origin: translateLocalLexiconText(local.e),
+              definitions: [],
+              strongsGloss: null,
+              meaning: null,
+              related: local.r ?? [],
+              curated: false,
+              translationSource: "source",
+            },
+            local,
+          )
+        : null;
+    }
+
+    const hit = json.find((item) => item.topic?.toUpperCase() === upperCode) ?? json[0];
+    if (!hit) return null;
+
+    const remoteEntry = buildStrongEntry(hit);
+    return local ? buildLocalStrongEntry(remoteEntry, local) : remoteEntry;
+  });
+}
+
 export async function fetchStrongEntries(codes: string[]): Promise<Record<string, StrongEntry>> {
   const unique = Array.from(new Set(codes));
   const results = await Promise.all(unique.map((c) => fetchStrongEntry(c).catch(() => null)));
@@ -1019,7 +1101,7 @@ export async function fetchStrongEntries(codes: string[]): Promise<Record<string
  * vez neste dispositivo. Verbetes da lista curada (CORE_TERMS) já estão em
  * português e não passam por aqui. */
 export async function translateStrongEntry(entry: StrongEntry): Promise<StrongEntry> {
-  if (entry.curated || entry.translationSource === "local") return entry;
+  if (entry.curated || (entry.translationSource === "local" && !entryNeedsTranslation(entry))) return entry;
   return cached(`xlex:v2:${entry.code}`, async () => {
     try {
       const { data, error } = await supabase.functions.invoke<{
