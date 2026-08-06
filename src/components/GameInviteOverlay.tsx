@@ -17,15 +17,21 @@ const gameDb = supabase as any;
 function notificationToInvite(value: unknown): GameInvite | null {
   const notification = value as { kind?: string; data?: Record<string, unknown> };
   const data = notification.data;
-  if (notification.kind !== "challenge" || data?.game_invite !== "character") return null;
-  if (typeof data.room_id !== "string") return null;
+  const gameType = data?.game_invite;
+  if (
+    notification.kind !== "challenge" ||
+    !["personagem", "versiculo", "cruzadas", "milhao"].includes(String(gameType)) ||
+    typeof data.room_id !== "string"
+  ) return null;
   return {
     roomId: data.room_id,
     inviterName: typeof data.inviter_name === "string" ? data.inviter_name : "Um amigo",
-    gameType: "personagem",
-    difficulty: "medio",
-    rounds: 10,
-    seed: 0,
+    gameType: gameType as GameInvite["gameType"],
+    difficulty: ["facil", "medio", "dificil", "bereano"].includes(String(data.difficulty))
+      ? (data.difficulty as GameInvite["difficulty"])
+      : "medio",
+    rounds: Number.isFinite(Number(data.rounds)) ? Number(data.rounds) : 10,
+    seed: Number.isFinite(Number(data.seed)) ? Number(data.seed) : 0,
   };
 }
 
