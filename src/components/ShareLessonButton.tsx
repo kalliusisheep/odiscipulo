@@ -51,12 +51,16 @@ export function ShareLessonButton({
   lessonId,
   title,
   shareContext,
-  backgroundSrc = "/share-bg-cross.jpg",
+  backgroundSrc = SHARE_BACKGROUNDS[0].src,
   className,
 }: ShareLessonButtonProps) {
   const [sharing, setSharing] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
-  const [selectedBackground, setSelectedBackground] = useState(backgroundSrc);
+  const [selectedBackground, setSelectedBackground] = useState(
+    SHARE_BACKGROUNDS.some((background) => background.src === backgroundSrc)
+      ? backgroundSrc
+      : SHARE_BACKGROUNDS[0].src,
+  );
 
   const handleShare = async () => {
     if (sharing) return;
