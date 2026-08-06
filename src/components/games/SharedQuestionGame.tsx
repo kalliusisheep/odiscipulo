@@ -337,7 +337,7 @@ export function SharedQuestionGame({
     if (data) setRemoteRound(data as RoomRound);
   };
 
-  const advance = async () => {
+  const advance = useCallback(async () => {
     if (!remoteRound || remoteRound.status === "active") return;
     if (roundNumber >= rounds) {
       await gameDb.rpc("finish_character_game_room", { _room_id: roomId });
@@ -350,7 +350,7 @@ export function SharedQuestionGame({
     setAnswered(false);
     setPhase("loading");
     playGameSfx("tap");
-  };
+  }, [remoteRound, roomId, roundNumber, rounds]);
 
   useEffect(() => {
     if (phase !== "answered" || !remoteRound || remoteRound.status === "active") return;
