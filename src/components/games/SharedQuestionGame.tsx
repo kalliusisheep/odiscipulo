@@ -353,6 +353,14 @@ export function SharedQuestionGame({
   };
 
   useEffect(() => {
+    if (phase !== "answered" || !remoteRound || remoteRound.status === "active") return;
+    const timer = window.setTimeout(() => {
+      void advance();
+    }, 1800);
+    return () => window.clearTimeout(timer);
+  }, [advance, phase, remoteRound, roundNumber]);
+
+  useEffect(() => {
     if (phase !== "finished" || !userId || resultSaved.current) return;
     resultSaved.current = true;
     void (async () => {
