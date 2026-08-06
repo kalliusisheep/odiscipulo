@@ -1,7 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { AppLanguage } from "@/lib/i18n";
 
 const API = "https://bolls.life";
-
 const REQUEST_TIMEOUT_MS = 15_000;
 
 async function fetchWithTimeout(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
@@ -14,29 +14,64 @@ async function fetchWithTimeout(input: RequestInfo | URL, init?: RequestInit): P
   }
 }
 
-
-export type PtTranslation = {
+export type BibleTranslation = {
   code: string;
   label: string;
   full: string;
+  language: AppLanguage;
   note?: string;
 };
 
-/** Traduções em português disponíveis no leitor (arquitetura extensível:
- * basta acrescentar um item aqui para habilitar uma nova versão). */
+export type PtTranslation = BibleTranslation;
+
+/**
+ * Traduções públicas servidas pelo Bolls Bible API. As opções em português
+ * preservam o catálogo original; WEB e RV1960 ampliam a leitura em inglês e
+ * espanhol sem exigir chave ou assinatura.
+ */
 export const PT_TRANSLATIONS: PtTranslation[] = [
-  { code: "NVIPT", label: "NVI", full: "Nova Versão Internacional" },
-  { code: "NAA", label: "NAA", full: "Nova Almeida Atualizada" },
-  { code: "ARC09", label: "ARC", full: "Almeida Revista e Corrigida" },
-  { code: "ACF11", label: "ACF", full: "Almeida Corrigida Fiel" },
-  { code: "TB10", label: "TB", full: "Tradução Brasileira" },
-  { code: "KJA", label: "KJA", full: "King James Atualizada" },
+  { code: "NVIPT", label: "NVI", full: "Nova Versão Internacional", language: "pt-BR" },
+  { code: "NAA", label: "NAA", full: "Nova Almeida Atualizada", language: "pt-BR" },
+  { code: "ARC09", label: "ARC", full: "Almeida Revista e Corrigida", language: "pt-BR" },
+  { code: "ACF11", label: "ACF", full: "Almeida Corrigida Fiel", language: "pt-BR" },
+  { code: "TB10", label: "TB", full: "Tradução Brasileira", language: "pt-BR" },
+  { code: "KJA", label: "KJA", full: "King James Atualizada", language: "pt-BR" },
+];
+
+export const BIBLE_TRANSLATIONS: BibleTranslation[] = [
+  ...PT_TRANSLATIONS,
+  {
+    code: "WEB",
+    label: "WEB",
+    full: "World English Bible",
+    language: "en",
+    note: "Texto em inglês de uso livre",
+  },
+  {
+    code: "KJV",
+    label: "KJV",
+    full: "King James Version",
+    language: "en",
+    note: "Texto em inglês de domínio público",
+  },
+  {
+    code: "RV1960",
+    label: "RVR60",
+    full: "Reina-Valera 1960",
+    language: "es",
+    note: "Texto em espanhol servido pela API pública",
+  },
 ];
 
 export const DEFAULT_TRANSLATION = "NVIPT";
 
-export function translationByCode(code: string): PtTranslation {
-  return PT_TRANSLATIONS.find((t) => t.code === code) ?? PT_TRANSLATIONS[0];
+export function translationsForLanguage(language: AppLanguage): BibleTranslation[] {
+  const available = BIBLE_TRANSLATIONS.filter((translation) => translation.language === language);
+  return available.length > 0 ? available : PT_TRANSLATIONS;
+}
+
+export function translationByCode(code: string): BibleTranslation {
+  return BIBLE_TRANSLATIONS.find((translation) => translation.code === code) ?? PT_TRANSLATIONS[0];
 }
 
 export type Verse = { verse: number; text: string };
