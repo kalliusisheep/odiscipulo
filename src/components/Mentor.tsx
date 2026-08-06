@@ -7,7 +7,11 @@ import {
   buildMemoryGreeting,
   extractAndSaveMemory,
 } from "@/lib/mentor-memory";
-import { Send, X, Loader2 } from "lucide-react";
+import { Send, X, Loader2, History } from "lucide-react";
+import { VoiceRecorder } from "@/components/VoiceRecorder";
+import { VoiceNotePlayer } from "@/components/VoiceNotePlayer";
+import { uploadChatVoiceMessage } from "@/lib/voice-upload";
+import { format } from "date-fns";
 import { useState, useRef, useEffect, type PointerEvent as ReactPointerEvent } from "react";
 
 const FAB_SIZE = 56;
@@ -208,7 +212,13 @@ export function MentorFAB() {
   );
 }
 
-type Msg = { role: "user" | "assistant"; content: string };
+type Msg = {
+  role: "user" | "assistant";
+  content: string;
+  audioUrl?: string;
+  audioDurationSeconds?: number;
+  createdAt?: string;
+};
 
 function buildMentorFallback(text: string): string {
   const normalized = text.toLocaleLowerCase("pt-BR");
@@ -250,6 +260,18 @@ export function MentorChat() {
   // conversas anteriores (pedidos de oração, lutas, áreas de crescimento).
   const [userId, setUserId] = useState<string | null>(null);
   const [memoryContext, setMemoryContext] = useState<string | undefined>(undefined);
+  const [voiceExpanded, setVoiceExpanded] = useState(false);
+
+  const persistMessage = async (message: Msg) => {
+    if (!userId || (!message.content.trim() && !message.audioUrl)) return;
+    await supabase.from("mentor_messages").insert({
+      user_id: userId,
+      role: message.role,
+      content: message.content.trim() || null,
+      audio_url: message.audioUrl ?? null,
+      audio_duration_seconds: message.audioDurationSeconds ?? null,
+    });
+  };
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -269,11 +291,28 @@ export function MentorChat() {
       const mems = await fetchMentorMemories(data.user.id);
       if (cancelled) return;
       setMemoryContext(buildMemoryContext(mems));
-      setMessages((prev) => {
-        if (prev.length !== 1 || prev[0].role !== "assistant") return prev;
-        const greeting = buildMemoryGreeting(mems);
-        return greeting ? [{ role: "assistant", content: greeting }] : prev;
-      });
+      const { data: savedMessages } = await supabase
+        .from("mentor_messages")
+        .select("role, content, audio_url, audio_duration_seconds, created_at")
+        .eq("user_id", data.user.id)
+        .order("created_at", { ascending: true })
+        .limit(100);
+      if (cancelled) return;
+      if (savedMessages?.length) {
+        setMessages(savedMessages.map((row) => ({
+          role: row.role as "user" | "assistant",
+          content: row.content ?? "",
+          audioUrl: row.audio_url ?? undefined,
+          audioDurationSeconds: row.audio_duration_seconds ?? undefined,
+          createdAt: row.created_at,
+        })));
+      } else {
+        setMessages((prev) => {
+          if (prev.length !== 1 || prev[0].role !== "assistant") return prev;
+          const greeting = buildMemoryGreeting(mems);
+          return greeting ? [{ role: "assistant", content: greeting }] : prev;
+        });
+      }
     })();
     return () => {
       cancelled = true;
@@ -292,8 +331,10 @@ export function MentorChat() {
   const send = async () => {
     const text = input.trim();
     if (!text || loading) return;
-    const next: Msg[] = [...messages, { role: "user", content: text }];
+    const userMessage: Msg = { role: "user", content: text, createdAt: new Date().toISOString() };
+    const next: Msg[] = [...messages, userMessage];
     setMessages(next);
+    void persistMessage(userMessage);
     setInput("");
     setLoading(true);
     try {
@@ -313,7 +354,7 @@ export function MentorChat() {
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let acc = "";
-      setMessages((m) => [...m, { role: "assistant", content: "" }]);
+      setMessages((m) => [...m, { role: "assistant", content: "", createdAt: new Date().toISOString() }]);
       // read SSE-ish stream from Lovable AI (chat.completions delta chunks)
       let buf = "";
       while (true) {
@@ -343,22 +384,36 @@ export function MentorChat() {
           }
         }
       }
+      if (acc.trim()) {
+        void persistMessage({ role: "assistant", content: acc });
+      }
     } catch {
-      setMessages((m) => [
-        ...m,
-        {
-          role: "assistant",
-          content: buildMentorFallback(text),
-        },
-      ]);
+      const fallback = buildMentorFallback(text);
+      const fallbackMessage = { role: "assistant" as const, content: fallback };
+      setMessages((m) => [...m, fallbackMessage]);
+      void persistMessage(fallbackMessage);
     } finally {
       setLoading(false);
     }
   };
 
+  const sendAudio = async (blob: Blob, seconds: number, mimeType: string) => {
+    if (!userId || loading) return;
+    const url = await uploadChatVoiceMessage(userId, blob, mimeType);
+    const audioMessage: Msg = {
+      role: "user",
+      content: "",
+      audioUrl: url,
+      audioDurationSeconds: seconds,
+      createdAt: new Date().toISOString(),
+    };
+    setMessages((prev) => [...prev, audioMessage]);
+    await persistMessage(audioMessage);
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center">
-      <div className="flex h-[85vh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl border border-border bg-surface shadow-2xl sm:rounded-3xl animate-slide-up">
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-0 backdrop-blur-sm sm:items-center sm:p-4">
+      <div className="flex h-[min(760px,92vh)] w-full max-w-lg flex-col overflow-hidden rounded-t-[2rem] border border-primary/20 bg-background shadow-2xl sm:rounded-[2rem] animate-slide-up">
         <header className="flex items-center justify-between border-b border-border bg-gradient-to-r from-primary/20 to-primary-glow/20 px-4 py-3">
           <div className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-glow">
@@ -370,9 +425,10 @@ export function MentorChat() {
             </div>
             <div>
               <h2 className="text-sm font-semibold">Barnabéé</h2>
-              <p className="text-[10px] text-muted-foreground">
-                Mentor IA · Companheiro de estudo, não substituto pastoral
-              </p>
+              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                <History className="h-3 w-3 text-primary" />
+                <span>Histórico salvo · não substitui o cuidado pastoral</span>
+              </div>
             </div>
           </div>
           <button
@@ -384,17 +440,23 @@ export function MentorChat() {
           </button>
         </header>
 
-        <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
+        <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto bg-gradient-to-b from-background to-surface/40 px-4 py-5">
           {messages.map((m, i) => (
             <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
               <div
-                className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+                className={`max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
                   m.role === "user"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-surface-2 text-foreground"
+                    ? "rounded-br-md bg-primary text-primary-foreground"
+                    : "rounded-bl-md border border-border/70 bg-surface-2 text-foreground"
                 }`}
               >
-                {m.content || <span className="text-muted-foreground">…</span>}
+                {m.audioUrl && <VoiceNotePlayer src={m.audioUrl} className="h-9 w-56 max-w-full" />}
+                {m.content && <p className={m.audioUrl ? "mt-2" : ""}>{m.content}</p>}
+                {m.createdAt && (
+                  <p className="mt-1 text-right text-[10px] opacity-60">
+                    {format(new Date(m.createdAt), "HH:mm")}
+                  </p>
+                )}
               </div>
             </div>
           ))}
@@ -412,28 +474,42 @@ export function MentorChat() {
             e.preventDefault();
             void send();
           }}
-          className="flex items-end gap-2 border-t border-border bg-surface p-3"
+          className="border-t border-border bg-surface/95 p-3 backdrop-blur-xl"
         >
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                void send();
-              }
-            }}
-            rows={1}
-            placeholder="Pergunte sobre um versículo, dúvida ou tema…"
-            className="flex-1 resize-none rounded-2xl border border-border bg-input px-4 py-2.5 text-sm outline-none placeholder:text-muted-foreground focus:border-primary"
-          />
-          <button
-            type="submit"
-            disabled={loading || !input.trim()}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground transition-all hover:bg-primary-glow disabled:opacity-50"
-          >
-            <Send className="h-4 w-4" />
-          </button>
+          <div className="flex items-end gap-2">
+            <textarea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  void send();
+                }
+              }}
+              rows={1}
+              placeholder="Pergunte sobre um versículo, dúvida ou tema…"
+              className={`min-w-0 flex-1 resize-none rounded-2xl border border-border bg-input px-4 py-3 text-sm outline-none placeholder:text-muted-foreground focus:border-primary ${voiceExpanded ? "hidden" : ""}`}
+            />
+            {input.trim() && !voiceExpanded ? (
+              <button
+                type="submit"
+                disabled={loading}
+                aria-label="Enviar mensagem"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-all hover:bg-primary-glow disabled:opacity-50"
+              >
+                <Send className="h-4 w-4" />
+              </button>
+            ) : (
+              <VoiceRecorder
+                onSend={sendAudio}
+                maxSeconds={60}
+                onExpandedChange={setVoiceExpanded}
+              />
+            )}
+          </div>
+          <p className="mt-2 px-1 text-[10px] text-muted-foreground">
+            Você pode escrever ou enviar uma mensagem de voz para Barnabéé.
+          </p>
         </form>
       </div>
     </div>
