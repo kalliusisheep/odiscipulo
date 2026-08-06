@@ -3,6 +3,36 @@ import { checkFinishChallenges } from "@/lib/challenges";
 
 const STREAK_BONUS_XP = 10;
 
+const REPEAT_XP_FLOOR = 5;
+const REPEAT_XP_RATIO = 0.35;
+
+/**
+ * Persiste uma atividade e calcula XP de revisão sem permitir que repetir
+ * sempre a mesma lição seja uma fonte infinita de XP cheio.
+ */
+export async function awardProgressXp(userId: string, progressId: string, baseXp: number) {
+  const { data: previous, error: lookupError } = await supabase
+    .from("lesson_progress")
+    .select("id")
+    .eq("user_id", userId)
+    .eq("lesson_id", progressId)
+    .maybeSingle();
+
+  const repeated = !lookupError && Boolean(previous);
+  const xp = repeated ? Math.max(REPEAT_XP_FLOOR, Math.round(baseXp * REPEAT_XP_RATIO)) : baseXp;
+
+  const { error: saveError } = await supabase
+    .from("lesson_progress")
+    .upsert(
+      { user_id: userId, lesson_id: progressId, xp_gained: xp },
+      { onConflict: "user_id,lesson_id" },
+    );
+  if (saveError) throw saveError;
+
+  const result = await awardXpAndStreak(userId, xp);
+  return { ...result, xp, repeated };
+}
+
 /**
  * Award XP and update daily streak for the current user.
  * When the streak advances to a new day, a +10 XP bonus is added on top of `xp`.
