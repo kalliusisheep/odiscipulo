@@ -270,7 +270,7 @@ function ChapterReader() {
 
 
   return (
-    <div className={`min-h-screen pb-32 transition-colors ${theme === "light" ? "bg-[#fbfaf7] text-slate-900" : "bg-background text-foreground"}`}>
+    <div className={`min-h-screen pb-32 transition-colors ${(theme === "white" || theme === "gray") ? "bg-[#fbfaf7] text-slate-900" : "bg-background text-foreground"}`}>
       {/* Barra superior fixa */}
       <div className="sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-xl">
         <div className="mx-auto grid max-w-lg grid-cols-[auto_minmax(0,1fr)_auto_auto_auto] items-center gap-1.5 px-4 py-2.5">
