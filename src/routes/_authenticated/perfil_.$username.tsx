@@ -164,7 +164,7 @@ function PublicProfilePage() {
 
           <h1 className="mt-6 text-2xl font-extrabold leading-tight tracking-tight drop-shadow-sm">{profile.display_name}</h1>
           <div className="mt-2 flex items-center gap-1.5 text-[11px] font-semibold">
-            <span className={`h-2 w-2 rounded-full ${isOnline ? "bg-emerald-300 shadow-[0_0_8px_rgba(110,231,183,0.85)]" : "bg-white/45"}`} />
+            <span className={`h-2 w-2 rounded-full ${isOnline ? "bg-emerald-300 shadow-[0_0_8px_rgba(110,231,183,0.85)]" : "bg-rose-300 shadow-[0_0_7px_rgba(251,113,133,0.55)]"}`} />
             <span className={isOnline ? "text-emerald-100" : "text-white/70"}>
               {isOnline ? "Online agora" : `Offline · ${presence.replace("Visto ", "")}`}
             </span>
