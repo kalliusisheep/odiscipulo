@@ -83,10 +83,16 @@ function MensagensListPage() {
           setLoading(false);
           return;
         }
-        const { data: peers } = await supabase
+        const withPresence = await supabase
           .from("profiles")
           .select("id, display_name, username, avatar_url, last_seen_at")
           .in("id", Array.from(byPeer.keys()));
+        const peers = withPresence.error
+          ? ((await supabase
+              .from("profiles")
+              .select("id, display_name, username, avatar_url")
+              .in("id", Array.from(byPeer.keys()))).data ?? []).map((p) => ({ ...p, last_seen_at: null }))
+          : (withPresence.data ?? []);
         const list: Conversation[] = (peers ?? [])
           .map((p) => {
             const last = byPeer.get(p.id)!;
