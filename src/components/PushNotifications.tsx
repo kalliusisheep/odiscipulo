@@ -38,8 +38,14 @@ export function PushNotifications() {
           { event: "INSERT", schema: "public", table: "app_notifications", filter: `user_id=eq.${data.user.id}` },
           (event) => {
             const notification = event.new as AppNotification;
-            if (Notification.permission === "granted") {
-              new Notification(notification.title, { body: notification.body, icon: "/isheep-img.png" });
+            if ("Notification" in window && Notification.permission === "granted") {
+              new Notification(notification.title, {
+                body: notification.body,
+                icon: "/isheep-img.png",
+                tag: notification.id,
+              });
+            } else {
+              toast(notification.title, { description: notification.body });
             }
           },
         )
