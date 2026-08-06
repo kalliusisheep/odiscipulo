@@ -55,7 +55,7 @@ export const Route = createFileRoute("/_authenticated/versiculo")({
 type Me = { id: string; name: string; avatarUrl: string | null };
 
 function VerseOfDayPage() {
-  const { bibleVersion } = useApp();
+  const { bibleVersion, language } = useApp();
   const dateKey = verseDateKey();
 
   const [verse, setVerse] = useState<DailyVerseRow | null>(null);
@@ -130,13 +130,13 @@ function VerseOfDayPage() {
     let alive = true;
     setText(null);
     setTextError(false);
-    fetchPassage(apiRefFor(verse), bibleVersion)
+    fetchPassage(apiRefFor(verse), bibleVersion, language)
       .then((t) => alive && setText(stripVerseNumbers(t)))
       .catch(() => alive && setTextError(true));
     return () => {
       alive = false;
     };
-  }, [verse, bibleVersion]);
+  }, [verse, bibleVersion, language]);
 
   // Realtime: curtidas/comentários de outros discípulos aparecem sem F5.
   useEffect(() => {
