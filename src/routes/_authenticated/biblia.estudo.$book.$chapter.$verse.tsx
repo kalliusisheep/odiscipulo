@@ -880,6 +880,31 @@ function WordDetail({
       : [];
   const pronunciation = approximatePtBr(entry?.transliteration ?? null);
 
+  const [occurrencesOpen, setOccurrencesOpen] = useState(false);
+
+  const occurrenceRefs = occurrence
+    ? [
+        {
+          label: "Primeira ocorrência",
+          book: occurrence.f[0],
+          chapter: occurrence.f[1],
+          verse: occurrence.f[2],
+        },
+        {
+          label: "Última ocorrência",
+          book: occurrence.l[0],
+          chapter: occurrence.l[1],
+          verse: occurrence.l[2],
+        },
+      ].filter(
+        (reference, index, references) =>
+          index === 0 ||
+          reference.book !== references[index - 1].book ||
+          reference.chapter !== references[index - 1].chapter ||
+          reference.verse !== references[index - 1].verse,
+      )
+    : [];
+
   const stats: { label: string; value: string }[] = [
     { label: "Ocorrências", value: occurrence ? String(occurrence.c) : "—" },
     {
@@ -975,7 +1000,16 @@ function WordDetail({
             Uso nas Escrituras
           </p>
           <div className="mt-2 grid grid-cols-3 gap-2">
-            {stats.map((stat) => (
+            <button
+              type="button"
+              onClick={() => setOccurrencesOpen((open) => !open)}
+              className="min-w-0 rounded-[18px] border border-primary/30 bg-primary/[0.08] p-3 text-center transition-colors hover:bg-primary/[0.14]"
+              aria-expanded={occurrencesOpen}
+            >
+              <p className="break-words text-xs font-extrabold leading-snug text-foreground">{stats[0].value}</p>
+              <p className="mt-1 text-[9px] font-semibold text-primary">Ver ocorrências</p>
+            </button>
+            {stats.slice(1).map((stat) => (
               <div
                 key={stat.label}
                 className="min-w-0 rounded-[18px] border border-border/60 bg-surface p-3 text-center"
@@ -988,6 +1022,49 @@ function WordDetail({
             ))}
           </div>
         </section>
+
+        {occurrencesOpen && occurrence && (
+          <section className="rounded-[22px] border border-primary/20 bg-primary/[0.05] p-4">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
+                  Referências encontradas
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {occurrence.c} ocorrências no índice bíblico
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setOccurrencesOpen(false)}
+                className="rounded-full border border-border bg-surface px-3 py-1.5 text-[10px] font-bold text-muted-foreground"
+              >
+                Fechar
+              </button>
+            </div>
+            <div className="mt-3 space-y-2">
+              {occurrenceRefs.map((reference) => (
+                <Link
+                  key={reference.label}
+                  to="/biblia/$book/$chapter"
+                  params={{ book: String(reference.book), chapter: String(reference.chapter) }}
+                  className="flex items-center justify-between gap-3 rounded-2xl border border-border/60 bg-surface px-3.5 py-3 transition-colors hover:border-primary/40 hover:bg-primary/10"
+                >
+                  <span>
+                    <span className="block text-[10px] font-semibold text-muted-foreground">{reference.label}</span>
+                    <span className="mt-0.5 block text-sm font-extrabold text-foreground">
+                      {bookNameById(reference.book)} {reference.chapter}:{reference.verse}
+                    </span>
+                  </span>
+                  <ChevronRight className="h-4 w-4 shrink-0 text-primary" />
+                </Link>
+              ))}
+            </div>
+            <p className="mt-3 text-[10px] leading-relaxed text-muted-foreground">
+              O índice mantém a contagem e as referências inicial e final para abrir o contexto com rapidez.
+            </p>
+          </section>
+        )}
 
         {entry && entry.related.length > 0 && (
           <section>
