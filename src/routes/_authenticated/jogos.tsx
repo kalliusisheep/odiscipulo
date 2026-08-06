@@ -4,10 +4,10 @@ import { ArrowLeft, ArrowRight, BookOpenText, CheckCircle2, Gamepad2, Grid2X2, T
 export const Route = createFileRoute("/_authenticated/jogos")({ component: JogosPage });
 
 const games = [
+  { title: "Quiz do milhão", description: "Suba a escada de perguntas e teste seu conhecimento.", to: "/jogos/milhao" as const, icon: Trophy, tone: "from-fuchsia-500/25 via-purple-500/10 to-surface", accent: "text-fuchsia-200" },
   { title: "Quem é o personagem?", description: "Descubra personagens bíblicos usando três pistas da Palavra.", to: "/jogos/personagem" as const, icon: UserRound, tone: "from-violet-500/30 via-primary/10 to-surface", accent: "text-violet-200" },
   { title: "Qual é o versículo?", description: "Reconheça o contexto e encontre a passagem certa.", to: "/jogos/versiculo" as const, icon: BookOpenText, tone: "from-emerald-500/25 via-teal-500/10 to-surface", accent: "text-emerald-200" },
   { title: "Palavras cruzadas", description: "Complete o desafio com termos e histórias bíblicas.", to: "/jogos/cruzadas" as const, icon: Grid2X2, tone: "from-amber-500/25 via-orange-500/10 to-surface", accent: "text-amber-200" },
-  { title: "Quiz do milhão", description: "Suba a escada de perguntas e teste seu conhecimento.", to: "/jogos/milhao" as const, icon: Trophy, tone: "from-fuchsia-500/25 via-purple-500/10 to-surface", accent: "text-fuchsia-200" },
 ];
 
 function JogosPage() {
