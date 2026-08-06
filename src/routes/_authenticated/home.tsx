@@ -55,6 +55,12 @@ type TrailRow = {
   lesson_id: string | null;
 };
 
+type DiscipleshipSummary = {
+  total: number;
+  completed: number;
+  leaderName: string;
+};
+
 function HomePage() {
   const { viewMode } = useApp();
   const nav = useNavigate();
@@ -63,13 +69,14 @@ function HomePage() {
   const [progressIds, setProgressIds] = useState<Set<string>>(new Set());
   const [modules, setModules] = useState<ModuleRow[]>([]);
   const [trails, setTrails] = useState<TrailRow[]>([]);
+  const [discipleship, setDiscipleship] = useState<DiscipleshipSummary | null>(null);
 
   useEffect(() => {
     void (async () => {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user) return;
       setUserId(u.user.id);
-      const [{ data: p }, { data: lp }, { data: mods }, { data: trs }] = await Promise.all([
+      const [{ data: p }, { data: lp }, { data: mods }, { data: trs }, { data: assignments }] = await Promise.all([
         supabase
           .from("profiles")
           .select("display_name, first_name, avatar_char, xp, streak, onboarded")
@@ -78,6 +85,11 @@ function HomePage() {
         supabase.from("lesson_progress").select("lesson_id").eq("user_id", u.user.id),
         supabase.from("disciple_modules").select("id, ord, title, description, color").order("ord"),
         supabase.from("disciple_trails").select("id, module_id, ord, title, lesson_id").order("ord"),
+        supabase
+          .from("discipleship_assignments")
+          .select("content_id, leader_id")
+          .eq("disciple_id", u.user.id)
+          .eq("status", "active"),
       ]);
       if (p && !p.onboarded) {
         void nav({ to: "/bem-vindo" });
@@ -87,6 +99,28 @@ function HomePage() {
       setProgressIds(new Set((lp ?? []).map((r) => r.lesson_id)));
       setModules((mods ?? []) as ModuleRow[]);
       setTrails((trs ?? []) as TrailRow[]);
+
+      const assignmentRows = assignments ?? [];
+      const assignedContentIds = [...new Set(assignmentRows.map((row) => row.content_id))];
+      const leaderIds = [...new Set(assignmentRows.map((row) => row.leader_id))];
+      if (assignedContentIds.length > 0) {
+        const { data: leaders } = leaderIds.length
+          ? await supabase.from("profiles").select("id, display_name").in("id", leaderIds)
+          : { data: [] };
+        const leaderNames = (leaders ?? [])
+          .map((leader) => leader.display_name)
+          .filter(Boolean);
+
+        setDiscipleship({
+          total: assignedContentIds.length,
+          completed: assignedContentIds.filter((id) =>
+            (lp ?? []).some((row) => row.lesson_id === id),
+          ).length,
+          leaderName: leaderNames.join(" · ") || "seu líder",
+        });
+      } else {
+        setDiscipleship(null);
+      }
     })();
   }, [nav]);
 
@@ -280,6 +314,8 @@ function HomePage() {
       <section className="space-y-3">
         <h2 className="text-sm font-semibold text-muted-foreground">Módulos de Discipulado</h2>
 
+        {discipleship && <DiscipleshipModuleCard summary={discipleship} />}
+
         {modules.filter((m) => m.id !== "como-ser-lider").map((m) => {
           const mtrails = trailsByModule.get(m.id) ?? [];
           const withLesson = mtrails.filter((t) => t.lesson_id);
@@ -372,6 +408,46 @@ function HomePage() {
         )}
       </section>
     </div>
+  );
+}
+
+function DiscipleshipModuleCard({ summary }: { summary: DiscipleshipSummary }) {
+  const progressPercent = summary.total
+    ? Math.round((summary.completed / summary.total) * 100)
+    : 0;
+
+  return (
+    <Link
+      to="/modulo/$id"
+      params={{ id: "meu-discipulado" }}
+      className="group relative block overflow-hidden rounded-3xl border border-amber-300/30 bg-gradient-to-br from-[#7a571f] via-[#3b2d1b] to-[#171a22] p-4 text-white shadow-lg shadow-amber-950/15 transition-all duration-300 hover:-translate-y-0.5 hover:border-amber-200/60"
+    >
+      <div className="pointer-events-none absolute -right-12 -top-14 h-36 w-36 rounded-full bg-amber-300/20 blur-3xl transition-transform group-hover:scale-125" />
+      <div className="relative flex items-center gap-4">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-amber-200/20 bg-amber-100/10">
+          <Crown className="h-5 w-5 text-amber-200" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-amber-100/70">
+            Discipulado aplicado
+          </span>
+          <p className="mt-0.5 text-base font-extrabold">Meu Discipulado</p>
+          <p className="truncate text-xs text-white/65">Com {summary.leaderName}</p>
+          <div className="mt-2.5 flex items-center gap-3">
+            <div className="h-2 flex-1 overflow-hidden rounded-full bg-black/25 p-[2px]">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-amber-300 to-yellow-100 transition-all"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+            <span className="text-[10px] font-bold text-amber-100">
+              {summary.completed}/{summary.total}
+            </span>
+          </div>
+        </div>
+        <ChevronRight className="h-4 w-4 shrink-0 text-amber-100/70 transition-transform group-hover:translate-x-0.5" />
+      </div>
+    </Link>
   );
 }
 
