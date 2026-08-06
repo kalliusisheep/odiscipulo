@@ -116,7 +116,7 @@ function VersiculoPage() {
   }, [answer, phase]);
 
   const next = () => {
-    if (round + 1 >= rounds) { setPhase("finished"); return; }
+    if (round + 1 >= rounds) { playGameSfx("complete"); setPhase("finished"); return; }
     const nextRound = round + 1; setRound(nextRound); prepareRound(nextRound); 
   };
 
