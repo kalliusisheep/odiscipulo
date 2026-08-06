@@ -37,7 +37,7 @@ import {
 const TABS = [
   {
     id: "original",
-    label: "Original",
+    label: "Idioma original",
     eyebrow: "Texto-base",
     description: "Leia o versículo na língua em que foi escrito.",
     icon: ScrollText,
@@ -169,6 +169,7 @@ function VerseStudy() {
   const [wordsLoading, setWordsLoading] = useState(true);
   const [origError, setOrigError] = useState(false);
   const [entries, setEntries] = useState<Record<string, StrongEntry>>({});
+  const [lexiconLoading, setLexiconLoading] = useState(true);
   const [occ, setOcc] = useState<Record<string, { c: number; f: number[]; l: number[] }>>({});
   const [xrefs, setXrefs] = useState<[number, number, number][]>([]);
   const [xrefsLoading, setXrefsLoading] = useState(true);
@@ -202,12 +203,14 @@ function VerseStudy() {
     setWords(null);
     setWordsLoading(true);
     setEntries({});
+    setLexiconLoading(true);
     setAnalysis(null);
     fetchOriginalVerse(book, chapter, verse)
       .then(async (loadedWords) => {
         if (!loadedWords?.length) {
           setWords([]);
           setOrigError(true);
+          setLexiconLoading(false);
           return;
         }
 
@@ -215,11 +218,13 @@ function VerseStudy() {
         const codes = loadedWords.map((word) => word.strong).filter(Boolean) as string[];
         const raw = await fetchStrongEntries(codes);
         setEntries(raw);
+        setLexiconLoading(false);
         void translateStrongEntries(raw).then(setEntries);
       })
       .catch(() => {
         setWords([]);
         setOrigError(true);
+        setLexiconLoading(false);
       })
       .finally(() => setWordsLoading(false));
   }, [translation, book, chapter, verse]);
@@ -649,11 +654,16 @@ function VerseStudy() {
 
           {aba === "lexico" && !wordsLoading && words && words.length > 0 && (
             <div className="space-y-3">
-              {lexicalEntries.length === 0 && (
-                <StudyLoading label="Carregando verbetes do léxico…" compact />
+              {lexiconLoading && <StudyLoading label="Carregando verbetes do léxico…" compact />}
+
+              {!lexiconLoading && lexicalEntries.length === 0 && (
+                <UnavailableState
+                  title="Nenhum verbete disponível"
+                  description="Não encontramos dados lexicais para as palavras deste versículo nesta fonte."
+                />
               )}
 
-              {lexicalEntries.map((entry, index) => (
+              {!lexiconLoading && lexicalEntries.map((entry, index) => (
                 <details
                   key={entry.code}
                   className="group overflow-hidden rounded-[24px] border border-border/70 bg-surface shadow-sm transition-colors open:border-primary/25"
