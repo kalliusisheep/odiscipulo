@@ -64,6 +64,7 @@ function VersiculoPage() {
   const [lastPoints, setLastPoints] = useState(0);
   const startedAtRef = useRef(0);
   const autoStarted = useRef(false);
+  const sessionSeenRef = useRef<Set<string>>(new Set());
   const question = questions[round];
   const meta = VERSE_DIFFICULTY[difficulty];
 
@@ -75,6 +76,7 @@ function VersiculoPage() {
   }, [questions, seed]);
 
   const start = () => {
+    scoreSaved.current = false;
     startGameMusic("verse");
     playGameSfx("start");
     const pool = versesForDifficulty(difficulty);
@@ -82,8 +84,12 @@ function VersiculoPage() {
     const recentKey = `verse_recent_questions_${difficulty}`;
     const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
     const shuffled = shuffle(fallbackPool);
-    const fresh = shuffled.filter((item) => !recentIds.includes(item.id));
-    const list = [...fresh, ...shuffled].slice(0, rounds);
+    const sessionCandidates = shuffled.filter((item) => !sessionSeenRef.current.has(item.id));
+    const fresh = sessionCandidates.filter((item) => !recentIds.includes(item.id));
+    const list = [...fresh, ...sessionCandidates]
+      .filter((item, index, items) => items.findIndex((candidate) => candidate.id === item.id) === index)
+      .slice(0, rounds);
+    list.forEach((item) => sessionSeenRef.current.add(item.id));
     window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...list.map((item) => item.id)])].slice(-Math.max(rounds * 5, 40))));
     setQuestions(list); setRound(0); setScore(0); setStreak(0); setBestStreak(0); setResults([]); setLastPoints(0);
     setOptions(seed ? shuffleWithSeed([list[0].reference, ...list[0].alternatives], seed) : shuffle([list[0].reference, ...list[0].alternatives])); setSelected(null); setTimeLeft(ROUND_SECONDS); startedAtRef.current = Date.now(); setPhase("answering");
