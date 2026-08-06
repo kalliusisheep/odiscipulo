@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -8,12 +8,18 @@ import {
   Check,
   ChevronRight,
   Crown,
+  Loader2,
+  Send,
   Shuffle,
   Sparkles,
   Target,
+  UserRound,
+  UsersRound,
   X,
 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import { verseText } from "@/data/content";
 import { SUPPORT_MODULES, type SupportLesson, type SupportModule } from "@/data/leader-support-content";
 import { useApp } from "@/lib/app-context";
@@ -21,6 +27,14 @@ import { useApp } from "@/lib/app-context";
 const TOTAL_SUPPORT_LESSONS = SUPPORT_MODULES.reduce((sum, m) => sum + m.lessons.length, 0);
 
 type Step = "estudo" | "fixar" | "aplicar";
+
+type AssignmentTarget = {
+  id: string;
+  type: "disciple" | "group";
+  name: string;
+  subtitle: string;
+  memberIds: string[];
+};
 
 // Embaralha um array sem alterar o original (Fisher–Yates simplificado).
 function shuffled<T>(arr: T[]): T[] {
@@ -36,6 +50,11 @@ export function LeaderResources({ completedLessons }: { completedLessons?: numbe
   const [open, setOpen] = useState(false);
   const [activeModule, setActiveModule] = useState<SupportModule | null>(null);
   const [selected, setSelected] = useState<SupportLesson | null>(null);
+  const [assigningLesson, setAssigningLesson] = useState<SupportLesson | null>(null);
+  const [targets, setTargets] = useState<AssignmentTarget[]>([]);
+  const [selectedTargetId, setSelectedTargetId] = useState("");
+  const [loadingTargets, setLoadingTargets] = useState(false);
+  const [savingAssignment, setSavingAssignment] = useState(false);
 
   const openLesson = (lesson: SupportLesson) => setSelected(lesson);
   const closeDialog = (nextOpen: boolean) => {
@@ -44,6 +63,121 @@ export function LeaderResources({ completedLessons }: { completedLessons?: numbe
       setSelected(null);
       setActiveModule(null);
     }
+  };
+
+  useEffect(() => {
+    if (!assigningLesson) return;
+
+    void (async () => {
+      setLoadingTargets(true);
+      const { data: user } = await supabase.auth.getUser();
+      if (!user.user) {
+        setLoadingTargets(false);
+        return;
+      }
+
+      const [{ data: links }, { data: groups }] = await Promise.all([
+        supabase
+          .from("leader_disciples")
+          .select("disciple_id")
+          .eq("leader_id", user.user.id),
+        supabase
+          .from("groups")
+          .select("id, name, topic")
+          .eq("leader_id", user.user.id)
+          .order("created_at", { ascending: false }),
+      ]);
+
+      const discipleIds = (links ?? []).map((row) => row.disciple_id);
+      const groupIds = (groups ?? []).map((group) => group.id);
+      const [{ data: profiles }, { data: members }] = await Promise.all([
+        discipleIds.length
+          ? supabase
+              .from("profiles")
+              .select("id, display_name, username")
+              .in("id", discipleIds)
+          : Promise.resolve({ data: [] }),
+        groupIds.length
+          ? supabase
+              .from("group_members")
+              .select("group_id, disciple_id")
+              .in("group_id", groupIds)
+          : Promise.resolve({ data: [] }),
+      ]);
+
+      const profileMap = new Map(
+        (profiles ?? []).map((profile) => [profile.id, profile]),
+      );
+      const nextTargets: AssignmentTarget[] = (profiles ?? []).map((profile) => ({
+        id: `disciple:${profile.id}`,
+        type: "disciple",
+        name: profile.display_name,
+        subtitle: profile.username ? `@${profile.username}` : "Discípulo",
+        memberIds: [profile.id],
+      }));
+
+      for (const group of groups ?? []) {
+        const memberIds = (members ?? [])
+          .filter((member) => member.group_id === group.id)
+          .map((member) => member.disciple_id)
+          .filter((id) => profileMap.has(id));
+
+        if (memberIds.length > 0) {
+          nextTargets.push({
+            id: `group:${group.id}`,
+            type: "group",
+            name: group.name,
+            subtitle: `${memberIds.length} membro${memberIds.length === 1 ? "" : "s"}`,
+            memberIds,
+          });
+        }
+      }
+
+      setTargets(nextTargets);
+      setSelectedTargetId(nextTargets[0]?.id ?? "");
+      setLoadingTargets(false);
+    })();
+  }, [assigningLesson]);
+
+  const applyLesson = async () => {
+    if (!assigningLesson || !selectedTargetId) {
+      toast.error("Escolha um discípulo ou grupo.");
+      return;
+    }
+
+    const target = targets.find((item) => item.id === selectedTargetId);
+    const { data: user } = await supabase.auth.getUser();
+    if (!target || !user.user) return;
+
+    setSavingAssignment(true);
+    const rows = target.memberIds.map((discipleId) => ({
+      leader_id: user.user.id,
+      disciple_id: discipleId,
+      group_id: target.type === "group" ? target.id.replace("group:", "") : null,
+      content_type: "support_lesson",
+      content_id: assigningLesson.id,
+      status: "active",
+    }));
+    const { error } = await supabase
+      .from("discipleship_assignments")
+      .upsert(rows, {
+        onConflict: "leader_id,disciple_id,content_type,content_id",
+        ignoreDuplicates: true,
+      });
+
+    setSavingAssignment(false);
+    if (error) {
+      toast.error("Não foi possível aplicar este conteúdo.");
+      return;
+    }
+
+    toast.success(
+      target.type === "group"
+        ? `Conteúdo aplicado ao grupo "${target.name}".`
+        : `Conteúdo aplicado a ${target.name}.`,
+    );
+    setAssigningLesson(null);
+    setSelectedTargetId("");
   };
 
   return (
@@ -116,6 +250,7 @@ export function LeaderResources({ completedLessons }: { completedLessons?: numbe
             <LessonFlow
               lesson={selected}
               onBack={() => setSelected(null)}
+              onApply={(lesson) => setAssigningLesson(lesson)}
             />
           ) : activeModule ? (
             <>
@@ -137,23 +272,33 @@ export function LeaderResources({ completedLessons }: { completedLessons?: numbe
               </DialogHeader>
               <div className="grid gap-2">
                 {activeModule.lessons.map((lesson, i) => (
-                  <button
-                    type="button"
+                  <div
                     key={lesson.id}
-                    onClick={() => openLesson(lesson)}
-                    className="flex items-center justify-between rounded-xl border border-border p-3 text-left hover:border-primary/60"
+                    className="flex items-center gap-2 rounded-xl border border-border p-2 transition-colors hover:border-primary/50"
                   >
-                    <div className="flex min-w-0 items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => openLesson(lesson)}
+                      className="flex min-w-0 flex-1 items-center gap-3 p-1.5 text-left"
+                    >
                       <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-surface text-xs font-bold text-muted-foreground">
                         {i + 1}
                       </span>
-                      <div className="min-w-0">
-                        <p className="truncate text-sm font-semibold">{lesson.title}</p>
-                        <p className="truncate text-xs text-muted-foreground">{lesson.verse.ref}</p>
-                      </div>
-                    </div>
-                    <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
-                  </button>
+                      <span className="min-w-0">
+                        <span className="block truncate text-sm font-semibold">{lesson.title}</span>
+                        <span className="block truncate text-xs text-muted-foreground">{lesson.verse.ref}</span>
+                      </span>
+                      <ChevronRight className="ml-auto h-4 w-4 shrink-0 text-muted-foreground" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAssigningLesson(lesson)}
+                      className="flex h-9 shrink-0 items-center gap-1.5 rounded-lg bg-primary/10 px-2.5 text-[11px] font-bold text-primary transition-colors hover:bg-primary/20"
+                      aria-label={`Aplicar ${lesson.title}`}
+                    >
+                      <Send className="h-3.5 w-3.5" /> Aplicar
+                    </button>
+                  </div>
                 ))}
               </div>
             </>
@@ -185,13 +330,113 @@ export function LeaderResources({ completedLessons }: { completedLessons?: numbe
           )}
         </DialogContent>
       </Dialog>
+
+      <Dialog
+        open={Boolean(assigningLesson)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setAssigningLesson(null);
+            setSelectedTargetId("");
+          }
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Aplicar conteúdo</DialogTitle>
+            <DialogDescription>
+              Escolha quem receberá esta trilha. O discípulo verá o módulo como Meu Discipulado.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-2">
+            {loadingTargets ? (
+              <div className="flex items-center justify-center gap-2 py-6 text-sm text-muted-foreground">
+                <Loader2 className="h-4 w-4 animate-spin" /> Carregando discípulos...
+              </div>
+            ) : targets.length === 0 ? (
+              <div className="rounded-2xl border border-dashed border-border p-4 text-center text-sm text-muted-foreground">
+                Adicione discípulos ou crie um grupo antes de aplicar conteúdos.
+              </div>
+            ) : (
+              targets.map((target) => {
+                const selectedTarget = selectedTargetId === target.id;
+                const Icon = target.type === "group" ? UsersRound : UserRound;
+                return (
+                  <button
+                    key={target.id}
+                    type="button"
+                    onClick={() => setSelectedTargetId(target.id)}
+                    className={`flex w-full items-center gap-3 rounded-2xl border p-3 text-left transition-colors ${
+                      selectedTarget
+                        ? "border-primary bg-primary/10"
+                        : "border-border hover:border-primary/50"
+                    }`}
+                  >
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-semibold">{target.name}</span>
+                      <span className="block text-xs text-muted-foreground">{target.subtitle}</span>
+                    </span>
+                    <span className={`h-4 w-4 rounded-full border-2 ${
+                      selectedTarget ? "border-primary bg-primary ring-2 ring-primary/20" : "border-border"
+                    }`} />
+                  </button>
+                );
+              })
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => void applyLesson()}
+            disabled={savingAssignment || loadingTargets || targets.length === 0}
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 disabled:opacity-50"
+          >
+            {savingAssignment && <Loader2 className="h-4 w-4 animate-spin" />}
+            Aplicar agora
+          </button>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
 
-function LessonFlow({ lesson, onBack }: { lesson: SupportLesson; onBack: () => void }) {
+export function SupportLessonFlow({
+  lesson,
+  onBack,
+  onComplete,
+  onApply,
+}: {
+  lesson: SupportLesson;
+  onBack: () => void;
+  onComplete?: () => Promise<void> | void;
+  onApply?: (lesson: SupportLesson) => void;
+}) {
+  return <LessonFlow lesson={lesson} onBack={onBack} onComplete={onComplete} onApply={onApply} />;
+}
+
+function LessonFlow({
+  lesson,
+  onBack,
+  onComplete,
+  onApply,
+}: {
+  lesson: SupportLesson;
+  onBack: () => void;
+  onComplete?: () => Promise<void> | void;
+  onApply?: (lesson: SupportLesson) => void;
+}) {
   const { bibleVersion } = useApp();
   const [step, setStep] = useState<Step>("estudo");
+  const [completionSaved, setCompletionSaved] = useState(false);
+
+  const completeLesson = async () => {
+    if (!onComplete || completionSaved) return;
+    await onComplete();
+    setCompletionSaved(true);
+  };
 
   // ── Fixar: quiz ──────────────────────────────────────────────
   const [quizAnswer, setQuizAnswer] = useState<number | null>(null);
@@ -456,11 +701,34 @@ function LessonFlow({ lesson, onBack }: { lesson: SupportLesson; onBack: () => v
             <p className="mt-2 text-sm font-medium">{lesson.reflectionQuestion}</p>
           </div>
 
-          <div className="flex items-center justify-center gap-2 rounded-2xl bg-primary/10 py-3 text-xs font-semibold text-primary">
-            <Sparkles className="h-4 w-4" /> Lição concluída — {lesson.title}
-          </div>
+          {onComplete ? (
+            <button
+              type="button"
+              onClick={() => void completeLesson()}
+              disabled={completionSaved}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 disabled:opacity-70"
+            >
+              <Check className="h-4 w-4" />
+              {completionSaved ? "Conteúdo concluído" : "Concluir conteúdo"}
+            </button>
+          ) : (
+            <div className="flex items-center justify-center gap-2 rounded-2xl bg-primary/10 py-3 text-xs font-semibold text-primary">
+              <Sparkles className="h-4 w-4" /> Lição concluída — {lesson.title}
+            </div>
+          )}
+
+          {onApply && (
+            <button
+              type="button"
+              onClick={() => onApply(lesson)}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl border border-primary/30 py-3 text-sm font-bold text-primary transition-colors hover:bg-primary/10"
+            >
+              <Send className="h-4 w-4" /> Aplicar aos discípulos
+            </button>
+          )}
 
           <button
+            type="button"
             onClick={resetAndBack}
             className="w-full rounded-2xl border border-border py-3 text-sm font-medium text-muted-foreground"
           >
