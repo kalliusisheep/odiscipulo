@@ -26,7 +26,6 @@ const difficultyIcons = { facil: Zap, medio: Sparkles, dificil: Flame, bereano: 
 
 const formatFirstHint = (hint: string) => {
   const text = hint.trim();
-  if (/^essa personagem/i.test(text)) return text.replace(/^essa personagem/i, "Esse personagem");
   if (/^esse personagem/i.test(text)) return text;
   if (/^(quem|qual|na |com |antes |depois |era |trabalhava |recebeu |foi |se tornou )/i.test(text)) return text;
   return `Esse personagem... ${text.charAt(0).toLowerCase()}${text.slice(1)}`;
