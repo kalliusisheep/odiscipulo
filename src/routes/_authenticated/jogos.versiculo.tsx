@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Check, Clock3, Flame, RotateCcw, Sparkles, Troph
 import { useCallback, useEffect, useRef, useState } from "react";
 import { BIBLICAL_VERSES, VERSE_DIFFICULTY, versesForDifficulty } from "@/data/biblical-verses";
 import type { GameDifficulty } from "@/data/biblical-characters";
+import { GameModeChooser } from "@/components/games/GameModeChooser";
 
 export const Route = createFileRoute("/_authenticated/jogos/versiculo")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -40,6 +41,7 @@ function shuffle<T>(items: T[]) { return [...items].sort(() => Math.random() - 0
 function VersiculoPage() {
   const { mode, roomId } = Route.useSearch();
   const [phase, setPhase] = useState<Phase>("setup");
+  const [modeSelected, setModeSelected] = useState(mode === "multi");
   const [difficulty, setDifficulty] = useState<GameDifficulty>("medio");
   const [rounds, setRounds] = useState(10);
   const [questions, setQuestions] = useState<typeof BIBLICAL_VERSES>([]);
@@ -96,6 +98,7 @@ function VersiculoPage() {
     const nextRound = round + 1; setRound(nextRound); prepareRound(nextRound); 
   };
 
+  if (phase === "setup" && !modeSelected) return <GameModeChooser title="Qual é o versículo?" description="Escolha entre reconhecer a passagem no seu ritmo ou disputar uma sala sincronizada com seus amigos." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer"; }} />;
   if (phase === "setup") return <Setup mode={mode} difficulty={difficulty} setDifficulty={setDifficulty} rounds={rounds} setRounds={setRounds} onStart={start} />;
   if (phase === "finished") return <Results score={score} rounds={rounds} bestStreak={bestStreak} results={results} onRestart={() => setPhase("setup")} />;
   if (!question) return null;
@@ -113,7 +116,7 @@ function VersiculoPage() {
   </div></main>;
 }
 
-function Setup({ difficulty, setDifficulty, rounds, setRounds, onStart }: { difficulty: GameDifficulty; setDifficulty: (value: GameDifficulty) => void; rounds: number; setRounds: (value: number) => void; onStart: () => void }) {
+function Setup({ mode, difficulty, setDifficulty, rounds, setRounds, onStart }: { mode: "single" | "multi"; difficulty: GameDifficulty; setDifficulty: (value: GameDifficulty) => void; rounds: number; setRounds: (value: number) => void; onStart: () => void }) {
   return <main className="min-h-screen bg-background"><div className="mx-auto max-w-lg px-4 pb-28 pt-5"><Link to="/jogos" className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground"><ArrowLeft className="h-4 w-4" /> Jogos</Link><header className="mt-8"><p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">{mode === "multi" ? "Partida em sala" : "Novo desafio"}</p><h1 className="mt-1 text-3xl font-extrabold">Qual é o versículo?</h1><p className="mt-3 text-sm leading-relaxed text-muted-foreground">A referência desapareceu. Você tem poucos segundos para reconhecer a passagem e manter seu combo.</p></header><section className="mt-8 space-y-6 rounded-[1.75rem] border border-border bg-surface p-5"><div><p className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">Escolha a dificuldade</p><div className="mt-3 grid grid-cols-2 gap-2">{difficultyOptions.map((option) => <button key={option} type="button" onClick={() => setDifficulty(option)} className={`rounded-2xl border px-3 py-3 text-left transition ${difficulty === option ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:border-primary/40"}`}><span className="block text-sm font-extrabold">{VERSE_DIFFICULTY[option].label}</span><span className="mt-1 block text-[10px] leading-snug opacity-75">{VERSE_DIFFICULTY[option].description}</span></button>)}</div></div><div><p className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">Número de rodadas</p><div className="mt-3 grid grid-cols-4 gap-2">{roundOptions.map((option) => <button key={option} type="button" onClick={() => setRounds(option)} className={`rounded-2xl border py-3 text-sm font-extrabold ${rounds === option ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground"}`}>{option}</button>)}</div></div>{mode === "multi" && <div className="rounded-2xl border border-ancient/25 bg-ancient/10 p-3 text-xs leading-relaxed text-muted-foreground">Todos os jogadores da sala receberão a mesma passagem e o mesmo cronômetro. Sala: <span className="font-mono text-foreground">{roomId?.slice(0, 8) ?? "—"}</span></div>}<button type="button" onClick={onStart} className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-4 text-sm font-extrabold text-primary-foreground shadow-lg shadow-primary/20">Começar partida <ArrowRight className="h-4 w-4" /></button></section></div></main>;
 }
 

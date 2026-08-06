@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, Clock3, Flame, HelpCircle, Lightbulb, RotateCcw, Sparkles, Trophy, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { MILLION_LEVELS, MILLION_QUESTIONS, type MillionQuestion } from "@/data/biblical-million";
+import { GameModeChooser } from "@/components/games/GameModeChooser";
 
 export const Route = createFileRoute("/_authenticated/jogos/milhao")({ component: MillionPage });
 type Phase = "setup" | "playing" | "answered" | "finished";
@@ -11,6 +12,7 @@ const ROUND_SECONDS = 22;
 
 function MillionPage() {
   const [phase, setPhase] = useState<Phase>("setup");
+  const [modeSelected, setModeSelected] = useState(false);
   const [questions, setQuestions] = useState<MillionQuestion[]>([]);
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
@@ -50,6 +52,7 @@ function MillionPage() {
     setUsedLifelines((current) => [...current, lifeline]);
   };
 
+  if (phase === "setup" && !modeSelected) return <GameModeChooser title="Quiz do Milhão" description="Suba pelos níveis do conhecimento bíblico sozinho ou desafie outros jogadores em uma sala competitiva." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer"; }} />;
   if (phase === "setup") return <Setup onStart={start} />;
   if (phase === "finished") return <Results score={score} correct={correctAnswers} bestStreak={bestStreak} weakness={weakness} onRestart={() => setPhase("setup")} />;
   if (!question) return null;

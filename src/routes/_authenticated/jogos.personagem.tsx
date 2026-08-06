@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, Eye, Lightbulb, RotateCcw, Trophy, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { BIBLICAL_CHARACTERS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
+import { GameModeChooser } from "@/components/games/GameModeChooser";
 
 export const Route = createFileRoute("/_authenticated/jogos/personagem")({ component: PersonagemPage });
 
@@ -11,6 +12,7 @@ const difficultyOptions: GameDifficulty[] = ["facil", "medio", "dificil", "berea
 
 function PersonagemPage() {
   const [phase, setPhase] = useState<Phase>("setup");
+  const [modeSelected, setModeSelected] = useState(false);
   const [difficulty, setDifficulty] = useState<GameDifficulty>("medio");
   const [rounds, setRounds] = useState(10);
   const [queue, setQueue] = useState<BiblicalCharacter[]>([]);
@@ -50,8 +52,9 @@ function PersonagemPage() {
     setRound((value) => value + 1); setRevealed([]); setAnswer(""); setCorrect(null); setRoundScore(0); setPhase("playing");
   };
 
+  if (phase === "setup" && !modeSelected) return <GameModeChooser title="Quem é o personagem?" description="Escolha uma experiência rápida para testar sua memória bíblica ou reúna seus amigos para uma disputa em sala." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer"; }} />;
   if (phase === "setup") return <Setup difficulty={difficulty} setDifficulty={setDifficulty} rounds={rounds} setRounds={setRounds} onStart={start} />;
-  if (phase === "finished") return <Finished score={score} rounds={rounds} onRestart={() => setPhase("setup")} />;
+  if (phase === "finished") return <Finished score={score} rounds={rounds} onRestart={() => { setModeSelected(false); setPhase("setup"); }} />;
   if (!character) return null;
 
   return <main className="min-h-screen bg-background"><div className="mx-auto max-w-lg px-4 pb-28 pt-5">

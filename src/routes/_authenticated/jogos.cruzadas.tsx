@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Check, Clock3, Eye, Flame, Lightbulb, RotateCcw,
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import type { GameDifficulty } from "@/data/biblical-characters";
 import { CROSSWORD_DIFFICULTY, CROSSWORD_THEMES, crosswordWordsFor, type CrosswordTheme, type CrosswordWord } from "@/data/biblical-crosswords";
+import { GameModeChooser } from "@/components/games/GameModeChooser";
 
 export const Route = createFileRoute("/_authenticated/jogos/cruzadas")({ component: CrosswordPage });
 
@@ -98,6 +99,7 @@ function tone(success: boolean) {
 
 function CrosswordPage() {
   const [phase, setPhase] = useState<Phase>("setup");
+  const [modeSelected, setModeSelected] = useState(false);
   const [difficulty, setDifficulty] = useState<GameDifficulty>("medio");
   const [theme, setTheme] = useState<CrosswordTheme | "todos">("todos");
   const [puzzle, setPuzzle] = useState(() => generatePuzzle("medio", "todos"));
@@ -154,6 +156,7 @@ function CrosswordPage() {
   const finish = completed.length === puzzle.placements.length && puzzle.placements.length > 0;
   useEffect(() => { if (finish) setPhase("finished"); }, [finish]);
 
+  if (phase === "setup" && !modeSelected) return <GameModeChooser title="Palavras Cruzadas" description="Escolha uma grade para resolver sozinho ou reúna seus amigos para um desafio bíblico em sala." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer"; }} />;
   if (phase === "setup") return <Setup difficulty={difficulty} setDifficulty={setDifficulty} theme={theme} setTheme={setTheme} onStart={start} />;
   if (phase === "finished") return <Results score={score} seconds={seconds} errors={errors} hints={hints} placements={puzzle.placements} onRestart={() => setPhase("setup")} />;
   const gridCells = Array.from({ length: puzzle.size * puzzle.size }, (_, index) => cellMap.get(key(Math.floor(index / puzzle.size), index % puzzle.size)));
