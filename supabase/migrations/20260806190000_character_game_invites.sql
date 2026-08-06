@@ -1,6 +1,16 @@
 -- Convites reais para salas: o host convida amigos e o convidado responde
 -- sem depender de estado local ou atualização manual da página.
 
+ALTER TABLE public.character_game_rooms
+  ADD COLUMN IF NOT EXISTS game_type text NOT NULL DEFAULT 'personagem';
+
+ALTER TABLE public.character_game_rooms
+  DROP CONSTRAINT IF EXISTS character_game_rooms_game_type_check;
+
+ALTER TABLE public.character_game_rooms
+  ADD CONSTRAINT character_game_rooms_game_type_check
+  CHECK (game_type IN ('personagem', 'versiculo', 'cruzadas', 'milhao'));
+
 ALTER TABLE public.character_game_room_players
   DROP CONSTRAINT IF EXISTS character_game_room_players_state_check;
 
