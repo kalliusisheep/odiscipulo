@@ -103,7 +103,8 @@ export function VerseActionSheet(props: Props) {
             <ShareLessonButton
               lessonId={`bible:${book}:${chapter}:${verse}`}
               title={ref}
-              shareContext={props.text}
+              shareContext={`${props.text}\n\nReferência bíblica: ${ref} · ${props.translationLabel}`}
+              referenceText={`${ref} · ${props.translationLabel}`}
               className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-primary/30 bg-primary/10 py-3 text-sm font-semibold text-primary transition-colors hover:bg-primary/15"
             />
           </div>
