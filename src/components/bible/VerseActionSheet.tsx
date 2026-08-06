@@ -19,7 +19,6 @@ type Props = {
   onFavorite: () => void;
   onNote: () => void;
   onCopy: () => void;
-  onShare: () => void;
 };
 
 export function VerseActionSheet(props: Props) {
@@ -43,7 +42,11 @@ export function VerseActionSheet(props: Props) {
       >
         <div className="mx-auto mt-3 h-1.5 w-10 rounded-full bg-muted-foreground/30" />
         <div className="px-5 pt-4">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">Ações do versículo</p>
+            <span className="rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-bold text-muted-foreground">Toque para agir</span>
+          </div>
+          <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
             {ref} · {props.translationLabel}
           </p>
           <p className="mt-2 line-clamp-3 scripture text-sm leading-relaxed text-foreground/90">
