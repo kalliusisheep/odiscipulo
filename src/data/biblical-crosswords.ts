@@ -311,4 +311,10 @@ const isValidCrosswordWord = (entry: CrosswordWord) => {
 
 export const CROSSWORD_WORDS = ALL_CROSSWORD_WORDS.filter(isValidCrosswordWord);
 
-export const crosswordWordsFor = (difficulty: GameDifficulty, theme?: CrosswordTheme | "todos") => CROSSWORD_WORDS.filter((entry) => entry.difficulty === difficulty && (theme === "todos" || !theme || entry.themes.includes(theme)));
+export const crosswordWordsFor = (difficulty: GameDifficulty, theme?: CrosswordTheme | "todos") => {
+  const themed = CROSSWORD_WORDS.filter((entry) => theme === "todos" || !theme || entry.themes.includes(theme));
+  const meaningful = themed.filter((entry) => !(entry.category === "Pessoa" && entry.reference === "Gênesis 1–50"));
+  if (difficulty === "bereano") return meaningful.filter((entry) => entry.word.length >= 7 || entry.difficulty === "bereano");
+  if (difficulty === "dificil") return meaningful.filter((entry) => entry.word.length >= 5 || entry.difficulty === "dificil");
+  return themed.filter((entry) => entry.difficulty === difficulty);
+};
