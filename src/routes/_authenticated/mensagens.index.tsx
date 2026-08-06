@@ -208,9 +208,9 @@ function MensagensListPage() {
                     to="/perfil/$username"
                     params={{ username: c.peer.username }}
                     aria-label={`Ver perfil de ${c.peer.display_name}`}
-                    className={\`relative h-12 w-12 shrink-0 overflow-visible rounded-full bg-surface transition-transform hover:scale-105 \${ 
+                    className={`relative h-12 w-12 shrink-0 overflow-visible rounded-full bg-surface transition-transform hover:scale-105 ${
                       inChallenge ? "avatar-ring-flame" : "ring-2 ring-border"
-                    }\`}
+                    }`}
                   >
                     <div className="absolute inset-0 overflow-hidden rounded-full">
                       {c.peer.avatar_url ? (
@@ -222,11 +222,11 @@ function MensagensListPage() {
                       )}
                     </div>
                     <span
-                      className={\`absolute -bottom-1 -right-1 z-10 h-4 w-4 rounded-full border-2 border-background \${ 
+                      className={`absolute -bottom-1 -right-1 z-10 h-4 w-4 rounded-full border-2 border-background ${
                         formatPresence(c.peer.last_seen_at) === "Online agora"
                           ? "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.85)]"
                           : "bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.7)]"
-                      }\`}
+                      }`}
                       aria-label={formatPresence(c.peer.last_seen_at) === "Online agora" ? "Online" : "Offline"}
                     />
                   </Link>
