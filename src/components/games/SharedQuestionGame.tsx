@@ -424,7 +424,8 @@ export function SharedQuestionGame({
 
   const roundClosed = remoteRound.status !== "active";
   const revealed = new Set([0, ...(remoteRound.revealed_hint_indexes ?? [])]);
-  const winningName = winner?.display_name ?? "Um jogador";
+  const roundWinner = players.find((player) => player.user_id === remoteRound.winner_id);
+  const winningName = roundWinner?.display_name ?? "Um jogador";
   const showWaiting = answered && !roundClosed;
 
   return (
