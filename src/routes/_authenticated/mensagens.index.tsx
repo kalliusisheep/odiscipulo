@@ -131,12 +131,13 @@ function MensagensListPage() {
   const totalUnread = conversations.filter((c) => c.unread).length;
 
   return (
-    <div className="mx-auto min-h-[100dvh] max-w-lg pb-24">
+    <div className="mx-auto min-h-[100dvh] max-w-lg bg-gradient-to-b from-background via-background to-surface/30 pb-24">
       {/* Header em gradiente */}
-      <div className="relative overflow-hidden rounded-b-[2rem] bg-gradient-to-br from-primary via-primary/85 to-indigo-600 px-5 pb-8 pt-6 text-primary-foreground shadow-lg">
-        <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
-        <div className="absolute -bottom-16 -left-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
-        <div className="relative flex items-center gap-3">
+      <div className="relative overflow-hidden rounded-b-[2rem] border-b border-white/10 px-5 pb-8 pt-6 text-primary-foreground shadow-xl">
+        <img src="/messages-hero.svg" alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#17152f]/95 via-[#373064]/80 to-[#4f35d8]/75" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#17152f]/45 to-transparent" />
+        <div className="relative z-10 flex items-center gap-3">
           <Link to="/home" aria-label="Voltar" className="rounded-full bg-white/15 p-2 backdrop-blur transition hover:bg-white/25">
             <ArrowLeft className="h-4 w-4" />
           </Link>
@@ -158,13 +159,13 @@ function MensagensListPage() {
         </div>
 
         {/* Busca */}
-        <div className="relative mt-5">
+        <div className="relative z-10 mt-5">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/70" />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Buscar irmão(ã)…"
-            className="w-full rounded-full border border-white/20 bg-white/15 py-2.5 pl-9 pr-4 text-sm text-white placeholder:text-white/70 outline-none backdrop-blur focus:border-white/40"
+            className="w-full rounded-2xl border border-white/30 bg-black/20 py-3 pl-10 pr-4 text-sm text-white placeholder:text-white/70 outline-none shadow-inner backdrop-blur-md transition focus:border-white/60 focus:bg-black/30"
           />
         </div>
       </div>
@@ -199,7 +200,7 @@ function MensagensListPage() {
                   className={`group relative flex items-center gap-3 overflow-hidden rounded-2xl border p-3 transition-all ${
                     c.unread
                       ? "border-primary/40 bg-primary/5 shadow-[0_2px_10px_-4px_hsl(var(--primary)/0.35)]"
-                      : "border-border bg-surface-2 hover:border-primary/30 hover:bg-surface"
+                      : "border-border/80 bg-surface-2/90 shadow-sm hover:border-primary/30 hover:bg-surface"
                   }`}
                 >
                   {/* Avatar: leva ao perfil */}
