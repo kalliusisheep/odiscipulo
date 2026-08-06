@@ -106,6 +106,7 @@ function PersonagemPage() {
 
   const next = () => {
     if (round + 1 >= rounds) {
+      playGameSfx("complete");
       setPhase("finished");
       return;
     }
