@@ -55,7 +55,7 @@ function MillionPage() {
   }, []);
 
   const start = () => {
-    startGameMusic(); playGameSfx("start");
+    startGameMusic("million"); playGameSfx("start");
     const ordered = [...MILLION_QUESTIONS].sort((a, b) => a.difficulty.localeCompare(b.difficulty));
     setQuestions(ordered.slice(0, ROUND_COUNT)); setScore(0); setStreak(0); setBestStreak(0); setUsedLifelines([]); setCorrectAnswers(0); setWeakness({}); setTimeLeft(ROUND_SECONDS); setConsultations(null); startedAt.current = Date.now(); setPhase("playing");
   };

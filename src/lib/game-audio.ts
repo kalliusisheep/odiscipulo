@@ -1,4 +1,5 @@
 export type GameSfx = "start" | "tap" | "reveal" | "success" | "error" | "complete";
+export type GameMusicTheme = "character" | "verse" | "crossword" | "million";
 
 export type GameAudioState = {
   musicEnabled: boolean;
@@ -7,12 +8,12 @@ export type GameAudioState = {
 };
 
 const listeners = new Set<() => void>();
-const progression = [
-  [130.81, 155.56, 196, 261.63],
-  [116.54, 146.83, 174.61, 233.08],
-  [146.83, 174.61, 220, 293.66],
-  [123.47, 155.56, 185, 246.94],
-];
+const progressions: Record<GameMusicTheme, number[][]> = {
+  character: [[130.81, 155.56, 196, 261.63], [116.54, 146.83, 174.61, 233.08], [146.83, 174.61, 220, 293.66], [123.47, 155.56, 185, 246.94]],
+  verse: [[130.81, 155.56, 196, 261.63], [146.83, 196, 220, 293.66], [116.54, 146.83, 196, 261.63], [123.47, 164.81, 196, 246.94]],
+  crossword: [[110, 138.59, 164.81, 220], [123.47, 155.56, 185, 246.94], [98, 123.47, 146.83, 196], [130.81, 164.81, 196, 261.63]],
+  million: [[98, 123.47, 146.83, 196], [103.83, 130.81, 155.56, 207.65], [92.5, 116.54, 138.59, 185], [110, 146.83, 174.61, 220]],
+};
 
 let audioContext: AudioContext | null = null;
 let musicGain: GainNode | null = null;
@@ -21,6 +22,7 @@ let musicStep = 0;
 let musicEnabled = true;
 let sfxEnabled = true;
 let musicStarted = false;
+let musicTheme: GameMusicTheme = "character";
 let audioSnapshot: GameAudioState = { musicEnabled, sfxEnabled, musicStarted };
 
 const emit = () => {
@@ -53,6 +55,7 @@ function playMusicStep() {
   const context = ensureContext();
   if (!context || !musicGain || !musicEnabled) return;
   const now = context.currentTime;
+  const progression = progressions[musicTheme];
   const chord = progression[musicStep % progression.length];
   chord.forEach((frequency, index) => {
     const oscillator = context.createOscillator();
@@ -83,8 +86,9 @@ function playMusicStep() {
   musicStep += 1;
 }
 
-export function startGameMusic() {
+export function startGameMusic(theme?: GameMusicTheme) {
   musicStarted = true;
+  musicTheme = theme ?? (typeof window !== "undefined" && window.location.pathname.includes("cruzadas") ? "crossword" : "character");
   const context = ensureContext();
   if (!context || !musicEnabled || musicTimer !== null) {
     emit();

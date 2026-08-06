@@ -42,7 +42,7 @@ function PersonagemPage() {
   );
 
   const start = () => {
-    startGameMusic();
+    startGameMusic("character");
     playGameSfx("start");
     const shuffled = [...filteredCharacters].sort(() => Math.random() - 0.5);
     const selected = Array.from({ length: rounds }, (_, index) => shuffled[index % shuffled.length]);

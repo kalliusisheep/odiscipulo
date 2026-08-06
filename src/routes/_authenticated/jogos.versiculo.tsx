@@ -69,7 +69,7 @@ function VersiculoPage() {
   }, [questions]);
 
   const start = () => {
-    startGameMusic();
+    startGameMusic("verse");
     playGameSfx("start");
     const pool = versesForDifficulty(difficulty);
     const fallbackPool = pool.length >= rounds ? pool : [...pool, ...BIBLICAL_VERSES.filter((item) => item.difficulty !== "bereano")];
