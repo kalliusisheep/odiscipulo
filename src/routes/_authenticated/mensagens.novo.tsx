@@ -47,10 +47,13 @@ function NovaMensagemPage() {
       return;
     }
 
-    const { data: profiles } = await supabase
+    const withPresence = await supabase
       .from("profiles")
       .select("id, display_name, username, avatar_url, last_seen_at")
       .in("id", ids);
+    const profiles = withPresence.error
+      ? ((await supabase.from("profiles").select("id, display_name, username, avatar_url").in("id", ids)).data ?? []).map((p) => ({ ...p, last_seen_at: null }))
+      : (withPresence.data ?? []);
 
     const list = ((profiles ?? []) as Contact[])
       .filter((p) => p.username)
@@ -72,12 +75,20 @@ function NovaMensagemPage() {
 
     // Todo usuário vinculado ao mesmo registro de igreja (mesmo church_id)
     // aparece como sugestão — o vínculo é exato, não uma comparação de texto.
-    const { data: members } = await supabase
+    const withPresence = await supabase
       .from("profiles")
-      .select("id, display_name, username, avatar_url, church_name")
+      .select("id, display_name, username, avatar_url, last_seen_at, church_name")
       .eq("church_id", myProfile.church_id)
       .neq("id", currentMyId)
       .limit(20);
+    const members = withPresence.error
+      ? ((await supabase
+          .from("profiles")
+          .select("id, display_name, username, avatar_url, church_name")
+          .eq("church_id", myProfile.church_id)
+          .neq("id", currentMyId)
+          .limit(20)).data ?? []).map((p) => ({ ...p, last_seen_at: null }))
+      : (withPresence.data ?? []);
 
     const list = ((members ?? []) as ChurchSuggestion[]).filter((m) => m.username && m.church_name);
     setChurchMembers(list);
@@ -108,16 +119,22 @@ function NovaMensagemPage() {
     }
     setSearching(true);
     const timeout = setTimeout(async () => {
-      const { data, error } = await supabase
+      const withPresence = await supabase
         .from("profiles")
         .select("id, display_name, username, avatar_url, last_seen_at")
         .ilike("username", `%${q}%`)
         .neq("id", myId)
         .limit(8);
+      const data = withPresence.error
+        ? ((await supabase
+            .from("profiles")
+            .select("id, display_name, username, avatar_url")
+            .ilike("username", `%${q}%`)
+            .neq("id", myId)
+            .limit(8)).data ?? []).map((p) => ({ ...p, last_seen_at: null }))
+        : (withPresence.data ?? []);
 
-      if (!error) {
-        setSearchResults(((data ?? []) as Contact[]).filter((p) => p.username));
-      }
+      setSearchResults(((data ?? []) as Contact[]).filter((p) => p.username));
       setSearching(false);
       setSearchedOnce(true);
     }, 350);
