@@ -114,23 +114,6 @@ export function ShareLessonButton({
   };
 
   return (
-    <button
-      type="button"
-      onClick={() => {
-        if (!sharing) setPickerOpen(true);
-      }}
-      disabled={sharing}
-      className={
-        className ??
-        "inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary-glow disabled:opacity-60"
-      }
-    >
-      {sharing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Share2 className="h-4 w-4" />}
-      {sharing ? "Preparando…" : "Compartilhar"}
-    </button>
-  );
-
-  return (
     <>
       <button
         type="button"
