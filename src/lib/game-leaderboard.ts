@@ -40,8 +40,6 @@ export async function recordGameResult(result: GameResult) {
   });
   if (!error) return null;
 
-  // Mantém o registro funcionando mesmo quando a função RPC ainda não foi
-  // publicada no projeto Supabase, desde que a tabela já exista.
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) return error;
   const fallback = await (supabase as any).from("game_scores").insert({
