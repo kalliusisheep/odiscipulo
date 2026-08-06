@@ -634,6 +634,42 @@ export type Database = {
           },
         ]
       }
+      discipleship_assignments: {
+        Row: {
+          assigned_at: string
+          content_id: string
+          content_type: string
+          created_at: string
+          disciple_id: string
+          group_id: string | null
+          id: string
+          leader_id: string
+          status: string
+        }
+        Insert: {
+          assigned_at?: string
+          content_id: string
+          content_type: string
+          created_at?: string
+          disciple_id: string
+          group_id?: string | null
+          id?: string
+          leader_id: string
+          status?: string
+        }
+        Update: {
+          assigned_at?: string
+          content_id?: string
+          content_type?: string
+          created_at?: string
+          disciple_id?: string
+          group_id?: string | null
+          id?: string
+          leader_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
       discipulos: {
         Row: {
           alert: string | null
