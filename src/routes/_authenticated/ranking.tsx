@@ -1,500 +1,178 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { Crown, Flame, Gamepad2, Medal, RefreshCw, Sparkles, Trophy, Users, Zap } from "lucide-react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { CHARACTERS } from "@/data/content";
-import { getLevel } from "@/data/levels";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { toast } from "sonner";
-import { normalizeUsername } from "@/lib/username";
-import { Flame, Users, UserPlus, Share2, Copy, Search, Link2, Check, Crown, AtSign, Trophy } from "lucide-react";
-import { getMyChallengePartnerIds } from "@/lib/challenges";
 import { fetchGameLeaderboard, type GameKey, type GameLeaderboardRow } from "@/lib/game-leaderboard";
 
-export const Route = createFileRoute("/_authenticated/ranking")({
-  component: RankingPage,
-});
+export const Route = createFileRoute("/_authenticated/ranking")({ component: RankingPage });
 
-type Row = {
-  id: string;
-  display_name: string;
-  username: string | null;
-  avatar_char: string;
-  avatar_url?: string | null;
-  xp: number;
-  streak: number;
-  isMe?: boolean;
-  isFriend?: boolean;
-  isDemo?: boolean;
-};
+const GAME_TABS: { key: GameKey; label: string; shortLabel: string; color: string }[] = [
+  { key: "milhao", label: "Quiz do Milhão", shortLabel: "Milhão", color: "text-amber-300" },
+  { key: "personagem", label: "Quem é o personagem?", shortLabel: "Personagem", color: "text-violet-300" },
+  { key: "versiculo", label: "Qual é o versículo?", shortLabel: "Versículo", color: "text-emerald-300" },
+  { key: "cruzadas", label: "Palavras cruzadas", shortLabel: "Cruzadas", color: "text-sky-300" },
+];
 
 function RankingPage() {
-  const [rows, setRows] = useState<Row[]>([]);
-  const [challengePartners, setChallengePartners] = useState<Set<string>>(new Set());
-  const [myUsername, setMyUsername] = useState<string | null>(null);
-  const [addOpen, setAddOpen] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
-  const [searching, setSearching] = useState(false);
-  const [searchResult, setSearchResult] = useState<Row | null | "notfound">(null);
-  const [alreadyFriend, setAlreadyFriend] = useState(false);
-  const [adding, setAdding] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [selectedGame, setSelectedGame] = useState<GameKey>("milhao");
-  const [gameRows, setGameRows] = useState<GameLeaderboardRow[]>([]);
-  const [gameRankingLoading, setGameRankingLoading] = useState(true);
-  const meRowRef = useRef<HTMLDivElement | null>(null);
+  const [rows, setRows] = useState<GameLeaderboardRow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const load = async () => {
-    const { data: u } = await supabase.auth.getUser();
-    const myId = u.user?.id ?? null;
-    const { data: me } = myId
-      ? await supabase
-          .from("profiles")
-          .select("id, display_name, username, avatar_char, avatar_url, xp, streak")
-          .eq("id", myId)
-          .maybeSingle()
-      : { data: null };
-    if (me?.username) setMyUsername(me.username);
-
-    // Friends
-    let friendProfiles: Row[] = [];
-    if (myId) {
-      const { data: fr } = await supabase.from("friendships").select("friend_id").eq("user_id", myId);
-      const friendIds = (fr ?? []).map((r) => r.friend_id);
-      if (friendIds.length > 0) {
-        const { data: fp } = await supabase
-          .from("profiles")
-          .select("id, display_name, username, avatar_char, avatar_url, xp, streak")
-          .in("id", friendIds);
-        friendProfiles = (fp ?? []).map((p) => ({ ...p, isFriend: true }) as Row);
-      }
-    }
-
-    const { data: demo } = await supabase.from("demo_users").select("id, display_name, avatar_char, xp, streak");
-    const merged: Row[] = [
-      ...(demo ?? []).map((d) => ({ ...d, username: null, avatar_url: null, isDemo: true }) as Row),
-      ...friendProfiles,
-      ...(me ? [{ ...me, isMe: true } as Row] : []),
-    ].sort((a, b) => b.xp - a.xp);
-    setRows(merged);
-    if (myId) setChallengePartners(await getMyChallengePartnerIds(myId));
+  const loadRanking = async (refresh = false) => {
+    if (refresh) setRefreshing(true);
+    else setLoading(true);
+    const result = await fetchGameLeaderboard(selectedGame, 100);
+    setRows(result.data);
+    setLoading(false);
+    setRefreshing(false);
   };
 
   useEffect(() => {
-    void load();
-  }, []);
-
-  useEffect(() => {
-    let active = true;
-    setGameRankingLoading(true);
-    void fetchGameLeaderboard(selectedGame).then((result) => {
-      if (!active) return;
-      setGameRows(result.data);
-      setGameRankingLoading(false);
-    });
-    return () => {
-      active = false;
-    };
+    void loadRanking();
   }, [selectedGame]);
 
-  const myIndex = useMemo(() => rows.findIndex((r) => r.isMe), [rows]);
-  const total = rows.length;
-
-  const inviteLink =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/auth${myUsername ? `?invite=${encodeURIComponent(myUsername)}` : ""}`
-      : "";
-
-  const copyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(inviteLink);
-      setCopied(true);
-      toast.success("Link copiado!");
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      toast.error("Não foi possível copiar.");
-    }
-  };
-
-  const shareRanking = async () => {
-    const me = rows[myIndex];
-    const text = me
-      ? `Estou em ${myIndex + 1}º de ${total} no Disciple — ${getLevel(me.xp).title} 🔥 ${me.streak} dias`
-      : `Confira o ranking da minha célula no Disciple`;
-    const nav = navigator as Navigator & { share?: (d: ShareData) => Promise<void> };
-    if (typeof navigator !== "undefined" && nav.share) {
-      try {
-        await nav.share({ title: "Disciple", text, url: inviteLink });
-        return;
-      } catch {
-        /* cancelled */
-      }
-    }
-    try {
-      await navigator.clipboard.writeText(`${text} — ${inviteLink}`);
-      toast.success("Copiado para compartilhar!");
-    } catch {
-      toast.error("Não foi possível compartilhar.");
-    }
-  };
-
-  const findUser = async () => {
-    const raw = searchInput.trim().replace(/^@/, "");
-    if (!raw) return;
-    setSearching(true);
-    setSearchResult(null);
-    setAlreadyFriend(false);
-    const uname = normalizeUsername(raw);
-    const { data } = await supabase
-      .from("profiles")
-      .select("id, display_name, username, avatar_char, avatar_url, xp, streak")
-      .ilike("username", uname)
-      .maybeSingle();
-    setSearching(false);
-    if (!data) {
-      setSearchResult("notfound");
-      return;
-    }
-    setSearchResult(data as Row);
-    const { data: u } = await supabase.auth.getUser();
-    if (u.user && data.id === u.user.id) {
-      setAlreadyFriend(true);
-      return;
-    }
-    if (u.user) {
-      const { data: existing } = await supabase
-        .from("friendships")
-        .select("user_id")
-        .eq("user_id", u.user.id)
-        .eq("friend_id", data.id)
-        .maybeSingle();
-      setAlreadyFriend(!!existing);
-    }
-  };
-
-  const addFriend = async () => {
-    if (!searchResult || searchResult === "notfound") return;
-    const { data: u } = await supabase.auth.getUser();
-    if (!u.user) return;
-    if (searchResult.id === u.user.id) {
-      toast.error("Você não pode adicionar a si mesmo.");
-      return;
-    }
-    setAdding(true);
-    const { error } = await supabase.rpc("add_friend", { _target: searchResult.id });
-    setAdding(false);
-    if (error) {
-      toast.error("Não foi possível adicionar. Tente novamente.");
-      return;
-    }
-
-    toast.success(`${searchResult.display_name} adicionado(a) como irmão!`);
-    setAddOpen(false);
-    setSearchInput("");
-    setSearchResult(null);
-    await load();
-  };
-
-  const top3 = rows.slice(0, 3);
+  const selectedTab = GAME_TABS.find((tab) => tab.key === selectedGame) ?? GAME_TABS[0];
+  const podium = rows.slice(0, 3);
   const rest = rows.slice(3);
-  const [first, second, third] = [top3[0], top3[1], top3[2]];
+  const totalPoints = useMemo(() => rows.reduce((sum, row) => sum + row.total_score, 0), [rows]);
+  const totalGames = useMemo(() => rows.reduce((sum, row) => sum + row.games_played, 0), [rows]);
 
   return (
-    <div className="mx-auto max-w-lg space-y-6 px-4 pt-6 pb-24">
-      <header className="flex items-center justify-between">
-        <div>
-          <p className="text-xs text-muted-foreground">Sua célula</p>
-          <h1 className="text-xl font-semibold">Ranking</h1>
-        </div>
-        <ThemeToggle />
-      </header>
-
-      <GameRankingSection
-        selectedGame={selectedGame}
-        setSelectedGame={setSelectedGame}
-        rows={gameRows}
-        loading={gameRankingLoading}
-      />
-
-     {/* Podium */}
-      {top3.length > 0 && (
-        <section className="card-elevated overflow-hidden bg-gradient-to-b from-primary/15 via-primary/5 to-transparent">
-         <div className="relative">
-            <img
-              src="/ranking-banner.png"
-              alt="Ovelhas comemorando com troféu"
-              className="h-96 w-full object-cover object-top"
-            />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-b from-transparent to-background" />
+    <main className="min-h-screen bg-background">
+      <div className="mx-auto max-w-lg space-y-5 px-4 pb-28 pt-6">
+        <header className="flex items-start justify-between">
+          <div>
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">Arena global</p>
+            <h1 className="mt-1 text-3xl font-black tracking-tight">Ranking dos jogos</h1>
+            <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
+              Todos os jogadores do app competindo pela melhor pontuação.
+            </p>
           </div>
-         <div className="relative z-10 -mt-48 flex items-end justify-center gap-3 px-4 pb-4">
-            {second && <PodiumSpot row={second} place={2} flame={challengePartners.has(second.id)} />}
-            {first && <PodiumSpot row={first} place={1} flame={challengePartners.has(first.id)} />}
-            {third && <PodiumSpot row={third} place={3} flame={challengePartners.has(third.id)} />}
+          <ThemeToggle />
+        </header>
+
+        <section className="relative overflow-hidden rounded-[2rem] border border-primary/30 bg-gradient-to-br from-primary/25 via-surface to-ancient/10 p-5 shadow-xl shadow-primary/10">
+          <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-primary/20 blur-3xl" />
+          <div className="relative flex items-center gap-4">
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-3xl bg-primary/15 text-primary ring-1 ring-primary/30">
+              <Gamepad2 className="h-8 w-8" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ancient">Temporada em andamento</p>
+              <h2 className="mt-1 text-xl font-black">{selectedTab.label}</h2>
+              <p className="mt-1 text-xs text-muted-foreground">Pontuação real acumulada nas partidas.</p>
+            </div>
+          </div>
+          <div className="relative mt-5 grid grid-cols-3 gap-2">
+            <Stat icon={<Users />} value={rows.length} label="jogadores" />
+            <Stat icon={<Trophy />} value={totalGames} label="partidas" />
+            <Stat icon={<Zap />} value={totalPoints} label="pontos" />
           </div>
         </section>
-      )}
 
-      {/* Action buttons */}
-      <div className="grid grid-cols-2 gap-3">
-        <button
-          onClick={() => void shareRanking()}
-          className="flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-md transition-transform active:scale-95"
-        >
-          <Share2 className="h-4 w-4" /> Compartilhar
-        </button>
-        <button
-          onClick={() => {
-            setSearchInput("");
-            setSearchResult(null);
-            setAlreadyFriend(false);
-            setAddOpen(true);
-          }}
-          className="flex items-center justify-center gap-2 rounded-2xl border border-border bg-surface-2 px-4 py-3 text-sm font-semibold transition-transform active:scale-95"
-        >
-          <UserPlus className="h-4 w-4" /> Adicionar Irmão
-        </button>
-      </div>
-
-      {/* List */}
-      <div className="space-y-2">
-        {rest.map((row, idx) => {
-          const i = idx + 3;
-          const level = getLevel(row.xp);
-          const ch = CHARACTERS.find((c) => c.id === row.avatar_char) ?? CHARACTERS[0];
-          const inner = (
-            <div
-              ref={row.isMe ? meRowRef : undefined}
-              className={`flex items-center gap-3 rounded-2xl p-3 transition-all ${
-                row.isMe
-                  ? "border-2 border-primary bg-primary/10 shadow-[0_0_0_4px_hsl(var(--primary)/0.15)]"
-                  : "border border-border bg-surface-2 hover:border-primary/40"
-              }`}
+        <div className="grid grid-cols-2 gap-2 rounded-2xl border border-border bg-surface p-1.5 sm:grid-cols-4">
+          {GAME_TABS.map((tab) => (
+            <button
+              key={tab.key}
+              type="button"
+              onClick={() => setSelectedGame(tab.key)}
+              className={["rounded-xl px-2 py-3 text-[11px] font-extrabold transition-all", selectedGame === tab.key ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"].join(" ")}
             >
-              <span className={`w-7 text-center text-sm font-bold ${row.isMe ? "text-primary" : "text-muted-foreground"}`}>
-                {i + 1}
-              </span>
-              <div className="relative h-11 w-11 shrink-0">
-                <div className={`h-11 w-11 overflow-hidden rounded-full bg-surface ${row.isMe ? "ring-2 ring-primary" : "ring-1 ring-border"} ${challengePartners.has(row.id) ? "avatar-ring-flame" : ""}`}>
-                  {row.avatar_url ? (
-                    <img src={row.avatar_url} alt="" className="h-full w-full object-cover" />
-                  ) : level.avatar ? (
-                    <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
-                  ) : (
-                    <span className="flex h-full w-full items-center justify-center text-lg">{ch.emoji}</span>
-                  )}
-                </div>
-                <span className="absolute -bottom-1 -right-1 flex h-5 min-w-[20px] items-center justify-center rounded-full border-2 border-background bg-primary px-1 text-[10px] font-bold text-primary-foreground">
-                  {level.level}
-                </span>
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="flex items-center gap-1.5 truncate text-sm font-semibold">
-                  {row.display_name}
-                  {row.isMe && (
-                    <span className="rounded bg-primary px-1.5 py-0.5 text-[9px] font-bold text-primary-foreground">VOCÊ</span>
-                  )}
-                  {row.isFriend && !row.isMe && (
-                    <span className="rounded bg-success/20 px-1.5 py-0.5 text-[9px] font-bold text-success">IRMÃO</span>
-                  )}
-                </p>
-                <p className="truncate text-[11px] text-muted-foreground">{level.title}</p>
-              </div>
-              <div className="flex items-center gap-1 rounded-full bg-streak/15 px-2.5 py-1 text-xs font-bold text-streak">
-                <Flame className="h-3.5 w-3.5" /> {row.streak}
-              </div>
-            </div>
-          );
-          if (row.username && !row.isMe) {
-            return (
-              <Link key={row.id} to="/perfil/$username" params={{ username: row.username }} className="block">
-                {inner}
-              </Link>
-            );
-          }
-          return <div key={row.id}>{inner}</div>;
-        })}
-      </div>
+              {tab.shortLabel}
+            </button>
+          ))}
+        </div>
 
-      <Dialog open={addOpen} onOpenChange={setAddOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-primary" /> Adicionar irmão
-            </DialogTitle>
-            <DialogDescription>
-              Busque pelo @ID de usuário ou envie um convite pela sua rede.
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-4">
-            <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Buscar por @ID</p>
-              <div className="flex gap-2">
-                <div className="relative flex-1">
-                  <AtSign className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <input
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") void findUser();
-                    }}
-                    placeholder="ex: pedro.silva123"
-                    className="w-full rounded-xl border border-border bg-background pl-9 pr-3 py-2 text-sm outline-none focus:border-primary"
-                  />
-                </div>
-                <button
-                  onClick={() => void findUser()}
-                  disabled={searching}
-                  className="flex items-center gap-1 rounded-xl bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
-                >
-                  <Search className="h-4 w-4" /> Buscar
-                </button>
-              </div>
-
-              {searchResult === "notfound" && (
-                <p className="mt-2 text-xs text-destructive">Nenhum irmão encontrado com esse @ID.</p>
-              )}
-              {searchResult && searchResult !== "notfound" && (
-                <div className="mt-3 flex items-center gap-3 rounded-xl border border-border bg-surface-2 p-3">
-                  <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-surface">
-                    {searchResult.avatar_url ? (
-                      <img src={searchResult.avatar_url} alt="" className="h-full w-full object-cover" />
-                    ) : getLevel(searchResult.xp).avatar ? (
-                      <img src={getLevel(searchResult.xp).avatar} alt="" className="h-full w-full object-cover" />
-                    ) : (
-                      <span>👤</span>
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="truncate text-sm font-semibold">{searchResult.display_name}</p>
-                    <p className="truncate text-[11px] text-muted-foreground">
-                      @{searchResult.username} · Nv {getLevel(searchResult.xp).level}
-                    </p>
-                  </div>
-                  {alreadyFriend ? (
-                    <span className="rounded-full bg-success/20 px-3 py-1.5 text-xs font-semibold text-success">Já adicionado</span>
-                  ) : (
-                    <button
-                      onClick={() => void addFriend()}
-                      disabled={adding}
-                      className="rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-60"
-                    >
-                      {adding ? "Adicionando…" : "Adicionar"}
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
-
-            <div className="border-t border-border pt-4">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Link compartilhável</p>
-              <div className="flex items-center gap-2 rounded-xl border border-border bg-surface-2 p-2">
-                <Link2 className="ml-1 h-4 w-4 shrink-0 text-muted-foreground" />
-                <span className="flex-1 truncate text-xs">{inviteLink}</span>
-                <button
-                  onClick={() => void copyLink()}
-                  className="flex items-center gap-1 rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground"
-                >
-                  {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-                  {copied ? "Copiado" : "Copiar"}
-                </button>
-              </div>
-            </div>
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-muted-foreground">Top jogadores</p>
+            <p className={["mt-1 text-sm font-black", selectedTab.color].join(" ")}>Quem está dominando a arena</p>
           </div>
-        </DialogContent>
-      </Dialog>
+          <button type="button" onClick={() => void loadRanking(true)} disabled={refreshing} className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface text-muted-foreground transition hover:border-primary/40 hover:text-primary disabled:opacity-50" aria-label="Atualizar ranking">
+            <RefreshCw className={["h-4 w-4", refreshing ? "animate-spin" : ""].join(" ")} />
+          </button>
+        </div>
+
+        {loading ? (
+          <div className="rounded-3xl border border-border bg-surface p-12 text-center text-sm text-muted-foreground">Carregando a arena…</div>
+        ) : rows.length === 0 ? (
+          <div className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 to-surface p-10 text-center">
+            <Trophy className="mx-auto h-10 w-10 text-ancient" />
+            <h2 className="mt-4 text-lg font-black">A arena está esperando você</h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Jogue uma partida para inaugurar sua pontuação neste ranking.</p>
+            <Link to="/jogos" className="mt-5 inline-flex rounded-xl bg-primary px-5 py-3 text-sm font-extrabold text-primary-foreground">Entrar nos jogos</Link>
+          </div>
+        ) : (
+          <>
+            <section className="relative overflow-hidden rounded-[2rem] border border-primary/25 bg-gradient-to-b from-primary/15 via-surface to-surface p-4">
+              <div className="relative flex items-end justify-center gap-2 pt-3">
+                {podium[1] && <PodiumCard row={podium[1]} place={2} />}
+                {podium[0] && <PodiumCard row={podium[0]} place={1} />}
+                {podium[2] && <PodiumCard row={podium[2]} place={3} />}
+              </div>
+            </section>
+            <section className="space-y-2">
+              {rest.map((row) => <LeaderboardRow key={row.user_id} row={row} color={selectedTab.color} />)}
+            </section>
+          </>
+        )}
+
+        <div className="flex items-center justify-center gap-2 pb-2 text-[11px] text-muted-foreground">
+          <Sparkles className="h-3.5 w-3.5 text-primary" />
+          Ranking global atualizado com as pontuações dos jogos.
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function Stat({ icon, value, label }: { icon: ReactNode; value: number; label: string }) {
+  return (
+    <div className="rounded-2xl border border-border/70 bg-background/45 px-2 py-3 text-center">
+      <span className="mx-auto flex h-5 w-5 items-center justify-center text-primary [&>svg]:h-4 [&>svg]:w-4">{icon}</span>
+      <p className="mt-1 text-sm font-black">{value.toLocaleString("pt-BR")}</p>
+      <p className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground">{label}</p>
     </div>
   );
 }
 
-
-const GAME_RANKING_TABS: { key: GameKey; label: string }[] = [
-  { key: "milhao", label: "Milhão" },
-  { key: "personagem", label: "Personagem" },
-  { key: "versiculo", label: "Versículo" },
-  { key: "cruzadas", label: "Cruzadas" },
-];
-
-function GameRankingSection({ selectedGame, setSelectedGame, rows, loading }: { selectedGame: GameKey; setSelectedGame: (value: GameKey) => void; rows: GameLeaderboardRow[]; loading: boolean }) {
-  return (
-    <section className="rounded-[1.75rem] border border-primary/20 bg-gradient-to-br from-primary/10 via-surface to-surface p-4">
-      <div className="flex items-start justify-between gap-3">
-        <div><p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary">Arena global</p><h2 className="mt-1 text-lg font-black">Ranking dos jogos</h2><p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">Todos os jogadores do app, com ou sem amizade.</p></div>
-        <Trophy className="mt-1 h-5 w-5 text-ancient" />
-      </div>
-      <div className="mt-4 grid grid-cols-4 gap-1 rounded-2xl bg-background/60 p-1">
-        {GAME_RANKING_TABS.map((tab) => <button key={tab.key} type="button" onClick={() => setSelectedGame(tab.key)} className={`rounded-xl px-1 py-2 text-[10px] font-extrabold transition ${selectedGame === tab.key ? "bg-primary text-primary-foreground shadow-md" : "text-muted-foreground hover:text-foreground"}`}>{tab.label}</button>)}
-      </div>
-      {loading ? <p className="py-8 text-center text-xs text-muted-foreground">Carregando placar global...</p> : rows.length === 0 ? <p className="py-8 text-center text-xs text-muted-foreground">Ainda não há partidas registradas neste jogo.</p> : <div className="mt-3 space-y-2">{rows.slice(0, 5).map((row) => <GameRankingRow key={row.user_id} row={row} />)}<Link to="/ranking" className="block pt-2 text-center text-[11px] font-extrabold text-primary">Ver todos os jogadores</Link></div>}
-    </section>
-  );
-}
-
-function GameRankingRow({ row }: { row: GameLeaderboardRow }) {
-  const content = <><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-[10px] font-black text-primary">{row.avatar_url ? <img src={row.avatar_url} alt="" className="h-full w-full rounded-xl object-cover" /> : row.avatar_char?.slice(0, 1).toUpperCase() ?? "?"}</span><span className="min-w-0 flex-1"><span className="block truncate text-xs font-extrabold">{row.position}º · {row.display_name}</span><span className="block text-[10px] text-muted-foreground">{row.games_played} partidas · {row.best_streak} melhor combo</span></span><span className="text-sm font-black text-ancient">{row.best_score}</span></>;
-  return row.username ? <Link to="/perfil/$username" params={{ username: row.username }} className="flex items-center gap-2 rounded-2xl border border-border/70 bg-background/45 p-2.5 hover:border-primary/40">{content}</Link> : <div className="flex items-center gap-2 rounded-2xl border border-border/70 bg-background/45 p-2.5">{content}</div>;
-}
-
-function PodiumSpot({ row, place, flame }: { row: Row; place: 1 | 2 | 3; flame?: boolean }) {
-  const level = getLevel(row.xp);
+function PodiumCard({ row, place }: { row: GameLeaderboardRow; place: 1 | 2 | 3 }) {
   const isFirst = place === 1;
-  const size = isFirst ? "h-24 w-24" : "h-20 w-20";
-  const ring =
-    place === 1
-      ? "ring-4 ring-ancient shadow-[0_0_24px_hsl(var(--ancient)/0.5)]"
-      : place === 2
-      ? "ring-4 ring-slate-300"
-      : "ring-4 ring-orange-400";
-  const block =
-    place === 1
-      ? "h-24 bg-gradient-to-b from-ancient to-ancient/60 text-background"
-      : place === 2
-      ? "h-16 bg-gradient-to-b from-slate-300 to-slate-400 text-slate-900"
-      : "h-12 bg-gradient-to-b from-orange-400 to-orange-600 text-white";
-  const order = place === 2 ? "order-1" : place === 1 ? "order-2" : "order-3";
-
-  const body = (
-    <>
-      {isFirst && (
-        <div className="mb-1 flex items-center gap-1 rounded-full bg-ancient px-2 py-0.5 text-[10px] font-bold text-background shadow">
-          <Crown className="h-3 w-3" /> LEVEL {level.level}
+  const accent = place === 1 ? "text-amber-300 ring-amber-300/70" : place === 2 ? "text-slate-300 ring-slate-300/70" : "text-orange-300 ring-orange-300/70";
+  const medal = place === 1 ? <Crown /> : place === 2 ? <Medal /> : <Trophy />;
+  return (
+    <div className={["flex w-1/3 flex-col items-center", isFirst ? "pb-1" : "pb-4"].join(" ")}>
+      <span className={["mb-2 flex h-7 w-7 items-center justify-center rounded-full bg-background/80 [&>svg]:h-4 [&>svg]:w-4", accent].join(" ")}>{medal}</span>
+      <div className={isFirst ? "relative h-24 w-24" : "relative h-20 w-20"}>
+        <div className={["h-full w-full overflow-hidden rounded-full bg-surface ring-4", accent].join(" ")}>
+          {row.avatar_url ? <img src={row.avatar_url} alt="" className="h-full w-full object-cover" /> : <span className="flex h-full w-full items-center justify-center text-3xl">{row.avatar_char?.slice(0, 1).toUpperCase() ?? "?"}</span>}
         </div>
-      )}
-      <div className={`relative ${size}`}>
-        <div className={`h-full w-full overflow-hidden rounded-full bg-surface ${ring} ${row.isMe ? "outline outline-4 outline-primary/60" : ""} ${flame ? "avatar-ring-flame" : ""}`}>
-          {row.avatar_url ? (
-            <img src={row.avatar_url} alt="" className="h-full w-full object-cover" />
-          ) : level.avatar ? (
-            <img src={level.avatar} alt={level.title} className="h-full w-full object-cover" />
-          ) : (
-            <span className="flex h-full w-full items-center justify-center text-3xl">👤</span>
-          )}
-        </div>
-        <span className="absolute -bottom-1 -right-1 flex h-6 min-w-[24px] items-center justify-center rounded-full border-2 border-background bg-primary px-1 text-[11px] font-bold text-primary-foreground">
-          {level.level}
-        </span>
+        <span className="absolute -bottom-1 -right-1 flex h-6 min-w-[24px] items-center justify-center rounded-full border-2 border-background bg-primary px-1 text-[11px] font-black text-primary-foreground">{row.position}</span>
       </div>
-      <p className="mt-2 line-clamp-1 max-w-full text-center text-xs font-semibold">
-        {row.display_name}
-        {row.isMe && <span className="ml-1 rounded bg-primary px-1 text-[9px] text-primary-foreground">VOCÊ</span>}
-      </p>
-      <p className="flex items-center gap-1 text-[10px] font-bold text-streak">
-        <Flame className="h-3 w-3" /> {row.streak}d
-      </p>
-      <div className={`mt-2 flex w-full items-start justify-center rounded-t-xl pt-2 text-lg font-black ${block}`}>
-        {place}º
-      </div>
-    </>
+      <p className="mt-2 max-w-full truncate text-center text-xs font-black">{row.display_name}</p>
+      <p className="mt-1 flex items-center gap-1 text-[11px] font-black text-ancient"><Zap className="h-3 w-3" /> {row.best_score.toLocaleString("pt-BR")}</p>
+      <div className={["mt-2 flex h-12 w-full items-center justify-center rounded-t-2xl text-xl font-black", place === 1 ? "bg-amber-300 text-amber-950" : place === 2 ? "bg-slate-300 text-slate-900" : "bg-orange-400 text-orange-950"].join(" ")}>{place}º</div>
+    </div>
   );
+}
 
-  const cls = `flex w-1/3 flex-col items-center ${order}`;
-  if (row.username && !row.isMe) {
-    return (
-      <Link to="/perfil/$username" params={{ username: row.username }} className={cls}>
-        {body}
-      </Link>
-    );
-  }
-  return <div className={cls}>{body}</div>;
+function LeaderboardRow({ row, color }: { row: GameLeaderboardRow; color: string }) {
+  const inner = (
+    <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-3 transition hover:-translate-y-0.5 hover:border-primary/40">
+      <span className={["w-8 text-center text-sm font-black", row.position <= 10 ? color : "text-muted-foreground"].join(" ")}>{row.position}</span>
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-primary/10 text-lg font-black text-primary ring-1 ring-primary/20">
+        {row.avatar_url ? <img src={row.avatar_url} alt="" className="h-full w-full object-cover" /> : row.avatar_char?.slice(0, 1).toUpperCase() ?? "?"}
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-black">{row.display_name}</p>
+        <p className="text-[10px] text-muted-foreground">{row.games_played} partidas · melhor combo {row.best_streak}</p>
+      </div>
+      <div className="text-right">
+        <p className="text-sm font-black text-ancient">{row.best_score.toLocaleString("pt-BR")}</p>
+        <p className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground">pontos</p>
+      </div>
+    </div>
+  );
+  return row.username ? <Link to="/perfil/$username" params={{ username: row.username }}>{inner}</Link> : inner;
 }
