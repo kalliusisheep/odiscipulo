@@ -31,7 +31,7 @@ export const CROSSWORD_THEMES: { id: CrosswordTheme; label: string }[] = [
   { id: "cartas", label: "Cartas" },
 ];
 
-export const CROSSWORD_WORDS: CrosswordWord[] = [
+const RAW_CROSSWORD_WORDS: CrosswordWord[] = [
   { id: "jesus", word: "JESUS", category: "Pessoa", clue: "O Cristo, Filho de Deus e Salvador.", reference: "Mateus 16:16", context: "Pedro reconheceu Jesus como o Cristo, o Filho do Deus vivo.", curiosity: "O nome Jesus significa ‘o Senhor salva’." , difficulty: "facil", themes: ["evangelhos", "personagens"] },
   { id: "moises", word: "MOISES", category: "Pessoa", clue: "Liderou Israel para fora do Egito.", reference: "Êxodo 3:10", context: "Deus chamou este servo para tirar seu povo da escravidão.", curiosity: "A história de seu chamado começa diante da sarça ardente.", difficulty: "facil", themes: ["antigo", "personagens"] },
   { id: "davi", word: "DAVI", category: "Rei", clue: "Pastor que se tornou rei e compositor de salmos.", reference: "1 Samuel 16:13", context: "Samuel ungiu o filho mais novo de Jessé diante de seus irmãos.", curiosity: "A Bíblia chama Davi de homem segundo o coração de Deus.", difficulty: "facil", themes: ["antigo", "personagens"] },
@@ -49,5 +49,14 @@ export const CROSSWORD_WORDS: CrosswordWord[] = [
   { id: "filemom", word: "FILEMOM", category: "Pessoa", clue: "Cristão a quem Paulo escreveu sobre Onésimo.", reference: "Filemom 1:1", context: "A pequena carta pede que um irmão seja recebido com amor.", curiosity: "É uma das cartas mais curtas do Novo Testamento.", difficulty: "bereano", themes: ["cartas", "personagens"] },
   { id: "colossenses", word: "COLOSSENSES", category: "Carta", clue: "Carta que apresenta Cristo como cabeça da igreja.", reference: "Colossenses 1:18", context: "Paulo ensina sobre a supremacia de Cristo e a nova vida.", curiosity: "A carta foi enviada a uma igreja que Paulo aparentemente não visitou.", difficulty: "bereano", themes: ["cartas"] },
 ];
+
+const isValidCrosswordWord = (entry: CrosswordWord) => {
+  const normalizedWord = entry.word.trim();
+  return Boolean(entry.id.trim() && normalizedWord.length >= 3 && entry.category.trim() && entry.clue.trim() && entry.reference.trim() && entry.context.trim() && entry.curiosity.trim())
+    && normalizedWord === normalizedWord.toUpperCase()
+    && entry.themes.length > 0;
+};
+
+export const CROSSWORD_WORDS = RAW_CROSSWORD_WORDS.filter(isValidCrosswordWord);
 
 export const crosswordWordsFor = (difficulty: GameDifficulty, theme?: CrosswordTheme | "todos") => CROSSWORD_WORDS.filter((entry) => entry.difficulty === difficulty && (theme === "todos" || !theme || entry.themes.includes(theme)));
