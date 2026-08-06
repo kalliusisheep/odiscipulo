@@ -354,6 +354,8 @@ function FullActions({ liked, likeCount, commentCount, onToggleLike, onToggleCom
         type="button"
         onClick={onToggleLike}
         aria-pressed={liked}
+        aria-label={liked ? "Remover curtida" : "Curtir atividade"}
+        title={liked ? "Remover curtida" : "Curtir atividade"}
         className={`inline-flex min-h-12 items-center gap-2 rounded-2xl px-4 text-sm font-bold transition-all ${
           liked
             ? "bg-destructive/10 text-destructive"
@@ -367,6 +369,8 @@ function FullActions({ liked, likeCount, commentCount, onToggleLike, onToggleCom
         type="button"
         onClick={onToggleComments}
         aria-expanded={commentsOpen}
+        aria-label={commentsOpen ? "Fechar comentários" : "Abrir comentários"}
+        title={commentsOpen ? "Fechar comentários" : "Abrir comentários"}
         className="inline-flex min-h-12 items-center gap-2 rounded-2xl px-4 text-sm font-bold text-muted-foreground transition-all hover:bg-surface-2 hover:text-foreground"
       >
         <MessageCircle className="h-5 w-5" />
@@ -388,6 +392,8 @@ function CompactActions({ liked, likeCount, commentCount, onToggleLike, onToggle
       <button
         type="button"
         onClick={onToggleLike}
+        aria-label={liked ? "Remover curtida" : "Curtir atividade"}
+        title={liked ? "Remover curtida" : "Curtir atividade"}
         className={`inline-flex min-h-10 items-center gap-2 rounded-xl px-2.5 text-xs font-bold transition-colors ${
           liked ? "text-destructive" : "text-muted-foreground hover:text-foreground"
         }`}
@@ -398,6 +404,8 @@ function CompactActions({ liked, likeCount, commentCount, onToggleLike, onToggle
       <button
         type="button"
         onClick={onToggleComments}
+        aria-label="Abrir comentários"
+        title="Abrir comentários"
         className="inline-flex min-h-10 items-center gap-2 rounded-xl px-2.5 text-xs font-bold text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground"
       >
         <MessageCircle className="h-4 w-4" />
