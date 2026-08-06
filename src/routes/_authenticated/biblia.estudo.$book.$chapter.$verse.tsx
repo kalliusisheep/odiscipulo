@@ -9,11 +9,13 @@ import {
   fetchStrongEntries,
   loadOccurrences,
   originalTranslationFor,
+  translateStrongEntries,
   translationByCode,
   type OriginalWord,
   type StrongEntry,
 } from "@/lib/bible-source";
 import { useBiblePrefs } from "@/lib/bible-prefs";
+import { supabase } from "@/integrations/supabase/client";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import {
   ArrowLeft,
@@ -152,39 +154,6 @@ type VerseAnalysis = {
   resumo: string;
 };
 
-function localVerseAnalysis(
-  words: OriginalWord[] | null,
-  entries: Record<string, StrongEntry>,
-): VerseAnalysis | null {
-  if (!words?.length || Object.keys(entries).length === 0) return null;
-
-  const verbos: string[] = [];
-  const substantivos: string[] = [];
-  for (const word of words) {
-    const entry = word.strong ? entries[word.strong] : null;
-    if (!entry) continue;
-    const label = `${word.word}${entry.meaning ? ` — ${entry.meaning.split(";")[0]}` : ""}`;
-    const grammar = entry.partOfSpeech?.toLocaleLowerCase("pt-BR") ?? "";
-    if (grammar.includes("verbo")) verbos.push(label);
-    if (grammar.includes("substantivo") || grammar.includes("nome próprio")) {
-      substantivos.push(label);
-    }
-  }
-
-  const parts: string[] = [];
-  if (verbos.length) parts.push(`${verbos.length} ${verbos.length === 1 ? "verbo" : "verbos"}`);
-  if (substantivos.length) {
-    parts.push(
-      `${substantivos.length} ${substantivos.length === 1 ? "substantivo ou nome" : "substantivos ou nomes"}`,
-    );
-  }
-  const resumo = parts.length
-    ? `A estrutura identificada no texto original reúne ${parts.join(" e ")}. Toque em cada palavra para conferir forma, sentidos e fonte.`
-    : "A fonte não classificou palavras deste versículo como verbos ou substantivos. Consulte cada termo para ver os dados disponíveis.";
-
-  return { verbos, substantivos, resumo };
-}
-
 function VerseStudy() {
   const { book: b, chapter: c, verse: v } = Route.useParams();
   const book = Number(b);
@@ -204,6 +173,9 @@ function VerseStudy() {
   const [xrefs, setXrefs] = useState<[number, number, number][]>([]);
   const [xrefsLoading, setXrefsLoading] = useState(true);
   const [openWord, setOpenWord] = useState<OriginalWord | null>(null);
+  const [analysis, setAnalysis] = useState<VerseAnalysis | null>(null);
+  const [analysisLoading, setAnalysisLoading] = useState(false);
+  const [analysisError, setAnalysisError] = useState(false);
 
   const lang = originalTranslationFor(book).lang;
 
@@ -230,6 +202,7 @@ function VerseStudy() {
     setWords(null);
     setWordsLoading(true);
     setEntries({});
+    setAnalysis(null);
     fetchOriginalVerse(book, chapter, verse)
       .then(async (loadedWords) => {
         if (!loadedWords?.length) {
@@ -242,6 +215,7 @@ function VerseStudy() {
         const codes = loadedWords.map((word) => word.strong).filter(Boolean) as string[];
         const raw = await fetchStrongEntries(codes);
         setEntries(raw);
+        void translateStrongEntries(raw).then(setEntries);
       })
       .catch(() => {
         setWords([]);
@@ -250,24 +224,36 @@ function VerseStudy() {
       .finally(() => setWordsLoading(false));
   }, [translation, book, chapter, verse]);
 
-  const analysis = useMemo(() => localVerseAnalysis(words, entries), [words, entries]);
+  // Análise do versículo, gerada pelo Gemini a partir das palavras do
+  // original e do léxico já carregado (roda de novo quando `entries` chega
+  // da tradução, para a IA receber os dados já em português).
+  useEffect(() => {
+    if (!words || words.length === 0 || Object.keys(entries).length === 0) return;
+    setAnalysisLoading(true);
+    setAnalysisError(false);
+    const payload = words.map((w) => ({
+      word: w.word,
+      strong: w.strong,
+      partOfSpeech: w.strong ? (entries[w.strong]?.partOfSpeech ?? null) : null,
+      meaning: w.strong ? (entries[w.strong]?.meaning ?? null) : null,
+    }));
+    supabase.functions
+      .invoke<VerseAnalysis>("verse-analysis", { body: { words: payload } })
+      .then(({ data, error }) => {
+        if (error || !data) {
+          setAnalysisError(true);
+          return;
+        }
+        setAnalysis(data);
+      })
+      .catch(() => setAnalysisError(true))
+      .finally(() => setAnalysisLoading(false));
+  }, [words, entries]);
 
   const speak = (word: string) => {
     if (typeof window === "undefined" || !window.speechSynthesis) return;
     const u = new SpeechSynthesisUtterance(word);
     u.lang = lang === "grego" ? "el-GR" : "he-IL";
-    const targetLanguage = u.lang.toLocaleLowerCase();
-    u.voice =
-      window.speechSynthesis
-        .getVoices()
-        .find((voice) => voice.lang.toLocaleLowerCase() === targetLanguage) ??
-      window.speechSynthesis
-        .getVoices()
-        .find((voice) => voice.lang.toLocaleLowerCase().startsWith(targetLanguage.slice(0, 2))) ??
-      null;
-    u.rate = 0.78;
-    u.pitch = 1;
-    window.speechSynthesis.cancel();
     window.speechSynthesis.speak(u);
   };
 
@@ -415,20 +401,9 @@ function VerseStudy() {
                       {lang === "hebraico" ? "Hebraico bíblico" : "Grego koiné"}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => speak(words.map((word) => word.word).join(" "))}
-                      className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-primary/25 bg-primary/10 px-3 text-[10px] font-bold text-primary transition-colors hover:bg-primary/15 active:scale-95"
-                      aria-label="Ouvir o versículo no idioma original"
-                    >
-                      <Volume2 className="h-3.5 w-3.5" />
-                      Ouvir verso
-                    </button>
-                    <span className="rounded-full border border-ancient/25 bg-ancient/10 px-2.5 py-1 text-[10px] font-bold capitalize text-ancient">
-                      {lang}
-                    </span>
-                  </div>
+                  <span className="rounded-full border border-ancient/25 bg-ancient/10 px-2.5 py-1 text-[10px] font-bold capitalize text-ancient">
+                    {lang}
+                  </span>
                 </div>
 
                 <p
@@ -440,9 +415,8 @@ function VerseStudy() {
               </section>
 
               <SourceNote>
-                <strong className="text-foreground/80">Fonte acadêmica:</strong> {sourceName}. Os
-                códigos de Strong conectam cada palavra ao léxico. O áudio usa gratuitamente a voz
-                do dispositivo e é uma aproximação de pronúncia.
+                <strong className="text-foreground/80">Fonte acadêmica:</strong> {sourceName}.
+                Os códigos de Strong conectam cada palavra ao léxico.
               </SourceNote>
             </div>
           )}
@@ -453,53 +427,92 @@ function VerseStudy() {
                 const entry = word.strong ? entries[word.strong] : null;
                 const senses = sensesFor(book, chapter, verse, index, entry);
                 return (
+                  <button
+                    key={word.index}
+                    type="button"
+                    onClick={() => setOpenWord(word)}
+                    className="group w-full rounded-[24px] border border-border/70 bg-surface p-4 text-left shadow-sm transition-all hover:border-primary/30 hover:bg-surface-2/50 active:scale-[0.99]"
+                  >
+                    <div className="flex items-start gap-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-xs font-extrabold text-primary">
+                        {index + 1}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-2">
+                          <p
+                            dir={lang === "hebraico" ? "rtl" : "ltr"}
+                            className="ancient-text break-words text-[22px] leading-tight text-ancient"
+                          >
+                            {word.word}
+                          </p>
+                          {word.strong && (
+                            <span className="shrink-0 rounded-full border border-primary/25 bg-primary/5 px-2 py-1 text-[10px] font-extrabold text-primary">
+                              {word.strong}
+                            </span>
+                          )}
+                        </div>
+                        <p className="mt-1 text-xs italic text-muted-foreground">
+                          {entry?.transliteration ?? "Transliteração indisponível"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 grid grid-cols-2 gap-2">
+                      <div className="rounded-2xl bg-surface-2/70 px-3 py-2.5">
+                        <p className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground">
+                          Pronúncia
+                        </p>
+                        <p className="mt-1 text-xs font-semibold text-foreground">
+                          {approximatePtBr(entry?.transliteration ?? null) ?? "—"}
+                        </p>
+                      </div>
+                      <div className="rounded-2xl bg-primary/[0.07] px-3 py-2.5">
+                        <p className="text-[9px] font-bold uppercase tracking-wider text-primary/75">
+                          Em português
+                        </p>
+                        <p className="mt-1 text-xs font-semibold leading-snug text-foreground">
+                          {senses.length ? senses.join(" · ") : "—"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 flex items-center justify-end gap-1 text-[11px] font-bold text-primary">
+                      Abrir análise
+                      <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                    </div>
+                  </button>
+                );
+              })}
+
+              <SourceNote>
+                A tradução é alinhada ao contexto do versículo. Toque em qualquer palavra para
+                consultar sentidos, ocorrências e pronúncia.
+              </SourceNote>
+            </div>
+          )}
+
+          {aba === "palavras" && !wordsLoading && words && words.length > 0 && (
+            <div className="space-y-3">
+              {words.map((word, index) => {
+                const entry = word.strong ? entries[word.strong] : null;
+                const senses = sensesFor(book, chapter, verse, index, entry);
+                return (
                   <article
                     key={word.index}
-                    className="group w-full overflow-hidden rounded-[24px] border border-border/70 bg-surface shadow-sm transition-all hover:border-primary/30"
+                    className="flex items-stretch overflow-hidden rounded-[24px] border border-border/70 bg-surface shadow-sm transition-colors hover:border-primary/30"
                   >
                     <button
                       type="button"
                       onClick={() => setOpenWord(word)}
-                      className="w-full p-4 text-left transition-colors hover:bg-surface-2/40 active:bg-surface-2/70"
+                      className="min-w-0 flex-1 p-4 text-left active:bg-surface-2/60"
                     >
                       <div className="flex items-start gap-3">
                         <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-xs font-extrabold text-primary">
                           {index + 1}
                         </span>
                         <div className="min-w-0 flex-1">
-                          <div className="flex items-start justify-between gap-2">
-                            <p
-                              dir={lang === "hebraico" ? "rtl" : "ltr"}
-                              className="ancient-text break-words text-[22px] leading-tight text-ancient"
-                            >
-                              {word.word}
-                            </p>
-                            {word.strong && (
-                              <span className="shrink-0 rounded-full border border-primary/25 bg-primary/5 px-2 py-1 text-[10px] font-extrabold text-primary">
-                                {word.strong}
-                              </span>
-                            )}
-                          </div>
-                          <p className="mt-1 text-xs italic text-muted-foreground">
-                            {entry?.transliteration ?? "Transliteração indisponível"}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="mt-3 grid grid-cols-2 gap-2">
-                        <div className="rounded-2xl bg-surface-2/70 px-3 py-2.5">
-                          <p className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground">
-                            Pronúncia
-                          </p>
-                          <p className="mt-1 text-xs font-semibold text-foreground">
-                            {approximatePtBr(entry?.transliteration ?? null) ?? "—"}
-                          </p>
-                        </div>
-                        <div className="rounded-2xl bg-primary/[0.…797 tokens truncated…       <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                            <p className="ancient-text break-words text-xl text-ancient">
-                              {word.word}
-                            </p>
+                            <p className="ancient-text break-words text-xl text-ancient">{word.word}</p>
                             <span className="text-[10px] font-bold text-primary">
                               {word.strong ?? "Sem Strong"}
                             </span>
@@ -533,7 +546,21 @@ function VerseStudy() {
                 );
               })}
 
-              {analysis && (
+              {analysisLoading && (
+                <div className="flex items-center gap-3 rounded-[24px] border border-primary/15 bg-primary/[0.05] p-4">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-bold">Preparando análise</p>
+                    <p className="text-xs text-muted-foreground">
+                      Identificando a estrutura do versículo…
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {!analysisLoading && analysis && (
                 <section className="overflow-hidden rounded-[26px] border border-primary/20 bg-gradient-to-br from-primary/15 via-surface to-surface p-5 shadow-sm">
                   <div className="flex items-center gap-3">
                     <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
@@ -555,10 +582,17 @@ function VerseStudy() {
                   </div>
 
                   <p className="mt-4 border-t border-border/60 pt-3 text-[10px] leading-relaxed text-muted-foreground">
-                    Análise gramatical local, derivada das classes registradas pelo léxico. Nenhuma
-                    palavra deste versículo é enviada a um serviço de IA.
+                    Análise assistida por IA a partir do texto original anotado. Confira os verbetes
+                    do léxico para aprofundar o estudo.
                   </p>
                 </section>
+              )}
+
+              {!analysisLoading && analysisError && (
+                <UnavailableState
+                  title="Análise temporariamente indisponível"
+                  description="As palavras e o léxico continuam disponíveis normalmente."
+                />
               )}
             </div>
           )}
@@ -646,24 +680,11 @@ function VerseStudy() {
                   </summary>
 
                   <div className="border-t border-border/60 px-4 pb-4 pt-3">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex flex-wrap gap-1.5">
-                        {entry.partOfSpeech && (
-                          <span className="inline-flex rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-bold text-muted-foreground">
-                            {entry.partOfSpeech}
-                          </span>
-                        )}
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => speak(entry.original ?? entry.transliteration ?? entry.code)}
-                        className="inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-xl border border-primary/20 bg-primary/[0.07] px-3 text-[10px] font-bold text-primary transition-colors hover:bg-primary/12 active:scale-95"
-                        aria-label={`Ouvir ${entry.original ?? entry.transliteration ?? entry.code}`}
-                      >
-                        <Volume2 className="h-3.5 w-3.5" />
-                        Ouvir
-                      </button>
-                    </div>
+                    {entry.partOfSpeech && (
+                      <span className="inline-flex rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-bold text-muted-foreground">
+                        {entry.partOfSpeech}
+                      </span>
+                    )}
 
                     <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
                       Sentidos possíveis
@@ -690,8 +711,8 @@ function VerseStudy() {
                     )}
 
                     <div className="mt-3 rounded-2xl border border-border/60 bg-background/50 p-3 text-[10px] leading-relaxed text-muted-foreground">
-                      Fonte lexical: Brown-Driver-Briggs / Thayer. Compare os sentidos com a
-                      ocorrência e o contexto do versículo.
+                      Tradução automática do léxico acadêmico em inglês BDB/Thayer. Pode conter
+                      imprecisões; classe gramatical e origem foram revisadas.
                     </div>
                   </div>
                 </details>
@@ -699,8 +720,7 @@ function VerseStudy() {
 
               {lexicalEntries.length > 0 && (
                 <SourceNote>
-                  Fonte: Brown-Driver-Briggs / Thayer, concordância de Strong. Os dados em português
-                  são locais; nenhum texto é enviado a um tradutor durante o uso.
+                  Fonte: Brown-Driver-Briggs / Thayer, concordância de Strong.
                 </SourceNote>
               )}
             </div>
@@ -752,7 +772,13 @@ function StudyLoading({
   );
 }
 
-function UnavailableState({ title, description }: { title: string; description: string }) {
+function UnavailableState({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
   return (
     <div className="rounded-[24px] border border-dashed border-border bg-surface/60 p-5 text-center">
       <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-surface-2 text-muted-foreground">
@@ -946,8 +972,8 @@ function WordDetail({
 
         {entry && (
           <SourceNote>
-            Fonte lexical: Brown-Driver-Briggs / Thayer. Consulte o contexto do versículo antes de
-            escolher um sentido.
+            Definições traduzidas automaticamente do BDB/Thayer. Consulte o contexto do versículo
+            antes de escolher um sentido.
           </SourceNote>
         )}
       </div>

@@ -27,13 +27,6 @@ import {
   Trophy,
   Users,
   X,
-  HeartHandshake,
-  ScrollText,
-  Radio,
-  Sparkles,
-  Mic2,
-  LockKeyhole,
-  Quote,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/mural")({
@@ -42,37 +35,10 @@ export const Route = createFileRoute("/_authenticated/mural")({
 
 type Tab = "feed" | "oracoes" | "diario";
 
-const TAB_META: Record<
-  Tab,
-  {
-    label: string;
-    eyebrow: string;
-    title: string;
-    description: string;
-    icon: React.ElementType;
-  }
-> = {
-  feed: {
-    label: "Feed",
-    eyebrow: "Comunidade viva",
-    title: "Caminhe junto",
-    description: "Compartilhe sua jornada e celebre cada passo de fé.",
-    icon: Radio,
-  },
-  oracoes: {
-    label: "Orações",
-    eyebrow: "Mural de oração",
-    title: "Ore em comunidade",
-    description: "Divida seus pedidos e sustente outras pessoas em oração.",
-    icon: HeartHandshake,
-  },
-  diario: {
-    label: "Meu Diário",
-    eyebrow: "Espaço pessoal",
-    title: "Guarde o que Deus falou",
-    description: "Releia respostas e perceba seu crescimento ao longo da jornada.",
-    icon: ScrollText,
-  },
+const TAB_LABELS: Record<Tab, string> = {
+  feed: "Feed",
+  oracoes: "Orações",
+  diario: "Meu Diário",
 };
 
 const TAB_BANNERS: Record<Tab, { src: string; alt: string }> = {
@@ -86,76 +52,42 @@ const TAB_BANNERS: Record<Tab, { src: string; alt: string }> = {
 
 function MuralPage() {
   const [tab, setTab] = useState<Tab>("feed");
-  const active = TAB_META[tab];
-  const ActiveIcon = active.icon;
-
   return (
-    <div className="mx-auto max-w-lg space-y-5 px-3 pt-5 sm:px-4">
-      <header className="flex items-center justify-between gap-3 px-1">
-        <div className="min-w-0">
-          <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
-            <Users className="h-3.5 w-3.5" /> Comunidade
-          </div>
-          <h1 className="mt-1 text-2xl font-extrabold tracking-tight">Feed</h1>
-          <p className="text-xs text-muted-foreground">Fé compartilhada fortalece a caminhada</p>
+    <div className="mx-auto max-w-lg space-y-4 px-4 pt-6">
+      <header className="flex items-center justify-between">
+        <div>
+          <p className="text-xs text-muted-foreground">Comunidade</p>
+          <h1 className="text-xl font-semibold">{TAB_LABELS[tab]}</h1>
         </div>
         <ThemeToggle />
       </header>
 
-      <section className="relative isolate min-h-[164px] overflow-hidden rounded-[30px] border border-white/10 bg-gradient-to-br from-[#2b3364] via-[#1b2344] to-[#101624] text-white shadow-2xl shadow-primary/10">
-        <div className="pointer-events-none absolute -left-14 -top-20 h-48 w-48 rounded-full bg-primary/25 blur-3xl" />
+      <div className="overflow-hidden rounded-2xl">
         <img
           key={tab}
           src={TAB_BANNERS[tab].src}
           alt={TAB_BANNERS[tab].alt}
-          className="pointer-events-none absolute inset-y-0 right-0 h-full w-[62%] object-cover object-center opacity-90"
+          className="aspect-[21/9] w-full object-cover object-top"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#161d36] via-[#161d36]/90 to-transparent" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
-        <div className="relative flex min-h-[164px] max-w-[64%] flex-col justify-center px-5 py-5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-[14px] border border-white/10 bg-white/10 text-primary-foreground backdrop-blur-sm">
-            <ActiveIcon className="h-[18px] w-[18px]" />
-          </span>
-          <p className="mt-3 text-[9px] font-extrabold uppercase tracking-[0.18em] text-primary-foreground/75">
-            {active.eyebrow}
-          </p>
-          <h2 className="mt-1 text-lg font-extrabold leading-tight">{active.title}</h2>
-          <p className="mt-1.5 text-[11px] leading-relaxed text-white/60">{active.description}</p>
-        </div>
-      </section>
-
-      <nav
-        className="grid grid-cols-3 gap-1 rounded-[22px] border border-border/70 bg-surface p-1.5 shadow-sm"
-        aria-label="Áreas da comunidade"
-      >
-        {(Object.keys(TAB_META) as Tab[]).map((key) => {
-          const item = TAB_META[key];
-          const Icon = item.icon;
-          const selected = tab === key;
-          return (
-            <button
-              key={key}
-              type="button"
-              onClick={() => setTab(key)}
-              aria-selected={selected}
-              className={`flex min-h-12 items-center justify-center gap-1.5 rounded-[17px] px-2 text-[11px] font-bold transition-all ${
-                selected
-                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
-                  : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
-              }`}
-            >
-              <Icon className="h-4 w-4" />
-              <span className="truncate">{item.label}</span>
-            </button>
-          );
-        })}
-      </nav>
-
-      <div key={tab} className="animate-slide-up">
-        {tab === "feed" && <Feed />}
-        {tab === "oracoes" && <Oracoes />}
-        {tab === "diario" && <Diario />}
       </div>
+
+      <div className="relative flex rounded-full border border-border bg-surface p-1 text-sm">
+        {(Object.keys(TAB_LABELS) as Tab[]).map((key) => (
+          <button
+            key={key}
+            onClick={() => setTab(key)}
+            className={`flex-1 rounded-full py-2 font-medium transition-all ${
+              tab === key ? "bg-primary text-primary-foreground" : "text-muted-foreground"
+            }`}
+          >
+            {TAB_LABELS[key]}
+          </button>
+        ))}
+      </div>
+
+      {tab === "feed" && <Feed />}
+      {tab === "oracoes" && <Oracoes />}
+      {tab === "diario" && <Diario />}
     </div>
   );
 }
@@ -449,75 +381,44 @@ function Feed() {
 
   return (
     <div className="space-y-5">
-      <section className="relative overflow-hidden rounded-[26px] border border-border/70 bg-gradient-to-br from-surface via-surface to-primary/[0.06] shadow-lg shadow-black/5">
-        <div className="pointer-events-none absolute -right-10 -top-12 h-32 w-32 rounded-full bg-primary/10 blur-3xl" />
-        <div className="relative p-4">
-          <div className="mb-3 flex items-center gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[15px] bg-primary/15 text-sm font-extrabold text-primary ring-1 ring-primary/15">
-              {me?.avatarUrl ? (
-                <img src={me.avatarUrl} alt={me.name} className="h-full w-full object-cover" />
-              ) : (
-                (me?.name?.[0] ?? "?")
-              )}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-extrabold">Compartilhe sua caminhada</p>
-              <p className="text-[10px] text-muted-foreground">
-                Uma reflexão, conquista ou motivo de gratidão
-              </p>
-            </div>
-            <Sparkles className="h-4 w-4 shrink-0 text-primary/60" />
+      <div className="overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-surface to-surface-2 shadow-sm">
+        <div className="h-1 w-full bg-gradient-to-r from-primary via-primary-glow to-accent" />
+        <div className="flex gap-3 p-4">
+          <div className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/20 text-sm font-semibold text-primary ring-2 ring-background">
+            {me?.avatarUrl ? (
+              <img src={me.avatarUrl} alt={me.name} className="h-full w-full object-cover" />
+            ) : (
+              (me?.name?.[0] ?? "?")
+            )}
           </div>
-          <textarea
-            value={composerText}
-            onChange={(e) => setComposerText(e.target.value)}
-            rows={3}
-            placeholder="O que você gostaria de compartilhar hoje?"
-            className="w-full resize-none rounded-[18px] border border-border/70 bg-background/70 p-3.5 text-sm leading-relaxed outline-none transition-all placeholder:text-muted-foreground focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
-          />
-          <div className="mt-2.5 flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
+          <div className="min-w-0 flex-1">
+            <textarea
+              value={composerText}
+              onChange={(e) => setComposerText(e.target.value)}
+              rows={3}
+              placeholder="Escreva algo para compartilhar com seus amigos…"
+              className="w-full resize-none rounded-xl border border-border bg-input p-3 text-sm outline-none focus:border-primary"
+            />
+            <div className="mt-2 flex items-center justify-between gap-2">
               <EmojiPicker onSelect={insertComposerEmoji} />
-              <span className="hidden text-[10px] text-muted-foreground min-[390px]:inline">
-                Adicione uma reação
-              </span>
+              <button
+                onClick={() => void publish()}
+                disabled={!composerText.trim() || posting}
+                className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary-glow hover:shadow-md disabled:opacity-50 disabled:shadow-none"
+              >
+                {posting ? "Publicando…" : "Publicar"}
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={() => void publish()}
-              disabled={!composerText.trim() || posting}
-              className="inline-flex min-h-10 items-center gap-2 rounded-full bg-primary px-5 text-xs font-extrabold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary-glow disabled:translate-y-0 disabled:opacity-50 disabled:shadow-none"
-            >
-              {posting ? "Publicando…" : "Publicar"}
-              {!posting && <Send className="h-3.5 w-3.5" />}
-            </button>
           </div>
         </div>
-      </section>
-
-      <div className="flex items-end justify-between gap-3 px-1">
-        <div>
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">
-            Agora na comunidade
-          </p>
-          <h3 className="mt-0.5 text-base font-extrabold">Últimas atividades</h3>
-        </div>
-        {items.length > 0 && (
-          <span className="rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-bold text-muted-foreground">
-            {items.length} {items.length === 1 ? "registro" : "registros"}
-          </span>
-        )}
       </div>
 
       {items.length === 0 && (
-        <div className="relative flex flex-col items-center overflow-hidden rounded-[26px] border border-dashed border-primary/25 bg-primary/[0.035] px-6 py-12 text-center">
-          <div className="pointer-events-none absolute -top-12 h-32 w-32 rounded-full bg-primary/10 blur-3xl" />
-          <span className="relative flex h-14 w-14 items-center justify-center rounded-[20px] bg-primary/10 text-primary ring-1 ring-primary/15">
-            <Users className="h-6 w-6" />
-          </span>
-          <h3 className="relative mt-4 font-extrabold">Sua comunidade está começando</h3>
-          <p className="relative mt-1 max-w-[280px] text-sm leading-relaxed text-muted-foreground">
-            Adicione amigos e continue estudando. As conquistas de vocês aparecerão aqui.
+        <div className="flex flex-col items-center rounded-3xl border border-dashed border-border px-6 py-12 text-center">
+          <Users className="mb-3 h-10 w-10 text-primary" />
+          <h3 className="font-semibold">Seu feed está vazio</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Adicione amigos e comece a estudar — as atividades aparecem aqui.
           </p>
         </div>
       )}
@@ -530,7 +431,265 @@ function Feed() {
           likeCount={likeCounts[item.id] ?? 0}
           commentCount={commentCounts[item.id] ?? 0}
           commentsOpen={openComments.has(item.id)}
-          commentsList={comments[item.id…2909 tokens truncated…
+          commentsList={comments[item.id] ?? []}
+          commentDraft={commentDraft[item.id] ?? ""}
+          pendingGif={pendingGif[item.id] ?? null}
+          commentLikeCounts={commentLikeCounts}
+          myCommentLikes={myCommentLikes}
+          onToggleLike={() => void toggleLike(item.id)}
+          onToggleComments={() => void toggleComments(item.id)}
+          onCommentDraftChange={(v) => setCommentDraft((prev) => ({ ...prev, [item.id]: v }))}
+          onPendingGifChange={(url) => setPendingGif((prev) => ({ ...prev, [item.id]: url }))}
+          onSendComment={() => void sendComment(item.id)}
+          onToggleCommentLike={(commentId) => void toggleCommentLike(commentId)}
+        />
+      ))}
+    </div>
+  );
+}
+
+function FeedCard({
+  item,
+  liked,
+  likeCount,
+  commentCount,
+  commentsOpen,
+  commentsList,
+  commentDraft,
+  pendingGif,
+  commentLikeCounts,
+  myCommentLikes,
+  onToggleLike,
+  onToggleComments,
+  onCommentDraftChange,
+  onPendingGifChange,
+  onSendComment,
+  onToggleCommentLike,
+}: {
+  item: FeedItem;
+  liked: boolean;
+  likeCount: number;
+  commentCount: number;
+  commentsOpen: boolean;
+  commentsList: FeedComment[];
+  commentDraft: string;
+  pendingGif: string | null;
+  commentLikeCounts: Record<string, number>;
+  myCommentLikes: Set<string>;
+  onToggleLike: () => void;
+  onToggleComments: () => void;
+  onCommentDraftChange: (v: string) => void;
+  onPendingGifChange: (url: string | null) => void;
+  onSendComment: () => void;
+  onToggleCommentLike: (commentId: string) => void;
+}) {
+  const Icon = FEED_KIND_ICON[item.kind];
+
+  return (
+    <article className="relative overflow-hidden rounded-3xl border border-border bg-surface pl-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg">
+      <div className={`absolute inset-y-0 left-0 w-1.5 ${FEED_KIND_ACCENT[item.kind]}`} />
+      <div className="p-4 pl-3">
+        <header className="flex items-start gap-2.5">
+          <div className="relative shrink-0">
+            <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-primary/20 text-sm font-semibold text-primary ring-2 ring-background">
+              {item.author_avatar_url ? (
+                <img
+                  src={item.author_avatar_url}
+                  alt={item.author_name}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                item.author_name[0]
+              )}
+            </div>
+            <div
+              className={`absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full ring-2 ring-surface ${FEED_KIND_STYLE[item.kind]}`}
+            >
+              <Icon className="h-3 w-3" />
+            </div>
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold leading-tight">{item.author_name}</p>
+            <p className="mt-0.5 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+              <span className={`font-medium ${FEED_KIND_STYLE[item.kind].split(" ")[1]}`}>
+                {FEED_KIND_LABEL[item.kind]}
+              </span>
+              <span aria-hidden>·</span>
+              {formatDistanceToNow(new Date(item.created_at), { locale: ptBR, addSuffix: true })}
+            </p>
+          </div>
+        </header>
+
+        <div className="mt-3 text-sm leading-relaxed">
+          {item.kind === "post" && <p className="whitespace-pre-wrap">{item.body}</p>}
+
+          {item.kind === "avatar_changed" && (
+            <div className="flex items-center gap-3">
+              <p className="text-muted-foreground">Trocou a foto de perfil</p>
+              {item.author_avatar_url && (
+                <img
+                  src={item.author_avatar_url}
+                  alt="Nova foto de perfil"
+                  className="h-12 w-12 rounded-xl object-cover ring-1 ring-border"
+                />
+              )}
+            </div>
+          )}
+
+          {item.kind === "bio_changed" && (
+            <div>
+              <p className="text-muted-foreground">Atualizou a bio</p>
+              {item.body && (
+                <p className="mt-1 rounded-xl bg-surface-2 p-3 text-sm italic text-foreground/90">
+                  "{item.body}"
+                </p>
+              )}
+            </div>
+          )}
+
+          {(item.kind === "lesson_completed" ||
+            item.kind === "module_completed" ||
+            item.kind === "reading_plan_started" ||
+            item.kind === "bible_study_started") && <p>{item.body}</p>}
+        </div>
+
+        <div className="mt-3 flex items-center gap-2 border-t border-border pt-3">
+          <button
+            onClick={onToggleLike}
+            className={`inline-flex flex-1 items-center justify-center gap-1.5 rounded-full py-1.5 text-xs font-medium transition-all ${
+              liked ? "text-primary" : "text-muted-foreground hover:bg-surface-2"
+            }`}
+          >
+            <Heart className={`h-4 w-4 ${liked ? "fill-current" : ""}`} />
+            Curtir{likeCount > 0 && <span className="font-semibold">({likeCount})</span>}
+          </button>
+          <div className="h-4 w-px bg-border" />
+          <button
+            onClick={onToggleComments}
+            className={`inline-flex flex-1 items-center justify-center gap-1.5 rounded-full py-1.5 text-xs font-medium transition-all ${
+              commentsOpen ? "text-primary" : "text-muted-foreground hover:bg-surface-2"
+            }`}
+          >
+            <MessageCircle className="h-4 w-4" />
+            Comentar{commentCount > 0 && <span className="font-semibold">({commentCount})</span>}
+          </button>
+        </div>
+
+        {commentsOpen && (
+          <div className="mt-3 space-y-3 border-t border-border pt-3">
+            {commentsList.map((c) => {
+              const commentLiked = myCommentLikes.has(c.id);
+              const commentLikeCount = commentLikeCounts[c.id] ?? 0;
+              return (
+                <div key={c.id} className="flex items-start gap-2">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/20 text-[11px] font-semibold text-primary">
+                    {c.author_avatar_url ? (
+                      <img
+                        src={c.author_avatar_url}
+                        alt={c.author_name}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      c.author_name[0]
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="inline-block max-w-full rounded-2xl bg-surface-2 px-3 py-2">
+                      <span className="text-xs font-semibold">{c.author_name}</span>
+                      {c.body && (
+                        <p className="mt-0.5 text-xs leading-relaxed text-foreground/90">
+                          {c.body}
+                        </p>
+                      )}
+                      {c.gif_url && (
+                        <img
+                          src={c.gif_url}
+                          alt="GIF enviado no comentário"
+                          className="mt-1.5 max-h-40 w-auto rounded-lg"
+                          loading="lazy"
+                        />
+                      )}
+                    </div>
+                    <div className="mt-1 flex items-center gap-3 px-1">
+                      <span className="text-[10px] text-muted-foreground">
+                        {formatDistanceToNow(new Date(c.created_at), {
+                          locale: ptBR,
+                          addSuffix: true,
+                        })}
+                      </span>
+                      <button
+                        onClick={() => onToggleCommentLike(c.id)}
+                        className={`inline-flex items-center gap-1 text-[10px] font-medium transition-colors ${
+                          commentLiked ? "text-primary" : "text-muted-foreground hover:text-primary"
+                        }`}
+                      >
+                        <Heart className={`h-3 w-3 ${commentLiked ? "fill-current" : ""}`} />
+                        Curtir{commentLikeCount > 0 && ` (${commentLikeCount})`}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+
+            <div className="space-y-1.5">
+              {pendingGif && (
+                <div className="relative inline-block">
+                  <img src={pendingGif} alt="GIF selecionado" className="max-h-28 rounded-lg" />
+                  <button
+                    onClick={() => onPendingGifChange(null)}
+                    aria-label="Remover GIF"
+                    className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-background text-foreground shadow ring-1 ring-border"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              )}
+              <div className="flex items-center gap-1.5">
+                <GifPicker onSelect={(url) => onPendingGifChange(url)} />
+                <EmojiPicker
+                  onSelect={(emoji) => onCommentDraftChange(commentDraft + emoji)}
+                  className="[&>button]:h-8 [&>button]:w-8"
+                />
+                <input
+                  value={commentDraft}
+                  onChange={(e) => onCommentDraftChange(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") onSendComment();
+                  }}
+                  placeholder="Escreva um comentário…"
+                  className="flex-1 rounded-full border border-border bg-input px-3 py-1.5 text-xs outline-none focus:border-primary"
+                />
+                <button
+                  onClick={onSendComment}
+                  disabled={!commentDraft.trim() && !pendingGif}
+                  aria-label="Enviar comentário"
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-all hover:bg-primary-glow disabled:opacity-50"
+                >
+                  <Send className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </article>
+  );
+}
+
+// ============================================================
+// ORAÇÕES — mesmo sistema de "clamores" compartilhados de sempre
+// ============================================================
+
+type Post = {
+  id: string;
+  author_name: string;
+  body: string | null;
+  audio_url: string | null;
+  audio_duration_seconds: number | null;
+  is_answered: boolean;
+  amens_seed: number;
+  created_at: string;
   user_id: string | null;
 };
 
@@ -649,116 +808,61 @@ function Oracoes() {
   };
 
   return (
-    <div className="space-y-5">
-      <section className="relative overflow-hidden rounded-[26px] border border-primary/20 bg-gradient-to-br from-primary/[0.12] via-surface to-surface shadow-lg shadow-primary/5">
-        <div className="pointer-events-none absolute -right-12 -top-14 h-36 w-36 rounded-full bg-primary/15 blur-3xl" />
-        <div className="relative p-4">
-          <div className="mb-3 flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-[16px] bg-primary/15 text-primary ring-1 ring-primary/15">
-              <HeartHandshake className="h-5 w-5" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-extrabold">Compartilhe seu clamor</p>
-              <p className="text-[10px] text-muted-foreground">A comunidade pode orar com você</p>
-            </div>
-          </div>
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            rows={3}
-            placeholder="Como podemos orar por você hoje?"
-            className="w-full resize-none rounded-[18px] border border-border/70 bg-background/70 p-3.5 text-sm leading-relaxed outline-none transition-all placeholder:text-muted-foreground focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
-          />
-          <div className="mt-2.5 flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <VoiceRecorder onSend={clamarComAudio} maxSeconds={60} />
-              <span className="hidden items-center gap-1 text-[10px] text-muted-foreground min-[390px]:flex">
-                <Mic2 className="h-3 w-3" /> ou envie por voz
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={() => void clamar()}
-              disabled={!text.trim() || posting}
-              className="inline-flex min-h-10 items-center gap-2 rounded-full bg-primary px-5 text-xs font-extrabold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary-glow disabled:translate-y-0 disabled:opacity-50 disabled:shadow-none"
-            >
-              {posting ? "Enviando…" : "Pedir oração"}
-              {!posting && <Send className="h-3.5 w-3.5" />}
-            </button>
-          </div>
+    <div className="space-y-4">
+      <div className="card-elevated p-4">
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          rows={3}
+          placeholder="Escreva seu clamor para o mural…"
+          className="w-full resize-none rounded-xl border border-border bg-input p-3 text-sm outline-none focus:border-primary"
+        />
+        <div className="mt-2 flex items-center justify-between gap-2">
+          <VoiceRecorder onSend={clamarComAudio} maxSeconds={60} />
+          <button
+            onClick={() => void clamar()}
+            disabled={!text.trim() || posting}
+            className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary-glow disabled:opacity-50"
+          >
+            Clamar
+          </button>
         </div>
-      </section>
-
-      <div className="flex items-end justify-between gap-3 px-1">
-        <div>
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">
-            Ore com alguém
-          </p>
-          <h3 className="mt-0.5 text-base font-extrabold">Pedidos da comunidade</h3>
-        </div>
-        {posts.length > 0 && (
-          <span className="rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-bold text-muted-foreground">
-            {posts.length} {posts.length === 1 ? "pedido" : "pedidos"}
-          </span>
-        )}
       </div>
 
-      {posts.length === 0 && (
-        <div className="relative flex flex-col items-center overflow-hidden rounded-[26px] border border-dashed border-primary/25 bg-primary/[0.035] px-6 py-12 text-center">
-          <span className="flex h-14 w-14 items-center justify-center rounded-[20px] bg-primary/10 text-primary ring-1 ring-primary/15">
-            <HeartHandshake className="h-6 w-6" />
-          </span>
-          <h3 className="mt-4 font-extrabold">Nenhum pedido por aqui ainda</h3>
-          <p className="mt-1 max-w-[280px] text-sm leading-relaxed text-muted-foreground">
-            Quando alguém compartilhar um clamor, você poderá apoiar com sua oração.
-          </p>
-        </div>
-      )}
-
       {posts.map((p) => (
-        <article
-          key={p.id}
-          className="relative overflow-hidden rounded-[26px] border border-border/70 bg-surface p-4 shadow-sm transition-all hover:border-primary/20 hover:shadow-lg"
-        >
-          <Quote className="pointer-events-none absolute -right-1 top-2 h-16 w-16 text-primary/[0.045]" />
-          <header className="relative flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-[15px] bg-primary/15 text-sm font-extrabold text-primary ring-1 ring-primary/10">
+        <article key={p.id} className="card-elevated p-4">
+          <header className="flex items-center gap-2">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/20 text-sm font-semibold text-primary">
               {p.author_name[0]}
             </div>
             <div className="flex-1">
-              <p className="text-sm font-extrabold">{p.author_name}</p>
+              <p className="text-sm font-semibold">{p.author_name}</p>
               <p className="text-[11px] text-muted-foreground">
                 {formatDistanceToNow(new Date(p.created_at), { locale: ptBR, addSuffix: true })}
               </p>
             </div>
             {p.is_answered && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-success/15 px-2.5 py-1 text-[9px] font-extrabold text-success ring-1 ring-success/15">
-                <CheckCircle2 className="h-3 w-3" /> Respondido
+              <span className="inline-flex items-center gap-1 rounded-full bg-success/20 px-2.5 py-0.5 text-[10px] font-semibold text-success">
+                <CheckCircle2 className="h-3 w-3" /> Pedido Respondido!
               </span>
             )}
           </header>
           {p.audio_url ? (
-            <div className="relative mt-4 rounded-[18px] bg-surface-2/60 p-2 ring-1 ring-border/50">
+            <div className="mt-3">
               <VoiceNotePlayer src={p.audio_url} />
             </div>
           ) : (
-            p.body && (
-              <p className="relative mt-4 text-[15px] leading-relaxed text-foreground/95">
-                {p.body}
-              </p>
-            )
+            p.body && <p className="mt-3 text-sm leading-relaxed">{p.body}</p>
           )}
           <button
-            type="button"
             onClick={() => void toggleAmen(p.id)}
-            className={`mt-4 inline-flex min-h-10 items-center gap-2 rounded-[15px] border px-4 text-xs font-bold transition-all ${
+            className={`mt-3 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${
               myAmens.has(p.id)
-                ? "border-primary/30 bg-primary/15 text-primary shadow-sm"
-                : "border-border/70 bg-background/60 text-muted-foreground hover:border-primary/30 hover:text-primary"
+                ? "border-primary bg-primary/20 text-primary"
+                : "border-border bg-background text-muted-foreground hover:border-primary/40"
             }`}
           >
-            <HeartHandshake className="h-4 w-4" /> Amém
-            <span className="font-extrabold">{counts[p.id] ?? 0}</span>
+            Amém 🙏 <span className="font-semibold">({counts[p.id] ?? 0})</span>
           </button>
         </article>
       ))}
@@ -883,24 +987,15 @@ function Diario() {
   };
 
   if (loading) {
-    return (
-      <div className="space-y-3">
-        <div className="h-24 animate-pulse rounded-[26px] bg-surface-2/70" />
-        <div className="h-48 animate-pulse rounded-[26px] bg-surface-2/70" />
-        <div className="h-40 animate-pulse rounded-[26px] bg-surface-2/70" />
-      </div>
-    );
+    return <div className="py-12 text-center text-sm text-muted-foreground">Carregando…</div>;
   }
 
   if (entries.length === 0) {
     return (
-      <div className="relative flex flex-col items-center overflow-hidden rounded-[26px] border border-dashed border-primary/25 bg-primary/[0.035] px-6 py-12 text-center">
-        <div className="pointer-events-none absolute -top-12 h-32 w-32 rounded-full bg-primary/10 blur-3xl" />
-        <span className="relative flex h-14 w-14 items-center justify-center rounded-[20px] bg-primary/10 text-primary ring-1 ring-primary/15">
-          <BookHeart className="h-6 w-6" />
-        </span>
-        <h3 className="relative mt-4 font-extrabold">Seu diário está aguardando</h3>
-        <p className="relative mt-1 max-w-[290px] text-sm leading-relaxed text-muted-foreground">
+      <div className="card-elevated flex flex-col items-center px-6 py-12 text-center">
+        <BookHeart className="mb-3 h-10 w-10 text-primary" />
+        <h3 className="font-semibold">Seu diário está aguardando</h3>
+        <p className="mt-1 text-sm text-muted-foreground">
           Complete uma lição — sua resposta de reflexão será salva aqui automaticamente.
         </p>
       </div>
@@ -908,51 +1003,20 @@ function Diario() {
   }
 
   return (
-    <div className="space-y-4">
-      <section className="relative overflow-hidden rounded-[26px] border border-border/70 bg-gradient-to-br from-primary/[0.1] via-surface to-surface p-4 shadow-sm">
-        <div className="pointer-events-none absolute -right-10 -top-12 h-32 w-32 rounded-full bg-primary/10 blur-3xl" />
-        <div className="relative flex items-center gap-3">
-          <span className="flex h-12 w-12 items-center justify-center rounded-[17px] bg-primary/15 text-primary ring-1 ring-primary/15">
-            <LockKeyhole className="h-5 w-5" />
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-extrabold">Seu caderno de caminhada</p>
-            <p className="mt-0.5 text-[10px] leading-relaxed text-muted-foreground">
-              Um espaço pessoal para rever aprendizados e perceber seu crescimento.
-            </p>
-          </div>
-          <span className="flex h-9 min-w-9 items-center justify-center rounded-full bg-primary/10 px-2 text-xs font-extrabold text-primary">
-            {entries.length}
-          </span>
-        </div>
-      </section>
-
-      <div className="flex items-end justify-between gap-3 px-1">
-        <div>
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">
-            Sua história
-          </p>
-          <h3 className="mt-0.5 text-base font-extrabold">Reflexões salvas</h3>
-        </div>
-      </div>
-
+    <div className="space-y-3">
       {ordered.map(({ entry: e, meta }) => {
         const isEditing = editingId === e.id;
         const wasEdited = e.updated_at && e.updated_at !== e.created_at;
         return (
-          <article
-            key={e.id}
-            className="relative overflow-hidden rounded-[26px] border border-border/70 bg-surface p-4 shadow-sm transition-all hover:border-primary/20 hover:shadow-lg"
-          >
-            <div className="absolute inset-y-4 left-0 w-1 rounded-r-full bg-gradient-to-b from-primary to-primary-glow" />
+          <article key={e.id} className="card-elevated p-4">
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-[9px] font-extrabold uppercase leading-relaxed tracking-[0.14em] text-primary">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
                   {meta
                     ? `Módulo ${meta.moduleOrd} · ${meta.moduleTitle} — Trilha: ${meta.trailTitle}`
                     : e.lesson_title}
                 </p>
-                <p className="mt-1 text-[10px] font-medium text-muted-foreground">
+                <p className="mt-1 text-xs text-muted-foreground">
                   {formatDistanceToNow(new Date(e.created_at), { locale: ptBR, addSuffix: true })}
                   {wasEdited && " · editado"}
                 </p>
@@ -961,14 +1025,14 @@ function Diario() {
                 <div className="flex shrink-0 gap-1">
                   <button
                     onClick={() => startEdit(e)}
-                    className="flex h-8 w-8 items-center justify-center rounded-[11px] text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
+                    className="rounded-full p-1.5 text-muted-foreground hover:bg-surface hover:text-primary"
                     aria-label="Editar resposta"
                   >
                     <Pencil className="h-3.5 w-3.5" />
                   </button>
                   <button
                     onClick={() => void remove(e.id)}
-                    className="flex h-8 w-8 items-center justify-center rounded-[11px] text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                    className="rounded-full p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                     aria-label="Apagar resposta"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
@@ -976,39 +1040,34 @@ function Diario() {
                 </div>
               )}
             </div>
-            <div className="mt-4 flex items-start gap-2.5">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[10px] bg-primary/10 text-primary">
-                <Quote className="h-3.5 w-3.5" />
-              </span>
-              <p className="pt-0.5 text-sm font-bold leading-relaxed">{e.question}</p>
-            </div>
+            <p className="mt-3 text-sm font-medium">{e.question}</p>
             {isEditing ? (
-              <div className="mt-3 space-y-2">
+              <div className="mt-2 space-y-2">
                 <textarea
                   value={editDraft}
                   onChange={(ev) => setEditDraft(ev.target.value)}
                   rows={4}
-                  className="w-full resize-none rounded-[18px] border border-border/70 bg-background/70 p-3.5 text-sm leading-relaxed outline-none transition-all focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
+                  className="w-full resize-none rounded-xl border border-border bg-input p-3 text-sm outline-none focus:border-primary"
                 />
                 <div className="flex justify-end gap-2">
                   <button
                     onClick={cancelEdit}
-                    className="min-h-9 rounded-full border border-border px-4 text-xs font-bold text-muted-foreground transition-colors hover:bg-surface-2"
+                    className="rounded-full border border-border px-4 py-1.5 text-xs font-medium text-muted-foreground"
                   >
                     Cancelar
                   </button>
                   <button
                     onClick={() => void saveEdit(e.id)}
                     disabled={saving || !editDraft.trim()}
-                    className="min-h-9 rounded-full bg-primary px-4 text-xs font-extrabold text-primary-foreground shadow-sm disabled:opacity-50"
+                    className="rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-50"
                   >
                     Salvar
                   </button>
                 </div>
               </div>
             ) : (
-              <p className="scripture mt-3 rounded-[18px] border border-border/50 bg-surface-2/70 p-3.5 text-base leading-relaxed text-foreground/90">
-                “{e.answer}”
+              <p className="mt-2 rounded-xl bg-surface-2 p-3 text-base leading-relaxed text-foreground/90 scripture">
+                "{e.answer}"
               </p>
             )}
           </article>
