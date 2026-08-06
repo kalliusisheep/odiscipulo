@@ -128,7 +128,7 @@ const ALL_BIBLICAL_CHARACTERS = [...RAW_BIBLICAL_CHARACTERS, ...FACT_CHARACTER_P
 
 const isValidBiblicalCharacter = (character: BiblicalCharacter) => {
   const hints = character.hints.map((hint) => hint.trim()).filter(Boolean);
-  const normalizedName = normalizeGameAnswer(character.name);
+  const normalizedName = character.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "").trim();
   return Boolean(character.id.trim() && character.name.trim() && character.summary.trim() && character.references.length > 0)
     && hints.length === 4
     && new Set([character.name, ...character.aliases]).size === character.aliases.length + 1
