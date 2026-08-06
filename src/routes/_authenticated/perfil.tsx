@@ -4,7 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { ViewModeToggle } from "@/components/ViewModeToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { CHARACTERS, BIBLE_VERSIONS, type BibleVersion } from "@/data/content";
-import { getLevel, xpToNextLevel, levelProgressPct, MAX_LEVEL } from "@/data/levels";
 import { toast } from "sonner";
 import { isUsernameAvailable, isValidUsername, normalizeUsername } from "@/lib/username";
 import {
@@ -18,7 +17,6 @@ import { ChurchLinkDialog } from "@/components/ChurchLinkDialog";
 import type { ChurchOption } from "@/lib/church";
 
 import { useApp } from "@/lib/app-context";
-import { useMascot, profileStatsLine } from "@/lib/mascot";
 import {
   AtSign,
   Bell,
@@ -27,9 +25,6 @@ import {
   Check,
   LogOut,
   BookOpen,
-  Flame,
-  Trophy,
-  Clock,
   Camera,
   Loader2,
   Pencil,
@@ -41,7 +36,6 @@ import {
   Crown,
   Settings2,
   ShieldCheck,
-  Target,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/perfil")({
@@ -88,7 +82,6 @@ type Profile = {
 
 function PerfilPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [lessonsCount, setLessonsCount] = useState(0);
   const [bioDraft, setBioDraft] = useState("");
   const [uploading, setUploading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -101,8 +94,6 @@ function PerfilPage() {
   const fileRef = useRef<HTMLInputElement>(null);
   const { bibleVersion, setBibleVersion } = useApp();
   const nav = useNavigate();
-  const { say } = useMascot();
-  const statsCommentedRef = useRef(false);
 
   useEffect(() => {
     void (async () => {
@@ -118,23 +109,8 @@ function PerfilPage() {
         setBioDraft((p as Profile).bio ?? "");
         setBibleVersion(p.bible_version as (typeof BIBLE_VERSIONS)[number]);
       }
-      const { count } = await supabase
-        .from("lesson_progress")
-        .select("*", { count: "exact", head: true })
-        .eq("user_id", u.user.id);
-      setLessonsCount(count ?? 0);
-
-      // Comenta as estatísticas reais do perfil (XP, lições, sequência),
-      // uma única vez por visita à aba.
-      if (!statsCommentedRef.current && p) {
-        const line = profileStatsLine((p.xp as number) ?? 0, count ?? 0, (p.streak as number) ?? 0);
-        if (line) {
-          statsCommentedRef.current = true;
-          setTimeout(() => say(line), 2600);
-        }
-      }
     })();
-  }, [setBibleVersion, say]);
+  }, [setBibleVersion]);
 
   const update = async (patch: Partial<Profile>) => {
     if (!profile) return;
@@ -224,10 +200,7 @@ function PerfilPage() {
 
   if (!profile) return <PerfilSkeleton />;
 
-  const level = getLevel(profile.xp);
   const ch = CHARACTERS.find((c) => c.id === profile.avatar_char) ?? CHARACTERS[0];
-  const toNext = xpToNextLevel(profile.xp);
-  const pct = Math.round(levelProgressPct(profile.xp));
 
   return (
     <div className="mx-auto max-w-lg space-y-5 px-3 pt-5 sm:px-4">
@@ -238,7 +211,7 @@ function PerfilPage() {
           </div>
           <h1 className="mt-1 text-2xl font-extrabold tracking-tight">Meu perfil</h1>
           <p className="text-xs text-muted-foreground">
-            Sua identidade e seu progresso em um só lugar
+            Seu espaço pessoal para manter tudo do seu jeito
           </p>
         </div>
         <div className="flex shrink-0 items-center gap-2">
@@ -267,16 +240,11 @@ function PerfilPage() {
 
         <div className="relative z-10 p-5">
           <div className="flex items-start gap-3.5">
-            <div className="relative h-[82px] w-[82px] shrink-0">
-              <div
-                className="absolute inset-0 rounded-[24px] p-[3px]"
-                style={{
-                  background: `conic-gradient(var(--primary) ${pct * 3.6}deg, rgba(255,255,255,.16) 0deg)`,
-                }}
-              >
-                <div className="h-full w-full rounded-[21px] bg-[#161d36]" />
+            <div className="relative h-[92px] w-[92px] shrink-0">
+              <div className="absolute inset-0 rounded-[28px] bg-gradient-to-br from-primary via-primary-glow to-white/20 p-[3px]">
+                <div className="h-full w-full rounded-[25px] bg-[#161d36]" />
               </div>
-              <div className="absolute inset-[4px] flex items-center justify-center overflow-hidden rounded-[20px] bg-surface-2 text-4xl ring-1 ring-white/10">
+              <div className="absolute inset-[5px] flex items-center justify-center overflow-hidden rounded-[24px] bg-surface-2 text-4xl ring-1 ring-white/10">
                 {profile.avatar_url ? (
                   <img
                     src={profile.avatar_url}
@@ -317,7 +285,7 @@ function PerfilPage() {
 
             <div className="min-w-0 flex-1 pt-0.5">
               <p className="flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-[0.16em] text-white/55">
-                <Sparkles className="h-3 w-3 text-primary" /> Sua jornada
+                <Sparkles className="h-3 w-3 text-primary" /> Seu perfil
               </p>
               <h2 className="mt-1 truncate text-lg font-extrabold leading-tight">
                 {profile.display_name}
@@ -389,16 +357,6 @@ function PerfilPage() {
                 )}
               </div>
 
-              <div className="mt-2 flex flex-wrap gap-1.5">
-                <span className="rounded-full bg-primary/20 px-2.5 py-1 text-[10px] font-extrabold text-primary-foreground ring-1 ring-primary/30">
-                  Nível {level.level}
-                </span>
-                <span className="rounded-full bg-white/[0.08] px-2.5 py-1 text-[10px] font-bold text-white/70 ring-1 ring-white/10">
-                  {profile.xp} XP total
-                </span>
-              </div>
-            </div>
-
             <div className="flex w-12 shrink-0 flex-col items-center rounded-[18px] border border-orange-300/25 bg-orange-400/10 px-1 py-2 text-center shadow-inner shadow-orange-300/5">
               <Flame className="h-4 w-4 text-orange-300" />
               <strong className="mt-0.5 text-lg leading-none text-orange-200">
@@ -407,55 +365,10 @@ function PerfilPage() {
               <span className="mt-1 text-[7px] font-extrabold uppercase tracking-wider text-orange-200/70">
                 dias
               </span>
-            </div>
           </div>
 
-          <div className="mt-5 rounded-[22px] border border-white/10 bg-black/20 p-3.5 shadow-inner shadow-black/20 backdrop-blur-sm">
-            <div className="flex items-center justify-between gap-3">
-              <div className="min-w-0">
-                <p className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-[0.14em] text-white/45">
-                  <Target className="h-3 w-3 text-primary" /> Rumo ao próximo nível
-                </p>
-                <p className="mt-0.5 truncate text-xs font-extrabold text-white">
-                  {toNext === null
-                    ? "Jornada de níveis concluída"
-                    : `Próximo nível: ${Math.min(level.level + 1, MAX_LEVEL)}`}
-                </p>
-              </div>
-              <span className="flex h-9 min-w-9 items-center justify-center rounded-full bg-white/10 px-2 text-xs font-black text-white ring-1 ring-white/10">
-                {pct}%
-              </span>
-            </div>
-            <div className="mt-3 h-2 overflow-hidden rounded-full bg-black/30 ring-1 ring-white/5">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-primary via-primary-glow to-violet-300 shadow-[0_0_12px_rgba(139,92,246,.45)] transition-[width] duration-700 ease-out"
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-            <div className="mt-2 flex items-center justify-between gap-3 text-[9px] font-semibold text-white/45">
-              <span>{profile.xp} XP acumulados</span>
-              <span className="text-right text-primary-foreground/90">
-                {toNext === null ? `Nível ${MAX_LEVEL} alcançado` : `Faltam ${toNext} XP`}
-              </span>
-            </div>
-          </div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => void nav({ to: "/niveis" })}
-          className="relative flex w-full items-center justify-between border-t border-white/10 bg-white/[0.045] px-5 py-3 text-left transition-colors hover:bg-white/[0.08]"
-        >
-          <span>
-            <span className="block text-xs font-extrabold">Mapa da jornada</span>
-            <span className="block text-[9px] font-medium text-white/45">
-              Explore níveis, títulos e conquistas
-            </span>
-          </span>
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/70">
-            <ChevronRight className="h-4 w-4" />
-          </span>
-        </button>
       </section>
 
       <section
@@ -486,39 +399,6 @@ function PerfilPage() {
           rows={3}
           className="mt-3 w-full resize-none rounded-[18px] border border-border/70 bg-background/70 px-3.5 py-3 text-sm leading-relaxed text-foreground placeholder:text-muted-foreground transition-all focus:border-primary/60 focus:outline-none focus:ring-4 focus:ring-primary/10"
         />
-      </section>
-
-      <section
-        className="animate-slide-up"
-        style={{ animationDelay: "100ms", animationFillMode: "backwards" }}
-      >
-        <SectionLabel>Visão geral</SectionLabel>
-        <div className="grid grid-cols-2 gap-2.5">
-          <StatItem
-            icon={Trophy}
-            label="Nível atual"
-            value={String(level.level)}
-            tint="var(--primary)"
-          />
-          <StatItem
-            icon={Flame}
-            label="Sequência"
-            value={`${profile.streak} dias`}
-            tint="var(--streak)"
-          />
-          <StatItem
-            icon={BookOpen}
-            label="Lições feitas"
-            value={String(lessonsCount)}
-            tint="var(--success)"
-          />
-          <StatItem
-            icon={Clock}
-            label="Tempo estimado"
-            value={`${lessonsCount * 8} min`}
-            tint="var(--ancient)"
-          />
-        </div>
       </section>
 
       <section
@@ -666,32 +546,6 @@ function SectionLabel({
     >
       {children}
     </p>
-  );
-}
-
-function StatItem({
-  icon: Icon,
-  label,
-  value,
-  tint,
-}: {
-  icon: React.ElementType;
-  label: string;
-  value: string;
-  tint: string;
-}) {
-  return (
-    <div className="card-elevated flex min-w-0 items-center gap-3 p-3.5">
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] bg-surface-2">
-        <Icon className="h-[18px] w-[18px]" style={{ color: tint }} />
-      </span>
-      <div className="min-w-0">
-        <p className="truncate text-base font-extrabold leading-none">{value}</p>
-        <p className="mt-1 truncate text-[9px] font-bold uppercase tracking-wider text-muted-foreground">
-          {label}
-        </p>
-      </div>
-    </div>
   );
 }
 
