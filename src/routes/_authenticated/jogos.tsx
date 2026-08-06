@@ -27,6 +27,16 @@ function JogosPage() {
           <span className="mt-8 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary"><Gamepad2 className="h-6 w-6" /></span>
         </header>
 
+        <section className="relative mt-7 h-40 overflow-hidden rounded-[1.75rem] border border-white/10 bg-surface shadow-xl shadow-black/20" aria-label="Comunidade jogando">
+          <img src="/jogos-hero.jpeg" alt="Ovelhas jogando juntas" className="absolute inset-0 h-full w-full object-cover object-center" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#080b18]/95 via-[#080b18]/55 to-[#080b18]/10" />
+          <div className="relative flex h-full max-w-[72%] flex-col justify-end p-5">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary-foreground/75">Comunidade em jogo</p>
+            <h2 className="mt-1 text-xl font-extrabold tracking-tight text-white">Jogue junto. Aprenda sempre.</h2>
+            <p className="mt-1 text-xs leading-relaxed text-white/70">Desafios rápidos para transformar conhecimento em uma caminhada compartilhada.</p>
+          </div>
+        </section>
+
         <section className="mt-8 space-y-3">
           <div className="px-1"><p className="text-xs font-extrabold uppercase tracking-[0.16em] text-muted-foreground">Escolha um desafio</p></div>
           {games.map((game) => {
