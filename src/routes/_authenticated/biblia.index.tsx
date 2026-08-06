@@ -4,6 +4,7 @@ import { BIBLE_BOOKS, bookById, bookNameById } from "@/data/bible-books";
 import { PT_TRANSLATIONS, searchBible, translationByCode } from "@/lib/bible-source";
 import { listReadChapters } from "@/lib/bible-user-data";
 import { useBiblePrefs } from "@/lib/bible-prefs";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   ArrowLeft,
   BookMarked,
@@ -113,7 +114,7 @@ function BibliaIndex() {
     <div className="pb-28">
       <div className="sticky top-0 z-30 border-b border-white/[0.06] bg-background/90 backdrop-blur-2xl">
         <div className="mx-auto max-w-lg px-4 pb-3 pt-3">
-          <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
+          <div className="grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-3">
             <button
               onClick={() => void nav({ to: "/perfil" })}
               aria-label="Voltar"
@@ -134,6 +135,7 @@ function BibliaIndex() {
               </div>
             </div>
 
+            <ThemeToggle className="h-10 w-10 border-border bg-surface/80" />
             <Link
               to="/biblia/marcados"
               aria-label="Meus marcadores"
