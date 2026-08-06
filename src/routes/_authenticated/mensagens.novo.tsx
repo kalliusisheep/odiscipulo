@@ -49,10 +49,10 @@ function NovaMensagemPage() {
 
     const withPresence = await supabase
       .from("profiles")
-      .select("id, display_name, username, avatar_url, last_seen_at")
+      .select("id, display_name, username, avatar_url, last_seen_at, updated_at")
       .in("id", ids);
     const profiles = withPresence.error
-      ? ((await supabase.from("profiles").select("id, display_name, username, avatar_url").in("id", ids)).data ?? []).map((p) => ({ ...p, last_seen_at: null }))
+      ? ((await supabase.from("profiles").select("id, display_name, username, avatar_url, updated_at").in("id", ids)).data ?? []).map((p) => ({ ...p, last_seen_at: p.updated_at ?? null }))
       : (withPresence.data ?? []);
 
     const list = ((profiles ?? []) as Contact[])
@@ -77,17 +77,17 @@ function NovaMensagemPage() {
     // aparece como sugestão — o vínculo é exato, não uma comparação de texto.
     const withPresence = await supabase
       .from("profiles")
-      .select("id, display_name, username, avatar_url, last_seen_at, church_name")
+      .select("id, display_name, username, avatar_url, last_seen_at, updated_at, church_name")
       .eq("church_id", myProfile.church_id)
       .neq("id", currentMyId)
       .limit(20);
     const members = withPresence.error
       ? ((await supabase
           .from("profiles")
-          .select("id, display_name, username, avatar_url, church_name")
+          .select("id, display_name, username, avatar_url, updated_at, church_name")
           .eq("church_id", myProfile.church_id)
           .neq("id", currentMyId)
-          .limit(20)).data ?? []).map((p) => ({ ...p, last_seen_at: null }))
+          .limit(20)).data ?? []).map((p) => ({ ...p, last_seen_at: p.updated_at ?? null }))
       : (withPresence.data ?? []);
 
     const list = ((members ?? []) as ChurchSuggestion[]).filter((m) => m.username && m.church_name);
@@ -121,17 +121,17 @@ function NovaMensagemPage() {
     const timeout = setTimeout(async () => {
       const withPresence = await supabase
         .from("profiles")
-        .select("id, display_name, username, avatar_url, last_seen_at")
+        .select("id, display_name, username, avatar_url, last_seen_at, updated_at")
         .ilike("username", `%${q}%`)
         .neq("id", myId)
         .limit(8);
       const data = withPresence.error
         ? ((await supabase
             .from("profiles")
-            .select("id, display_name, username, avatar_url")
+            .select("id, display_name, username, avatar_url, updated_at")
             .ilike("username", `%${q}%`)
             .neq("id", myId)
-            .limit(8)).data ?? []).map((p) => ({ ...p, last_seen_at: null }))
+            .limit(8)).data ?? []).map((p) => ({ ...p, last_seen_at: p.updated_at ?? null }))
         : (withPresence.data ?? []);
 
       setSearchResults(((data ?? []) as Contact[]).filter((p) => p.username));
