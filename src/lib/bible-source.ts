@@ -826,6 +826,118 @@ type BollsDictHit = {
   short_definition?: string | null;
 };
 
+type LocalLexiconHit = {
+  o?: string;
+  t?: string;
+  p?: string;
+  g?: string;
+  e?: string;
+  d?: string[];
+  r?: string[];
+};
+
+const localLexiconBuckets = new Map<string, Record<string, LocalLexiconHit>>();
+
+async function fetchLocalLexiconEntry(code: string): Promise<LocalLexiconHit | null> {
+  const match = code.match(/^([GH])(\d+)$/i);
+  if (!match) return null;
+
+  const bucket = match[1].toUpperCase() + Math.floor(Number(match[2]) / 100);
+  let entries = localLexiconBuckets.get(bucket);
+  if (!entries) {
+    try {
+      const response = await fetch("/data/lexicon-pt/" + bucket + ".json");
+      if (!response.ok) return null;
+      entries = (await response.json()) as Record<string, LocalLexiconHit>;
+      localLexiconBuckets.set(bucket, entries);
+    } catch {
+      return null;
+    }
+  }
+
+  return entries[code.toUpperCase()] ?? entries[code] ?? null;
+}
+
+const LOCAL_LEXICON_FIXES: [RegExp, string][] = [
+  [/Latchet/gi, "Correia"],
+  [/Bough/gi, "Ramo"],
+  [/Jordan/gi, "Jordão"],
+  [/Jeremiah/gi, "Jeremias"],
+  [/Isaiah/gi, "Isaías"],
+  [/Ephraim/gi, "Efraim"],
+  [/Shadrach/gi, "Sadraque"],
+  [/Jericho/gi, "Jericó"],
+  [/Joppa/gi, "Jope"],
+  [/Sodom/gi, "Sodoma"],
+  [/Gomorrah/gi, "Gomorra"],
+  [/Bethlehem/gi, "Belém"],
+  [/Jerusalem/gi, "Jerusalém"],
+  [/Galilee/gi, "Galileia"],
+  [/Samaria/gi, "Samaria"],
+  [/primitive root/gi, "raiz primitiva"],
+  [/uncertain derivation/gi, "derivação incerta"],
+  [/proper noun/gi, "nome próprio"],
+  [/place noun/gi, "nome de lugar"],
+  [/masculine noun/gi, "substantivo masculino"],
+  [/feminine noun/gi, "substantivo feminino"],
+  [/neuter noun/gi, "substantivo neutro"],
+  [/same as/gi, "o mesmo que"],
+  [/probably/gi, "provavelmente"],
+  [/perhaps/gi, "talvez"],
+];
+
+function translateLocalLexiconText(text: string | null | undefined): string | null {
+  if (!text) return null;
+  let translated = translateGrammarTerms(text);
+  for (const [pattern, replacement] of LOCAL_LEXICON_FIXES) {
+    translated = translated.replace(pattern, replacement);
+  }
+  return translated.trim() || null;
+}
+
+const ENGLISH_LEXICON_MARKERS =
+  /\\b(?:part(?:s)? of speech|primitive root|proper noun|place noun|masculine|feminine|neuter|a root|from the|of the|to be|to do|the place|the name|used of|denotes the)\\b/i;
+
+function containsEnglishLexicon(text: string | null | undefined): boolean {
+  return Boolean(text && ENGLISH_LEXICON_MARKERS.test(text));
+}
+
+function entryNeedsTranslation(entry: StrongEntry): boolean {
+  return [
+    entry.partOfSpeech,
+    entry.origin,
+    entry.meaning,
+    entry.strongsGloss,
+    ...entry.definitions,
+  ].some(containsEnglishLexicon);
+}
+
+function buildLocalStrongEntry(
+  base: StrongEntry,
+  local: LocalLexiconHit,
+): StrongEntry {
+  const definitions = (local.d ?? [])
+    .map((definition) => translateLocalLexiconText(definition))
+    .filter((definition): definition is string => Boolean(definition));
+  const meaningParts = definitions.slice(0, 2);
+
+  return {
+    ...base,
+    transliteration: base.transliteration ?? local.t ?? null,
+    phonetic: base.phonetic ?? local.p ?? null,
+    partOfSpeech:
+      translateLocalLexiconText(local.g) ?? base.partOfSpeech ?? null,
+    origin: translateLocalLexiconText(local.e) ?? base.origin ?? null,
+    definitions: definitions.length ? definitions : base.definitions,
+    strongsGloss: definitions[0] ?? null,
+    meaning: meaningParts.length
+      ? meaningParts.join("; ")
+      : base.meaning,
+    related: local.r?.length ? local.r : base.related,
+    translationSource: "local",
+  };
+}
+
 function parseDefinitionParagraphs(html: string): string[] {
   const defBlock = html.split(/<p class="def">.*?<\/p>/i)[1] ?? "";
   const beforeOrigin = defBlock.split(/<p class="origin"/i)[0] ?? "";
@@ -845,9 +957,6 @@ function buildMeaning(
   const primary = shortDefinition || definitions[0] || strongsGloss || null;
   if (!primary) return null;
 
-  // Se o sentido principal já veio do `short_definition` oficial, o 2º
-  // sentido candidato é o próprio 1º parágrafo do léxico; caso contrário,
-  // é o 2º parágrafo (já que o 1º virou o sentido principal).
   const candidates = shortDefinition ? definitions : definitions.slice(1);
   const secondary = candidates.find(
     (d) =>
@@ -855,16 +964,9 @@ function buildMeaning(
       d.length <= SECOND_SENSE_MAX_LENGTH &&
       d.toLowerCase() !== primary.toLowerCase(),
   );
-  return secondary ? `${primary}; ${secondary}` : primary;
+  return secondary ? primary + "; " + secondary : primary;
 }
 
-/** Monta um StrongEntry a partir de um item bruto devolvido pela API de
- * dicionário da bolls.life. Usa os campos estruturados (`lexeme`,
- * `transliteration`, `pronunciation`, `short_definition`) como fonte
- * primária — eles vêm sempre preenchidos pela API, independentemente de o
- * HTML de `definition` seguir ou não o padrão de rótulos esperado. Os
- * rótulos dentro do HTML ("Part(s) of speech:", "Origin:") continuam sendo
- * lidos como complemento, quando disponíveis. */
 function buildStrongEntry(hit: BollsDictHit): StrongEntry {
   const code = (hit.topic ?? "").toUpperCase();
   const html = hit.definition ?? "";
@@ -872,7 +974,9 @@ function buildStrongEntry(hit: BollsDictHit): StrongEntry {
   const definitions = parseDefinitionParagraphs(html);
   const strongsMatch = html.match(/-\s*Strongs:\s*([\s\S]*?)(?:<p|$)/i);
   const strongsGloss = strongsMatch ? stripTags(strongsMatch[1]) : null;
-  const shortDefinition = hit.short_definition ? stripTags(hit.short_definition) : null;
+  const shortDefinition = hit.short_definition
+    ? stripTags(hit.short_definition)
+    : null;
 
   return {
     code,
@@ -881,60 +985,21 @@ function buildStrongEntry(hit: BollsDictHit): StrongEntry {
     phonetic: hit.pronunciation || grab(html, "Phonetic"),
     partOfSpeech: translateGrammarTerms(grab(html, "Part\\(s\\) of speech")),
     origin: translateGrammarTerms(grab(html, "Origin")),
-    definitions: definitions.length ? definitions : shortDefinition ? [shortDefinition] : [],
+    definitions: definitions.length
+      ? definitions
+      : shortDefinition
+        ? [shortDefinition]
+        : [],
     strongsGloss,
     meaning: buildMeaning(shortDefinition, definitions, strongsGloss),
-    related: Array.from(new Set((html.match(/S:([GH]\d+)/g) ?? []).map((s) => s.slice(2)))).filter(
-      (c) => c !== code,
-    ),
+    related: Array.from(
+      new Set(
+        (html.match(/S:([GH]\d+)/g) ?? []).map((value) => value.slice(2)),
+      ),
+    ).filter((relatedCode) => relatedCode !== code),
     curated: false,
+    translationSource: "source",
   };
-}
-
-/** Verbete do léxico (BDB para hebraico, Thayer para grego).
- *
- * Para os códigos presentes em CORE_TERMS, o resultado é montado
- * diretamente a partir da lista curada (conferida manualmente) e não
- * depende da fonte externa nem de heurística de leitura de HTML — garante
- * que palavras teologicamente centrais (Elohim, YHWH, Cristo, Espírito
- * etc.) sempre tragam o sentido correto. */
-export async function fetchStrongEntry(code: string): Promise<StrongEntry | null> {
-  const upperCode = code.toUpperCase();
-  // "v5" na chave: nova versão para invalidar QUALQUER cache anterior
-  // (localStorage do navegador do usuário) que possa ter sido salvo antes
-  // de a lista curada (CORE_TERMS) estar completa — sem isso, quem já
-  // tivesse aberto um versículo antes permaneceria vendo dados antigos/
-  // incompletos para sempre, mesmo depois do deploy da correção.
-  const cacheKey = `strong:v5:${upperCode}`;
-  const override = CORE_TERMS[upperCode];
-  if (override) {
-    return cached(cacheKey, async () => {
-      const definitions = override.definitions ?? [override.meaning];
-      return {
-        code: upperCode,
-        original: override.original,
-        transliteration: override.transliteration,
-        phonetic: override.phonetic ?? null,
-        partOfSpeech: override.partOfSpeech ?? null,
-        origin: null,
-        definitions,
-        strongsGloss: override.meaning,
-        meaning: override.meaning,
-        related: [],
-        curated: true,
-      };
-    });
-  }
-
-  return cached(cacheKey, async () => {
-    const res = await fetch(`${API}/dictionary-definition/BDBT/${upperCode}/`);
-    if (!res.ok) return null;
-    const json = (await res.json()) as BollsDictHit[];
-    if (!Array.isArray(json) || json.length === 0) return null;
-    const hit = json.find((d) => d.topic?.toUpperCase() === upperCode) ?? json[0];
-    if (!hit) return null;
-    return buildStrongEntry(hit);
-  });
 }
 
 export async function fetchStrongEntries(codes: string[]): Promise<Record<string, StrongEntry>> {
@@ -954,8 +1019,8 @@ export async function fetchStrongEntries(codes: string[]): Promise<Record<string
  * vez neste dispositivo. Verbetes da lista curada (CORE_TERMS) já estão em
  * português e não passam por aqui. */
 export async function translateStrongEntry(entry: StrongEntry): Promise<StrongEntry> {
-  if (entry.curated) return entry;
-  return cached(`xlex:v1:${entry.code}`, async () => {
+  if (entry.curated || entry.translationSource === "local") return entry;
+  return cached(`xlex:v2:${entry.code}`, async () => {
     try {
       const { data, error } = await supabase.functions.invoke<{
         meaning: string | null;
@@ -974,6 +1039,7 @@ export async function translateStrongEntry(entry: StrongEntry): Promise<StrongEn
         meaning: data.meaning ?? entry.meaning,
         definitions: data.definitions?.length ? data.definitions : entry.definitions,
         strongsGloss: data.strongsGloss ?? entry.strongsGloss,
+        translationSource: "ai",
       };
     } catch {
       return entry;
