@@ -77,6 +77,8 @@ function ChapterReader() {
   const speechTokenRef = useRef(0);
   const speakVerseRef = useRef<(index: number, token: number) => void>(() => undefined);
   const verseRefs = useRef<Record<number, HTMLButtonElement | null>>({});
+  const chapterEndRef = useRef<HTMLDivElement | null>(null);
+  const [chapterEndVisible, setChapterEndVisible] = useState(false);
 
   const meta = bookById(book);
 
@@ -173,6 +175,17 @@ function ChapterReader() {
   }, [narrationIndex, verses]);
 
   useEffect(() => () => stopNarration(), [stopNarration]);
+
+  useEffect(() => {
+    const element = chapterEndRef.current;
+    if (!element || !verses) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setChapterEndVisible(entry.isIntersecting),
+      { threshold: 0.2, rootMargin: "0px 0px 140px 0px" },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [verses]);
 
   useEffect(() => {
     let alive = true;
@@ -329,6 +342,8 @@ function ChapterReader() {
             ))}
           </div>
         )}
+
+        {verses && <div ref={chapterEndRef} className="h-24" aria-hidden="true" />}
       </div>
 
       
@@ -364,7 +379,7 @@ function ChapterReader() {
       {/* Navegação flutuante */}
       {verses && (
         <div className="fixed inset-x-0 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-20 flex justify-center px-4">
-          <div className="flex items-center gap-1 rounded-full border border-border bg-background/90 p-1.5 shadow-lg backdrop-blur-xl">
+          <div className="flex items-center gap-2 rounded-2xl border border-primary/20 bg-background/95 p-2 shadow-2xl shadow-primary/10 backdrop-blur-xl">
             <button
               onClick={() => go(-1)}
               disabled={chapter <= 1}
@@ -375,7 +390,7 @@ function ChapterReader() {
             </button>
             <button
               onClick={() => setChapterPicker(true)}
-              className="px-3 text-xs font-bold"
+              className="min-w-[92px] px-3 text-center text-xs font-extrabold"
             >
               {meta?.abbr} {chapter}
               <span className="ml-1 text-muted-foreground">/ {meta?.chapters}</span>
