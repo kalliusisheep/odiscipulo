@@ -145,12 +145,33 @@ function CrosswordPage() {
   const [errorCell, setErrorCell] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const autoStarted = useRef(false);
+  const sessionUsedWordIds = useRef<Set<string>>(new Set());
   const config = CROSSWORD_DIFFICULTY[difficulty];
   const cellMap = useMemo(() => new Map(puzzle.cells.map((cell) => [key(cell.row, cell.col), cell])), [puzzle.cells]);
   const activePlacement = puzzle.placements.find((placement) => placement.word.id === activeWordId);
   const activeWord = activePlacement?.word;
 
-  const start = () => { scoreSaved.current = false; startGameMusic(); playGameSfx("start"); setPuzzle(generatePuzzle(difficulty, theme, seed)); setLetters({}); setSelectedCell(null); setActiveWordId(null); setCompleted([]); setErrors(0); setHints(0); setSeconds(0); setScore(0); setPhase("playing"); };
+  const start = () => {
+    scoreSaved.current = false;
+    startGameMusic();
+    playGameSfx("start");
+    let nextPuzzle = generatePuzzle(difficulty, theme, seed);
+    for (let attempt = 1; attempt < 8 && nextPuzzle.placements.some((placement) => sessionUsedWordIds.current.has(placement.word.id)); attempt += 1) {
+      const attemptSeed = seed === undefined ? undefined : seed + attempt * 104729;
+      nextPuzzle = generatePuzzle(difficulty, theme, attemptSeed);
+    }
+    nextPuzzle.placements.forEach((placement) => sessionUsedWordIds.current.add(placement.word.id));
+    setPuzzle(nextPuzzle);
+    setLetters({});
+    setSelectedCell(null);
+    setActiveWordId(null);
+    setCompleted([]);
+    setErrors(0);
+    setHints(0);
+    setSeconds(0);
+    setScore(0);
+    setPhase("playing");
+  };
 
   useEffect(() => {
     if (mode === "multi" && roomId && !autoStarted.current) {
