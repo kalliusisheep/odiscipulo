@@ -17,8 +17,11 @@ import {
   Camera,
   CalendarDays,
   CheckCircle2,
+  ChevronDown,
   GraduationCap,
   Heart,
+  ImageIcon,
+  Loader2,
   MessageCircle,
   MessageSquare,
   Pencil,
@@ -96,7 +99,7 @@ function MuralPage() {
           <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
             <Users className="h-3.5 w-3.5" /> Comunidade
           </div>
-          <h1 className="mt-1 text-2xl font-extrabold tracking-tight">Feed</h1>
+          <h1 className="mt-1 text-2xl font-extrabold tracking-tight">{active.label}</h1>
           <p className="text-xs text-muted-foreground">Fé compartilhada fortalece a caminhada</p>
         </div>
         <ThemeToggle />
@@ -108,7 +111,7 @@ function MuralPage() {
           key={tab}
           src={TAB_BANNERS[tab].src}
           alt={TAB_BANNERS[tab].alt}
-          className="pointer-events-none absolute inset-y-0 right-0 h-full w-[62%] object-cover object-center opacity-90"
+          className="pointer-events-none absolute inset-y-0 right-0 h-full w-[62%] object-cover object-center opacity-90 animate-fade-in"
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#161d36] via-[#161d36]/90 to-transparent" />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
@@ -138,7 +141,7 @@ function MuralPage() {
               type="button"
               onClick={() => setTab(key)}
               aria-selected={selected}
-              className={`flex min-h-12 items-center justify-center gap-1.5 rounded-[17px] px-2 text-[11px] font-bold transition-all ${
+              className={`flex min-h-12 items-center justify-center gap-1.5 rounded-[17px] px-2 text-[11px] font-bold transition-all duration-200 ${
                 selected
                   ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
                   : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
@@ -151,11 +154,90 @@ function MuralPage() {
         })}
       </nav>
 
-      <div key={tab} className="animate-slide-up">
+      <div key={tab} className="animate-slide-up pb-6">
         {tab === "feed" && <Feed />}
         {tab === "oracoes" && <Oracoes />}
         {tab === "diario" && <Diario />}
       </div>
+    </div>
+  );
+}
+
+// ============================================================
+// SKELETON — usado no Feed e nas Orações enquanto carrega
+// ============================================================
+
+function CardSkeleton() {
+  return (
+    <div className="space-y-3">
+      {[0, 1, 2].map((i) => (
+        <div
+          key={i}
+          className="animate-pulse rounded-[26px] border border-border/60 bg-surface p-4"
+        >
+          <div className="flex items-center gap-3">
+            <div className="h-11 w-11 rounded-[15px] bg-surface-2" />
+            <div className="flex-1 space-y-2">
+              <div className="h-3 w-1/3 rounded-full bg-surface-2" />
+              <div className="h-2.5 w-1/4 rounded-full bg-surface-2" />
+            </div>
+          </div>
+          <div className="mt-4 space-y-2">
+            <div className="h-2.5 w-full rounded-full bg-surface-2" />
+            <div className="h-2.5 w-4/5 rounded-full bg-surface-2" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function EmptyState({
+  icon: Icon,
+  title,
+  description,
+}: {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="relative flex flex-col items-center overflow-hidden rounded-[26px] border border-dashed border-primary/25 bg-primary/[0.035] px-6 py-12 text-center">
+      <div className="pointer-events-none absolute -top-12 h-32 w-32 rounded-full bg-primary/10 blur-3xl" />
+      <span className="relative flex h-14 w-14 items-center justify-center rounded-[20px] bg-primary/10 text-primary ring-1 ring-primary/15">
+        <Icon className="h-6 w-6" />
+      </span>
+      <h3 className="relative mt-4 font-extrabold">{title}</h3>
+      <p className="relative mt-1 max-w-[280px] text-sm leading-relaxed text-muted-foreground">
+        {description}
+      </p>
+    </div>
+  );
+}
+
+function Avatar({
+  name,
+  url,
+  size = "md",
+  ring,
+}: {
+  name: string;
+  url?: string | null;
+  size?: "sm" | "md";
+  ring?: string;
+}) {
+  const dims = size === "sm" ? "h-8 w-8 text-xs rounded-[11px]" : "h-11 w-11 text-sm rounded-[15px]";
+  return (
+    <div
+      className={`flex shrink-0 items-center justify-center overflow-hidden bg-primary/15 font-extrabold text-primary ${dims} ${
+        ring ?? "ring-1 ring-primary/15"
+      }`}
+    >
+      {url ? (
+        <img src={url} alt={name} className="h-full w-full object-cover" />
+      ) : (
+        (name?.[0] ?? "?").toUpperCase()
+      )}
     </div>
   );
 }
@@ -195,8 +277,6 @@ const FEED_KIND_STYLE: Record<FeedKind, string> = {
   bio_changed: "bg-accent text-accent-foreground",
 };
 
-// Barra de destaque à esquerda do card + rótulo do tipo de evento — é o que
-// dá ao Feed uma identidade "linha do tempo" bem diferente do Mural de Orações.
 const FEED_KIND_ACCENT: Record<FeedKind, string> = {
   post: "bg-primary",
   lesson_completed: "bg-success",
@@ -219,13 +299,16 @@ const FEED_KIND_LABEL: Record<FeedKind, string> = {
 
 function Feed() {
   const [items, setItems] = useState<FeedItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
   const [myLikes, setMyLikes] = useState<Set<string>>(new Set());
   const [commentCounts, setCommentCounts] = useState<Record<string, number>>({});
   const [openComments, setOpenComments] = useState<Set<string>>(new Set());
   const [comments, setComments] = useState<Record<string, FeedComment[]>>({});
+  const [commentsLoading, setCommentsLoading] = useState<Set<string>>(new Set());
   const [commentDraft, setCommentDraft] = useState<Record<string, string>>({});
   const [pendingGif, setPendingGif] = useState<Record<string, string | null>>({});
+  const [sendingComment, setSendingComment] = useState<Set<string>>(new Set());
   const [commentLikeCounts, setCommentLikeCounts] = useState<Record<string, number>>({});
   const [myCommentLikes, setMyCommentLikes] = useState<Set<string>>(new Set());
   const [composerText, setComposerText] = useState("");
@@ -241,6 +324,7 @@ function Feed() {
       .limit(150);
     const list = (feedItems ?? []) as FeedItem[];
     setItems(list);
+    setLoading(false);
 
     const ids = list.map((i) => i.id);
     if (ids.length === 0) {
@@ -272,8 +356,6 @@ function Feed() {
     setCommentCounts(cc);
   };
 
-  // Busca curtidas dos comentários de um item específico e mescla no estado
-  // global (indexado por comment id, então funciona para vários itens abertos).
   const loadCommentLikes = async (commentIds: string[], uid: string | null) => {
     if (commentIds.length === 0) return;
     const { data } = await supabase
@@ -314,7 +396,6 @@ function Feed() {
       }
       await refresh(uid);
 
-      // Sem isso, posts, curtidas e comentários de outras pessoas só apareciam após F5.
       channel = supabase
         .channel("feed-realtime")
         .on(
@@ -365,12 +446,18 @@ function Feed() {
   const toggleLike = async (itemId: string) => {
     if (!me) return;
     const has = myLikes.has(itemId);
+    setMyLikes((prev) => {
+      const next = new Set(prev);
+      if (has) next.delete(itemId);
+      else next.add(itemId);
+      return next;
+    });
+    setLikeCounts((prev) => ({ ...prev, [itemId]: Math.max(0, (prev[itemId] ?? 0) + (has ? -1 : 1)) }));
     if (has) {
       await supabase.from("feed_likes").delete().eq("item_id", itemId).eq("user_id", me.id);
     } else {
       await supabase.from("feed_likes").insert({ item_id: itemId, user_id: me.id });
     }
-    await refresh(me.id);
   };
 
   const toggleComments = async (itemId: string) => {
@@ -381,6 +468,7 @@ function Feed() {
       return next;
     });
     if (!comments[itemId]) {
+      setCommentsLoading((prev) => new Set(prev).add(itemId));
       const { data } = await supabase
         .from("feed_comments")
         .select("*")
@@ -388,6 +476,11 @@ function Feed() {
         .order("created_at", { ascending: true });
       const list = (data ?? []) as FeedComment[];
       setComments((prev) => ({ ...prev, [itemId]: list }));
+      setCommentsLoading((prev) => {
+        const next = new Set(prev);
+        next.delete(itemId);
+        return next;
+      });
       void loadCommentLikes(
         list.map((c) => c.id),
         me?.id ?? null,
@@ -399,6 +492,7 @@ function Feed() {
     const text = (commentDraft[itemId] ?? "").trim();
     const gifUrl = pendingGif[itemId] ?? null;
     if ((!text && !gifUrl) || !me) return;
+    setSendingComment((prev) => new Set(prev).add(itemId));
     const { error } = await supabase.from("feed_comments").insert({
       item_id: itemId,
       user_id: me.id,
@@ -406,6 +500,11 @@ function Feed() {
       author_avatar_url: me.avatarUrl,
       body: text,
       gif_url: gifUrl,
+    });
+    setSendingComment((prev) => {
+      const next = new Set(prev);
+      next.delete(itemId);
+      return next;
     });
     if (!error) {
       setCommentDraft((prev) => ({ ...prev, [itemId]: "" }));
@@ -423,7 +522,6 @@ function Feed() {
   const toggleCommentLike = async (commentId: string) => {
     if (!me) return;
     const has = myCommentLikes.has(commentId);
-    // Otimista: atualiza a UI na hora, sem esperar a rede.
     setMyCommentLikes((prev) => {
       const next = new Set(prev);
       if (has) next.delete(commentId);
@@ -453,13 +551,7 @@ function Feed() {
         <div className="pointer-events-none absolute -right-10 -top-12 h-32 w-32 rounded-full bg-primary/10 blur-3xl" />
         <div className="relative p-4">
           <div className="mb-3 flex items-center gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[15px] bg-primary/15 text-sm font-extrabold text-primary ring-1 ring-primary/15">
-              {me?.avatarUrl ? (
-                <img src={me.avatarUrl} alt={me.name} className="h-full w-full object-cover" />
-              ) : (
-                (me?.name?.[0] ?? "?")
-              )}
-            </div>
+            <Avatar name={me?.name ?? "?"} url={me?.avatarUrl} />
             <div className="min-w-0 flex-1">
               <p className="text-sm font-extrabold">Compartilhe sua caminhada</p>
               <p className="text-[10px] text-muted-foreground">
@@ -472,6 +564,7 @@ function Feed() {
             value={composerText}
             onChange={(e) => setComposerText(e.target.value)}
             rows={3}
+            maxLength={600}
             placeholder="O que você gostaria de compartilhar hoje?"
             className="w-full resize-none rounded-[18px] border border-border/70 bg-background/70 p-3.5 text-sm leading-relaxed outline-none transition-all placeholder:text-muted-foreground focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
           />
@@ -488,8 +581,13 @@ function Feed() {
               disabled={!composerText.trim() || posting}
               className="inline-flex min-h-10 items-center gap-2 rounded-full bg-primary px-5 text-xs font-extrabold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary-glow disabled:translate-y-0 disabled:opacity-50 disabled:shadow-none"
             >
-              {posting ? "Publicando…" : "Publicar"}
-              {!posting && <Send className="h-3.5 w-3.5" />}
+              {posting ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <>
+                  Publicar <Send className="h-3.5 w-3.5" />
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -509,17 +607,14 @@ function Feed() {
         )}
       </div>
 
-      {items.length === 0 && (
-        <div className="relative flex flex-col items-center overflow-hidden rounded-[26px] border border-dashed border-primary/25 bg-primary/[0.035] px-6 py-12 text-center">
-          <div className="pointer-events-none absolute -top-12 h-32 w-32 rounded-full bg-primary/10 blur-3xl" />
-          <span className="relative flex h-14 w-14 items-center justify-center rounded-[20px] bg-primary/10 text-primary ring-1 ring-primary/15">
-            <Users className="h-6 w-6" />
-          </span>
-          <h3 className="relative mt-4 font-extrabold">Sua comunidade está começando</h3>
-          <p className="relative mt-1 max-w-[280px] text-sm leading-relaxed text-muted-foreground">
-            Adicione amigos e continue estudando. As conquistas de vocês aparecerão aqui.
-          </p>
-        </div>
+      {loading && <CardSkeleton />}
+
+      {!loading && items.length === 0 && (
+        <EmptyState
+          icon={Users}
+          title="Sua comunidade está começando"
+          description='Adicione amigos e continue estudando. As conquistas de vocês aparecerão aqui.'
+        />
       )}
 
       {items.map((item) => (
@@ -530,12 +625,244 @@ function Feed() {
           likeCount={likeCounts[item.id] ?? 0}
           commentCount={commentCounts[item.id] ?? 0}
           commentsOpen={openComments.has(item.id)}
-          commentsList={comments[item.id…2909 tokens truncated…
-  user_id: string | null;
+          commentsLoading={commentsLoading.has(item.id)}
+          commentsList={comments[item.id] ?? []}
+          commentDraft={commentDraft[item.id] ?? ""}
+          pendingGif={pendingGif[item.id] ?? null}
+          sending={sendingComment.has(item.id)}
+          commentLikeCounts={commentLikeCounts}
+          myCommentLikes={myCommentLikes}
+          onToggleLike={() => void toggleLike(item.id)}
+          onToggleComments={() => void toggleComments(item.id)}
+          onDraftChange={(text) => setCommentDraft((prev) => ({ ...prev, [item.id]: text }))}
+          onGifSelect={(url) => setPendingGif((prev) => ({ ...prev, [item.id]: url }))}
+          onGifClear={() => setPendingGif((prev) => ({ ...prev, [item.id]: null }))}
+          onSendComment={() => void sendComment(item.id)}
+          onToggleCommentLike={(commentId) => void toggleCommentLike(commentId)}
+        />
+      ))}
+    </div>
+  );
+}
+
+function FeedCard({
+  item,
+  liked,
+  likeCount,
+  commentCount,
+  commentsOpen,
+  commentsLoading,
+  commentsList,
+  commentDraft,
+  pendingGif,
+  sending,
+  commentLikeCounts,
+  myCommentLikes,
+  onToggleLike,
+  onToggleComments,
+  onDraftChange,
+  onGifSelect,
+  onGifClear,
+  onSendComment,
+  onToggleCommentLike,
+}: {
+  item: FeedItem;
+  liked: boolean;
+  likeCount: number;
+  commentCount: number;
+  commentsOpen: boolean;
+  commentsLoading: boolean;
+  commentsList: FeedComment[];
+  commentDraft: string;
+  pendingGif: string | null;
+  sending: boolean;
+  commentLikeCounts: Record<string, number>;
+  myCommentLikes: Set<string>;
+  onToggleLike: () => void;
+  onToggleComments: () => void;
+  onDraftChange: (text: string) => void;
+  onGifSelect: (url: string) => void;
+  onGifClear: () => void;
+  onSendComment: () => void;
+  onToggleCommentLike: (commentId: string) => void;
+}) {
+  const Icon = FEED_KIND_ICON[item.kind];
+
+  return (
+    <article className="relative overflow-hidden rounded-[26px] border border-border/70 bg-surface shadow-sm transition-all hover:border-primary/20 hover:shadow-lg">
+      <div className={`absolute inset-y-4 left-0 w-1 rounded-r-full ${FEED_KIND_ACCENT[item.kind]}`} />
+      <div className="p-4 pl-5">
+        <header className="flex items-start gap-3">
+          <Avatar name={item.author_name} url={item.author_avatar_url} />
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-extrabold">{item.author_name}</p>
+            <div className="mt-0.5 flex flex-wrap items-center gap-1.5">
+              <span
+                className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wide ${FEED_KIND_STYLE[item.kind]}`}
+              >
+                <Icon className="h-2.5 w-2.5" />
+                {FEED_KIND_LABEL[item.kind]}
+              </span>
+              <span className="text-[10px] text-muted-foreground">
+                · {formatDistanceToNow(new Date(item.created_at), { locale: ptBR, addSuffix: true })}
+              </span>
+            </div>
+          </div>
+        </header>
+
+        {item.body && (
+          <p className="mt-3 text-[15px] leading-relaxed text-foreground/95">{item.body}</p>
+        )}
+
+        <div className="mt-3.5 flex items-center gap-1 border-t border-border/50 pt-3">
+          <button
+            type="button"
+            onClick={onToggleLike}
+            className={`inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-bold transition-all ${
+              liked
+                ? "bg-destructive/10 text-destructive"
+                : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
+            }`}
+          >
+            <Heart className={`h-4 w-4 transition-transform ${liked ? "scale-110 fill-destructive" : ""}`} />
+            {likeCount > 0 && likeCount}
+          </button>
+          <button
+            type="button"
+            onClick={onToggleComments}
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-bold text-muted-foreground transition-all hover:bg-surface-2 hover:text-foreground"
+          >
+            <MessageCircle className="h-4 w-4" />
+            {commentCount > 0 && commentCount}
+          </button>
+          <ChevronDown
+            onClick={onToggleComments}
+            className={`ml-auto h-4 w-4 cursor-pointer text-muted-foreground transition-transform ${
+              commentsOpen ? "rotate-180" : ""
+            }`}
+          />
+        </div>
+
+        {commentsOpen && (
+          <div className="mt-3 space-y-3 border-t border-border/50 pt-3">
+            {commentsLoading && (
+              <div className="flex items-center gap-2 py-2 text-xs text-muted-foreground">
+                <Loader2 className="h-3.5 w-3.5 animate-spin" /> Carregando comentários…
+              </div>
+            )}
+
+            {!commentsLoading && commentsList.length === 0 && (
+              <p className="py-1 text-xs text-muted-foreground">
+                Seja o primeiro a comentar.
+              </p>
+            )}
+
+            {commentsList.map((c) => (
+              <div key={c.id} className="flex items-start gap-2.5">
+                <Avatar name={c.author_name} url={c.author_avatar_url} size="sm" />
+                <div className="min-w-0 flex-1">
+                  <div className="rounded-[16px] bg-surface-2/70 px-3 py-2">
+                    <p className="text-xs font-extrabold">{c.author_name}</p>
+                    {c.body && (
+                      <p className="mt-0.5 text-sm leading-relaxed text-foreground/90">{c.body}</p>
+                    )}
+                    {c.gif_url && (
+                      <img
+                        src={c.gif_url}
+                        alt="GIF"
+                        className="mt-1.5 max-h-40 rounded-[12px] object-cover"
+                      />
+                    )}
+                  </div>
+                  <div className="mt-1 flex items-center gap-2.5 px-1">
+                    <span className="text-[10px] text-muted-foreground">
+                      {formatDistanceToNow(new Date(c.created_at), { locale: ptBR, addSuffix: true })}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => onToggleCommentLike(c.id)}
+                      className={`inline-flex items-center gap-1 text-[10px] font-bold transition-colors ${
+                        myCommentLikes.has(c.id) ? "text-destructive" : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      <Heart
+                        className={`h-3 w-3 ${myCommentLikes.has(c.id) ? "fill-destructive" : ""}`}
+                      />
+                      {(commentLikeCounts[c.id] ?? 0) > 0 && commentLikeCounts[c.id]}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {pendingGif && (
+              <div className="relative inline-block">
+                <img src={pendingGif} alt="GIF selecionado" className="max-h-28 rounded-[12px]" />
+                <button
+                  type="button"
+                  onClick={onGifClear}
+                  className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-foreground text-background shadow"
+                  aria-label="Remover GIF"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </div>
+            )}
+
+            <div className="flex items-center gap-2 pt-1">
+              <input
+                value={commentDraft}
+                onChange={(e) => onDraftChange(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    onSendComment();
+                  }
+                }}
+                placeholder="Escreva um comentário…"
+                className="min-h-9 flex-1 rounded-full border border-border/70 bg-background/70 px-3.5 text-xs outline-none transition-all placeholder:text-muted-foreground focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
+              />
+              <GifPicker onSelect={onGifSelect} />
+              <button
+                type="button"
+                onClick={onSendComment}
+                disabled={(!commentDraft.trim() && !pendingGif) || sending}
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md shadow-primary/20 transition-all hover:bg-primary-glow disabled:opacity-40"
+                aria-label="Enviar comentário"
+              >
+                {sending ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Send className="h-3.5 w-3.5" />
+                )}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </article>
+  );
+}
+
+// ============================================================
+// ORAÇÕES — mural de clamores/pedidos de oração
+// ============================================================
+
+type Post = {
+  id: string;
+  user_id: string;
+  author_name: string;
+  body: string | null;
+  audio_url: string | null;
+  audio_duration_seconds: number | null;
+  is_answered: boolean;
+  amens_seed: number;
+  created_at: string;
 };
 
 function Oracoes() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
   const [myAmens, setMyAmens] = useState<Set<string>>(new Set());
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [text, setText] = useState("");
@@ -559,7 +886,6 @@ function Oracoes() {
       }
       await refresh(uid);
 
-      // Sem isso, posts e "Amém" de outras pessoas só apareciam após F5.
       channel = supabase
         .channel("mural-clamores")
         .on(
@@ -591,6 +917,7 @@ function Oracoes() {
       .order("created_at", { ascending: false });
     const list = (p ?? []) as Post[];
     setPosts(list);
+    setLoading(false);
     const { data: amens } = await supabase.from("mural_amens").select("post_id, user_id");
     const c: Record<string, number> = {};
     const mine = new Set<string>();
@@ -640,12 +967,18 @@ function Oracoes() {
   const toggleAmen = async (postId: string) => {
     if (!me) return;
     const has = myAmens.has(postId);
+    setMyAmens((prev) => {
+      const next = new Set(prev);
+      if (has) next.delete(postId);
+      else next.add(postId);
+      return next;
+    });
+    setCounts((prev) => ({ ...prev, [postId]: Math.max(0, (prev[postId] ?? 0) + (has ? -1 : 1)) }));
     if (has) {
       await supabase.from("mural_amens").delete().eq("post_id", postId).eq("user_id", me.id);
     } else {
       await supabase.from("mural_amens").insert({ post_id: postId, user_id: me.id });
     }
-    await refresh(me.id);
   };
 
   return (
@@ -666,6 +999,7 @@ function Oracoes() {
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={3}
+            maxLength={600}
             placeholder="Como podemos orar por você hoje?"
             className="w-full resize-none rounded-[18px] border border-border/70 bg-background/70 p-3.5 text-sm leading-relaxed outline-none transition-all placeholder:text-muted-foreground focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
           />
@@ -682,8 +1016,13 @@ function Oracoes() {
               disabled={!text.trim() || posting}
               className="inline-flex min-h-10 items-center gap-2 rounded-full bg-primary px-5 text-xs font-extrabold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary-glow disabled:translate-y-0 disabled:opacity-50 disabled:shadow-none"
             >
-              {posting ? "Enviando…" : "Pedir oração"}
-              {!posting && <Send className="h-3.5 w-3.5" />}
+              {posting ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <>
+                  Pedir oração <Send className="h-3.5 w-3.5" />
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -703,16 +1042,14 @@ function Oracoes() {
         )}
       </div>
 
-      {posts.length === 0 && (
-        <div className="relative flex flex-col items-center overflow-hidden rounded-[26px] border border-dashed border-primary/25 bg-primary/[0.035] px-6 py-12 text-center">
-          <span className="flex h-14 w-14 items-center justify-center rounded-[20px] bg-primary/10 text-primary ring-1 ring-primary/15">
-            <HeartHandshake className="h-6 w-6" />
-          </span>
-          <h3 className="mt-4 font-extrabold">Nenhum pedido por aqui ainda</h3>
-          <p className="mt-1 max-w-[280px] text-sm leading-relaxed text-muted-foreground">
-            Quando alguém compartilhar um clamor, você poderá apoiar com sua oração.
-          </p>
-        </div>
+      {loading && <CardSkeleton />}
+
+      {!loading && posts.length === 0 && (
+        <EmptyState
+          icon={HeartHandshake}
+          title="Nenhum pedido por aqui ainda"
+          description="Quando alguém compartilhar um clamor, você poderá apoiar com sua oração."
+        />
       )}
 
       {posts.map((p) => (
@@ -722,9 +1059,7 @@ function Oracoes() {
         >
           <Quote className="pointer-events-none absolute -right-1 top-2 h-16 w-16 text-primary/[0.045]" />
           <header className="relative flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-[15px] bg-primary/15 text-sm font-extrabold text-primary ring-1 ring-primary/10">
-              {p.author_name[0]}
-            </div>
+            <Avatar name={p.author_name} />
             <div className="flex-1">
               <p className="text-sm font-extrabold">{p.author_name}</p>
               <p className="text-[11px] text-muted-foreground">
@@ -757,7 +1092,8 @@ function Oracoes() {
                 : "border-border/70 bg-background/60 text-muted-foreground hover:border-primary/30 hover:text-primary"
             }`}
           >
-            <HeartHandshake className="h-4 w-4" /> Amém
+            <HeartHandshake className={`h-4 w-4 transition-transform ${myAmens.has(p.id) ? "scale-110" : ""}`} />{" "}
+            Amém
             <span className="font-extrabold">{counts[p.id] ?? 0}</span>
           </button>
         </article>
@@ -789,6 +1125,7 @@ function Diario() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editDraft, setEditDraft] = useState("");
   const [saving, setSaving] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -876,7 +1213,9 @@ function Diario() {
 
   const remove = async (id: string) => {
     if (!window.confirm("Apagar esta resposta do diário? Essa ação não pode ser desfeita.")) return;
+    setDeletingId(id);
     const { error } = await supabase.from("diary_entries").delete().eq("id", id);
+    setDeletingId(null);
     if (!error) {
       setEntries((prev) => prev.filter((e) => e.id !== id));
     }
@@ -894,16 +1233,11 @@ function Diario() {
 
   if (entries.length === 0) {
     return (
-      <div className="relative flex flex-col items-center overflow-hidden rounded-[26px] border border-dashed border-primary/25 bg-primary/[0.035] px-6 py-12 text-center">
-        <div className="pointer-events-none absolute -top-12 h-32 w-32 rounded-full bg-primary/10 blur-3xl" />
-        <span className="relative flex h-14 w-14 items-center justify-center rounded-[20px] bg-primary/10 text-primary ring-1 ring-primary/15">
-          <BookHeart className="h-6 w-6" />
-        </span>
-        <h3 className="relative mt-4 font-extrabold">Seu diário está aguardando</h3>
-        <p className="relative mt-1 max-w-[290px] text-sm leading-relaxed text-muted-foreground">
-          Complete uma lição — sua resposta de reflexão será salva aqui automaticamente.
-        </p>
-      </div>
+      <EmptyState
+        icon={BookHeart}
+        title="Seu diário está aguardando"
+        description="Complete uma lição — sua resposta de reflexão será salva aqui automaticamente."
+      />
     );
   }
 
@@ -939,6 +1273,7 @@ function Diario() {
       {ordered.map(({ entry: e, meta }) => {
         const isEditing = editingId === e.id;
         const wasEdited = e.updated_at && e.updated_at !== e.created_at;
+        const isDeleting = deletingId === e.id;
         return (
           <article
             key={e.id}
@@ -968,10 +1303,15 @@ function Diario() {
                   </button>
                   <button
                     onClick={() => void remove(e.id)}
-                    className="flex h-8 w-8 items-center justify-center rounded-[11px] text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                    disabled={isDeleting}
+                    className="flex h-8 w-8 items-center justify-center rounded-[11px] text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive disabled:opacity-40"
                     aria-label="Apagar resposta"
                   >
-                    <Trash2 className="h-3.5 w-3.5" />
+                    {isDeleting ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <Trash2 className="h-3.5 w-3.5" />
+                    )}
                   </button>
                 </div>
               )}
@@ -1002,7 +1342,7 @@ function Diario() {
                     disabled={saving || !editDraft.trim()}
                     className="min-h-9 rounded-full bg-primary px-4 text-xs font-extrabold text-primary-foreground shadow-sm disabled:opacity-50"
                   >
-                    Salvar
+                    {saving ? "Salvando…" : "Salvar"}
                   </button>
                 </div>
               </div>
