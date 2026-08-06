@@ -10,7 +10,7 @@ import { shuffleWithSeed } from "@/lib/seeded-random";
 
 export const Route = createFileRoute("/_authenticated/jogos/versiculo")({
   validateSearch: (search: Record<string, unknown>) => ({
-    mode: search.mode === "multi" ? "multi" : "single",
+    mode: search.mode === "multi" ? ("multi" as const) : ("single" as const),
     roomId: typeof search.roomId === "string" ? search.roomId : undefined,
     seed: typeof search.seed === "string" && Number.isFinite(Number(search.seed)) ? Number(search.seed) : undefined,
     difficulty: ["facil", "medio", "dificil", "bereano"].includes(String(search.difficulty)) ? String(search.difficulty) : "medio",
