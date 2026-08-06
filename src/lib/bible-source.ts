@@ -2,6 +2,19 @@ import { supabase } from "@/integrations/supabase/client";
 
 const API = "https://bolls.life";
 
+const REQUEST_TIMEOUT_MS = 15_000;
+
+async function fetchWithTimeout(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  try {
+    return await fetch(input, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+
 export type PtTranslation = {
   code: string;
   label: string;
@@ -83,7 +96,7 @@ export async function fetchChapter(
   chapter: number,
 ): Promise<Verse[]> {
   return cached(`bib:${translation}:${book}:${chapter}`, async () => {
-    const res = await fetch(`${API}/get-text/${translation}/${book}/${chapter}/`);
+    const res = await fetchWithTimeout(`${API}/get-text/${translation}/${book}/${chapter}/`);
     if (!res.ok) throw new Error("Não foi possível carregar o capítulo.");
     const json = (await res.json()) as { verse: number; text: string }[];
     return json.map((v) => ({ verse: v.verse, text: stripTags(v.text) }));
@@ -114,7 +127,7 @@ export async function fetchOriginalChapter(
   const { code } = originalTranslationFor(book);
   const prefix = book >= 40 ? "G" : "H";
   return cached(`orig:${code}:${book}:${chapter}`, async () => {
-    const res = await fetch(`${API}/get-text/${code}/${book}/${chapter}/`);
+    const res = await fetchWithTimeout(`${API}/get-text/${code}/${book}/${chapter}/`);
     if (!res.ok) throw new Error("Texto original indisponível.");
     const json = (await res.json()) as { verse: number; text: string }[];
     return json.map((v) => ({ verse: v.verse, words: parseOriginal(v.text, prefix) }));
@@ -988,7 +1001,7 @@ export async function searchBible(
   query: string,
 ): Promise<{ book: number; chapter: number; verse: number; text: string }[]> {
   const url = `${API}/v2/find/${translation}?search=${encodeURIComponent(query)}&match_case=false&match_whole=false`;
-  const res = await fetch(url);
+  const res = await fetchWithTimeout(url);
   if (!res.ok) throw new Error("Busca indisponível no momento.");
   const json = (await res.json()) as {
     results?: { book: number; chapter: number; verse: number; text: string }[];
