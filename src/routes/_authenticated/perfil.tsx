@@ -666,22 +666,22 @@ function JourneyShortcut({
     <button
       type="button"
       onClick={onClick}
-      className="group card-elevated relative min-h-[132px] overflow-hidden p-4 text-left transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg"
+      className="group card-elevated relative flex min-h-[82px] items-center gap-3 overflow-hidden p-3.5 text-left transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg"
     >
       <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-primary/10 blur-2xl transition-transform group-hover:scale-125" />
-      <div className="relative flex h-full flex-col">
-        <div className="flex items-start justify-between gap-2">
-          <span className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-primary/10 text-primary ring-1 ring-primary/10">
-            <Icon className="h-5 w-5" />
-          </span>
-          <ArrowUpRight className="h-4 w-4 text-muted-foreground/40 transition-colors group-hover:text-primary" />
-        </div>
-        <p className="mt-3 text-[9px] font-extrabold uppercase tracking-[0.14em] text-primary">
+      <span className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-primary/10 text-primary ring-1 ring-primary/10">
+        <Icon className="h-5 w-5" />
+      </span>
+      <span className="relative min-w-0 flex-1">
+        <span className="block text-[9px] font-extrabold uppercase tracking-[0.14em] text-primary">
           {eyebrow}
-        </p>
-        <h3 className="mt-0.5 text-sm font-extrabold leading-tight">{title}</h3>
-        <p className="mt-1 text-[10px] leading-snug text-muted-foreground">{description}</p>
-      </div>
+        </span>
+        <span className="mt-0.5 block text-sm font-extrabold leading-tight">{title}</span>
+        <span className="mt-1 block truncate text-[10px] leading-snug text-muted-foreground">
+          {description}
+        </span>
+      </span>
+      <ArrowUpRight className="relative h-4 w-4 shrink-0 text-muted-foreground/40 transition-colors group-hover:text-primary" />
     </button>
   );
 }
