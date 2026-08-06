@@ -51,7 +51,7 @@ function PersonagemPage() {
   const firstHint = character ? formatFirstHint(character.hints[0]) : "";
 
   const filteredCharacters = useMemo(
-    () => BIBLICAL_CHARACTERS.filter((item) => item.difficulty === difficulty || difficulty === "bereano" || item.difficulty !== "bereano"),
+    () => BIBLICAL_CHARACTERS.filter((item) => item.difficulty === difficulty),
     [difficulty],
   );
 
