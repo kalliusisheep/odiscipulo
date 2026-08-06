@@ -1,16 +1,19 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Brain, CheckCircle2, Gamepad2, HelpCircle, LockKeyhole, Sparkles, Trophy } from "lucide-react";
+import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
+import { ArrowLeft, ArrowRight, CheckCircle2, Gamepad2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/jogos")({ component: JogosPage });
 
 const games = [
-  { title: "Quem é o personagem?", description: "Descubra personagens bíblicos usando três pistas da Palavra.", to: "/jogos/personagem" as const, icon: Brain, tone: "from-primary/30 to-primary/5", active: true },
-  { title: "Qual é o versículo?", description: "Reconheça o contexto e encontre a passagem certa.", to: "/jogos/versiculo" as const, icon: HelpCircle, tone: "from-success/20 to-success/5", active: true },
-  { title: "Palavras cruzadas", description: "Complete o desafio com termos e histórias bíblicas.", to: "/jogos/cruzadas" as const, icon: Sparkles, tone: "from-ancient/25 to-ancient/5", active: true },
-  { title: "Quiz do milhão", description: "Suba a escada de perguntas e teste seu conhecimento.", to: "/jogos/milhao" as const, icon: Trophy, tone: "from-purple-500/25 to-purple-500/5", active: true },
+  { title: "Quem é o personagem?", description: "Descubra personagens bíblicos usando três pistas da Palavra.", to: "/jogos/personagem" as const, symbol: "✦", tone: "from-violet-500/30 via-primary/10 to-surface", accent: "text-violet-200" },
+  { title: "Qual é o versículo?", description: "Reconheça o contexto e encontre a passagem certa.", to: "/jogos/versiculo" as const, symbol: "⌁", tone: "from-emerald-500/25 via-teal-500/10 to-surface", accent: "text-emerald-200" },
+  { title: "Palavras cruzadas", description: "Complete o desafio com termos e histórias bíblicas.", to: "/jogos/cruzadas" as const, symbol: "╳", tone: "from-amber-500/25 via-orange-500/10 to-surface", accent: "text-amber-200" },
+  { title: "Quiz do milhão", description: "Suba a escada de perguntas e teste seu conhecimento.", to: "/jogos/milhao" as const, symbol: "◆", tone: "from-fuchsia-500/25 via-purple-500/10 to-surface", accent: "text-fuchsia-200" },
 ];
 
 function JogosPage() {
+  const location = useLocation();
+  if (location.pathname !== "/jogos") return <Outlet />;
+
   return (
     <main className="min-h-screen bg-background">
       <div className="mx-auto max-w-lg px-4 pb-28 pt-5">
@@ -24,16 +27,10 @@ function JogosPage() {
           <span className="mt-8 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary"><Gamepad2 className="h-6 w-6" /></span>
         </header>
 
-        <section className="mt-7 rounded-[1.75rem] border border-border bg-surface/70 p-5 shadow-lg shadow-black/10">
-          <div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-ancient/15 text-ancient"><Trophy className="h-5 w-5" /></span><div><p className="text-sm font-extrabold">Uma pausa que edifica</p><p className="text-xs text-muted-foreground">Pontue e compartilhe seu resultado.</p></div></div>
-        </section>
-
-        <section className="mt-7 space-y-3">
+        <section className="mt-8 space-y-3">
           <div className="px-1"><p className="text-xs font-extrabold uppercase tracking-[0.16em] text-muted-foreground">Escolha um desafio</p></div>
           {games.map((game) => {
-            const Icon = game.icon;
-            const content = <><span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${game.tone} text-primary ring-1 ring-white/5`}><Icon className="h-6 w-6" /></span><span className="min-w-0 flex-1"><span className="flex items-center gap-2"><span className="text-base font-extrabold">{game.title}</span>{!game.active && <span className="inline-flex items-center gap-1 rounded-full bg-surface-2 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-muted-foreground"><LockKeyhole className="h-3 w-3" /> Em breve</span>}</span><span className="mt-1 block text-xs leading-relaxed text-muted-foreground">{game.description}</span></span>{game.active ? <ArrowRight className="h-5 w-5 shrink-0 text-primary transition-transform group-hover:translate-x-1" /> : <LockKeyhole className="h-4 w-4 shrink-0 text-muted-foreground/50" />}</>;
-            return game.active ? <Link key={game.title} to={game.to} className="group flex items-center gap-4 rounded-3xl border border-primary/25 bg-surface p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/55 hover:shadow-primary/10">{content}</Link> : <div key={game.title} className="flex items-center gap-4 rounded-3xl border border-border bg-surface/50 p-4 opacity-75">{content}</div>;
+            return <Link key={game.title} to={game.to} className={`group flex min-h-[112px] items-center gap-4 rounded-[1.75rem] border border-white/10 bg-gradient-to-br ${game.tone} p-4 shadow-lg shadow-black/10 transition-all hover:-translate-y-0.5 hover:border-white/25 hover:shadow-primary/10`}><span className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-background/40 text-3xl font-black leading-none ring-1 ring-white/10 ${game.accent}`} aria-hidden="true">{game.symbol}</span><span className="min-w-0 flex-1"><span className="block text-base font-extrabold tracking-tight">{game.title}</span><span className="mt-1 block text-xs leading-relaxed text-muted-foreground">{game.description}</span></span><ArrowRight className="h-5 w-5 shrink-0 text-foreground/70 transition-transform group-hover:translate-x-1" /></Link>;
           })}
         </section>
         <p className="mt-6 flex items-center justify-center gap-2 text-center text-[11px] text-muted-foreground"><CheckCircle2 className="h-3.5 w-3.5 text-success" /> Conteúdo revisado com referências bíblicas.</p>

@@ -124,32 +124,32 @@ const AuthenticatedJogosRoute = AuthenticatedJogosRouteImport.update({
 const AuthenticatedJogosPersonagemRoute =
   AuthenticatedJogosPersonagemRouteImport.update({
     id: '/jogos/personagem',
-    path: '/jogos/personagem',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    path: '/personagem',
+    getParentRoute: () => AuthenticatedJogosRoute,
   } as any)
 const AuthenticatedJogosVersiculoRoute =
   AuthenticatedJogosVersiculoRouteImport.update({
     id: '/jogos/versiculo',
-    path: '/jogos/versiculo',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    path: '/versiculo',
+    getParentRoute: () => AuthenticatedJogosRoute,
   } as any)
 const AuthenticatedJogosCruzadasRoute =
   AuthenticatedJogosCruzadasRouteImport.update({
     id: '/jogos/cruzadas',
-    path: '/jogos/cruzadas',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    path: '/cruzadas',
+    getParentRoute: () => AuthenticatedJogosRoute,
   } as any)
 const AuthenticatedJogosMilhaoRoute =
   AuthenticatedJogosMilhaoRouteImport.update({
     id: '/jogos/milhao',
-    path: '/jogos/milhao',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    path: '/milhao',
+    getParentRoute: () => AuthenticatedJogosRoute,
   } as any)
 const AuthenticatedJogosMultiplayerRoute =
   AuthenticatedJogosMultiplayerRouteImport.update({
     id: '/jogos/multiplayer',
-    path: '/jogos/multiplayer',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    path: '/multiplayer',
+    getParentRoute: () => AuthenticatedJogosRoute,
   } as any)
 const ApiTtsRoute = ApiTtsRouteImport.update({
   id: '/api/tts',
@@ -634,38 +634,38 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/jogos/personagem': {
       id: '/_authenticated/jogos/personagem'
-      path: '/jogos/personagem'
+      path: '/personagem'
       fullPath: '/jogos/personagem'
       preLoaderRoute: typeof AuthenticatedJogosPersonagemRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedJogosRoute
     }
     '/_authenticated/jogos/versiculo': {
       id: '/_authenticated/jogos/versiculo'
-      path: '/jogos/versiculo'
+      path: '/versiculo'
       fullPath: '/jogos/versiculo'
       preLoaderRoute: typeof AuthenticatedJogosVersiculoRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedJogosRoute
     }
     '/_authenticated/jogos/cruzadas': {
       id: '/_authenticated/jogos/cruzadas'
-      path: '/jogos/cruzadas'
+      path: '/cruzadas'
       fullPath: '/jogos/cruzadas'
       preLoaderRoute: typeof AuthenticatedJogosCruzadasRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedJogosRoute
     }
     '/_authenticated/jogos/milhao': {
       id: '/_authenticated/jogos/milhao'
-      path: '/jogos/milhao'
+      path: '/milhao'
       fullPath: '/jogos/milhao'
       preLoaderRoute: typeof AuthenticatedJogosMilhaoRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedJogosRoute
     }
     '/_authenticated/jogos/multiplayer': {
       id: '/_authenticated/jogos/multiplayer'
-      path: '/jogos/multiplayer'
+      path: '/multiplayer'
       fullPath: '/jogos/multiplayer'
       preLoaderRoute: typeof AuthenticatedJogosMultiplayerRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedJogosRoute
     }
     '/api/tts': {
       id: '/api/tts'
@@ -817,6 +817,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedJogosRouteChildren {
+  AuthenticatedJogosPersonagemRoute: typeof AuthenticatedJogosPersonagemRoute
+  AuthenticatedJogosVersiculoRoute: typeof AuthenticatedJogosVersiculoRoute
+  AuthenticatedJogosCruzadasRoute: typeof AuthenticatedJogosCruzadasRoute
+  AuthenticatedJogosMilhaoRoute: typeof AuthenticatedJogosMilhaoRoute
+  AuthenticatedJogosMultiplayerRoute: typeof AuthenticatedJogosMultiplayerRoute
+}
+
+const AuthenticatedJogosRouteChildren: AuthenticatedJogosRouteChildren = {
+  AuthenticatedJogosPersonagemRoute: AuthenticatedJogosPersonagemRoute,
+  AuthenticatedJogosVersiculoRoute: AuthenticatedJogosVersiculoRoute,
+  AuthenticatedJogosCruzadasRoute: AuthenticatedJogosCruzadasRoute,
+  AuthenticatedJogosMilhaoRoute: AuthenticatedJogosMilhaoRoute,
+  AuthenticatedJogosMultiplayerRoute: AuthenticatedJogosMultiplayerRoute,
+}
+
+const AuthenticatedJogosRouteWithChildren =
+  AuthenticatedJogosRoute._addFileChildren(AuthenticatedJogosRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedBemVindoRoute: typeof AuthenticatedBemVindoRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
@@ -828,12 +847,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRankingRoute: typeof AuthenticatedRankingRoute
   AuthenticatedRankingDetalhesRoute: typeof AuthenticatedRankingDetalhesRoute
   AuthenticatedVersiculoRoute: typeof AuthenticatedVersiculoRoute
-  AuthenticatedJogosRoute: typeof AuthenticatedJogosRoute
-  AuthenticatedJogosPersonagemRoute: typeof AuthenticatedJogosPersonagemRoute
-  AuthenticatedJogosVersiculoRoute: typeof AuthenticatedJogosVersiculoRoute
-  AuthenticatedJogosCruzadasRoute: typeof AuthenticatedJogosCruzadasRoute
-  AuthenticatedJogosMilhaoRoute: typeof AuthenticatedJogosMilhaoRoute
-  AuthenticatedJogosMultiplayerRoute: typeof AuthenticatedJogosMultiplayerRoute
+  AuthenticatedJogosRoute: typeof AuthenticatedJogosRouteWithChildren
   AuthenticatedAdminPregerarNarracaoRoute: typeof AuthenticatedAdminPregerarNarracaoRoute
   AuthenticatedAdminPregerarTextosRoute: typeof AuthenticatedAdminPregerarTextosRoute
   AuthenticatedBibliaMarcadosRoute: typeof AuthenticatedBibliaMarcadosRoute
@@ -867,12 +881,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRankingRoute: AuthenticatedRankingRoute,
   AuthenticatedRankingDetalhesRoute: AuthenticatedRankingDetalhesRoute,
   AuthenticatedVersiculoRoute: AuthenticatedVersiculoRoute,
-  AuthenticatedJogosRoute: AuthenticatedJogosRoute,
-  AuthenticatedJogosPersonagemRoute: AuthenticatedJogosPersonagemRoute,
-  AuthenticatedJogosVersiculoRoute: AuthenticatedJogosVersiculoRoute,
-  AuthenticatedJogosCruzadasRoute: AuthenticatedJogosCruzadasRoute,
-  AuthenticatedJogosMilhaoRoute: AuthenticatedJogosMilhaoRoute,
-  AuthenticatedJogosMultiplayerRoute: AuthenticatedJogosMultiplayerRoute,
+  AuthenticatedJogosRoute: AuthenticatedJogosRouteWithChildren,
   AuthenticatedAdminPregerarNarracaoRoute:
     AuthenticatedAdminPregerarNarracaoRoute,
   AuthenticatedAdminPregerarTextosRoute: AuthenticatedAdminPregerarTextosRoute,
