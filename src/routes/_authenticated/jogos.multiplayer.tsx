@@ -64,8 +64,9 @@ function MultiplayerPage() {
       return;
     }
     const playerIds = (roomPlayers ?? []).map((player: { user_id: string }) => player.user_id);
-    const { data: profiles } = playerIds.length ? await gameDb.from("profiles").select("id,display_name,avatar_url").in("id", playerIds) : { data: [] };
-    const profileMap = new Map((profiles ?? []).map((profile: Friend) => [profile.id, profile]));
+    const { data: profileRows } = playerIds.length ? await gameDb.from("profiles").select("id,display_name,avatar_url").in("id", playerIds) : { data: [] };
+    const profiles = (profileRows ?? []) as Friend[];
+    const profileMap = new Map(profiles.map((profile) => [profile.id, profile]));
     setRoom(nextRoom as Room);
     setRoomId(nextRoomId);
     setMaxPlayers(nextRoom.max_players);
