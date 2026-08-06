@@ -46,6 +46,7 @@ function LicaoPage() {
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [reflection, setReflection] = useState("");
   const [saving, setSaving] = useState(false);
+  const [earnedXp, setEarnedXp] = useState<number | null>(null);
   const { scaleIndex, increase, decrease, contentZoomStyle } = useReadingFontScale();
 
   useEffect(() => {
@@ -114,6 +115,7 @@ function LicaoPage() {
         );
       }
       const progressReward = await awardProgressXp(u.user.id, lesson.id, lesson.xp);
+      setEarnedXp(progressReward.xp);
       celebrateActivity({
         prevXp: progressReward.prevXp,
         newXp: progressReward.newXp,
@@ -463,7 +465,7 @@ function LicaoPage() {
           <h2 className="mt-6 text-2xl font-bold">Lição concluída!</h2>
           <p className="mt-1 text-sm text-muted-foreground">{lesson.title}</p>
           <p className="mt-4 rounded-full bg-primary/20 px-4 py-1.5 text-sm font-bold text-primary">
-            +{lesson.xp} XP
+            +{earnedXp ?? lesson.xp} XP
           </p>
           <div className="mt-8 w-full max-w-xs rounded-3xl bg-gradient-to-br from-slate-800 to-slate-900 p-6 text-white">
             <Sparkles className="mx-auto h-8 w-8 text-ancient" />
