@@ -65,8 +65,8 @@ function MeditacaoPage() {
   };
 
   return (
-    <div className="mx-auto max-w-lg px-4 pt-4 pb-24 animate-slide-up">
-      <div className="mb-4 flex items-center gap-3">
+    <div className="mx-auto max-w-lg px-4 pb-28 pt-5 animate-slide-up">
+      <div className="sticky top-0 z-20 -mx-4 mb-5 flex items-center gap-3 border-b border-border/70 bg-background/90 px-4 py-3 backdrop-blur-xl">
         <Link
           to="/estudos"
           className="rounded-full p-2 text-muted-foreground hover:bg-surface"
@@ -87,7 +87,7 @@ function MeditacaoPage() {
         </span>
       </div>
 
-      <div className="mb-5">
+      <div className="rounded-3xl border border-border bg-surface/60 p-5 shadow-sm">
         <span className="inline-flex items-center gap-1 rounded-full bg-ancient/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-ancient">
           <Sparkles className="h-3 w-3" /> Meditação Guiada
         </span>
@@ -99,7 +99,7 @@ function MeditacaoPage() {
 
       {atIntro && (
         <div className="space-y-5">
-          <div className="card-elevated border-l-4 border-l-ancient p-5">
+          <div className="rounded-3xl border border-ancient/25 bg-ancient/5 p-5 shadow-sm">
             <p className="scripture text-base leading-relaxed text-foreground/90">{med.intro}</p>
           </div>
           <div className="rounded-2xl border border-border bg-surface/50 p-4 text-sm text-muted-foreground">
@@ -120,7 +120,7 @@ function MeditacaoPage() {
             Pausa {idx + 1} de {total}
           </div>
 
-          <section className="card-elevated space-y-4 p-6">
+          <section className="rounded-3xl border border-border bg-surface/70 p-6 shadow-sm">
             <h2 className="font-serif text-xl text-ancient">{currentStep.heading}</h2>
             <p className="scripture text-base leading-relaxed text-foreground/90">{currentStep.body}</p>
             {currentStep.scripture && (
@@ -156,7 +156,7 @@ function MeditacaoPage() {
 
       {atFinal && (
         <div className="space-y-5">
-          <div className="card-elevated border-l-4 border-l-primary p-5">
+          <div className="rounded-3xl border border-primary/25 bg-primary/5 p-5 shadow-sm">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Centralização</p>
             <p className="mt-2 scripture text-base leading-relaxed">{med.centralQuestion}</p>
           </div>
