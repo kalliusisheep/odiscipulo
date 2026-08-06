@@ -72,6 +72,7 @@ function ChapterReader() {
   const [narrationStarted, setNarrationStarted] = useState(false);
   const [narrationPaused, setNarrationPaused] = useState(false);
   const [narrationLoading, setNarrationLoading] = useState(false);
+  const [narrationError, setNarrationError] = useState(false);
   const [narrationRate, setNarrationRate] = useState(1);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioUrlRef = useRef<string | null>(null);
@@ -93,6 +94,18 @@ function ChapterReader() {
     setNarrationStarted(false);
     setNarrationPaused(false);
     setNarrationLoading(false);
+    setNarrationError(false);
+  }, []);
+
+  const failNarration = useCallback(() => {
+    audioRef.current?.pause();
+    audioRef.current = null;
+    if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
+    audioUrlRef.current = null;
+    setNarrationLoading(false);
+    setNarrationPaused(true);
+    setNarrationStarted(true);
+    setNarrationError(true);
   }, []);
 
   const speakVerse = useCallback(
@@ -125,17 +138,17 @@ function ChapterReader() {
         };
         audio.onerror = () => {
           if (token !== speechTokenRef.current) return;
-          stopNarration();
+          failNarration();
           toast.error("Não foi possível carregar a narração.");
         };
       } catch (error) {
         if (token !== speechTokenRef.current) return;
-        stopNarration();
+        failNarration();
         toast.error("A narração externa está indisponível no momento.");
         console.error(error);
       }
     },
-    [narrationRate, stopNarration, verses],
+    [failNarration, narrationRate, stopNarration, verses],
   );
 
   speakVerseRef.current = speakVerse;
@@ -148,6 +161,7 @@ function ChapterReader() {
       speechTokenRef.current = token;
       setNarrationStarted(true);
       setNarrationPaused(false);
+      setNarrationError(false);
       speakVerseRef.current(index, token);
     },
     [stopNarration, verses],
@@ -381,18 +395,41 @@ function ChapterReader() {
         <div className="fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-20 px-4">
           <div className="mx-auto flex max-w-lg items-center gap-3 rounded-2xl border border-border bg-background/95 px-3 py-2.5 shadow-xl backdrop-blur-xl">
             <button
-              onClick={() => narrationIndex !== null && toggleNarrationPause()}
-              aria-label={narrationLoading ? "Carregando narração" : narrationPaused ? "Continuar narração" : "Pausar narração"}
-              disabled={narrationLoading || narrationIndex === null}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform active:scale-95 disabled:cursor-wait disabled:opacity-70"
+              onClick={() => {
+                if (narrationError) startNarration(narrationIndex ?? 0);
+                else if (narrationIndex !== null) toggleNarrationPause();
+              }}
+              aria-label={
+                narrationLoading
+                  ? "Carregando narração"
+                  : narrationError
+                    ? "Tentar narração novamente"
+                    : narrationPaused
+                      ? "Continuar narração"
+                      : "Pausar narração"
+              }
+              disabled={narrationLoading}
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/20 transition-transform active:scale-95 disabled:cursor-wait disabled:opacity-70"
             >
-              {narrationLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : narrationIndex !== null && !narrationPaused ? <Pause className="h-4 w-4" /> : <Play className="ml-0.5 h-4 w-4 fill-current" />}
+              {narrationLoading ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : narrationError || narrationIndex === null || narrationPaused ? (
+                <Play className="ml-0.5 h-5 w-5 fill-current" />
+              ) : (
+                <Pause className="h-5 w-5" />
+              )}
             </button>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
                 <Volume2 className="h-3.5 w-3.5 shrink-0 text-primary" />
                 <span className="truncate text-[11px] font-bold">
-                  {narrationIndex === null ? "Ouvir capítulo" : narrationPaused ? "Narração pausada" : "Narrando versículo"}
+                  {narrationError
+                    ? "Não foi possível carregar · toque para tentar novamente"
+                    : narrationIndex === null
+                      ? "Ouvir capítulo"
+                      : narrationPaused
+                        ? "Narração pausada"
+                        : "Narrando versículo"}
                 </span>
                 {narrationIndex !== null && <span className="ml-auto shrink-0 text-[10px] font-semibold text-muted-foreground">{narrationIndex + 1}/{verses.length}</span>}
               </div>
