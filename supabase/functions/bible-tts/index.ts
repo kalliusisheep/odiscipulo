@@ -35,11 +35,11 @@ Deno.serve(async (req) => {
     }
 
     const percent = Math.round((rate - 1) * 100);
-    const speed = percent === 0 ? "0%" : \`\${percent > 0 ? "+" : ""}\${percent}%\`;
-    const ssml = \`<speak version="1.0" xml:lang="pt-BR"><voice name="pt-BR-AntonioNeural"><prosody rate="\${speed}">\${escapeXml(text)}</prosody></voice></speak>\`;
+    const speed = percent === 0 ? "0%" : `${percent > 0 ? "+" : ""}${percent}%`;
+    const ssml = `<speak version="1.0" xml:lang="pt-BR"><voice name="pt-BR-AntonioNeural"><prosody rate="${speed}">${escapeXml(text)}</prosody></voice></speak>`;
 
     const response = await fetch(
-      \`https://\${region}.tts.speech.microsoft.com/cognitiveservices/v1\`,
+      `https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`,
       {
         method: "POST",
         headers: {
@@ -54,7 +54,7 @@ Deno.serve(async (req) => {
 
     if (!response.ok) {
       const detail = await response.text().catch(() => "");
-      return new Response(\`Azure TTS \${response.status}: \${detail.slice(0, 300)}\`, {
+      return new Response(`Azure TTS ${response.status}: ${detail.slice(0, 300)}`, {
         status: 502,
         headers: corsHeaders,
       });
