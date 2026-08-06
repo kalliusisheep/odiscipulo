@@ -243,6 +243,7 @@ function BibliaIndex() {
                 key={`${h.book}-${h.chapter}-${h.verse}`}
                 to="/biblia/$book/$chapter"
                 params={{ book: String(h.book), chapter: String(h.chapter) }}
+                hash={`v-${h.verse}`}
                 className="group flex items-center gap-3 rounded-2xl border border-white/10 bg-surface/80 p-3.5 shadow-sm transition-all hover:border-primary/30 hover:bg-surface"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/15">
