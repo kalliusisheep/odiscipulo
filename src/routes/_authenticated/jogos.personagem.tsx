@@ -119,6 +119,13 @@ function PersonagemPage() {
     setPhase("playing");
   };
 
+  const scoreSaved = useRef(false);
+  useEffect(() => {
+    if (phase !== "finished" || scoreSaved.current) return;
+    scoreSaved.current = true;
+    void recordGameResult({ gameKey: "personagem", score, rounds });
+  }, [phase, rounds, score]);
+
   if (phase === "setup" && !modeSelected) {
     return <GameModeChooser title="Quem é o personagem?" heroImage="/game-quem-e-o-personagem.jpeg" heroImageAlt="Ovelha apresentando o jogo Quem é o personagem?" description="Escolha uma experiência rápida para testar sua memória bíblica ou reúna seus amigos para uma disputa em sala." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=personagem"; }} />;
   }
@@ -126,13 +133,6 @@ function PersonagemPage() {
   if (phase === "setup") {
     return <Setup difficulty={difficulty} setDifficulty={setDifficulty} rounds={rounds} setRounds={setRounds} onStart={start} />;
   }
-
-  const scoreSaved = useRef(false);
-  useEffect(() => {
-    if (phase !== "finished" || scoreSaved.current) return;
-    scoreSaved.current = true;
-    void recordGameResult({ gameKey: "personagem", score, rounds });
-  }, [phase, rounds, score]);
 
   if (phase === "finished") {
     return <Finished score={score} rounds={rounds} onRestart={() => { setModeSelected(false); setPhase("setup"); }} />;
