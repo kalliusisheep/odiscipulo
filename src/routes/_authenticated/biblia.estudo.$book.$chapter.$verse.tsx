@@ -299,7 +299,7 @@ function VerseStudy() {
             </div>
 
             <span className="max-w-[7.5rem] truncate rounded-full border border-border/70 bg-surface-2/70 px-2.5 py-1 text-[10px] font-semibold text-muted-foreground">
-              {translationByCode(translation).code}
+              {translationByCode(translation).label}
             </span>
           </div>
 
