@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { BIBLE_BOOKS, bookById, bookNameById } from "@/data/bible-books";
-import { PT_TRANSLATIONS, searchBible, translationByCode } from "@/lib/bible-source";
+import { searchBible, translationByCode, translationsForLanguage } from "@/lib/bible-source";
 import { listReadChapters } from "@/lib/bible-user-data";
 import { useBiblePrefs } from "@/lib/bible-prefs";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useApp } from "@/lib/app-context";
 import {
   ArrowLeft,
   BookMarked,
@@ -49,6 +50,8 @@ const normalize = (s: string) =>
 function BibliaIndex() {
   const nav = useNavigate();
   const { translation, setTranslation } = useBiblePrefs();
+  const { language } = useApp();
+  const availableTranslations = useMemo(() => translationsForLanguage(language), [language]);
   const [testament, setTestament] = useState<"AT" | "NT">("AT");
   const [openBook, setOpenBook] = useState<number | null>(null);
   const [query, setQuery] = useState("");
@@ -221,7 +224,7 @@ function BibliaIndex() {
                     onChange={(e) => setTranslation(e.target.value)}
                     className="appearance-none rounded-lg border border-primary/20 bg-primary/10 py-1.5 pl-2.5 pr-7 text-[10px] font-extrabold text-primary outline-none"
                   >
-                    {PT_TRANSLATIONS.map((t) => (
+                    {availableTranslations.map((t) => (
                       <option key={t.code} value={t.code}>
                         {t.label}
                       </option>
