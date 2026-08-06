@@ -141,42 +141,53 @@ function LicaoPage() {
 
   return (
     <div className="mx-auto max-w-lg px-4 pb-28 pt-5 animate-slide-up">
-      <div className="sticky top-0 z-20 -mx-4 mb-5 flex items-center gap-3 border-b border-border/70 bg-background/90 px-4 py-3 backdrop-blur-xl">
-        <button
-          type="button"
-          onClick={goBack}
-          className="rounded-full p-2 text-muted-foreground hover:bg-surface"
-          aria-label="Voltar"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </button>
-        <div className="flex-1">
-          <div className="h-1.5 overflow-hidden rounded-full bg-surface">
-            <div className="h-full bg-primary transition-all" style={{ width: `${pct}%` }} />
-          </div>
-          <div className="mt-1 flex justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
-            <span className={step === "estudo" ? "font-bold text-primary" : ""}>Estudo</span>
-            <span className={step === "fixar" ? "font-bold text-primary" : ""}>Fixar</span>
-            <span className={step === "aplicar" ? "font-bold text-primary" : ""}>Aplicar</span>
+      <header className="sticky top-0 z-20 -mx-4 mb-6 border-b border-border/70 bg-background/95 px-4 py-3 backdrop-blur-xl">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={goBack}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-border bg-surface text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+            aria-label="Voltar"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </button>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary">
+                Sua lição
+              </span>
+              <span className="rounded-full bg-ancient/15 px-2.5 py-1 text-[10px] font-extrabold text-ancient">
+                +{lesson.xp} XP
+              </span>
+            </div>
+            <div className="mt-2 h-2 overflow-hidden rounded-full bg-surface">
+              <div className="h-full rounded-full bg-gradient-to-r from-primary to-primary-glow transition-all duration-500" style={{ width: `${pct}%` }} />
+            </div>
           </div>
         </div>
-        <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-          +{lesson.xp} XP
-        </span>
-      </div>
+        <div className="mt-3 grid grid-cols-3 gap-1 rounded-2xl border border-border bg-surface/70 p-1">
+          {(["estudo", "fixar", "aplicar"] as const).map((item, index) => (
+            <span
+              key={item}
+              className={`rounded-xl px-2 py-2 text-center text-[10px] font-bold uppercase tracking-[0.12em] transition-colors ${
+                step === item ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground"
+              }`}
+            >
+              {index + 1}. {item}
+            </span>
+          ))}
+        </div>
+      </header>
 
       {step === "estudo" && (
         <HighlightsProvider contentId={lesson.id} contentType="trilha" contentTitle={lesson.title}>
           <div style={contentZoomStyle} className="space-y-5" data-tts-scope="licao">
-            <div>
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex min-w-0 items-center gap-2">
-                  <BookOpen className="h-5 w-5 shrink-0 text-primary" />
-                  <h1 className="truncate text-2xl font-bold" data-narrate>
-                    {lesson.title}
-                  </h1>
+            <section className="overflow-hidden rounded-[2rem] border border-primary/25 bg-gradient-to-br from-primary/15 via-surface to-surface p-5 shadow-lg shadow-primary/10">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/25">
+                  <BookOpen className="h-6 w-6" />
                 </div>
-                <div className="flex shrink-0 items-center gap-1.5">
+                <div className="flex items-center gap-2">
                   <NarrationButton containerSelector='[data-tts-scope="licao"]' />
                   <FontSizeControls
                     scaleIndex={scaleIndex}
@@ -185,22 +196,49 @@ function LicaoPage() {
                   />
                 </div>
               </div>
-            </div>
+              <p className="mt-6 text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">
+                Estudo bíblico
+              </p>
+              <h1 className="mt-2 text-3xl font-extrabold leading-tight tracking-tight" data-narrate>
+                {lesson.title}
+              </h1>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                Leia com calma, destaque o que falar ao seu coração e continue quando estiver pronto.
+              </p>
+            </section>
 
-            <div className="rounded-3xl border border-border bg-surface/70 p-5 shadow-sm">
-              {lesson.intro.map((p, i) => (
-                <HighlightedText
-                  key={i}
-                  fieldKey={`intro-${i}`}
-                  text={p}
-                  narrate
-                  className="text-sm leading-relaxed text-foreground/90"
-                />
-              ))}
+            <section className="rounded-[1.75rem] border border-border bg-surface/70 p-5 shadow-sm">
+              <div className="mb-4 flex items-center gap-2">
+                <span className="rounded-full bg-primary/15 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">
+                  A ideia central
+                </span>
+                <Sparkles className="h-4 w-4 text-primary" />
+              </div>
+              <div className="space-y-4">
+                {lesson.intro.map((p, i) => (
+                  <HighlightedText
+                    key={i}
+                    fieldKey={`intro-${i}`}
+                    text={p}
+                    narrate
+                    className="text-[15px] leading-7 text-foreground/90"
+                  />
+                ))}
+              </div>
+            </section>
+
+            <div className="flex items-end justify-between gap-3 px-1 pt-1">
+              <div>
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">Base bíblica</p>
+                <h2 className="mt-1 text-xl font-extrabold">O que a Bíblia diz</h2>
+              </div>
+              <span className="rounded-full border border-border bg-surface px-2.5 py-1 text-[10px] font-bold text-muted-foreground">
+                {lesson.verses.length} {lesson.verses.length === 1 ? "versículo" : "versículos"}
+              </span>
             </div>
 
             {lesson.verses.map((v, vi) => (
-              <div key={v.ref} className="rounded-3xl border border-ancient/25 bg-ancient/5 p-5 shadow-sm">
+              <div key={v.ref} className="rounded-[1.75rem] border border-ancient/30 bg-gradient-to-br from-ancient/10 to-surface p-5 shadow-sm shadow-ancient/5">
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
                   <span data-narrate>{v.ref}</span> · {bibleVersion}
                 </p>
@@ -227,7 +265,10 @@ function LicaoPage() {
               </div>
             ))}
 
-            <div className="rounded-3xl border border-border bg-surface/70 p-5 shadow-sm">
+            <section className="rounded-[1.75rem] border border-border bg-surface/70 p-5 shadow-sm">
+              <div className="mb-3 flex items-center gap-2">
+                <span className="rounded-full bg-primary/15 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">Leitura guiada</span>
+              </div>
               <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
                 Explicação
               </p>
@@ -237,9 +278,9 @@ function LicaoPage() {
                 narrate
                 className="mt-2 block text-sm leading-relaxed text-foreground/90"
               />
-            </div>
+            </section>
 
-            <blockquote className="rounded-3xl border border-ancient/25 bg-ancient/5 p-5 shadow-sm">
+            <blockquote className="rounded-[1.75rem] border border-ancient/25 bg-ancient/5 p-5 shadow-sm">
               <Quote className="h-4 w-4 text-ancient" />
               <HighlightedText
                 fieldKey="citacao"
@@ -279,13 +320,16 @@ function LicaoPage() {
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <Brain className="h-5 w-5 text-primary" />
-              <h2 className="text-2xl font-bold">Fixar</h2>
+              <h2 className="text-3xl font-extrabold tracking-tight">Fixar o aprendizado</h2>
             </div>
             <FontSizeControls scaleIndex={scaleIndex} onIncrease={increase} onDecrease={decrease} />
           </div>
-          <p className="text-sm text-muted-foreground">
-            Responda as perguntas — pode tentar novamente até acertar.
-          </p>
+          <div className="rounded-[1.75rem] border border-primary/20 bg-primary/10 p-5">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary">Agora, reflita</p>
+            <p className="mt-2 text-sm leading-relaxed text-foreground/80">
+              Responda as perguntas para transformar a leitura em memória. Você pode tentar novamente até acertar.
+            </p>
+          </div>
 
           {lesson.quizzes.map((q, qi) => {
             const chosen = answers[qi];
@@ -361,13 +405,13 @@ function LicaoPage() {
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <Target className="h-5 w-5 text-primary" />
-              <h2 className="text-2xl font-bold">Aplicar</h2>
+              <h2 className="text-3xl font-extrabold tracking-tight">Levar para a vida</h2>
             </div>
             <FontSizeControls scaleIndex={scaleIndex} onIncrease={increase} onDecrease={decrease} />
           </div>
 
-          <div className="card-elevated p-5">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+          <div className="rounded-[1.75rem] border border-primary/25 bg-gradient-to-br from-primary/15 to-surface p-5 shadow-sm">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">
               Aplicação prática
             </p>
             <p className="mt-2 text-sm leading-relaxed">{lesson.application}</p>
