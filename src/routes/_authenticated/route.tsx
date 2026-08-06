@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet, redirect, useRouterState } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { AppProvider } from "@/lib/app-context";
@@ -6,6 +7,7 @@ import { CelebrationProvider } from "@/lib/celebration";
 import { MascotProvider } from "@/lib/mascot";
 import { BottomNav } from "@/components/BottomNav";
 import { MentorFAB, MentorChat } from "@/components/Mentor";
+import { touchLastSeen } from "@/lib/presence";
 
 function AuthCheckPending() {
   return (
@@ -28,6 +30,20 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 function AuthedLayout() {
+  useEffect(() => {
+    const touch = () => void touchLastSeen();
+    touch();
+    const timer = window.setInterval(touch, 60_000);
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") touch();
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, []);
+
   // Na conversa privada o compositor fica colado no rodapé (tela de altura
   // cheia). A barra de navegação e o balão do Mentor são "fixed" por cima
   // dela, então cobriam justamente os botões de emoji/microfone/enviar —
