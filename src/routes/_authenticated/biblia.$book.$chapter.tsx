@@ -447,29 +447,35 @@ function ChapterReader() {
       {/* Navegação contextual no fim do capítulo */}
       {verses && chapterEndVisible && (
         <div className="fixed inset-x-0 bottom-[calc(9rem+env(safe-area-inset-bottom))] z-20 flex justify-center px-4 animate-slide-up">
-          <div className="flex items-center gap-2 rounded-2xl border border-primary/20 bg-background/95 p-2 shadow-2xl shadow-primary/10 backdrop-blur-xl">
+          <div className="flex items-center gap-2 rounded-[1.5rem] border border-primary/20 bg-background/95 p-2 shadow-2xl shadow-primary/15 backdrop-blur-xl">
             <button
               onClick={() => go(-1)}
               disabled={chapter <= 1}
               aria-label="Capítulo anterior"
-              className="flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-surface disabled:opacity-30"
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-border bg-surface text-muted-foreground transition-all hover:border-primary/40 hover:text-primary active:scale-95 disabled:opacity-30"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-6 w-6" />
             </button>
             <button
               onClick={() => setChapterPicker(true)}
-              className="min-w-[92px] px-3 text-center text-xs font-extrabold"
+              aria-label="Escolher capítulo"
+              className="min-w-[132px] rounded-2xl px-3 py-1.5 text-center transition-colors hover:bg-surface"
             >
-              {meta?.abbr} {chapter}
-              <span className="ml-1 text-muted-foreground">/ {meta?.chapters}</span>
+              <span className="block text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">
+                Capítulo atual
+              </span>
+              <span className="mt-0.5 block text-base font-extrabold">
+                {meta?.abbr} {chapter}
+                <span className="ml-1 text-muted-foreground">/ {meta?.chapters}</span>
+              </span>
             </button>
             <button
               onClick={() => go(1)}
               disabled={!meta || chapter >= meta.chapters}
               aria-label="Próximo capítulo"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform active:scale-95 disabled:opacity-30"
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/25 transition-all active:scale-95 disabled:opacity-30"
             >
-              <ChevronRight className="h-5 w-5" />
+              <ChevronRight className="h-6 w-6" />
             </button>
           </div>
         </div>
