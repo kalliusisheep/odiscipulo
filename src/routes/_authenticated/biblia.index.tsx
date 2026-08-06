@@ -395,11 +395,12 @@ function BibliaIndex() {
                     <button
                       key={b.id}
                       onClick={() => openChapters(b.id)}
-                      className="bible-book-card group relative min-h-[116px] overflow-hidden rounded-[1.35rem] border border-white/10 bg-surface/75 p-3.5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
+                      aria-label={`Abrir ${b.name}`}
+                      className="bible-book-card group relative min-h-[148px] overflow-hidden rounded-[1.5rem] border border-white/10 bg-surface/75 p-4 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
                     >
                       <div className="flex items-start gap-2.5">
                         <span
-                            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-[10px] font-extrabold ring-1 ${
+                            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-[10px] font-extrabold ring-1 shadow-sm ${
                             complete
                               ? "bg-ancient/15 text-ancient ring-ancient/20"
                               : testament === "AT"
@@ -410,15 +411,20 @@ function BibliaIndex() {
                           {complete ? <Check className="h-4 w-4" /> : b.abbr}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block truncate text-sm font-extrabold leading-tight">{b.name}</span>
+                          <span className="block line-clamp-2 text-[15px] font-extrabold leading-snug">{b.name}</span>
                           <span className="mt-1 block text-[10px] text-muted-foreground">
                             {done > 0 ? `${done}/${b.chapters} lidos` : `${b.chapters} capítulos`}
                           </span>
                         </span>
-                        <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground/45 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+                        <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/45 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
                       </div>
 
-                      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-background/70">
+                      <div className="mt-4 flex items-center justify-between gap-2 text-[9px] font-semibold text-muted-foreground/75">
+                        <span>{complete ? "Concluído" : done > 0 ? `${bookPct}% em andamento` : "Pronto para começar"}</span>
+                        <span>{bookPct}%</span>
+                      </div>
+
+                      <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-background/70 ring-1 ring-black/10">
                         <div
                           className={`h-full rounded-full transition-all duration-500 ${
                             complete
