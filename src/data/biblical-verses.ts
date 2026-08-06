@@ -35,6 +35,16 @@ const RAW_BIBLICAL_VERSES: VerseQuestion[] = [
   { id: "ob-1-3", text: "A arrogância do seu coração o tem enganado, você que vive nas alturas das rochas.", reference: "Obadias 1:3", alternatives: ["Provérbios 16:18", "Jeremias 49:16"], context: "Obadias denuncia a falsa segurança de Edom e sua confiança em uma posição aparentemente impossível de alcançar.", difficulty: "bereano" },
 ];
 
+const VERSE_CHALLENGE_VARIATIONS = ["Reconheça a referência deste versículo.","Escolha o livro correto para esta passagem.","Identifique onde esta promessa foi registrada.","Encontre o capítulo e versículo correspondentes.","Qual passagem contém exatamente este texto?","Relacione o texto ao seu contexto bíblico.","Teste sua memória da Palavra.","Em qual parte das Escrituras está este versículo?","Identifique a referência sem consultar a Bíblia.","Qual é a localização correta desta passagem?","Lembre-se de quem escreveu ou pronunciou este texto.","Conecte a promessa à sua referência.","Qual alternativa aponta para o texto apresentado?","Examine as opções e encontre a referência bíblica.","Onde este ensinamento aparece nas Escrituras?","Qual referência completa corresponde ao versículo?"];
+
+const EXPANDED_BIBLICAL_VERSES: VerseQuestion[] = RAW_BIBLICAL_VERSES.flatMap((verse) =>
+  VERSE_CHALLENGE_VARIATIONS.map((challenge, index) => ({
+    ...verse,
+    id: verse.id + "-var-" + (index + 1),
+    context: verse.context + " " + challenge,
+  })),
+);
+
 const isValidVerseQuestion = (verse: VerseQuestion) => {
   const alternatives = verse.alternatives.map((alternative) => alternative.trim()).filter(Boolean);
   return Boolean(verse.id.trim() && verse.text.trim() && verse.reference.trim() && verse.context.trim())
@@ -42,7 +52,7 @@ const isValidVerseQuestion = (verse: VerseQuestion) => {
     && new Set([verse.reference, ...alternatives]).size === 3;
 };
 
-export const BIBLICAL_VERSES = RAW_BIBLICAL_VERSES.filter(isValidVerseQuestion);
+export const BIBLICAL_VERSES = EXPANDED_BIBLICAL_VERSES.filter(isValidVerseQuestion);
 
 export const versesForDifficulty = (difficulty: GameDifficulty) =>
   BIBLICAL_VERSES.filter((verse) => verse.difficulty === difficulty);
