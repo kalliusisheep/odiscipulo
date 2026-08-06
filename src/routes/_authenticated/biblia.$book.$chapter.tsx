@@ -21,6 +21,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { useApp } from "@/lib/app-context";
 import {
   ArrowLeft,
+  BookOpen,
   ChevronLeft,
   ChevronRight,
   Loader2,
@@ -321,7 +322,19 @@ function ChapterReader() {
         )}
         {error && <p className="mt-10 text-center text-sm text-destructive">{error}</p>}
 
-        {verses && (
+        {verses?.length === 0 && !error && (
+          <div className="mx-auto mt-12 max-w-sm rounded-[1.5rem] border border-dashed border-border bg-surface/60 p-6 text-center">
+            <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <BookOpen className="h-5 w-5" />
+            </span>
+            <p className="mt-3 text-sm font-extrabold">Nenhum versículo encontrado</p>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+              Este capítulo não retornou conteúdo para a tradução escolhida. Tente outra versão da Bíblia.
+            </p>
+          </div>
+        )}
+
+        {verses && verses.length > 0 && (
           <section className="bible-reader-surface rounded-[1.5rem] border border-border/70 bg-surface/35 p-3 shadow-lg shadow-black/5">
             <div className="mb-3 flex items-center justify-between border-b border-border/60 px-1 pb-3">
               <div><p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">Texto bíblico</p><p className="mt-0.5 text-xs text-muted-foreground">Leia, marque e reflita com calma</p></div>
@@ -378,11 +391,11 @@ function ChapterReader() {
           </div>
         )}
 
-        {verses && <div ref={chapterEndRef} className="h-24" aria-hidden="true" />}
+        {verses && verses.length > 0 && <div ref={chapterEndRef} className="h-24" aria-hidden="true" />}
       </div>
 
       
-      {verses && narrationStarted && (
+      {verses && verses.length > 0 && narrationStarted && (
         <div className="fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-20 px-4">
           <div className="mx-auto flex max-w-lg items-center gap-3 rounded-2xl border border-border bg-background/95 px-3 py-2.5 shadow-xl backdrop-blur-xl">
             <button
