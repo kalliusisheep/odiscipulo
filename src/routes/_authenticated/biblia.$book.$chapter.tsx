@@ -17,6 +17,7 @@ import {
 import { useBiblePrefs, BIBLE_FONT_SCALES } from "@/lib/bible-prefs";
 import { VerseActionSheet } from "@/components/bible/VerseActionSheet";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useApp } from "@/lib/app-context";
 import {
   ArrowLeft,
   ChevronLeft,
@@ -53,7 +54,8 @@ function ChapterReader() {
   const book = Number(params.book);
   const chapter = Number(params.chapter);
   const nav = useNavigate();
-  const { translation, setTranslation, fontIndex, setFont, fontSize, theme } = useBiblePrefs();
+  const { translation, setTranslation, fontIndex, setFont, fontSize } = useBiblePrefs();
+  const { theme } = useApp();
 
   const [verses, setVerses] = useState<Verse[] | null>(null);
   const [error, setError] = useState<string | null>(null);
