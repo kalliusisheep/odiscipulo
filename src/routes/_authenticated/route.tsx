@@ -8,6 +8,7 @@ import { MascotProvider } from "@/lib/mascot";
 import { BottomNav } from "@/components/BottomNav";
 import { MentorFAB, MentorChat } from "@/components/Mentor";
 import { touchLastSeen } from "@/lib/presence";
+import { GameInviteOverlay } from "@/components/GameInviteOverlay";
 
 function AuthCheckPending() {
   return (
@@ -58,6 +59,7 @@ function AuthedLayout() {
         <CelebrationProvider>
           <div className={`min-h-screen bg-background ${isPrivateChat ? "" : "pb-24"}`}>
             <Outlet />
+            <GameInviteOverlay />
             {!isPrivateChat && (
               <>
                 <MentorFAB />
