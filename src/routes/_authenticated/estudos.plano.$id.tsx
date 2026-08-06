@@ -58,7 +58,7 @@ function PlanoPage() {
   const [done, setDone] = useState<Set<number>>(new Set());
   const [openDay, setOpenDay] = useState<number | null>(null);
   const { celebrateActivity } = useCelebration();
-  const { bibleVersion } = useApp();
+  const { bibleVersion, language } = useApp();
 
   useEffect(() => {
     let cancelled = false;
@@ -296,11 +296,13 @@ function DayDetails({
   checked,
   onComplete,
   version,
+  language,
 }: {
   day: PlanDay;
   checked: boolean;
   onComplete: () => void;
   version: BibleVersion;
+  language: import("@/lib/i18n").AppLanguage;
 }) {
   const { scaleIndex, increase, decrease, contentZoomStyle } = useReadingFontScale();
 
@@ -337,6 +339,7 @@ function DayDetails({
               apiRef={ref}
               label={day.refs[i] ?? ref}
               version={version}
+              language={language}
             />
             ))}
           </div>
@@ -417,7 +420,7 @@ function PassageBlock({
     setLoading(true);
     setError(false);
     setText(null);
-    fetchPassage(apiRef, version)
+    fetchPassage(apiRef, version, language)
       .then((t) => {
         if (!cancelled) setText(t);
       })
@@ -430,7 +433,7 @@ function PassageBlock({
     return () => {
       cancelled = true;
     };
-  }, [apiRef, version]);
+  }, [apiRef, version, language]);
 
   return (
     <div className="rounded-[1.5rem] border border-border bg-surface-2/70 p-4 shadow-sm">
