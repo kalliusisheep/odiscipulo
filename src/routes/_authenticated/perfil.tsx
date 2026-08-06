@@ -235,10 +235,6 @@ function PerfilPage() {
             alt=""
             aria-hidden="true"
             className="h-full w-full object-cover object-center saturate-[0.9]"
-            style={{
-              WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 34%, black 100%)",
-              maskImage: "linear-gradient(to right, transparent 0%, black 34%, black 100%)",
-            }}
           />
         </div>
 
