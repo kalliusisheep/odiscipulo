@@ -46,11 +46,18 @@ function PublicProfilePage() {
       setLoading(true);
       const { data: u } = await supabase.auth.getUser();
       setMyId(u.user?.id ?? null);
-      const { data: p } = await supabase
+      const withPresence = await supabase
         .from("profiles")
         .select("id, display_name, username, avatar_char, avatar_url, bio, xp, streak, church_name, last_seen_at")
         .ilike("username", username)
         .maybeSingle();
+      const p = withPresence.error
+        ? (await supabase
+            .from("profiles")
+            .select("id, display_name, username, avatar_char, avatar_url, bio, xp, streak, church_name")
+            .ilike("username", username)
+            .maybeSingle()).data
+        : withPresence.data;
       if (!p) {
         setLoading(false);
         throw notFound();
