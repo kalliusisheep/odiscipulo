@@ -26,6 +26,8 @@ type ShareLessonButtonProps = {
   shareContext: string;
   /** Imagem de fundo já existente no app. */
   backgroundSrc?: string;
+  /** Referência exibida na arte final, quando o conteúdo é um versículo. */
+  referenceText?: string;
   className?: string;
 };
 
@@ -53,6 +55,7 @@ export function ShareLessonButton({
   title,
   shareContext,
   backgroundSrc = SHARE_BACKGROUNDS[0].src,
+  referenceText,
   className,
 }: ShareLessonButtonProps) {
   const [sharing, setSharing] = useState(false);
@@ -80,7 +83,7 @@ export function ShareLessonButton({
         console.error("Não foi possível gerar o texto de compartilhamento, usando texto padrão:", fnError);
       }
 
-      const blob = await generateShareImage({ title, bodyText: shareText, backgroundSrc: selectedBackground });
+      const blob = await generateShareImage({ title, bodyText: shareText, backgroundSrc: selectedBackground, referenceText });
       const fileName = `${slugify(title)}.jpg`;
       const file = new File([blob], fileName, { type: "image/jpeg" });
 
