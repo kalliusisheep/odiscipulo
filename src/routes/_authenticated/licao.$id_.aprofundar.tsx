@@ -120,6 +120,26 @@ function AprofundarPage() {
                       <p className="mt-1 scripture text-base text-foreground/85" data-narrate>
                         {`"${verseText(v, bibleVersion)}"`}
                       </p>
+                      {v.originals && v.originals.length > 0 && (
+                        <div className="mt-3 space-y-2 border-t border-ancient/15 pt-3">
+                          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ancient">
+                            Palavras no original
+                          </p>
+                          {v.originals.map((o, oi) => (
+                            <div key={oi} className="rounded-xl border border-ancient/20 bg-ancient/5 p-2.5">
+                              <div className="flex flex-wrap items-baseline gap-2">
+                                <span className="ancient-text text-lg text-ancient">{o.word}</span>
+                                <span className="text-xs text-ancient/80">
+                                  ({o.translit}, {o.lang})
+                                </span>
+                              </div>
+                              <p className="mt-1 text-xs leading-relaxed text-foreground/80" data-narrate>
+                                {o.meaning}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
