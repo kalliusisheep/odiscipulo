@@ -60,6 +60,7 @@ function MillionPage() {
   const [weakness, setWeakness] = useState<Record<string, { correct: number; total: number }>>({});
   const startedAt = useRef(0);
   const autoStarted = useRef(false);
+  const sessionSeenRef = useRef<Set<string>>(new Set());
   const question = questions[index];
   const level = useMemo(() => [...MILLION_LEVELS].reverse().find((item) => score >= item.points) ?? MILLION_LEVELS[0], [score]);
 
@@ -68,12 +69,17 @@ function MillionPage() {
   }, []);
 
   const start = () => {
+    scoreSaved.current = false;
     startGameMusic("million"); playGameSfx("start");
     const recentKey = `million_recent_questions_${difficulty}`;
     const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
     const candidates = seed ? randomMillionQuestionsWithSeed(difficulty, 999, seed) : randomMillionQuestions(difficulty, 999);
-    const fresh = candidates.filter((candidate) => !recentIds.includes(candidate.id));
-    const selectedQuestions = [...fresh, ...candidates].slice(0, rounds);
+    const sessionCandidates = candidates.filter((candidate) => !sessionSeenRef.current.has(candidate.id));
+    const fresh = sessionCandidates.filter((candidate) => !recentIds.includes(candidate.id));
+    const selectedQuestions = [...fresh, ...sessionCandidates]
+      .filter((question, index, items) => items.findIndex((candidate) => candidate.id === question.id) === index)
+      .slice(0, rounds);
+    selectedQuestions.forEach((question) => sessionSeenRef.current.add(question.id));
     window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...selectedQuestions.map((question) => question.id)])].slice(-Math.max(rounds * 5, 40))));
     setQuestions(selectedQuestions); setScore(0); setStreak(0); setBestStreak(0); setUsedLifelines([]); setCorrectAnswers(0); setWeakness({}); setTimeLeft(ROUND_SECONDS); setConsultations(null); startedAt.current = Date.now(); setPhase("playing");
   };
