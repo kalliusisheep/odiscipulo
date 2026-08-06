@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { normalizeUsername } from "@/lib/username";
 import { toast } from "sonner";
 import { ArrowLeft, AtSign, Church, Loader2, Search, UserCheck, UserPlus, Users } from "lucide-react";
+import { formatPresence } from "@/lib/presence";
 
 export const Route = createFileRoute("/_authenticated/mensagens/novo")({
   component: NovaMensagemPage,
@@ -14,6 +15,7 @@ type Contact = {
   display_name: string;
   username: string;
   avatar_url: string | null;
+  last_seen_at: string | null;
 };
 
 type ChurchSuggestion = Contact & { church_name: string };
@@ -47,7 +49,7 @@ function NovaMensagemPage() {
 
     const { data: profiles } = await supabase
       .from("profiles")
-      .select("id, display_name, username, avatar_url")
+      .select("id, display_name, username, avatar_url, last_seen_at")
       .in("id", ids);
 
     const list = ((profiles ?? []) as Contact[])
@@ -108,7 +110,7 @@ function NovaMensagemPage() {
     const timeout = setTimeout(async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select("id, display_name, username, avatar_url")
+        .select("id, display_name, username, avatar_url, last_seen_at")
         .ilike("username", `%${q}%`)
         .neq("id", myId)
         .limit(8);
@@ -198,6 +200,9 @@ function NovaMensagemPage() {
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-semibold">{m.display_name}</p>
                   <p className="truncate text-xs text-muted-foreground">@{m.username}</p>
+                  <p className={`mt-0.5 truncate text-[11px] ${formatPresence(m.last_seen_at) === "Online agora" ? "font-semibold text-emerald-400" : "text-muted-foreground"}`}>
+                    {formatPresence(m.last_seen_at)}
+                  </p>
                   <p className="mt-0.5 flex items-center gap-1 truncate text-[11px] text-primary">
                     <Church className="h-3 w-3 shrink-0" /> {m.church_name}
                   </p>
@@ -253,6 +258,9 @@ function NovaMensagemPage() {
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-semibold">{p.display_name}</p>
                     <p className="truncate text-xs text-muted-foreground">@{p.username}</p>
+                    <p className={`mt-0.5 truncate text-[11px] ${formatPresence(p.last_seen_at) === "Online agora" ? "font-semibold text-emerald-400" : "text-muted-foreground"}`}>
+                      {formatPresence(p.last_seen_at)}
+                    </p>
                   </div>
                   {alreadyFriend ? (
                     <Link
@@ -328,6 +336,9 @@ function NovaMensagemPage() {
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-sm font-semibold">{c.display_name}</p>
                           <p className="truncate text-xs text-muted-foreground">@{c.username}</p>
+                          <p className={`mt-0.5 truncate text-[11px] ${formatPresence(c.last_seen_at) === "Online agora" ? "font-semibold text-emerald-400" : "text-muted-foreground"}`}>
+                            {formatPresence(c.last_seen_at)}
+                          </p>
                         </div>
                       </Link>
                     </li>
