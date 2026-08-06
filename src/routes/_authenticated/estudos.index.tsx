@@ -57,7 +57,7 @@ function EstudosPage() {
               const Icon = t.icon;
               const active = tab === t.id;
               return (
-                <button key={t.id} onClick={() => setTab(t.id)} className={\`flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2.5 text-[10px] font-bold transition-all \${active ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"}\`}>
+                <button key={t.id} onClick={() => setTab(t.id)} className={`flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2.5 text-[10px] font-bold transition-all ${active ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"}`}>
                   <Icon className="h-4 w-4" /><span className="truncate">{t.label}</span>
                 </button>
               );
