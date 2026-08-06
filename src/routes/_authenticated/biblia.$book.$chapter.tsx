@@ -59,7 +59,7 @@ function ChapterReader() {
   const chapter = Number(params.chapter);
   const nav = useNavigate();
   const { translation, setTranslation, fontIndex, setFont, fontSize } = useBiblePrefs();
-  const { theme, language } = useApp();
+  const { theme, language, t } = useApp();
   const availableTranslations = useMemo(() => translationsForLanguage(language), [language]);
 
   const [verses, setVerses] = useState<Verse[] | null>(null);
@@ -638,21 +638,21 @@ function ChapterReader() {
             <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-border" />
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">Escolha o capítulo</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">{t("bible.chooseChapter")}</p>
                 <h2 className="mt-1 truncate text-lg font-extrabold">{meta.name}</h2>
-                <p className="mt-1 text-xs text-muted-foreground">{meta.chapters} capítulos · toque para abrir</p>
+                <p className="mt-1 text-xs text-muted-foreground">{meta.chapters} {t("bible.chapterCount")}</p>
               </div>
               <button
                 type="button"
                 onClick={() => setChapterPicker(false)}
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-muted-foreground shadow-sm transition-colors hover:bg-surface-2 hover:text-foreground"
-                aria-label="Fechar seletor de capítulos"
+                aria-label={t("bible.closeChapterPicker")}
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
             <Link to="/biblia" className="mt-4 inline-flex text-xs font-semibold text-primary">
-              Todos os livros
+              {t("bible.allBooks")}
             </Link>
             <div className="mt-4 grid grid-cols-5 gap-2 sm:grid-cols-6">
               {Array.from({ length: meta.chapters }, (_, i) => i + 1).map((c) => (
