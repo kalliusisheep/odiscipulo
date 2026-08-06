@@ -222,6 +222,7 @@ function NovaMensagemPage() {
               >
                 <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-surface">
                   {m.avatar_url && <img src={m.avatar_url} alt="" className="h-full w-full object-cover" />}
+                  <span className={`absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-surface-2 ${formatPresence(m.last_seen_at) === "Online agora" ? "bg-emerald-400 shadow-[0_0_7px_rgba(52,211,153,0.8)]" : "bg-rose-400 shadow-[0_0_7px_rgba(251,113,133,0.65)]"}`} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-semibold">{m.display_name}</p>
@@ -278,8 +279,9 @@ function NovaMensagemPage() {
                   key={p.id}
                   className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-surface-2 p-3"
                 >
-                  <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-surface">
+                  <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full bg-surface">
                     {p.avatar_url && <img src={p.avatar_url} alt="" className="h-full w-full object-cover" />}
+                    <span className={`absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-surface-2 ${formatPresence(p.last_seen_at) === "Online agora" ? "bg-emerald-400 shadow-[0_0_7px_rgba(52,211,153,0.8)]" : "bg-rose-400 shadow-[0_0_7px_rgba(251,113,133,0.65)]"}`} />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-semibold">{p.display_name}</p>
@@ -354,10 +356,11 @@ function NovaMensagemPage() {
                         params={{ username: c.username }}
                         className="flex items-center gap-3 rounded-2xl border border-border bg-surface-2 p-3 transition-colors hover:border-primary/40"
                       >
-                        <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-surface">
+                        <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full bg-surface">
                           {c.avatar_url && (
                             <img src={c.avatar_url} alt="" className="h-full w-full object-cover" />
                           )}
+                          <span className={`absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-surface-2 ${formatPresence(c.last_seen_at) === "Online agora" ? "bg-emerald-400 shadow-[0_0_7px_rgba(52,211,153,0.8)]" : "bg-rose-400 shadow-[0_0_7px_rgba(251,113,133,0.65)]"}`} />
                         </div>
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-sm font-semibold">{c.display_name}</p>
