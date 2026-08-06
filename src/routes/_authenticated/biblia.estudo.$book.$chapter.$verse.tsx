@@ -181,23 +181,38 @@ function VerseStudy() {
   const lang = originalTranslationFor(book).lang;
 
   useEffect(() => {
+    let cancelled = false;
     window.scrollTo(0, 0);
 
     setText(null);
     setTextLoading(true);
     void fetchChapter(translation, book, chapter)
-      .then((ch) => setText(ch.find((x) => x.verse === verse)?.text ?? null))
-      .catch(() => setText(null))
-      .finally(() => setTextLoading(false));
+      .then((ch) => {
+        if (!cancelled) setText(ch.find((x) => x.verse === verse)?.text ?? null);
+      })
+      .catch(() => {
+        if (!cancelled) setText(null);
+      })
+      .finally(() => {
+        if (!cancelled) setTextLoading(false);
+      });
 
     setXrefs([]);
     setXrefsLoading(true);
     void crossReferencesFor(book, chapter, verse)
-      .then(setXrefs)
-      .catch(() => setXrefs([]))
-      .finally(() => setXrefsLoading(false));
+      .then((items) => {
+        if (!cancelled) setXrefs(items);
+      })
+      .catch(() => {
+        if (!cancelled) setXrefs([]);
+      })
+      .finally(() => {
+        if (!cancelled) setXrefsLoading(false);
+      });
 
-    void loadOccurrences().then((o) => setOcc(o as never));
+    void loadOccurrences().then((occurrences) => {
+      if (!cancelled) setOcc(occurrences as never);
+    });
 
     setOrigError(false);
     setWords(null);
@@ -205,8 +220,10 @@ function VerseStudy() {
     setEntries({});
     setLexiconLoading(true);
     setAnalysis(null);
-    fetchOriginalVerse(book, chapter, verse)
+
+    void fetchOriginalVerse(book, chapter, verse)
       .then(async (loadedWords) => {
+        if (cancelled) return;
         if (!loadedWords?.length) {
           setWords([]);
           setOrigError(true);
@@ -217,16 +234,26 @@ function VerseStudy() {
         setWords(loadedWords);
         const codes = loadedWords.map((word) => word.strong).filter(Boolean) as string[];
         const raw = await fetchStrongEntries(codes);
+        if (cancelled) return;
         setEntries(raw);
         setLexiconLoading(false);
-        void translateStrongEntries(raw).then(setEntries);
+        void translateStrongEntries(raw).then((translated) => {
+          if (!cancelled) setEntries(translated);
+        });
       })
       .catch(() => {
+        if (cancelled) return;
         setWords([]);
         setOrigError(true);
         setLexiconLoading(false);
       })
-      .finally(() => setWordsLoading(false));
+      .finally(() => {
+        if (!cancelled) setWordsLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [translation, book, chapter, verse]);
 
   // Análise do versículo, gerada pelo Gemini a partir das palavras do
