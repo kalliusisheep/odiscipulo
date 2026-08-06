@@ -91,18 +91,37 @@ function MultiplayerPage() {
   const canStart = isHost && activePlayers.length >= 2 && activePlayers.every((player) => ["ready", "connected"].includes(player.state));
 
   const createRoom = async () => {
-    if (!myId || busy) return;
+    if (busy) return;
     setBusy(true);
     try {
-      const { data: newRoom, error } = await gameDb.from("character_game_rooms").insert({ host_id: myId, max_players: maxPlayers, difficulty, rounds }).select("id").single();
-      if (error || !newRoom) throw error ?? new Error("room_creation_failed");
-      const { error: playerError } = await gameDb.from("character_game_room_players").insert({ room_id: newRoom.id, user_id: myId, role: "host", state: "connected" });
+      let userId = myId;
+      if (!userId) {
+        const { data, error } = await supabase.auth.getUser();
+        if (error) throw error;
+        userId = data.user?.id ?? null;
+        if (userId) setMyId(userId);
+      }
+      if (!userId) throw new Error("session_required");
+
+      const newRoomId = crypto.randomUUID();
+      const { error: roomError } = await gameDb.from("character_game_rooms").insert({
+        id: newRoomId,
+        host_id: userId,
+        max_players: maxPlayers,
+        difficulty,
+        rounds,
+      });
+      if (roomError) throw roomError;
+
+      const { error: playerError } = await gameDb.from("character_game_room_players").insert({ room_id: newRoomId, user_id: userId, role: "host", state: "connected" });
       if (playerError) throw playerError;
-      await loadRoom(newRoom.id, myId);
-      window.history.replaceState({}, "", `/jogos/multiplayer?roomId=${newRoom.id}`);
+      await loadRoom(newRoomId, userId);
+      window.history.replaceState({}, "", `/jogos/multiplayer?roomId=${newRoomId}`);
       toast.success("Sala criada. Convide seus amigos!");
-    } catch {
-      toast.error("Não foi possível criar a sala.");
+    } catch (error) {
+      console.error("[multiplayer] room creation failed", error);
+      const message = String((error as { message?: string })?.message ?? "");
+      toast.error(message === "session_required" ? "Faça login para criar uma sala." : "Não foi possível criar a sala. Tente novamente.");
     } finally {
       setBusy(false);
     }
