@@ -6,7 +6,7 @@ export const Route = createFileRoute("/_authenticated/jogos")({ component: Jogos
 
 const games = [
   { title: "Quiz do milhão", description: "Suba a escada de perguntas e teste seu conhecimento.", meta: "Combo e ranking", tag: "Escalada", to: "/jogos/milhao" as const, icon: Trophy, tone: "from-fuchsia-500/30 via-purple-500/15 to-surface", accent: "text-fuchsia-200", dot: "bg-fuchsia-300" },
-  { title: "Quem é o personagem?", description: "Descubra personagens bíblicos usando três pistas da Palavra.", meta: "Pistas e velocidade", tag: "Arena", to: "/jogos/personagem" as const, icon: UserRound, tone: "from-violet-500/35 via-primary/15 to-surface", accent: "text-violet-200", dot: "bg-violet-300" },
+  { title: "Quem é o personagem?", description: "Descubra personagens bíblicos usando quatro pistas da Palavra.", meta: "Pistas e velocidade", tag: "Arena", to: "/jogos/personagem" as const, icon: UserRound, tone: "from-violet-500/35 via-primary/15 to-surface", accent: "text-violet-200", dot: "bg-violet-300" },
   { title: "Qual é o versículo?", description: "Reconheça o contexto e encontre a passagem certa.", meta: "Memória e contexto", tag: "Bíblia", to: "/jogos/versiculo" as const, icon: BookOpenText, tone: "from-emerald-500/30 via-teal-500/15 to-surface", accent: "text-emerald-200", dot: "bg-emerald-300" },
   { title: "Palavras cruzadas", description: "Complete o desafio com termos e histórias bíblicas.", meta: "Precisão e sequência", tag: "Grade", to: "/jogos/cruzadas" as const, icon: Grid2X2, tone: "from-amber-500/30 via-orange-500/15 to-surface", accent: "text-amber-200", dot: "bg-amber-300" },
 ];
