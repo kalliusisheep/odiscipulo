@@ -47,11 +47,18 @@ function MessagesPage() {
       const { data: u } = await supabase.auth.getUser();
       if (!u.user) return;
       setMyId(u.user.id);
-      const { data: p } = await supabase
+      const withPresence = await supabase
         .from("profiles")
         .select("id, display_name, username, avatar_url, last_seen_at")
         .ilike("username", username)
         .maybeSingle();
+      const p = withPresence.error
+        ? (await supabase
+            .from("profiles")
+            .select("id, display_name, username, avatar_url")
+            .ilike("username", username)
+            .maybeSingle()).data
+        : withPresence.data;
       if (!p) return;
       setPeer(p as Peer);
       const { data: msgs } = await supabase
