@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { bookNameById } from "@/data/bible-books";
 import { highlightClass, listAllMarks } from "@/lib/bible-user-data";
 import { ArrowLeft, BookMarked, Loader2 } from "lucide-react";
@@ -23,10 +23,24 @@ const TABS = ["Destaques", "Anotações", "Favoritos", "Marcadores"] as const;
 function Marcados() {
   const [tab, setTab] = useState<(typeof TABS)[number]>("Destaques");
   const [data, setData] = useState<Awaited<ReturnType<typeof listAllMarks>> | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const loadMarks = useCallback(async () => {
+    setLoading(true);
+    setError(false);
+    try {
+      setData(await listAllMarks());
+    } catch {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    void listAllMarks().then(setData);
-  }, []);
+    void loadMarks();
+  }, [loadMarks]);
 
   const item = (book: number, chapter: number, verse: number, extra?: string, color?: string) => (
     <Link
@@ -85,13 +99,22 @@ function Marcados() {
         })}
       </div>
 
-      {!data && (
-        <div className="mt-16 flex justify-center">
+      {loading && (
+        <div className="mt-16 flex flex-col items-center justify-center gap-3 text-center">
           <Loader2 className="h-6 w-6 animate-spin text-primary" />
+          <p className="text-xs text-muted-foreground">Carregando sua biblioteca…</p>
         </div>
       )}
 
-      {data && (
+      {error && !loading && (
+        <div className="mt-8 rounded-[1.5rem] border border-destructive/20 bg-destructive/5 p-6 text-center">
+          <p className="text-sm font-extrabold">Não foi possível carregar seus marcadores</p>
+          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Tente novamente para sincronizar destaques, anotações e favoritos.</p>
+          <button type="button" onClick={() => void loadMarks()} className="mt-4 rounded-xl bg-primary px-4 py-2.5 text-xs font-bold text-primary-foreground">Tentar novamente</button>
+        </div>
+      )}
+
+      {data && !loading && !error && (
         <div className="mt-4 space-y-2">
           {tab === "Destaques" &&
             (data.highlights.length
