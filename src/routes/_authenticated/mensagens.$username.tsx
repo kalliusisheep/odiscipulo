@@ -49,18 +49,18 @@ function MessagesPage() {
       setMyId(u.user.id);
       const withPresence = await supabase
         .from("profiles")
-        .select("id, display_name, username, avatar_url, last_seen_at")
+        .select("id, display_name, username, avatar_url, last_seen_at, updated_at")
         .ilike("username", username)
         .maybeSingle();
       const p = withPresence.error
         ? (await supabase
             .from("profiles")
-            .select("id, display_name, username, avatar_url")
+            .select("id, display_name, username, avatar_url, updated_at")
             .ilike("username", username)
             .maybeSingle()).data
         : withPresence.data;
       if (!p) return;
-      setPeer(p as Peer);
+      setPeer({ ...p, last_seen_at: p.last_seen_at ?? p.updated_at ?? null } as Peer);
       const { data: msgs } = await supabase
         .from("messages")
         .select("*")
