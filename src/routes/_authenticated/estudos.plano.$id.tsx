@@ -281,6 +281,7 @@ function PlanoPage() {
                   checked={checked}
                   onComplete={() => toggle(d.day)}
                   version={bibleVersion}
+                  language={language}
                 />
               )}
             </article>
@@ -406,10 +407,12 @@ function PassageBlock({
   apiRef,
   label,
   version,
+  language,
 }: {
   apiRef: string;
   label: string;
   version: BibleVersion;
+  language: import("@/lib/i18n").AppLanguage;
 }) {
   const [text, setText] = useState<string | null>(null);
   const [error, setError] = useState(false);
