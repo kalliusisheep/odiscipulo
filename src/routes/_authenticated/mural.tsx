@@ -710,8 +710,25 @@ function FeedCard({
           </div>
         </header>
 
-        {item.body && (
-          <p className="mt-3 text-[15px] leading-relaxed text-foreground/95">{item.body}</p>
+        {item.kind === "avatar_changed" ? (
+          <div className="mt-3 flex items-center gap-3 rounded-[16px] bg-surface-2/60 p-2.5">
+            {item.author_avatar_url ? (
+              <img
+                src={item.author_avatar_url}
+                alt={item.author_name}
+                className="h-14 w-14 rounded-[13px] object-cover ring-1 ring-border/60"
+              />
+            ) : (
+              <span className="flex h-14 w-14 items-center justify-center rounded-[13px] bg-primary/10 text-primary">
+                <Camera className="h-5 w-5" />
+              </span>
+            )}
+            <p className="text-sm font-medium text-foreground/90">Atualizou a foto de perfil ✨</p>
+          </div>
+        ) : (
+          item.body && (
+            <p className="mt-3 text-[15px] leading-relaxed text-foreground/95">{item.body}</p>
+          )
         )}
 
         <div className="mt-3.5 flex items-center gap-1 border-t border-border/50 pt-3">
