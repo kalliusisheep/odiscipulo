@@ -36,6 +36,7 @@ import {
   Crown,
   Settings2,
   ShieldCheck,
+  Trophy,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/perfil")({
@@ -419,6 +420,32 @@ function PerfilPage() {
             onClick={() => void nav({ to: "/notas" })}
           />
         </div>
+      </section>
+
+      <section
+        className="animate-slide-up"
+        style={{ animationDelay: "145ms", animationFillMode: "backwards" }}
+      >
+        <SectionLabel>Comunidade</SectionLabel>
+        <button
+          type="button"
+          onClick={() => void nav({ to: "/ranking" })}
+          className="group card-elevated flex w-full items-center gap-3.5 p-4 text-left transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg"
+        >
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-primary/10 text-primary ring-1 ring-primary/10 transition-colors group-hover:bg-primary/15">
+            <Trophy className="h-5 w-5" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-[9px] font-extrabold uppercase tracking-[0.14em] text-primary">
+              Conexão
+            </span>
+            <span className="mt-0.5 block text-sm font-extrabold">Ranking da comunidade</span>
+            <span className="mt-1 block text-[10px] leading-snug text-muted-foreground">
+              Veja pessoas próximas, convide amigos e acompanhe a caminhada juntos.
+            </span>
+          </span>
+          <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground/40 transition-colors group-hover:text-primary" />
+        </button>
       </section>
 
       <section
