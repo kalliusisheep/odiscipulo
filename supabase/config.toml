@@ -1,5 +1,8 @@
 project_id = "qvplaksxqhdhsgipmbvu"
 
+[functions.bible-tts]
+verify_jwt = true
+
 [functions.dispatch-push]
 verify_jwt = false
 
