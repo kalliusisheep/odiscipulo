@@ -19,6 +19,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { normalizeUsername } from "@/lib/username";
+import { DiscipleshipProgress } from "@/components/DiscipleshipProgress";
 
 export const Route = createFileRoute("/_authenticated/lider")({
   component: LiderPage,
@@ -225,6 +226,8 @@ function LiderPage() {
         <div className="min-w-0 flex-1"><p className="text-sm font-semibold">Árvore de Discipulado</p><p className="text-xs text-muted-foreground">Veja sua linha de discipulado, de cima a baixo</p></div>
         <ChevronRight className="h-4 w-4 text-muted-foreground" />
       </Link>
+
+      {myId && <DiscipleshipProgress leaderId={myId} />}
 
       <section className="space-y-2">
         <h2 className="px-1 text-sm font-semibold text-muted-foreground">Grupos de Discipulado</h2>
