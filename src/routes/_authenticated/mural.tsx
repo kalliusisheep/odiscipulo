@@ -235,10 +235,10 @@ function Avatar({
 }: {
   name: string;
   url?: string | null;
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "lg";
   ring?: string;
 }) {
-  const dims = size === "sm" ? "h-8 w-8 text-xs rounded-[11px]" : "h-11 w-11 text-sm rounded-[15px]";
+  const dims = size === "sm" ? "h-8 w-8 text-xs rounded-[11px]" : size === "lg" ? "h-12 w-12 text-base rounded-[17px]" : "h-11 w-11 text-sm rounded-[15px]";
   return (
     <div
       className={`flex shrink-0 items-center justify-center overflow-hidden bg-primary/15 font-extrabold text-primary ${dims} ${
@@ -349,12 +349,12 @@ type ActionsHandlers = {
 
 function FullActions({ liked, likeCount, commentCount, onToggleLike, onToggleComments, commentsOpen }: ActionsHandlers & { commentsOpen: boolean }) {
   return (
-    <div className="flex items-center gap-1 border-t border-border/50 pt-3">
+    <div className="flex items-center gap-1 border-t border-border/50 pt-3.5">
       <button
         type="button"
         onClick={onToggleLike}
         aria-pressed={liked}
-        className={`inline-flex min-h-11 items-center gap-2 rounded-full px-3.5 text-sm font-bold transition-all ${
+        className={`inline-flex min-h-12 items-center gap-2 rounded-2xl px-4 text-sm font-bold transition-all ${
           liked
             ? "bg-destructive/10 text-destructive"
             : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
@@ -367,14 +367,14 @@ function FullActions({ liked, likeCount, commentCount, onToggleLike, onToggleCom
         type="button"
         onClick={onToggleComments}
         aria-expanded={commentsOpen}
-        className="inline-flex min-h-11 items-center gap-2 rounded-full px-3.5 text-sm font-bold text-muted-foreground transition-all hover:bg-surface-2 hover:text-foreground"
+        className="inline-flex min-h-12 items-center gap-2 rounded-2xl px-4 text-sm font-bold text-muted-foreground transition-all hover:bg-surface-2 hover:text-foreground"
       >
         <MessageCircle className="h-5 w-5" />
         {commentCount > 0 && commentCount}
       </button>
       <ChevronDown
         onClick={onToggleComments}
-        className={`ml-auto h-4 w-4 cursor-pointer text-muted-foreground transition-transform duration-300 ${
+        className={`ml-auto h-5 w-5 cursor-pointer rounded-lg p-0.5 text-muted-foreground transition-transform duration-300 hover:bg-surface-2 ${
           commentsOpen ? "rotate-180" : ""
         }`}
       />
@@ -384,11 +384,11 @@ function FullActions({ liked, likeCount, commentCount, onToggleLike, onToggleCom
 
 function CompactActions({ liked, likeCount, commentCount, onToggleLike, onToggleComments }: ActionsHandlers) {
   return (
-    <div className="mt-1.5 flex items-center gap-3.5">
+    <div className="mt-2 flex items-center gap-2.5">
       <button
         type="button"
         onClick={onToggleLike}
-        className={`inline-flex min-h-10 items-center gap-1.5 text-xs font-bold transition-colors ${
+        className={`inline-flex min-h-10 items-center gap-2 rounded-xl px-2.5 text-xs font-bold transition-colors ${
           liked ? "text-destructive" : "text-muted-foreground hover:text-foreground"
         }`}
       >
@@ -398,7 +398,7 @@ function CompactActions({ liked, likeCount, commentCount, onToggleLike, onToggle
       <button
         type="button"
         onClick={onToggleComments}
-        className="inline-flex min-h-10 items-center gap-1.5 text-xs font-bold text-muted-foreground transition-colors hover:text-foreground"
+        className="inline-flex min-h-10 items-center gap-2 rounded-xl px-2.5 text-xs font-bold text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground"
       >
         <MessageCircle className="h-4 w-4" />
         {commentCount > 0 && commentCount}
@@ -560,16 +560,15 @@ type CardCommonProps = {
 function PostCard(props: CardCommonProps) {
   const { item } = props;
   return (
-    <article className="animate-fade-in overflow-hidden rounded-3xl border border-border/70 bg-surface shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-lg">
+    <article className="feed-post-card animate-fade-in overflow-hidden rounded-[2rem] border border-border/70 bg-surface shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-lg">
       <div className="p-5">
         <header className="flex items-center gap-3">
-          <Avatar name={item.author_name} url={item.author_avatar_url} />
+          <Avatar name={item.author_name} url={item.author_avatar_url} size="lg" ring="ring-2 ring-primary/15" />
           <div className="min-w-0 flex-1">
             <p className="text-sm font-extrabold">{item.author_name}</p>
-            <p className="text-[10px] text-muted-foreground">
-              {formatDistanceToNow(new Date(item.created_at), { locale: ptBR, addSuffix: true })}
-            </p>
+            <p className="mt-0.5 flex items-center gap-1.5 text-[10px] text-muted-foreground"><span className="h-1.5 w-1.5 rounded-full bg-success" /> {formatDistanceToNow(new Date(item.created_at), { locale: ptBR, addSuffix: true })}</p>
           </div>
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary"><MessageSquare className="h-4 w-4" /></span>
         </header>
 
         {item.body && (
@@ -617,25 +616,25 @@ function MilestoneItem(props: CardCommonProps & { connectTop: boolean; connectBo
   const Icon = FEED_KIND_ICON[item.kind];
 
   return (
-    <div className="animate-fade-in relative flex gap-3 rounded-3xl border border-border/70 bg-surface p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-lg">
+    <div className="feed-milestone-card animate-fade-in relative flex gap-4 rounded-[2rem] border border-border/70 bg-surface p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-lg">
       {(connectTop || connectBottom) && (
         <span
-          className={`absolute left-[23px] w-px bg-border/70 ${connectTop ? "top-0" : "top-1/2"} ${
+          className={`absolute left-[28px] w-px bg-border/70 ${connectTop ? "top-0" : "top-1/2"} ${
             connectBottom ? "bottom-0" : "bottom-1/2"
           }`}
         />
       )}
       <div className="relative z-10 shrink-0">
-        <Avatar name={item.author_name} url={item.author_avatar_url} ring="ring-2 ring-background" />
+        <Avatar name={item.author_name} url={item.author_avatar_url} size="lg" ring="ring-2 ring-background" />
         <span
-          className={`absolute -bottom-1 -right-1 flex h-[18px] w-[18px] items-center justify-center rounded-full text-white ring-2 ring-background ${FEED_KIND_DOT[item.kind]}`}
+          className={`absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full text-white ring-2 ring-background ${FEED_KIND_DOT[item.kind]}`}
           aria-label={FEED_KIND_LABEL[item.kind]}
         >
-          <Icon className="h-[10px] w-[10px]" />
+          <Icon className="h-3 w-3" />
         </span>
       </div>
       <div className="min-w-0 flex-1 pb-0.5 pt-0.5">
-        <p className="text-sm leading-relaxed text-foreground/90">
+        <p className="text-[15px] leading-relaxed text-foreground/90">
           <span className="font-extrabold">{item.author_name}</span> {milestoneText(item)}
         </p>
         <div className="mt-2 flex items-center gap-2">

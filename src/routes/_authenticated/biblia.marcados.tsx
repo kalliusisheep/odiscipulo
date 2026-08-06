@@ -33,7 +33,7 @@ function Marcados() {
       key={`${book}-${chapter}-${verse}-${extra ?? ""}`}
       to="/biblia/$book/$chapter"
       params={{ book: String(book), chapter: String(chapter) }}
-      className={`block rounded-2xl border border-border p-3.5 ${color ? highlightClass(color) : "bg-surface"}`}
+      className={`bible-mark-card block rounded-[1.35rem] border border-border p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 ${color ? highlightClass(color) : "bg-surface"}`}
     >
       <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
         {bookNameById(book)} {chapter}:{verse}
@@ -43,20 +43,23 @@ function Marcados() {
   );
 
   return (
-    <div className="mx-auto max-w-lg px-4 pt-4 pb-28 animate-slide-up">
-      <div className="flex items-center gap-2">
+    <div className="bible-secondary-page mx-auto max-w-lg px-4 pb-28 pt-4 animate-slide-up">
+      <div className="rounded-[1.6rem] border border-border/70 bg-surface/60 p-4 shadow-lg shadow-black/5">
+        <div className="flex items-center gap-2">
         <Link to="/biblia" aria-label="Voltar" className="rounded-full p-2 text-muted-foreground hover:bg-surface">
           <ArrowLeft className="h-5 w-5" />
         </Link>
-        <h1 className="text-lg font-bold">Meus marcadores</h1>
+        <div><p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">Sua biblioteca</p><h1 className="text-xl font-extrabold">Meus marcadores</h1></div>
+        </div>
+        <p className="mt-2 pl-10 text-xs text-muted-foreground">Tudo o que você separou para voltar depois.</p>
       </div>
 
-      <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
+      <div className="mt-4 flex gap-2 overflow-x-auto rounded-[1.35rem] border border-border/70 bg-surface/55 p-1.5 pb-1">
         {TABS.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`shrink-0 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-all ${
+            className={`shrink-0 rounded-xl border px-3.5 py-2 text-xs font-bold transition-all ${
               tab === t ? "border-primary bg-primary/15 text-primary" : "border-border bg-surface text-muted-foreground"
             }`}
           >

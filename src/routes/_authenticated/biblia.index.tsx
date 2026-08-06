@@ -112,7 +112,7 @@ function BibliaIndex() {
 
   return (
     <div className="pb-28">
-      <div className="sticky top-0 z-30 border-b border-white/[0.06] bg-background/90 backdrop-blur-2xl">
+      <div className="sticky top-0 z-30 border-b border-white/[0.06] bg-background/90 shadow-lg shadow-black/5 backdrop-blur-2xl">
         <div className="mx-auto max-w-lg px-4 pb-3 pt-3">
           <div className="grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-3">
             <button
@@ -128,7 +128,7 @@ function BibliaIndex() {
                 <Library className="h-4.5 w-4.5" />
               </span>
               <div className="min-w-0">
-                <h1 className="truncate text-base font-extrabold leading-tight">Bíblia de Estudos</h1>
+                <h1 className="truncate text-lg font-extrabold leading-tight">Bíblia de Estudos</h1>
                 <p className="mt-0.5 truncate text-[10px] text-muted-foreground">
                   Leia, marque e aprofunde cada passagem
                 </p>
@@ -145,7 +145,7 @@ function BibliaIndex() {
             </Link>
           </div>
 
-          <div className="mt-3 rounded-2xl border border-white/10 bg-surface/85 p-1.5 shadow-lg shadow-black/10">
+          <div className="bible-search-panel mt-3 rounded-[1.35rem] border border-white/10 bg-surface/85 p-1.5 shadow-lg shadow-black/10">
             <div className="flex items-center gap-2 px-2">
               <Search className="h-4.5 w-4.5 shrink-0 text-primary" />
               <input
@@ -153,7 +153,7 @@ function BibliaIndex() {
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && void runSearch()}
                 placeholder="Busque um livro, palavra ou frase"
-                className="min-w-0 flex-1 bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground/70"
+                className="min-w-0 flex-1 bg-transparent py-2.5 text-[15px] outline-none placeholder:text-muted-foreground/70"
               />
               {searching ? (
                 <Loader2 className="h-4 w-4 shrink-0 animate-spin text-primary" />
@@ -169,7 +169,7 @@ function BibliaIndex() {
               <button
                 onClick={() => void runSearch()}
                 disabled={q.length < 3 || searching}
-                className="shrink-0 rounded-xl bg-primary px-3 py-2 text-[11px] font-bold text-primary-foreground transition-all hover:bg-primary-glow disabled:cursor-not-allowed disabled:opacity-40"
+                className="min-h-10 shrink-0 rounded-xl bg-primary px-3.5 py-2 text-[11px] font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-glow disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Buscar
               </button>
@@ -275,7 +275,7 @@ function BibliaIndex() {
         {!hits && (
           <>
             <section
-              className="relative isolate overflow-hidden rounded-[1.75rem] border border-violet-300/15 shadow-xl shadow-black/25"
+              className="bible-journey-card relative isolate overflow-hidden rounded-[1.9rem] border border-violet-300/15 shadow-xl shadow-black/25"
               style={{
                 background:
                   "linear-gradient(145deg, rgba(55, 48, 163, 0.70) 0%, rgba(30, 41, 59, 0.92) 52%, rgba(15, 23, 42, 0.98) 100%)",
@@ -340,6 +340,12 @@ function BibliaIndex() {
                     <span className="font-extrabold text-violet-200">{progressPct}% concluído</span>
                   </div>
                 </div>
+
+                <div className="mt-4 grid grid-cols-3 gap-2 border-t border-white/10 pt-4">
+                  <div className="rounded-2xl bg-white/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Lidos</p><p className="mt-1 text-sm font-extrabold text-white">{read.length}</p></div>
+                  <div className="rounded-2xl bg-white/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Livros</p><p className="mt-1 text-sm font-extrabold text-white">{new Set(read.map((item) => item.book)).size}/66</p></div>
+                  <div className="rounded-2xl bg-white/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Versão</p><p className="mt-1 text-sm font-extrabold text-violet-200">{translation}</p></div>
+                </div>
               </div>
             </section>
 
@@ -389,11 +395,11 @@ function BibliaIndex() {
                     <button
                       key={b.id}
                       onClick={() => openChapters(b.id)}
-                      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-surface/75 p-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
+                      className="bible-book-card group relative min-h-[116px] overflow-hidden rounded-[1.35rem] border border-white/10 bg-surface/75 p-3.5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
                     >
                       <div className="flex items-start gap-2.5">
                         <span
-                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[10px] font-extrabold ring-1 ${
+                            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-[10px] font-extrabold ring-1 ${
                             complete
                               ? "bg-ancient/15 text-ancient ring-ancient/20"
                               : testament === "AT"
@@ -404,8 +410,8 @@ function BibliaIndex() {
                           {complete ? <Check className="h-4 w-4" /> : b.abbr}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block truncate text-[13px] font-bold leading-tight">{b.name}</span>
-                          <span className="mt-1 block text-[9px] text-muted-foreground">
+                          <span className="block truncate text-sm font-extrabold leading-tight">{b.name}</span>
+                          <span className="mt-1 block text-[10px] text-muted-foreground">
                             {done > 0 ? `${done}/${b.chapters} lidos` : `${b.chapters} capítulos`}
                           </span>
                         </span>

@@ -271,7 +271,7 @@ function ChapterReader() {
     <div className={`min-h-screen pb-32 transition-colors ${theme === "light" ? "bg-[#fbfaf7] text-slate-900" : "bg-background text-foreground"}`}>
       {/* Barra superior fixa */}
       <div className="sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-xl">
-        <div className="mx-auto grid max-w-lg grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-4 py-2.5">
+        <div className="mx-auto grid max-w-lg grid-cols-[auto_minmax(0,1fr)_auto_auto_auto] items-center gap-1.5 px-4 py-2.5">
           <Link
             to="/biblia"
             aria-label="Voltar"
@@ -290,6 +290,24 @@ function ChapterReader() {
               Toque para trocar de capítulo · {label}
             </span>
           </button>
+          <button
+            onClick={() => {
+              if (narrationStarted) toggleNarrationPause();
+              else startNarration();
+            }}
+            aria-label={narrationStarted && !narrationPaused ? "Pausar narração" : "Ouvir narração"}
+            disabled={!verses || narrationLoading}
+            className={`flex h-9 w-9 items-center justify-center rounded-xl border border-primary/20 transition-all active:scale-95 disabled:opacity-40 ${narrationStarted && !narrationPaused ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "bg-primary/10 text-primary"}`}
+          >
+            {narrationStarted && !narrationPaused ? <Pause className="h-4 w-4" /> : <Play className="ml-0.5 h-4 w-4 fill-current" />}
+          </button>
+          <button
+            onClick={() => setSettingsOpen(true)}
+            aria-label="Ajustes de leitura"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-surface text-muted-foreground transition-all hover:border-primary/30 hover:text-primary active:scale-95"
+          >
+            <Type className="h-4 w-4" />
+          </button>
           <ThemeToggle className="h-9 w-9 border-border bg-surface" />
         </div>
 
@@ -304,6 +322,11 @@ function ChapterReader() {
         {error && <p className="mt-10 text-center text-sm text-destructive">{error}</p>}
 
         {verses && (
+          <section className="bible-reader-surface rounded-[1.5rem] border border-border/70 bg-surface/35 p-3 shadow-lg shadow-black/5">
+            <div className="mb-3 flex items-center justify-between border-b border-border/60 px-1 pb-3">
+              <div><p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">Texto bíblico</p><p className="mt-0.5 text-xs text-muted-foreground">Leia, marque e reflita com calma</p></div>
+              <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-extrabold text-primary">{label}</span>
+            </div>
           <div className="space-y-1">
             {verses.map((v) => {
               const color = highlightMap[v.verse];
@@ -336,6 +359,7 @@ function ChapterReader() {
               );
             })}
           </div>
+          </section>
         )}
 
         {notes.length > 0 && (
