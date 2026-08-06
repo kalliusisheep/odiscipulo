@@ -267,24 +267,16 @@ const FEED_KIND_ICON: Record<FeedKind, React.ElementType> = {
   bio_changed: Pencil,
 };
 
-const FEED_KIND_STYLE: Record<FeedKind, string> = {
-  post: "bg-primary/15 text-primary",
-  lesson_completed: "bg-success/15 text-success",
-  module_completed: "bg-streak/20 text-streak",
-  reading_plan_started: "bg-ancient/15 text-ancient",
-  bible_study_started: "bg-ancient/15 text-ancient",
-  avatar_changed: "bg-accent text-accent-foreground",
-  bio_changed: "bg-accent text-accent-foreground",
-};
-
-const FEED_KIND_ACCENT: Record<FeedKind, string> = {
+// Cor sólida usada no "pingo" da linha do tempo e no fio que conecta
+// marcos consecutivos do mesmo dia — é a assinatura visual do Feed.
+const FEED_KIND_DOT: Record<FeedKind, string> = {
   post: "bg-primary",
   lesson_completed: "bg-success",
   module_completed: "bg-streak",
   reading_plan_started: "bg-ancient",
   bible_study_started: "bg-ancient",
-  avatar_changed: "bg-accent-foreground/40",
-  bio_changed: "bg-accent-foreground/40",
+  avatar_changed: "bg-accent-foreground/70",
+  bio_changed: "bg-accent-foreground/70",
 };
 
 const FEED_KIND_LABEL: Record<FeedKind, string> = {
@@ -296,6 +288,373 @@ const FEED_KIND_LABEL: Record<FeedKind, string> = {
   avatar_changed: "Foto atualizada",
   bio_changed: "Bio atualizada",
 };
+
+function lowerFirst(text: string) {
+  return text ? text.charAt(0).toLocaleLowerCase("pt-BR") + text.slice(1) : text;
+}
+
+// Eventos automáticos já vêm com uma frase pronta do backend ("Terminou a
+// trilha…"). Aqui só ajustamos para caber depois do nome, em uma linha só.
+function milestoneText(item: FeedItem) {
+  if (item.kind === "avatar_changed") return "atualizou a foto de perfil";
+  if (item.kind === "bio_changed") return `atualizou a bio para “${item.body}”`;
+  return lowerFirst(item.body);
+}
+
+function dayLabel(iso: string) {
+  const d = new Date(iso);
+  const now = new Date();
+  const startOf = (x: Date) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+  const diffDays = Math.round((startOf(now) - startOf(d)) / 86_400_000);
+  if (diffDays === 0) return "Hoje";
+  if (diffDays === 1) return "Ontem";
+  return d.toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "long",
+    year: d.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
+  });
+}
+
+function DayDivider({ label }: { label: string }) {
+  return (
+    <div className="flex items-center gap-3 px-1 py-1">
+      <span className="h-px flex-1 bg-border/60" />
+      <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-muted-foreground">
+        {label}
+      </span>
+      <span className="h-px flex-1 bg-border/60" />
+    </div>
+  );
+}
+
+type ActionsHandlers = {
+  liked: boolean;
+  likeCount: number;
+  commentCount: number;
+  onToggleLike: () => void;
+  onToggleComments: () => void;
+};
+
+function FullActions({ liked, likeCount, commentCount, onToggleLike, onToggleComments, commentsOpen }: ActionsHandlers & { commentsOpen: boolean }) {
+  return (
+    <div className="flex items-center gap-1 border-t border-border/50 pt-3">
+      <button
+        type="button"
+        onClick={onToggleLike}
+        className={`inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-bold transition-all ${
+          liked
+            ? "bg-destructive/10 text-destructive"
+            : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
+        }`}
+      >
+        <Heart className={`h-4 w-4 transition-transform ${liked ? "scale-110 fill-destructive" : ""}`} />
+        {likeCount > 0 && likeCount}
+      </button>
+      <button
+        type="button"
+        onClick={onToggleComments}
+        className="inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-bold text-muted-foreground transition-all hover:bg-surface-2 hover:text-foreground"
+      >
+        <MessageCircle className="h-4 w-4" />
+        {commentCount > 0 && commentCount}
+      </button>
+      <ChevronDown
+        onClick={onToggleComments}
+        className={`ml-auto h-4 w-4 cursor-pointer text-muted-foreground transition-transform duration-300 ${
+          commentsOpen ? "rotate-180" : ""
+        }`}
+      />
+    </div>
+  );
+}
+
+function CompactActions({ liked, likeCount, commentCount, onToggleLike, onToggleComments }: ActionsHandlers) {
+  return (
+    <div className="mt-1 flex items-center gap-3.5">
+      <button
+        type="button"
+        onClick={onToggleLike}
+        className={`inline-flex items-center gap-1 text-[11px] font-bold transition-colors ${
+          liked ? "text-destructive" : "text-muted-foreground hover:text-foreground"
+        }`}
+      >
+        <Heart className={`h-3.5 w-3.5 transition-transform ${liked ? "scale-110 fill-destructive" : ""}`} />
+        {likeCount > 0 && likeCount}
+      </button>
+      <button
+        type="button"
+        onClick={onToggleComments}
+        className="inline-flex items-center gap-1 text-[11px] font-bold text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <MessageCircle className="h-3.5 w-3.5" />
+        {commentCount > 0 && commentCount}
+      </button>
+    </div>
+  );
+}
+
+function CommentsPanel({
+  open,
+  loading,
+  list,
+  draft,
+  pendingGif,
+  sending,
+  commentLikeCounts,
+  myCommentLikes,
+  onDraftChange,
+  onGifSelect,
+  onGifClear,
+  onSend,
+  onToggleCommentLike,
+}: {
+  open: boolean;
+  loading: boolean;
+  list: FeedComment[];
+  draft: string;
+  pendingGif: string | null;
+  sending: boolean;
+  commentLikeCounts: Record<string, number>;
+  myCommentLikes: Set<string>;
+  onDraftChange: (text: string) => void;
+  onGifSelect: (url: string) => void;
+  onGifClear: () => void;
+  onSend: () => void;
+  onToggleCommentLike: (commentId: string) => void;
+}) {
+  return (
+    <div
+      className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+        open ? "mt-3 grid-rows-[1fr]" : "grid-rows-[0fr]"
+      }`}
+    >
+      <div className="overflow-hidden">
+        <div className="space-y-3 border-t border-border/50 pt-3">
+          {loading && (
+            <div className="flex items-center gap-2 py-2 text-xs text-muted-foreground">
+              <Loader2 className="h-3.5 w-3.5 animate-spin" /> Carregando comentários…
+            </div>
+          )}
+
+          {!loading && list.length === 0 && (
+            <p className="py-1 text-xs text-muted-foreground">Seja o primeiro a comentar.</p>
+          )}
+
+          {list.map((c) => (
+            <div key={c.id} className="flex items-start gap-2.5">
+              <Avatar name={c.author_name} url={c.author_avatar_url} size="sm" />
+              <div className="min-w-0 flex-1">
+                <div className="rounded-[16px] bg-surface-2/70 px-3 py-2">
+                  <p className="text-xs font-extrabold">{c.author_name}</p>
+                  {c.body && (
+                    <p className="mt-0.5 text-sm leading-relaxed text-foreground/90">{c.body}</p>
+                  )}
+                  {c.gif_url && (
+                    <img
+                      src={c.gif_url}
+                      alt="GIF"
+                      className="mt-1.5 max-h-40 rounded-[12px] object-cover"
+                    />
+                  )}
+                </div>
+                <div className="mt-1 flex items-center gap-2.5 px-1">
+                  <span className="text-[10px] text-muted-foreground">
+                    {formatDistanceToNow(new Date(c.created_at), { locale: ptBR, addSuffix: true })}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => onToggleCommentLike(c.id)}
+                    className={`inline-flex items-center gap-1 text-[10px] font-bold transition-colors ${
+                      myCommentLikes.has(c.id) ? "text-destructive" : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    <Heart className={`h-3 w-3 ${myCommentLikes.has(c.id) ? "fill-destructive" : ""}`} />
+                    {(commentLikeCounts[c.id] ?? 0) > 0 && commentLikeCounts[c.id]}
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {pendingGif && (
+            <div className="relative inline-block">
+              <img src={pendingGif} alt="GIF selecionado" className="max-h-28 rounded-[12px]" />
+              <button
+                type="button"
+                onClick={onGifClear}
+                className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-foreground text-background shadow"
+                aria-label="Remover GIF"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </div>
+          )}
+
+          <div className="flex items-center gap-2 pt-1">
+            <input
+              value={draft}
+              onChange={(e) => onDraftChange(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  onSend();
+                }
+              }}
+              placeholder="Escreva um comentário…"
+              className="min-h-9 flex-1 rounded-full border border-border/70 bg-background/70 px-3.5 text-xs outline-none transition-all placeholder:text-muted-foreground focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
+            />
+            <GifPicker onSelect={onGifSelect} />
+            <button
+              type="button"
+              onClick={onSend}
+              disabled={(!draft.trim() && !pendingGif) || sending}
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md shadow-primary/20 transition-all hover:bg-primary-glow disabled:opacity-40"
+              aria-label="Enviar comentário"
+            >
+              {sending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+type CardCommonProps = {
+  item: FeedItem;
+  liked: boolean;
+  likeCount: number;
+  commentCount: number;
+  commentsOpen: boolean;
+  commentsLoading: boolean;
+  commentsList: FeedComment[];
+  commentDraft: string;
+  pendingGif: string | null;
+  sending: boolean;
+  commentLikeCounts: Record<string, number>;
+  myCommentLikes: Set<string>;
+  onToggleLike: () => void;
+  onToggleComments: () => void;
+  onDraftChange: (text: string) => void;
+  onGifSelect: (url: string) => void;
+  onGifClear: () => void;
+  onSendComment: () => void;
+  onToggleCommentLike: (commentId: string) => void;
+};
+
+// Card cheio — reservado para publicações reais das pessoas.
+function PostCard(props: CardCommonProps) {
+  const { item } = props;
+  return (
+    <article className="animate-fade-in overflow-hidden rounded-[26px] border border-border/70 bg-surface shadow-sm transition-all hover:border-primary/20 hover:shadow-lg">
+      <div className="p-4">
+        <header className="flex items-center gap-3">
+          <Avatar name={item.author_name} url={item.author_avatar_url} />
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-extrabold">{item.author_name}</p>
+            <p className="text-[10px] text-muted-foreground">
+              {formatDistanceToNow(new Date(item.created_at), { locale: ptBR, addSuffix: true })}
+            </p>
+          </div>
+        </header>
+
+        {item.body && (
+          <p className="mt-3 whitespace-pre-wrap text-[15px] leading-relaxed text-foreground/95">
+            {item.body}
+          </p>
+        )}
+
+        <div className="mt-3.5">
+          <FullActions
+            liked={props.liked}
+            likeCount={props.likeCount}
+            commentCount={props.commentCount}
+            commentsOpen={props.commentsOpen}
+            onToggleLike={props.onToggleLike}
+            onToggleComments={props.onToggleComments}
+          />
+        </div>
+
+        <CommentsPanel
+          open={props.commentsOpen}
+          loading={props.commentsLoading}
+          list={props.commentsList}
+          draft={props.commentDraft}
+          pendingGif={props.pendingGif}
+          sending={props.sending}
+          commentLikeCounts={props.commentLikeCounts}
+          myCommentLikes={props.myCommentLikes}
+          onDraftChange={props.onDraftChange}
+          onGifSelect={props.onGifSelect}
+          onGifClear={props.onGifClear}
+          onSend={props.onSendComment}
+          onToggleCommentLike={props.onToggleCommentLike}
+        />
+      </div>
+    </article>
+  );
+}
+
+// Linha compacta — reservada para eventos automáticos (lição concluída,
+// módulo, plano de leitura...). Vários marcos do mesmo dia se conectam
+// por um fio vertical, como pontos de uma trilha.
+function MilestoneItem(props: CardCommonProps & { connectTop: boolean; connectBottom: boolean }) {
+  const { item, connectTop, connectBottom } = props;
+  const Icon = FEED_KIND_ICON[item.kind];
+
+  return (
+    <div className="animate-fade-in relative flex gap-3 rounded-[20px] px-2 py-2 transition-colors hover:bg-surface-2/50">
+      {(connectTop || connectBottom) && (
+        <span
+          className={`absolute left-[23px] w-px bg-border/70 ${connectTop ? "top-0" : "top-1/2"} ${
+            connectBottom ? "bottom-0" : "bottom-1/2"
+          }`}
+        />
+      )}
+      <div className="relative z-10 shrink-0">
+        <Avatar name={item.author_name} url={item.author_avatar_url} size="sm" ring="ring-2 ring-background" />
+        <span
+          className={`absolute -bottom-1 -right-1 flex h-[18px] w-[18px] items-center justify-center rounded-full text-white ring-2 ring-background ${FEED_KIND_DOT[item.kind]}`}
+          aria-label={FEED_KIND_LABEL[item.kind]}
+        >
+          <Icon className="h-[10px] w-[10px]" />
+        </span>
+      </div>
+      <div className="min-w-0 flex-1 pb-0.5 pt-0.5">
+        <p className="text-[13px] leading-snug text-foreground/90">
+          <span className="font-extrabold">{item.author_name}</span> {milestoneText(item)}
+        </p>
+        <div className="mt-0.5 flex items-center gap-2">
+          <span className="text-[10px] text-muted-foreground">
+            {formatDistanceToNow(new Date(item.created_at), { locale: ptBR, addSuffix: true })}
+          </span>
+          <CompactActions
+            liked={props.liked}
+            likeCount={props.likeCount}
+            commentCount={props.commentCount}
+            onToggleLike={props.onToggleLike}
+            onToggleComments={props.onToggleComments}
+          />
+        </div>
+        <CommentsPanel
+          open={props.commentsOpen}
+          loading={props.commentsLoading}
+          list={props.commentsList}
+          draft={props.commentDraft}
+          pendingGif={props.pendingGif}
+          sending={props.sending}
+          commentLikeCounts={props.commentLikeCounts}
+          myCommentLikes={props.myCommentLikes}
+          onDraftChange={props.onDraftChange}
+          onGifSelect={props.onGifSelect}
+          onGifClear={props.onGifClear}
+          onSend={props.onSendComment}
+          onToggleCommentLike={props.onToggleCommentLike}
+        />
+      </div>
+    </div>
+  );
+}
 
 function Feed() {
   const [items, setItems] = useState<FeedItem[]>([]);
@@ -545,13 +904,26 @@ function Feed() {
 
   const insertComposerEmoji = (emoji: string) => setComposerText((t) => t + emoji);
 
+  // Agrupa por dia ("Hoje", "Ontem"…) mantendo a ordem que já vem do
+  // Supabase (mais recente primeiro), sem precisar reordenar nada.
+  const groups = useMemo(() => {
+    const out: { label: string; items: FeedItem[] }[] = [];
+    for (const item of items) {
+      const label = dayLabel(item.created_at);
+      const last = out[out.length - 1];
+      if (last && last.label === label) last.items.push(item);
+      else out.push({ label, items: [item] });
+    }
+    return out;
+  }, [items]);
+
   return (
     <div className="space-y-5">
-      <section className="relative overflow-hidden rounded-[26px] border border-border/70 bg-gradient-to-br from-surface via-surface to-primary/[0.06] shadow-lg shadow-black/5">
-        <div className="pointer-events-none absolute -right-10 -top-12 h-32 w-32 rounded-full bg-primary/10 blur-3xl" />
+      <section className="group relative overflow-hidden rounded-[26px] border border-border/70 bg-gradient-to-br from-surface via-surface to-primary/[0.06] shadow-lg shadow-black/5 transition-all focus-within:border-primary/50 focus-within:shadow-primary/10">
+        <div className="pointer-events-none absolute -right-10 -top-12 h-32 w-32 rounded-full bg-primary/10 blur-3xl transition-opacity group-focus-within:opacity-70" />
         <div className="relative p-4">
           <div className="mb-3 flex items-center gap-3">
-            <Avatar name={me?.name ?? "?"} url={me?.avatarUrl} />
+            <Avatar name={me?.name ?? "?"} url={me?.avatarUrl} ring="ring-2 ring-primary/20" />
             <div className="min-w-0 flex-1">
               <p className="text-sm font-extrabold">Compartilhe sua caminhada</p>
               <p className="text-[10px] text-muted-foreground">
@@ -575,20 +947,31 @@ function Feed() {
                 Adicione uma reação
               </span>
             </div>
-            <button
-              type="button"
-              onClick={() => void publish()}
-              disabled={!composerText.trim() || posting}
-              className="inline-flex min-h-10 items-center gap-2 rounded-full bg-primary px-5 text-xs font-extrabold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary-glow disabled:translate-y-0 disabled:opacity-50 disabled:shadow-none"
-            >
-              {posting ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
-              ) : (
-                <>
-                  Publicar <Send className="h-3.5 w-3.5" />
-                </>
+            <div className="flex items-center gap-2.5">
+              {composerText.length > 0 && (
+                <span
+                  className={`text-[10px] font-bold tabular-nums ${
+                    composerText.length > 560 ? "text-destructive" : "text-muted-foreground"
+                  }`}
+                >
+                  {composerText.length}/600
+                </span>
               )}
-            </button>
+              <button
+                type="button"
+                onClick={() => void publish()}
+                disabled={!composerText.trim() || posting}
+                className="inline-flex min-h-10 items-center gap-2 rounded-full bg-primary px-5 text-xs font-extrabold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary-glow disabled:translate-y-0 disabled:opacity-50 disabled:shadow-none"
+              >
+                {posting ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <>
+                    Publicar <Send className="h-3.5 w-3.5" />
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -613,251 +996,54 @@ function Feed() {
         <EmptyState
           icon={Users}
           title="Sua comunidade está começando"
-          description='Adicione amigos e continue estudando. As conquistas de vocês aparecerão aqui.'
+          description="Adicione amigos e continue estudando. As conquistas de vocês aparecerão aqui."
         />
       )}
 
-      {items.map((item) => (
-        <FeedCard
-          key={item.id}
-          item={item}
-          liked={myLikes.has(item.id)}
-          likeCount={likeCounts[item.id] ?? 0}
-          commentCount={commentCounts[item.id] ?? 0}
-          commentsOpen={openComments.has(item.id)}
-          commentsLoading={commentsLoading.has(item.id)}
-          commentsList={comments[item.id] ?? []}
-          commentDraft={commentDraft[item.id] ?? ""}
-          pendingGif={pendingGif[item.id] ?? null}
-          sending={sendingComment.has(item.id)}
-          commentLikeCounts={commentLikeCounts}
-          myCommentLikes={myCommentLikes}
-          onToggleLike={() => void toggleLike(item.id)}
-          onToggleComments={() => void toggleComments(item.id)}
-          onDraftChange={(text) => setCommentDraft((prev) => ({ ...prev, [item.id]: text }))}
-          onGifSelect={(url) => setPendingGif((prev) => ({ ...prev, [item.id]: url }))}
-          onGifClear={() => setPendingGif((prev) => ({ ...prev, [item.id]: null }))}
-          onSendComment={() => void sendComment(item.id)}
-          onToggleCommentLike={(commentId) => void toggleCommentLike(commentId)}
-        />
+      {groups.map((group) => (
+        <div key={group.label} className="space-y-2.5">
+          <DayDivider label={group.label} />
+          {group.items.map((item, index) => {
+            const shared: CardCommonProps = {
+              item,
+              liked: myLikes.has(item.id),
+              likeCount: likeCounts[item.id] ?? 0,
+              commentCount: commentCounts[item.id] ?? 0,
+              commentsOpen: openComments.has(item.id),
+              commentsLoading: commentsLoading.has(item.id),
+              commentsList: comments[item.id] ?? [],
+              commentDraft: commentDraft[item.id] ?? "",
+              pendingGif: pendingGif[item.id] ?? null,
+              sending: sendingComment.has(item.id),
+              commentLikeCounts,
+              myCommentLikes,
+              onToggleLike: () => void toggleLike(item.id),
+              onToggleComments: () => void toggleComments(item.id),
+              onDraftChange: (text) => setCommentDraft((prev) => ({ ...prev, [item.id]: text })),
+              onGifSelect: (url) => setPendingGif((prev) => ({ ...prev, [item.id]: url })),
+              onGifClear: () => setPendingGif((prev) => ({ ...prev, [item.id]: null })),
+              onSendComment: () => void sendComment(item.id),
+              onToggleCommentLike: (commentId) => void toggleCommentLike(commentId),
+            };
+
+            if (item.kind === "post") {
+              return <PostCard key={item.id} {...shared} />;
+            }
+
+            const prev = group.items[index - 1];
+            const next = group.items[index + 1];
+            return (
+              <MilestoneItem
+                key={item.id}
+                {...shared}
+                connectTop={!!prev && prev.kind !== "post"}
+                connectBottom={!!next && next.kind !== "post"}
+              />
+            );
+          })}
+        </div>
       ))}
     </div>
-  );
-}
-
-function FeedCard({
-  item,
-  liked,
-  likeCount,
-  commentCount,
-  commentsOpen,
-  commentsLoading,
-  commentsList,
-  commentDraft,
-  pendingGif,
-  sending,
-  commentLikeCounts,
-  myCommentLikes,
-  onToggleLike,
-  onToggleComments,
-  onDraftChange,
-  onGifSelect,
-  onGifClear,
-  onSendComment,
-  onToggleCommentLike,
-}: {
-  item: FeedItem;
-  liked: boolean;
-  likeCount: number;
-  commentCount: number;
-  commentsOpen: boolean;
-  commentsLoading: boolean;
-  commentsList: FeedComment[];
-  commentDraft: string;
-  pendingGif: string | null;
-  sending: boolean;
-  commentLikeCounts: Record<string, number>;
-  myCommentLikes: Set<string>;
-  onToggleLike: () => void;
-  onToggleComments: () => void;
-  onDraftChange: (text: string) => void;
-  onGifSelect: (url: string) => void;
-  onGifClear: () => void;
-  onSendComment: () => void;
-  onToggleCommentLike: (commentId: string) => void;
-}) {
-  const Icon = FEED_KIND_ICON[item.kind];
-
-  return (
-    <article className="relative overflow-hidden rounded-[26px] border border-border/70 bg-surface shadow-sm transition-all hover:border-primary/20 hover:shadow-lg">
-      <div className={`absolute inset-y-4 left-0 w-1 rounded-r-full ${FEED_KIND_ACCENT[item.kind]}`} />
-      <div className="p-4 pl-5">
-        <header className="flex items-start gap-3">
-          <Avatar name={item.author_name} url={item.author_avatar_url} />
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-extrabold">{item.author_name}</p>
-            <div className="mt-0.5 flex flex-wrap items-center gap-1.5">
-              <span
-                className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wide ${FEED_KIND_STYLE[item.kind]}`}
-              >
-                <Icon className="h-2.5 w-2.5" />
-                {FEED_KIND_LABEL[item.kind]}
-              </span>
-              <span className="text-[10px] text-muted-foreground">
-                · {formatDistanceToNow(new Date(item.created_at), { locale: ptBR, addSuffix: true })}
-              </span>
-            </div>
-          </div>
-        </header>
-
-        {item.kind === "avatar_changed" ? (
-          <div className="mt-3 flex items-center gap-3 rounded-[16px] bg-surface-2/60 p-2.5">
-            {item.author_avatar_url ? (
-              <img
-                src={item.author_avatar_url}
-                alt={item.author_name}
-                className="h-14 w-14 rounded-[13px] object-cover ring-1 ring-border/60"
-              />
-            ) : (
-              <span className="flex h-14 w-14 items-center justify-center rounded-[13px] bg-primary/10 text-primary">
-                <Camera className="h-5 w-5" />
-              </span>
-            )}
-            <p className="text-sm font-medium text-foreground/90">Atualizou a foto de perfil ✨</p>
-          </div>
-        ) : (
-          item.body && (
-            <p className="mt-3 text-[15px] leading-relaxed text-foreground/95">{item.body}</p>
-          )
-        )}
-
-        <div className="mt-3.5 flex items-center gap-1 border-t border-border/50 pt-3">
-          <button
-            type="button"
-            onClick={onToggleLike}
-            className={`inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-bold transition-all ${
-              liked
-                ? "bg-destructive/10 text-destructive"
-                : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
-            }`}
-          >
-            <Heart className={`h-4 w-4 transition-transform ${liked ? "scale-110 fill-destructive" : ""}`} />
-            {likeCount > 0 && likeCount}
-          </button>
-          <button
-            type="button"
-            onClick={onToggleComments}
-            className="inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-bold text-muted-foreground transition-all hover:bg-surface-2 hover:text-foreground"
-          >
-            <MessageCircle className="h-4 w-4" />
-            {commentCount > 0 && commentCount}
-          </button>
-          <ChevronDown
-            onClick={onToggleComments}
-            className={`ml-auto h-4 w-4 cursor-pointer text-muted-foreground transition-transform ${
-              commentsOpen ? "rotate-180" : ""
-            }`}
-          />
-        </div>
-
-        {commentsOpen && (
-          <div className="mt-3 space-y-3 border-t border-border/50 pt-3">
-            {commentsLoading && (
-              <div className="flex items-center gap-2 py-2 text-xs text-muted-foreground">
-                <Loader2 className="h-3.5 w-3.5 animate-spin" /> Carregando comentários…
-              </div>
-            )}
-
-            {!commentsLoading && commentsList.length === 0 && (
-              <p className="py-1 text-xs text-muted-foreground">
-                Seja o primeiro a comentar.
-              </p>
-            )}
-
-            {commentsList.map((c) => (
-              <div key={c.id} className="flex items-start gap-2.5">
-                <Avatar name={c.author_name} url={c.author_avatar_url} size="sm" />
-                <div className="min-w-0 flex-1">
-                  <div className="rounded-[16px] bg-surface-2/70 px-3 py-2">
-                    <p className="text-xs font-extrabold">{c.author_name}</p>
-                    {c.body && (
-                      <p className="mt-0.5 text-sm leading-relaxed text-foreground/90">{c.body}</p>
-                    )}
-                    {c.gif_url && (
-                      <img
-                        src={c.gif_url}
-                        alt="GIF"
-                        className="mt-1.5 max-h-40 rounded-[12px] object-cover"
-                      />
-                    )}
-                  </div>
-                  <div className="mt-1 flex items-center gap-2.5 px-1">
-                    <span className="text-[10px] text-muted-foreground">
-                      {formatDistanceToNow(new Date(c.created_at), { locale: ptBR, addSuffix: true })}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => onToggleCommentLike(c.id)}
-                      className={`inline-flex items-center gap-1 text-[10px] font-bold transition-colors ${
-                        myCommentLikes.has(c.id) ? "text-destructive" : "text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      <Heart
-                        className={`h-3 w-3 ${myCommentLikes.has(c.id) ? "fill-destructive" : ""}`}
-                      />
-                      {(commentLikeCounts[c.id] ?? 0) > 0 && commentLikeCounts[c.id]}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-
-            {pendingGif && (
-              <div className="relative inline-block">
-                <img src={pendingGif} alt="GIF selecionado" className="max-h-28 rounded-[12px]" />
-                <button
-                  type="button"
-                  onClick={onGifClear}
-                  className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-foreground text-background shadow"
-                  aria-label="Remover GIF"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </div>
-            )}
-
-            <div className="flex items-center gap-2 pt-1">
-              <input
-                value={commentDraft}
-                onChange={(e) => onDraftChange(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    onSendComment();
-                  }
-                }}
-                placeholder="Escreva um comentário…"
-                className="min-h-9 flex-1 rounded-full border border-border/70 bg-background/70 px-3.5 text-xs outline-none transition-all placeholder:text-muted-foreground focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
-              />
-              <GifPicker onSelect={onGifSelect} />
-              <button
-                type="button"
-                onClick={onSendComment}
-                disabled={(!commentDraft.trim() && !pendingGif) || sending}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md shadow-primary/20 transition-all hover:bg-primary-glow disabled:opacity-40"
-                aria-label="Enviar comentário"
-              >
-                {sending ? (
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                ) : (
-                  <Send className="h-3.5 w-3.5" />
-                )}
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-    </article>
   );
 }
 
