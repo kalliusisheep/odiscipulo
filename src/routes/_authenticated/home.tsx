@@ -22,7 +22,7 @@ import { MessagesLinkButton } from "@/components/MessagesLinkButton";
 import { PushNotifications } from "@/components/PushNotifications";
 import { VerseOfDayCard } from "@/components/home/VerseOfDayCard";
 import { useApp } from "@/lib/app-context";
-import { Flame, Check, ChevronRight, Sparkles, BookOpen } from "lucide-react";
+import { ArrowUpRight, BookOpen, BookOpenCheck, Check, ChevronRight, Crown, Flame, HeartHandshake, MessageCircle, Sparkles, UsersRound } from "lucide-react";
 import { ChallengePanel } from "@/components/ChallengeProgressBar";
 import { LeaderResources } from "@/components/LeaderResources";
 
@@ -377,31 +377,65 @@ function HomePage() {
 
 function LiderInline() {
   return (
-    <div className="mx-auto max-w-lg space-y-5 px-4 pt-6 pb-24">
-      <header className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Modo Líder</h1>
+    <div className="mx-auto max-w-lg space-y-5 px-4 pb-24 pt-6">
+      <header className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary">
+            <Crown className="h-3.5 w-3.5" /> Sua liderança
+          </p>
+          <h1 className="mt-1 text-2xl font-extrabold tracking-tight">Modo Líder</h1>
+          <p className="mt-1 max-w-[18rem] text-xs leading-relaxed text-muted-foreground">
+            Cuide de pessoas, forme discípulos e sirva com propósito.
+          </p>
+        </div>
         <ThemeToggle />
       </header>
-      <div className="h-36 w-full overflow-hidden rounded-2xl sm:h-44">
-        <img
-          src="/lider-banner.jpg"
-          alt=""
-          className="h-full w-full object-cover object-[center_35%]"
-        />
-      </div>
-      <div className="card-elevated p-5">
-        <p className="text-sm text-muted-foreground">
-          Acompanhe seus discípulos, crie grupos e envie mensagens.
-        </p>
-        <div className="mt-4 flex justify-center">
+
+      <section className="relative isolate overflow-hidden rounded-[28px] border border-violet-300/15 bg-gradient-to-br from-[#312663] via-[#1a2040] to-[#101827] shadow-2xl shadow-primary/10">
+        <div className="relative h-48 overflow-hidden sm:h-56">
+          <img
+            src="/lider-banner.jpg"
+            alt="Barnabé ensinando em uma cidade antiga"
+            className="h-full w-full object-cover object-[center_34%]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0d1222] via-[#0d1222]/25 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-5">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-black/25 px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-[0.14em] text-white/80 ring-1 ring-white/15 backdrop-blur-sm">
+              <HeartHandshake className="h-3 w-3 text-violet-200" /> Liderança com propósito
+            </span>
+            <p className="mt-2 max-w-[19rem] text-lg font-extrabold leading-tight text-white">
+              Lidere como Cristo ensinou: perto, presente e intencional.
+            </p>
+          </div>
+        </div>
+
+        <div className="border-t border-white/10 px-5 py-4">
+          <p className="text-sm leading-relaxed text-white/70">
+            Acompanhe seus discípulos, crie grupos e envie mensagens em um só lugar.
+          </p>
           <Link
             to="/lider"
-            className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+            className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-extrabold text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5 hover:bg-primary-glow"
           >
-            Abrir painel <ChevronRight className="h-4 w-4" />
+            Abrir painel <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>
-      </div>
+      </section>
+
+      <section className="grid grid-cols-3 gap-2.5" aria-label="Recursos do modo líder">
+        <div className="card-elevated flex min-h-[76px] flex-col justify-between p-3">
+          <UsersRound className="h-4 w-4 text-primary" />
+          <span className="text-[11px] font-bold">Pessoas</span>
+        </div>
+        <div className="card-elevated flex min-h-[76px] flex-col justify-between p-3">
+          <MessageCircle className="h-4 w-4 text-success" />
+          <span className="text-[11px] font-bold">Conversas</span>
+        </div>
+        <div className="card-elevated flex min-h-[76px] flex-col justify-between p-3">
+          <BookOpenCheck className="h-4 w-4 text-ancient" />
+          <span className="text-[11px] font-bold">Formação</span>
+        </div>
+      </section>
 
       <LeaderResources />
     </div>
