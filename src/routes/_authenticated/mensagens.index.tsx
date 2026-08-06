@@ -229,9 +229,23 @@ function MensagensListPage() {
                     <div className="flex items-center justify-between gap-2">
                       <div className="min-w-0">
                         <p className="truncate text-sm font-semibold">{c.peer.display_name}</p>
-                        <p className={`truncate text-[10px] ${formatPresence(c.peer.last_seen_at) === "Online agora" ? "font-semibold text-emerald-400" : "text-muted-foreground"}`}>
-                          {formatPresence(c.peer.last_seen_at)}
-                        </p>
+                        <div className="mt-0.5 flex items-center gap-1.5">
+                          <span
+                            className={`h-2 w-2 shrink-0 rounded-full ${
+                              formatPresence(c.peer.last_seen_at) === "Online agora"
+                                ? "bg-emerald-400 shadow-[0_0_7px_rgba(52,211,153,0.8)]"
+                                : "bg-rose-400/80"
+                            }`}
+                            aria-label={formatPresence(c.peer.last_seen_at) === "Online agora" ? "Online" : "Offline"}
+                          />
+                          <p className={`truncate text-[10px] ${
+                            formatPresence(c.peer.last_seen_at) === "Online agora"
+                              ? "font-semibold text-emerald-400"
+                              : "text-muted-foreground"
+                          }`}>
+                            {formatPresence(c.peer.last_seen_at)}
+                          </p>
+                        </div>
                       </div>
                       <span className={`shrink-0 text-[10px] ${c.unread ? "font-bold text-primary" : "text-muted-foreground"}`}>
                         {formatDistanceToNow(new Date(c.lastAt), { locale: ptBR, addSuffix: true })}
