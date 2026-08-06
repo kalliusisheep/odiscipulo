@@ -134,7 +134,7 @@ function VersiculoPage() {
     void recordGameResult({ gameKey: "versiculo", score, correctAnswers: results.filter((item) => item.correct).length, rounds, bestStreak });
   }, [bestStreak, phase, results, rounds, score]);
   if (phase === "setup" && !modeSelected) return <GameModeChooser title="Qual é o versículo?" description="Escolha entre reconhecer a passagem no seu ritmo ou disputar uma sala sincronizada com seus amigos." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=versiculo"; }} />;
-  if (phase === "setup") return <Setup mode={mode} difficulty={difficulty} setDifficulty={setDifficulty} rounds={rounds} setRounds={setRounds} onStart={start} />;
+  if (phase === "setup") return <Setup roomId={roomId} mode={mode} difficulty={difficulty} setDifficulty={setDifficulty} rounds={rounds} setRounds={setRounds} onStart={start} />;
 
 
   if (phase === "finished") return <Results score={score} rounds={rounds} bestStreak={bestStreak} results={results} onRestart={() => setPhase("setup")} />;
