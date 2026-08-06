@@ -267,19 +267,6 @@ function ChapterReader() {
     }
   };
 
-  const handleShare = async () => {
-    const payload = `"${selectedText}"\n— ${fullRef}`;
-    if (navigator.share) {
-      try {
-        await navigator.share({ text: payload });
-        return;
-      } catch {
-        /* cancelado */
-      }
-    }
-    await navigator.clipboard.writeText(payload);
-    toast.success("Versículo copiado para compartilhar");
-  };
 
   return (
     <div className={`min-h-screen pb-32 transition-colors ${theme === "light" ? "bg-[#fbfaf7] text-slate-900" : "bg-background text-foreground"}`}>
@@ -713,7 +700,6 @@ function ChapterReader() {
             toast.success("Versículo copiado");
             setSelected(null);
           }}
-          onShare={() => void handleShare()}
         />
       )}
 
