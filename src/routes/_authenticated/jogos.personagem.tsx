@@ -45,6 +45,7 @@ function PersonagemPage() {
   const [streak, setStreak] = useState(0);
   const [correct, setCorrect] = useState<boolean | null>(null);
   const autoStarted = useRef(false);
+  const sessionSeenRef = useRef<Set<string>>(new Set());
   const character = queue[round];
   const difficultyData = CHARACTER_DIFFICULTY[difficulty];
   const firstHint = character ? formatFirstHint(character.hints[0]) : "";
@@ -60,8 +61,12 @@ function PersonagemPage() {
     const shuffled = seed ? shuffleWithSeed(filteredCharacters, seed) : [...filteredCharacters].sort(() => Math.random() - 0.5);
     const recentKey = `character_recent_questions_${difficulty}`;
     const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
-    const fresh = shuffled.filter((item) => !recentIds.includes(item.id));
-    const selected = [...fresh, ...shuffled].slice(0, rounds);
+    const sessionCandidates = shuffled.filter((item) => !sessionSeenRef.current.has(item.id));
+    const fresh = sessionCandidates.filter((item) => !recentIds.includes(item.id));
+    const selected = [...fresh, ...sessionCandidates]
+      .filter((item, index, items) => items.findIndex((candidate) => candidate.id === item.id) === index)
+      .slice(0, rounds);
+    selected.forEach((item) => sessionSeenRef.current.add(item.id));
     window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...selected.map((item) => item.id)])].slice(-Math.max(rounds * 5, 40))));
     setQueue(selected);
     setRound(0);
