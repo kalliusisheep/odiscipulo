@@ -62,7 +62,8 @@ function PublicProfilePage() {
         setLoading(false);
         throw notFound();
       }
-      setProfile({ ...p, last_seen_at: p.last_seen_at ?? p.updated_at ?? null } as Profile);
+      const row = p as { last_seen_at?: string | null; updated_at?: string | null };
+      setProfile({ ...p, last_seen_at: row.last_seen_at ?? row.updated_at ?? null } as Profile);
       const { count } = await supabase
         .from("lesson_progress")
         .select("*", { count: "exact", head: true })
