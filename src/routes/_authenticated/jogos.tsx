@@ -48,7 +48,7 @@ function JogosPage() {
           <div className="px-1"><p className="text-xs font-extrabold uppercase tracking-[0.16em] text-muted-foreground">Escolha um desafio</p></div>
           {games.map((game) => {
             const Icon = game.icon;
-            return <Link key={game.title} to={game.to} className={`game-card group flex min-h-[124px] items-center gap-4 rounded-[1.75rem] border border-white/10 bg-gradient-to-br ${game.tone} p-4 shadow-lg shadow-black/10 transition-all hover:-translate-y-1 hover:border-white/30 hover:shadow-primary/15`}>
+            return <Link key={game.title} to={game.to} search={{} as never} className={`game-card group flex min-h-[124px] items-center gap-4 rounded-[1.75rem] border border-white/10 bg-gradient-to-br ${game.tone} p-4 shadow-lg shadow-black/10 transition-all hover:-translate-y-1 hover:border-white/30 hover:shadow-primary/15`}>
               <span className={`game-card-icon flex h-16 w-16 shrink-0 items-center justify-center rounded-[1.35rem] bg-background/45 ring-1 ring-white/15 ${game.accent}`} aria-hidden="true"><Icon className="h-8 w-8" strokeWidth={2} /></span>
               <span className="min-w-0 flex-1">
                 <span className="flex items-center gap-2"><span className="block text-base font-extrabold tracking-tight">{game.title}</span><span className="hidden rounded-full bg-white/10 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-white/70 min-[390px]:inline">{game.tag}</span></span>
