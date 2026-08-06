@@ -196,7 +196,7 @@ function PlanoPage() {
 
       {plan.intro && (
         <div className="rounded-3xl border border-success/25 bg-success/5 p-5 shadow-sm">
-          <p className="!font-sans text-lg font-normal leading-8 text-foreground/90 !not-italic">{plan.intro}</p>
+          <p className="scripture text-base leading-relaxed text-foreground/90">{plan.intro}</p>
         </div>
       )}
 
@@ -268,10 +268,10 @@ function PlanoPage() {
                       }`}
                     />
                   </div>
-                  <p className="font-serif text-sm font-medium text-ancient">
+                  <p className="font-serif text-base font-medium text-ancient">
                     {d.refs.join(" · ")}
                   </p>
-                  <p className="text-xs font-medium text-foreground/80">{d.focus}</p>
+                  <p className="text-sm font-medium leading-relaxed text-foreground/80">{d.focus}</p>
                 </button>
               </div>
 
