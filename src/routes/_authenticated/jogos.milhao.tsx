@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { MILLION_DIFFICULTY, MILLION_LEVELS, randomMillionQuestions, randomMillionQuestionsWithSeed, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
+import { recordGameResult } from "@/lib/game-leaderboard";
 
 export const Route = createFileRoute("/_authenticated/jogos/milhao")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -114,6 +115,13 @@ function MillionPage() {
 
   if (phase === "setup" && !modeSelected) return <GameModeChooser title="Quiz do Milhão" heroImage="/game-quiz-do-milhao.jpeg" heroImageAlt="Ovelha apresentando o Quiz do Milhão em uma arena bíblica" description="Suba pelos níveis do conhecimento bíblico sozinho ou desafie outros jogadores em uma sala competitiva." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=milhao"; }} />;
   if (phase === "setup") return <Setup difficulty={difficulty} onDifficultyChange={setDifficulty} onStart={start} />;
+  const scoreSaved = useRef(false);
+  useEffect(() => {
+    if (phase !== "finished" || scoreSaved.current) return;
+    scoreSaved.current = true;
+    void recordGameResult({ gameKey: "milhao", score, correctAnswers, rounds, bestStreak });
+  }, [bestStreak, correctAnswers, phase, rounds, score]);
+
   if (phase === "finished") return <Results score={score} correct={correctAnswers} rounds={rounds} bestStreak={bestStreak} weakness={weakness} onRestart={() => setPhase("setup")} />;
   if (!question) return null;
   const isCorrect = selected === question.answer;
