@@ -748,8 +748,8 @@ function VerseStudy() {
                     )}
 
                     <div className="mt-3 rounded-2xl border border-border/60 bg-background/50 p-3 text-[10px] leading-relaxed text-muted-foreground">
-                      Tradução automática do léxico acadêmico em inglês BDB/Thayer. Pode conter
-                      imprecisões; classe gramatical e origem foram revisadas.
+                      Tradução em português baseada no léxico acadêmico BDB/Thayer. Pode conter
+                      imprecisões; confira sempre o sentido no contexto do versículo.
                     </div>
                   </div>
                 </details>
@@ -1009,7 +1009,7 @@ function WordDetail({
 
         {entry && (
           <SourceNote>
-            Definições traduzidas automaticamente do BDB/Thayer. Consulte o contexto do versículo
+            Definições traduzidas para português a partir do BDB/Thayer. Consulte o contexto do versículo
             antes de escolher um sentido.
           </SourceNote>
         )}
