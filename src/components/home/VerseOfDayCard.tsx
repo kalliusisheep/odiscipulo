@@ -20,7 +20,7 @@ import { useApp } from "@/lib/app-context";
 import { supabase } from "@/integrations/supabase/client";
 
 export function VerseOfDayCard() {
-  const { bibleVersion } = useApp();
+  const { bibleVersion, language } = useApp();
 
   const [verse, setVerse] = useState<DailyVerseRow | null>(null);
   const [text, setText] = useState<string | null>(null);
@@ -64,14 +64,14 @@ export function VerseOfDayCard() {
 
     let alive = true;
 
-    fetchPassage(apiRefFor(verse), bibleVersion)
+    fetchPassage(apiRefFor(verse), bibleVersion, language)
       .then((t) => alive && setText(stripVerseNumbers(t)))
       .catch(() => alive && setText(null));
 
     return () => {
       alive = false;
     };
-  }, [verse, bibleVersion]);
+  }, [verse, bibleVersion, language]);
 
   if (!verse) return null;
 
