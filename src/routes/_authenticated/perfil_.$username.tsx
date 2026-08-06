@@ -120,9 +120,9 @@ function PublicProfilePage() {
   const xpPct = Math.min(100, Math.round((xpInLevel / xpNeeded) * 100));
 
   return (
-    <div className="mx-auto max-w-lg px-4 pb-28 pt-4">
+    <div className="mx-auto min-h-[100dvh] max-w-lg bg-gradient-to-b from-background via-background to-surface/30 px-4 pb-28 pt-4">
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary via-primary/85 to-indigo-600 px-5 pb-9 pt-5 text-primary-foreground shadow-xl shadow-primary/15">
+      <section className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-primary via-primary/85 to-indigo-600 px-5 pb-9 pt-5 text-primary-foreground shadow-xl shadow-primary/20">
         <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
         <div className="absolute -bottom-20 -left-16 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
 
@@ -144,7 +144,7 @@ function PublicProfilePage() {
           </button>
         </div>
 
-        <div className="relative mt-7 flex flex-col items-center text-center">
+        <div className="relative mt-6 flex flex-col items-center text-center">
           <div className="relative">
             {/* Anel */}
             <div className="absolute -inset-1.5 rounded-full bg-gradient-to-br from-yellow-300 via-white to-yellow-300 blur-md opacity-70" />
@@ -162,7 +162,7 @@ function PublicProfilePage() {
             </div>
           </div>
 
-          <h1 className="mt-6 text-2xl font-extrabold leading-tight tracking-tight">{profile.display_name}</h1>
+          <h1 className="mt-6 text-2xl font-extrabold leading-tight tracking-tight drop-shadow-sm">{profile.display_name}</h1>
           <div className="mt-2 flex items-center gap-1.5 text-[11px] font-semibold">
             <span className={`h-2 w-2 rounded-full ${isOnline ? "bg-emerald-300 shadow-[0_0_8px_rgba(110,231,183,0.85)]" : "bg-white/45"}`} />
             <span className={isOnline ? "text-emerald-100" : "text-white/70"}>
@@ -202,11 +202,12 @@ function PublicProfilePage() {
         </div>
       </section>
 
-      <div className="space-y-5 pt-5">
+      <div className="space-y-5 pt-6">
         {/* Ações */}
         {!isSelf && (
           <>
-            <div className="rounded-[1.75rem] border border-border bg-surface/60 p-2.5">
+            <div className="rounded-[1.75rem] border border-border bg-surface/70 p-2.5 shadow-sm">
+              <p className="mb-2 px-2 text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary">Conexão</p>
               <div className="grid grid-cols-2 gap-2">
               <Link
                 to="/mensagens/$username"
@@ -236,7 +237,7 @@ function PublicProfilePage() {
 
         {/* Estatísticas */}
         <section>
-          <div className="mb-3 flex items-end justify-between px-1">
+          <div className="mb-3 flex items-end justify-between px-1.5">
             <div>
               <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary">Visão geral</p>
               <p className="mt-1 text-sm font-extrabold">Estatísticas da caminhada</p>
@@ -310,12 +311,14 @@ function StatCard({
   iconTone: string;
 }) {
   return (
-    <div className={`relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br ${tone} p-3.5`}>
+    <div className={`relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br ${tone} p-4 shadow-sm`}>
       <div className="flex items-center gap-2">
-        <Icon className={`h-4 w-4 ${iconTone}`} />
+        <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-background/30">
+          <Icon className={`h-4 w-4 ${iconTone}`} />
+        </span>
         <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{label}</p>
       </div>
-      <p className="mt-1.5 text-2xl font-bold leading-none">{value}</p>
+      <p className="mt-2 text-2xl font-extrabold leading-none tracking-tight">{value}</p>
     </div>
   );
 }
