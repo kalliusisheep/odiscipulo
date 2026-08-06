@@ -362,25 +362,36 @@ function BibliaIndex() {
                 </span>
               </div>
 
-              <div className="mt-3 grid grid-cols-2 rounded-2xl border border-white/10 bg-surface/70 p-1.5 shadow-sm">
+              <div className="mt-3 grid grid-cols-2 gap-2">
                 {(["AT", "NT"] as const).map((t) => {
                   const active = testament === t;
                   return (
                     <button
                       key={t}
                       onClick={() => setTestament(t)}
-                      className={`rounded-xl px-3 py-2.5 text-left transition-all ${
+                      aria-pressed={active}
+                      className={`group relative overflow-hidden rounded-2xl border px-3 py-2.5 text-left transition-all ${
                         active
-                          ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
-                          : "text-muted-foreground hover:bg-white/[0.04]"
+                          ? "border-primary/45 bg-primary/10 shadow-sm shadow-primary/15"
+                          : "border-white/10 bg-surface/50 hover:border-primary/20 hover:bg-surface/80"
                       }`}
                     >
-                      <span className="block text-[10px] font-extrabold uppercase tracking-wider">
-                        {t === "AT" ? "Antigo Testamento" : "Novo Testamento"}
+                      <span className="flex items-center justify-between gap-2">
+                        <span className={`text-[10px] font-black uppercase tracking-[0.08em] ${
+                          active ? "text-primary" : "text-muted-foreground"
+                        }`}>
+                          {t === "AT" ? "Antigo Testamento" : "Novo Testamento"}
+                        </span>
+                        <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-bold ${
+                          active ? "bg-primary/15 text-primary" : "bg-background/60 text-muted-foreground/70"
+                        }`}>
+                          {t === "AT" ? "39" : "27"}
+                        </span>
                       </span>
-                      <span className={`mt-0.5 block text-[9px] ${active ? "text-primary-foreground/70" : "text-muted-foreground/65"}`}>
-                        {t === "AT" ? "39 livros · Gênesis a Malaquias" : "27 livros · Mateus a Apocalipse"}
+                      <span className="mt-1 block truncate text-[9px] text-muted-foreground/75">
+                        {t === "AT" ? "Gênesis a Malaquias" : "Mateus a Apocalipse"}
                       </span>
+                      {active && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-primary" />}
                     </button>
                   );
                 })}
@@ -396,11 +407,11 @@ function BibliaIndex() {
                       key={b.id}
                       onClick={() => openChapters(b.id)}
                       aria-label={`Abrir ${b.name}`}
-                      className="bible-book-card group relative min-h-[126px] overflow-hidden rounded-[1.35rem] border border-white/10 bg-surface/75 p-3.5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
+                      className="bible-book-card group relative min-h-[112px] overflow-hidden rounded-[1.25rem] border border-white/10 bg-surface/75 p-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
                     >
                       <div className="flex items-start gap-2.5">
                         <span
-                            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-[10px] font-extrabold ring-1 shadow-sm ${
+                            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[10px] font-extrabold ring-1 shadow-sm ${
                             complete
                               ? "bg-ancient/15 text-ancient ring-ancient/20"
                               : testament === "AT"
@@ -419,12 +430,12 @@ function BibliaIndex() {
                         <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/45 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
                       </div>
 
-                      <div className="mt-3 flex items-center justify-between gap-2 text-[9px] font-semibold text-muted-foreground/75">
+                      <div className="mt-2.5 flex items-center justify-between gap-2 text-[9px] font-semibold text-muted-foreground/75">
                         <span>{complete ? "Concluído" : done > 0 ? `${bookPct}% em andamento` : "Pronto para começar"}</span>
                         <span>{bookPct}%</span>
                       </div>
 
-                      <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-background/70 ring-1 ring-black/10">
+                      <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-background/70 ring-1 ring-black/10">
                         <div
                           className={`h-full rounded-full transition-all duration-500 ${
                             complete
