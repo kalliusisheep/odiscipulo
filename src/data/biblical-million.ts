@@ -152,6 +152,11 @@ const isValidQuestion = (question: MillionQuestion) => {
 };
 
 export const MILLION_QUESTIONS = BIBLE_FACTS.flatMap(createQuestions).filter(isValidQuestion);
-export const millionQuestionsForDifficulty = (difficulty: MillionDifficulty) => MILLION_QUESTIONS.filter((question) => question.difficulty === difficulty && !(difficulty === "dificil" || difficulty === "bereano") || (question.difficulty === difficulty && question.type !== "true-false"));
+export const millionQuestionsForDifficulty = (difficulty: MillionDifficulty) =>
+  MILLION_QUESTIONS.filter((question) => {
+    if (question.difficulty !== difficulty) return false;
+    if (difficulty === "dificil" || difficulty === "bereano") return question.type !== "true-false";
+    return true;
+  });
 export const randomMillionQuestions = (difficulty: MillionDifficulty, amount: number) => shuffle(millionQuestionsForDifficulty(difficulty)).slice(0, amount).map((question) => ({ ...question, options: shuffle(question.options) }));
 export const randomMillionQuestionsWithSeed = (difficulty: MillionDifficulty, amount: number, seed: number) => shuffleWithSeed(millionQuestionsForDifficulty(difficulty), seed).slice(0, amount).map((question, index) => ({ ...question, options: shuffleWithSeed(question.options, seed + index + 1) }));
