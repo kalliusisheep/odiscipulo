@@ -219,6 +219,11 @@ function MultiplayerPage() {
     return () => window.clearInterval(heartbeat);
   }, [me?.state, myId, room?.status, roomId]);
 
+  useEffect(() => {
+    if (room?.status !== "playing" || !roomId) return;
+    window.location.href = `/jogos/${gameType}?mode=multi&roomId=${roomId}`;
+  }, [gameType, room?.status, roomId]);
+
   const copyInvite = async () => {
     if (!roomId) return;
     await navigator.clipboard?.writeText(`${window.location.origin}/jogos/multiplayer?roomId=${roomId}`);

@@ -55,6 +55,7 @@ function MillionPage() {
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [weakness, setWeakness] = useState<Record<string, { correct: number; total: number }>>({});
   const startedAt = useRef(0);
+  const autoStarted = useRef(false);
   const question = questions[index];
   const level = useMemo(() => [...MILLION_LEVELS].reverse().find((item) => score >= item.points) ?? MILLION_LEVELS[0], [score]);
 
@@ -72,6 +73,13 @@ function MillionPage() {
     window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...selectedQuestions.map((question) => question.id)])].slice(-Math.max(ROUND_COUNT * 5, 40))));
     setQuestions(selectedQuestions); setScore(0); setStreak(0); setBestStreak(0); setUsedLifelines([]); setCorrectAnswers(0); setWeakness({}); setTimeLeft(ROUND_SECONDS); setConsultations(null); startedAt.current = Date.now(); setPhase("playing");
   };
+
+  useEffect(() => {
+    if (mode === "multi" && roomId && !autoStarted.current) {
+      autoStarted.current = true;
+      start();
+    }
+  }, [mode, roomId]);
 
   const answer = useCallback((value: string | null) => {
     if (phase !== "playing" || !question) return;

@@ -58,6 +58,7 @@ function VersiculoPage() {
   const [results, setResults] = useState<RoundResult[]>([]);
   const [lastPoints, setLastPoints] = useState(0);
   const startedAtRef = useRef(0);
+  const autoStarted = useRef(false);
   const question = questions[round];
   const meta = VERSE_DIFFICULTY[difficulty];
 
@@ -82,6 +83,13 @@ function VersiculoPage() {
     setQuestions(list); setRound(0); setScore(0); setStreak(0); setBestStreak(0); setResults([]); setLastPoints(0);
     setOptions(shuffle([list[0].reference, ...list[0].alternatives])); setSelected(null); setTimeLeft(ROUND_SECONDS); startedAtRef.current = Date.now(); setPhase("answering");
   };
+
+  useEffect(() => {
+    if (mode === "multi" && roomId && !autoStarted.current) {
+      autoStarted.current = true;
+      start();
+    }
+  }, [mode, roomId]);
 
   const answer = useCallback((value: string | null) => {
     if (phase !== "answering" || !question) return;

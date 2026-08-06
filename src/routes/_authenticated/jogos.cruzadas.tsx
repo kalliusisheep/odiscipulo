@@ -123,12 +123,20 @@ function CrosswordPage() {
   const [score, setScore] = useState(0);
   const [errorCell, setErrorCell] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const autoStarted = useRef(false);
   const config = CROSSWORD_DIFFICULTY[difficulty];
   const cellMap = useMemo(() => new Map(puzzle.cells.map((cell) => [key(cell.row, cell.col), cell])), [puzzle.cells]);
   const activePlacement = puzzle.placements.find((placement) => placement.word.id === activeWordId);
   const activeWord = activePlacement?.word;
 
   const start = () => { startGameMusic(); playGameSfx("start"); setPuzzle(generatePuzzle(difficulty, theme)); setLetters({}); setSelectedCell(null); setActiveWordId(null); setCompleted([]); setErrors(0); setHints(0); setSeconds(0); setScore(0); setPhase("playing"); };
+
+  useEffect(() => {
+    if (mode === "multi" && roomId && !autoStarted.current) {
+      autoStarted.current = true;
+      start();
+    }
+  }, [mode, roomId]);
   useEffect(() => { if (phase !== "playing") return; const timer = window.setInterval(() => setSeconds((value) => value + 1), 1000); return () => window.clearInterval(timer); }, [phase]);
 
   const selectCell = (cell: Cell) => { setSelectedCell(key(cell.row, cell.col)); setActiveWordId((current) => current && cell.wordIds.includes(current) ? current : cell.wordIds[0]); inputRef.current?.focus(); };

@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check, Flame, Lightbulb, RotateCcw, Sparkles, Trophy, X, Zap } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { BIBLICAL_CHARACTERS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
@@ -39,6 +39,7 @@ function PersonagemPage() {
   const [roundScore, setRoundScore] = useState(0);
   const [streak, setStreak] = useState(0);
   const [correct, setCorrect] = useState<boolean | null>(null);
+  const autoStarted = useRef(false);
   const character = queue[round];
   const difficultyData = CHARACTER_DIFFICULTY[difficulty];
   const firstHint = character ? formatFirstHint(character.hints[0]) : "";
@@ -66,6 +67,13 @@ function PersonagemPage() {
     setCorrect(null);
     setPhase("playing");
   };
+
+  useEffect(() => {
+    if (mode === "multi" && roomId && !autoStarted.current) {
+      autoStarted.current = true;
+      start();
+    }
+  }, [mode, roomId]);
 
   const revealHint = (hintIndex: number) => {
     if (revealed.includes(hintIndex)) return;
