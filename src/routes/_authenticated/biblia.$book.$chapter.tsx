@@ -197,6 +197,14 @@ function ChapterReader() {
     });
   }, [narrationIndex, verses]);
 
+  useEffect(() => {
+    if (!verses || typeof window === "undefined" || !window.location.hash) return;
+    const targetId = decodeURIComponent(window.location.hash.slice(1));
+    requestAnimationFrame(() => {
+      document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }, [verses]);
+
   useEffect(() => () => stopNarration(), [stopNarration]);
 
   useEffect(() => {
@@ -376,6 +384,7 @@ function ChapterReader() {
                     verseRefs.current[v.verse] = element;
                   }}
                   onClick={() => setSelected(v.verse)}
+                  id={`v-${v.verse}`}
                   className={`block w-full rounded-xl px-2 py-1.5 text-left transition-all ${
                     narrationIndex === verses.findIndex((item) => item.verse === v.verse)
                       ? "bg-primary/[0.08] shadow-[inset_3px_0_0_hsl(var(--primary)),0_0_22px_hsl(var(--primary)/0.10)]"
