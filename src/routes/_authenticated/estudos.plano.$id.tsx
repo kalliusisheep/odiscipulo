@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/lib/app-context";
 import { useCelebration } from "@/lib/celebration";
-import { awardXpAndStreak } from "@/lib/progress";
+import { awardProgressXp } from "@/lib/progress";
 import { logActivityOnce } from "@/lib/activities";
 import { fetchPassage, bibleLabelFor, stripVerseNumbers } from "@/lib/bible";
 import { NarrationButton } from "@/components/NarrationButton";
@@ -152,13 +152,12 @@ function PlanoPage() {
       void (async () => {
         const { data: u } = await supabase.auth.getUser();
         if (!u.user) return;
-        const xp = 30;
-        await supabase.from("lesson_progress").upsert(
-          { user_id: u.user.id, lesson_id: `plan:${id}:${day}`, xp_gained: xp },
-          { onConflict: "user_id,lesson_id" },
-        );
-        const { prevXp, newXp } = await awardXpAndStreak(u.user.id, xp);
-        celebrateActivity({ prevXp, newXp, xp });
+        const progressReward = await awardProgressXp(u.user.id, `plan:${id}:${day}`, 30);
+        celebrateActivity({
+          prevXp: progressReward.prevXp,
+          newXp: progressReward.newXp,
+          xp: progressReward.xp,
+        });
       })();
     }
   };
