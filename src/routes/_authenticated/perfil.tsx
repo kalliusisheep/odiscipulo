@@ -949,6 +949,7 @@ function BibleVersionSelector({
   onOpenChange: (open: boolean) => void;
   onSelect: (code: BibleVersion) => void;
 }) {
+  const { t } = useApp();
   const current =
     BIBLE_VERSION_OPTIONS.find((option) => option.code === value) ?? BIBLE_VERSION_OPTIONS[0];
   return (
@@ -962,7 +963,7 @@ function BibleVersionSelector({
           <BookOpen className="h-5 w-5" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-bold">Versão da Bíblia</p>
+          <p className="text-sm font-bold">{t("profile.bibleVersion")}</p>
           <p className="mt-0.5 truncate text-[11px] text-muted-foreground">{current.name}</p>
         </div>
         <span className="rounded-full bg-primary/[0.07] px-2.5 py-1 text-[10px] font-extrabold text-primary">
@@ -973,7 +974,7 @@ function BibleVersionSelector({
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Versão da Bíblia</DialogTitle>
+            <DialogTitle>{t("profile.bibleVersion")}</DialogTitle>
             <DialogDescription>
               Escolha a versão exibida em lições, estudos e mural.
             </DialogDescription>
