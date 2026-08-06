@@ -15,7 +15,7 @@ function JogosPage() {
   if (location.pathname !== "/jogos") return <Outlet />;
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="game-arena-page min-h-screen bg-background">
       <div className="mx-auto max-w-lg px-4 pb-28 pt-5">
         <header className="flex items-start justify-between gap-4">
           <div>

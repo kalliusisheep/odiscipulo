@@ -10,7 +10,7 @@ type GameModeChooserProps = {
 
 export function GameModeChooser({ title, description, onBack, onSinglePlayer, onMultiplayer }: GameModeChooserProps) {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="game-arena-page min-h-screen bg-background">
       <div className="mx-auto max-w-lg px-4 pb-28 pt-5">
         <button type="button" onClick={onBack} className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Jogos
