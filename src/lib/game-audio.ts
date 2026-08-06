@@ -23,6 +23,10 @@ let musicEnabled = true;
 let sfxEnabled = true;
 let musicStarted = false;
 let musicTheme: GameMusicTheme = "character";
+if (typeof window !== "undefined") {
+  musicEnabled = window.localStorage.getItem("disciple.game.music") !== "off";
+  sfxEnabled = window.localStorage.getItem("disciple.game.sfx") !== "off";
+}
 let audioSnapshot: GameAudioState = { musicEnabled, sfxEnabled, musicStarted };
 
 const emit = () => {
@@ -65,20 +69,33 @@ function playMusicStep() {
     oscillator.type = index === 0 ? "sine" : "triangle";
     oscillator.frequency.setValueAtTime(frequency, now);
     gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(index === 0 ? 0.16 : 0.07, now + 0.24);
+    gain.gain.exponentialRampToValueAtTime(index === 0 ? 0.28 : 0.13, now + 0.24);
     gain.gain.exponentialRampToValueAtTime(0.0001, now + 3.1);
     oscillator.connect(gain);
     gain.connect(destination);
     oscillator.start(now);
     oscillator.stop(now + 3.2);
   });
+
+  const bass = context.createOscillator();
+  const bassGain = context.createGain();
+  bass.type = "sine";
+  bass.frequency.setValueAtTime(chord[0] / 2, now);
+  bassGain.gain.setValueAtTime(0.0001, now);
+  bassGain.gain.exponentialRampToValueAtTime(0.18, now + 0.3);
+  bassGain.gain.exponentialRampToValueAtTime(0.0001, now + 3.1);
+  bass.connect(bassGain);
+  bassGain.connect(destination);
+  bass.start(now);
+  bass.stop(now + 3.2);
+
   if (musicStep % 2 === 0) {
     const bell = context.createOscillator();
     const bellGain = context.createGain();
     bell.type = "sine";
     bell.frequency.setValueAtTime(chord[3] * 2, now + 0.55);
     bellGain.gain.setValueAtTime(0.0001, now);
-    bellGain.gain.exponentialRampToValueAtTime(0.035, now + 0.62);
+    bellGain.gain.exponentialRampToValueAtTime(0.07, now + 0.62);
     bellGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.2);
     bell.connect(bellGain);
     bellGain.connect(destination);
@@ -90,7 +107,16 @@ function playMusicStep() {
 
 export function startGameMusic(theme?: GameMusicTheme) {
   musicStarted = true;
-  musicTheme = theme ?? (typeof window !== "undefined" && window.location.pathname.includes("cruzadas") ? "crossword" : "character");
+  const pathName = typeof window !== "undefined" ? window.location.pathname : "";
+  musicTheme =
+    theme ??
+    (pathName.includes("cruzadas")
+      ? "crossword"
+      : pathName.includes("milhao")
+        ? "million"
+        : pathName.includes("versiculo")
+          ? "verse"
+          : "character");
   const context = ensureContext();
   if (!context || !musicEnabled || musicTimer !== null) {
     emit();
@@ -99,7 +125,7 @@ export function startGameMusic(theme?: GameMusicTheme) {
   void context.resume();
   if (musicGain) {
     musicGain.gain.cancelScheduledValues(context.currentTime);
-    musicGain.gain.setTargetAtTime(0.24, context.currentTime, 0.7);
+    musicGain.gain.setTargetAtTime(0.38, context.currentTime, 0.7);
   }
   playMusicStep();
   musicTimer = window.setInterval(playMusicStep, 3200);
@@ -117,6 +143,7 @@ export function stopGameMusic() {
 
 export function toggleGameMusic() {
   musicEnabled = !musicEnabled;
+  if (typeof window !== "undefined") window.localStorage.setItem("disciple.game.music", musicEnabled ? "on" : "off");
   if (musicEnabled && musicStarted) startGameMusic();
   else if (!musicEnabled) stopGameMusic();
   emit();
@@ -124,6 +151,7 @@ export function toggleGameMusic() {
 
 export function toggleGameSfx() {
   sfxEnabled = !sfxEnabled;
+  if (typeof window !== "undefined") window.localStorage.setItem("disciple.game.sfx", sfxEnabled ? "on" : "off");
   emit();
 }
 
@@ -149,7 +177,7 @@ export function playGameSfx(kind: GameSfx) {
     oscillator.type = kind === "error" ? "sawtooth" : "triangle";
     oscillator.frequency.setValueAtTime(frequency, startAt);
     gain.gain.setValueAtTime(0.0001, startAt);
-    gain.gain.exponentialRampToValueAtTime(kind === "tap" ? 0.035 : 0.075, startAt + 0.012);
+    gain.gain.exponentialRampToValueAtTime(kind === "tap" ? 0.06 : 0.14, startAt + 0.012);
     gain.gain.exponentialRampToValueAtTime(0.0001, startAt + durations[kind]);
     oscillator.connect(gain);
     gain.connect(context.destination);
