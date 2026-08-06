@@ -179,7 +179,7 @@ function MessagesPage() {
             <div className="min-w-0">
               <p className="truncate text-sm font-extrabold">{peer.display_name}</p>
               <div className="mt-0.5 flex items-center gap-1.5">
-                <span className={`h-2 w-2 shrink-0 rounded-full ${peerOnline ? "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.75)]" : "bg-slate-500"}`} />
+                <span className={`h-2 w-2 shrink-0 rounded-full ${peerOnline ? "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.75)]" : "bg-rose-400 shadow-[0_0_7px_rgba(251,113,133,0.45)]"}`} />
                 <p className={`truncate text-[11px] ${peerOnline ? "font-semibold text-emerald-400" : "text-muted-foreground"}`}>
                   {peerOnline ? "Online agora" : `Offline · ${peerPresence.replace("Visto ", "")}`}
                 </p>
