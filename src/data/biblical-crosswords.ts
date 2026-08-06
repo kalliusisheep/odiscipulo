@@ -316,5 +316,5 @@ export const crosswordWordsFor = (difficulty: GameDifficulty, theme?: CrosswordT
   const meaningful = themed.filter((entry) => !(entry.category === "Pessoa" && entry.reference === "Gênesis 1–50"));
   if (difficulty === "bereano") return meaningful.filter((entry) => entry.word.length >= 7 || entry.difficulty === "bereano");
   if (difficulty === "dificil") return meaningful.filter((entry) => entry.word.length >= 5 || entry.difficulty === "dificil");
-  return themed.filter((entry) => entry.difficulty === difficulty);
+  return meaningful.filter((entry) => entry.difficulty === difficulty);
 };
