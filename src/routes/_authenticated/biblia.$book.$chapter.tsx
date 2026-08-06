@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { bookById, bookNameById } from "@/data/bible-books";
-import { fetchChapter, translationByCode, PT_TRANSLATIONS, type Verse } from "@/lib/bible-source";
+import { fetchChapter, translationByCode, translationsForLanguage, type Verse } from "@/lib/bible-source";
 import {
   addNote,
   highlightClass,
@@ -59,7 +59,8 @@ function ChapterReader() {
   const chapter = Number(params.chapter);
   const nav = useNavigate();
   const { translation, setTranslation, fontIndex, setFont, fontSize } = useBiblePrefs();
-  const { theme } = useApp();
+  const { theme, language } = useApp();
+  const availableTranslations = useMemo(() => translationsForLanguage(language), [language]);
 
   const [verses, setVerses] = useState<Verse[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -594,7 +595,7 @@ function ChapterReader() {
               Tradução
             </p>
             <div className="mt-2 grid grid-cols-2 gap-2">
-              {PT_TRANSLATIONS.map((t) => (
+              {availableTranslations.map((t) => (
                 <button
                   key={t.code}
                   onClick={() => {
