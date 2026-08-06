@@ -3,19 +3,30 @@ import { ArrowLeft, ArrowRight, Swords, Sparkles, UserRound, Users } from "lucid
 type GameModeChooserProps = {
   title: string;
   description: string;
+  heroImage?: string;
+  heroImageAlt?: string;
   onBack: () => void;
   onSinglePlayer: () => void;
   onMultiplayer: () => void;
 };
 
-export function GameModeChooser({ title, description, onBack, onSinglePlayer, onMultiplayer }: GameModeChooserProps) {
+export function GameModeChooser({ title, description, heroImage, heroImageAlt, onBack, onSinglePlayer, onMultiplayer }: GameModeChooserProps) {
   return (
     <main className="game-arena-page min-h-screen bg-background">
       <div className="mx-auto max-w-lg px-4 pb-28 pt-5">
         <button type="button" onClick={onBack} className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Jogos
         </button>
-        <header className="game-mode-hero relative mt-10 overflow-hidden rounded-[2rem] border border-primary/20 bg-gradient-to-br from-primary/20 via-surface to-ancient/10 p-5 shadow-xl shadow-primary/10">
+        <header className="game-mode-hero relative mt-10 min-h-[220px] overflow-hidden rounded-[2rem] border border-primary/20 bg-gradient-to-br from-primary/20 via-surface to-ancient/10 p-5 shadow-xl shadow-primary/10">
+          {heroImage && (
+            <img
+              src={heroImage}
+              alt={heroImageAlt ?? `Ilustração de ${title}`}
+              className="absolute inset-0 h-full w-full object-cover object-center"
+            />
+          )}
+          {heroImage && <span className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background/95 via-background/75 to-background/30" aria-hidden="true" />}
+          {heroImage && <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/85 via-background/10 to-transparent" aria-hidden="true" />}
           <Sparkles className="pointer-events-none absolute -right-3 -top-3 h-24 w-24 text-primary/10" />
           <p className="relative text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">Escolha como jogar</p>
           <h1 className="relative mt-1 text-3xl font-extrabold">{title}</h1>

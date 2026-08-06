@@ -114,7 +114,7 @@ function PersonagemPage() {
   };
 
   if (phase === "setup" && !modeSelected) {
-    return <GameModeChooser title="Quem é o personagem?" description="Escolha uma experiência rápida para testar sua memória bíblica ou reúna seus amigos para uma disputa em sala." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=personagem"; }} />;
+    return <GameModeChooser title="Quem é o personagem?" heroImage="/game-quem-e-o-personagem.jpeg" heroImageAlt="Ovelha apresentando o jogo Quem é o personagem?" description="Escolha uma experiência rápida para testar sua memória bíblica ou reúna seus amigos para uma disputa em sala." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=personagem"; }} />;
   }
 
   if (phase === "setup") {
