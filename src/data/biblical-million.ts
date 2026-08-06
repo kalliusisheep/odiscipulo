@@ -139,7 +139,7 @@ function createQuestions(fact: BibleFact): MillionQuestion[] {
     { id: `${fact.id}-multiple`, type: "multiple", prompt: fact.prompt, options: answerOptions, answer: fact.answer, explanation: fact.explanation, reference: fact.reference, category: fact.category, difficulty: fact.difficulty },
     { id: `${fact.id}-true-false`, type: "true-false", prompt: `Verdadeiro ou falso: ${fact.statement}`, options: ["Verdadeiro", "Falso"], answer: "Verdadeiro", explanation: fact.explanation, reference: fact.reference, category: fact.category, difficulty: fact.difficulty },
     { id: `${fact.id}-complete`, type: "complete", prompt: `Complete: “${fact.completion}”`, options: completionOptions, answer: completionAnswer, explanation: fact.explanation, reference: fact.reference, category: fact.category, difficulty: fact.difficulty },
-    { id: `${fact.id}-reference`, type: "reference", prompt: `Qual referência registra este fato: ${fact.prompt}`, options: [fact.reference, ...fact.referenceChoices], answer: fact.reference, explanation: fact.explanation, reference: fact.reference, category: fact.category, difficulty: fact.difficulty },
+    { id: `${fact.id}-reference`, type: "reference", prompt: `Qual passagem contextualiza este acontecimento? ${fact.prompt}`, options: [fact.reference, ...fact.referenceChoices], answer: fact.reference, explanation: fact.explanation, reference: fact.reference, category: fact.category, difficulty: fact.difficulty },
   ];
 }
 
