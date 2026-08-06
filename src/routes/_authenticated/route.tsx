@@ -9,6 +9,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { MentorFAB, MentorChat } from "@/components/Mentor";
 import { touchLastSeen } from "@/lib/presence";
 import { GameInviteOverlay } from "@/components/GameInviteOverlay";
+import { PushNotifications } from "@/components/PushNotifications";
 
 function AuthCheckPending() {
   return (
@@ -60,6 +61,7 @@ function AuthedLayout() {
           <div className={`min-h-screen bg-background ${isPrivateChat ? "" : "pb-24"}`}>
             <Outlet />
             <GameInviteOverlay />
+            <PushNotifications />
             {!isPrivateChat && (
               <>
                 <MentorFAB />
