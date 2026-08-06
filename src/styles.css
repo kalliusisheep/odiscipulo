@@ -237,6 +237,11 @@
   --ring: oklch(0.7 0.2 350);
 }
 
+.theme-preview-white { background: linear-gradient(135deg, #ffffff, #e7eaf2); }
+.theme-preview-gray { background: linear-gradient(135deg, #d5d8e0, #8f96a8); }
+.theme-preview-black { background: linear-gradient(135deg, #11131b, #030407); }
+.theme-preview-pink { background: linear-gradient(135deg, #f06bba, #52205f); }
+
 @layer base {
   html, body {
     background-color: var(--color-background);
