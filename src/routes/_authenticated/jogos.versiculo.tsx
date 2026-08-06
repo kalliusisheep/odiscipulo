@@ -73,7 +73,7 @@ function VersiculoPage() {
     if (!current) return;
     setOptions(seed ? shuffleWithSeed([current.reference, ...current.alternatives], seed + index) : shuffle([current.reference, ...current.alternatives]));
     setSelected(null); setTimeLeft(meta.timeLimit); startedAtRef.current = Date.now(); setPhase("answering");
-  }, [questions, seed]);
+  }, [meta.timeLimit, questions, seed]);
 
   const start = () => {
     scoreSaved.current = false;
