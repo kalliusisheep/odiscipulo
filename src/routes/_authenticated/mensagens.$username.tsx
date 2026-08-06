@@ -8,6 +8,7 @@ import { EmojiPicker } from "@/components/EmojiPicker";
 import { VoiceRecorder } from "@/components/VoiceRecorder";
 import { VoiceNotePlayer } from "@/components/VoiceNotePlayer";
 import { uploadChatVoiceMessage } from "@/lib/voice-upload";
+import { formatPresence } from "@/lib/presence";
 
 export const Route = createFileRoute("/_authenticated/mensagens/$username")({
   component: MessagesPage,
@@ -23,7 +24,7 @@ type Msg = {
   created_at: string;
   read_at: string | null;
 };
-type Peer = { id: string; display_name: string; username: string; avatar_url: string | null };
+type Peer = { id: string; display_name: string; username: string; avatar_url: string | null; last_seen_at: string | null };
 
 function dayLabel(date: Date) {
   const label = format(date, "d 'de' MMMM", { locale: ptBR });
@@ -48,7 +49,7 @@ function MessagesPage() {
       setMyId(u.user.id);
       const { data: p } = await supabase
         .from("profiles")
-        .select("id, display_name, username, avatar_url")
+        .select("id, display_name, username, avatar_url, last_seen_at")
         .ilike("username", username)
         .maybeSingle();
       if (!p) return;
@@ -140,9 +141,12 @@ function MessagesPage() {
     inputRef.current?.focus();
   };
 
+  const peerPresence = peer ? formatPresence(peer.last_seen_at) : "Carregando presença";
+  const peerOnline = peerPresence === "Online agora";
+
   return (
     <div className="mx-auto flex h-[100dvh] max-w-lg flex-col bg-gradient-to-b from-surface/60 via-background to-background">
-      <header className="flex items-center gap-3 border-b border-border bg-background/80 px-4 py-3 backdrop-blur-md">
+      <header className="flex items-center gap-3 border-b border-border bg-background/90 px-4 py-3 shadow-sm backdrop-blur-xl">
         <Link
           to="/mensagens"
           className="text-muted-foreground transition-colors hover:text-primary"
@@ -156,7 +160,7 @@ function MessagesPage() {
             className="flex min-w-0 flex-1 items-center gap-3 rounded-xl px-1 py-1 transition-colors hover:bg-surface-2"
             aria-label={`Ver perfil de ${peer.display_name}`}
           >
-            <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-surface-2 ring-2 ring-primary/30">
+            <div className={`relative h-11 w-11 shrink-0 overflow-hidden rounded-full bg-surface-2 ring-2 ${peerOnline ? "ring-emerald-400/70" : "ring-border"}`}>
               {peer.avatar_url ? (
                 <img src={peer.avatar_url} alt="" className="h-full w-full object-cover" />
               ) : (
@@ -166,8 +170,13 @@ function MessagesPage() {
               )}
             </div>
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold">{peer.display_name}</p>
-              <p className="truncate text-[11px] text-muted-foreground">Toque para ver o perfil</p>
+              <p className="truncate text-sm font-extrabold">{peer.display_name}</p>
+              <div className="mt-0.5 flex items-center gap-1.5">
+                <span className={`h-2 w-2 shrink-0 rounded-full ${peerOnline ? "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.75)]" : "bg-slate-500"}`} />
+                <p className={`truncate text-[11px] ${peerOnline ? "font-semibold text-emerald-400" : "text-muted-foreground"}`}>
+                  {peerOnline ? "Online agora" : `Offline · ${peerPresence.replace("Visto ", "")}`}
+                </p>
+              </div>
             </div>
           </Link>
         )}
@@ -250,7 +259,7 @@ function MessagesPage() {
           e.preventDefault();
           void send();
         }}
-        className="flex items-center gap-2 border-t border-border bg-background/90 px-3 py-3 backdrop-blur-md"
+        className="flex items-center gap-2 rounded-t-3xl border-t border-border bg-background/95 px-3 py-3.5 shadow-[0_-8px_24px_-20px_hsl(var(--primary)/0.6)] backdrop-blur-xl"
       >
         <EmojiPicker onSelect={insertEmoji} className={voiceExpanded ? "hidden" : undefined} />
         <input
@@ -258,7 +267,7 @@ function MessagesPage() {
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Escreva uma mensagem…"
-          className={`min-w-0 flex-1 rounded-full border border-border bg-input px-4 py-2.5 text-base outline-none transition-colors focus:border-primary ${voiceExpanded ? "hidden" : ""}`}
+          className={`min-w-0 flex-1 rounded-2xl border border-border bg-input px-4 py-3 text-base outline-none transition-colors focus:border-primary ${voiceExpanded ? "hidden" : ""}`}
         />
         {text.trim() && !voiceExpanded ? (
           <button
