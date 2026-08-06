@@ -55,17 +55,34 @@ function Marcados() {
       </div>
 
       <div className="mt-4 flex gap-2 overflow-x-auto rounded-[1.35rem] border border-border/70 bg-surface/55 p-1.5 pb-1">
-        {TABS.map((t) => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            className={`shrink-0 rounded-xl border px-3.5 py-2 text-xs font-bold transition-all ${
-              tab === t ? "border-primary bg-primary/15 text-primary" : "border-border bg-surface text-muted-foreground"
-            }`}
-          >
-            {t}
-          </button>
-        ))}
+        {TABS.map((t) => {
+          const count =
+            t === "Destaques"
+              ? data?.highlights.length ?? 0
+              : t === "Anotações"
+                ? data?.notes.length ?? 0
+                : t === "Favoritos"
+                  ? data?.favorites.length ?? 0
+                  : data?.bookmarks.length ?? 0;
+          return (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`flex shrink-0 items-center gap-2 rounded-xl border px-3.5 py-2 text-xs font-bold transition-all ${
+                tab === t
+                  ? "border-primary bg-primary/15 text-primary"
+                  : "border-border bg-surface text-muted-foreground"
+              }`}
+            >
+              {t}
+              <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-extrabold ${
+                tab === t ? "bg-primary/15 text-primary" : "bg-surface-2 text-muted-foreground"
+              }`}>
+                {count}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       {!data && (
