@@ -208,6 +208,7 @@ export function SharedQuestionGame({
     if (me) {
       setError("");
     }
+    return nextPlayers;
   }, [roomId, userId]);
 
   const loadRound = useCallback(async () => {
@@ -351,19 +352,22 @@ export function SharedQuestionGame({
   useEffect(() => {
     if (phase !== "finished" || !userId || resultSaved.current) return;
     resultSaved.current = true;
-    void loadPlayers(userId);
-    void recordGameResult({
-      gameKey: gameKeys[gameType],
-      score: players.find((player) => player.user_id === userId)?.score ?? 0,
-      correctAnswers: players.find((player) => player.user_id === userId)?.correct_answers ?? 0,
-      rounds,
-      bestStreak: players.find((player) => player.user_id === userId)?.best_streak ?? 0,
-    });
+    void (async () => {
+      const finalPlayers = await loadPlayers(userId);
+      const finalMe = finalPlayers.find((player) => player.user_id === userId);
+      await recordGameResult({
+        gameKey: gameKeys[gameType],
+        score: finalMe?.score ?? 0,
+        correctAnswers: finalMe?.correct_answers ?? 0,
+        rounds,
+        bestStreak: finalMe?.best_streak ?? 0,
+      });
+    })();
     if (!finishSoundPlayed.current) {
       finishSoundPlayed.current = true;
       playGameSfx("complete");
     }
-  }, [gameType, loadPlayers, phase, players, rounds, userId]);
+  }, [gameType, loadPlayers, phase, rounds, userId]);
 
   const me = players.find((player) => player.user_id === userId);
   const sortedPlayers = [...players].sort((first, second) => second.score - first.score || second.correct_answers - first.correct_answers);
