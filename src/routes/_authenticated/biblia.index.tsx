@@ -56,10 +56,24 @@ function BibliaIndex() {
   const [hits, setHits] = useState<SearchHit[] | null>(null);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [read, setRead] = useState<{ book: number; chapter: number }[]>([]);
+  const [readLoading, setReadLoading] = useState(true);
+  const [readError, setReadError] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
 
+  const loadReadProgress = async () => {
+    setReadLoading(true);
+    setReadError(false);
+    try {
+      setRead(await listReadChapters());
+    } catch {
+      setReadError(true);
+    } finally {
+      setReadLoading(false);
+    }
+  };
+
   useEffect(() => {
-    void listReadChapters().then(setRead);
+    void loadReadProgress();
   }, []);
 
   const readSet = useMemo(() => new Set(read.map((r) => `${r.book}:${r.chapter}`)), [read]);
@@ -85,8 +99,29 @@ function BibliaIndex() {
 
   const runSearch = async () => {
     if (q.length < 3) return;
-    setSearching(true);
     setSearchError(null);
+
+    const reference = q.match(/^(.+?)\\s+(\\d{1,3})(?::|\\.)(\\d{1,3})$/);
+    if (reference) {
+      const normalizedBook = normalize(reference[1]);
+      const book = BIBLE_BOOKS.find(
+        (item) => normalize(item.name) === normalizedBook || normalize(item.abbr) === normalizedBook,
+      );
+      const chapter = Number(reference[2]);
+      const verse = Number(reference[3]);
+      if (book && chapter >= 1 && chapter <= book.chapters && verse >= 1) {
+        await nav({
+          to: "/biblia/$book/$chapter",
+          params: { book: String(book.id), chapter: String(chapter) },
+          hash: "v-" + verse,
+        });
+        return;
+      }
+      setSearchError("Referência não encontrada. Use, por exemplo, João 3:16.");
+      return;
+    }
+
+    setSearching(true);
     try {
       setHits(await searchBible(translation, q));
     } catch {
@@ -152,7 +187,7 @@ function BibliaIndex() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && void runSearch()}
-                placeholder="Busque um livro, palavra ou frase"
+                placeholder="Busque livro, referência ou frase"
                 className="min-w-0 flex-1 bg-transparent py-2.5 text-[15px] outline-none placeholder:text-muted-foreground/70"
               />
               {searching ? (
@@ -218,6 +253,15 @@ function BibliaIndex() {
         {searchError && (
           <div className="mb-3 rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-xs text-destructive">
             {searchError}
+          </div>
+        )}
+
+        {readError && (
+          <div className="mb-3 flex items-center justify-between gap-3 rounded-2xl border border-amber-400/25 bg-amber-400/5 px-4 py-3 text-xs text-muted-foreground">
+            <span>Não foi possível carregar seu progresso de leitura.</span>
+            <button type="button" onClick={() => void loadReadProgress()} className="shrink-0 rounded-xl bg-primary px-3 py-2 font-bold text-primary-foreground">
+              Tentar novamente
+            </button>
           </div>
         )}
 
@@ -327,7 +371,7 @@ function BibliaIndex() {
                   <div className="flex items-center justify-between gap-3">
                     <span className="text-[10px] font-semibold text-white/55">Progresso completo</span>
                     <span className="text-[10px] font-bold text-white/80">
-                      {read.length} de 1189 capítulos
+                      {readLoading ? "Carregando progresso…" : `${read.length} de 1189 capítulos`}
                     </span>
                   </div>
                   <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-slate-950/45 p-[2px] ring-1 ring-white/5">
