@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, useState, type ReactNode } from "react";
 import type { BibleVersion } from "@/data/content";
 import {
   type AppLanguage,
@@ -47,14 +47,22 @@ function applyTheme(theme: AppTheme, language: AppLanguage) {
   root.classList.remove("light", "dark", "theme-white", "theme-gray", "theme-black", "theme-pink");
   root.classList.add(`theme-${theme}`);
   root.classList.add(theme === "black" || theme === "pink" ? "dark" : "light");
+  root.style.colorScheme = theme === "black" || theme === "pink" ? "dark" : "light";
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [viewMode, setViewMode] = useState<ViewMode>("aluno");
   const [bibleVersion, setBibleVersion] = useState<BibleVersion>("NVI");
   const [mentorOpen, setMentorOpen] = useState(false);
-  const [language, setLanguageState] = useState<AppLanguage>("pt-BR");
-  const [theme, setThemeState] = useState<AppTheme>("black");
+  const [language, setLanguageState] = useState<AppLanguage>(() => {
+    if (typeof window === "undefined") return "pt-BR";
+    const stored = window.localStorage.getItem("disciple.language");
+    return isLanguage(stored) ? stored : "pt-BR";
+  });
+  const [theme, setThemeState] = useState<AppTheme>(() => {
+    if (typeof window === "undefined") return "black";
+    return normalizeTheme(window.localStorage.getItem("disciple.theme"));
+  });
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -62,9 +70,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (v) setBibleVersion(v as BibleVersion);
     const m = window.localStorage.getItem("disciple.viewMode");
     if (m === "lider" || m === "aluno") setViewMode(m);
-    const storedLanguage = window.localStorage.getItem("disciple.language");
-    if (isLanguage(storedLanguage)) setLanguageState(storedLanguage);
-    setThemeState(normalizeTheme(window.localStorage.getItem("disciple.theme")));
+    // Idioma e tema já são restaurados nos inicializadores para evitar flash
+    // e impedir que a navegação volte ao padrão visual.
   }, []);
 
   useEffect(() => {
@@ -79,7 +86,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   }, [viewMode]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (typeof window !== "undefined") {
       window.localStorage.setItem("disciple.language", language);
     }
