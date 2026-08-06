@@ -88,7 +88,8 @@ export function ShareLessonButton({
         share?: (data: ShareData) => Promise<void>;
       };
 
-      if (nav.share && nav.canShare?.({ files: [file] })) {
+      const canShareFile = nav.canShare ? nav.canShare({ files: [file] }) : true;
+      if (nav.share && canShareFile) {
         try {
           await nav.share({ files: [file], title });
           return;
@@ -135,8 +136,8 @@ export function ShareLessonButton({
       </button>
 
       {pickerOpen && (
-        <div className="fixed inset-0 z-[80] overflow-y-auto bg-background/98 px-4 py-5 backdrop-blur-xl">
-          <div className="mx-auto flex min-h-full max-w-3xl flex-col">
+        <div className="fixed inset-0 z-[80] flex h-[100dvh] flex-col overflow-hidden bg-background/98 px-4 pt-5 backdrop-blur-xl">
+          <div className="mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col">
             <header className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">
@@ -159,7 +160,8 @@ export function ShareLessonButton({
               </button>
             </header>
 
-            <div className="mt-6 grid flex-1 grid-cols-2 gap-3 pb-28 sm:grid-cols-3">
+            <div className="mt-6 min-h-0 flex-1 overflow-y-auto pb-32 [scrollbar-width:thin]">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {SHARE_BACKGROUNDS.map((background) => {
                 const selected = selectedBackground === background.src;
                 return (
@@ -176,6 +178,8 @@ export function ShareLessonButton({
                     <img
                       src={background.src}
                       alt={`Fundo ${background.label}`}
+                      loading="eager"
+                      decoding="async"
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-3 pb-3 pt-10">
@@ -189,6 +193,7 @@ export function ShareLessonButton({
                   </button>
                 );
               })}
+              </div>
             </div>
 
             <div className="fixed inset-x-0 bottom-0 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-xl">
