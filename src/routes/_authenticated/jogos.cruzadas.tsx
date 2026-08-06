@@ -289,6 +289,7 @@ function CrosswordPage() {
   useEffect(() => {
     if (!finish || phase !== "playing") return;
     if (roundIndex + 1 >= rounds) {
+      playGameSfx("complete");
       setPhase("finished");
       return;
     }
