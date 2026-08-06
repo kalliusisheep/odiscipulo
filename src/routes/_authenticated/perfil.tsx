@@ -291,7 +291,7 @@ function PerfilPage() {
             src="/sheep-profile.jpeg"
             alt=""
             aria-hidden="true"
-            className="h-full w-full object-cover object-center brightness-[0.72] saturate-[0.9]"
+            className="h-full w-full object-cover object-[center_28%] brightness-[0.72] saturate-[0.9]"
           />
           <div className="absolute inset-0 bg-[#111827]/15" />
         </div>
