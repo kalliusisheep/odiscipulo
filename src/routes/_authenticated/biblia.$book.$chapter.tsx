@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import { bookById, bookNameById } from "@/data/bible-books";
 import { fetchChapter, translationByCode, PT_TRANSLATIONS, type Verse } from "@/lib/bible-source";
 import {
@@ -69,49 +70,66 @@ function ChapterReader() {
   const [chapterPicker, setChapterPicker] = useState(false);
   const [narrationIndex, setNarrationIndex] = useState<number | null>(null);
   const [narrationPaused, setNarrationPaused] = useState(false);
+  const [narrationLoading, setNarrationLoading] = useState(false);
   const [narrationRate, setNarrationRate] = useState(1);
-  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioUrlRef = useRef<string | null>(null);
   const speechTokenRef = useRef(0);
   const speakVerseRef = useRef<(index: number, token: number) => void>(() => undefined);
   const verseRefs = useRef<Record<number, HTMLButtonElement | null>>({});
 
   const meta = bookById(book);
- 
+
   const stopNarration = useCallback(() => {
     speechTokenRef.current += 1;
-    if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
-    utteranceRef.current = null;
+    audioRef.current?.pause();
+    audioRef.current = null;
+    if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
+    audioUrlRef.current = null;
     setNarrationIndex(null);
     setNarrationPaused(false);
+    setNarrationLoading(false);
   }, []);
 
   const speakVerse = useCallback(
-    (index: number, token: number) => {
+    async (index: number, token: number) => {
       if (!verses || token !== speechTokenRef.current) return;
       if (index >= verses.length) {
         stopNarration();
         return;
       }
-      const verse = verses[index];
-      const utterance = new SpeechSynthesisUtterance(verse.text);
-      utterance.lang = "pt-BR";
-      utterance.rate = narrationRate;
-      utterance.pitch = 1;
-      utterance.onstart = () => {
+      setNarrationLoading(true);
+      try {
+        const { data, error } = await supabase.functions.invoke("bible-tts", {
+          body: { text: verses[index].text, rate: narrationRate },
+        });
+        if (error || !(data instanceof Blob)) throw error ?? new Error("Áudio inválido");
         if (token !== speechTokenRef.current) return;
-        setNarrationIndex(index);
-        setNarrationPaused(false);
-      };
-      utterance.onend = () => {
-        if (token === speechTokenRef.current) speakVerseRef.current(index + 1, token);
-      };
-      utterance.onerror = () => {
+        const url = URL.createObjectURL(data);
+        audioUrlRef.current = url;
+        const audio = new Audio(url);
+        audioRef.current = audio;
+        audio.onloadedmetadata = () => {
+          if (token !== speechTokenRef.current) return;
+          setNarrationIndex(index);
+          setNarrationLoading(false);
+          setNarrationPaused(false);
+          void audio.play();
+        };
+        audio.onended = () => {
+          if (token === speechTokenRef.current) speakVerseRef.current(index + 1, token);
+        };
+        audio.onerror = () => {
+          if (token !== speechTokenRef.current) return;
+          stopNarration();
+          toast.error("Não foi possível carregar a narração.");
+        };
+      } catch (error) {
         if (token !== speechTokenRef.current) return;
         stopNarration();
-        toast.error("Não foi possível iniciar a narração neste aparelho.");
-      };
-      utteranceRef.current = utterance;
-      window.speechSynthesis.speak(utterance);
+        toast.error("A narração externa está indisponível no momento.");
+        console.error(error);
+      }
     },
     [narrationRate, stopNarration, verses],
   );
@@ -120,26 +138,24 @@ function ChapterReader() {
 
   const startNarration = useCallback(
     (index = 0) => {
-      if (!verses || typeof window === "undefined" || !("speechSynthesis" in window)) {
-        toast.error("A narração não é compatível com este navegador.");
-        return;
-      }
-      window.speechSynthesis.cancel();
+      if (!verses) return;
+      stopNarration();
       const token = speechTokenRef.current + 1;
       speechTokenRef.current = token;
       setNarrationPaused(false);
       speakVerseRef.current(index, token);
     },
-    [verses],
+    [stopNarration, verses],
   );
 
   const toggleNarrationPause = () => {
-    if (narrationIndex === null || typeof window === "undefined") return;
+    const audio = audioRef.current;
+    if (!audio || narrationIndex === null) return;
     if (narrationPaused) {
-      window.speechSynthesis.resume();
+      void audio.play();
       setNarrationPaused(false);
     } else {
-      window.speechSynthesis.pause();
+      audio.pause();
       setNarrationPaused(true);
     }
   };
@@ -324,7 +340,7 @@ function ChapterReader() {
               aria-label={narrationIndex === null ? "Iniciar narração" : narrationPaused ? "Continuar narração" : "Pausar narração"}
               className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform active:scale-95"
             >
-              {narrationIndex !== null && !narrationPaused ? <Pause className="h-4 w-4" /> : <Play className="ml-0.5 h-4 w-4 fill-current" />}
+              {narrationLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : narrationIndex !== null && !narrationPaused ? <Pause className="h-4 w-4" /> : <Play className="ml-0.5 h-4 w-4 fill-current" />}
             </button>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
