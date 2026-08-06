@@ -196,7 +196,7 @@ function PlanoPage() {
 
       {plan.intro && (
         <div className="rounded-3xl border border-success/25 bg-success/5 p-5 shadow-sm">
-          <p className="scripture text-base leading-relaxed text-foreground/90">{plan.intro}</p>
+          <p className="!font-sans text-lg font-normal leading-8 text-foreground/90 !not-italic">{plan.intro}</p>
         </div>
       )}
 
@@ -361,7 +361,7 @@ function DayDetails({
         </Section>
 
         <Section title="Oração">
-          <p className="!font-sans text-base font-normal leading-relaxed text-foreground/90 !not-italic" data-narrate>
+          <p className="!font-sans text-lg font-normal leading-8 text-foreground/90 !not-italic" data-narrate>
             {day.prayer}
           </p>
         </Section>
@@ -454,7 +454,7 @@ function PassageBlock({
       )}
       {text && (
         <p
-          className="!font-sans text-base font-normal leading-7 text-foreground/90 !not-italic"
+          className="!font-sans text-lg font-normal leading-8 text-foreground/90 !not-italic"
           data-narrate
           data-narrate-text={stripVerseNumbers(text)}
         >
