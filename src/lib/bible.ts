@@ -168,7 +168,6 @@ const BOOK_ALIASES: Record<string, number> = {
   mk: 41,
   luke: 42,
   lucas: 42,
-  luke: 42,
   john: 43,
   joao: 43,
   acts: 44,
