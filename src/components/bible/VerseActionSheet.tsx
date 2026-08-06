@@ -2,7 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { HIGHLIGHT_COLORS, type HighlightColor } from "@/lib/bible-user-data";
 import { bookNameById } from "@/data/bible-books";
-import { BookOpen, Copy, Highlighter, Library, PenLine, Share2, Star } from "lucide-react";
+import { BookOpen, Copy, Highlighter, Library, PenLine, Star } from "lucide-react";
+import { ShareLessonButton } from "@/components/ShareLessonButton";
 
 type Props = {
   open: boolean;
@@ -98,7 +99,14 @@ export function VerseActionSheet(props: Props) {
             active={props.isFavorite}
           />
           <SheetAction icon={Copy} label="Copiar" onClick={props.onCopy} />
-          <SheetAction icon={Share2} label="Compartilhar" onClick={props.onShare} />
+          <div className="col-span-2">
+            <ShareLessonButton
+              lessonId={`bible:${book}:${chapter}:${verse}`}
+              title={ref}
+              shareContext={props.text}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-primary/30 bg-primary/10 py-3 text-sm font-semibold text-primary transition-colors hover:bg-primary/15"
+            />
+          </div>
         </div>
       </SheetContent>
     </Sheet>
