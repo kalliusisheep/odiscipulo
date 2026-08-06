@@ -63,6 +63,7 @@ function ChapterReader() {
 
   const [verses, setVerses] = useState<Verse[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loadAttempt, setLoadAttempt] = useState(0);
   const [highlights, setHighlights] = useState<BibleHighlight[]>([]);
   const [notes, setNotes] = useState<BibleNote[]>([]);
   const [favorites, setFavorites] = useState<number[]>([]);
@@ -121,8 +122,9 @@ function ChapterReader() {
       }
       setNarrationLoading(true);
       try {
-        const { data, error } = await supabase.functions.invoke("bible-tts", {
+        const { data, error } = await supabase.functions.invoke<Blob>("bible-tts", {
           body: { text: verses[index].text, rate: narrationRate },
+          responseType: "blob",
         });
         if (error || !(data instanceof Blob)) throw error ?? new Error("Áudio inválido");
         if (token !== speechTokenRef.current) return;
@@ -218,7 +220,7 @@ function ChapterReader() {
     return () => {
       alive = false;
     };
-  }, [translation, book, chapter]);
+  }, [translation, book, chapter, loadAttempt]);
 
   const reloadMarks = useCallback(async () => {
     const m = await listChapterMarks(book, chapter);
@@ -330,7 +332,21 @@ function ChapterReader() {
             <Loader2 className="h-6 w-6 animate-spin text-primary" />
           </div>
         )}
-        {error && <p className="mt-10 text-center text-sm text-destructive">{error}</p>}
+        {error && (
+          <div className="mx-auto mt-10 max-w-sm rounded-3xl border border-destructive/20 bg-destructive/5 p-5 text-center">
+            <p className="text-sm font-bold text-destructive">{error}</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Você pode tentar novamente sem sair do capítulo.
+            </p>
+            <button
+              type="button"
+              onClick={() => setLoadAttempt((attempt) => attempt + 1)}
+              className="mt-4 rounded-xl bg-primary px-4 py-2.5 text-xs font-bold text-primary-foreground"
+            >
+              Tentar novamente
+            </button>
+          </div>
+        )}
 
         {verses?.length === 0 && !error && (
           <div className="mx-auto mt-12 max-w-sm rounded-[1.5rem] border border-dashed border-border bg-surface/60 p-6 text-center">
