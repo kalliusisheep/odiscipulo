@@ -54,6 +54,8 @@ function ensureContext() {
 function playMusicStep() {
   const context = ensureContext();
   if (!context || !musicGain || !musicEnabled) return;
+  const destination = musicGain;
+  if (!destination) return;
   const now = context.currentTime;
   const progression = progressions[musicTheme];
   const chord = progression[musicStep % progression.length];
@@ -66,7 +68,7 @@ function playMusicStep() {
     gain.gain.exponentialRampToValueAtTime(index === 0 ? 0.16 : 0.07, now + 0.24);
     gain.gain.exponentialRampToValueAtTime(0.0001, now + 3.1);
     oscillator.connect(gain);
-    gain.connect(musicGain);
+    gain.connect(destination);
     oscillator.start(now);
     oscillator.stop(now + 3.2);
   });
@@ -79,7 +81,7 @@ function playMusicStep() {
     bellGain.gain.exponentialRampToValueAtTime(0.035, now + 0.62);
     bellGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.2);
     bell.connect(bellGain);
-    bellGain.connect(musicGain);
+    bellGain.connect(destination);
     bell.start(now + 0.55);
     bell.stop(now + 2.3);
   }
