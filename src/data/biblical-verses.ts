@@ -16,7 +16,7 @@ export const VERSE_DIFFICULTY: Record<GameDifficulty, { label: string; multiplie
   bereano: { label: "Bereano Supremo", multiplier: 2, description: "Passagens menos populares e referências próximas." },
 };
 
-export const BIBLICAL_VERSES: VerseQuestion[] = [
+const RAW_BIBLICAL_VERSES: VerseQuestion[] = [
   { id: "jo-3-16", text: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.", reference: "João 3:16", alternatives: ["Romanos 5:8", "Efésios 2:8"], context: "Jesus explicou a Nicodemos que a salvação nasce do amor de Deus e da fé no Filho.", difficulty: "facil" },
   { id: "sl-23-1", text: "O Senhor é o meu pastor; nada me faltará.", reference: "Salmos 23:1", alternatives: ["Salmos 27:1", "Isaías 40:11"], context: "O salmo apresenta Deus como pastor presente, que guia e sustenta seu povo.", difficulty: "facil" },
   { id: "fp-4-13", text: "Tudo posso naquele que me fortalece.", reference: "Filipenses 4:13", alternatives: ["2 Coríntios 12:9", "Isaías 41:10"], context: "Paulo fala de aprender a viver com fartura ou necessidade, sustentado por Cristo.", difficulty: "facil" },
@@ -34,6 +34,15 @@ export const BIBLICAL_VERSES: VerseQuestion[] = [
   { id: "hc-2-4", text: "O justo viverá pela sua fidelidade.", reference: "Habacuque 2:4", alternatives: ["Romanos 1:17", "Gálatas 3:11"], context: "A visão responde à espera do profeta e se torna uma afirmação central sobre viver confiando em Deus.", difficulty: "bereano" },
   { id: "ob-1-3", text: "A arrogância do seu coração o tem enganado, você que vive nas alturas das rochas.", reference: "Obadias 1:3", alternatives: ["Provérbios 16:18", "Jeremias 49:16"], context: "Obadias denuncia a falsa segurança de Edom e sua confiança em uma posição aparentemente impossível de alcançar.", difficulty: "bereano" },
 ];
+
+const isValidVerseQuestion = (verse: VerseQuestion) => {
+  const alternatives = verse.alternatives.map((alternative) => alternative.trim()).filter(Boolean);
+  return Boolean(verse.id.trim() && verse.text.trim() && verse.reference.trim() && verse.context.trim())
+    && alternatives.length === 2
+    && new Set([verse.reference, ...alternatives]).size === 3;
+};
+
+export const BIBLICAL_VERSES = RAW_BIBLICAL_VERSES.filter(isValidVerseQuestion);
 
 export const versesForDifficulty = (difficulty: GameDifficulty) =>
   BIBLICAL_VERSES.filter((verse) => verse.difficulty === difficulty);
