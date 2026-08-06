@@ -6,6 +6,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { CHARACTERS, BIBLE_VERSIONS, type BibleVersion } from "@/data/content";
 import { toast } from "sonner";
 import { isUsernameAvailable, isValidUsername, normalizeUsername } from "@/lib/username";
+import { getVapidKey, isPushSupported, subscribeAndPersist } from "@/lib/push";
 import {
   Dialog,
   DialogContent,
@@ -93,6 +94,7 @@ function PerfilPage() {
   const [versionOpen, setVersionOpen] = useState(false);
   const [avatarDialogOpen, setAvatarDialogOpen] = useState(false);
   const [churchDialogOpen, setChurchDialogOpen] = useState(false);
+  const [savingDevotionalReminder, setSavingDevotionalReminder] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const { bibleVersion, setBibleVersion } = useApp();
   const nav = useNavigate();
@@ -157,6 +159,60 @@ function PerfilPage() {
 
   const saveBio = async () => {
     await update({ bio: bioDraft.trim() || null });
+  };
+
+  const toggleDevotionalReminder = async () => {
+    if (!profile || savingDevotionalReminder) return;
+
+    const nextValue = !profile.notify_devocional;
+    setSavingDevotionalReminder(true);
+
+    try {
+      if (nextValue) {
+        if (!isPushSupported()) {
+          toast.error("Este dispositivo não oferece notificações push.");
+          return;
+        }
+
+        if (!getVapidKey()) {
+          toast.error("As notificações push ainda não estão configuradas.");
+          return;
+        }
+
+        const permission =
+          Notification.permission === "granted"
+            ? "granted"
+            : await Notification.requestPermission();
+
+        if (permission !== "granted") {
+          toast.error("Permita as notificações do navegador para ativar o lembrete.");
+          return;
+        }
+
+        const subscription = await subscribeAndPersist();
+        if (!subscription) throw new Error("push-subscription-not-saved");
+      }
+
+      const { error } = await supabase
+        .from("profiles")
+        .update({ notify_devocional: nextValue })
+        .eq("id", profile.id);
+
+      if (error) throw error;
+
+      setProfile((current) =>
+        current ? { ...current, notify_devocional: nextValue } : current,
+      );
+      toast.success(
+        nextValue
+          ? "Lembrete ativado! Você receberá avisos às 06h e às 20h."
+          : "Lembrete de devocional desativado.",
+      );
+    } catch {
+      toast.error("Não foi possível atualizar as notificações neste dispositivo.");
+    } finally {
+      setSavingDevotionalReminder(false);
+    }
   };
 
   const copyUsername = async () => {
@@ -420,13 +476,6 @@ function PerfilPage() {
         style={{ animationDelay: "145ms", animationFillMode: "backwards" }}
       >
         <SectionLabel>Comunidade</SectionLabel>
-        <button
-          type="button"
-          onClick={()       <section
-        className="animate-slide-up"
-        style={{ animationDelay: "145ms", animationFillMode: "backwards" }}
-      >
-        <SectionLabel>Comunidade</SectionLabel>
         <div className="space-y-2.5">
           <button
             type="button"
@@ -505,11 +554,16 @@ function PerfilPage() {
           <SettingsRow
             icon={Bell}
             title="Lembrete de Devocional"
-            subtitle="Mantém sua ofensiva ativa."
+            subtitle={
+              profile.notify_devocional
+                ? "Você receberá avisos às 06h e às 20h."
+                : "Receba um aviso diário para não perder a Palavra."
+            }
             action={
               <ToggleSwitch
                 checked={profile.notify_devocional}
-                onChange={() => void update({ notify_devocional: !profile.notify_devocional })}
+                onChange={() => void toggleDevotionalReminder()}
+                disabled={savingDevotionalReminder}
                 ariaLabel="Ativar lembrete de devocional"
               />
             }
@@ -660,19 +714,23 @@ function SettingsRow({
 function ToggleSwitch({
   checked,
   onChange,
+  disabled = false,
   ariaLabel,
 }: {
   checked: boolean;
   onChange: () => void;
+  disabled?: boolean;
   ariaLabel: string;
 }) {
   return (
     <button
+      type="button"
       onClick={onChange}
+      disabled={disabled}
       role="switch"
       aria-checked={checked}
       aria-label={ariaLabel}
-      className={`relative h-7 w-12 shrink-0 rounded-full transition-colors duration-300 ${checked ? "bg-primary" : "bg-muted"}`}
+      className={`relative h-7 w-12 shrink-0 rounded-full transition-colors duration-300 ${checked ? "bg-primary" : "bg-muted"} disabled:cursor-not-allowed disabled:opacity-60`}
     >
       <span
         className={`absolute top-0.5 left-0.5 h-6 w-6 rounded-full bg-white shadow-md transition-transform duration-300 ease-out ${
