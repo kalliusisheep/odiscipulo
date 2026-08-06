@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { BIBLICAL_VERSES, VERSE_DIFFICULTY, versesForDifficulty } from "@/data/biblical-verses";
 import type { GameDifficulty } from "@/data/biblical-characters";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
+import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 
 export const Route = createFileRoute("/_authenticated/jogos/versiculo")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -20,6 +21,8 @@ const roundOptions = [5, 10, 20, 30];
 const ROUND_SECONDS = 18;
 
 function playTone(success: boolean) {
+  playGameSfx(success ? "success" : "error");
+  return;
   if (typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   try {
     const AudioContextConstructor = window.AudioContext ?? (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
@@ -66,6 +69,8 @@ function VersiculoPage() {
   }, [questions]);
 
   const start = () => {
+    startGameMusic();
+    playGameSfx("start");
     const pool = versesForDifficulty(difficulty);
     const fallbackPool = pool.length >= rounds ? pool : [...pool, ...BIBLICAL_VERSES.filter((item) => item.difficulty !== "bereano")];
     const list = Array.from({ length: rounds }, (_, index) => shuffle(fallbackPool)[index % fallbackPool.length]);

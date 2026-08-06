@@ -1,5 +1,6 @@
 import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, BookOpenText, CheckCircle2, Gamepad2, Grid2X2, Trophy, UserRound } from "lucide-react";
+import { GameAudioControls } from "@/components/games/GameAudioControls";
 
 export const Route = createFileRoute("/_authenticated/jogos")({ component: JogosPage });
 
@@ -12,7 +13,7 @@ const games = [
 
 function JogosPage() {
   const location = useLocation();
-  if (location.pathname !== "/jogos") return <Outlet />;
+  if (location.pathname !== "/jogos") return <><Outlet /><GameAudioControls /></>;
 
   return (
     <main className="game-arena-page min-h-screen bg-background">

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react"
 import type { GameDifficulty } from "@/data/biblical-characters";
 import { CROSSWORD_DIFFICULTY, CROSSWORD_THEMES, crosswordWordsFor, type CrosswordTheme, type CrosswordWord } from "@/data/biblical-crosswords";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
+import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 
 export const Route = createFileRoute("/_authenticated/jogos/cruzadas")({ component: CrosswordPage });
 
@@ -94,6 +95,8 @@ function generatePuzzle(difficulty: GameDifficulty, theme: CrosswordTheme | "tod
 }
 
 function tone(success: boolean) {
+  playGameSfx(success ? "success" : "error");
+  return;
   try { const Context = window.AudioContext; if (!Context) return; const context = new Context(); const oscillator = context.createOscillator(); const gain = context.createGain(); oscillator.frequency.value = success ? 620 : 180; gain.gain.setValueAtTime(0.04, context.currentTime); gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.15); oscillator.connect(gain); gain.connect(context.destination); oscillator.start(); oscillator.stop(context.currentTime + 0.16); } catch { /* áudio opcional */ }
 }
 
@@ -118,7 +121,7 @@ function CrosswordPage() {
   const activePlacement = puzzle.placements.find((placement) => placement.word.id === activeWordId);
   const activeWord = activePlacement?.word;
 
-  const start = () => { setPuzzle(generatePuzzle(difficulty, theme)); setLetters({}); setSelectedCell(null); setActiveWordId(null); setCompleted([]); setErrors(0); setHints(0); setSeconds(0); setScore(0); setPhase("playing"); };
+  const start = () => { startGameMusic(); playGameSfx("start"); setPuzzle(generatePuzzle(difficulty, theme)); setLetters({}); setSelectedCell(null); setActiveWordId(null); setCompleted([]); setErrors(0); setHints(0); setSeconds(0); setScore(0); setPhase("playing"); };
   useEffect(() => { if (phase !== "playing") return; const timer = window.setInterval(() => setSeconds((value) => value + 1), 1000); return () => window.clearInterval(timer); }, [phase]);
 
   const selectCell = (cell: Cell) => { setSelectedCell(key(cell.row, cell.col)); setActiveWordId((current) => current && cell.wordIds.includes(current) ? current : cell.wordIds[0]); inputRef.current?.focus(); };

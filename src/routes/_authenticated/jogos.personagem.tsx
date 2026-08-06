@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Check, Flame, Lightbulb, RotateCcw, Sparkles, Tr
 import { useMemo, useState } from "react";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { BIBLICAL_CHARACTERS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
+import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 
 export const Route = createFileRoute("/_authenticated/jogos/personagem")({ component: PersonagemPage });
 
@@ -41,6 +42,8 @@ function PersonagemPage() {
   );
 
   const start = () => {
+    startGameMusic();
+    playGameSfx("start");
     const shuffled = [...filteredCharacters].sort(() => Math.random() - 0.5);
     const selected = Array.from({ length: rounds }, (_, index) => shuffled[index % shuffled.length]);
     setQueue(selected);
@@ -55,12 +58,14 @@ function PersonagemPage() {
 
   const revealHint = (hintIndex: number) => {
     if (revealed.includes(hintIndex)) return;
+    playGameSfx("reveal");
     setRevealed((items) => [...items, hintIndex]);
   };
 
   const submit = () => {
     if (!character || !answer.trim() || correct !== null) return;
     const isCorrect = isCorrectCharacterAnswer(character, answer);
+    playGameSfx(isCorrect ? "success" : "error");
     const extraHints = Math.max(0, revealed.length - 1);
     const base = Math.max(0, 100 - extraHints * 40);
     const earned = isCorrect ? Math.round(base * difficultyData.multiplier) : 0;
@@ -77,6 +82,7 @@ function PersonagemPage() {
       return;
     }
     setRound((value) => value + 1);
+    playGameSfx("tap");
     setRevealed([0]);
     setAnswer("");
     setCorrect(null);
