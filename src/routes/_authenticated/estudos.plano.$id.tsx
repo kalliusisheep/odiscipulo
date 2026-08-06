@@ -7,6 +7,8 @@ import { awardXpAndStreak } from "@/lib/progress";
 import { logActivityOnce } from "@/lib/activities";
 import { fetchPassage, bibleLabelFor, stripVerseNumbers } from "@/lib/bible";
 import { NarrationButton } from "@/components/NarrationButton";
+import { FontSizeControls } from "@/components/font-size-controls";
+import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
 import type { BibleVersion } from "@/data/content";
 import {
   ArrowLeft,
@@ -302,22 +304,29 @@ function DayDetails({
 }) {
   return (
     <div className="space-y-5 border-t border-border/60 bg-surface/50 p-5" data-tts-scope="plano-dia">
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-end gap-2">
         <NarrationButton containerSelector='[data-tts-scope="plano-dia"]' />
+        <FontSizeControls
+          scaleIndex={scaleIndex}
+          onIncrease={increase}
+          onDecrease={decrease}
+        />
       </div>
 
-      <Section title="Passagem" icon={<BookOpen className="h-3.5 w-3.5" />}>
-        <div className="space-y-3">
-          {day.passage_api_refs.map((ref, i) => (
+      <div style={contentZoomStyle} className="space-y-3">
+        <Section title="Passagem" icon={<BookOpen className="h-3.5 w-3.5" />}>
+          <div className="space-y-3">
+            {day.passage_api_refs.map((ref, i) => (
             <PassageBlock
               key={ref}
               apiRef={ref}
               label={day.refs[i] ?? ref}
               version={version}
             />
-          ))}
-        </div>
-      </Section>
+            ))}
+          </div>
+        </Section>
+      </div>
 
       <Section title="Contexto">
         <p className="text-sm leading-relaxed text-foreground/85" data-narrate>{day.context}</p>
@@ -425,7 +434,7 @@ function PassageBlock({
       )}
       {text && (
         <p
-          className="scripture text-base leading-relaxed text-foreground/90"
+          className="font-sans text-base font-normal leading-7 text-foreground/90 not-italic"
           data-narrate
           data-narrate-text={stripVerseNumbers(text)}
         >
