@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { BIBLICAL_VERSES, VERSE_DIFFICULTY, versesForDifficulty } from "@/data/biblical-verses";
 import type { GameDifficulty } from "@/data/biblical-characters";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
+import { SharedQuestionGame } from "@/components/games/SharedQuestionGame";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { recordGameResult } from "@/lib/game-leaderboard";
 import { shuffleWithSeed } from "@/lib/seeded-random";
@@ -63,7 +64,6 @@ function VersiculoPage() {
   const [results, setResults] = useState<RoundResult[]>([]);
   const [lastPoints, setLastPoints] = useState(0);
   const startedAtRef = useRef(0);
-  const autoStarted = useRef(false);
   const sessionSeenRef = useRef<Set<string>>(new Set());
   const question = questions[round];
   const meta = VERSE_DIFFICULTY[difficulty];
@@ -94,13 +94,6 @@ function VersiculoPage() {
     setQuestions(list); setRound(0); setScore(0); setStreak(0); setBestStreak(0); setResults([]); setLastPoints(0);
     setOptions(seed ? shuffleWithSeed([list[0].reference, ...list[0].alternatives], seed) : shuffle([list[0].reference, ...list[0].alternatives])); setSelected(null); setTimeLeft(VERSE_DIFFICULTY[difficulty].timeLimit); startedAtRef.current = Date.now(); setPhase("answering");
   };
-
-  useEffect(() => {
-    if (mode === "multi" && roomId && !autoStarted.current) {
-      autoStarted.current = true;
-      start();
-    }
-  }, [mode, roomId]);
 
   const answer = useCallback((value: string | null) => {
     if (phase !== "answering" || !question) return;
@@ -134,6 +127,7 @@ function VersiculoPage() {
     void recordGameResult({ gameKey: "versiculo", score, correctAnswers: results.filter((item) => item.correct).length, rounds, bestStreak });
   }, [bestStreak, phase, results, rounds, score]);
   if (phase === "setup" && !modeSelected) return <GameModeChooser title="Qual é o versículo?" description="Escolha entre reconhecer a passagem no seu ritmo ou disputar uma sala sincronizada com seus amigos." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=versiculo"; }} />;
+  if (mode === "multi" && roomId) return <SharedQuestionGame gameType="versiculo" roomId={roomId} seed={seed} difficulty={difficulty} rounds={rounds} />;
   if (phase === "setup") return <Setup roomId={roomId} mode={mode} difficulty={difficulty} setDifficulty={setDifficulty} rounds={rounds} setRounds={setRounds} onStart={start} />;
 
 
@@ -159,5 +153,5 @@ function Setup({ roomId, mode, difficulty, setDifficulty, rounds, setRounds, onS
 
 function Results({ score, rounds, bestStreak, results, onRestart }: { score: number; rounds: number; bestStreak: number; results: RoundResult[]; onRestart: () => void }) {
   const correct = results.filter((item) => item.correct).length;
-  return <main className="min-h-screen bg-background"><div className="mx-auto max-w-lg px-4 pb-28 pt-10 text-center"><span className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-ancient/15 text-ancient"><Trophy className="h-10 w-10" /></span><p className="mt-7 text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">Partida encerrada</p><h1 className="mt-2 text-3xl font-extrabold">Seu placar</h1><p className="mt-2 text-sm text-muted-foreground">Você manteve a Palavra no centro da competição.</p><section className="mt-7 rounded-[1.75rem] border border-border bg-surface p-6"><p className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">Pontuação final</p><p className="mt-2 text-5xl font-black text-ancient">{score}</p><div className="mt-6 grid grid-cols-3 gap-2 text-center"><div><p className="text-xl font-black">{correct}/{rounds}</p><p className="text-[10px] text-muted-foreground">acertos</p></div><div><p className="text-xl font-black">{bestStreak}</p><p className="text-[10px] text-muted-foreground">maior combo</p></div><div><p className="text-xl font-black">{Math.round(results.reduce((sum, item) => sum + item.elapsed, 0) / Math.max(1, results.length))}s</p><p className="text-[10px] text-muted-foreground">média</p></div></div></section><div className="mt-6 flex gap-3"><Link to="/jogos" className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-border px-4 py-3 text-sm font-bold"><ArrowLeft className="h-4 w-4" /> Jogos</Link><button type="button" onClick={onRestart} className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-extrabold text-primary-foreground"><RotateCcw className="h-4 w-4" /> Jogar de novo</button></div></div></main>;
+  return <main className="min-h-screen bg-background"><div className="mx-auto max-w-lg px-4 pb-28 pt-10 text-center"><span className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-ancient/15 text-ancient"><Trophy className="h-10 w-10" /></span><p className="mt-7 text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">Partida encerrada</p><h1 className="mt-2 text-3xl font-extrabold">Seu placar</h1><p className="mt-2 text-sm text-muted-foreground">Você manteve a Palavra no centro da competição.</p><section className="mt-7 rounded-[1.75rem] border border-border bg-surface p-6"><p className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">Pontuação final</p><p className="mt-2 text-5xl font-black text-ancient">{score}</p><div className="mt-6 grid grid-cols-3 gap-2 text-center"><div><p className="text-xl font-black">{correct}/{rounds}</p><p className="text-[10px] text-muted-foreground">acertos</p></div><div><p className="text-xl font-black">{bestStreak}</p><p className="text-[10px] text-muted-foreground">maior combo</p></div><div><p className="text-xl font-black">{Math.round(results.reduce((sum, item) => sum + item.elapsed, 0) / Math.max(1, results.length))}s</p><p className="text-[10px] text-muted-foreground">média</p></div></div></section><div className="mt-6 flex gap-3"><Link to="/jogos/versiculo" className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-border px-4 py-3 text-sm font-bold"><ArrowLeft className="h-4 w-4" /> Tela inicial</Link><button type="button" onClick={onRestart} className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-extrabold text-primary-foreground"><RotateCcw className="h-4 w-4" /> Jogar de novo</button></div></div></main>;
 }
