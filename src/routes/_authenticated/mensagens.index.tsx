@@ -85,19 +85,19 @@ function MensagensListPage() {
         }
         const withPresence = await supabase
           .from("profiles")
-          .select("id, display_name, username, avatar_url, last_seen_at")
+          .select("id, display_name, username, avatar_url, last_seen_at, updated_at")
           .in("id", Array.from(byPeer.keys()));
         const peers = withPresence.error
           ? ((await supabase
               .from("profiles")
-              .select("id, display_name, username, avatar_url")
-              .in("id", Array.from(byPeer.keys()))).data ?? []).map((p) => ({ ...p, last_seen_at: null }))
+              .select("id, display_name, username, avatar_url, updated_at")
+              .in("id", Array.from(byPeer.keys()))).data ?? []).map((p) => ({ ...p, last_seen_at: p.updated_at ?? null }))
           : (withPresence.data ?? []);
         const list: Conversation[] = (peers ?? [])
           .map((p) => {
             const last = byPeer.get(p.id)!;
             return {
-              peer: { id: p.id, display_name: p.display_name, username: p.username ?? "", avatar_url: p.avatar_url, last_seen_at: p.last_seen_at },
+              peer: { id: p.id, display_name: p.display_name, username: p.username ?? "", avatar_url: p.avatar_url, last_seen_at: p.last_seen_at ?? p.updated_at },
               lastBody: last.body,
               lastAt: last.at,
               lastFromMe: last.fromMe,
