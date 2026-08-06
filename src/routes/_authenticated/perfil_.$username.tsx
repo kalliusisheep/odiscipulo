@@ -122,15 +122,15 @@ function PublicProfilePage() {
   return (
     <div className="mx-auto min-h-[100dvh] max-w-lg bg-gradient-to-b from-background via-background to-surface/30 px-4 pb-28 pt-4">
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-primary via-primary/85 to-indigo-600 px-5 pb-9 pt-5 text-primary-foreground shadow-xl shadow-primary/20">
-        <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
-        <div className="absolute -bottom-20 -left-16 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
+      <section className="relative overflow-hidden rounded-[2rem] border border-primary/25 bg-gradient-to-br from-[#29264d] via-surface-2 to-[#171827] px-5 pb-8 pt-5 text-foreground shadow-xl shadow-black/20">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 -left-20 h-64 w-64 rounded-full bg-indigo-500/10 blur-3xl" />
 
         <div className="relative flex items-center justify-between">
           <Link
             to="/ranking"
             aria-label="Voltar"
-            className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-xs font-medium backdrop-blur transition hover:bg-white/25"
+            className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/90 backdrop-blur transition hover:bg-white/15"
           >
             <ArrowLeft className="h-3.5 w-3.5" /> Voltar
           </Link>
@@ -147,8 +147,8 @@ function PublicProfilePage() {
         <div className="relative mt-6 flex flex-col items-center text-center">
           <div className="relative">
             {/* Anel */}
-            <div className="absolute -inset-1.5 rounded-full bg-gradient-to-br from-yellow-300 via-white to-yellow-300 blur-md opacity-70" />
-            <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-full bg-white ring-4 ring-white/60 text-6xl shadow-2xl">
+            <div className="absolute -inset-2 rounded-full bg-primary/40 blur-xl" />
+            <div className="relative flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-surface ring-4 ring-primary/40 text-6xl shadow-2xl">
               {profile.avatar_url ? (
                 <img src={profile.avatar_url} alt="Foto" className="h-full w-full object-cover" />
               ) : level.avatar ? (
@@ -157,12 +157,12 @@ function PublicProfilePage() {
                 <span>{ch.emoji}</span>
               )}
             </div>
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-white px-3 py-1 text-[11px] font-bold text-primary shadow">
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full border border-primary/20 bg-background px-3 py-1 text-[11px] font-extrabold text-primary shadow-lg">
               Nível {level.level}
             </div>
           </div>
 
-          <h1 className="mt-6 text-2xl font-extrabold leading-tight tracking-tight drop-shadow-sm">{profile.display_name}</h1>
+          <h1 className="mt-7 text-[1.75rem] font-extrabold leading-tight tracking-tight text-white">{profile.display_name}</h1>
           <div className="mt-2 flex items-center gap-1.5 text-[11px] font-semibold">
             <span className={`h-2 w-2 rounded-full ${isOnline ? "bg-emerald-300 shadow-[0_0_8px_rgba(110,231,183,0.85)]" : "bg-rose-300 shadow-[0_0_7px_rgba(251,113,133,0.55)]"}`} />
             <span className={isOnline ? "text-emerald-100" : "text-white/70"}>
@@ -170,7 +170,7 @@ function PublicProfilePage() {
             </span>
           </div>
           <div className="mt-1.5 flex flex-wrap items-center justify-center gap-1.5">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-semibold text-white/90 backdrop-blur">
               <Sparkles className="h-3 w-3" /> {level.title}
             </span>
             {profile.church_name && (
@@ -206,7 +206,7 @@ function PublicProfilePage() {
         {/* Ações */}
         {!isSelf && (
           <>
-            <div className="rounded-[1.75rem] border border-border bg-surface/70 p-2.5 shadow-sm">
+            <div className="rounded-[1.75rem] border border-border bg-surface/80 p-2.5 shadow-lg shadow-black/10">
               <p className="mb-2 px-2 text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary">Conexão</p>
               <div className="grid grid-cols-2 gap-2">
               <Link
@@ -249,35 +249,35 @@ function PublicProfilePage() {
               icon={Trophy}
               label="Nível atual"
               value={`${level.level}/${MAX_LEVEL}`}
-              tone="from-amber-500/25 to-orange-500/10"
+              tone="from-surface-2 to-surface"
               iconTone="text-amber-500"
             />
             <StatCard
               icon={Flame}
               label="Ofensiva"
               value={`${profile.streak}d`}
-              tone="from-orange-500/25 to-red-500/10"
+              tone="from-surface-2 to-surface"
               iconTone="text-orange-500"
             />
             <StatCard
               icon={BookOpen}
               label="Lições"
               value={String(lessons)}
-              tone="from-primary/25 to-indigo-500/10"
+              tone="from-surface-2 to-surface"
               iconTone="text-primary"
             />
             <StatCard
               icon={Clock}
               label="Tempo de estudo"
               value={`${lessons * 8}m`}
-              tone="from-emerald-500/25 to-teal-500/10"
+              tone="from-surface-2 to-surface"
               iconTone="text-emerald-500"
             />
           </div>
         </section>
 
         {/* Card de XP total */}
-        <section className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/10 via-surface-2 to-surface p-4">
+        <section className="relative overflow-hidden rounded-3xl border border-border bg-surface/80 p-4 shadow-lg shadow-black/10">
           <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-primary/20 blur-2xl" />
           <div className="relative flex items-center gap-3">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/15">
