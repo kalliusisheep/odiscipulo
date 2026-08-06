@@ -7,6 +7,7 @@ type QueuedNotification = {
   title: string;
   body: string;
   url: string;
+  kind: "message" | "challenge" | "daily_reminder";
   data: Record<string, unknown> | null;
 };
 
@@ -30,7 +31,55 @@ Deno.serve(async () => {
 
   if (error) return Response.json({ error: error.message }, { status: 500 });
 
-  for (const notification of (notifications ?? []) as QueuedNotification[]) {
+  const pendingNotifications = (notifications ?? []) as QueuedNotification[];
+  const dailyUserIds = [
+    ...new Set(
+      pendingNotifications
+        .filter((notification) => notification.kind === "daily_reminder")
+        .map((notification) => notification.user_id),
+    ),
+  ];
+
+  const enabledDailyUsers = new Set<string>();
+  if (dailyUserIds.length > 0) {
+    const { data: profiles, error: profilesError } = await admin
+      .from("profiles")
+      .select("id")
+      .in("id", dailyUserIds)
+      .eq("notify_devocional", true);
+
+    if (profilesError) {
+      return Response.json({ error: profilesError.message }, { status: 500 });
+    }
+
+    for (const profile of profiles ?? []) enabledDailyUsers.add(profile.id);
+  }
+
+  const blockedDailyNotifications = pendingNotifications.filter(
+    (notification) =>
+      notification.kind === "daily_reminder" && !enabledDailyUsers.has(notification.user_id),
+  );
+
+  if (blockedDailyNotifications.length > 0) {
+    const { error: discardError } = await admin
+      .from("app_notifications")
+      .update({ delivered_at: new Date().toISOString() })
+      .in(
+        "id",
+        blockedDailyNotifications.map((notification) => notification.id),
+      );
+
+    if (discardError) {
+      return Response.json({ error: discardError.message }, { status: 500 });
+    }
+  }
+
+  const notificationsToDispatch = pendingNotifications.filter(
+    (notification) =>
+      notification.kind !== "daily_reminder" || enabledDailyUsers.has(notification.user_id),
+  );
+
+  for (const notification of notificationsToDispatch) {
     const { data: subscriptions } = await admin
       .from("push_subscriptions")
       .select("id, endpoint, p256dh, auth")
@@ -61,5 +110,8 @@ Deno.serve(async () => {
     await admin.from("app_notifications").update({ delivered_at: new Date().toISOString() }).eq("id", notification.id);
   }
 
-  return Response.json({ dispatched: notifications?.length ?? 0 });
+  return Response.json({
+    dispatched: notificationsToDispatch.length,
+    skipped: blockedDailyNotifications.length,
+  });
 });
