@@ -20,7 +20,7 @@ export const CROSSWORD_DIFFICULTY: Record<GameDifficulty, { label: string; size:
   facil: { label: "Fácil", size: 9, words: 8, multiplier: 1, description: "Palavras conhecidas e cruzamentos generosos." },
   medio: { label: "Médio", size: 11, words: 12, multiplier: 1.25, description: "Mais cruzamentos e personagens variados." },
   dificil: { label: "Difícil", size: 13, words: 16, multiplier: 1.5, description: "Respostas maiores e referências menos óbvias." },
-  bereano: { label: "Bereano Supremo", size: 15, words: 20, multiplier: 2, description: "Conhecimento profundo para quem examina tudo." },
+  bereano: { label: "Bereano Supremo", size: 15, words: 20, multiplier: 2, description: "Conhecimento profundo e conexões menos óbvias." },
 };
 
 export const CROSSWORD_THEMES: { id: CrosswordTheme; label: string }[] = [
