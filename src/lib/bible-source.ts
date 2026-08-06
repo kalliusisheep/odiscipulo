@@ -889,7 +889,7 @@ const LOCAL_LEXICON_FIXES: [RegExp, string][] = [
 
 function translateLocalLexiconText(text: string | null | undefined): string | null {
   if (!text) return null;
-  let translated = translateGrammarTerms(text);
+  let translated = translateGrammarTerms(text) ?? text;
   for (const [pattern, replacement] of LOCAL_LEXICON_FIXES) {
     translated = translated.replace(pattern, replacement);
   }
