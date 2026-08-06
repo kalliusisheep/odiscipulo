@@ -136,12 +136,14 @@ const isValidBiblicalCharacter = (character: BiblicalCharacter) => {
     && normalizedName.length >= 3;
 };
 
+const normalizeCharacterName = (value: string) =>
+  value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "").trim();
+
 export const BIBLICAL_CHARACTERS = ALL_BIBLICAL_CHARACTERS
   .filter(isValidBiblicalCharacter)
-  .filter((character, index, items) => items.findIndex((candidate) => normalizeGameAnswer(candidate.name) === normalizeGameAnswer(character.name)) === index);
+  .filter((character, index, items) => items.findIndex((candidate) => normalizeCharacterName(candidate.name) === normalizeCharacterName(character.name)) === index);
 
-export const normalizeGameAnswer = (value: string) =>
-  value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "").trim();
+export const normalizeGameAnswer = normalizeCharacterName;
 
 export const isCorrectCharacterAnswer = (character: BiblicalCharacter, answer: string) => {
   const normalized = normalizeGameAnswer(answer);
