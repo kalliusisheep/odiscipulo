@@ -5,6 +5,7 @@ import { BIBLICAL_VERSES, VERSE_DIFFICULTY, versesForDifficulty } from "@/data/b
 import type { GameDifficulty } from "@/data/biblical-characters";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
+import { recordGameResult } from "@/lib/game-leaderboard";
 import { shuffleWithSeed } from "@/lib/seeded-random";
 
 export const Route = createFileRoute("/_authenticated/jogos/versiculo")({
@@ -122,6 +123,13 @@ function VersiculoPage() {
 
   if (phase === "setup" && !modeSelected) return <GameModeChooser title="Qual é o versículo?" description="Escolha entre reconhecer a passagem no seu ritmo ou disputar uma sala sincronizada com seus amigos." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=versiculo"; }} />;
   if (phase === "setup") return <Setup mode={mode} difficulty={difficulty} setDifficulty={setDifficulty} rounds={rounds} setRounds={setRounds} onStart={start} />;
+  const scoreSaved = useRef(false);
+  useEffect(() => {
+    if (phase !== "finished" || scoreSaved.current) return;
+    scoreSaved.current = true;
+    void recordGameResult({ gameKey: "versiculo", score, correctAnswers: results.filter((item) => item.correct).length, rounds, bestStreak });
+  }, [bestStreak, phase, results, rounds, score]);
+
   if (phase === "finished") return <Results score={score} rounds={rounds} bestStreak={bestStreak} results={results} onRestart={() => setPhase("setup")} />;
   if (!question) return null;
   const correct = selected === question.reference;
