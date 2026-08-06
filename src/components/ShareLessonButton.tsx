@@ -4,16 +4,17 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { generateShareImage } from "@/lib/share-image";
 
+const SHARE_BACKGROUND_BASE = `${import.meta.env.BASE_URL.replace(/\/?$/, "/")}share-backgrounds/`;
 const SHARE_BACKGROUNDS = [
-  { src: "/share-backgrounds/design-sem-nome.jpg", label: "Horizonte" },
-  { src: "/share-backgrounds/design-sem-nome-1.jpg", label: "Caminho dourado" },
-  { src: "/share-backgrounds/design-sem-nome-2.jpg", label: "Montanhas" },
-  { src: "/share-backgrounds/design-sem-nome-3.jpg", label: "Árvore no deserto" },
-  { src: "/share-backgrounds/design-sem-nome-4.jpg", label: "Noite serena" },
-  { src: "/share-backgrounds/design-sem-nome-5.jpg", label: "Floresta" },
-  { src: "/share-backgrounds/design-sem-nome-6.jpg", label: "Mesa no cânion" },
-  { src: "/share-backgrounds/design-sem-nome-7.jpg", label: "Mar e cruz" },
-  { src: "/share-backgrounds/design-sem-nome-8.jpg", label: "Novo horizonte" },
+  { src: `${SHARE_BACKGROUND_BASE}design-sem-nome.jpg`, label: "Horizonte" },
+  { src: `${SHARE_BACKGROUND_BASE}design-sem-nome-1.jpg`, label: "Caminho dourado" },
+  { src: `${SHARE_BACKGROUND_BASE}design-sem-nome-2.jpg`, label: "Montanhas" },
+  { src: `${SHARE_BACKGROUND_BASE}design-sem-nome-3.jpg`, label: "Árvore no deserto" },
+  { src: `${SHARE_BACKGROUND_BASE}design-sem-nome-4.jpg`, label: "Noite serena" },
+  { src: `${SHARE_BACKGROUND_BASE}design-sem-nome-5.jpg`, label: "Floresta" },
+  { src: `${SHARE_BACKGROUND_BASE}design-sem-nome-6.jpg`, label: "Mesa no cânion" },
+  { src: `${SHARE_BACKGROUND_BASE}design-sem-nome-7.jpg`, label: "Mar e cruz" },
+  { src: `${SHARE_BACKGROUND_BASE}design-sem-nome-8.jpg`, label: "Novo horizonte" },
 ] as const;
 
 type ShareLessonButtonProps = {
@@ -92,6 +93,7 @@ export function ShareLessonButton({
       if (nav.share && canShareFile) {
         try {
           await nav.share({ files: [file], title });
+          toast.success("Imagem compartilhada!");
           return;
         } catch (shareError) {
           if (shareError instanceof DOMException && shareError.name === "AbortError") {

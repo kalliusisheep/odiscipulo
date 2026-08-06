@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
 import { Check, Gamepad2, Sparkles, Users, X } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 type GameInvite = {
   roomId: string;
   inviterName: string;
+  gameType: "personagem" | "versiculo" | "cruzadas" | "milhao";
 };
 
 const gameDb = supabase as any;
@@ -19,11 +19,27 @@ function notificationToInvite(value: unknown): GameInvite | null {
   return {
     roomId: data.room_id,
     inviterName: typeof data.inviter_name === "string" ? data.inviter_name : "Um amigo",
+    gameType: "personagem",
+  };
+}
+
+async function resolveInvite(roomId: string, fallbackName = "Um amigo"): Promise<GameInvite | null> {
+  const { data: room } = await gameDb
+    .from("character_game_rooms")
+    .select("id,host_id,game_type")
+    .eq("id", roomId)
+    .maybeSingle();
+  if (!room) return null;
+  const { data: profile } = await gameDb.from("profiles").select("display_name").eq("id", room.host_id).maybeSingle();
+  const gameType = ["personagem", "versiculo", "cruzadas", "milhao"].includes(room.game_type) ? room.game_type : "personagem";
+  return {
+    roomId,
+    inviterName: profile?.display_name || fallbackName,
+    gameType,
   };
 }
 
 export function GameInviteOverlay() {
-  const navigate = useNavigate();
   const [invite, setInvite] = useState<GameInvite | null>(null);
   const [responding, setResponding] = useState(false);
 
@@ -44,16 +60,9 @@ export function GameInviteOverlay() {
         .maybeSingle();
 
       if (pending.data?.room_id) {
-        const room = await gameDb
-          .from("character_game_rooms")
-          .select("host_id")
-          .eq("id", pending.data.room_id)
-          .maybeSingle();
-        const profile = room.data?.host_id
-          ? await gameDb.from("profiles").select("display_name").eq("id", room.data.host_id).maybeSingle()
-          : { data: null };
+        const pendingInvite = await resolveInvite(pending.data.room_id);
         if (!cancelled) {
-          setInvite({ roomId: pending.data.room_id, inviterName: profile.data?.display_name || "Um amigo" });
+          setInvite(pendingInvite);
         }
       }
 
@@ -62,9 +71,22 @@ export function GameInviteOverlay() {
         .on(
           "postgres_changes",
           { event: "INSERT", schema: "public", table: "app_notifications", filter: `user_id=eq.${auth.user.id}` },
-          (payload) => {
+          async (payload) => {
             const nextInvite = notificationToInvite(payload.new);
-            if (nextInvite) setInvite(nextInvite);
+            if (nextInvite) {
+              const resolvedInvite = await resolveInvite(nextInvite.roomId, nextInvite.inviterName);
+              if (!cancelled) setInvite(resolvedInvite ?? nextInvite);
+            }
+          },
+        )
+        .on(
+          "postgres_changes",
+          { event: "INSERT", schema: "public", table: "character_game_room_players", filter: `user_id=eq.${auth.user.id}` },
+          async (payload) => {
+            const row = payload.new as { state?: string; room_id?: string };
+            if (row.state !== "invited" || typeof row.room_id !== "string") return;
+            const resolvedInvite = await resolveInvite(row.room_id);
+            if (!cancelled) setInvite(resolvedInvite);
           },
         )
         .subscribe();
@@ -89,7 +111,7 @@ export function GameInviteOverlay() {
       const roomId = invite.roomId;
       setInvite(null);
       if (accept) {
-        await navigate({ to: "/jogos/multiplayer", search: { roomId } });
+        window.location.href = `/jogos/${invite.gameType}?mode=multi&roomId=${roomId}`;
       } else {
         toast.success("Convite recusado");
       }

@@ -5,7 +5,13 @@ import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { MILLION_DIFFICULTY, MILLION_LEVELS, randomMillionQuestions, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 
-export const Route = createFileRoute("/_authenticated/jogos/milhao")({ component: MillionPage });
+export const Route = createFileRoute("/_authenticated/jogos/milhao")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    mode: search.mode === "multi" ? "multi" : "single",
+    roomId: typeof search.roomId === "string" ? search.roomId : undefined,
+  }),
+  component: MillionPage,
+});
 
 type Phase = "setup" | "playing" | "answered" | "finished";
 type Lifeline = "eliminar" | "contexto" | "consultar";
@@ -31,8 +37,9 @@ function consultCharacters(question: MillionQuestion): Consultation[] {
 }
 
 function MillionPage() {
+  const { mode, roomId } = Route.useSearch();
   const [phase, setPhase] = useState<Phase>("setup");
-  const [modeSelected, setModeSelected] = useState(false);
+  const [modeSelected, setModeSelected] = useState(mode === "multi");
   const [difficulty, setDifficulty] = useState<MillionDifficulty>("medio");
   const [questions, setQuestions] = useState<MillionQuestion[]>([]);
   const [index, setIndex] = useState(0);
@@ -94,7 +101,7 @@ function MillionPage() {
     setUsedLifelines((current) => [...current, lifeline]);
   };
 
-  if (phase === "setup" && !modeSelected) return <GameModeChooser title="Quiz do Milhão" description="Suba pelos níveis do conhecimento bíblico sozinho ou desafie outros jogadores em uma sala competitiva." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer"; }} />;
+  if (phase === "setup" && !modeSelected) return <GameModeChooser title="Quiz do Milhão" description="Suba pelos níveis do conhecimento bíblico sozinho ou desafie outros jogadores em uma sala competitiva." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=milhao"; }} />;
   if (phase === "setup") return <Setup difficulty={difficulty} onDifficultyChange={setDifficulty} onStart={start} />;
   if (phase === "finished") return <Results score={score} correct={correctAnswers} bestStreak={bestStreak} weakness={weakness} onRestart={() => setPhase("setup")} />;
   if (!question) return null;

@@ -5,7 +5,13 @@ import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { BIBLICAL_CHARACTERS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 
-export const Route = createFileRoute("/_authenticated/jogos/personagem")({ component: PersonagemPage });
+export const Route = createFileRoute("/_authenticated/jogos/personagem")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    mode: search.mode === "multi" ? "multi" : "single",
+    roomId: typeof search.roomId === "string" ? search.roomId : undefined,
+  }),
+  component: PersonagemPage,
+});
 
 type Phase = "setup" | "playing" | "round-result" | "finished";
 
@@ -20,8 +26,9 @@ const formatFirstHint = (hint: string) => {
 };
 
 function PersonagemPage() {
+  const { mode, roomId } = Route.useSearch();
   const [phase, setPhase] = useState<Phase>("setup");
-  const [modeSelected, setModeSelected] = useState(false);
+  const [modeSelected, setModeSelected] = useState(mode === "multi");
   const [difficulty, setDifficulty] = useState<GameDifficulty>("medio");
   const [rounds, setRounds] = useState(10);
   const [queue, setQueue] = useState<BiblicalCharacter[]>([]);
@@ -95,7 +102,7 @@ function PersonagemPage() {
   };
 
   if (phase === "setup" && !modeSelected) {
-    return <GameModeChooser title="Quem é o personagem?" description="Escolha uma experiência rápida para testar sua memória bíblica ou reúna seus amigos para uma disputa em sala." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer"; }} />;
+    return <GameModeChooser title="Quem é o personagem?" description="Escolha uma experiência rápida para testar sua memória bíblica ou reúna seus amigos para uma disputa em sala." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=personagem"; }} />;
   }
 
   if (phase === "setup") {

@@ -108,7 +108,7 @@ function VersiculoPage() {
     const nextRound = round + 1; setRound(nextRound); prepareRound(nextRound); 
   };
 
-  if (phase === "setup" && !modeSelected) return <GameModeChooser title="Qual é o versículo?" description="Escolha entre reconhecer a passagem no seu ritmo ou disputar uma sala sincronizada com seus amigos." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer"; }} />;
+  if (phase === "setup" && !modeSelected) return <GameModeChooser title="Qual é o versículo?" description="Escolha entre reconhecer a passagem no seu ritmo ou disputar uma sala sincronizada com seus amigos." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=versiculo"; }} />;
   if (phase === "setup") return <Setup mode={mode} difficulty={difficulty} setDifficulty={setDifficulty} rounds={rounds} setRounds={setRounds} onStart={start} />;
   if (phase === "finished") return <Results score={score} rounds={rounds} bestStreak={bestStreak} results={results} onRestart={() => setPhase("setup")} />;
   if (!question) return null;

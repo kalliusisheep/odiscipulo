@@ -6,7 +6,13 @@ import { CROSSWORD_DIFFICULTY, CROSSWORD_THEMES, crosswordWordsFor, type Crosswo
 import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 
-export const Route = createFileRoute("/_authenticated/jogos/cruzadas")({ component: CrosswordPage });
+export const Route = createFileRoute("/_authenticated/jogos/cruzadas")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    mode: search.mode === "multi" ? "multi" : "single",
+    roomId: typeof search.roomId === "string" ? search.roomId : undefined,
+  }),
+  component: CrosswordPage,
+});
 
 type Direction = "across" | "down";
 type Cell = { row: number; col: number; letter: string; wordIds: string[] };
@@ -101,8 +107,9 @@ function tone(success: boolean) {
 }
 
 function CrosswordPage() {
+  const { mode, roomId } = Route.useSearch();
   const [phase, setPhase] = useState<Phase>("setup");
-  const [modeSelected, setModeSelected] = useState(false);
+  const [modeSelected, setModeSelected] = useState(mode === "multi");
   const [difficulty, setDifficulty] = useState<GameDifficulty>("medio");
   const [theme, setTheme] = useState<CrosswordTheme | "todos">("todos");
   const [puzzle, setPuzzle] = useState(() => generatePuzzle("medio", "todos"));
@@ -159,7 +166,7 @@ function CrosswordPage() {
   const finish = completed.length === puzzle.placements.length && puzzle.placements.length > 0;
   useEffect(() => { if (finish) setPhase("finished"); }, [finish]);
 
-  if (phase === "setup" && !modeSelected) return <GameModeChooser title="Palavras Cruzadas" description="Escolha uma grade para resolver sozinho ou reúna seus amigos para um desafio bíblico em sala." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer"; }} />;
+  if (phase === "setup" && !modeSelected) return <GameModeChooser title="Palavras Cruzadas" description="Escolha uma grade para resolver sozinho ou reúna seus amigos para um desafio bíblico em sala." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=cruzadas"; }} />;
   if (phase === "setup") return <Setup difficulty={difficulty} setDifficulty={setDifficulty} theme={theme} setTheme={setTheme} onStart={start} />;
   if (phase === "finished") return <Results score={score} seconds={seconds} errors={errors} hints={hints} placements={puzzle.placements} onRestart={() => setPhase("setup")} />;
   const gridCells = Array.from({ length: puzzle.size * puzzle.size }, (_, index) => cellMap.get(key(Math.floor(index / puzzle.size), index % puzzle.size)));

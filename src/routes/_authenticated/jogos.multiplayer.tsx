@@ -7,20 +7,23 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/_authenticated/jogos/multiplayer")({
   validateSearch: (search: Record<string, unknown>) => ({
     roomId: typeof search.roomId === "string" ? search.roomId : undefined,
+    game: ["personagem", "versiculo", "cruzadas", "milhao"].includes(String(search.game)) ? String(search.game) : "personagem",
   }),
   component: MultiplayerPage,
 });
 
 type Friend = { id: string; display_name: string; avatar_url: string | null };
 type Player = { user_id: string; role: "host" | "player"; state: string; display_name: string; avatar_url: string | null; last_seen_at: string };
-type Room = { id: string; host_id: string; max_players: number; difficulty: string; rounds: number; status: string };
+type GameType = "personagem" | "versiculo" | "cruzadas" | "milhao";
+type Room = { id: string; host_id: string; max_players: number; difficulty: string; rounds: number; status: string; game_type: GameType };
 
 const gameDb = supabase as any;
 
 function MultiplayerPage() {
-  const { roomId: initialRoomId } = Route.useSearch();
+  const { roomId: initialRoomId, game: initialGame } = Route.useSearch();
   const [myId, setMyId] = useState<string | null>(null);
   const [roomId, setRoomId] = useState(initialRoomId ?? null);
+  const [gameType, setGameType] = useState<GameType>(initialGame as GameType);
   const [room, setRoom] = useState<Room | null>(null);
   const [players, setPlayers] = useState<Player[]>([]);
   const [friends, setFriends] = useState<Friend[]>([]);
@@ -43,7 +46,7 @@ function MultiplayerPage() {
 
   const loadRoom = async (nextRoomId: string, userId: string) => {
     const [{ data: nextRoom, error: roomError }, { data: roomPlayers }] = await Promise.all([
-      gameDb.from("character_game_rooms").select("id,host_id,max_players,difficulty,rounds,status").eq("id", nextRoomId).maybeSingle(),
+      gameDb.from("character_game_rooms").select("id,host_id,max_players,difficulty,rounds,status,game_type").eq("id", nextRoomId).maybeSingle(),
       gameDb.from("character_game_room_players").select("user_id,role,state,last_seen_at").eq("room_id", nextRoomId),
     ]);
     if (roomError || !nextRoom) {
@@ -58,6 +61,7 @@ function MultiplayerPage() {
     setMaxPlayers(nextRoom.max_players);
     setRounds(nextRoom.rounds);
     setDifficulty(nextRoom.difficulty);
+    setGameType(nextRoom.game_type ?? "personagem");
     setPlayers((roomPlayers ?? []).map((player: { user_id: string; role: "host" | "player"; state: string; last_seen_at: string }) => ({
       ...player,
       display_name: profileMap.get(player.user_id)?.display_name ?? (player.user_id === userId ? "Você" : "Jogador"),
@@ -109,12 +113,13 @@ function MultiplayerPage() {
         _max_players: maxPlayers,
         _difficulty: difficulty,
         _rounds: rounds,
+        _game_type: initialGame,
       });
       if (creationDbError) throw creationDbError;
       if (typeof newRoomId !== "string") throw new Error("room_creation_failed");
 
       await loadRoom(newRoomId, userId);
-      window.history.replaceState({}, "", `/jogos/multiplayer?roomId=${newRoomId}`);
+      window.history.replaceState({}, "", `/jogos/multiplayer?roomId=${newRoomId}&game=${initialGame}`);
       toast.success("Sala criada. Convide seus amigos!");
     } catch (error) {
       console.error("[multiplayer] room creation failed", error);
@@ -169,6 +174,7 @@ function MultiplayerPage() {
       const { error } = await gameDb.from("character_game_rooms").update({ status: "playing", started_at: new Date().toISOString() }).eq("id", roomId).eq("host_id", myId);
       if (error) throw error;
       toast.success("Partida iniciada!");
+      window.location.href = `/jogos/${gameType}?mode=multi&roomId=${roomId}`;
     } catch {
       toast.error("A partida precisa de dois jogadores prontos.");
     } finally {
