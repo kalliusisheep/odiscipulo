@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { bookNameById } from "@/data/bible-books";
 import { highlightClass, listAllMarks } from "@/lib/bible-user-data";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, BookMarked, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/biblia/marcados")({
   head: () => ({
@@ -79,21 +79,39 @@ function Marcados() {
           {tab === "Destaques" &&
             (data.highlights.length
               ? data.highlights.map((h) => item(h.book, h.chapter, h.verse, undefined, h.color))
-              : <Empty />)}
+              : <Empty tab={tab} />)}
           {tab === "Anotações" &&
-            (data.notes.length ? data.notes.map((n) => item(n.book, n.chapter, n.verse, n.content)) : <Empty />)}
+            (data.notes.length ? data.notes.map((n) => item(n.book, n.chapter, n.verse, n.content)) : <Empty tab={tab} />)}
           {tab === "Favoritos" &&
-            (data.favorites.length ? data.favorites.map((f) => item(f.book, f.chapter, f.verse)) : <Empty />)}
+            (data.favorites.length ? data.favorites.map((f) => item(f.book, f.chapter, f.verse)) : <Empty tab={tab} />)}
           {tab === "Marcadores" &&
             (data.bookmarks.length
               ? data.bookmarks.map((b) => item(b.book, b.chapter, b.verse, b.label ?? undefined))
-              : <Empty />)}
+              : <Empty tab={tab} />)}
         </div>
       )}
     </div>
   );
 }
 
-function Empty() {
-  return <p className="mt-10 text-center text-sm text-muted-foreground">Nada por aqui ainda.</p>;
+function Empty({ tab }: { tab: (typeof TABS)[number] }) {
+  const copy: Record<(typeof TABS)[number], [string, string]> = {
+    Destaques: ["Nenhum destaque ainda", "Toque em um versículo e use Destacar para guardá-lo aqui."],
+    Anotações: ["Nenhuma anotação ainda", "Suas reflexões salvas aparecerão nesta seção."],
+    Favoritos: ["Nenhum favorito ainda", "Marque versículos importantes para encontrá-los rapidamente."],
+    Marcadores: ["Nenhum marcador ainda", "Crie um marcador ao estudar um capítulo da Bíblia."],
+  };
+  const [title, description] = copy[tab];
+
+  return (
+    <div className="mt-8 rounded-[1.5rem] border border-dashed border-border bg-surface/60 p-6 text-center">
+      <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+        <BookMarked className="h-5 w-5" />
+      </span>
+      <p className="mt-3 text-sm font-extrabold">{title}</p>
+      <p className="mx-auto mt-1 max-w-xs text-xs leading-relaxed text-muted-foreground">
+        {description}
+      </p>
+    </div>
+  );
 }
