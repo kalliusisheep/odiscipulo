@@ -48,13 +48,13 @@ function PublicProfilePage() {
       setMyId(u.user?.id ?? null);
       const withPresence = await supabase
         .from("profiles")
-        .select("id, display_name, username, avatar_char, avatar_url, bio, xp, streak, church_name, last_seen_at")
+        .select("id, display_name, username, avatar_char, avatar_url, bio, xp, streak, church_name, last_seen_at, updated_at")
         .ilike("username", username)
         .maybeSingle();
       const p = withPresence.error
         ? (await supabase
             .from("profiles")
-            .select("id, display_name, username, avatar_char, avatar_url, bio, xp, streak, church_name")
+            .select("id, display_name, username, avatar_char, avatar_url, bio, xp, streak, church_name, updated_at")
             .ilike("username", username)
             .maybeSingle()).data
         : withPresence.data;
@@ -62,7 +62,7 @@ function PublicProfilePage() {
         setLoading(false);
         throw notFound();
       }
-      setProfile(p as Profile);
+      setProfile({ ...p, last_seen_at: p.last_seen_at ?? p.updated_at ?? null } as Profile);
       const { count } = await supabase
         .from("lesson_progress")
         .select("*", { count: "exact", head: true })
