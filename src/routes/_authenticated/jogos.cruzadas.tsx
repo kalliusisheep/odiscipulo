@@ -5,6 +5,7 @@ import type { GameDifficulty } from "@/data/biblical-characters";
 import { CROSSWORD_DIFFICULTY, CROSSWORD_THEMES, crosswordWordsFor, type CrosswordTheme, type CrosswordWord } from "@/data/biblical-crosswords";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
+import { recordGameResult } from "@/lib/game-leaderboard";
 import { shuffleWithSeed } from "@/lib/seeded-random";
 
 export const Route = createFileRoute("/_authenticated/jogos/cruzadas")({
@@ -183,6 +184,13 @@ function CrosswordPage() {
 
   if (phase === "setup" && !modeSelected) return <GameModeChooser title="Palavras Cruzadas" description="Escolha uma grade para resolver sozinho ou reúna seus amigos para um desafio bíblico em sala." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=cruzadas"; }} />;
   if (phase === "setup") return <Setup difficulty={difficulty} setDifficulty={setDifficulty} theme={theme} setTheme={setTheme} onStart={start} />;
+  const scoreSaved = useRef(false);
+  useEffect(() => {
+    if (phase !== "finished" || scoreSaved.current) return;
+    scoreSaved.current = true;
+    void recordGameResult({ gameKey: "cruzadas", score, correctAnswers: completed.length, rounds: puzzle.placements.length });
+  }, [completed.length, phase, puzzle.placements.length, score]);
+
   if (phase === "finished") return <Results score={score} seconds={seconds} errors={errors} hints={hints} placements={puzzle.placements} onRestart={() => setPhase("setup")} />;
   const gridCells = Array.from({ length: puzzle.size * puzzle.size }, (_, index) => cellMap.get(key(Math.floor(index / puzzle.size), index % puzzle.size)));
 
