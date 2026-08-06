@@ -54,12 +54,25 @@ const RAW_CROSSWORD_WORDS: CrosswordWord[] = [
 
 // Banco ampliado: palavras bíblicas adicionais usadas para variar as grades.
 
-const CROSSWORD_EXCLUDED_FACT_IDS = new Set(["pedro-negacao", "gideao", "samuel-chamado", "salomao-sabedoria", "miqueias-justica", "habacuque-fe"]);
+const CROSSWORD_EXCLUDED_FACT_IDS = new Set([
+  // Respostas que são frases, quantidades, eventos ou abstrações — não formam
+  // entradas legíveis de uma cruzada.
+  "cana",
+  "pedro-negacao",
+  "gideao",
+  "samuel-chamado",
+  "salomao-sabedoria",
+  "miqueias-justica",
+  "habacuque-fe",
+  "filho-prodigo",
+  "maria-magnificat",
+  "zacqueu",
+]);
 
 const normalizeCrosswordWord = (value: string) =>
   value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Za-z]/g, "").toUpperCase();
 
-const maskCrosswordAnswer = (text: string, answer: string) => text.split(answer).join("Este personagem");
+const maskCrosswordAnswer = (text: string, answer: string) => text.split(answer).join("Esta resposta");
 
 const themesForCategory = (category: string): CrosswordTheme[] => {
   if (/evangelho|ensino/i.test(category)) return ["evangelhos", "personagens"];
