@@ -616,7 +616,7 @@ function MilestoneItem(props: CardCommonProps & { connectTop: boolean; connectBo
   const Icon = FEED_KIND_ICON[item.kind];
 
   return (
-    <div className="feed-milestone-card animate-fade-in relative flex gap-4 rounded-[2rem] border border-border/70 bg-surface p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-lg">
+    <article className="feed-milestone-card animate-fade-in relative flex gap-4 rounded-[2rem] border border-border/70 bg-surface p-5 pb-[4.75rem] shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-lg">
       {(connectTop || connectBottom) && (
         <span
           className={`absolute left-[28px] w-px bg-border/70 ${connectTop ? "top-0" : "top-1/2"} ${
@@ -637,10 +637,12 @@ function MilestoneItem(props: CardCommonProps & { connectTop: boolean; connectBo
         <p className="text-[15px] leading-relaxed text-foreground/90">
           <span className="font-extrabold">{item.author_name}</span> {milestoneText(item)}
         </p>
-        <div className="mt-2 flex items-center gap-2">
+        <div className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center">
           <span className="text-[10px] text-muted-foreground">
             {formatDistanceToNow(new Date(item.created_at), { locale: ptBR, addSuffix: true })}
           </span>
+        </div>
+        <div className="absolute bottom-1.5 right-3">
           <CompactActions
             liked={props.liked}
             likeCount={props.likeCount}
@@ -665,7 +667,7 @@ function MilestoneItem(props: CardCommonProps & { connectTop: boolean; connectBo
           onToggleCommentLike={props.onToggleCommentLike}
         />
       </div>
-    </div>
+    </article>
   );
 }
 
