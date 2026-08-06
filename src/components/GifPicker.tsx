@@ -27,8 +27,10 @@ export function GifPicker({ onSelect, className }: { onSelect: (gifUrl: string) 
   const [errored, setErrored] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const requestRef = useRef(0);
 
   const search = async (term: string) => {
+    const requestId = ++requestRef.current;
     setLoading(true);
     setErrored(false);
     try {
@@ -36,31 +38,35 @@ export function GifPicker({ onSelect, className }: { onSelect: (gifUrl: string) 
         body: { q: term },
       });
       if (error || !data || data.error) throw error ?? new Error(data?.error ?? "Falha ao buscar GIFs");
-      setGifs(data.gifs ?? []);
+      if (requestId === requestRef.current) setGifs(data.gifs ?? []);
     } catch (e) {
+      if (requestId !== requestRef.current) return;
       console.error("GifPicker: falha ao buscar GIFs:", e);
       setErrored(true);
       setGifs([]);
     } finally {
-      setLoading(false);
+      if (requestId === requestRef.current) setLoading(false);
     }
   };
 
   useEffect(() => {
     if (!open) return;
-    void search("");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => void search(query), 400);
+    debounceRef.current = setTimeout(() => void search(query), query ? 350 : 0);
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, open]);
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -88,8 +94,26 @@ export function GifPicker({ onSelect, className }: { onSelect: (gifUrl: string) 
       </button>
 
       {open && (
-        <div className="absolute bottom-10 left-0 z-20 w-72 rounded-2xl border border-border bg-popover p-2.5 shadow-xl animate-slide-up">
-          <div className="flex items-center gap-2 rounded-full border border-border bg-input px-3 py-1.5">
+        <div
+          className="fixed inset-0 z-[100] flex items-end justify-center bg-black/65 p-3 backdrop-blur-sm animate-fade-in sm:items-center sm:p-6"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Buscar GIF"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setOpen(false);
+          }}
+        >
+          <div className="w-full max-w-md overflow-hidden rounded-[24px] border border-primary/25 bg-popover p-3 shadow-2xl shadow-black/40 animate-slide-up sm:animate-fade-in">
+            <div className="flex items-center justify-between gap-3 px-1 pb-2">
+              <div>
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary">Adicionar reação</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">Escolha um GIF para o comentário</p>
+              </div>
+              <button type="button" onClick={() => setOpen(false)} aria-label="Fechar busca de GIF" className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-surface-2 hover:text-foreground">
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            <div className="flex items-center gap-2 rounded-full border border-border bg-input px-3 py-1.5">
             <Search className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
             <input
               autoFocus
@@ -98,17 +122,9 @@ export function GifPicker({ onSelect, className }: { onSelect: (gifUrl: string) 
               placeholder="Buscar GIF na web…"
               className="w-full bg-transparent text-xs outline-none placeholder:text-muted-foreground"
             />
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label="Fechar busca de GIF"
-              className="shrink-0 text-muted-foreground hover:text-foreground"
-            >
-              <X className="h-3.5 w-3.5" />
-            </button>
           </div>
 
-          <div className="mt-2 grid max-h-64 grid-cols-3 gap-1.5 overflow-y-auto">
+          <div className="mt-3 grid max-h-[min(56vh,26rem)] grid-cols-3 gap-2 overflow-y-auto rounded-2xl bg-background/35 p-1.5">
             {loading && (
               <div className="col-span-3 flex items-center justify-center py-8 text-muted-foreground">
                 <Loader2 className="h-5 w-5 animate-spin" />
@@ -140,7 +156,8 @@ export function GifPicker({ onSelect, className }: { onSelect: (gifUrl: string) 
               ))}
           </div>
           {/* Exigido pelos termos de uso da Giphy: atribuição visível onde a busca aparece. */}
-          <p className="mt-1.5 text-center text-[9px] text-muted-foreground">Powered by GIPHY</p>
+            <p className="mt-2 text-center text-[9px] text-muted-foreground">Powered by GIPHY</p>
+          </div>
         </div>
       )}
     </div>
