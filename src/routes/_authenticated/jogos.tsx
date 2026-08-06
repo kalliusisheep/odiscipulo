@@ -5,10 +5,9 @@ export const Route = createFileRoute("/_authenticated/jogos")({ component: Jogos
 
 const games = [
   { title: "Quem é o personagem?", description: "Descubra personagens bíblicos usando três pistas da Palavra.", to: "/jogos/personagem" as const, icon: Brain, tone: "from-primary/30 to-primary/5", active: true },
-  { title: "Multi Player", description: "Compita com 2 a 4 jogadores em uma rodada sincronizada.", to: "/jogos/multiplayer" as const, icon: Trophy, tone: "from-ancient/25 to-ancient/5", active: true },
-  { title: "Qual é o versículo?", description: "Reconheça o contexto e encontre a passagem certa.", icon: HelpCircle, tone: "from-success/20 to-success/5", active: false },
-  { title: "Palavras cruzadas", description: "Complete o desafio com termos e histórias bíblicas.", icon: Sparkles, tone: "from-ancient/25 to-ancient/5", active: false },
-  { title: "Quiz do milhão", description: "Suba a escada de perguntas e teste seu conhecimento.", icon: Trophy, tone: "from-purple-500/25 to-purple-500/5", active: false },
+  { title: "Qual é o versículo?", description: "Reconheça o contexto e encontre a passagem certa.", to: "/jogos/versiculo" as const, icon: HelpCircle, tone: "from-success/20 to-success/5", active: true },
+  { title: "Palavras cruzadas", description: "Complete o desafio com termos e histórias bíblicas.", to: "/jogos/cruzadas" as const, icon: Sparkles, tone: "from-ancient/25 to-ancient/5", active: true },
+  { title: "Quiz do milhão", description: "Suba a escada de perguntas e teste seu conhecimento.", to: "/jogos/milhao" as const, icon: Trophy, tone: "from-purple-500/25 to-purple-500/5", active: true },
 ];
 
 function JogosPage() {

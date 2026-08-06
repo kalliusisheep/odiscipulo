@@ -22,6 +22,11 @@ import { Route as AuthenticatedPreview_niveisRouteImport } from './routes/_authe
 import { Route as AuthenticatedRankingRouteImport } from './routes/_authenticated/ranking'
 import { Route as AuthenticatedRankingDetalhesRouteImport } from './routes/_authenticated/ranking-detalhes'
 import { Route as AuthenticatedVersiculoRouteImport } from './routes/_authenticated/versiculo'
+import { Route as AuthenticatedJogosRouteImport } from './routes/_authenticated/jogos'
+import { Route as AuthenticatedJogosPersonagemRouteImport } from './routes/_authenticated/jogos.personagem'
+import { Route as AuthenticatedJogosVersiculoRouteImport } from './routes/_authenticated/jogos.versiculo'
+import { Route as AuthenticatedJogosCruzadasRouteImport } from './routes/_authenticated/jogos.cruzadas'
+import { Route as AuthenticatedJogosMilhaoRouteImport } from './routes/_authenticated/jogos.milhao'
 import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as AuthenticatedAdminPregerarNarracaoRouteImport } from './routes/_authenticated/admin.pregerar-narracao'
 import { Route as AuthenticatedAdminPregerarTextosRouteImport } from './routes/_authenticated/admin.pregerar-textos'
@@ -110,6 +115,35 @@ const AuthenticatedVersiculoRoute = AuthenticatedVersiculoRouteImport.update({
   path: '/versiculo',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedJogosRoute = AuthenticatedJogosRouteImport.update({
+  id: '/jogos',
+  path: '/jogos',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedJogosPersonagemRoute =
+  AuthenticatedJogosPersonagemRouteImport.update({
+    id: '/jogos/personagem',
+    path: '/jogos/personagem',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedJogosVersiculoRoute =
+  AuthenticatedJogosVersiculoRouteImport.update({
+    id: '/jogos/versiculo',
+    path: '/jogos/versiculo',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedJogosCruzadasRoute =
+  AuthenticatedJogosCruzadasRouteImport.update({
+    id: '/jogos/cruzadas',
+    path: '/jogos/cruzadas',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedJogosMilhaoRoute =
+  AuthenticatedJogosMilhaoRouteImport.update({
+    id: '/jogos/milhao',
+    path: '/jogos/milhao',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const ApiTtsRoute = ApiTtsRouteImport.update({
   id: '/api/tts',
   path: '/api/tts',
@@ -245,6 +279,11 @@ export interface FileRoutesByFullPath {
   '/ranking': typeof AuthenticatedRankingRoute
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/versiculo': typeof AuthenticatedVersiculoRoute
+  '/jogos': typeof AuthenticatedJogosRoute
+  '/jogos/personagem': typeof AuthenticatedJogosPersonagemRoute
+  '/jogos/versiculo': typeof AuthenticatedJogosVersiculoRoute
+  '/jogos/cruzadas': typeof AuthenticatedJogosCruzadasRoute
+  '/jogos/milhao': typeof AuthenticatedJogosMilhaoRoute
   '/api/tts': typeof ApiTtsRoute
   '/admin/pregerar-narracao': typeof AuthenticatedAdminPregerarNarracaoRoute
   '/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
@@ -280,6 +319,11 @@ export interface FileRoutesByTo {
   '/ranking': typeof AuthenticatedRankingRoute
   '/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/versiculo': typeof AuthenticatedVersiculoRoute
+  '/jogos': typeof AuthenticatedJogosRoute
+  '/jogos/personagem': typeof AuthenticatedJogosPersonagemRoute
+  '/jogos/versiculo': typeof AuthenticatedJogosVersiculoRoute
+  '/jogos/cruzadas': typeof AuthenticatedJogosCruzadasRoute
+  '/jogos/milhao': typeof AuthenticatedJogosMilhaoRoute
   '/api/tts': typeof ApiTtsRoute
   '/admin/pregerar-narracao': typeof AuthenticatedAdminPregerarNarracaoRoute
   '/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
@@ -317,6 +361,11 @@ export interface FileRoutesById {
   '/_authenticated/ranking': typeof AuthenticatedRankingRoute
   '/_authenticated/ranking-detalhes': typeof AuthenticatedRankingDetalhesRoute
   '/_authenticated/versiculo': typeof AuthenticatedVersiculoRoute
+  '/_authenticated/jogos': typeof AuthenticatedJogosRoute
+  '/_authenticated/jogos/personagem': typeof AuthenticatedJogosPersonagemRoute
+  '/_authenticated/jogos/versiculo': typeof AuthenticatedJogosVersiculoRoute
+  '/_authenticated/jogos/cruzadas': typeof AuthenticatedJogosCruzadasRoute
+  '/_authenticated/jogos/milhao': typeof AuthenticatedJogosMilhaoRoute
   '/api/tts': typeof ApiTtsRoute
   '/_authenticated/admin/pregerar-narracao': typeof AuthenticatedAdminPregerarNarracaoRoute
   '/_authenticated/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
@@ -354,6 +403,11 @@ export interface FileRouteTypes {
     | '/ranking'
     | '/ranking-detalhes'
     | '/versiculo'
+    | '/jogos'
+    | '/jogos/personagem'
+    | '/jogos/versiculo'
+    | '/jogos/cruzadas'
+    | '/jogos/milhao'
     | '/api/tts'
     | '/admin/pregerar-narracao'
     | '/admin/pregerar-textos'
@@ -389,6 +443,11 @@ export interface FileRouteTypes {
     | '/ranking'
     | '/ranking-detalhes'
     | '/versiculo'
+    | '/jogos'
+    | '/jogos/personagem'
+    | '/jogos/versiculo'
+    | '/jogos/cruzadas'
+    | '/jogos/milhao'
     | '/api/tts'
     | '/admin/pregerar-narracao'
     | '/admin/pregerar-textos'
@@ -425,6 +484,11 @@ export interface FileRouteTypes {
     | '/_authenticated/ranking'
     | '/_authenticated/ranking-detalhes'
     | '/_authenticated/versiculo'
+    | '/_authenticated/jogos'
+    | '/_authenticated/jogos/personagem'
+    | '/_authenticated/jogos/versiculo'
+    | '/_authenticated/jogos/cruzadas'
+    | '/_authenticated/jogos/milhao'
     | '/api/tts'
     | '/_authenticated/admin/pregerar-narracao'
     | '/_authenticated/admin/pregerar-textos'
@@ -546,6 +610,41 @@ declare module '@tanstack/react-router' {
       path: '/versiculo'
       fullPath: '/versiculo'
       preLoaderRoute: typeof AuthenticatedVersiculoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/jogos': {
+      id: '/_authenticated/jogos'
+      path: '/jogos'
+      fullPath: '/jogos'
+      preLoaderRoute: typeof AuthenticatedJogosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/jogos/personagem': {
+      id: '/_authenticated/jogos/personagem'
+      path: '/jogos/personagem'
+      fullPath: '/jogos/personagem'
+      preLoaderRoute: typeof AuthenticatedJogosPersonagemRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/jogos/versiculo': {
+      id: '/_authenticated/jogos/versiculo'
+      path: '/jogos/versiculo'
+      fullPath: '/jogos/versiculo'
+      preLoaderRoute: typeof AuthenticatedJogosVersiculoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/jogos/cruzadas': {
+      id: '/_authenticated/jogos/cruzadas'
+      path: '/jogos/cruzadas'
+      fullPath: '/jogos/cruzadas'
+      preLoaderRoute: typeof AuthenticatedJogosCruzadasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/jogos/milhao': {
+      id: '/_authenticated/jogos/milhao'
+      path: '/jogos/milhao'
+      fullPath: '/jogos/milhao'
+      preLoaderRoute: typeof AuthenticatedJogosMilhaoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/api/tts': {
@@ -709,6 +808,11 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRankingRoute: typeof AuthenticatedRankingRoute
   AuthenticatedRankingDetalhesRoute: typeof AuthenticatedRankingDetalhesRoute
   AuthenticatedVersiculoRoute: typeof AuthenticatedVersiculoRoute
+  AuthenticatedJogosRoute: typeof AuthenticatedJogosRoute
+  AuthenticatedJogosPersonagemRoute: typeof AuthenticatedJogosPersonagemRoute
+  AuthenticatedJogosVersiculoRoute: typeof AuthenticatedJogosVersiculoRoute
+  AuthenticatedJogosCruzadasRoute: typeof AuthenticatedJogosCruzadasRoute
+  AuthenticatedJogosMilhaoRoute: typeof AuthenticatedJogosMilhaoRoute
   AuthenticatedAdminPregerarNarracaoRoute: typeof AuthenticatedAdminPregerarNarracaoRoute
   AuthenticatedAdminPregerarTextosRoute: typeof AuthenticatedAdminPregerarTextosRoute
   AuthenticatedBibliaMarcadosRoute: typeof AuthenticatedBibliaMarcadosRoute
@@ -742,6 +846,11 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRankingRoute: AuthenticatedRankingRoute,
   AuthenticatedRankingDetalhesRoute: AuthenticatedRankingDetalhesRoute,
   AuthenticatedVersiculoRoute: AuthenticatedVersiculoRoute,
+  AuthenticatedJogosRoute: AuthenticatedJogosRoute,
+  AuthenticatedJogosPersonagemRoute: AuthenticatedJogosPersonagemRoute,
+  AuthenticatedJogosVersiculoRoute: AuthenticatedJogosVersiculoRoute,
+  AuthenticatedJogosCruzadasRoute: AuthenticatedJogosCruzadasRoute,
+  AuthenticatedJogosMilhaoRoute: AuthenticatedJogosMilhaoRoute,
   AuthenticatedAdminPregerarNarracaoRoute:
     AuthenticatedAdminPregerarNarracaoRoute,
   AuthenticatedAdminPregerarTextosRoute: AuthenticatedAdminPregerarTextosRoute,
