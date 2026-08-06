@@ -257,7 +257,7 @@ function ChapterReader() {
     <div className={`min-h-screen pb-32 transition-colors ${theme === "light" ? "bg-[#fbfaf7] text-slate-900" : "bg-background text-foreground"}`}>
       {/* Barra superior fixa */}
       <div className="sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-xl">
-        <div className="mx-auto grid max-w-lg grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-2 px-4 py-2.5">
+        <div className="mx-auto grid max-w-lg grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-4 py-2.5">
           <Link
             to="/biblia"
             aria-label="Voltar"
@@ -277,41 +277,8 @@ function ChapterReader() {
             </span>
           </button>
           <ThemeToggle className="h-9 w-9 border-border bg-surface" />
-          <button
-            onClick={() => {
-              if (narrationIndex === null && !narrationLoading) startNarration();
-              else if (narrationIndex !== null) toggleNarrationPause();
-            }}
-            aria-label={
-              narrationLoading
-                ? "Carregando narração"
-                : narrationIndex !== null && !narrationPaused
-                  ? "Pausar narração"
-                  : "Iniciar narração"
-            }
-            disabled={narrationLoading}
-            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-all active:scale-95 disabled:cursor-wait disabled:opacity-70 ${
-              narrationIndex !== null && !narrationPaused
-                ? "border-primary bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                : "border-border bg-surface text-primary hover:bg-primary/10"
-            }`}
-          >
-            {narrationLoading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : narrationIndex !== null && !narrationPaused ? (
-              <Pause className="h-4 w-4" />
-            ) : (
-              <Play className="ml-0.5 h-4 w-4 fill-current" />
-            )}
-          </button>
-          <button
-            onClick={() => setSettingsOpen(true)}
-            aria-label="Ajustes de leitura"
-            className="shrink-0 rounded-full border border-border bg-surface p-2.5 text-primary transition-transform active:scale-95"
-          >
-            <Type className="h-4 w-4" />
-          </button>
         </div>
+
       </div>
 
       <div className="mx-auto max-w-lg px-4 pt-4 animate-slide-up">
