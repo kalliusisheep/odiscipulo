@@ -146,13 +146,13 @@ function MuralPage() {
               aria-controls={`mural-panel-${key}`}
               aria-selected={selected}
               tabIndex={selected ? 0 : -1}
-              className={`relative flex min-h-12 items-center justify-center gap-1.5 rounded-[18px] px-2 text-[11px] font-bold transition-all duration-200 ${
+              className={`relative flex min-h-14 items-center justify-center gap-2 rounded-[18px] px-2 text-xs font-bold transition-all duration-200 ${
                 selected
                   ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
                   : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
               }`}
             >
-              <Icon className="h-4 w-4" />
+              <Icon className="h-5 w-5" />
               <span className="truncate">{item.label}</span>
               {selected && <span className="absolute bottom-1 h-1 w-1 rounded-full bg-primary-foreground/90" />}
             </button>
@@ -354,22 +354,22 @@ function FullActions({ liked, likeCount, commentCount, onToggleLike, onToggleCom
         type="button"
         onClick={onToggleLike}
         aria-pressed={liked}
-        className={`inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-bold transition-all ${
+        className={`inline-flex min-h-11 items-center gap-2 rounded-full px-3.5 text-sm font-bold transition-all ${
           liked
             ? "bg-destructive/10 text-destructive"
             : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
         }`}
       >
-        <Heart className={`h-4 w-4 transition-transform ${liked ? "scale-110 fill-destructive" : ""}`} />
+        <Heart className={`h-5 w-5 transition-transform ${liked ? "scale-110 fill-destructive" : ""}`} />
         {likeCount > 0 && likeCount}
       </button>
       <button
         type="button"
         onClick={onToggleComments}
         aria-expanded={commentsOpen}
-        className="inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-bold text-muted-foreground transition-all hover:bg-surface-2 hover:text-foreground"
+        className="inline-flex min-h-11 items-center gap-2 rounded-full px-3.5 text-sm font-bold text-muted-foreground transition-all hover:bg-surface-2 hover:text-foreground"
       >
-        <MessageCircle className="h-4 w-4" />
+        <MessageCircle className="h-5 w-5" />
         {commentCount > 0 && commentCount}
       </button>
       <ChevronDown
@@ -388,19 +388,19 @@ function CompactActions({ liked, likeCount, commentCount, onToggleLike, onToggle
       <button
         type="button"
         onClick={onToggleLike}
-        className={`inline-flex items-center gap-1 text-[11px] font-bold transition-colors ${
+        className={`inline-flex min-h-10 items-center gap-1.5 text-xs font-bold transition-colors ${
           liked ? "text-destructive" : "text-muted-foreground hover:text-foreground"
         }`}
       >
-        <Heart className={`h-3.5 w-3.5 transition-transform ${liked ? "scale-110 fill-destructive" : ""}`} />
+        <Heart className={`h-4 w-4 transition-transform ${liked ? "scale-110 fill-destructive" : ""}`} />
         {likeCount > 0 && likeCount}
       </button>
       <button
         type="button"
         onClick={onToggleComments}
-        className="inline-flex items-center gap-1 text-[11px] font-bold text-muted-foreground transition-colors hover:text-foreground"
+        className="inline-flex min-h-10 items-center gap-1.5 text-xs font-bold text-muted-foreground transition-colors hover:text-foreground"
       >
-        <MessageCircle className="h-3.5 w-3.5" />
+        <MessageCircle className="h-4 w-4" />
         {commentCount > 0 && commentCount}
       </button>
     </div>
@@ -976,7 +976,7 @@ function Feed() {
                 type="button"
                 onClick={() => void publish()}
                 disabled={!composerText.trim() || posting}
-                className="inline-flex min-h-10 items-center gap-2 rounded-full bg-primary px-5 text-xs font-extrabold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary-glow disabled:translate-y-0 disabled:opacity-50 disabled:shadow-none"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-extrabold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary-glow disabled:translate-y-0 disabled:opacity-50 disabled:shadow-none"
               >
                 {posting ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
