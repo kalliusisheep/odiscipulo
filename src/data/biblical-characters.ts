@@ -17,7 +17,7 @@ export const CHARACTER_DIFFICULTY: Record<GameDifficulty, { label: string; multi
   bereano: { label: "Bereano Supremo", multiplier: 2, tone: "text-purple-300" },
 };
 
-export const BIBLICAL_CHARACTERS: BiblicalCharacter[] = [
+const RAW_BIBLICAL_CHARACTERS: BiblicalCharacter[] = [
   {
     id: "moises", name: "Moisés", aliases: ["moises", "mose"], difficulty: "facil",
     summary: "Liderou a saída do povo hebreu do Egito e recebeu a Lei no Sinai.", references: ["Êxodo 3–14", "Êxodo 20"],
@@ -79,6 +79,15 @@ export const BIBLICAL_CHARACTERS: BiblicalCharacter[] = [
     hints: ["Era da tribo de Judá e descendia de uma família ligada à liderança.", "Recebeu habilidade especial para trabalhar com ouro, prata, bronze e madeira.", "Coordenou a produção dos objetos e tecidos do santuário móvel.", "Foi escolhido por Deus para liderar os artesãos do tabernáculo."],
   },
 ];
+
+const isValidBiblicalCharacter = (character: BiblicalCharacter) => {
+  const hints = character.hints.map((hint) => hint.trim()).filter(Boolean);
+  return Boolean(character.id.trim() && character.name.trim() && character.summary.trim() && character.references.length > 0)
+    && hints.length === 4
+    && new Set([character.name, ...character.aliases]).size === character.aliases.length + 1;
+};
+
+export const BIBLICAL_CHARACTERS = RAW_BIBLICAL_CHARACTERS.filter(isValidBiblicalCharacter);
 
 export const normalizeGameAnswer = (value: string) =>
   value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "").trim();
