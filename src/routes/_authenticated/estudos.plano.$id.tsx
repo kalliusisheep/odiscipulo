@@ -302,6 +302,8 @@ function DayDetails({
   onComplete: () => void;
   version: BibleVersion;
 }) {
+  const { scaleIndex, increase, decrease, contentZoomStyle } = useReadingFontScale();
+
   return (
     <div className="space-y-5 border-t border-border/60 bg-surface/50 p-5" data-tts-scope="plano-dia">
       <div className="flex items-center justify-end gap-2">
