@@ -18,6 +18,7 @@ import { ChurchLinkDialog } from "@/components/ChurchLinkDialog";
 import type { ChurchOption } from "@/lib/church";
 
 import { useApp } from "@/lib/app-context";
+import { APP_LANGUAGES, languageByCode, THEME_OPTIONS, type AppLanguage, type AppTheme } from "@/lib/i18n";
 import {
   AtSign,
   Bell,
@@ -40,6 +41,8 @@ import {
   Trophy,
   MessageCircle,
   Gamepad2,
+  Languages,
+  Palette,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/perfil")({
@@ -93,11 +96,13 @@ function PerfilPage() {
   const [usernameDraft, setUsernameDraft] = useState("");
   const [savingUsername, setSavingUsername] = useState(false);
   const [versionOpen, setVersionOpen] = useState(false);
+  const [languageOpen, setLanguageOpen] = useState(false);
+  const [themeOpen, setThemeOpen] = useState(false);
   const [avatarDialogOpen, setAvatarDialogOpen] = useState(false);
   const [churchDialogOpen, setChurchDialogOpen] = useState(false);
   const [savingDevotionalReminder, setSavingDevotionalReminder] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
-  const { bibleVersion, setBibleVersion } = useApp();
+  const { bibleVersion, setBibleVersion, language, setLanguage, theme, setTheme, t } = useApp();
   const nav = useNavigate();
 
   useEffect(() => {
@@ -546,9 +551,27 @@ function PerfilPage() {
       >
         <div className="mb-2 flex items-center gap-2 px-1">
           <Settings2 className="h-3.5 w-3.5 text-primary" />
-          <SectionLabel className="mb-0 px-0">Preferências</SectionLabel>
+          <SectionLabel className="mb-0 px-0">{t("profile.preferences")}</SectionLabel>
         </div>
         <div className="card-elevated divide-y divide-border/70 overflow-hidden">
+          <LanguageSelector
+            value={language}
+            open={languageOpen}
+            onOpenChange={setLanguageOpen}
+            onSelect={(value) => {
+              setLanguage(value);
+              setLanguageOpen(false);
+            }}
+          />
+          <ThemeSelector
+            value={theme}
+            open={themeOpen}
+            onOpenChange={setThemeOpen}
+            onSelect={(value) => {
+              setTheme(value);
+              setThemeOpen(false);
+            }}
+          />
           <BibleVersionSelector
             value={bibleVersion}
             open={versionOpen}
@@ -561,7 +584,7 @@ function PerfilPage() {
           />
           <SettingsRow
             icon={Church}
-            title="Minha Igreja"
+            title={t("profile.myChurch")}
             subtitle={profile.church_name ?? "Não vinculado a uma igreja"}
             action={
               <button
@@ -574,7 +597,7 @@ function PerfilPage() {
           />
           <SettingsRow
             icon={Bell}
-            title="Lembrete de Devocional"
+            title={t("profile.devotionalReminder")}
             subtitle={
               profile.notify_devocional
                 ? "Você receberá avisos às 06h e às 20h."
@@ -759,6 +782,159 @@ function ToggleSwitch({
         }`}
       />
     </button>
+  );
+}
+
+function LanguageSelector({
+  value,
+  open,
+  onOpenChange,
+  onSelect,
+}: {
+  value: AppLanguage;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSelect: (value: AppLanguage) => void;
+}) {
+  const { t } = useApp();
+  const current = languageByCode(value);
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => onOpenChange(true)}
+        className="flex w-full items-center gap-3 p-4 text-left transition-colors hover:bg-surface-2/40"
+      >
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] bg-primary/10 text-primary ring-1 ring-primary/10">
+          <Languages className="h-5 w-5" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-bold">{t("profile.language")}</p>
+          <p className="mt-0.5 truncate text-[11px] text-muted-foreground">
+            {t("profile.languageDescription")}
+          </p>
+        </div>
+        <span className="rounded-full bg-primary/[0.07] px-2.5 py-1 text-[10px] font-extrabold text-primary">
+          {current.nativeLabel}
+        </span>
+      </button>
+
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t("profile.languageDialogTitle")}</DialogTitle>
+            <DialogDescription>{t("profile.languageDialogDescription")}</DialogDescription>
+          </DialogHeader>
+          <div className="divide-y divide-border overflow-hidden rounded-2xl border border-border">
+            {APP_LANGUAGES.map((option) => {
+              const selected = option.code === value;
+              return (
+                <button
+                  key={option.code}
+                  type="button"
+                  onClick={() => onSelect(option.code)}
+                  className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors ${
+                    selected ? "bg-primary/5" : "hover:bg-surface-2"
+                  }`}
+                >
+                  <span
+                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold ${
+                      selected ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground"
+                    }`}
+                  >
+                    {option.nativeLabel.slice(0, 2).toUpperCase()}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-semibold">{option.label}</span>
+                    <span className="block text-xs text-muted-foreground">
+                      {option.nativeLabel}
+                    </span>
+                  </span>
+                  {selected ? (
+                    <Check className="h-5 w-5 shrink-0 text-primary" />
+                  ) : (
+                    <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/40" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
+function ThemeSelector({
+  value,
+  open,
+  onOpenChange,
+  onSelect,
+}: {
+  value: AppTheme;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSelect: (value: AppTheme) => void;
+}) {
+  const { t } = useApp();
+  const current = THEME_OPTIONS.find((option) => option.id === value) ?? THEME_OPTIONS[0];
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => onOpenChange(true)}
+        className="flex w-full items-center gap-3 p-4 text-left transition-colors hover:bg-surface-2/40"
+      >
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] bg-primary/10 text-primary ring-1 ring-primary/10">
+          <Palette className="h-5 w-5" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-bold">{t("profile.theme")}</p>
+          <p className="mt-0.5 truncate text-[11px] text-muted-foreground">
+            {t("profile.themeDescription")}
+          </p>
+        </div>
+        <span className={`h-6 w-6 rounded-full border-2 border-border shadow-inner theme-preview-${value}`} aria-hidden="true" />
+        <span className="max-w-[5.5rem] truncate text-[10px] font-extrabold text-primary">
+          {t(current.labelKey)}
+        </span>
+      </button>
+
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t("profile.themeDialogTitle")}</DialogTitle>
+            <DialogDescription>{t("profile.themeDialogDescription")}</DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-2 gap-2.5">
+            {THEME_OPTIONS.map((option) => {
+              const selected = option.id === value;
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  onClick={() => onSelect(option.id)}
+                  className={`group rounded-2xl border p-3 text-left transition-all active:scale-[0.98] ${
+                    selected ? "border-primary bg-primary/10 shadow-lg shadow-primary/10" : "border-border hover:border-primary/40"
+                  }`}
+                >
+                  <span className={`theme-preview-${option.id} block h-12 rounded-xl border border-border/70 shadow-inner`} />
+                  <span className="mt-2 flex items-center justify-between gap-2">
+                    <span className="text-sm font-extrabold">{t(option.labelKey)}</span>
+                    {selected && <Check className="h-4 w-4 text-primary" />}
+                  </span>
+                  <span className="mt-0.5 block text-[10px] text-muted-foreground">
+                    {t(option.descriptionKey)}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
