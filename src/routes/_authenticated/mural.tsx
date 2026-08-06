@@ -384,7 +384,7 @@ function FullActions({ liked, likeCount, commentCount, onToggleLike, onToggleCom
 
 function CompactActions({ liked, likeCount, commentCount, onToggleLike, onToggleComments }: ActionsHandlers) {
   return (
-    <div className="mt-1 flex items-center gap-3.5">
+    <div className="mt-1.5 flex items-center gap-3.5">
       <button
         type="button"
         onClick={onToggleLike}
@@ -472,7 +472,7 @@ function CommentsPanel({
                   )}
                 </div>
                 <div className="mt-1 flex items-center gap-2.5 px-1">
-                  <span className="text-[10px] text-muted-foreground">
+                  <span className="text-[11px] text-muted-foreground">
                     {formatDistanceToNow(new Date(c.created_at), { locale: ptBR, addSuffix: true })}
                   </span>
                   <button
@@ -560,8 +560,8 @@ type CardCommonProps = {
 function PostCard(props: CardCommonProps) {
   const { item } = props;
   return (
-    <article className="animate-fade-in overflow-hidden rounded-[26px] border border-border/70 bg-surface shadow-sm transition-all hover:border-primary/20 hover:shadow-lg">
-      <div className="p-4">
+    <article className="animate-fade-in overflow-hidden rounded-3xl border border-border/70 bg-surface shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-lg">
+      <div className="p-5">
         <header className="flex items-center gap-3">
           <Avatar name={item.author_name} url={item.author_avatar_url} />
           <div className="min-w-0 flex-1">
@@ -573,7 +573,7 @@ function PostCard(props: CardCommonProps) {
         </header>
 
         {item.body && (
-          <p className="mt-3 whitespace-pre-wrap text-[15px] leading-relaxed text-foreground/95">
+          <p className="mt-4 whitespace-pre-wrap text-base leading-relaxed text-foreground/95">
             {item.body}
           </p>
         )}
@@ -617,7 +617,7 @@ function MilestoneItem(props: CardCommonProps & { connectTop: boolean; connectBo
   const Icon = FEED_KIND_ICON[item.kind];
 
   return (
-    <div className="animate-fade-in relative flex gap-3 rounded-[20px] px-2 py-2 transition-colors hover:bg-surface-2/50">
+    <div className="animate-fade-in relative flex gap-3 rounded-3xl border border-border/70 bg-surface p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-lg">
       {(connectTop || connectBottom) && (
         <span
           className={`absolute left-[23px] w-px bg-border/70 ${connectTop ? "top-0" : "top-1/2"} ${
@@ -626,7 +626,7 @@ function MilestoneItem(props: CardCommonProps & { connectTop: boolean; connectBo
         />
       )}
       <div className="relative z-10 shrink-0">
-        <Avatar name={item.author_name} url={item.author_avatar_url} size="sm" ring="ring-2 ring-background" />
+        <Avatar name={item.author_name} url={item.author_avatar_url} ring="ring-2 ring-background" />
         <span
           className={`absolute -bottom-1 -right-1 flex h-[18px] w-[18px] items-center justify-center rounded-full text-white ring-2 ring-background ${FEED_KIND_DOT[item.kind]}`}
           aria-label={FEED_KIND_LABEL[item.kind]}
@@ -635,10 +635,10 @@ function MilestoneItem(props: CardCommonProps & { connectTop: boolean; connectBo
         </span>
       </div>
       <div className="min-w-0 flex-1 pb-0.5 pt-0.5">
-        <p className="text-[13px] leading-snug text-foreground/90">
+        <p className="text-sm leading-relaxed text-foreground/90">
           <span className="font-extrabold">{item.author_name}</span> {milestoneText(item)}
         </p>
-        <div className="mt-0.5 flex items-center gap-2">
+        <div className="mt-2 flex items-center gap-2">
           <span className="text-[10px] text-muted-foreground">
             {formatDistanceToNow(new Date(item.created_at), { locale: ptBR, addSuffix: true })}
           </span>
