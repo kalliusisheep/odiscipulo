@@ -66,7 +66,7 @@ BEGIN
     inviter_name || ' convidou você para uma partida bíblica.',
     '/jogos/multiplayer?roomId=' || _room_id::text,
     jsonb_build_object(
-      'game_invite', 'character',
+      'game_invite', COALESCE(room_row.game_type, 'personagem'),
       'room_id', _room_id,
       'inviter_id', auth.uid(),
       'inviter_name', inviter_name
