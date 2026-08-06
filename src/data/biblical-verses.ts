@@ -9,11 +9,11 @@ export type VerseQuestion = {
   difficulty: GameDifficulty;
 };
 
-export const VERSE_DIFFICULTY: Record<GameDifficulty, { label: string; multiplier: number; description: string }> = {
-  facil: { label: "Fácil", multiplier: 1, description: "Versículos muito conhecidos e marcantes." },
-  medio: { label: "Médio", multiplier: 1.25, description: "Passagens frequentes, mas com referências parecidas." },
-  dificil: { label: "Difícil", multiplier: 1.5, description: "Textos que exigem memória do contexto bíblico." },
-  bereano: { label: "Bereano Supremo", multiplier: 2, description: "Passagens menos populares e referências próximas." },
+export const VERSE_DIFFICULTY: Record<GameDifficulty, { label: string; multiplier: number; description: string; timeLimit: number }> = {
+  facil: { label: "Fácil", multiplier: 1, description: "Versículos muito conhecidos e marcantes.", timeLimit: 20 },
+  medio: { label: "Médio", multiplier: 1.25, description: "Passagens frequentes, mas com referências parecidas.", timeLimit: 16 },
+  dificil: { label: "Difícil", multiplier: 1.5, description: "Textos que exigem memória do contexto bíblico.", timeLimit: 12 },
+  bereano: { label: "Bereano Supremo", multiplier: 2, description: "Passagens menos populares e referências muito próximas.", timeLimit: 9 },
 };
 
 const RAW_BIBLICAL_VERSES: VerseQuestion[] = [
