@@ -21,7 +21,6 @@ type Phase = "setup" | "playing" | "answered" | "finished";
 type Lifeline = "eliminar" | "contexto" | "consultar";
 type Consultation = { name: string; role: string; answer: string; confidence: string; tone: string };
 
-const ROUND_SECONDS = 22;
 const consultants = [
   { name: "Pedro", role: "testemunha dos Evangelhos", tone: "text-sky-300" },
   { name: "Paulo", role: "estudioso das Escrituras", tone: "text-amber-300" },
@@ -51,7 +50,7 @@ function MillionPage() {
   const [hidden, setHidden] = useState<string[]>([]);
   const [contextOpen, setContextOpen] = useState(false);
   const [consultations, setConsultations] = useState<Consultation[] | null>(null);
-  const [timeLeft, setTimeLeft] = useState(ROUND_SECONDS);
+  const [timeLeft, setTimeLeft] = useState(MILLION_DIFFICULTY[initialDifficulty as MillionDifficulty].timeLimit);
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
@@ -65,7 +64,7 @@ function MillionPage() {
   const level = useMemo(() => [...MILLION_LEVELS].reverse().find((item) => score >= item.points) ?? MILLION_LEVELS[0], [score]);
 
   const prepare = useCallback((nextIndex: number, list: MillionQuestion[]) => {
-    setIndex(nextIndex); setSelected(null); setHidden([]); setContextOpen(false); setConsultations(null); setTimeLeft(ROUND_SECONDS); startedAt.current = Date.now(); setPhase("playing");
+    setIndex(nextIndex); setSelected(null); setHidden([]); setContextOpen(false); setConsultations(null); setTimeLeft(MILLION_DIFFICULTY[difficulty].timeLimit); startedAt.current = Date.now(); setPhase("playing");
   }, []);
 
   const start = () => {
@@ -81,7 +80,7 @@ function MillionPage() {
       .slice(0, rounds);
     selectedQuestions.forEach((question) => sessionSeenRef.current.add(question.id));
     window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...selectedQuestions.map((question) => question.id)])].slice(-Math.max(rounds * 5, 40))));
-    setQuestions(selectedQuestions); setScore(0); setStreak(0); setBestStreak(0); setUsedLifelines([]); setCorrectAnswers(0); setWeakness({}); setTimeLeft(ROUND_SECONDS); setConsultations(null); startedAt.current = Date.now(); setPhase("playing");
+    setQuestions(selectedQuestions); setScore(0); setStreak(0); setBestStreak(0); setUsedLifelines([]); setCorrectAnswers(0); setWeakness({}); setTimeLeft(MILLION_DIFFICULTY[difficulty].timeLimit); setConsultations(null); startedAt.current = Date.now(); setPhase("playing");
   };
 
   useEffect(() => {
