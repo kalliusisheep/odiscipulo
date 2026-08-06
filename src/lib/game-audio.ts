@@ -69,7 +69,7 @@ function playMusicStep() {
     oscillator.type = index === 0 ? "sine" : "triangle";
     oscillator.frequency.setValueAtTime(frequency, now);
     gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(index === 0 ? 0.28 : 0.13, now + 0.24);
+    gain.gain.exponentialRampToValueAtTime(index === 0 ? 0.34 : 0.16, now + 0.24);
     gain.gain.exponentialRampToValueAtTime(0.0001, now + 3.1);
     oscillator.connect(gain);
     gain.connect(destination);
@@ -82,7 +82,7 @@ function playMusicStep() {
   bass.type = "sine";
   bass.frequency.setValueAtTime(chord[0] / 2, now);
   bassGain.gain.setValueAtTime(0.0001, now);
-  bassGain.gain.exponentialRampToValueAtTime(0.18, now + 0.3);
+  bassGain.gain.exponentialRampToValueAtTime(0.24, now + 0.3);
   bassGain.gain.exponentialRampToValueAtTime(0.0001, now + 3.1);
   bass.connect(bassGain);
   bassGain.connect(destination);
@@ -95,7 +95,7 @@ function playMusicStep() {
     bell.type = "sine";
     bell.frequency.setValueAtTime(chord[3] * 2, now + 0.55);
     bellGain.gain.setValueAtTime(0.0001, now);
-    bellGain.gain.exponentialRampToValueAtTime(0.07, now + 0.62);
+    bellGain.gain.exponentialRampToValueAtTime(0.09, now + 0.62);
     bellGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.2);
     bell.connect(bellGain);
     bellGain.connect(destination);
@@ -125,7 +125,7 @@ export function startGameMusic(theme?: GameMusicTheme) {
   void context.resume();
   if (musicGain) {
     musicGain.gain.cancelScheduledValues(context.currentTime);
-    musicGain.gain.setTargetAtTime(0.38, context.currentTime, 0.7);
+    musicGain.gain.setTargetAtTime(0.52, context.currentTime, 0.7);
   }
   playMusicStep();
   musicTimer = window.setInterval(playMusicStep, 3200);
