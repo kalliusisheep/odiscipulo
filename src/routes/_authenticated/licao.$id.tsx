@@ -6,7 +6,7 @@ import { useApp } from "@/lib/app-context";
 import { useCelebration } from "@/lib/celebration";
 import { useMascot, trailCompletionLine } from "@/lib/mascot";
 import { HighlightsProvider, HighlightedText } from "@/components/notes/HighlightsProvider";
-import { awardXpAndStreak } from "@/lib/progress";
+import { awardProgressXp } from "@/lib/progress";
 import { logLessonCompletionToFeed } from "@/lib/feed";
 import { useReadingFontScale } from "@/hooks/use-reading-font-scale";
 import { FontSizeControls } from "@/components/font-size-controls";
@@ -98,12 +98,6 @@ function LicaoPage() {
     setSaving(true);
     const { data: u } = await supabase.auth.getUser();
     if (u.user) {
-      await supabase
-        .from("lesson_progress")
-        .upsert(
-          { user_id: u.user.id, lesson_id: lesson.id, xp_gained: lesson.xp },
-          { onConflict: "user_id,lesson_id" },
-        );
       if (reflection.trim()) {
         // upsert em vez de insert: se o usuário já tinha respondido essa
         // mesma lição antes, atualiza a resposta em vez de criar duplicata
@@ -119,8 +113,12 @@ function LicaoPage() {
           { onConflict: "user_id,lesson_id" },
         );
       }
-      const { prevXp, newXp } = await awardXpAndStreak(u.user.id, lesson.xp);
-      celebrateActivity({ prevXp, newXp, xp: lesson.xp });
+      const progressReward = await awardProgressXp(u.user.id, lesson.id, lesson.xp);
+      celebrateActivity({
+        prevXp: progressReward.prevXp,
+        newXp: progressReward.newXp,
+        xp: progressReward.xp,
+      });
       void logLessonCompletionToFeed(u.user.id, lesson.id, lesson.title);
 
       // Reflexão do mentor sobre a trilha concluída — usa o título exato
