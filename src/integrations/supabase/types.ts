@@ -1401,6 +1401,36 @@ export type Database = {
         }
         Relationships: []
       }
+      mentor_messages: {
+        Row: {
+          audio_duration_seconds: number | null
+          audio_url: string | null
+          content: string | null
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          audio_duration_seconds?: number | null
+          audio_url?: string | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          audio_duration_seconds?: number | null
+          audio_url?: string | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_char: string
@@ -1420,6 +1450,7 @@ export type Database = {
           onboarded: boolean
           streak: number
           updated_at: string
+          last_seen_at: string | null
           username: string | null
           xp: number
         }
@@ -1441,6 +1472,7 @@ export type Database = {
           onboarded?: boolean
           streak?: number
           updated_at?: string
+          last_seen_at?: string | null
           username?: string | null
           xp?: number
         }
