@@ -1356,3 +1356,52 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
     transition: none !important;
   }
 }
+
+
+.bible-index-header {
+  border-bottom: 0 !important;
+  box-shadow: 0 12px 30px color-mix(in srgb, hsl(var(--background)) 30%, transparent) !important;
+}
+
+.bible-index-header-inner {
+  padding-top: 0.65rem;
+  padding-bottom: 0.65rem !important;
+}
+
+.bible-search-panel {
+  border-color: color-mix(in srgb, hsl(var(--border)) 58%, transparent) !important;
+  box-shadow:
+    0 12px 26px color-mix(in srgb, hsl(var(--background)) 28%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 5%, transparent);
+}
+
+.bible-search-panel > div:last-child {
+  border-top-color: color-mix(in srgb, hsl(var(--border)) 46%, transparent);
+}
+
+.bible-journey-card {
+  border-color: color-mix(in srgb, hsl(var(--primary)) 22%, transparent) !important;
+  box-shadow:
+    0 18px 36px color-mix(in srgb, hsl(var(--background)) 38%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 9%, transparent);
+}
+
+.bible-journey-stats {
+  display: none;
+}
+
+.bible-testament-switcher {
+  margin-top: 0.75rem;
+  border-color: color-mix(in srgb, hsl(var(--border)) 68%, transparent);
+  background: color-mix(in srgb, hsl(var(--surface)) 54%, transparent);
+}
+
+.bible-testament-option {
+  min-height: 2.75rem !important;
+  padding: 0.55rem 0.7rem !important;
+}
+
+.bible-book-card {
+  min-height: 6.35rem !important;
+  border-color: color-mix(in srgb, hsl(var(--border)) 72%, transparent) !important;
+}
