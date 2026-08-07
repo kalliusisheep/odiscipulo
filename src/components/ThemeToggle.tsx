@@ -3,7 +3,7 @@ import { Moon, Sun } from "lucide-react";
 
 export function ThemeToggle({ className = "" }: { className?: string }) {
   const { theme, toggleTheme, t } = useApp();
-  const isDark = theme === "black" || theme === "pink";
+  const isDark = theme === "default" || theme === "black" || theme === "blue" || theme === "pink";
 
   return (
     <button
