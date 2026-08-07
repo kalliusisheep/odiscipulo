@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, redirect, useRouterState } from "@tanstack/rea
 import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { AppProvider } from "@/lib/app-context";
+import { AppProvider, useApp } from "@/lib/app-context";
 import { CelebrationProvider } from "@/lib/celebration";
 import { MascotProvider } from "@/lib/mascot";
 import { BottomNav } from "@/components/BottomNav";
@@ -18,6 +18,24 @@ function AuthCheckPending() {
     </div>
   );
 }
+
+function MentorLayer({ hidden }: { hidden: boolean }) {
+  const { setMentorOpen } = useApp();
+
+  useEffect(() => {
+    if (hidden) setMentorOpen(false);
+  }, [hidden, setMentorOpen]);
+
+  if (hidden) return null;
+
+  return (
+    <>
+      <MentorFAB />
+      <MentorChat />
+    </>
+  );
+}
+
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -53,6 +71,11 @@ function AuthedLayout() {
   // eles ficam ocultos.
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isPrivateChat = /^\/mensagens\/[^/]+$/.test(pathname);
+  const isBibleOrGames =
+    pathname === "/biblia" ||
+    pathname.startsWith("/biblia/") ||
+    pathname === "/jogos" ||
+    pathname.startsWith("/jogos/");
 
   return (
     <AppProvider>
@@ -64,8 +87,7 @@ function AuthedLayout() {
             <PushNotifications />
             {!isPrivateChat && (
               <>
-                <MentorFAB />
-                <MentorChat />
+                <MentorLayer hidden={isBibleOrGames} />
                 <BottomNav />
               </>
             )}
