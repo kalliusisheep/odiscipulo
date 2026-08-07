@@ -216,26 +216,26 @@
 }
 
 .theme-black {
-  --background: oklch(0.055 0.008 265);
-  --foreground: oklch(0.98 0.008 265);
-  --surface: oklch(0.09 0.014 265);
-  --surface-2: oklch(0.13 0.018 265);
-  --card: oklch(0.1 0.015 265);
-  --card-foreground: oklch(0.98 0.008 265);
-  --popover: oklch(0.1 0.015 265);
-  --popover-foreground: oklch(0.98 0.008 265);
-  --primary: oklch(0.7 0.22 292);
-  --primary-foreground: oklch(0.99 0.005 292);
-  --primary-glow: oklch(0.78 0.2 285);
-  --secondary: oklch(0.17 0.02 265);
-  --secondary-foreground: oklch(0.98 0.008 265);
-  --muted: oklch(0.18 0.018 265);
-  --muted-foreground: oklch(0.75 0.028 265);
-  --accent: oklch(0.2 0.035 285);
-  --accent-foreground: oklch(0.98 0.008 285);
-  --border: oklch(0.22 0.022 265);
-  --input: oklch(0.14 0.018 265);
-  --ring: oklch(0.7 0.22 292);
+  --background: oklch(0.035 0.006 265);
+  --foreground: oklch(0.95 0.006 265);
+  --surface: oklch(0.075 0.008 265);
+  --surface-2: oklch(0.12 0.01 265);
+  --card: oklch(0.085 0.009 265);
+  --card-foreground: oklch(0.95 0.006 265);
+  --popover: oklch(0.085 0.009 265);
+  --popover-foreground: oklch(0.95 0.006 265);
+  --primary: oklch(0.72 0.008 265);
+  --primary-foreground: oklch(0.1 0.006 265);
+  --primary-glow: oklch(0.82 0.006 265);
+  --secondary: oklch(0.15 0.01 265);
+  --secondary-foreground: oklch(0.95 0.006 265);
+  --muted: oklch(0.16 0.009 265);
+  --muted-foreground: oklch(0.7 0.008 265);
+  --accent: oklch(0.19 0.012 265);
+  --accent-foreground: oklch(0.95 0.006 265);
+  --border: oklch(0.25 0.012 265);
+  --input: oklch(0.12 0.009 265);
+  --ring: oklch(0.72 0.008 265);
 }
 
 .theme-pink {
@@ -2552,4 +2552,35 @@ body,
     0 0 0 3px color-mix(in srgb, var(--primary) 22%, transparent),
     0 8px 18px -7px color-mix(in srgb, var(--primary) 78%, transparent),
     inset 0 1px 1px color-mix(in srgb, white 18%, transparent) !important;
+}
+
+
+.theme-black :is([class*="bg-purple-"], [class*="bg-violet-"], [class*="bg-indigo-"], [class*="bg-fuchsia-"]) {
+  background-color: color-mix(in oklab, var(--primary) 12%, var(--surface-2)) !important;
+}
+
+.theme-black :is([class*="text-purple-"], [class*="text-violet-"], [class*="text-indigo-"], [class*="text-fuchsia-"]) {
+  color: var(--primary) !important;
+}
+
+.theme-black :is([class*="border-purple-"], [class*="border-violet-"], [class*="border-indigo-"], [class*="border-fuchsia-"]) {
+  border-color: color-mix(in oklab, var(--primary) 34%, var(--border)) !important;
+}
+
+.theme-black :is([class*="from-purple-"], [class*="from-violet-"], [class*="from-indigo-"], [class*="from-fuchsia-"]) {
+  --tw-gradient-from: var(--surface-2) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+.theme-black :is([class*="via-purple-"], [class*="via-violet-"], [class*="via-indigo-"], [class*="via-fuchsia-"]) {
+  --tw-gradient-via: var(--surface) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to) !important;
+}
+
+.theme-black :is([class*="to-purple-"], [class*="to-violet-"], [class*="to-indigo-"], [class*="to-fuchsia-"]) {
+  --tw-gradient-to: color-mix(in oklab, var(--primary) 24%, var(--background)) !important;
+}
+
+.theme-black :is([class*="shadow-purple-"], [class*="shadow-violet-"], [class*="shadow-indigo-"], [class*="shadow-fuchsia-"]) {
+  --tw-shadow-color: color-mix(in oklab, var(--primary) 28%, transparent) !important;
 }
