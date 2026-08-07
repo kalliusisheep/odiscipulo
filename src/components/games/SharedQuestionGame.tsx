@@ -259,7 +259,12 @@ export function SharedQuestionGame({
           const row = payload.new as { status?: string };
           if (row.status === "finished") setPhase("finished");
         })
-        .subscribe();
+        .subscribe((status) => {
+          if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+            setError("A conexão da sala foi interrompida. Tentando sincronizar novamente…");
+          }
+          if (status === "SUBSCRIBED") setError("");
+        });
     })();
     return () => {
       cancelled = true;
@@ -333,7 +338,12 @@ export function SharedQuestionGame({
   const revealHint = async (index: number) => {
     if (!remoteRound || !question?.isCharacter || remoteRound.revealed_hint_indexes.includes(index)) return;
     playGameSfx("reveal");
-    const { data } = await gameDb.rpc("reveal_character_game_hint", { _round_id: remoteRound.id, _hint_index: index });
+    const { data, error: hintError } = await gameDb.rpc("reveal_character_game_hint", { _round_id: remoteRound.id, _hint_index: index });
+    if (hintError) {
+      setError("Não foi possível revelar essa pista. A sala pode ter avançado.");
+      return;
+    }
+    setError("");
     if (data) setRemoteRound(data as RoomRound);
   };
 
@@ -398,7 +408,7 @@ export function SharedQuestionGame({
 
   if (phase === "finished") {
     return (
-      <main className="min-h-screen bg-background">
+      <main className="game-play-page min-h-screen bg-background">
         <div className="mx-auto max-w-lg px-4 pb-28 pt-10 text-center">
           <span className={"mx-auto flex h-24 w-24 items-center justify-center rounded-[2rem] " + (won ? "bg-success/15 text-success" : "bg-ancient/15 text-ancient")}>
             {won ? <Trophy className="h-12 w-12" /> : isDraw ? <Users className="h-12 w-12" /> : <X className="h-12 w-12" />}
@@ -420,7 +430,7 @@ export function SharedQuestionGame({
           </section>
           <div className="mt-6 flex gap-3">
             <a href={"/jogos/" + gameType} className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-border px-4 py-3 text-sm font-bold"><ArrowLeft className="h-4 w-4" /> Tela inicial</a>
-            <button type="button" onClick={() => window.location.reload()} className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-extrabold text-primary-foreground"><RotateCcw className="h-4 w-4" /> Jogar de novo</button>
+            <a href={"/jogos/" + gameType} className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-extrabold text-primary-foreground"><RotateCcw className="h-4 w-4" /> Jogar de novo</a>
           </div>
         </div>
       </main>
@@ -438,11 +448,11 @@ export function SharedQuestionGame({
   const showWaiting = answered && !roundClosed;
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="game-play-page min-h-screen bg-background">
       <div className="mx-auto max-w-lg px-4 pb-28 pt-5">
         <header className="flex items-center justify-between"><a href={"/jogos/" + gameType} className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground"><ArrowLeft className="h-4 w-4" /> Jogos</a><div className="flex items-center gap-2"><span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">Rodada {roundNumber}/{rounds}</span><span className="rounded-full bg-ancient/10 px-3 py-1 text-xs font-black text-ancient">{me?.score ?? 0} pts</span></div></header>
         <div className="mt-6 flex items-end justify-between"><div><p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">{gameLabels[gameType]}</p><h1 className="mt-1 text-2xl font-black">{gameType === "personagem" ? "Descubra pela pista :)" : gameType === "versiculo" ? "Reconheça a passagem" : "Desafio compartilhado"}</h1></div><div className="text-right"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Na sala</p><p className="text-xl font-black text-ancient">{players.length}</p></div></div>
-        <div className="mt-4 flex items-center gap-3"><div className="h-2 flex-1 overflow-hidden rounded-full bg-surface-2"><div className="h-full rounded-full bg-gradient-to-r from-primary to-ancient" style={{ width: String(Math.max(0, Math.min(100, (timeLeft / timeLimit) * 100))) + "%" }} /></div><span className={"inline-flex items-center gap-1 text-sm font-black " + (timeLeft <= 5 ? "text-red-300" : "text-foreground")}><Clock3 className="h-4 w-4" />{timeLeft}</span></div>
+        <div className="mt-4 flex items-center gap-3"><div className="h-2 flex-1 overflow-hidden rounded-full bg-surface-2"><div className="h-full rounded-full bg-gradient-to-r from-primary to-ancient" style={{ width: String(Math.max(0, Math.min(100, (timeLeft / timeLimit) * 100))) + "%" }} /></div><span className={"inline-flex items-center gap-1 text-sm font-black " + (timeLeft <= 5 ? "text-red-300" : "text-foreground")}><Clock3 className="h-4 w-4" /><span role="timer" aria-live="polite" aria-atomic="true">{timeLeft}</span></span></div>
         <section className="mt-5 rounded-[2rem] border border-primary/25 bg-gradient-to-br from-primary/15 via-surface to-surface p-5 shadow-xl shadow-primary/5">
           <div className="flex items-center justify-between"><span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">{currentQuestion.category}</span><span className="inline-flex items-center gap-1 text-[10px] font-extrabold text-ancient"><Flame className="h-3.5 w-3.5" /> {me?.best_streak ?? 0} combo</span></div>
           <p className="mt-5 text-lg font-extrabold leading-relaxed">{currentQuestion.prompt}</p>
