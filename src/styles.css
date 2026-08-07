@@ -1346,7 +1346,6 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bible-guided-banner,
   .bible-book-card,
   .bible-testament-option,
   .bible-sheet-action,
