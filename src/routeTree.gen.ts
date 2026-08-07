@@ -15,7 +15,6 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedBemVindoRouteImport } from './routes/_authenticated/bem-vindo'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedJogosRouteImport } from './routes/_authenticated/jogos'
-import { Route as AuthenticatedJogosRankingRouteImport } from './routes/_authenticated/jogos.ranking'
 import { Route as AuthenticatedLiderRouteImport } from './routes/_authenticated/lider'
 import { Route as AuthenticatedMuralRouteImport } from './routes/_authenticated/mural'
 import { Route as AuthenticatedNiveisRouteImport } from './routes/_authenticated/niveis'
@@ -34,6 +33,7 @@ import { Route as AuthenticatedJogosCruzadasRouteImport } from './routes/_authen
 import { Route as AuthenticatedJogosMilhaoRouteImport } from './routes/_authenticated/jogos.milhao'
 import { Route as AuthenticatedJogosMultiplayerRouteImport } from './routes/_authenticated/jogos.multiplayer'
 import { Route as AuthenticatedJogosPersonagemRouteImport } from './routes/_authenticated/jogos.personagem'
+import { Route as AuthenticatedJogosRankingRouteImport } from './routes/_authenticated/jogos.ranking'
 import { Route as AuthenticatedJogosVersiculoRouteImport } from './routes/_authenticated/jogos.versiculo'
 import { Route as AuthenticatedLicaoIdRouteImport } from './routes/_authenticated/licao.$id'
 import { Route as AuthenticatedLiderArvoreRouteImport } from './routes/_authenticated/lider_.arvore'
@@ -80,12 +80,6 @@ const AuthenticatedJogosRoute = AuthenticatedJogosRouteImport.update({
   path: '/jogos',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedJogosRankingRoute =
-  AuthenticatedJogosRankingRouteImport.update({
-    id: '/ranking',
-    path: '/ranking',
-    getParentRoute: () => AuthenticatedJogosRoute,
-  } as any)
 const AuthenticatedLiderRoute = AuthenticatedLiderRouteImport.update({
   id: '/lider',
   path: '/lider',
@@ -187,6 +181,12 @@ const AuthenticatedJogosPersonagemRoute =
     path: '/personagem',
     getParentRoute: () => AuthenticatedJogosRoute,
   } as any)
+const AuthenticatedJogosRankingRoute =
+  AuthenticatedJogosRankingRouteImport.update({
+    id: '/ranking',
+    path: '/ranking',
+    getParentRoute: () => AuthenticatedJogosRoute,
+  } as any)
 const AuthenticatedJogosVersiculoRoute =
   AuthenticatedJogosVersiculoRouteImport.update({
     id: '/versiculo',
@@ -286,7 +286,6 @@ export interface FileRoutesByFullPath {
   '/bem-vindo': typeof AuthenticatedBemVindoRoute
   '/home': typeof AuthenticatedHomeRoute
   '/jogos': typeof AuthenticatedJogosRouteWithChildren
-  '/jogos/ranking': typeof AuthenticatedJogosRankingRoute
   '/lider': typeof AuthenticatedLiderRoute
   '/mural': typeof AuthenticatedMuralRoute
   '/niveis': typeof AuthenticatedNiveisRoute
@@ -303,6 +302,7 @@ export interface FileRoutesByFullPath {
   '/jogos/milhao': typeof AuthenticatedJogosMilhaoRoute
   '/jogos/multiplayer': typeof AuthenticatedJogosMultiplayerRoute
   '/jogos/personagem': typeof AuthenticatedJogosPersonagemRoute
+  '/jogos/ranking': typeof AuthenticatedJogosRankingRoute
   '/jogos/versiculo': typeof AuthenticatedJogosVersiculoRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/lider/arvore': typeof AuthenticatedLiderArvoreRoute
@@ -328,7 +328,6 @@ export interface FileRoutesByTo {
   '/bem-vindo': typeof AuthenticatedBemVindoRoute
   '/home': typeof AuthenticatedHomeRoute
   '/jogos': typeof AuthenticatedJogosRouteWithChildren
-  '/jogos/ranking': typeof AuthenticatedJogosRankingRoute
   '/lider': typeof AuthenticatedLiderRoute
   '/mural': typeof AuthenticatedMuralRoute
   '/niveis': typeof AuthenticatedNiveisRoute
@@ -345,6 +344,7 @@ export interface FileRoutesByTo {
   '/jogos/milhao': typeof AuthenticatedJogosMilhaoRoute
   '/jogos/multiplayer': typeof AuthenticatedJogosMultiplayerRoute
   '/jogos/personagem': typeof AuthenticatedJogosPersonagemRoute
+  '/jogos/ranking': typeof AuthenticatedJogosRankingRoute
   '/jogos/versiculo': typeof AuthenticatedJogosVersiculoRoute
   '/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/lider/arvore': typeof AuthenticatedLiderArvoreRoute
@@ -372,7 +372,6 @@ export interface FileRoutesById {
   '/_authenticated/bem-vindo': typeof AuthenticatedBemVindoRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/jogos': typeof AuthenticatedJogosRouteWithChildren
-  '/_authenticated/jogos/ranking': typeof AuthenticatedJogosRankingRoute
   '/_authenticated/lider': typeof AuthenticatedLiderRoute
   '/_authenticated/mural': typeof AuthenticatedMuralRoute
   '/_authenticated/niveis': typeof AuthenticatedNiveisRoute
@@ -389,6 +388,7 @@ export interface FileRoutesById {
   '/_authenticated/jogos/milhao': typeof AuthenticatedJogosMilhaoRoute
   '/_authenticated/jogos/multiplayer': typeof AuthenticatedJogosMultiplayerRoute
   '/_authenticated/jogos/personagem': typeof AuthenticatedJogosPersonagemRoute
+  '/_authenticated/jogos/ranking': typeof AuthenticatedJogosRankingRoute
   '/_authenticated/jogos/versiculo': typeof AuthenticatedJogosVersiculoRoute
   '/_authenticated/licao/$id': typeof AuthenticatedLicaoIdRoute
   '/_authenticated/lider_/arvore': typeof AuthenticatedLiderArvoreRoute
@@ -416,7 +416,6 @@ export interface FileRouteTypes {
     | '/bem-vindo'
     | '/home'
     | '/jogos'
-    | '/jogos/ranking'
     | '/lider'
     | '/mural'
     | '/niveis'
@@ -433,6 +432,7 @@ export interface FileRouteTypes {
     | '/jogos/milhao'
     | '/jogos/multiplayer'
     | '/jogos/personagem'
+    | '/jogos/ranking'
     | '/jogos/versiculo'
     | '/licao/$id'
     | '/lider/arvore'
@@ -458,7 +458,6 @@ export interface FileRouteTypes {
     | '/bem-vindo'
     | '/home'
     | '/jogos'
-    | '/jogos/ranking'
     | '/lider'
     | '/mural'
     | '/niveis'
@@ -475,6 +474,7 @@ export interface FileRouteTypes {
     | '/jogos/milhao'
     | '/jogos/multiplayer'
     | '/jogos/personagem'
+    | '/jogos/ranking'
     | '/jogos/versiculo'
     | '/licao/$id'
     | '/lider/arvore'
@@ -501,7 +501,6 @@ export interface FileRouteTypes {
     | '/_authenticated/bem-vindo'
     | '/_authenticated/home'
     | '/_authenticated/jogos'
-    | '/_authenticated/jogos/ranking'
     | '/_authenticated/lider'
     | '/_authenticated/mural'
     | '/_authenticated/niveis'
@@ -518,6 +517,7 @@ export interface FileRouteTypes {
     | '/_authenticated/jogos/milhao'
     | '/_authenticated/jogos/multiplayer'
     | '/_authenticated/jogos/personagem'
+    | '/_authenticated/jogos/ranking'
     | '/_authenticated/jogos/versiculo'
     | '/_authenticated/licao/$id'
     | '/_authenticated/lider_/arvore'
@@ -588,13 +588,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/jogos'
       preLoaderRoute: typeof AuthenticatedJogosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/jogos/ranking': {
-      id: '/_authenticated/jogos/ranking'
-      path: '/ranking'
-      fullPath: '/jogos/ranking'
-      preLoaderRoute: typeof AuthenticatedJogosRankingRouteImport
-      parentRoute: typeof AuthenticatedJogosRoute
     }
     '/_authenticated/lider': {
       id: '/_authenticated/lider'
@@ -722,6 +715,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedJogosPersonagemRouteImport
       parentRoute: typeof AuthenticatedJogosRoute
     }
+    '/_authenticated/jogos/ranking': {
+      id: '/_authenticated/jogos/ranking'
+      path: '/ranking'
+      fullPath: '/jogos/ranking'
+      preLoaderRoute: typeof AuthenticatedJogosRankingRouteImport
+      parentRoute: typeof AuthenticatedJogosRoute
+    }
     '/_authenticated/jogos/versiculo': {
       id: '/_authenticated/jogos/versiculo'
       path: '/versiculo'
@@ -838,20 +838,20 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedJogosRouteChildren {
-  AuthenticatedJogosRankingRoute: typeof AuthenticatedJogosRankingRoute
   AuthenticatedJogosCruzadasRoute: typeof AuthenticatedJogosCruzadasRoute
   AuthenticatedJogosMilhaoRoute: typeof AuthenticatedJogosMilhaoRoute
   AuthenticatedJogosMultiplayerRoute: typeof AuthenticatedJogosMultiplayerRoute
   AuthenticatedJogosPersonagemRoute: typeof AuthenticatedJogosPersonagemRoute
+  AuthenticatedJogosRankingRoute: typeof AuthenticatedJogosRankingRoute
   AuthenticatedJogosVersiculoRoute: typeof AuthenticatedJogosVersiculoRoute
 }
 
 const AuthenticatedJogosRouteChildren: AuthenticatedJogosRouteChildren = {
-  AuthenticatedJogosRankingRoute: AuthenticatedJogosRankingRoute,
   AuthenticatedJogosCruzadasRoute: AuthenticatedJogosCruzadasRoute,
   AuthenticatedJogosMilhaoRoute: AuthenticatedJogosMilhaoRoute,
   AuthenticatedJogosMultiplayerRoute: AuthenticatedJogosMultiplayerRoute,
   AuthenticatedJogosPersonagemRoute: AuthenticatedJogosPersonagemRoute,
+  AuthenticatedJogosRankingRoute: AuthenticatedJogosRankingRoute,
   AuthenticatedJogosVersiculoRoute: AuthenticatedJogosVersiculoRoute,
 }
 
@@ -940,3 +940,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
