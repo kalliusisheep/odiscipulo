@@ -54,7 +54,7 @@ function BibliaIndex() {
     () => availableTranslations.find((item) => item.code === translation)?.label ?? translation,
     [availableTranslations, translation],
   );
-  const [testament, setTestament] = useState<"AT" | "NT" | null>("AT");
+  const [testament, setTestament] = useState<"AT" | "NT" | null>(null);
   const [openBook, setOpenBook] = useState<number | null>(null);
   const [query, setQuery] = useState("");
   const [searching, setSearching] = useState(false);
