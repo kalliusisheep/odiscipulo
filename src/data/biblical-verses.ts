@@ -71,5 +71,8 @@ const isValidVerseQuestion = (verse: VerseQuestion) => {
 
 export const BIBLICAL_VERSES = EXPANDED_BIBLICAL_VERSES.filter(isValidVerseQuestion);
 
+export const VERSE_QUESTION_BANK = BIBLICAL_VERSES;
+export const VERSE_VARIATION_COUNT = VERSE_QUESTION_BANK.length;
+
 export const versesForDifficulty = (difficulty: GameDifficulty) =>
   BIBLICAL_VERSES.filter((verse) => verse.difficulty === difficulty);
