@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { HIGHLIGHT_COLORS, type HighlightColor } from "@/lib/bible-user-data";
+import { HIGHLIGHT_COLORS, normalizeHighlightColor, type HighlightColor } from "@/lib/bible-user-data";
 import { bookNameById } from "@/data/bible-books";
 import { BookOpen, Copy, GitCompareArrows, Highlighter, Library, PenLine, Star } from "lucide-react";
 import { ShareLessonButton } from "@/components/ShareLessonButton";
@@ -55,15 +55,15 @@ export function VerseActionSheet(props: Props) {
           </p>
         </div>
 
-        <div className="mt-4 flex items-center gap-2 px-5">
+        <div className="mt-4 flex flex-wrap items-center gap-1.5 px-5">
           {HIGHLIGHT_COLORS.map((c) => (
             <button
               key={c.id}
               type="button"
               aria-label={`Destacar em ${c.label}`}
               onClick={() => props.onHighlight(c.id)}
-              className={`h-9 w-9 rounded-full border-2 transition-transform active:scale-90 ${c.className} ${
-                props.currentColor === c.id ? "border-primary" : "border-transparent"
+              className={`h-8 w-8 shrink-0 rounded-full border-2 transition-transform active:scale-90 ${c.className} ${
+                normalizeHighlightColor(props.currentColor) === c.id ? "border-primary" : "border-transparent"
               }`}
             />
           ))}
