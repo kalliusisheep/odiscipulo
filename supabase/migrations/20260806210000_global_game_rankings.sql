@@ -67,7 +67,7 @@ CREATE OR REPLACE FUNCTION public.get_game_leaderboard(
   _limit INT DEFAULT 100
 )
 RETURNS TABLE (
-  position BIGINT,
+  "position" BIGINT,
   user_id UUID,
   display_name TEXT,
   username TEXT,
@@ -96,12 +96,12 @@ AS $$
   ),
   ranked AS (
     SELECT
-      ROW_NUMBER() OVER (ORDER BY t.best_score DESC, t.total_score DESC, t.best_streak DESC, t.user_id)::BIGINT AS position,
+      ROW_NUMBER() OVER (ORDER BY t.best_score DESC, t.total_score DESC, t.best_streak DESC, t.user_id)::BIGINT AS rank_position,
       t.*
     FROM totals t
   )
   SELECT
-    r.position,
+    r.rank_position AS "position",
     r.user_id,
     p.display_name,
     p.username,
@@ -113,7 +113,7 @@ AS $$
     r.best_streak
   FROM ranked r
   JOIN public.profiles p ON p.id = r.user_id
-  ORDER BY r.position
+  ORDER BY r.rank_position
   LIMIT GREATEST(1, LEAST(COALESCE(_limit, 100), 100));
 $$;
 
