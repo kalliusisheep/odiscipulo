@@ -248,9 +248,7 @@ function TheologyStudyView({
         </section>
 
         <article className="mt-4 rounded-3xl border border-border/25 bg-background/45 p-5">
-          <p className="whitespace-pre-line text-[0.98rem] leading-8 text-foreground/90">
-            {chapter.content}
-          </p>
+          <TheologyContent chapter={chapter} />
 
           <div className="mt-6 border-t border-border/20 pt-4">
             <div className="flex items-center gap-2 text-primary">
@@ -329,3 +327,35 @@ function TheologyStudyView({
     </div>
   );
 }
+
+
+function TheologyContent({ chapter }: { chapter: TheologyChapter }) {
+  const blocks = chapter.blocks ?? [{ type: "paragraph" as const, text: chapter.content }];
+
+  return (
+    <div className="space-y-5">
+      {blocks.map((block, index) =>
+        block.type === "verse" ? (
+          <blockquote
+            key={"verse-" + index}
+            className="rounded-2xl border-l-2 border-primary/45 bg-primary/5 px-4 py-4"
+          >
+            <p className="text-[0.98rem] font-bold leading-7 text-foreground">
+              {block.text}
+            </p>
+            {block.reference && (
+              <cite className="mt-3 block text-xs font-bold not-italic text-primary">
+                — {block.reference}
+              </cite>
+            )}
+          </blockquote>
+        ) : (
+          <p key={"paragraph-" + index} className="text-[0.98rem] leading-7 text-foreground/90">
+            {block.text}
+          </p>
+        ),
+      )}
+    </div>
+  );
+}
+
