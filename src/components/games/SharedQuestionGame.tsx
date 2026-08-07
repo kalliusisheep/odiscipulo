@@ -176,6 +176,7 @@ export function SharedQuestionGame({
   const [error, setError] = useState("");
   const resultSaved = useRef(false);
   const finishSoundPlayed = useRef(false);
+  const preparedRoundRef = useRef<string | null>(null);
   const questions = useMemo(() => buildQuestions(gameType, difficulty, seed), [difficulty, gameType, seed]);
   const question = questions[(roundNumber - 1) % Math.max(1, questions.length)];
   const timeLimit = timeLimitFor(gameType, difficulty);
@@ -248,11 +249,11 @@ export function SharedQuestionGame({
       channel = supabase
         .channel("shared-round-" + roomId)
         .on("postgres_changes", { event: "*", schema: "public", table: "character_game_rounds", filter: "room_id=eq." + roomId }, (payload) => {
+          if (payload.eventType === "DELETE") return;
           const row = payload.new as RoomRound;
-          if (row.round_number === roundNumber) {
-            setRemoteRound(row);
-            setPhase(row.status === "active" ? "playing" : "answered");
-          }
+          if (!row?.round_number || row.round_number !== roundNumber) return;
+          setRemoteRound(row);
+          setPhase(row.status === "active" ? "playing" : "answered");
         })
         .on("postgres_changes", { event: "*", schema: "public", table: "character_game_room_players", filter: "room_id=eq." + roomId }, () => void loadPlayers())
         .on("postgres_changes", { event: "UPDATE", schema: "public", table: "character_game_rooms", filter: "id=eq." + roomId }, (payload) => {
@@ -274,6 +275,9 @@ export function SharedQuestionGame({
 
   useEffect(() => {
     if (!userId || !question || phase === "finished") return;
+    const roundKey = roomId + ":" + roundNumber + ":" + question.id;
+    if (preparedRoundRef.current === roundKey) return;
+    preparedRoundRef.current = roundKey;
     void (async () => {
       const { data, error: roundError } = await gameDb.rpc("ensure_character_game_round", {
         _room_id: roomId,
@@ -283,6 +287,7 @@ export function SharedQuestionGame({
         _answer_hash: answerHash(question.answer),
       });
       if (roundError || !data) {
+        preparedRoundRef.current = null;
         setError("Não foi possível preparar esta rodada. Aguarde a sincronização e tente novamente.");
         return;
       }
