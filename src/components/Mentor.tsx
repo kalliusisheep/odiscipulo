@@ -228,6 +228,27 @@ type Msg = {
   createdAt?: string;
 };
 
+function renderMentorText(text: string) {
+  const normalized = text
+    .replace(/\\r?\\n/g, "\n")
+    .replace(/\r\n/g, "\n")
+    .replace(/\*{3}([^*]+)\*{3}/g, "**$1**")
+    .replace(/__([^_]+)__/g, "**$1**");
+
+  return normalized.split(/\n+/).map((line, lineIndex) => (
+    <span key={lineIndex}>
+      {lineIndex > 0 && <br />}
+      {line.split(/(\*\*[^*]+\*\*)/g).map((part, partIndex) => {
+        const bold = part.match(/^\*\*(.+)\*\*$/);
+        if (bold) {
+          return <strong key={partIndex}>{bold[1]}</strong>;
+        }
+        return part.replace(/[\*_~]/g, "").replace(/\x60/g, "");
+      })}
+    </span>
+  ));
+}
+
 function buildMentorFallback(text: string): string {
   const normalized = text.toLocaleLowerCase("pt-BR");
 
@@ -459,7 +480,7 @@ export function MentorChat() {
                 }`}
               >
                 {m.audioUrl && <VoiceNotePlayer src={m.audioUrl} className="h-9 w-56 max-w-full" />}
-                {m.content && <p className={m.audioUrl ? "mt-2" : ""}>{m.content}</p>}
+                {m.content && <p className={m.audioUrl ? "mt-2" : ""}>{m.role === "assistant" ? renderMentorText(m.content) : m.content}</p>}
                 {m.createdAt && (
                   <p className="mt-1 text-right text-[10px] opacity-60">
                     {format(new Date(m.createdAt), "HH:mm")}
