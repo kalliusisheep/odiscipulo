@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft, BookOpen, ChevronDown, ChevronRight, Sparkles } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { theologyModules } from "@/data/teologia";
 
 export const Route = createFileRoute("/_authenticated/biblia/teologia")({
   head: () => ({
@@ -16,90 +17,9 @@ export const Route = createFileRoute("/_authenticated/biblia/teologia")({
   component: TeologiaSistematicaPage,
 });
 
-type TheologyTopic = {
-  id: string;
-  title: string;
-  subtitle: string;
-  subtopics: string[];
-};
-
-const theologyTopics: TheologyTopic[] = [
-  {
-    id: "prolegomenos",
-    title: "Prolegômenos",
-    subtitle: "A introdução ao estudo da teologia",
-    subtopics: ["O que é teologia", "Fontes do conhecimento teológico", "Método e limites da teologia"],
-  },
-  {
-    id: "bibliologia",
-    title: "Bibliologia",
-    subtitle: "A doutrina das Sagradas Escrituras",
-    subtopics: ["Revelação", "Inspiração", "Cânon, autoridade e suficiência", "Preservação das Escrituras"],
-  },
-  {
-    id: "teontologia",
-    title: "Teontologia",
-    subtitle: "O ser, os atributos e as obras de Deus",
-    subtopics: ["A existência de Deus", "Os atributos de Deus", "A Trindade", "A criação e a providência"],
-  },
-  {
-    id: "angelologia",
-    title: "Angelologia",
-    subtitle: "Os anjos e os seres espirituais",
-    subtopics: ["A natureza dos anjos", "O ministério dos anjos", "Anjos na história da redenção"],
-  },
-  {
-    id: "demonologia",
-    title: "Demonologia",
-    subtitle: "O mal espiritual e sua oposição a Deus",
-    subtopics: ["A realidade do mal", "Satanás e seus anjos", "Conflito espiritual e vitória de Cristo"],
-  },
-  {
-    id: "antropologia",
-    title: "Antropologia",
-    subtitle: "A criação e a natureza do ser humano",
-    subtopics: ["Criação do ser humano", "A imagem de Deus", "Constituição e propósito humano", "Destino do ser humano"],
-  },
-  {
-    id: "hamartiologia",
-    title: "Hamartiologia",
-    subtitle: "A origem, a natureza e os efeitos do pecado",
-    subtopics: ["A origem do pecado", "A natureza do pecado", "As consequências do pecado", "Pecado e redenção"],
-  },
-  {
-    id: "cristologia",
-    title: "Cristologia",
-    subtitle: "A pessoa e a obra de Jesus Cristo",
-    subtopics: ["A pessoa de Cristo", "A encarnação", "A obra de Cristo", "A ressurreição e a exaltação"],
-  },
-  {
-    id: "pneumatologia",
-    title: "Pneumatologia",
-    subtitle: "A pessoa e a obra do Espírito Santo",
-    subtopics: ["A pessoa do Espírito Santo", "A obra na criação", "Regeneração e santificação", "Dons e fruto do Espírito"],
-  },
-  {
-    id: "soteriologia",
-    title: "Soteriologia",
-    subtitle: "A salvação realizada por Deus",
-    subtopics: ["Graça e eleição", "Chamado e conversão", "Justificação", "Santificação e perseverança"],
-  },
-  {
-    id: "eclesiologia",
-    title: "Eclesiologia",
-    subtitle: "A natureza e a missão da Igreja",
-    subtopics: ["A natureza da Igreja", "As marcas da Igreja", "Dons e ministérios", "As ordenanças"],
-  },
-  {
-    id: "escatologia",
-    title: "Escatologia",
-    subtitle: "A consumação do plano de Deus",
-    subtopics: ["O retorno de Cristo", "A ressurreição e o juízo", "O reino de Deus", "A nova criação"],
-  },
-];
-
 function TeologiaSistematicaPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [selectedChapterId, setSelectedChapterId] = useState<string | null>(null);
 
   return (
     <div className="bible-index-shell min-h-screen pb-28">
@@ -146,9 +66,12 @@ function TeologiaSistematicaPage() {
         </section>
 
         <section className="mt-6 space-y-3" aria-label="Temas de teologia sistemática">
-          {theologyTopics.map((topic, index) => {
+          {theologyModules.map((topic, index) => {
             const isOpen = expandedId === topic.id;
             const panelId = `theology-topic-${topic.id}`;
+            const selectedChapter = topic.chapters.find(
+              (chapter) => chapter.id === selectedChapterId,
+            );
 
             return (
               <div key={topic.id} className={`bible-testament-group ${isOpen ? "is-open" : ""}`}>
@@ -156,7 +79,10 @@ function TeologiaSistematicaPage() {
                   type="button"
                   aria-expanded={isOpen}
                   aria-controls={panelId}
-                  onClick={() => setExpandedId((current) => (current === topic.id ? null : topic.id))}
+                  onClick={() => {
+                    setExpandedId((current) => (current === topic.id ? null : topic.id));
+                    setSelectedChapterId(null);
+                  }}
                   className="bible-testament-toggle group flex w-full items-center gap-3 text-left"
                 >
                   <span
@@ -170,9 +96,11 @@ function TeologiaSistematicaPage() {
                   </span>
 
                   <span className="min-w-0 flex-1">
-                    <span className={`block text-sm font-medium tracking-[-0.01em] ${
-                      isOpen ? "text-primary" : "text-foreground"
-                    }`}>
+                    <span
+                      className={`block text-sm font-medium tracking-[-0.01em] ${
+                        isOpen ? "text-primary" : "text-foreground"
+                      }`}
+                    >
                       {topic.title}
                     </span>
                     <span className="mt-0.5 block text-[10px] font-medium text-muted-foreground">
@@ -180,6 +108,9 @@ function TeologiaSistematicaPage() {
                     </span>
                   </span>
 
+                  <span className="shrink-0 text-[10px] font-semibold tabular-nums text-muted-foreground/70">
+                    {topic.chapters.length} temas
+                  </span>
                   <ChevronDown
                     className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-300 ${
                       isOpen ? "rotate-180 text-primary" : ""
@@ -189,25 +120,79 @@ function TeologiaSistematicaPage() {
 
                 <div id={panelId} hidden={!isOpen} className="bible-testament-books">
                   <div className="bible-book-list">
-                    {topic.subtopics.map((subtopic, subtopicIndex) => (
-                      <div
-                        key={subtopic}
-                        className="bible-book-row flex items-center gap-3"
-                      >
-                        <span className="bible-book-abbr flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border/40 text-[10px] font-bold text-muted-foreground">
-                          {String(subtopicIndex + 1).padStart(2, "0")}
-                        </span>
-                        <span className="min-w-0 flex-1">
-                          <span className="block text-sm font-semibold text-foreground">
-                            {subtopic}
-                          </span>
-                          <span className="mt-0.5 block text-[10px] text-muted-foreground">
-                            Tema para aprofundamento
-                          </span>
-                        </span>
-                        <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/55" />
-                      </div>
-                    ))}
+                    {topic.chapters.map((chapter, chapterIndex) => {
+                      const isSelected = selectedChapterId === chapter.id;
+
+                      return (
+                        <div key={chapter.id}>
+                          <button
+                            type="button"
+                            aria-expanded={isSelected}
+                            onClick={() =>
+                              setSelectedChapterId((current) =>
+                                current === chapter.id ? null : chapter.id,
+                              )
+                            }
+                            className={`bible-book-row flex w-full items-center gap-3 text-left transition-colors ${
+                              isSelected ? "bg-primary/10" : ""
+                            }`}
+                          >
+                            <span
+                              className={`bible-book-abbr flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-[10px] font-bold ${
+                                isSelected
+                                  ? "border-primary/40 text-primary"
+                                  : "border-border/40 text-muted-foreground"
+                              }`}
+                            >
+                              {String(chapterIndex + 1).padStart(2, "0")}
+                            </span>
+                            <span className="min-w-0 flex-1">
+                              <span
+                                className={`block text-sm font-semibold ${
+                                  isSelected ? "text-primary" : "text-foreground"
+                                }`}
+                              >
+                                {chapter.title}
+                              </span>
+                              <span className="mt-0.5 block text-[10px] text-muted-foreground">
+                                Leia o capítulo e consulte as referências
+                              </span>
+                            </span>
+                            <ChevronRight
+                              className={`h-4 w-4 shrink-0 text-muted-foreground/55 transition-transform ${
+                                isSelected ? "rotate-90 text-primary" : ""
+                              }`}
+                            />
+                          </button>
+
+                          {isSelected && selectedChapter && (
+                            <article className="mx-3 mb-3 rounded-2xl border border-border/30 bg-background/35 p-4">
+                              <h3 className="text-base font-bold tracking-[-0.01em] text-foreground">
+                                {selectedChapter.title}
+                              </h3>
+                              <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                                {selectedChapter.content}
+                              </p>
+                              <div className="mt-4 border-t border-border/20 pt-3">
+                                <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">
+                                  Referências bíblicas
+                                </p>
+                                <div className="mt-2 flex flex-wrap gap-2">
+                                  {selectedChapter.references.map((reference) => (
+                                    <span
+                                      key={reference}
+                                      className="rounded-full border border-primary/20 bg-primary/5 px-2.5 py-1 text-[10px] font-semibold text-primary"
+                                    >
+                                      {reference}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            </article>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -220,7 +205,6 @@ function TeologiaSistematicaPage() {
           Explore um tema por vez e construa uma visão completa da fé.
         </div>
       </main>
-
     </div>
   );
 }
