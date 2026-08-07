@@ -329,29 +329,29 @@ function ChapterReader() {
     <div className={`bible-reader-shell min-h-screen pb-32 transition-colors ${(theme === "white" || theme === "gray") ? "bg-[#fbfaf7] text-slate-900" : "bg-background text-foreground"}`}>
       {/* Barra superior fixa */}
       <div className={`bible-reader-header sticky top-0 z-30 bg-background/85 backdrop-blur-xl ${readerScrolled ? "is-immersive" : ""}`}>
-        <div className="bible-reader-header-inner relative mx-auto grid min-h-[4.35rem] max-w-lg grid-cols-[2.25rem_minmax(0,1fr)_auto] items-center gap-2 px-4">
+        <div className="bible-reader-header-inner relative mx-auto flex min-h-[5rem] max-w-lg items-center gap-2 px-3 py-2 sm:min-h-[4.35rem] sm:px-4 sm:py-0">
           <Link
             to="/biblia"
             aria-label="Voltar"
-            className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border/70 bg-surface/70 text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/10 hover:text-primary active:scale-95"
+            className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border/70 bg-surface/70 text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/10 hover:text-primary active:scale-95"
           >
             <ArrowLeft className="h-4 w-4" />
           </Link>
           <button
             onClick={openChapterPicker}
-            className="bible-chapter-trigger bible-header-chapter min-w-0 justify-self-center rounded-xl px-2 py-1 text-center transition-colors hover:bg-surface/70"
+            className="bible-chapter-trigger bible-header-chapter min-w-[7rem] flex-1 rounded-xl px-2 py-1.5 text-center transition-colors hover:bg-surface/70"
           >
-            <span className="block truncate text-[14px] font-extrabold leading-tight">
+            <span className="block truncate text-[15px] font-extrabold leading-tight">
               {bookNameById(book)}
             </span>
             <span className="mt-0.5 block text-[11px] font-bold leading-tight text-primary">
               Capítulo {chapter}
             </span>
-            <span className="mt-1 block truncate text-[8px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+            <span className="mt-1 block truncate text-[9px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
               Toque para trocar de capítulo
             </span>
           </button>
-          <div className="bible-reader-action-group relative z-10 flex shrink-0 items-center gap-1">
+          <div className="bible-reader-action-group relative z-10 flex shrink-0 items-center gap-0.5 sm:gap-1">
             <button
               onClick={() => {
                 if (narrationStarted) toggleNarrationPause();
