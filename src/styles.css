@@ -1056,15 +1056,6 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
   padding-bottom: 0.7rem;
 }
 
-.bible-guided-banner {
-  border-radius: 1.2rem;
-  background:
-    linear-gradient(105deg, color-mix(in srgb, hsl(var(--primary)) 13%, hsl(var(--surface))) 0%, color-mix(in srgb, hsl(var(--surface)) 96%, transparent) 72%),
-    hsl(var(--surface));
-  box-shadow:
-    0 10px 24px color-mix(in srgb, hsl(var(--background)) 24%, transparent),
-    inset 0 1px 0 color-mix(in srgb, white 7%, transparent);
-}
 
 .bible-index-main {
   padding-top: 1.15rem;
