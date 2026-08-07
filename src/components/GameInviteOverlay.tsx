@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Check, Gamepad2, Sparkles, Users, X } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -59,14 +59,14 @@ export function GameInviteOverlay() {
   const [responding, setResponding] = useState(false);
   const invite = pendingInvites[0] ?? null;
 
-  const enqueueInvite = (nextInvite: GameInvite | null) => {
+  const enqueueInvite = useCallback((nextInvite: GameInvite | null) => {
     if (!nextInvite) return;
     setPendingInvites((current) =>
       current.some((item) => item.roomId === nextInvite.roomId)
         ? current
         : [...current, nextInvite],
     );
-  };
+  }, []);
 
   useEffect(() => {
     let channel: ReturnType<typeof supabase.channel> | null = null;
@@ -123,7 +123,7 @@ export function GameInviteOverlay() {
       cancelled = true;
       if (channel) void supabase.removeChannel(channel);
     };
-  }, []);
+  }, [enqueueInvite]);
 
   const respond = async (accept: boolean) => {
     if (!invite || responding) return;
