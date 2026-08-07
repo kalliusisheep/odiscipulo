@@ -120,7 +120,7 @@ BEGIN
     RAISE EXCEPTION 'invalid_rounds';
   END IF;
 
-  IF safe_correct > safe_rounds OR safe_streak > safe_correct THEN
+  IF safe_correct > safe_rounds * 20 OR safe_streak > safe_correct THEN
     RAISE EXCEPTION 'invalid_game_result';
   END IF;
 
