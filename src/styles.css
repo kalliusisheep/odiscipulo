@@ -1755,3 +1755,24 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* Final visual pass: keep Bible surfaces soft and never bright white. */
+.bible-index-shell [class*="border-border"],
+.bible-reader-shell [class*="border-border"],
+.bible-secondary-page [class*="border-border"] {
+  border-color: color-mix(in srgb, hsl(var(--foreground)) 14%, transparent) !important;
+}
+
+.bible-index-shell .bible-search-panel,
+.bible-index-shell .bible-testament-switcher,
+.bible-index-shell .bible-journey-card,
+.bible-index-shell .bible-book-card,
+.bible-reader-shell .bible-reader-surface,
+.bible-secondary-page .bible-mark-card {
+  border-color: color-mix(in srgb, hsl(var(--foreground)) 14%, transparent) !important;
+}
+
+.bible-index-shell .bible-search-panel:focus-within {
+  border-color: color-mix(in srgb, hsl(var(--primary)) 42%, transparent) !important;
+}
