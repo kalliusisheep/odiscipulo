@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Download, Loader2, Minus, Plus as PlusIcon, RotateCcw } from "lucide-react";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { supabase } from "@/integrations/supabase/client";
 import { getLevel } from "@/data/levels";
 
@@ -573,7 +572,6 @@ function ArvorePage() {
             <h1 className="text-xl font-semibold">Árvore de Discipulado</h1>
           </div>
         </div>
-        <ThemeToggle />
       </header>
 
       {loading ? (
