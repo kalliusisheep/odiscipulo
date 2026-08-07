@@ -67,6 +67,28 @@ const CROSSWORD_EXCLUDED_FACT_IDS = new Set([
   "filho-prodigo",
   "maria-magnificat",
   "zacqueu",
+  "manna",
+]);
+
+const CROSSWORD_PLACE_FACT_IDS = new Set([
+  "dez-mandamentos",
+  "jerico",
+  "jesus-belem",
+  "paulo-conversao",
+  "mar-vermelho",
+]);
+
+const CROSSWORD_NON_WORD_FACT_ANSWERS = new Set([
+  "MANA",
+  "OSENHOR",
+  "MAGNIFICAT",
+  "ORACAO",
+  "VERDADEIRO",
+  "FALSO",
+  "SABEDORIA",
+  "FE",
+  "TRES",
+  "TREZENTOS",
 ]);
 
 const normalizeCrosswordWord = (value: string) =>
@@ -84,8 +106,12 @@ const themesForCategory = (category: string): CrosswordTheme[] => {
   return ["personagens"];
 };
 
+const themesForFact = (fact: { id: string; category: string }): CrosswordTheme[] =>
+  CROSSWORD_PLACE_FACT_IDS.has(fact.id) ? ["lugares", "antigo"] : themesForCategory(fact.category);
+
 const FACT_CROSSWORD_WORDS: CrosswordWord[] = BIBLE_FACTS
   .filter((fact) => !CROSSWORD_EXCLUDED_FACT_IDS.has(fact.id))
+  .filter((fact) => !CROSSWORD_NON_WORD_FACT_ANSWERS.has(normalizeCrosswordWord(fact.answer)))
   .map((fact) => ({ ...fact, word: normalizeCrosswordWord(fact.answer) }))
   .filter((fact) => fact.word.length >= 3 && fact.word.length <= 15)
   .map((fact) => ({
@@ -97,7 +123,7 @@ const FACT_CROSSWORD_WORDS: CrosswordWord[] = BIBLE_FACTS
     context: maskCrosswordAnswer(fact.explanation, fact.answer),
     curiosity: maskCrosswordAnswer(fact.statement, fact.answer),
     difficulty: fact.difficulty,
-    themes: themesForCategory(fact.category),
+    themes: themesForFact(fact),
   }));
 
 const ALL_CROSSWORD_WORDS = [...RAW_CROSSWORD_WORDS, ...FACT_CROSSWORD_WORDS];
