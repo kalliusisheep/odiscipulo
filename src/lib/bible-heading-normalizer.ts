@@ -253,7 +253,6 @@ const HEADING_WORD_REPLACEMENTS: Record<string, string> = {
   "Abrahão": "Abraão",
   "Achitophel": "Aitofel",
   "Antiochia": "Antioquia",
-  "Babylonia": "Babilônia",
   "Bethania": "Betânia",
   "Bethesda": "Betesda",
   "Bethlehem": "Belém",
@@ -281,7 +280,6 @@ const HEADING_WORD_REPLACEMENTS: Record<string, string> = {
   "Mephiboseth": "Mefibosete",
   "Nazareth": "Nazaré",
   "Orpha": "Orfa",
-  "Pharaó": "Faraó",
   "Rebecca": "Rebeca",
   "Ruth": "Rute",
   "Sabbado": "sábado",
@@ -330,7 +328,6 @@ const HEADING_WORD_REPLACEMENTS: Record<string, string> = {
   "Athalia": "Atalia",
   "Cyro": "Ciro",
   "Tychico": "Tíquico",
-  "Manasseh": "Manassés",
   "Beth": "Bet",
   "ephod": "éfode",
   "sittim": "Sitim",
@@ -338,7 +335,6 @@ const HEADING_WORD_REPLACEMENTS: Record<string, string> = {
   "manná": "maná",
   "rebella": "rebela",
   "acclamado": "aclamado",
-  "Phineas": "Fineias",
 };
 
 const HEADING_REPLACEMENTS = new Map(
