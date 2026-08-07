@@ -759,27 +759,24 @@ function ChapterReader() {
                       setBookSearch("");
                     }}
                     className={[
-                      "flex w-full items-center gap-3 rounded-[1.35rem] border px-3.5 py-3 text-left shadow-sm transition-all active:scale-[0.99]",
+                      "flex w-full items-center gap-3 rounded-[1rem] border px-3.5 py-3.5 text-left shadow-sm transition-all active:scale-[0.99]",
                       active
                         ? "border-primary/50 bg-primary/10 shadow-primary/10"
                         : "border-border/50 bg-surface/70 hover:border-primary/30 hover:bg-primary/5",
                     ].join(" ")}
                   >
                     <span className={[
-                      "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs font-black",
+                      "flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.7rem] text-[11px] font-black",
                       active ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "bg-surface-2 text-primary",
                     ].join(" ")}>
                       {value}
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
+                      <span className="block truncate text-[12px] font-black uppercase tracking-[0.1em] text-primary">
                         {value === "AT" ? "Antigo Testamento" : "Novo Testamento"}
                       </span>
-                      <span className="mt-0.5 block truncate text-base font-extrabold text-foreground">
-                        {value === "AT" ? "Gênesis a Malaquias" : "Mateus a Apocalipse"}
-                      </span>
                     </span>
-                    <span className="mr-1 rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-bold text-muted-foreground">
+                    <span className="mr-1 rounded-full bg-surface-2 px-2.5 py-1 text-[9px] font-bold text-muted-foreground">
                       {total} livros
                     </span>
                     <ChevronDown className={[
