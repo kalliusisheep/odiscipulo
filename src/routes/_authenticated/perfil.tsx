@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ViewModeToggle } from "@/components/ViewModeToggle";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { CHARACTERS, BIBLE_VERSIONS, type BibleVersion } from "@/data/content";
 import { toast } from "sonner";
 import { isUsernameAvailable, isValidUsername, normalizeUsername } from "@/lib/username";
@@ -268,18 +267,9 @@ function PerfilPage() {
 
   return (
     <div className="mx-auto max-w-lg space-y-5 px-3 pt-5 sm:px-4">
-      <header className="flex animate-slide-up items-center justify-between gap-3 px-1">
-        <div className="min-w-0">
-          <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
-            <Crown className="h-3.5 w-3.5" /> Minha caminhada
-          </div>
-          <h1 className="mt-1 text-2xl font-extrabold tracking-tight">Meu perfil</h1>
-          <p className="text-xs text-muted-foreground">
-            Seu espaço pessoal para manter tudo do seu jeito
-          </p>
-        </div>
-        <div className="flex shrink-0 items-center gap-2">
-          <ThemeToggle />
+      <header className="relative flex min-h-10 animate-slide-up items-start px-1">
+        <h1 className="text-2xl font-extrabold tracking-tight">Meu perfil</h1>
+        <div className="absolute right-1 top-0 flex shrink-0 items-center">
           <ViewModeToggle />
         </div>
       </header>
