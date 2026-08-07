@@ -480,7 +480,8 @@ function BibliaIndex() {
                 })}
               </div>
             </section>
-
+          </>
+        )}
       </main>
 
       {pickerOpen && picker && (
