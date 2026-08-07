@@ -119,6 +119,11 @@ function TeologiaSistematicaPage() {
                 </button>
 
                 <div id={panelId} hidden={!isOpen} className="bible-testament-books">
+                  {topic.introduction && (
+                    <p className="mx-3 mb-3 whitespace-pre-line rounded-2xl border border-primary/15 bg-primary/5 px-4 py-3 text-xs leading-6 text-muted-foreground">
+                      {topic.introduction}
+                    </p>
+                  )}
                   <div className="bible-book-list">
                     {topic.chapters.map((chapter, chapterIndex) => {
                       const isSelected = selectedChapterId === chapter.id;
