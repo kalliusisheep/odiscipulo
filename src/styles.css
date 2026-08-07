@@ -1807,3 +1807,35 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
 .bible-chapter-nav > div > button:first-child {
   border-color: color-mix(in srgb, hsl(var(--foreground)) 14%, transparent) !important;
 }
+
+/* Premium Bible chapter controls: remove harsh white outlines. */
+.bible-index-shell [class*="border-border"],
+.bible-reader-shell [class*="border-border"],
+.bible-secondary-page [class*="border-border"] {
+  border-color: color-mix(in srgb, hsl(var(--foreground)) 8%, transparent) !important;
+}
+
+.bible-index-shell .bible-chapter-option,
+.bible-reader-shell .bible-chapter-option {
+  border-color: color-mix(in srgb, hsl(var(--foreground)) 8%, transparent) !important;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.02) !important;
+}
+
+.bible-index-shell .bible-chapter-option[aria-current="page"],
+.bible-reader-shell .bible-chapter-option[aria-current="page"] {
+  border-color: color-mix(in srgb, hsl(var(--primary)) 62%, transparent) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, hsl(var(--primary)) 18%, transparent),
+    0 8px 20px -16px color-mix(in srgb, hsl(var(--primary)) 70%, transparent) !important;
+}
+
+.bible-index-shell .bible-chapter-option:hover,
+.bible-reader-shell .bible-chapter-option:hover {
+  border-color: color-mix(in srgb, hsl(var(--primary)) 34%, transparent) !important;
+}
+
+.bible-reader-shell .bible-chapter-option:focus-visible,
+.bible-index-shell .bible-chapter-option:focus-visible {
+  outline: 2px solid color-mix(in srgb, hsl(var(--primary)) 62%, transparent);
+  outline-offset: 2px;
+}
