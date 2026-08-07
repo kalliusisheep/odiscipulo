@@ -60,6 +60,7 @@ function BibliaIndex() {
   const [readLoading, setReadLoading] = useState(true);
   const [readError, setReadError] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [translationMenuOpen, setTranslationMenuOpen] = useState(false);
 
   const loadReadProgress = useCallback(async () => {
     setReadLoading(true);
@@ -205,20 +206,60 @@ function BibliaIndex() {
                 <span className="text-[9px] font-semibold uppercase tracking-[0.2em] text-muted-foreground/60">
                   Versão
                 </span>
-                <span className="relative">
-                  <select
-                    aria-label="Tradução"
-                    value={translation}
-                    onChange={(e) => setTranslation(e.target.value)}
-                    className="bible-translation-select appearance-none rounded-full border border-border/40 bg-transparent py-1 pl-3 pr-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground/80 outline-none transition-colors hover:border-primary/40"
+                <span
+                  className="bible-translation-menu relative"
+                  onBlur={(event) => {
+                    const nextTarget = event.relatedTarget;
+                    if (!nextTarget || !event.currentTarget.contains(nextTarget as Node)) {
+                      setTranslationMenuOpen(false);
+                    }
+                  }}
+                >
+                  <button
+                    type="button"
+                    aria-label="Escolher tradução"
+                    aria-haspopup="listbox"
+                    aria-expanded={translationMenuOpen}
+                    aria-controls="bible-translation-options"
+                    onClick={() => setTranslationMenuOpen((open) => !open)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Escape") setTranslationMenuOpen(false);
+                    }}
+                    className="bible-translation-trigger flex items-center gap-2 rounded-full border border-border/40 bg-transparent py-1 pl-3 pr-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground/80 outline-none transition-colors hover:border-primary/40 focus-visible:border-primary/60"
                   >
-                    {availableTranslations.map((t) => (
-                      <option key={t.code} value={t.code}>
-                        {t.label}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3 w-3 -translate-y-1/2 text-muted-foreground" />
+                    <span>{translation}</span>
+                    <ChevronDown
+                      className={`h-3 w-3 text-muted-foreground transition-transform duration-200 ${translationMenuOpen ? "rotate-180" : ""}`}
+                    />
+                  </button>
+
+                  {translationMenuOpen && (
+                    <div
+                      id="bible-translation-options"
+                      role="listbox"
+                      aria-label="Traduções disponíveis"
+                      className="bible-translation-options absolute right-0 top-full z-50 mt-2"
+                    >
+                      {availableTranslations.map((t) => (
+                        <button
+                          key={t.code}
+                          type="button"
+                          role="option"
+                          aria-selected={t.code === translation}
+                          onClick={() => {
+                            setTranslation(t.code);
+                            setTranslationMenuOpen(false);
+                          }}
+                          className={`bible-translation-option flex w-full items-center justify-between gap-4 text-left ${t.code === translation ? "is-selected" : ""}`}
+                        >
+                          <span className="font-bold">{t.code}</span>
+                          <span className="truncate text-[10px] font-medium text-muted-foreground">
+                            {t.label}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </span>
               </label>
             </div>
