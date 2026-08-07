@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Crown, Gamepad2, Medal, RefreshCw, Sparkles, Trophy, Users, Zap } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { fetchGameLeaderboard, type GameKey, type GameLeaderboardRow } from "@/lib/game-leaderboard";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -63,7 +62,6 @@ function RankingPage() {
               Todos os jogadores do app competindo pela melhor pontuação.
             </p>
           </div>
-          <ThemeToggle />
         </header>
 
         <section className="relative overflow-hidden rounded-[2rem] border border-primary/30 bg-gradient-to-br from-primary/25 via-surface to-ancient/10 p-5 shadow-xl shadow-primary/10">
