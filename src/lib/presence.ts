@@ -20,7 +20,15 @@ export async function touchLastSeen() {
   }
 }
 
-export function isPresenceOnline(lastSeenAt: string | null | undefined) {\n  if (!lastSeenAt) return false;\n  const date = new Date(lastSeenAt);\n  if (Number.isNaN(date.getTime())) return false;\n  const minutesAgo = (Date.now() - date.getTime()) / 60000;\n  return minutesAgo >= 0 && minutesAgo < 5;\n}\n\nexport function formatPresence(lastSeenAt: string | null | undefined) {
+export function isPresenceOnline(lastSeenAt: string | null | undefined) {
+  if (!lastSeenAt) return false;
+  const date = new Date(lastSeenAt);
+  if (Number.isNaN(date.getTime())) return false;
+  const minutesAgo = (Date.now() - date.getTime()) / 60000;
+  return minutesAgo >= 0 && minutesAgo < 5;
+}
+
+export function formatPresence(lastSeenAt: string | null | undefined) {
   if (!lastSeenAt) return "Último acesso indisponível";
   const date = new Date(lastSeenAt);
   if (Number.isNaN(date.getTime())) return "Último acesso indisponível";

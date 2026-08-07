@@ -191,7 +191,9 @@ export function SharedQuestionGame({
     const profiles = ids.length
       ? (await gameDb.from("profiles").select("id,display_name,avatar_url").in("id", ids)).data ?? []
       : [];
-    const profileMap = new Map(profiles.map((profile: { id: string; display_name: string; avatar_url: string | null }) => [profile.id, profile] as const));
+    const profileMap = new Map<string, { id: string; display_name: string; avatar_url: string | null }>(
+      profiles.map((profile: { id: string; display_name: string; avatar_url: string | null }) => [profile.id, profile] as const),
+    );
     const nextPlayers = rows.map((row: RoomPlayer) => ({
       ...row,
       score: Number(row.score ?? 0),
@@ -201,7 +203,7 @@ export function SharedQuestionGame({
       avatar_url: profileMap.get(row.user_id)?.avatar_url ?? null,
     }));
     setPlayers(nextPlayers);
-    const me = nextPlayers.find((player) => player.user_id === currentUserId);
+    const me = nextPlayers.find((player: { user_id: string }) => player.user_id === currentUserId);
     if (me) {
       setError("");
     }
@@ -366,7 +368,7 @@ export function SharedQuestionGame({
     resultSaved.current = true;
     void (async () => {
       const finalPlayers = await loadPlayers(userId);
-      const finalMe = finalPlayers.find((player) => player.user_id === userId);
+      const finalMe = finalPlayers.find((player: { user_id: string }) => player.user_id === userId);
       const resultError = await recordSharedGameResult(roomId, finalMe ? {
         gameKey: gameType,
         score: finalMe.score,
@@ -380,7 +382,7 @@ export function SharedQuestionGame({
       if (!finishSoundPlayed.current) {
         finishSoundPlayed.current = true;
         const finalWinner = [...finalPlayers].sort((first, second) => second.score - first.score || second.correct_answers - first.correct_answers)[0];
-        const tied = finalWinner && finalPlayers.filter((player) => player.score === finalWinner.score).length > 1;
+        const tied = finalWinner && finalPlayers.filter((player: { score: number }) => player.score === finalWinner.score).length > 1;
         playGameSfx(tied ? "complete" : finalWinner?.user_id === finalMe?.user_id ? "victory" : "defeat");
       }
     })();

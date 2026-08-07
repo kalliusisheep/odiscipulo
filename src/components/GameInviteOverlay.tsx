@@ -16,7 +16,7 @@ const gameDb = supabase as any;
 
 function notificationToInvite(value: unknown): GameInvite | null {
   const notification = value as { kind?: string; data?: Record<string, unknown> };
-  const data = notification.data;
+  const data = (notification.data ?? {}) as Record<string, any>;
   const gameType = data?.game_invite;
   if (
     notification.kind !== "challenge" ||
