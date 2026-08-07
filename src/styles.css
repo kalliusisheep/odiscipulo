@@ -2885,3 +2885,46 @@ body,
     border-radius: 0.85rem !important;
   }
 }
+
+
+/* Final Bible reader header alignment */
+.bible-reader-shell .bible-reader-primary-row {
+  grid-template-columns: 2.25rem minmax(0, 1fr) auto 2.25rem !important;
+  column-gap: 0.55rem !important;
+}
+
+.bible-reader-shell .bible-reader-header .bible-chapter-trigger {
+  width: min(100%, 10rem) !important;
+  justify-self: center !important;
+  text-decoration: none !important;
+}
+
+.bible-reader-shell .bible-reader-header .bible-chapter-trigger::after,
+.bible-reader-shell .bible-reader-header .bible-chapter-trigger:hover::after,
+.bible-reader-shell .bible-reader-header .bible-chapter-trigger:focus-visible::after {
+  display: none !important;
+  content: none !important;
+}
+
+.bible-reader-shell .bible-reader-header .bible-header-chapter-label {
+  font-size: 1.1rem !important;
+  line-height: 1.08 !important;
+  text-decoration: none !important;
+}
+
+@media (max-width: 380px) {
+  .bible-reader-shell .bible-reader-primary-row {
+    grid-template-columns: 2.25rem minmax(0, 1fr) auto 2.25rem !important;
+    column-gap: 0.35rem !important;
+  }
+
+  .bible-reader-shell .bible-reader-header .bible-chapter-trigger {
+    min-width: 7rem;
+    max-width: 8.75rem;
+    padding-inline: 0.55rem !important;
+  }
+
+  .bible-reader-shell .bible-reader-header .bible-header-chapter-label {
+    font-size: 1.05rem !important;
+  }
+}
