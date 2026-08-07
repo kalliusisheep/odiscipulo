@@ -177,6 +177,9 @@ const isValidQuestion = (question: MillionQuestion) => {
 
 const VALID_BIBLE_FACTS = BIBLE_FACTS.filter(isValidFact);
 export const MILLION_QUESTIONS = VALID_BIBLE_FACTS.flatMap(createQuestions).filter(isValidQuestion);
+export const MILLION_QUESTION_BANK = MILLION_QUESTIONS;
+export const MILLION_QUESTION_VARIATION_COUNT = MILLION_QUESTION_BANK.length;
+
 export const millionQuestionsForDifficulty = (difficulty: MillionDifficulty) =>
   MILLION_QUESTIONS.filter((question) => {
     if (question.difficulty !== difficulty) return false;
