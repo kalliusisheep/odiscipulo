@@ -71,7 +71,9 @@ function AuthedLayout() {
   // eles ficam ocultos.
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isPrivateChat = /^\/mensagens\/[^/]+$/.test(pathname);
-  const isBibleReader = pathname.startsWith("/biblia/");
+  const isBibleReader =
+    /^\\/biblia\\/\\d+\\/\\d+$/.test(pathname) ||
+    pathname.startsWith("/biblia/estudo/");
   const isBibleOrGames =
     pathname === "/biblia" ||
     pathname.startsWith("/biblia/") ||
