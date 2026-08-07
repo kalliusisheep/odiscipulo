@@ -24,7 +24,7 @@ export function todayStr(date = new Date()): string {
 }
 
 function dayNumber(dateKey: string): number | null {
-  const match = /^(\\d{4})-(\\d{2})-(\\d{2})$/.exec(dateKey);
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateKey);
   if (!match) return null;
 
   const year = Number(match[1]);
