@@ -1084,6 +1084,24 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
   }
 }
 
+.bible-index-shell [class*="border-border"],
+.bible-reader-shell [class*="border-border"],
+.bible-secondary-page [class*="border-border"] {
+  border-color: color-mix(in oklab, var(--foreground) 14%, transparent);
+}
+
+.bible-index-shell .bible-search-panel,
+.bible-index-shell .bible-journey-card,
+.bible-index-shell .bible-book-card,
+.bible-reader-shell .bible-reader-surface,
+.bible-secondary-page .bible-mark-card {
+  border-color: color-mix(in oklab, var(--foreground) 14%, transparent);
+}
+
+.bible-index-shell .bible-search-panel:focus-within {
+  border-color: color-mix(in oklab, var(--primary) 42%, transparent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bible-index-header,
   .bible-reader-header,
