@@ -553,9 +553,9 @@ function BibliaIndex() {
               <Link
                 to="/estudos/"
                 aria-label="Abrir Teologia Sistemática"
-                className="bible-theology-button mt-3 flex items-center gap-3"
+                className="bible-testament-group bible-testament-toggle bible-theology-button mt-5 flex w-full items-center gap-3 text-left"
               >
-                <span className="bible-theology-icon flex h-9 w-9 shrink-0 items-center justify-center rounded-xl">
+                <span className="bible-testament-badge bible-theology-icon flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-[9px] font-semibold tracking-[0.08em]">
                   <BookOpen className="h-4 w-4" />
                 </span>
                 <span className="min-w-0 flex-1">
