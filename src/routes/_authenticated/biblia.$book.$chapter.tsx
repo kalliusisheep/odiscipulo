@@ -78,6 +78,7 @@ function ChapterReader() {
   const [bookPickerOpen, setBookPickerOpen] = useState(false);
   const [bookSearch, setBookSearch] = useState("");
   const [pickerBook, setPickerBook] = useState(book);
+  const [pickerTestament, setPickerTestament] = useState<"AT" | "NT">(book <= 39 ? "AT" : "NT");
   const [narrationIndex, setNarrationIndex] = useState<number | null>(null);
   const [narrationStarted, setNarrationStarted] = useState(false);
   const [narrationPaused, setNarrationPaused] = useState(false);
@@ -308,6 +309,7 @@ function ChapterReader() {
 
   const openChapterPicker = () => {
     setPickerBook(book);
+    setPickerTestament(book <= 39 ? "AT" : "NT");
     setBookPickerOpen(false);
     setBookSearch("");
     setChapterPicker(true);
@@ -322,6 +324,7 @@ function ChapterReader() {
   }, [bookSearch]);
 
   const pickerMeta = bookById(pickerBook);
+  const pickerTestamentBooks = filteredPickerBooks.filter((item) => item.testament === pickerTestament);
 
 
   return (
@@ -725,29 +728,52 @@ function ChapterReader() {
               </span>
             </div>
 
-            <button
-              type="button"
-              aria-expanded={bookPickerOpen}
-              aria-controls="bible-book-picker-panel"
-              onClick={() => setBookPickerOpen((open) => !open)}
-              className="mt-2 flex w-full items-center gap-3 rounded-[1.35rem] border border-primary/30 bg-gradient-to-r from-primary/10 via-surface to-surface px-3.5 py-3 text-left shadow-[0_10px_30px_-20px_hsl(var(--primary))] transition-all hover:border-primary/60 hover:bg-primary/[0.13] active:scale-[0.99]"
-            >
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
-                <BookOpen className="h-4 w-4" />
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
-                  {pickerMeta.testament === "AT" ? "Antigo Testamento" : "Novo Testamento"}
-                </span>
-                <span className="mt-0.5 block truncate text-base font-extrabold text-foreground">
-                  {pickerMeta.name}
-                </span>
-              </span>
-              <span className="mr-1 rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-bold text-muted-foreground">
-                {pickerMeta.abbr}
-              </span>
-              <ChevronRight className={`h-5 w-5 shrink-0 text-primary transition-transform ${bookPickerOpen ? "rotate-90" : ""}`} />
-            </button>
+            <div className="mt-2 grid gap-2">
+              {(["AT", "NT"] as const).map((value) => {
+                const active = pickerTestament === value;
+                const total = BIBLE_BOOKS.filter((item) => item.testament === value).length;
+                return (
+                  <button
+                    key={value}
+                    type="button"
+                    aria-expanded={active && bookPickerOpen}
+                    onClick={() => {
+                      setPickerTestament(value);
+                      setBookPickerOpen(true);
+                      setBookSearch("");
+                    }}
+                    className={[
+                      "flex w-full items-center gap-3 rounded-[1.35rem] border px-3.5 py-3 text-left shadow-sm transition-all active:scale-[0.99]",
+                      active
+                        ? "border-primary/50 bg-primary/10 shadow-primary/10"
+                        : "border-border/50 bg-surface/70 hover:border-primary/30 hover:bg-primary/5",
+                    ].join(" ")}
+                  >
+                    <span className={[
+                      "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs font-black",
+                      active ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "bg-surface-2 text-primary",
+                    ].join(" ")}>
+                      {value}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
+                        {value === "AT" ? "Antigo Testamento" : "Novo Testamento"}
+                      </span>
+                      <span className="mt-0.5 block truncate text-base font-extrabold text-foreground">
+                        {value === "AT" ? "Gênesis a Malaquias" : "Mateus a Apocalipse"}
+                      </span>
+                    </span>
+                    <span className="mr-1 rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-bold text-muted-foreground">
+                      {total} livros
+                    </span>
+                    <ChevronDown className={[
+                      "h-4 w-4 shrink-0 text-primary transition-transform",
+                      active && bookPickerOpen ? "rotate-180" : "",
+                    ].join(" ")} />
+                  </button>
+                );
+              })}
+            </div>
 
             {bookPickerOpen && (
               <div
@@ -778,55 +804,51 @@ function ChapterReader() {
                 </div>
 
                 <div className="max-h-64 overflow-y-auto p-2.5">
-                  {(["AT", "NT"] as const).map((testament) => {
-                    const testamentBooks = filteredPickerBooks.filter((item) => item.testament === testament);
-                    if (testamentBooks.length === 0) return null;
-                    return (
-                      <div key={testament} className="bible-picker-testament-group mt-4 first:mt-0">
-                        <div className="bible-picker-testament-heading mb-2.5 flex items-center gap-2.5 rounded-2xl px-3 py-2.5">
-                          <span className="bible-picker-testament-mark flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-xs font-black text-primary">
-                            {testament}
-                          </span>
-                          <p className="text-[13px] font-black uppercase tracking-[0.12em] text-primary">
-                            {testament === "AT" ? "Antigo Testamento" : "Novo Testamento"}
-                          </p>
-                          <span className="ml-auto text-[10px] font-bold text-muted-foreground">
-                            {testamentBooks.length} livros
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-2 gap-1.5">
-                          {testamentBooks.map((item) => {
-                            const active = item.id === pickerBook;
-                            return (
-                              <button
-                                key={item.id}
-                                type="button"
-                                onClick={() => {
-                                  setPickerBook(item.id);
-                                  setBookPickerOpen(false);
-                                  setBookSearch("");
-                                }}
-                                className={`flex min-h-10 items-center gap-2 rounded-xl border px-2.5 py-2 text-left text-xs font-bold transition-all active:scale-[0.98] ${
-                                  active
-                                    ? "border-primary/50 bg-primary/15 text-primary"
-                                    : "border-border/70 bg-background/45 text-foreground/80 hover:border-primary/30 hover:bg-primary/10"
-                                }`}
-                              >
-                                <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-[9px] font-extrabold ${
-                                  active ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground"
-                                }`}>
-                                  {active ? <Check className="h-3.5 w-3.5" /> : item.abbr}
-                                </span>
-                                <span className="min-w-0 truncate">{item.name}</span>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    );
-                  })}
+                  <div className="bible-picker-testament-group">
+                    <div className="bible-picker-testament-heading mb-2.5 flex items-center gap-2.5 rounded-2xl px-3 py-2.5">
+                      <span className="bible-picker-testament-mark flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-xs font-black text-primary">
+                        {pickerTestament}
+                      </span>
+                      <p className="text-[13px] font-black uppercase tracking-[0.12em] text-primary">
+                        {pickerTestament === "AT" ? "Antigo Testamento" : "Novo Testamento"}
+                      </p>
+                      <span className="ml-auto text-[10px] font-bold text-muted-foreground">
+                        {pickerTestamentBooks.length} livros
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {pickerTestamentBooks.map((item) => {
+                        const active = item.id === pickerBook;
+                        return (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => {
+                              setPickerBook(item.id);
+                              setBookPickerOpen(false);
+                              setBookSearch("");
+                            }}
+                            className={[
+                              "flex min-h-10 items-center gap-2 rounded-xl border px-2.5 py-2 text-left text-xs font-bold transition-all active:scale-[0.98]",
+                              active
+                                ? "border-primary/50 bg-primary/15 text-primary"
+                                : "border-border/70 bg-background/45 text-foreground/80 hover:border-primary/30 hover:bg-primary/10",
+                            ].join(" ")}
+                          >
+                            <span className={[
+                              "flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-[9px] font-extrabold",
+                              active ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground",
+                            ].join(" ")}>
+                              {active ? <Check className="h-3.5 w-3.5" /> : item.abbr}
+                            </span>
+                            <span className="min-w-0 truncate">{item.name}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
 
-                  {filteredPickerBooks.length === 0 && (
+                  {pickerTestamentBooks.length === 0 && (
                     <div className="px-4 py-7 text-center">
                       <Search className="mx-auto h-5 w-5 text-muted-foreground/60" />
                       <p className="mt-2 text-xs font-bold">Nenhum livro encontrado</p>
