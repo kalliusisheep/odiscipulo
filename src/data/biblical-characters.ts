@@ -163,6 +163,31 @@ export const BIBLICAL_CHARACTERS = ALL_BIBLICAL_CHARACTERS
   .filter(isValidBiblicalCharacter)
   .filter((character, index, items) => items.findIndex((candidate) => normalizeCharacterName(candidate.name) === normalizeCharacterName(character.name)) === index);
 
+const CHARACTER_HINT_ORDERS = (() => {
+  const orders: number[][] = [];
+  const visit = (remaining: number[], current: number[]) => {
+    if (remaining.length === 0) {
+      orders.push(current);
+      return;
+    }
+    remaining.forEach((value, index) => {
+      visit([...remaining.slice(0, index), ...remaining.slice(index + 1)], [...current, value]);
+    });
+  };
+  visit([0, 1, 2, 3], []);
+  return orders;
+})();
+
+export const BIBLICAL_CHARACTER_ROUNDS: BiblicalCharacter[] = BIBLICAL_CHARACTERS
+  .flatMap((character) => CHARACTER_HINT_ORDERS.map((order, variationIndex) => ({
+    ...character,
+    id: character.id + "-var-" + (variationIndex + 1),
+    hints: order.map((hintIndex) => character.hints[hintIndex]) as BiblicalCharacter["hints"],
+  })))
+  .slice(0, 256);
+
+export const CHARACTER_VARIATION_COUNT = BIBLICAL_CHARACTER_ROUNDS.length;
+
 export const normalizeGameAnswer = normalizeCharacterName;
 
 export const isCorrectCharacterAnswer = (character: BiblicalCharacter, answer: string) => {
