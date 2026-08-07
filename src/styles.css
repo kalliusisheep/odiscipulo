@@ -1975,3 +1975,57 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
   outline: 2px solid color-mix(in oklab, var(--primary) 64%, transparent);
   outline-offset: 2px;
 }
+
+
+/* Theme synchronization: Bible surfaces follow the selected app palette. */
+html,
+body,
+#root {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.bible-index-shell .bible-journey-card {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--primary) 24%, var(--surface)),
+      color-mix(in oklab, var(--surface) 88%, var(--background)),
+      var(--background)
+    ) !important;
+  border-color: color-mix(in oklab, var(--primary) 22%, transparent) !important;
+  box-shadow:
+    0 18px 36px color-mix(in oklab, var(--background) 38%, transparent),
+    inset 0 1px 0 color-mix(in oklab, var(--foreground) 9%, transparent) !important;
+}
+
+.bible-index-shell .bible-picker-overlay {
+  background: color-mix(in oklab, var(--background) 68%, transparent) !important;
+}
+
+.bible-index-shell .bible-picker-sheet {
+  background: var(--background) !important;
+  color: var(--foreground);
+  border-color: color-mix(in oklab, var(--primary) 20%, var(--border)) !important;
+}
+
+.bible-index-shell .bible-picker-sheet > div:first-child {
+  background: color-mix(in oklab, var(--background) 94%, transparent) !important;
+  border-color: color-mix(in oklab, var(--foreground) 10%, transparent) !important;
+}
+
+.bible-index-shell .bible-picker-sheet .bible-chapter-option:not([aria-current="page"]) {
+  background-color: var(--surface) !important;
+  color: color-mix(in oklab, var(--foreground) 86%, transparent) !important;
+  border-color: color-mix(in oklab, var(--foreground) 10%, transparent) !important;
+}
+
+.bible-index-shell .bible-picker-sheet .bible-chapter-option[aria-current="page"] {
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--primary) 88%, var(--surface)),
+    color-mix(in oklab, var(--primary-glow) 82%, var(--primary))
+  ) !important;
+  color: var(--primary-foreground) !important;
+  border-color: color-mix(in oklab, var(--primary) 58%, transparent) !important;
+}
