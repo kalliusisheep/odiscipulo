@@ -345,6 +345,171 @@ export type Database = {
         }
         Relationships: []
       }
+      character_game_answers: {
+        Row: {
+          answer_hash: string
+          is_correct: boolean
+          is_locked: boolean
+          received_at: string
+          round_id: string
+          user_id: string
+        }
+        Insert: {
+          answer_hash: string
+          is_correct?: boolean
+          is_locked?: boolean
+          received_at?: string
+          round_id: string
+          user_id: string
+        }
+        Update: {
+          answer_hash?: string
+          is_correct?: boolean
+          is_locked?: boolean
+          received_at?: string
+          round_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "character_game_answers_round_id_fkey"
+            columns: ["round_id"]
+            isOneToOne: false
+            referencedRelation: "character_game_rounds"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      character_game_room_players: {
+        Row: {
+          joined_at: string
+          last_seen_at: string
+          role: string
+          room_id: string
+          state: string
+          user_id: string
+        }
+        Insert: {
+          joined_at?: string
+          last_seen_at?: string
+          role?: string
+          room_id: string
+          state?: string
+          user_id: string
+        }
+        Update: {
+          joined_at?: string
+          last_seen_at?: string
+          role?: string
+          room_id?: string
+          state?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "character_game_room_players_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "character_game_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      character_game_rooms: {
+        Row: {
+          created_at: string
+          current_round: number
+          difficulty: string
+          finished_at: string | null
+          game_type: string
+          host_id: string
+          id: string
+          max_players: number
+          round_seed: number
+          rounds: number
+          started_at: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          current_round?: number
+          difficulty?: string
+          finished_at?: string | null
+          game_type?: string
+          host_id: string
+          id?: string
+          max_players?: number
+          round_seed?: number
+          rounds?: number
+          started_at?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          current_round?: number
+          difficulty?: string
+          finished_at?: string | null
+          game_type?: string
+          host_id?: string
+          id?: string
+          max_players?: number
+          round_seed?: number
+          rounds?: number
+          started_at?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
+      character_game_rounds: {
+        Row: {
+          character_id: string
+          closed_at: string | null
+          hints: Json
+          id: string
+          opened_at: string
+          points_available: number
+          revealed_hint_indexes: number[]
+          room_id: string
+          round_number: number
+          status: string
+          winner_id: string | null
+        }
+        Insert: {
+          character_id: string
+          closed_at?: string | null
+          hints?: Json
+          id?: string
+          opened_at?: string
+          points_available?: number
+          revealed_hint_indexes?: number[]
+          room_id: string
+          round_number: number
+          status?: string
+          winner_id?: string | null
+        }
+        Update: {
+          character_id?: string
+          closed_at?: string | null
+          hints?: Json
+          id?: string
+          opened_at?: string
+          points_available?: number
+          revealed_hint_indexes?: number[]
+          room_id?: string
+          round_number?: number
+          status?: string
+          winner_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "character_game_rounds_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "character_game_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       churches: {
         Row: {
           created_at: string
@@ -1645,6 +1810,15 @@ export type Database = {
         Args: { _challenge_id: string; _user: string }
         Returns: number
       }
+      create_character_game_room: {
+        Args: {
+          _difficulty: string
+          _game_type: string
+          _max_players: number
+          _rounds: number
+        }
+        Returns: string
+      }
       find_or_create_church: { Args: { _name: string }; Returns: string }
       finish_challenge_step: {
         Args: { _challenge_id: string }
@@ -1663,7 +1837,90 @@ export type Database = {
           xp: number
         }[]
       }
+      invite_character_game_player: {
+        Args: { _room_id: string; _user_id: string }
+        Returns: {
+          joined_at: string
+          last_seen_at: string
+          role: string
+          room_id: string
+          state: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "character_game_room_players"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      is_character_game_member: { Args: { _room_id: string }; Returns: boolean }
       normalize_church_name: { Args: { _name: string }; Returns: string }
+      remove_character_game_player: {
+        Args: { _room_id: string; _user_id: string }
+        Returns: boolean
+      }
+      respond_character_game_invite: {
+        Args: { _accept: boolean; _room_id: string }
+        Returns: {
+          joined_at: string
+          last_seen_at: string
+          role: string
+          room_id: string
+          state: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "character_game_room_players"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      reveal_character_game_hint: {
+        Args: { _hint_index: number; _round_id: string }
+        Returns: {
+          character_id: string
+          closed_at: string | null
+          hints: Json
+          id: string
+          opened_at: string
+          points_available: number
+          revealed_hint_indexes: number[]
+          room_id: string
+          round_number: number
+          status: string
+          winner_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "character_game_rounds"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      submit_character_game_answer: {
+        Args: { _answer_hash: string; _is_correct: boolean; _round_id: string }
+        Returns: {
+          character_id: string
+          closed_at: string | null
+          hints: Json
+          id: string
+          opened_at: string
+          points_available: number
+          revealed_hint_indexes: number[]
+          room_id: string
+          round_number: number
+          status: string
+          winner_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "character_game_rounds"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       touch_last_seen: { Args: never; Returns: undefined }
     }
     Enums: {
