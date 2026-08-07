@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { HIGHLIGHT_COLORS, normalizeHighlightColor, type HighlightColor } from "@/lib/bible-user-data";
 import { bookNameById } from "@/data/bible-books";
-import { BookOpen, Copy, GitCompareArrows, Highlighter, Library, PenLine, Star } from "lucide-react";
+import { BookOpen, Copy, GitCompareArrows, Highlighter, Library, PenLine, Star, X } from "lucide-react";
 import { ShareLessonButton } from "@/components/ShareLessonButton";
 
 type Props = {
@@ -16,6 +16,7 @@ type Props = {
   isFavorite: boolean;
   currentColor?: string;
   onHighlight: (color: HighlightColor) => void;
+  onClearHighlight: () => void;
   onFavorite: () => void;
   onNote: () => void;
   onCopy: () => void;
@@ -74,6 +75,19 @@ export function VerseActionSheet(props: Props) {
                 }`}
               />
             ))}
+            <button
+              type="button"
+              aria-label="Remover marcação"
+              aria-pressed={!normalizeHighlightColor(props.currentColor)}
+              onClick={props.onClearHighlight}
+              className={`bible-highlight-swatch flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 bg-muted/60 text-muted-foreground transition-all active:scale-90 ${
+                !normalizeHighlightColor(props.currentColor)
+                  ? "border-primary ring-2 ring-primary/25 ring-offset-2 ring-offset-background"
+                  : "border-foreground/15 hover:border-primary/40 hover:text-foreground"
+              }`}
+            >
+              <X className="h-4 w-4" strokeWidth={2.5} />
+            </button>
             <span className="ml-1 text-[11px] text-muted-foreground">
               Toque para aplicar
             </span>
