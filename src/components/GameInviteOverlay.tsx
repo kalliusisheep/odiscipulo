@@ -137,7 +137,7 @@ export function GameInviteOverlay() {
       const roomId = invite.roomId;
       setPendingInvites((current) => current.slice(1));
       if (accept) {
-        window.location.href = `/jogos/${invite.gameType}?mode=multi&roomId=${roomId}&seed=${invite.seed}&difficulty=${invite.difficulty}&rounds=${invite.rounds}`;
+        window.location.href = `/jogos/multiplayer?roomId=${roomId}&game=${invite.gameType}`;
       } else {
         toast.success("Convite recusado");
       }
