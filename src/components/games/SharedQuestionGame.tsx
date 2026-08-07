@@ -1,7 +1,7 @@
 import { ArrowLeft, ArrowRight, Check, Clock3, Crown, Flame, Lightbulb, RotateCcw, Sparkles, Trophy, Users, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BIBLICAL_CHARACTER_ROUNDS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
-import { VERSE_DIFFICULTY, versesForDifficulty } from "@/data/biblical-verses";
+import { BIBLICAL_VERSES, VERSE_DIFFICULTY, versesForDifficulty } from "@/data/biblical-verses";
 import { MILLION_DIFFICULTY, MILLION_QUESTIONS, randomMillionQuestions, randomMillionQuestionsWithSeed, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { recordSharedGameResult } from "@/lib/game-leaderboard";
