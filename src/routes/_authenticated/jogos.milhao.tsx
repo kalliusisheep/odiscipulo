@@ -65,7 +65,7 @@ function MillionPage() {
 
   const prepare = useCallback((nextIndex: number, list: MillionQuestion[]) => {
     setIndex(nextIndex); setSelected(null); setHidden([]); setContextOpen(false); setConsultations(null); setTimeLeft(MILLION_DIFFICULTY[difficulty].timeLimit); startedAt.current = Date.now(); setPhase("playing");
-  }, []);
+  }, [difficulty]);
 
   const start = () => {
     scoreSaved.current = false;
