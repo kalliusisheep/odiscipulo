@@ -909,6 +909,12 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
   letter-spacing: 0.002em;
 }
 
+.bible-verse-quote,
+.scripture {
+  font-family: "Literata";
+  letter-spacing: 0.002em;
+}
+
 .bible-floating-control {
   pointer-events: none;
 }
@@ -1027,7 +1033,7 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
   }
 
   .bible-book-card {
-    min-height: 6.65rem;
+    min-height: 6.25rem;
     padding: 0.7rem;
   }
 
