@@ -307,9 +307,11 @@ export function SharedQuestionGame({
       _streak: (players.find((player) => player.user_id === userId)?.best_streak ?? 0) + (correct ? 1 : 0),
     });
     if (submitError) {
-      setError("Não foi possível registrar sua resposta.");
+      setAnswered(false);
+      setError("Não foi possível registrar sua resposta. Tente novamente.");
       return;
     }
+    setError("");
     setRemoteRound(data as RoomRound);
     setPhase("answered");
     await loadPlayers();
