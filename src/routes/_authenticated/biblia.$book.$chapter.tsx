@@ -317,29 +317,29 @@ function ChapterReader() {
     <div className={`bible-reader-shell min-h-screen pb-32 transition-colors ${(theme === "white" || theme === "gray") ? "bg-[#fbfaf7] text-slate-900" : "bg-background text-foreground"}`}>
       {/* Barra superior fixa */}
       <div className={`bible-reader-header sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-xl ${readerScrolled ? "is-immersive" : ""}`}>
-        <div className="bible-reader-header-inner relative mx-auto flex max-w-lg items-center gap-3 px-4 py-2.5">
+        <div className="bible-reader-header-inner relative mx-auto grid min-h-[4.35rem] max-w-lg grid-cols-[2.25rem_minmax(0,1fr)_auto] items-center gap-2 px-4">
           <Link
             to="/biblia"
             aria-label="Voltar"
-            className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border/70 bg-surface/70 text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/10 hover:text-primary active:scale-95"
+            className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border/70 bg-surface/70 text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/10 hover:text-primary active:scale-95"
           >
             <ArrowLeft className="h-4 w-4" />
           </Link>
           <button
             onClick={openChapterPicker}
-            className="bible-chapter-trigger bible-header-chapter rounded-2xl px-3 py-1.5 text-center transition-colors hover:bg-surface/70"
+            className="bible-chapter-trigger bible-header-chapter min-w-0 justify-self-center rounded-xl px-2 py-1 text-center transition-colors hover:bg-surface/70"
           >
-            <span className="block truncate text-[15px] font-extrabold leading-tight">
+            <span className="block truncate text-[14px] font-extrabold leading-tight">
               {bookNameById(book)}
             </span>
-            <span className="mt-0.5 block text-xs font-bold text-primary">
+            <span className="mt-0.5 block text-[11px] font-bold leading-tight text-primary">
               Capítulo {chapter}
             </span>
-            <span className="mt-0.5 block truncate text-[9px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-              {label} · toque para explorar
+            <span className="mt-1 block truncate text-[8px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+              {label} · toque para trocar
             </span>
           </button>
-          <div className="bible-reader-action-group relative z-10 ml-auto flex shrink-0 items-center gap-1">
+          <div className="bible-reader-action-group relative z-10 flex shrink-0 items-center gap-1">
             <button
               onClick={() => {
                 if (narrationStarted) toggleNarrationPause();
@@ -408,60 +408,57 @@ function ChapterReader() {
         )}
 
         {verses && verses.length > 0 && (
-          <section className="bible-reading-column bible-reader-surface rounded-[1.75rem] border border-border/70 bg-surface/35 p-3 shadow-lg shadow-black/5">
-            <div className="bible-reading-hero">
-              <div className="bible-reading-hero-topline">
+          <>
+            <div className="bible-reading-meta mx-auto max-w-lg px-4 pb-2 pt-3">
+              <div className="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-[0.16em] text-muted-foreground">
                 <span>{label}</span>
                 <span>{verses.length} versículos</span>
               </div>
-              <p className="bible-reading-hero-kicker">Leitura em foco</p>
-              <h1>{bookNameById(book)}</h1>
-              <span className="bible-reading-hero-chapter">{chapter}</span>
-              <p className="bible-reading-hero-caption">Capítulo {chapter} · toque em um versículo para interagir</p>
             </div>
-          <div className="bible-verse-list space-y-1">
-            {verses.map((v) => {
-              const color = highlightMap[v.verse];
-              return (
-                <div key={v.verse}>
-                  {v.heading && (
-                    <div className="bible-section-heading">
-                      <span className="bible-section-heading-rule" aria-hidden="true" />
-                      <h3>{v.heading}</h3>
+            <section className="bible-reading-column mx-auto max-w-lg px-4">
+              <div className="bible-verse-list space-y-0.5">
+                {verses.map((v) => {
+                  const color = highlightMap[v.verse];
+                  return (
+                    <div key={v.verse}>
+                      {v.heading && (
+                        <div className="bible-section-heading">
+                          <span className="bible-section-heading-rule" aria-hidden="true" />
+                          <h3>{v.heading}</h3>
+                        </div>
+                      )}
+                      <button
+                        ref={(element) => {
+                          verseRefs.current[v.verse] = element;
+                        }}
+                        onClick={() => setSelected(v.verse)}
+                        id={`v-${v.verse}`}
+                        className={`bible-verse-row block w-full rounded-lg px-1.5 py-1 text-left transition-all ${
+                          narrationIndex === verses.findIndex((item) => item.verse === v.verse)
+                            ? "bg-primary/[0.08] shadow-[inset_3px_0_0_hsl(var(--primary)),0_0_22px_hsl(var(--primary)/0.10)]"
+                            : color
+                              ? highlightClass(color)
+                              : "bible-verse-row-idle"
+                        }`}
+                      >
+                        <span className="bible-verse-number mr-1.5 align-super text-[11px] font-bold text-primary">{v.verse}</span>
+                        <span className="bible-verse-copy leading-[1.55]" style={{ fontSize }}>
+                          {v.text}
+                        </span>
+                        {favorites.includes(v.verse) && (
+                          <Star className="ml-1 inline h-3.5 w-3.5 fill-current text-ancient" />
+                        )}
+                        {notesByVerse[v.verse] && (
+                          <StickyNote className="ml-1 inline h-3.5 w-3.5 text-primary" />
+                        )}
+                      </button>
                     </div>
-                  )}
-                  <button
-                    ref={(element) => {
-                      verseRefs.current[v.verse] = element;
-                    }}
-                    onClick={() => setSelected(v.verse)}
-                    id={`v-${v.verse}`}
-                    className={`bible-verse-row block w-full rounded-xl px-2 py-1.5 text-left transition-all ${
-                      narrationIndex === verses.findIndex((item) => item.verse === v.verse)
-                        ? "bg-primary/[0.08] shadow-[inset_3px_0_0_hsl(var(--primary)),0_0_22px_hsl(var(--primary)/0.10)]"
-                        : color
-                          ? highlightClass(color)
-                          : "bible-verse-row-idle"
-                    }`}
-                  >
-                    <span className="bible-verse-number mr-1.5 align-super text-[11px] font-bold text-primary">{v.verse}</span>
-                    <span className="bible-verse-copy leading-relaxed" style={{ fontSize }}>
-                      {v.text}
-                    </span>
-                    {favorites.includes(v.verse) && (
-                      <Star className="ml-1 inline h-3.5 w-3.5 fill-current text-ancient" />
-                    )}
-                    {notesByVerse[v.verse] && (
-                      <StickyNote className="ml-1 inline h-3.5 w-3.5 text-primary" />
-                    )}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-          </section>
+                  );
+                })}
+              </div>
+            </section>
+          </>
         )}
-
         {notes.length > 0 && (
           <div className="bible-notes-section mt-8 space-y-2">
             <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
