@@ -1033,12 +1033,15 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
 }
 
 @media (max-width: 380px) {
-  .bible-reader-header-inner,
+  .bible-reader-header-inner {
+    gap: 0.5rem;
+    min-height: 5rem;
+  }
+
   .bible-index-header-inner {
     gap: 0.25rem;
   }
 
-  .bible-reader-header-inner > button,
   .bible-index-header-inner > a,
   .bible-index-header-inner > button {
     height: 2.4rem;
