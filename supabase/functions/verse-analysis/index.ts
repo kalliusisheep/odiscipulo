@@ -49,29 +49,42 @@ serve(async (req) => {
       )
       .join("\n");
 
-    const res = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-goog-api-key": apiKey,
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              role: "user",
-              parts: [{ text: `${SYSTEM_PROMPT}\n\nPalavras do versículo:\n${userContent}` }],
-            },
-          ],
-          generationConfig: { responseMimeType: "application/json" },
-        }),
-      },
-    );
+    // Modelos em ordem de preferência — o free tier do gemini-2.0-flash foi
+    // zerado (429 RESOURCE_EXHAUSTED), então tentamos os modelos atuais.
+    const MODELS = ["gemini-3.6-flash", "gemini-flash-latest", "gemini-2.5-flash"];
 
-    if (!res.ok) {
-      const errText = await res.text();
-      return new Response(JSON.stringify({ error: "Falha na API do Gemini", details: errText }), {
+    let res: Response | null = null;
+    let lastError = "sem resposta";
+    for (const model of MODELS) {
+      const attempt = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-goog-api-key": apiKey,
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                role: "user",
+                parts: [{ text: `${SYSTEM_PROMPT}\n\nPalavras do versículo:\n${userContent}` }],
+              },
+            ],
+            generationConfig: { responseMimeType: "application/json" },
+          }),
+        },
+      );
+      if (attempt.ok) {
+        res = attempt;
+        break;
+      }
+      lastError = `${attempt.status}: ${(await attempt.text().catch(() => "")).slice(0, 300)}`;
+      console.error(`verse-analysis: modelo ${model} falhou —`, lastError);
+    }
+
+    if (!res) {
+      return new Response(JSON.stringify({ error: "Falha na API do Gemini", details: lastError }), {
         status: 502,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
