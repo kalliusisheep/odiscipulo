@@ -425,7 +425,7 @@ function BibliaIndex() {
                       key={b.id}
                       onClick={() => openChapters(b.id)}
                       aria-label={`Abrir ${b.name}`}
-                      className="bible-book-card group relative min-h-[96px] overflow-hidden rounded-[1.05rem] border border-border/30 bg-surface/75 p-2.5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
+                      className="bible-book-card group relative min-h-[84px] overflow-hidden rounded-[1.05rem] border border-border/30 bg-surface/75 p-2.5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
                     >
                       <div className="flex items-start gap-2">
                         <span
@@ -448,12 +448,11 @@ function BibliaIndex() {
                         <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/45 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
                       </div>
 
-                      <div className="mt-2 flex items-center justify-between gap-2 text-[9px] font-semibold text-muted-foreground/75">
+                      <div className="mt-1.5 text-[9px] font-semibold text-muted-foreground/75">
                         <span>{complete ? "Concluído" : done > 0 ? `${bookPct}% em andamento` : "Pronto para começar"}</span>
-                        <span>{bookPct}%</span>
                       </div>
 
-                      <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-background/70 ring-1 ring-black/10">
+                      <div className="mt-1 h-1 overflow-hidden rounded-full bg-background/70 ring-1 ring-black/10">
                         <div
                           className={`h-full rounded-full transition-all duration-500 ${
                             complete
