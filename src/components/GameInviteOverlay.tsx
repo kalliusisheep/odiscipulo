@@ -70,16 +70,14 @@ export function GameInviteOverlay() {
 
   useEffect(() => {
     let channel: ReturnType<typeof supabase.channel> | null = null;
+    let poll: number | null = null;
     let cancelled = false;
 
-    const load = async () => {
-      const { data: auth } = await supabase.auth.getUser();
-      if (!auth.user) return;
-
+    const syncPendingInvites = async (userId: string) => {
       const pending = await gameDb
         .from("character_game_room_players")
         .select("room_id")
-        .eq("user_id", auth.user.id)
+        .eq("user_id", userId)
         .eq("state", "invited")
         .limit(10);
 
@@ -88,15 +86,20 @@ export function GameInviteOverlay() {
           typeof row.room_id === "string" ? resolveInvite(row.room_id) : Promise.resolve(null),
         ),
       );
-      if (!cancelled) {
-        pendingInvites.forEach(enqueueInvite);
-      }
+      if (!cancelled) pendingInvites.forEach(enqueueInvite);
+    };
+
+    const load = async () => {
+      const { data: auth } = await supabase.auth.getUser();
+      if (!auth.user || cancelled) return;
+      const userId = auth.user.id;
+      await syncPendingInvites(userId);
 
       channel = supabase
-        .channel(`game-invites-${auth.user.id}`)
+        .channel(`game-invites-${userId}`)
         .on(
           "postgres_changes",
-          { event: "INSERT", schema: "public", table: "app_notifications", filter: `user_id=eq.${auth.user.id}` },
+          { event: "INSERT", schema: "public", table: "app_notifications", filter: `user_id=eq.${userId}` },
           async (payload) => {
             const nextInvite = notificationToInvite(payload.new);
             if (nextInvite) {
@@ -107,7 +110,7 @@ export function GameInviteOverlay() {
         )
         .on(
           "postgres_changes",
-          { event: "INSERT", schema: "public", table: "character_game_room_players", filter: `user_id=eq.${auth.user.id}` },
+          { event: "INSERT", schema: "public", table: "character_game_room_players", filter: `user_id=eq.${userId}` },
           async (payload) => {
             const row = payload.new as { state?: string; room_id?: string };
             if (row.state !== "invited" || typeof row.room_id !== "string") return;
@@ -115,12 +118,17 @@ export function GameInviteOverlay() {
             if (!cancelled) enqueueInvite(resolvedInvite);
           },
         )
-        .subscribe();
+        .subscribe((status) => {
+          if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") void syncPendingInvites(userId);
+        });
+
+      poll = window.setInterval(() => void syncPendingInvites(userId), 5000);
     };
 
     void load();
     return () => {
       cancelled = true;
+      if (poll !== null) window.clearInterval(poll);
       if (channel) void supabase.removeChannel(channel);
     };
   }, [enqueueInvite]);
