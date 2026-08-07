@@ -2200,23 +2200,24 @@ body,
 }
 
 .bible-reader-shell .bible-chapter-nav-play {
-  border: 1px solid color-mix(in srgb, var(--primary) 46%, var(--border)) !important;
+  border: 1px solid color-mix(in srgb, var(--primary) 48%, white 10%) !important;
   outline: none;
+  color: rgb(255 255 255 / 0.96) !important;
   background:
     radial-gradient(
-      circle at 30% 24%,
-      color-mix(in srgb, white 16%, transparent),
-      transparent 38%
+      circle at 31% 22%,
+      rgb(255 255 255 / 0.18),
+      transparent 34%
     ),
     linear-gradient(
       145deg,
-      color-mix(in srgb, var(--primary) 78%, white 22%),
-      color-mix(in srgb, var(--primary) 58%, black 42%)
+      color-mix(in srgb, var(--surface-2) 82%, var(--primary) 18%),
+      color-mix(in srgb, var(--background) 92%, var(--primary) 8%)
     ) !important;
   box-shadow:
-    0 10px 24px color-mix(in srgb, var(--primary) 24%, transparent),
-    inset 0 1px 0 color-mix(in srgb, white 20%, transparent),
-    inset 0 -1px 0 color-mix(in srgb, black 28%, transparent);
+    0 9px 22px color-mix(in srgb, var(--primary) 20%, transparent),
+    inset 0 1px 0 rgb(255 255 255 / 0.16),
+    inset 0 -1px 0 rgb(0 0 0 / 0.34);
 }
 
 .bible-reader-shell .bible-chapter-nav-play:focus-visible {
@@ -2241,24 +2242,32 @@ body,
 }
 
 .bible-reader-shell .bible-chapter-nav-pill-button {
-  width: 2.4rem;
-  min-width: 2.4rem !important;
-  height: 2.4rem;
-  min-height: 2.4rem !important;
+  width: 2.75rem;
+  min-width: 2.75rem !important;
+  height: 2.75rem;
+  min-height: 2.75rem !important;
+  border: 0 !important;
+  color: rgb(255 255 255 / 0.96) !important;
 }
 
-.bible-reader-shell .bible-chapter-nav-pill-button:not(.bible-chapter-nav-next) {
-  color: var(--muted-foreground);
+.bible-reader-shell .bible-chapter-nav-pill-button:hover {
+  color: rgb(255 255 255 / 1) !important;
+  background: rgb(255 255 255 / 0.08) !important;
+}
+
+.bible-reader-shell .bible-chapter-nav-pill-button:disabled {
+  color: rgb(255 255 255 / 0.42) !important;
 }
 
 .bible-reader-shell .bible-chapter-nav-next {
   order: 3;
-  border: 0;
-  color: var(--foreground);
+  margin-left: auto !important;
 }
 
 .bible-reader-shell .bible-chapter-nav-current {
-  width: 100%;
+  order: 2;
+  flex: 1 1 auto;
+  width: auto;
   min-width: 0;
 }
 
