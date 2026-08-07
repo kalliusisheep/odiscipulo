@@ -3,18 +3,31 @@
 
 import { supabase } from "@/integrations/supabase/client";
 
-export type HighlightColor = "amber" | "green" | "blue" | "pink" | "purple";
+export type HighlightColor = "white" | "yellow" | "blue" | "green" | "pink" | "gray";
+
+const HIGHLIGHT_ALIASES: Record<string, HighlightColor> = {
+  amber: "yellow",
+  purple: "gray",
+};
 
 export const HIGHLIGHT_COLORS: { id: HighlightColor; label: string; className: string }[] = [
-  { id: "amber", label: "Âmbar", className: "bg-amber-300/45 dark:bg-amber-400/25" },
-  { id: "green", label: "Verde", className: "bg-emerald-300/45 dark:bg-emerald-400/25" },
-  { id: "blue", label: "Azul", className: "bg-sky-300/45 dark:bg-sky-400/25" },
-  { id: "pink", label: "Rosa", className: "bg-pink-300/45 dark:bg-pink-400/25" },
-  { id: "purple", label: "Roxo", className: "bg-violet-300/45 dark:bg-violet-400/25" },
+  { id: "white", label: "Branco", className: "bible-highlight bible-highlight-white" },
+  { id: "yellow", label: "Amarelo", className: "bible-highlight bible-highlight-yellow" },
+  { id: "blue", label: "Azul", className: "bible-highlight bible-highlight-blue" },
+  { id: "green", label: "Verde", className: "bible-highlight bible-highlight-green" },
+  { id: "pink", label: "Rosa", className: "bible-highlight bible-highlight-pink" },
+  { id: "gray", label: "Cinza", className: "bible-highlight bible-highlight-gray" },
 ];
 
+export function normalizeHighlightColor(color: string | undefined): HighlightColor | undefined {
+  if (!color) return undefined;
+  if (HIGHLIGHT_COLORS.some((item) => item.id === color)) return color as HighlightColor;
+  return HIGHLIGHT_ALIASES[color];
+}
+
 export function highlightClass(color: string): string {
-  return HIGHLIGHT_COLORS.find((c) => c.id === color)?.className ?? HIGHLIGHT_COLORS[0].className;
+  return HIGHLIGHT_COLORS.find((c) => c.id === normalizeHighlightColor(color))?.className
+    ?? HIGHLIGHT_COLORS[0].className;
 }
 
 export type VerseRef = { book: number; chapter: number; verse: number };
