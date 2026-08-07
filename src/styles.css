@@ -3199,3 +3199,33 @@ body,
     font-size: 0.8rem;
   }
 }
+
+/* Black theme: preserve separation without introducing accent colors. */
+.theme-black .bible-index-shell .bible-book-card {
+  border: 1px solid color-mix(in oklab, var(--foreground) 19%, var(--background)) !important;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in oklab, var(--surface-2) 78%, var(--background)),
+      color-mix(in oklab, var(--background) 86%, var(--surface))
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--foreground) 11%, transparent),
+    inset 0 -1px 0 color-mix(in oklab, var(--background) 70%, transparent),
+    0 10px 22px color-mix(in oklab, var(--background) 52%, transparent);
+}
+
+.theme-black .bible-index-shell .bible-book-card:hover,
+.theme-black .bible-index-shell .bible-book-card:focus-visible {
+  border-color: color-mix(in oklab, var(--foreground) 30%, var(--background)) !important;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in oklab, var(--surface-2) 88%, var(--background)),
+      color-mix(in oklab, var(--background) 78%, var(--surface))
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--foreground) 15%, transparent),
+    inset 0 -1px 0 color-mix(in oklab, var(--background) 62%, transparent),
+    0 14px 26px color-mix(in oklab, var(--background) 62%, transparent);
+}
