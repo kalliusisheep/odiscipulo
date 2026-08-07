@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { normalizeUsername } from "@/lib/username";
 import { toast } from "sonner";
 import { ArrowLeft, AtSign, Church, Loader2, Search, UserCheck, UserPlus, Users } from "lucide-react";
-import { formatPresence } from "@/lib/presence";
+import { formatPresence, isPresenceOnline } from "@/lib/presence";
 
 export const Route = createFileRoute("/_authenticated/mensagens/novo")({
   component: NovaMensagemPage,
@@ -281,12 +281,12 @@ function NovaMensagemPage() {
                 >
                   <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full bg-surface">
                     {p.avatar_url && <img src={p.avatar_url} alt="" className="h-full w-full object-cover" />}
-                    <span className={`absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-surface-2 ${formatPresence(p.last_seen_at) === "Online agora" ? "bg-emerald-400 shadow-[0_0_7px_rgba(52,211,153,0.8)]" : "bg-rose-400 shadow-[0_0_7px_rgba(251,113,133,0.65)]"}`} />
+                    <span className={`absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-surface-2 ${isPresenceOnline(p.last_seen_at) ? "bg-emerald-400 shadow-[0_0_7px_rgba(52,211,153,0.8)]" : "bg-rose-400 shadow-[0_0_7px_rgba(251,113,133,0.65)]"}`} />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-semibold">{p.display_name}</p>
                     <p className="truncate text-xs text-muted-foreground">@{p.username}</p>
-                    <p className={`mt-0.5 truncate text-[11px] ${formatPresence(p.last_seen_at) === "Online agora" ? "font-semibold text-emerald-400" : "text-muted-foreground"}`}>
+                    <p className={`mt-0.5 truncate text-[11px] ${isPresenceOnline(p.last_seen_at) ? "font-semibold text-emerald-400" : "text-muted-foreground"}`}>
                       {formatPresence(p.last_seen_at)}
                     </p>
                   </div>
@@ -360,12 +360,12 @@ function NovaMensagemPage() {
                           {c.avatar_url && (
                             <img src={c.avatar_url} alt="" className="h-full w-full object-cover" />
                           )}
-                          <span className={`absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-surface-2 ${formatPresence(c.last_seen_at) === "Online agora" ? "bg-emerald-400 shadow-[0_0_7px_rgba(52,211,153,0.8)]" : "bg-rose-400 shadow-[0_0_7px_rgba(251,113,133,0.65)]"}`} />
+                          <span className={`absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-surface-2 ${isPresenceOnline(c.last_seen_at) ? "bg-emerald-400 shadow-[0_0_7px_rgba(52,211,153,0.8)]" : "bg-rose-400 shadow-[0_0_7px_rgba(251,113,133,0.65)]"}`} />
                         </div>
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-sm font-semibold">{c.display_name}</p>
                           <p className="truncate text-xs text-muted-foreground">@{c.username}</p>
-                          <p className={`mt-0.5 truncate text-[11px] ${formatPresence(c.last_seen_at) === "Online agora" ? "font-semibold text-emerald-400" : "text-muted-foreground"}`}>
+                          <p className={`mt-0.5 truncate text-[11px] ${isPresenceOnline(c.last_seen_at) ? "font-semibold text-emerald-400" : "text-muted-foreground"}`}>
                             {formatPresence(c.last_seen_at)}
                           </p>
                         </div>
