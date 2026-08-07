@@ -263,7 +263,7 @@ function ChapterReader() {
 
       lastScrollYRef.current = currentY;
       if (chapterNavIdleTimer.current) clearTimeout(chapterNavIdleTimer.current);
-      chapterNavIdleTimer.current = setTimeout(() => setChapterNavVisible(true), 220);
+      chapterNavIdleTimer.current = setTimeout(() => setChapterNavVisible(true), 700);
     };
 
     lastScrollYRef.current = window.scrollY;
@@ -554,8 +554,8 @@ function ChapterReader() {
             </div>
           )}
 
-          <div className={`bible-chapter-nav fixed inset-x-0 bottom-[calc(4.25rem+env(safe-area-inset-bottom))] z-30 flex justify-center px-3 animate-slide-up ${chapterNavVisible ? "is-visible" : "is-hidden"}`}>
-            <div className="bible-chapter-nav-panel flex w-full max-w-md items-center gap-2 rounded-[1.35rem] border border-primary/20 bg-background/95 p-1.5 shadow-2xl shadow-primary/15 backdrop-blur-xl">
+          <div className={`bible-chapter-nav fixed inset-x-0 bottom-[calc(4.05rem+env(safe-area-inset-bottom))] z-30 flex justify-center px-0 ${chapterNavVisible ? "is-visible" : "is-hidden"}`}>
+            <div className="bible-chapter-nav-panel flex w-full max-w-lg items-center gap-1 rounded-t-[1.15rem] rounded-b-none border border-primary/20 bg-background/95 p-1 shadow-2xl shadow-primary/15 backdrop-blur-xl">
               <button
                 type="button"
                 onClick={() => {
