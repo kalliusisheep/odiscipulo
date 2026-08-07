@@ -140,6 +140,23 @@ export const CROSSWORD_WORDS = ALL_CROSSWORD_WORDS
   .filter(isValidCrosswordWord)
   .filter((entry, index, items) => items.findIndex((candidate) => candidate.word === entry.word) === index);
 
+export type CrosswordVariation = {
+  id: string;
+  seed: number;
+  difficulty: GameDifficulty;
+};
+
+export const CROSSWORD_VARIATIONS: CrosswordVariation[] = Array.from({ length: 250 }, (_, index) => {
+  const difficulty = (["facil", "medio", "dificil", "bereano"] as GameDifficulty[])[index % 4];
+  return {
+    id: "crossword-variation-" + String(index + 1).padStart(3, "0"),
+    seed: 104729 + index * 7919,
+    difficulty,
+  };
+});
+
+export const CROSSWORD_VARIATION_COUNT = CROSSWORD_VARIATIONS.length;
+
 export const crosswordWordsFor = (difficulty: GameDifficulty, theme?: CrosswordTheme | "todos") => {
   const themed = CROSSWORD_WORDS.filter((entry) => theme === "todos" || !theme || entry.themes.includes(theme));
   if (difficulty === "bereano") return themed.filter((entry) => entry.word.length >= 7 || entry.difficulty === "bereano");
