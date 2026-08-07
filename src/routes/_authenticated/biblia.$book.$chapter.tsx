@@ -867,7 +867,7 @@ function ChapterReader() {
                   params={{ book: String(pickerBook), chapter: String(c) }}
                   onClick={() => setChapterPicker(false)}
                   aria-current={pickerBook === book && c === chapter ? "page" : undefined}
-                  className={`flex h-12 items-center justify-center rounded-2xl border text-sm font-extrabold transition-all active:scale-95 ${
+                  className={`bible-chapter-option flex h-12 items-center justify-center rounded-2xl border text-sm font-extrabold transition-all active:scale-95 ${
                     pickerBook === book && c === chapter
                       ? "border-primary bg-primary text-primary-foreground shadow-[0_0_20px_hsl(var(--primary)/0.35)]"
                       : "border-border bg-surface text-foreground/80 hover:border-primary/40 hover:bg-primary/10"
