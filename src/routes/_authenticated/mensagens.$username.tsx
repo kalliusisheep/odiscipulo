@@ -8,7 +8,7 @@ import { EmojiPicker } from "@/components/EmojiPicker";
 import { VoiceRecorder } from "@/components/VoiceRecorder";
 import { VoiceNotePlayer } from "@/components/VoiceNotePlayer";
 import { uploadChatVoiceMessage } from "@/lib/voice-upload";
-import { formatPresence } from "@/lib/presence";
+import { formatPresence, isPresenceOnline } from "@/lib/presence";
 
 export const Route = createFileRoute("/_authenticated/mensagens/$username")({
   component: MessagesPage,
@@ -161,7 +161,7 @@ function MessagesPage() {
   };
 
   const peerPresence = peer ? formatPresence(peer.last_seen_at) : "Carregando presença";
-  const peerOnline = peerPresence === "Online agora";
+  const peerOnline = isPresenceOnline(peer?.last_seen_at);
 
   return (
     <div className="mx-auto flex h-[100dvh] max-w-lg flex-col bg-gradient-to-b from-surface/60 via-background to-background">
