@@ -137,20 +137,27 @@ function MessagesPage() {
 
   const sendAudio = async (blob: Blob, seconds: number, mimeType: string) => {
     if (!peer || !myId) return;
-    const url = await uploadChatVoiceMessage(myId, blob, mimeType);
-    const { data, error } = await supabase
-      .from("messages")
-      .insert({
-        sender_id: myId,
-        recipient_id: peer.id,
-        body: null,
-        audio_url: url,
-        audio_duration_seconds: seconds,
-      })
-      .select()
-      .single();
-    if (!error && data)
-      setMessages((prev) => (prev.some((x) => x.id === data.id) ? prev : [...prev, data as Msg]));
+    try {
+      const url = await uploadChatVoiceMessage(myId, blob, mimeType);
+      const { data, error } = await supabase
+        .from("messages")
+        .insert({
+          sender_id: myId,
+          recipient_id: peer.id,
+          body: null,
+          audio_url: url,
+          audio_duration_seconds: seconds,
+        })
+        .select()
+        .single();
+      if (error) throw error;
+      if (data)
+        setMessages((prev) => (prev.some((x) => x.id === data.id) ? prev : [...prev, data as Msg]));
+    } catch {
+      window.dispatchEvent(new CustomEvent("disciple:toast", {
+        detail: { type: "error", message: "Não foi possível enviar o áudio. Tente novamente." },
+      }));
+    }
   };
 
   const [voiceExpanded, setVoiceExpanded] = useState(false);
