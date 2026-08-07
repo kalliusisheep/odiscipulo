@@ -885,7 +885,7 @@ function ChapterReader() {
               </span>
             </div>
 
-            <div className="mt-3 grid grid-cols-5 gap-2 sm:grid-cols-6">
+            <div className="mt-3 grid grid-cols-5 gap-1.5 sm:gap-2">
               {Array.from({ length: pickerMeta.chapters }, (_, i) => i + 1).map((c) => (
                 <Link
                   key={c}
@@ -893,7 +893,7 @@ function ChapterReader() {
                   params={{ book: String(pickerBook), chapter: String(c) }}
                   onClick={() => setChapterPicker(false)}
                   aria-current={pickerBook === book && c === chapter ? "page" : undefined}
-                  className={`bible-chapter-option flex h-12 items-center justify-center rounded-2xl border text-sm font-extrabold transition-all active:scale-95 ${
+                  className={`bible-chapter-option flex h-11 items-center justify-center rounded-[0.7rem] border text-[13px] font-extrabold transition-all active:scale-[0.98] ${
                     pickerBook === book && c === chapter
                       ? "border-primary bg-primary text-primary-foreground shadow-[0_0_20px_hsl(var(--primary)/0.35)]"
                       : "border-border bg-surface text-foreground/80 hover:border-primary/40 hover:bg-primary/10"
