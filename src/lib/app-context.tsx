@@ -99,6 +99,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useLayoutEffect(() => {
     if (typeof window !== "undefined") {
       window.localStorage.setItem("disciple.language", language);
+      window.localStorage.setItem("disciple.theme", theme);
     }
     applyTheme(theme, language);
   }, [language, theme]);
