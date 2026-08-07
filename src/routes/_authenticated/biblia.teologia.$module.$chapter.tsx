@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, BookOpen, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { theologyModules, type TheologyChapter } from "@/data/teologia";
+import { theologyModules, type TheologyChapter, type TheologyContentBlock } from "@/data/teologia";
 
 export const Route = createFileRoute("/_authenticated/biblia/teologia/$module/$chapter")({
   head: () => ({
@@ -182,7 +182,21 @@ function TeologiaCapituloPage() {
 
 
 function TheologyContent({ chapter }: { chapter: TheologyChapter }) {
-  const blocks = chapter.blocks ?? [{ type: "paragraph" as const, text: chapter.content }];
+  const blocks = (chapter.blocks ?? [{ type: "paragraph" as const, text: chapter.content }]).reduce<
+    TheologyContentBlock[]
+  >((normalized, block) => {
+    const text = block.text.replace(/\s+/g, " ").trim();
+    if (!text) return normalized;
+
+    const previous = normalized.at(-1);
+    if (block.type === "paragraph" && previous?.type === "paragraph") {
+      previous.text = `${previous.text} ${text}`;
+      return normalized;
+    }
+
+    normalized.push({ ...block, text });
+    return normalized;
+  }, []);
 
   return (
     <div className="space-y-5">
