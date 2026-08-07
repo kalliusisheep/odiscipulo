@@ -2584,3 +2584,36 @@ body,
 .theme-black :is([class*="shadow-purple-"], [class*="shadow-violet-"], [class*="shadow-indigo-"], [class*="shadow-fuchsia-"]) {
   --tw-shadow-color: color-mix(in oklab, var(--primary) 28%, transparent) !important;
 }
+
+
+/* Global premium interaction polish */
+:where(button, a, input, select, textarea) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(button, input, select, textarea):focus-visible,
+:where(a):focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--primary) 72%, transparent);
+  outline-offset: 3px;
+}
+
+:where(button):disabled {
+  cursor: not-allowed;
+}
+
+:where(html) {
+  text-rendering: optimizeLegibility;
+  overscroll-behavior-x: none;
+}
+
+:where([class*="border-white"]) {
+  border-color: color-mix(in oklab, var(--border) 72%, transparent) !important;
+}
+
+:where([class*="bg-white/"]) {
+  background-color: color-mix(in oklab, var(--surface) 78%, transparent) !important;
+}
+
+.theme-black :where([class*="shadow-purple-"], [class*="shadow-violet-"], [class*="shadow-indigo-"], [class*="shadow-fuchsia-"]) {
+  --tw-shadow-color: color-mix(in oklab, var(--primary) 24%, transparent) !important;
+}
