@@ -685,7 +685,7 @@ function preserveWhitespace(original: string, translated: string): string {
 function translateTextNode(node: Text, language: AppLanguage) {
   const raw = node.nodeValue ?? "";
   const normalized = raw.replace(/\s+/g, " ").trim();
-  if (!normalized || normalized.length > 180) return;
+  if (!normalized) return;
   const lastRendered = renderedByNode.get(node);
   const source = lastRendered && normalized === lastRendered ? sourceByNode.get(node) ?? normalized : normalized;
   const translated = translateValue(source, language);
