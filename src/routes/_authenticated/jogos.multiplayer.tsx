@@ -3,6 +3,7 @@ import { ArrowLeft, Check, Copy, Crown, Loader2, Plus, Search, Share2, Sparkles,
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { isPresenceOnline } from "@/lib/presence";
 
 export const Route = createFileRoute("/_authenticated/jogos/multiplayer")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -13,7 +14,7 @@ export const Route = createFileRoute("/_authenticated/jogos/multiplayer")({
 });
 
 type Friend = { id: string; display_name: string; avatar_url: string | null };
-type Player = { user_id: string; role: "host" | "player"; state: string; display_name: string; avatar_url: string | null; last_seen_at: string };
+type Player = { user_id: string; role: "host" | "player"; state: string; display_name: string; avatar_url: string | null; last_seen_at: string | null };
 type GameType = "personagem" | "versiculo" | "cruzadas" | "milhao";
 type Room = { id: string; host_id: string; max_players: number; difficulty: string; rounds: number; status: string; game_type: GameType; round_seed: number };
 
@@ -25,8 +26,8 @@ const gameLabels: Record<GameType, string> = {
   milhao: "Quiz do milhão",
 };
 
-function isRecentlyOnline(lastSeenAt: string) {
-  return Date.now() - new Date(lastSeenAt).getTime() < 90_000;
+function isRecentlyOnline(lastSeenAt: string | null) {
+  return isPresenceOnline(lastSeenAt);
 }
 
 function MultiplayerPage() {
