@@ -1254,7 +1254,7 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
 }
 
 .bible-reading-column .bible-verse-copy {
-  font-family: var(--font-serif), Georgia, serif;
+  font-family: Georgia, "Times New Roman", serif;
   letter-spacing: 0.002em;
   line-height: 1.94;
 }
