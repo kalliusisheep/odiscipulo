@@ -156,7 +156,7 @@ function BibliaIndex() {
             <button
               onClick={() => void nav({ to: "/perfil" })}
               aria-label="Voltar"
-              className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-surface/80 text-muted-foreground shadow-sm transition-all hover:border-primary/30 hover:text-foreground active:scale-95"
+              className="flex h-10 w-10 items-center justify-center rounded-2xl border border-border/30 bg-surface/80 text-muted-foreground shadow-sm transition-all hover:border-primary/30 hover:text-foreground active:scale-95"
             >
               <ArrowLeft className="h-4.5 w-4.5" />
             </button>
@@ -181,7 +181,7 @@ function BibliaIndex() {
             </Link>
           </div>
 
-          <div className="bible-search-panel mt-3 rounded-[1.35rem] border border-white/10 bg-surface/85 p-1.5 shadow-lg shadow-black/10">
+          <div className="bible-search-panel mt-3 rounded-[1.35rem] border border-border/30 bg-surface/85 p-1.5 shadow-lg shadow-black/10">
             <div className="flex items-center gap-2 px-2">
               <Search className="h-4.5 w-4.5 shrink-0 text-primary" />
               <input
@@ -212,7 +212,7 @@ function BibliaIndex() {
               </button>
             </div>
 
-            <div className="mt-1 flex items-center justify-end gap-2 border-t border-white/[0.06] px-2 pb-0.5 pt-2"><label className="flex items-center gap-2"><span className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground">Versão</span>
+            <div className="mt-1 flex items-center justify-end gap-2 border-t border-border/20 px-2 pb-0.5 pt-2"><label className="flex items-center gap-2"><span className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground">Versão</span>
                 <span className="relative">
                   <select
                     aria-label="Tradução"
@@ -238,7 +238,7 @@ function BibliaIndex() {
                 <button
                   key={b.id}
                   onClick={() => openChapters(b.id)}
-                  className="shrink-0 rounded-full border border-white/10 bg-surface px-3 py-1.5 text-[11px] font-semibold shadow-sm transition-colors hover:border-primary/40 hover:text-primary"
+                  className="shrink-0 rounded-full border border-border/30 bg-surface px-3 py-1.5 text-[11px] font-semibold shadow-sm transition-colors hover:border-primary/40 hover:text-primary"
                 >
                   {b.name}
                 </button>
@@ -287,7 +287,7 @@ function BibliaIndex() {
                 to="/biblia/$book/$chapter"
                 params={{ book: String(h.book), chapter: String(h.chapter) }}
                 hash={`v-${h.verse}`}
-                className="group flex items-center gap-3 rounded-2xl border border-white/10 bg-surface/80 p-3.5 shadow-sm transition-all hover:border-primary/30 hover:bg-surface"
+                className="group flex items-center gap-3 rounded-2xl border border-border/30 bg-surface/80 p-3.5 shadow-sm transition-all hover:border-primary/30 hover:bg-surface"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/15">
                   <BookOpen className="h-4.5 w-4.5" />
@@ -340,7 +340,7 @@ function BibliaIndex() {
                   <Link
                     to="/biblia/$book/$chapter"
                     params={{ book: String(last.book), chapter: String(last.chapter) }}
-                    className="group mt-3 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.07] p-3.5 transition-colors hover:bg-white/[0.11]"
+                    className="group mt-3 flex items-center gap-3 rounded-2xl border border-border/30 bg-white/[0.07] p-3.5 transition-colors hover:bg-white/[0.11]"
                   >
                     <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-white shadow-lg ring-1 ring-white/10">
                       <Play className="ml-0.5 h-5 w-5 fill-current" />
@@ -358,7 +358,7 @@ function BibliaIndex() {
                     </span>
                   </Link>
                 ) : (
-                  <div className="mt-3 rounded-2xl border border-white/10 bg-white/[0.06] p-4">
+                  <div className="mt-3 rounded-2xl border border-border/30 bg-white/[0.06] p-4">
                     <p className="text-sm font-bold text-white">Comece sua leitura hoje</p>
                     <p className="mt-1 text-xs text-white/60">
                       Escolha um livro abaixo e marque seu primeiro capítulo.
@@ -382,7 +382,7 @@ function BibliaIndex() {
                   <div className="mt-2 flex justify-end text-[10px]"><span className="font-extrabold text-violet-200">{progressPct}% concluído</span></div>
                 </div>
 
-                <div className="bible-journey-stats mt-4 grid grid-cols-3 gap-2 border-t border-white/10 pt-4">
+                <div className="bible-journey-stats mt-4 grid grid-cols-3 gap-2 border-t border-border/30 pt-4">
                   <div className="rounded-2xl bg-white/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Lidos</p><p className="mt-1 text-sm font-extrabold text-white">{read.length}</p></div>
                   <div className="rounded-2xl bg-white/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Livros</p><p className="mt-1 text-sm font-extrabold text-white">{new Set(read.map((item) => item.book)).size}/66</p></div>
                   <div className="rounded-2xl bg-white/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Versão</p><p className="mt-1 truncate text-sm font-extrabold text-violet-200">{translationByCode(translation).label}</p></div>
@@ -444,7 +444,7 @@ function BibliaIndex() {
                       key={b.id}
                       onClick={() => openChapters(b.id)}
                       aria-label={`Abrir ${b.name}`}
-                      className="bible-book-card group relative min-h-[100px] overflow-hidden rounded-[1.25rem] border border-white/10 bg-surface/75 p-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
+                      className="bible-book-card group relative min-h-[100px] overflow-hidden rounded-[1.25rem] border border-border/30 bg-surface/75 p-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
                     >
                       <div className="flex items-start gap-2.5">
                         <span
@@ -499,10 +499,10 @@ function BibliaIndex() {
           onClick={() => setPickerOpen(false)}
         >
           <div
-            className="bible-picker-sheet max-h-[calc(100dvh-1rem)] w-full overflow-y-auto rounded-t-[2rem] border-t border-white/10 bg-background pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl animate-slide-up"
+            className="bible-picker-sheet max-h-[calc(100dvh-1rem)] w-full overflow-y-auto rounded-t-[2rem] border-t border-border/30 bg-background pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl animate-slide-up"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="sticky top-0 z-10 border-b border-white/[0.06] bg-background/95 px-5 pb-4 pt-3 backdrop-blur-xl">
+            <div className="sticky top-0 z-10 border-b border-border/20 bg-background/95 px-5 pb-4 pt-3 backdrop-blur-xl">
               <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-white/15" />
               <div className="flex items-center gap-3">
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/20">
@@ -544,7 +544,7 @@ function BibliaIndex() {
                     className={`relative flex h-12 items-center justify-center rounded-2xl text-sm font-bold shadow-sm transition-all active:scale-95 ${
                       done
                         ? "bg-primary text-primary-foreground shadow-primary/15"
-                        : "border border-white/10 bg-surface text-foreground/80 hover:border-primary/30 hover:bg-primary/10"
+                        : "border border-border/30 bg-surface text-foreground/80 hover:border-primary/30 hover:bg-primary/10"
                     }`}
                   >
                     {c}
