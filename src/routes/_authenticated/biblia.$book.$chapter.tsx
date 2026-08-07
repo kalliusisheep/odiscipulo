@@ -226,6 +226,11 @@ function ChapterReader() {
   }, [verses]);
 
   useEffect(() => {
+    if (!chapterEndVisible || !verses?.length) return;
+    void markChapterRead(book, chapter);
+  }, [book, chapter, chapterEndVisible, verses?.length]);
+
+  useEffect(() => {
     const updateReadingProgress = () => {
       const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = scrollableHeight > 0
@@ -251,7 +256,6 @@ function ChapterReader() {
       .then((v) => {
         if (!alive) return;
         setVerses(v);
-        if (v.length > 0) void markChapterRead(book, chapter);
       })
       .catch(() => alive && setError("Não foi possível carregar este capítulo."));
     return () => {
