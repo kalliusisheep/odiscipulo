@@ -381,6 +381,15 @@ const dynamicPatterns: Array<{
       language === "en" ? match[1] + " invited you to a Bible game." : language === "es" ? match[1] + " te invitó a una partida bíblica." : match[0],
   },
   {
+    pattern: /^(\d+) de (\d+) dias · (\d+)%$/,
+    render: (match, language) =>
+      language === "en"
+        ? match[1] + " of " + match[2] + " days · " + match[3] + "%"
+        : language === "es"
+          ? match[1] + " de " + match[2] + " días · " + match[3] + "%"
+          : match[0],
+  },
+  {
     pattern: /^(\d+)\s+de\s+(\d+)\s+capítulos$/,
     render: (match, language) =>
       language === "en" ? match[1] + " of " + match[2] + " chapters" : language === "es" ? match[1] + " de " + match[2] + " capítulos" : match[0],
