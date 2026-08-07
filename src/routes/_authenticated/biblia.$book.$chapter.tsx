@@ -350,7 +350,8 @@ function ChapterReader() {
             </button>
             <ThemeToggle className="h-8 w-8 border-border bg-surface" />
           </div>
-        </div>        <div className="bible-reader-progress" aria-hidden="true">
+        </div>
+        <div className="bible-reader-progress" aria-hidden="true">
           <span style={{ width: `${readingProgress}%` }} />
         </div>
       </div>
@@ -391,9 +392,15 @@ function ChapterReader() {
 
         {verses && verses.length > 0 && (
           <section className="bible-reading-column bible-reader-surface rounded-[1.75rem] border border-border/70 bg-surface/35 p-3 shadow-lg shadow-black/5">
-            <div className="mb-3 flex items-center justify-between border-b border-border/60 px-1 pb-3">
-              <div><p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">Texto bíblico</p><p className="mt-0.5 text-xs text-muted-foreground">Leia, marque e reflita com calma</p></div>
-              <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-extrabold text-primary">{label}</span>
+            <div className="bible-reading-hero">
+              <div className="bible-reading-hero-topline">
+                <span>{label}</span>
+                <span>{verses.length} versículos</span>
+              </div>
+              <p className="bible-reading-hero-kicker">Leitura em foco</p>
+              <h1>{bookNameById(book)}</h1>
+              <span className="bible-reading-hero-chapter">{chapter}</span>
+              <p className="bible-reading-hero-caption">Capítulo {chapter} · toque em um versículo para interagir</p>
             </div>
           <div className="bible-verse-list space-y-1">
             {verses.map((v) => {
