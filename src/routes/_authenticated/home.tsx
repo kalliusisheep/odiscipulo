@@ -178,7 +178,7 @@ function HomePage() {
       </header>
 
       <section
-        className="home-journey-card relative isolate overflow-hidden rounded-[1.75rem] border border-primary/20 bg-gradient-to-br from-primary/25 via-surface to-background shadow-2xl shadow-black/35"}
+        className="home-journey-card relative isolate overflow-hidden rounded-[1.75rem] border border-primary/20 bg-gradient-to-br from-primary/25 via-surface to-background shadow-2xl shadow-black/35"
       >
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.08]"
@@ -237,16 +237,16 @@ function HomePage() {
           </div>
 
           <div
-            className="mt-5 rounded-[1.25rem] border border-foreground/10 bg-background/45 p-3.5 shadow-inner"}
+            className="mt-5 rounded-[1.25rem] border border-foreground/10 bg-background/45 p-3.5 shadow-inner"
           >
             <div className="flex items-center justify-between gap-3">
               <div className="min-w-0">
                 <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-foreground/45">Rumo ao próximo nível</p>
-                <p className="mt-1 truncate text-xs font-bold text-white/90">
+                <p className="mt-1 truncate text-xs font-bold text-foreground/90">
                   {nextLevel ? `Nv ${nextLevel.level} · ${nextLevel.title}` : "Você alcançou o nível máximo"}
                 </p>
               </div>
-              <div className="shrink-0 rounded-xl bg-white/10 px-2.5 py-1.5 text-sm font-black text-white ring-1 ring-white/10">
+              <div className="shrink-0 rounded-xl bg-foreground/10 px-2.5 py-1.5 text-sm font-black text-foreground ring-1 ring-foreground/10">
                 {Math.round(levelPct)}%
               </div>
             </div>
@@ -262,10 +262,10 @@ function HomePage() {
             </div>
 
             <div className="mt-2.5 flex items-center justify-between gap-3 text-[10px]">
-              <span className="font-medium text-white/45">
+              <span className="font-medium text-foreground/45">
                 {xpLeft === null ? "Jornada concluída" : `${xp} de ${xp + xpLeft} XP`}
               </span>
-              <span className="shrink-0 font-bold text-violet-200">
+              <span className="shrink-0 font-bold text-primary/80">
                 {xpLeft === null ? "Nível máximo" : `Faltam ${xpLeft} XP`}
               </span>
             </div>
@@ -285,13 +285,13 @@ function HomePage() {
 
         <Link
           to="/niveis"
-          className="group relative z-10 flex items-center justify-between gap-3 border-t border-white/10 bg-foreground/[0.045] px-5 py-3.5 transition-colors hover:bg-foreground/[0.08]"
+          className="group relative z-10 flex items-center justify-between gap-3 border-t border-foreground/10 bg-foreground/[0.045] px-5 py-3.5 transition-colors hover:bg-foreground/[0.08]"
         >
           <div>
-            <p className="text-xs font-bold text-white">Mapa da jornada</p>
+            <p className="text-xs font-bold text-foreground">Mapa da jornada</p>
             <p className="mt-0.5 text-[10px] text-foreground/50">Explore níveis, títulos e conquistas</p>
           </div>
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/10 transition-transform group-hover:translate-x-0.5">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-foreground/10 ring-1 ring-foreground/10 transition-transform group-hover:translate-x-0.5">
             <ChevronRight className="h-4 w-4 text-foreground/80" />
           </span>
         </Link>
