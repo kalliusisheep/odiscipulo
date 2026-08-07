@@ -4,7 +4,7 @@ import { BIBLICAL_CHARACTERS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, ty
 import { VERSE_DIFFICULTY, versesForDifficulty } from "@/data/biblical-verses";
 import { MILLION_DIFFICULTY, randomMillionQuestions, randomMillionQuestionsWithSeed, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
-import { recordSharedGameResult, type GameKey } from "@/lib/game-leaderboard";
+import { recordSharedGameResult } from "@/lib/game-leaderboard";
 import { shuffleWithSeed } from "@/lib/seeded-random";
 import { supabase } from "@/integrations/supabase/client";
 
