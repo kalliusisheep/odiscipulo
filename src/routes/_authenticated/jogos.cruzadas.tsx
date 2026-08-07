@@ -165,8 +165,8 @@ function rememberCrosswordPuzzle(puzzle: ReturnType<typeof generatePuzzle>) {
   const signature = puzzleSignature(puzzle);
   const history = readCrosswordSessionHistory();
   const nextHistory: CrosswordSessionHistory = {
-    signatures: [...new Set([...history.signatures, signature])].slice(-256),
-    wordIds: [...new Set([...history.wordIds, ...puzzle.placements.map((placement) => placement.word.id)])].slice(-512),
+    signatures: [...new Set([...history.signatures, signature])].slice(-1024),
+    wordIds: [...new Set([...history.wordIds, ...puzzle.placements.map((placement) => placement.word.id)])].slice(-2048),
   };
   window.sessionStorage.setItem(CROSSWORD_SESSION_HISTORY_KEY, JSON.stringify(nextHistory));
 }
@@ -195,7 +195,7 @@ function chooseCrosswordPuzzle(
   let best = generatePuzzle(difficulty, theme, seed);
   let bestScore = Number.NEGATIVE_INFINITY;
 
-  for (let attempt = 0; attempt < 48; attempt += 1) {
+  for (let attempt = 0; attempt < 96; attempt += 1) {
     const variationSeed = baseSeed === undefined
       ? eligibleVariations[(historyIndex + attempt) % Math.max(1, eligibleVariations.length)]?.seed ?? seed + attempt * 104729
       : seed + attempt * 104729;
