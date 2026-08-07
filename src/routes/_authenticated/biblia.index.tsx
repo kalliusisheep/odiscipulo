@@ -90,7 +90,6 @@ function BibliaIndex() {
     ).slice(0, 6);
   }, [q]);
 
-  const books = useMemo(() => BIBLE_BOOKS.filter((b) => b.testament === testament), [testament]);
 
   const readByBook = useMemo(() => {
     const map: Record<number, number> = {};
@@ -377,100 +376,111 @@ function BibliaIndex() {
                   <h2 className="text-sm font-extrabold">Explore os livros</h2>
                 </div>
                 <span className="rounded-full bg-surface px-2.5 py-1 text-[10px] font-bold text-muted-foreground ring-1 ring-border">
-                  {testament === "AT" ? "39 livros" : "27 livros"}
+                  66 livros
                 </span>
               </div>
 
-              <div className="bible-testament-switcher mt-3 grid grid-cols-2 gap-2">
+              <div className="bible-testament-accordion mt-3">
                 {(["AT", "NT"] as const).map((t) => {
-                  const active = testament === t;
+                  const expanded = testament === t;
+                  const booksForTestament = BIBLE_BOOKS.filter((book) => book.testament === t);
+                  const panelId = `bible-testament-books-${t.toLowerCase()}`;
+
                   return (
-                    <button
-                      key={t}
-                      onClick={() => setTestament(t)}
-                      aria-pressed={active}
-                      className={`bible-testament-option group relative overflow-hidden rounded-2xl border px-3 py-3 text-left transition-all ${
-                        active
-                          ? "border-primary/45 bg-primary/10 shadow-sm shadow-primary/15"
-                          : "border-border/40 bg-surface/50 hover:border-primary/20 hover:bg-surface/80"
-                      }`}
-                    >
-                      <span className="flex items-center justify-between gap-2">
-                        <span className={`text-[12px] font-black uppercase tracking-[0.04em] ${
-                          active ? "text-primary" : "text-foreground/80"
-                        }`}>
-                          {t === "AT" ? "Antigo Testamento" : "Novo Testamento"}
-                        </span>
-                        <span className={`rounded-full px-2 py-1 text-[10px] font-extrabold ${
-                          active ? "bg-primary/15 text-primary" : "bg-background/60 text-muted-foreground"
-                        }`}>
-                          {t === "AT" ? "39" : "27"}
-                        </span>
-                      </span>
-                      <span className="mt-1 block text-[10px] font-semibold text-muted-foreground">
-                        {active ? "Livros selecionados" : "Explorar livros"}
-                      </span>
-                      {active && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-primary" />}
-                    </button>
-                  );
-                })}
-              </div>
-              <div className="mt-3 grid grid-cols-2 gap-2.5">
-                {books.map((b) => {
-                  const done = readByBook[b.id] ?? 0;
-                  const complete = done >= b.chapters;
-                  const bookPct = Math.round((done / b.chapters) * 100);
-                  return (
-                    <button
-                      key={b.id}
-                      onClick={() => openChapters(b.id)}
-                      aria-label={`Abrir ${b.name}`}
-                      className="bible-book-card group relative min-h-[84px] overflow-hidden rounded-[1.05rem] border border-border/30 bg-surface/75 p-2.5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
-                    >
-                      <div className="flex items-start gap-2">
+                    <div key={t} className={`bible-testament-group ${expanded ? "is-open" : ""}`}>
+                      <button
+                        type="button"
+                        onClick={() => setTestament(t)}
+                        aria-expanded={expanded}
+                        aria-controls={panelId}
+                        className="bible-testament-option group flex w-full items-center gap-3 text-left"
+                      >
                         <span
-                            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-[0.7rem] text-[9px] font-black ring-1 shadow-sm ${
-                            complete
-                              ? "bg-ancient/15 text-ancient ring-ancient/20"
-                              : testament === "AT"
-                                ? "bg-amber-400/10 text-amber-300 ring-amber-300/15"
-                                : "bg-violet-400/10 text-violet-300 ring-violet-300/15"
-                          }`}
+                          className={`bible-testament-badge flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-[10px] font-black tracking-wide transition-colors ${expanded ? "bg-primary text-primary-foreground" : "bg-foreground/[0.06] text-muted-foreground"}`}
                         >
-                          {complete ? <Check className="h-4 w-4" /> : b.abbr}
+                          {t}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block line-clamp-1 text-[13px] font-black leading-tight tracking-[-0.01em]">{b.name}</span>
-                          <span className="mt-1 block text-[9px] text-muted-foreground">
-                            {done > 0 ? `${done}/${b.chapters} lidos` : `${b.chapters} capítulos`}
+                          <span className={`block text-sm font-black uppercase tracking-[0.06em] ${expanded ? "text-primary" : "text-foreground"}`}>
+                            {t === "AT" ? "Antigo Testamento" : "Novo Testamento"}
+                          </span>
+                          <span className="mt-0.5 block text-[10px] font-semibold text-muted-foreground">
+                            {t === "AT" ? "39 livros" : "27 livros"}
                           </span>
                         </span>
-                        <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/45 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
-                      </div>
-
-                      <div className="mt-1.5 text-[9px] font-semibold text-muted-foreground/75">
-                        <span>{complete ? "Concluído" : done > 0 ? `${bookPct}% em andamento` : "Pronto para começar"}</span>
-                      </div>
-
-                      <div className="mt-1 h-1 overflow-hidden rounded-full bg-background/70 ring-1 ring-black/10">
-                        <div
-                          className={`h-full rounded-full transition-all duration-500 ${
-                            complete
-                              ? "bg-ancient"
-                              : testament === "AT"
-                                ? "bg-gradient-to-r from-amber-500 to-orange-300"
-                                : "bg-gradient-to-r from-violet-500 to-fuchsia-300"
-                          }`}
-                          style={{ width: `${bookPct}%` }}
+                        <ChevronDown
+                          className={`h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-300 ease-out ${expanded ? "rotate-180 text-primary" : ""}`}
                         />
+                      </button>
+
+                      <div
+                        id={panelId}
+                        className={`bible-testament-books ${expanded ? "is-open" : ""}`}
+                        aria-hidden={!expanded}
+                      >
+                        <div className="bible-testament-books-inner grid grid-cols-2 gap-2.5">
+                          {booksForTestament.map((b) => {
+                            const done = readByBook[b.id] ?? 0;
+                            const complete = done >= b.chapters;
+                            const bookPct = Math.round((done / b.chapters) * 100);
+
+                            return (
+                              <button
+                                key={b.id}
+                                type="button"
+                                tabIndex={expanded ? 0 : -1}
+                                onClick={() => openChapters(b.id)}
+                                aria-label={`Abrir ${b.name}`}
+                                className="bible-book-card group relative min-h-[84px] overflow-hidden rounded-[1.05rem] border border-border/30 bg-surface/75 p-2.5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
+                              >
+                                <div className="flex items-start gap-2">
+                                  <span
+                                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-[0.7rem] text-[9px] font-black ring-1 shadow-sm ${
+                                      complete
+                                        ? "bg-ancient/15 text-ancient ring-ancient/20"
+                                        : t === "AT"
+                                          ? "bg-amber-400/10 text-amber-300 ring-amber-300/15"
+                                          : "bg-violet-400/10 text-violet-300 ring-violet-300/15"
+                                    }`}
+                                  >
+                                    {complete ? <Check className="h-4 w-4" /> : b.abbr}
+                                  </span>
+                                  <span className="min-w-0 flex-1">
+                                    <span className="block line-clamp-1 text-[13px] font-black leading-tight tracking-[-0.01em]">{b.name}</span>
+                                    <span className="mt-1 block text-[9px] text-muted-foreground">
+                                      {done > 0 ? `${done}/${b.chapters} lidos` : `${b.chapters} capítulos`}
+                                    </span>
+                                  </span>
+                                  <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/45 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+                                </div>
+
+                                <div className="mt-1.5 text-[9px] font-semibold text-muted-foreground/75">
+                                  <span>{complete ? "Concluído" : done > 0 ? `${bookPct}% em andamento` : "Pronto para começar"}</span>
+                                </div>
+
+                                <div className="mt-1 h-1 overflow-hidden rounded-full bg-background/70 ring-1 ring-black/10">
+                                  <div
+                                    className={`h-full rounded-full transition-all duration-500 ${
+                                      complete
+                                        ? "bg-ancient"
+                                        : t === "AT"
+                                          ? "bg-gradient-to-r from-amber-500 to-orange-300"
+                                          : "bg-gradient-to-r from-violet-500 to-fuchsia-300"
+                                    }`}
+                                    style={{ width: `${bookPct}%` }}
+                                  />
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
-                    </button>
+                    </div>
                   );
                 })}
               </div>
             </section>
-          </>
-        )}
+
       </main>
 
       {pickerOpen && picker && (
