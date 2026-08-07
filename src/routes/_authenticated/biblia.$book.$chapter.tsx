@@ -23,6 +23,7 @@ import { useApp } from "@/lib/app-context";
 import {
   ArrowLeft,
   BookOpen,
+  Check,
   ChevronLeft,
   ChevronRight,
   Loader2,
@@ -30,6 +31,7 @@ import {
   Pause,
   Play,
   Plus,
+  Search,
   Square,
   Star,
   Volume2,
@@ -74,6 +76,8 @@ function ChapterReader() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [compareOpen, setCompareOpen] = useState(false);
   const [chapterPicker, setChapterPicker] = useState(false);
+  const [bookPickerOpen, setBookPickerOpen] = useState(false);
+  const [bookSearch, setBookSearch] = useState("");
   const [pickerBook, setPickerBook] = useState(book);
   const [narrationIndex, setNarrationIndex] = useState<number | null>(null);
   const [narrationStarted, setNarrationStarted] = useState(false);
@@ -293,8 +297,18 @@ function ChapterReader() {
 
   const openChapterPicker = () => {
     setPickerBook(book);
+    setBookPickerOpen(false);
+    setBookSearch("");
     setChapterPicker(true);
   };
+
+  const filteredPickerBooks = useMemo(() => {
+    const normalized = bookSearch.trim().toLocaleLowerCase("pt-BR");
+    if (!normalized) return BIBLE_BOOKS;
+    return BIBLE_BOOKS.filter((item) =>
+      [item.name, item.abbr].some((value) => value.toLocaleLowerCase("pt-BR").includes(normalized)),
+    );
+  }, [bookSearch]);
 
   const pickerMeta = bookById(pickerBook);
 
@@ -703,34 +717,121 @@ function ChapterReader() {
               </div>
             </div>
 
-            <label htmlFor="bible-book-picker" className="mt-5 block text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-              Livro da Bíblia
-            </label>
-            <div className="relative mt-2">
-              <BookOpen className="pointer-events-none absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-primary" />
-              <select
-                id="bible-book-picker"
-                value={pickerBook}
-                onChange={(event) => setPickerBook(Number(event.target.value))}
-                className="w-full appearance-none rounded-2xl border border-border bg-surface px-10 py-3.5 pr-10 text-sm font-bold text-foreground outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/15"
-              >
-                <optgroup label="Antigo Testamento">
-                  {BIBLE_BOOKS.filter((item) => item.testament === "AT").map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </optgroup>
-                <optgroup label="Novo Testamento">
-                  {BIBLE_BOOKS.filter((item) => item.testament === "NT").map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </optgroup>
-              </select>
-              <ChevronRight className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 rotate-90 text-muted-foreground" />
+            <div className="mt-5 flex items-center justify-between gap-3">
+              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                Livro da Bíblia
+              </p>
+              <span className="text-[10px] font-semibold text-muted-foreground">
+                66 livros disponíveis
+              </span>
             </div>
+
+            <button
+              type="button"
+              aria-expanded={bookPickerOpen}
+              aria-controls="bible-book-picker-panel"
+              onClick={() => setBookPickerOpen((open) => !open)}
+              className="mt-2 flex w-full items-center gap-3 rounded-[1.35rem] border border-primary/30 bg-gradient-to-r from-primary/10 via-surface to-surface px-3.5 py-3 text-left shadow-[0_10px_30px_-20px_hsl(var(--primary))] transition-all hover:border-primary/60 hover:bg-primary/[0.13] active:scale-[0.99]"
+            >
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
+                <BookOpen className="h-4 w-4" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
+                  {pickerMeta.testament === "AT" ? "Antigo Testamento" : "Novo Testamento"}
+                </span>
+                <span className="mt-0.5 block truncate text-base font-extrabold text-foreground">
+                  {pickerMeta.name}
+                </span>
+              </span>
+              <span className="mr-1 rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-bold text-muted-foreground">
+                {pickerMeta.abbr}
+              </span>
+              <ChevronRight className={`h-5 w-5 shrink-0 text-primary transition-transform ${bookPickerOpen ? "rotate-90" : ""}`} />
+            </button>
+
+            {bookPickerOpen && (
+              <div
+                id="bible-book-picker-panel"
+                className="mt-2 overflow-hidden rounded-[1.35rem] border border-primary/20 bg-surface/80 shadow-inner animate-slide-up"
+              >
+                <div className="border-b border-border/60 p-2.5">
+                  <div className="flex items-center gap-2 rounded-xl border border-border bg-background/70 px-3">
+                    <Search className="h-4 w-4 shrink-0 text-primary" />
+                    <input
+                      value={bookSearch}
+                      onChange={(event) => setBookSearch(event.target.value)}
+                      placeholder="Buscar livro"
+                      aria-label="Buscar livro da Bíblia"
+                      className="min-w-0 flex-1 bg-transparent py-2.5 text-xs font-semibold outline-none placeholder:text-muted-foreground/70"
+                    />
+                    {bookSearch && (
+                      <button
+                        type="button"
+                        aria-label="Limpar busca de livro"
+                        onClick={() => setBookSearch("")}
+                        className="rounded-full p-1 text-muted-foreground hover:bg-surface-2 hover:text-foreground"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <div className="max-h-64 overflow-y-auto p-2.5">
+                  {(["AT", "NT"] as const).map((testament) => {
+                    const testamentBooks = filteredPickerBooks.filter((item) => item.testament === testament);
+                    if (testamentBooks.length === 0) return null;
+                    return (
+                      <div key={testament} className="not-first:mt-3">
+                        <div className="mb-1.5 flex items-center gap-2 px-1">
+                          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                          <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">
+                            {testament === "AT" ? "Antigo Testamento" : "Novo Testamento"}
+                          </p>
+                        </div>
+                        <div className="grid grid-cols-2 gap-1.5">
+                          {testamentBooks.map((item) => {
+                            const active = item.id === pickerBook;
+                            return (
+                              <button
+                                key={item.id}
+                                type="button"
+                                onClick={() => {
+                                  setPickerBook(item.id);
+                                  setBookPickerOpen(false);
+                                  setBookSearch("");
+                                }}
+                                className={`flex min-h-10 items-center gap-2 rounded-xl border px-2.5 py-2 text-left text-xs font-bold transition-all active:scale-[0.98] ${
+                                  active
+                                    ? "border-primary/50 bg-primary/15 text-primary"
+                                    : "border-border/70 bg-background/45 text-foreground/80 hover:border-primary/30 hover:bg-primary/10"
+                                }`}
+                              >
+                                <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-[9px] font-extrabold ${
+                                  active ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground"
+                                }`}>
+                                  {active ? <Check className="h-3.5 w-3.5" /> : item.abbr}
+                                </span>
+                                <span className="min-w-0 truncate">{item.name}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                  {filteredPickerBooks.length === 0 && (
+                    <div className="px-4 py-7 text-center">
+                      <Search className="mx-auto h-5 w-5 text-muted-foreground/60" />
+                      <p className="mt-2 text-xs font-bold">Nenhum livro encontrado</p>
+                      <p className="mt-1 text-[10px] text-muted-foreground">Tente outro nome ou abreviação.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
             <div className="mt-5 flex items-end justify-between gap-3">
               <div>
