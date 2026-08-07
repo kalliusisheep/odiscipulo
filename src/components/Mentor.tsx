@@ -149,26 +149,34 @@ export function MentorFAB() {
 
   // Se a ovelha estiver muito perto do topo da tela, o balão abre pra baixo
   // em vez de pra cima, pra nunca ficar cortado fora da viewport.
+  // O balão se adapta à posição da ovelha para permanecer inteiro na viewport.
   const bubbleBelow = pos.y < 140;
+  const viewportWidth = typeof window !== "undefined" ? window.innerWidth : 360;
+  const bubbleAlign =
+    pos.x < 120 ? "left" : pos.x > viewportWidth - 176 ? "right" : "center";
+  const bubbleMessage = message?.replace(/\s+/g, " ").trim() ?? "";
 
   return (
     <div
       className="fixed z-40"
       style={{ left: pos.x, top: pos.y, width: FAB_SIZE, height: FAB_SIZE }}
     >
-      {showBubble && message && (
+      {showBubble && bubbleMessage && (
         <div
-          className={`animate-fade-in pointer-events-none absolute max-w-[190px] rounded-2xl px-3 py-1.5 text-center text-[11px] font-medium leading-snug text-foreground shadow-md ring-1 ring-border ${
+          className={`animate-fade-in pointer-events-none absolute w-[240px] max-w-[calc(100vw-24px)] rounded-2xl px-4 py-3 text-left text-xs font-medium leading-relaxed text-foreground shadow-lg ring-1 ring-border [overflow-wrap:anywhere] ${
             bubbleBelow ? "rounded-tl-sm" : "rounded-bl-sm"
           }`}
           style={{
-            left: "50%",
-            transform: "translateX(-50%)",
+            ...(bubbleAlign === "left"
+              ? { left: 0 }
+              : bubbleAlign === "right"
+                ? { right: 0 }
+                : { left: "50%", transform: "translateX(-50%)" }),
             [bubbleBelow ? "top" : "bottom"]: FAB_SIZE + 8,
             background: "var(--surface)",
           }}
         >
-          {message}
+          {bubbleMessage}
         </div>
       )}
 
