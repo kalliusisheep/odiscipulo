@@ -1776,3 +1776,25 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
 .bible-index-shell .bible-search-panel:focus-within {
   border-color: color-mix(in srgb, hsl(var(--primary)) 42%, transparent) !important;
 }
+
+
+.bible-picker-testament-heading {
+  border: 1px solid color-mix(in srgb, hsl(var(--primary)) 22%, transparent);
+  background: linear-gradient(
+    110deg,
+    color-mix(in srgb, hsl(var(--primary)) 12%, hsl(var(--surface))),
+    color-mix(in srgb, hsl(var(--surface)) 72%, transparent)
+  );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 7%, transparent),
+    0 10px 24px -20px color-mix(in srgb, hsl(var(--primary)) 70%, transparent);
+}
+
+.bible-picker-testament-mark {
+  border: 1px solid color-mix(in srgb, hsl(var(--primary)) 28%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 8%, transparent);
+}
+
+.bible-picker-testament-group + .bible-picker-testament-group {
+  margin-top: 1.25rem;
+}
