@@ -2321,6 +2321,13 @@ body,
   outline: none;
 }
 
+.bible-reader-shell .bible-chapter-nav-current {
+  min-width: 0 !important;
+  padding: 0.5rem !important;
+  background: transparent !important;
+  color: var(--foreground) !important;
+}
+
 .bible-reader-shell .bible-chapter-nav-pill-button:focus-visible {
   background: color-mix(in srgb, var(--primary) 12%, transparent) !important;
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 28%, transparent) !important;
