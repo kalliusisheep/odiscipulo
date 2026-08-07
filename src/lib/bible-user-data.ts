@@ -92,12 +92,13 @@ export async function toggleFavorite(ref: VerseRef) {
   const { data: existing } = await supabase
     .from("bible_favorites")
     .select("id")
+    .eq("user_id", userId)
     .eq("book", ref.book)
     .eq("chapter", ref.chapter)
     .eq("verse", ref.verse)
     .maybeSingle();
   if (existing) {
-    await supabase.from("bible_favorites").delete().eq("id", existing.id);
+    await supabase.from("bible_favorites").delete().eq("id", existing.id).eq("user_id", userId);
     return false;
   }
   await supabase.from("bible_favorites").insert({ user_id: userId, ...ref });
@@ -127,12 +128,13 @@ export async function toggleBookmark(ref: VerseRef, label?: string) {
   const { data: existing } = await supabase
     .from("bible_bookmarks")
     .select("id")
+    .eq("user_id", userId)
     .eq("book", ref.book)
     .eq("chapter", ref.chapter)
     .eq("verse", ref.verse)
     .maybeSingle();
   if (existing) {
-    await supabase.from("bible_bookmarks").delete().eq("id", existing.id);
+    await supabase.from("bible_bookmarks").delete().eq("id", existing.id).eq("user_id", userId);
     return false;
   }
   await supabase.from("bible_bookmarks").insert({ user_id: userId, ...ref, label: label ?? null });
