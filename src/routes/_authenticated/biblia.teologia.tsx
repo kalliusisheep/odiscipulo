@@ -77,7 +77,6 @@ function TeologiaSistematicaPage() {
                   aria-controls={panelId}
                   onClick={() => {
                     setExpandedId((current) => (current === topic.id ? null : topic.id));
-                    setSelectedChapterId(null);
                   }}
                   className="bible-testament-toggle group flex w-full items-center gap-3 text-left"
                 >
