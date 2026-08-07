@@ -3,6 +3,7 @@ import { Crown, Flame, Gamepad2, Medal, RefreshCw, Sparkles, Trophy, Users, Zap 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { fetchGameLeaderboard, type GameKey, type GameLeaderboardRow } from "@/lib/game-leaderboard";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/ranking")({ component: RankingPage });
 
@@ -18,18 +19,31 @@ function RankingPage() {
   const [rows, setRows] = useState<GameLeaderboardRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [loadError, setLoadError] = useState("");
 
   const loadRanking = async (refresh = false) => {
     if (refresh) setRefreshing(true);
     else setLoading(true);
+    setLoadError("");
     const result = await fetchGameLeaderboard(selectedGame, 100);
     setRows(result.data);
+    if (result.error) setLoadError("Não foi possível sincronizar este ranking agora. Tente atualizar novamente.");
     setLoading(false);
     setRefreshing(false);
   };
 
   useEffect(() => {
     void loadRanking();
+  }, [selectedGame]);
+
+  useEffect(() => {
+    const channel = supabase
+      .channel(`game-ranking-${selectedGame}`)
+      .on("postgres_changes", { event: "*", schema: "public", table: "game_scores", filter: `game_key=eq.${selectedGame}` }, () => void loadRanking(true))
+      .subscribe();
+    return () => {
+      void supabase.removeChannel(channel);
+    };
   }, [selectedGame]);
 
   const selectedTab = GAME_TABS.find((tab) => tab.key === selectedGame) ?? GAME_TABS[0];
@@ -96,6 +110,13 @@ function RankingPage() {
 
         {loading ? (
           <div className="rounded-3xl border border-border bg-surface p-12 text-center text-sm text-muted-foreground">Carregando a arena…</div>
+        ) : loadError ? (
+          <div className="rounded-3xl border border-red-400/30 bg-red-400/10 p-8 text-center">
+            <Trophy className="mx-auto h-10 w-10 text-red-300" />
+            <h2 className="mt-4 text-lg font-black">Ranking temporariamente indisponível</h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">A pontuação continua protegida e será sincronizada quando a conexão voltar.</p>
+            <button type="button" onClick={() => void loadRanking(true)} className="mt-5 inline-flex rounded-xl bg-primary px-5 py-3 text-sm font-extrabold text-primary-foreground">Tentar novamente</button>
+          </div>
         ) : rows.length === 0 ? (
           <div className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 to-surface p-10 text-center">
             <Trophy className="mx-auto h-10 w-10 text-ancient" />
