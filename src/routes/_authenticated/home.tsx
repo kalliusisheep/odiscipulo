@@ -178,11 +178,7 @@ function HomePage() {
       </header>
 
       <section
-        className="relative isolate overflow-hidden rounded-[1.75rem] border border-violet-300/15 shadow-2xl shadow-black/35"
-        style={{
-          background:
-            "linear-gradient(145deg, rgba(55, 48, 163, 0.64) 0%, rgba(30, 41, 59, 0.90) 48%, rgba(15, 23, 42, 0.98) 100%)",
-        }}
+        className="home-journey-card relative isolate overflow-hidden rounded-[1.75rem] border border-primary/20 bg-gradient-to-br from-primary/25 via-surface to-background shadow-2xl shadow-black/35"}
       >
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.08]"
@@ -193,14 +189,14 @@ function HomePage() {
             maskImage: "linear-gradient(to bottom, black, transparent 72%)",
           }}
         />
-        <div className="pointer-events-none absolute -right-14 -top-20 h-60 w-60 rounded-full bg-violet-400/20 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 -left-8 h-52 w-52 rounded-full bg-blue-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute -right-14 -top-20 h-60 w-60 rounded-full bg-primary/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 -left-8 h-52 w-52 rounded-full bg-primary/10 blur-3xl" />
 
         <div className="relative z-10 p-5">
           <div className="flex items-start gap-3.5">
             <div className="relative shrink-0">
               <div className="absolute -inset-1 rounded-[1.4rem] bg-gradient-to-br from-violet-300/60 via-primary/35 to-transparent blur-[1px]" />
-              <div className="relative h-[4.75rem] w-[4.75rem] overflow-hidden rounded-[1.2rem] bg-surface-2 ring-1 ring-white/25 shadow-xl shadow-black/30">
+              <div className="relative h-[4.75rem] w-[4.75rem] overflow-hidden rounded-[1.2rem] bg-surface-2 ring-1 ring-foreground/20 shadow-xl shadow-black/30">
                 {level.avatar ? (
                   <img src={level.avatar} alt={level.title} className="absolute inset-0 h-full w-full object-cover" />
                 ) : (
@@ -211,16 +207,16 @@ function HomePage() {
 
             <div className="min-w-0 flex-1 pt-0.5">
               <div className="flex items-center gap-1.5">
-                <Sparkles className="h-3.5 w-3.5 text-violet-300" />
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-violet-100/65">Sua jornada</p>
+                <Sparkles className="h-3.5 w-3.5 text-primary" />
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-foreground/60">Sua jornada</p>
               </div>
-              <p className={`mt-1.5 font-extrabold leading-tight text-white ${levelTitleSizeClass}`}>{levelTitleText}</p>
+              <p className={`mt-1.5 font-extrabold leading-tight text-foreground ${levelTitleSizeClass}`}>{levelTitleText}</p>
               <div className="mt-2 flex flex-wrap items-center gap-1.5">
-                <span className="rounded-full bg-white/10 px-2 py-1 text-[10px] font-bold text-white/80 ring-1 ring-white/10">
+                <span className="rounded-full bg-foreground/10 px-2 py-1 text-[10px] font-bold text-foreground/80 ring-1 ring-foreground/10">
                   {xp} XP total
                 </span>
                 {nextLevel && (
-                  <span className="rounded-full bg-violet-400/10 px-2 py-1 text-[10px] font-semibold text-violet-200 ring-1 ring-violet-300/15">
+                  <span className="rounded-full bg-primary/10 px-2 py-1 text-[10px] font-semibold text-primary/80 ring-1 ring-primary/15">
                     Meta: Nv {nextLevel.level}
                   </span>
                 )}
@@ -241,15 +237,11 @@ function HomePage() {
           </div>
 
           <div
-            className="mt-5 rounded-[1.25rem] p-3.5 shadow-inner"
-            style={{
-              background: "linear-gradient(180deg, rgba(2, 6, 23, 0.42), rgba(2, 6, 23, 0.24))",
-              border: "1px solid rgba(255, 255, 255, 0.09)",
-            }}
+            className="mt-5 rounded-[1.25rem] border border-foreground/10 bg-background/45 p-3.5 shadow-inner"}
           >
             <div className="flex items-center justify-between gap-3">
               <div className="min-w-0">
-                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-white/45">Rumo ao próximo nível</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-foreground/45">Rumo ao próximo nível</p>
                 <p className="mt-1 truncate text-xs font-bold text-white/90">
                   {nextLevel ? `Nv ${nextLevel.level} · ${nextLevel.title}` : "Você alcançou o nível máximo"}
                 </p>
@@ -259,14 +251,14 @@ function HomePage() {
               </div>
             </div>
 
-            <div className="relative mt-3 h-3 overflow-hidden rounded-full bg-slate-950/55 p-[2px] ring-1 ring-white/5">
+            <div className="relative mt-3 h-3 overflow-hidden rounded-full bg-background/45 p-[2px] ring-1 ring-foreground/5">
               <div
-                className="relative h-full rounded-full bg-gradient-to-r from-violet-500 via-primary-glow to-fuchsia-300 shadow-[0_0_14px_rgba(167,139,250,0.6)] transition-all duration-700"
+                className="relative h-full rounded-full bg-gradient-to-r from-primary via-primary-glow to-primary shadow-[0_0_14px_color-mix(in_oklab,var(--primary)_60%,transparent)] transition-all duration-700"
                 style={{ width: `${levelPct}%` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-b from-white/35 to-transparent" />
               </div>
-              {levelPct === 0 && <div className="absolute left-[3px] top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-violet-300/55" />}
+              {levelPct === 0 && <div className="absolute left-[3px] top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-primary/55" />}
             </div>
 
             <div className="mt-2.5 flex items-center justify-between gap-3 text-[10px]">
@@ -281,11 +273,11 @@ function HomePage() {
         </div>
 
         {showLevel50Checklist && (
-          <div className="relative z-10 border-t border-white/10 bg-ancient/10 px-5 py-4">
+          <div className="relative z-10 border-t border-foreground/10 bg-ancient/10 px-5 py-4">
             <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-ancient">
               <Sparkles className="h-3.5 w-3.5" /> Rumo ao Nível {GATED_LEVEL} · Discípulo
             </p>
-            <p className="mt-1 text-xs text-white/65">
+            <p className="mt-1 text-xs text-foreground/65">
               Você já tem XP suficiente. Para se tornar Discípulo, conclua todo o conteúdo.
             </p>
           </div>
@@ -293,14 +285,14 @@ function HomePage() {
 
         <Link
           to="/niveis"
-          className="group relative z-10 flex items-center justify-between gap-3 border-t border-white/10 bg-white/[0.045] px-5 py-3.5 transition-colors hover:bg-white/[0.08]"
+          className="group relative z-10 flex items-center justify-between gap-3 border-t border-white/10 bg-foreground/[0.045] px-5 py-3.5 transition-colors hover:bg-foreground/[0.08]"
         >
           <div>
             <p className="text-xs font-bold text-white">Mapa da jornada</p>
-            <p className="mt-0.5 text-[10px] text-white/50">Explore níveis, títulos e conquistas</p>
+            <p className="mt-0.5 text-[10px] text-foreground/50">Explore níveis, títulos e conquistas</p>
           </div>
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/10 transition-transform group-hover:translate-x-0.5">
-            <ChevronRight className="h-4 w-4 text-white/80" />
+            <ChevronRight className="h-4 w-4 text-foreground/80" />
           </span>
         </Link>
       </section>
