@@ -533,7 +533,7 @@ function ChapterReader() {
           )}
 
           <div className="bible-chapter-nav fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-30 flex justify-center px-3 animate-slide-up">
-            <div className="bible-chapter-nav-panel w-full max-w-md items-center rounded-[1.5rem] border border-primary/20 bg-background/95 p-1.5 shadow-2xl shadow-primary/15 backdrop-blur-xl">
+            <div className="bible-chapter-nav-panel flex w-full max-w-md items-center gap-2 rounded-[1.35rem] border border-primary/20 bg-background/95 p-1.5 shadow-2xl shadow-primary/15 backdrop-blur-xl">
               <button
                 type="button"
                 onClick={() => {
@@ -550,7 +550,7 @@ function ChapterReader() {
                       ? "Pausar narração"
                       : "Iniciar narração"
                 }
-                className="bible-chapter-nav-button bible-chapter-nav-play flex items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 transition-all active:scale-90 disabled:cursor-wait disabled:opacity-60"
+                className="bible-chapter-nav-button bible-chapter-nav-play flex shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-all active:scale-90 disabled:cursor-wait disabled:opacity-60"
               >
                 {narrationLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -560,37 +560,40 @@ function ChapterReader() {
                   <Play className="ml-0.5 h-4 w-4 fill-current" />
                 )}
               </button>
-              <button
-                type="button"
-                onClick={() => go(-1)}
-                disabled={chapter <= 1}
-                aria-label="Capítulo anterior"
-                className="bible-chapter-nav-button bible-chapter-nav-arrow flex items-center justify-center rounded-full text-muted-foreground transition-all hover:bg-primary/10 hover:text-primary active:scale-90 disabled:opacity-30"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </button>
-              <button
-                type="button"
-                onClick={openChapterPicker}
-                aria-label="Escolher capítulo"
-                className="bible-chapter-nav-current min-w-0 rounded-2xl px-2 py-1.5 text-center transition-colors hover:bg-surface"
-              >
-                <span className="bible-chapter-nav-book block truncate text-sm font-extrabold">
-                  {meta?.name ?? bookNameById(book)}
-                </span>
-                <span className="bible-chapter-nav-label block text-[9px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-                  Capítulo {chapter} de {meta?.chapters ?? "—"}
-                </span>
-              </button>
-              <button
-                type="button"
-                onClick={() => go(1)}
-                disabled={!meta || chapter >= meta.chapters}
-                aria-label="Próximo capítulo"
-                className="bible-chapter-nav-button bible-chapter-nav-arrow bible-chapter-nav-next flex items-center justify-center rounded-full bg-primary/15 text-primary shadow-[inset_0_0_0_1px_hsl(var(--primary)/0.22)] transition-all hover:bg-primary hover:text-primary-foreground active:scale-90 disabled:opacity-30"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </button>
+
+              <div className="bible-chapter-nav-pill flex min-w-0 flex-1 items-center rounded-full bg-surface-2/90 px-1 shadow-inner">
+                <button
+                  type="button"
+                  onClick={() => go(-1)}
+                  disabled={chapter <= 1}
+                  aria-label="Capítulo anterior"
+                  className="bible-chapter-nav-pill-button flex shrink-0 items-center justify-center rounded-full text-muted-foreground transition-all hover:bg-primary/10 hover:text-primary active:scale-90 disabled:opacity-30"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={openChapterPicker}
+                  aria-label="Escolher capítulo"
+                  className="bible-chapter-nav-current min-w-0 flex-1 rounded-full px-2 py-2 text-center transition-colors hover:bg-primary/10"
+                >
+                  <span className="bible-chapter-nav-book block truncate text-sm font-extrabold leading-tight">
+                    {meta?.name ?? bookNameById(book)} {chapter}
+                  </span>
+                  <span className="bible-chapter-nav-label block text-[8px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                    Capítulo {chapter} de {meta?.chapters ?? "—"}
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => go(1)}
+                  disabled={!meta || chapter >= meta.chapters}
+                  aria-label="Próximo capítulo"
+                  className="bible-chapter-nav-pill-button bible-chapter-nav-next flex shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:bg-primary-glow active:scale-90 disabled:opacity-30"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
             </div>
           </div>
         </>
