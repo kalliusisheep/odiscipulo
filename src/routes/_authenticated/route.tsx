@@ -71,6 +71,7 @@ function AuthedLayout() {
   // eles ficam ocultos.
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isPrivateChat = /^\/mensagens\/[^/]+$/.test(pathname);
+  const isBibleReader = pathname.startsWith("/biblia/");
   const isBibleOrGames =
     pathname === "/biblia" ||
     pathname.startsWith("/biblia/") ||
@@ -81,7 +82,7 @@ function AuthedLayout() {
     <AppProvider>
       <MascotProvider>
         <CelebrationProvider>
-          <div className={`min-h-screen bg-background ${isPrivateChat ? "" : "pb-24"}`}>
+          <div className={`min-h-screen bg-background ${isPrivateChat || isBibleReader ? "" : "pb-24"}`}>
             <Outlet />
             <GameInviteOverlay />
             {!isBibleOrGames && <PushNotifications />}
