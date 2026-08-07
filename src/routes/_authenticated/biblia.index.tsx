@@ -425,11 +425,11 @@ function BibliaIndex() {
                       key={b.id}
                       onClick={() => openChapters(b.id)}
                       aria-label={`Abrir ${b.name}`}
-                      className="bible-book-card group relative min-h-[100px] overflow-hidden rounded-[1.25rem] border border-border/30 bg-surface/75 p-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
+                      className="bible-book-card group relative min-h-[96px] overflow-hidden rounded-[1.05rem] border border-border/30 bg-surface/75 p-2.5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
                     >
-                      <div className="flex items-start gap-2.5">
+                      <div className="flex items-start gap-2">
                         <span
-                            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[10px] font-extrabold ring-1 shadow-sm ${
+                            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-[0.7rem] text-[9px] font-black ring-1 shadow-sm ${
                             complete
                               ? "bg-ancient/15 text-ancient ring-ancient/20"
                               : testament === "AT"
@@ -440,15 +440,15 @@ function BibliaIndex() {
                           {complete ? <Check className="h-4 w-4" /> : b.abbr}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block line-clamp-2 text-[14px] font-extrabold leading-snug">{b.name}</span>
-                          <span className="mt-1 block text-[10px] text-muted-foreground">
+                          <span className="block line-clamp-1 text-[13px] font-black leading-tight tracking-[-0.01em]">{b.name}</span>
+                          <span className="mt-1 block text-[9px] text-muted-foreground">
                             {done > 0 ? `${done}/${b.chapters} lidos` : `${b.chapters} capítulos`}
                           </span>
                         </span>
                         <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/45 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
                       </div>
 
-                      <div className="mt-2.5 flex items-center justify-between gap-2 text-[9px] font-semibold text-muted-foreground/75">
+                      <div className="mt-2 flex items-center justify-between gap-2 text-[9px] font-semibold text-muted-foreground/75">
                         <span>{complete ? "Concluído" : done > 0 ? `${bookPct}% em andamento` : "Pronto para começar"}</span>
                         <span>{bookPct}%</span>
                       </div>
