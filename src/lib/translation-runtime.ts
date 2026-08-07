@@ -453,10 +453,11 @@ function walkAndTranslate(language: AppLanguage) {
     }
     node = walker.nextNode();
   }
-  document.body.querySelectorAll<HTMLElement>("[placeholder], [aria-label], [title]").forEach((element) => {
+  document.body.querySelectorAll<HTMLElement>("[placeholder], [aria-label], [title], [alt]").forEach((element) => {
     translateAttribute(element, "placeholder", language);
     translateAttribute(element, "aria-label", language);
     translateAttribute(element, "title", language);
+    translateAttribute(element, "alt", language);
   });
 }
 
