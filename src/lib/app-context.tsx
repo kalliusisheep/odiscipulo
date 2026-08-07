@@ -49,6 +49,13 @@ function applyTheme(theme: AppTheme, language: AppLanguage) {
   root.classList.add(`theme-${theme}`);
   root.classList.add(theme === "black" || theme === "pink" ? "dark" : "light");
   root.style.colorScheme = theme === "black" || theme === "pink" ? "dark" : "light";
+  const pageCopy = {
+    "pt-BR": { title: "Disciple — Discipulado cristão gamificado", description: "Trilhas de estudo, quizzes e um Mentor IA para crescer na fé um dia por vez." },
+    en: { title: "Disciple — Gamified Christian discipleship", description: "Study paths, quizzes, and an AI Mentor to grow in faith one day at a time." },
+    es: { title: "Disciple — Discipulado cristiano gamificado", description: "Rutas de estudio, cuestionarios y un Mentor IA para crecer en la fe cada día." },
+  }[language];
+  document.title = pageCopy.title;
+  document.querySelector("meta[name=description]")?.setAttribute("content", pageCopy.description);
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {
