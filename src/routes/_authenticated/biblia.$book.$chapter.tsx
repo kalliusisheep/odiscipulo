@@ -329,7 +329,7 @@ function ChapterReader() {
       {/* Barra superior fixa */}
       <div className={`bible-reader-header sticky top-0 z-30 bg-background/85 backdrop-blur-xl ${readerScrolled ? "is-immersive" : ""}`}>
         <div className="bible-reader-header-inner mx-auto max-w-lg px-3 py-2 sm:px-4">
-          <div className="bible-reader-primary-row flex min-h-[3rem] items-center gap-2">
+          <div className="bible-reader-primary-row relative flex min-h-[3rem] items-center justify-between gap-2">
             <Link
               to="/biblia"
               aria-label="Voltar"
@@ -337,24 +337,28 @@ function ChapterReader() {
             >
               <ArrowLeft className="h-4 w-4" />
             </Link>
-            <button
-              type="button"
-              onClick={() => setSettingsOpen(true)}
-              aria-label={`Versão atual: ${label}. Abrir ajustes de leitura`}
-              className="bible-reader-version-pill flex h-9 min-w-[3.75rem] shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 px-2 text-[11px] font-extrabold uppercase tracking-[0.08em] text-primary transition-all hover:border-primary/40 hover:bg-primary/15 active:scale-95"
-            >
-              {label}
-            </button>
+
             <button
               type="button"
               onClick={openChapterPicker}
-              className="bible-chapter-trigger bible-header-chapter min-w-0 flex-1 rounded-xl px-2 py-1.5 text-center transition-colors hover:bg-surface/70"
+              className="bible-chapter-trigger bible-header-chapter absolute left-1/2 max-w-[7.5rem] -translate-x-1/2 rounded-xl px-2 py-1.5 text-center transition-colors hover:bg-surface/70 sm:max-w-[12rem]"
             >
               <span className="block truncate text-[15px] font-black leading-tight">
                 {bookNameById(book)} {chapter}
               </span>
             </button>
-            <ThemeToggle className="h-9 w-9 shrink-0 border-border bg-surface" />
+
+            <div className="ml-auto flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setSettingsOpen(true)}
+                aria-label={`Versão atual: ${label}. Abrir ajustes de leitura`}
+                className="bible-reader-version-pill flex h-9 min-w-[3.75rem] shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 px-2 text-[11px] font-extrabold uppercase tracking-[0.08em] text-primary transition-all hover:border-primary/40 hover:bg-primary/15 active:scale-95"
+              >
+                {label}
+              </button>
+              <ThemeToggle className="h-9 w-9 shrink-0 border-border bg-surface" />
+            </div>
           </div>
         </div>
         <div className="bible-reader-progress" aria-hidden="true">
