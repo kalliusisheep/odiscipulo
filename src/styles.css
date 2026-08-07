@@ -3075,8 +3075,8 @@ body,
 
 
 .bible-reader-shell .bible-chapter-nav-panel {
-  min-height: 3.45rem !important;
-  padding: 0.45rem !important;
+  min-height: 3.9rem !important;
+  padding: 0.52rem !important;
   background: var(--surface) !important;
   background-image: none !important;
   backdrop-filter: none !important;
