@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { bookById, bookNameById } from "@/data/bible-books";
+import { BIBLE_BOOKS, bookById, bookNameById } from "@/data/bible-books";
 import { fetchChapter, translationByCode, translationsForLanguage, type Verse } from "@/lib/bible-source";
 import {
   addNote,
@@ -74,6 +74,7 @@ function ChapterReader() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [compareOpen, setCompareOpen] = useState(false);
   const [chapterPicker, setChapterPicker] = useState(false);
+  const [pickerBook, setPickerBook] = useState(book);
   const [narrationIndex, setNarrationIndex] = useState<number | null>(null);
   const [narrationStarted, setNarrationStarted] = useState(false);
   const [narrationPaused, setNarrationPaused] = useState(false);
@@ -287,58 +288,69 @@ function ChapterReader() {
     }
   };
 
+  const openChapterPicker = () => {
+    setPickerBook(book);
+    setChapterPicker(true);
+  };
+
+  const pickerMeta = bookById(pickerBook);
+
 
   return (
     <div className={`bible-reader-shell min-h-screen pb-32 transition-colors ${(theme === "white" || theme === "gray") ? "bg-[#fbfaf7] text-slate-900" : "bg-background text-foreground"}`}>
       {/* Barra superior fixa */}
       <div className={`bible-reader-header sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-xl ${readerScrolled ? "is-immersive" : ""}`}>
-        <div className="bible-reader-header-inner mx-auto grid max-w-lg grid-cols-[auto_minmax(0,1fr)_auto_auto_auto] items-center gap-1.5 px-4 py-2.5">
+        <div className="bible-reader-header-inner relative mx-auto flex max-w-lg items-center gap-3 px-4 py-2.5">
           <Link
             to="/biblia"
             aria-label="Voltar"
-            className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-surface"
+            className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border/70 bg-surface/70 text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/10 hover:text-primary active:scale-95"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-4 w-4" />
           </Link>
           <button
-            onClick={() => setChapterPicker(true)}
-            className="bible-chapter-trigger min-w-0 rounded-xl px-2 py-1 text-left transition-colors hover:bg-surface"
+            onClick={openChapterPicker}
+            className="bible-chapter-trigger bible-header-chapter rounded-2xl px-3 py-1.5 text-center transition-colors hover:bg-surface/70"
           >
-            <span className="block truncate text-[15px] font-bold leading-tight">
-              {bookNameById(book)} {chapter}
+            <span className="block truncate text-[15px] font-extrabold leading-tight">
+              {bookNameById(book)}
             </span>
-            <span className="block truncate text-[10px] text-muted-foreground">
-              Toque para trocar de capítulo · {label}
+            <span className="mt-0.5 block text-xs font-bold text-primary">
+              Capítulo {chapter}
+            </span>
+            <span className="mt-0.5 block truncate text-[9px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+              {label} · toque para explorar
             </span>
           </button>
-          <button
-            onClick={() => {
-              if (narrationStarted) toggleNarrationPause();
-              else startNarration();
-            }}
-            aria-label={narrationStarted && !narrationPaused ? "Pausar narração" : "Ouvir narração"}
-            disabled={!verses || narrationLoading}
-            className={`flex h-9 w-9 items-center justify-center rounded-xl border border-primary/20 transition-all active:scale-95 disabled:opacity-40 ${narrationStarted && !narrationPaused ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "bg-primary/10 text-primary"}`}
-          >
-            {narrationStarted && !narrationPaused ? <Pause className="h-4 w-4" /> : <Play className="ml-0.5 h-4 w-4 fill-current" />}
-          </button>
-          <button
-            onClick={() => setSettingsOpen(true)}
-            aria-label="Ajustes de leitura"
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-surface text-muted-foreground transition-all hover:border-primary/30 hover:text-primary active:scale-95"
-          >
-            <Type className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => setCompareOpen(true)}
-            aria-label="Comparar versões"
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-surface text-muted-foreground transition-all hover:border-primary/30 hover:text-primary active:scale-95"
-          >
-            <GitCompareArrows className="h-4 w-4" />
-          </button>
-          <ThemeToggle className="h-9 w-9 border-border bg-surface" />
-        </div>
-        <div className="bible-reader-progress" aria-hidden="true">
+          <div className="bible-reader-action-group relative z-10 ml-auto flex shrink-0 items-center gap-1">
+            <button
+              onClick={() => {
+                if (narrationStarted) toggleNarrationPause();
+                else startNarration();
+              }}
+              aria-label={narrationStarted && !narrationPaused ? "Pausar narração" : "Ouvir narração"}
+              disabled={!verses || narrationLoading}
+              className={`flex h-8 w-8 items-center justify-center rounded-xl border border-primary/20 transition-all active:scale-95 disabled:opacity-40 ${narrationStarted && !narrationPaused ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "bg-primary/10 text-primary"}`}
+            >
+              {narrationStarted && !narrationPaused ? <Pause className="h-4 w-4" /> : <Play className="ml-0.5 h-4 w-4 fill-current" />}
+            </button>
+            <button
+              onClick={() => setSettingsOpen(true)}
+              aria-label="Ajustes de leitura"
+              className="flex h-8 w-8 items-center justify-center rounded-xl border border-border bg-surface text-muted-foreground transition-all hover:border-primary/30 hover:text-primary active:scale-95"
+            >
+              <Type className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => setCompareOpen(true)}
+              aria-label="Comparar versões"
+              className="flex h-8 w-8 items-center justify-center rounded-xl border border-border bg-surface text-muted-foreground transition-all hover:border-primary/30 hover:text-primary active:scale-95"
+            >
+              <GitCompareArrows className="h-4 w-4" />
+            </button>
+            <ThemeToggle className="h-8 w-8 border-border bg-surface" />
+          </div>
+        </div>        <div className="bible-reader-progress" aria-hidden="true">
           <span style={{ width: `${readingProgress}%` }} />
         </div>
       </div>
@@ -543,7 +555,7 @@ function ChapterReader() {
               <ChevronLeft className="h-6 w-6" />
             </button>
             <button
-              onClick={() => setChapterPicker(true)}
+              onClick={openChapterPicker}
               aria-label="Escolher capítulo"
               className="min-w-[132px] rounded-2xl px-3 py-1.5 text-center transition-colors hover:bg-surface"
             >
@@ -653,46 +665,84 @@ function ChapterReader() {
         </div>
       )}
 
-      {/* Sheet de capítulos */}
-      {chapterPicker && meta && (
+      {/* Seletor premium de livro e capítulo */}
+      {chapterPicker && pickerMeta && (
         <div
-          className="fixed inset-0 z-50 flex items-end bg-black/60 p-0 backdrop-blur-[2px] animate-fade-in"
+          className="bible-picker-overlay fixed inset-0 z-50 flex items-end bg-black/60 p-0 backdrop-blur-[3px] animate-fade-in"
           onClick={() => setChapterPicker(false)}
         >
           <div
-            className="bible-picker-sheet max-h-[82vh] w-full overflow-y-auto overflow-x-visible rounded-t-3xl border-t border-border bg-background/95 p-5 pt-[calc(1rem+env(safe-area-inset-top))] pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-[0_-20px_80px_rgba(0,0,0,0.45)] backdrop-blur-xl animate-slide-up"
+            className="bible-picker-sheet max-h-[88vh] w-full overflow-y-auto overflow-x-visible rounded-t-[2rem] border-t border-border bg-background/95 p-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-[0_-24px_90px_rgba(0,0,0,0.48)] backdrop-blur-2xl animate-slide-up"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-border" />
-            <div className="flex items-start justify-between gap-4">
-              <div className="min-w-0">
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">{t("bible.chooseChapter")}</p>
-                <h2 className="mt-1 truncate text-lg font-extrabold">{meta.name}</h2>
-                <p className="mt-1 text-xs text-muted-foreground">{meta.chapters} {t("bible.chapterCount")}</p>
+            <div className="bible-sheet-header">
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">Navegação bíblica</p>
+                  <h2 className="mt-1 text-xl font-extrabold tracking-tight">Escolha um livro e capítulo</h2>
+                  <p className="mt-1 text-xs text-muted-foreground">Salte rapidamente para qualquer passagem.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setChapterPicker(false)}
+                  className="bible-close-button flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-border bg-surface text-muted-foreground shadow-sm transition-all hover:border-primary/35 hover:bg-primary/10 hover:text-primary active:scale-95"
+                  aria-label="Fechar seletor"
+                >
+                  <X className="h-5 w-5" />
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => setChapterPicker(false)}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-muted-foreground shadow-sm transition-colors hover:bg-surface-2 hover:text-foreground"
-                aria-label={t("bible.closeChapterPicker")}
-              >
-                <X className="h-5 w-5" />
-              </button>
             </div>
-            <Link to="/biblia" className="mt-4 inline-flex text-xs font-semibold text-primary">
-              {t("bible.allBooks")}
-            </Link>
-            <div className="mt-4 grid grid-cols-5 gap-2 sm:grid-cols-6">
-              {Array.from({ length: meta.chapters }, (_, i) => i + 1).map((c) => (
+
+            <label htmlFor="bible-book-picker" className="mt-5 block text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+              Livro da Bíblia
+            </label>
+            <div className="relative mt-2">
+              <BookOpen className="pointer-events-none absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-primary" />
+              <select
+                id="bible-book-picker"
+                value={pickerBook}
+                onChange={(event) => setPickerBook(Number(event.target.value))}
+                className="w-full appearance-none rounded-2xl border border-border bg-surface px-10 py-3.5 pr-10 text-sm font-bold text-foreground outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/15"
+              >
+                <optgroup label="Antigo Testamento">
+                  {BIBLE_BOOKS.filter((item) => item.testament === "AT").map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="Novo Testamento">
+                  {BIBLE_BOOKS.filter((item) => item.testament === "NT").map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </optgroup>
+              </select>
+              <ChevronRight className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 rotate-90 text-muted-foreground" />
+            </div>
+
+            <div className="mt-5 flex items-end justify-between gap-3">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Capítulos</p>
+                <h3 className="mt-1 text-lg font-extrabold">{pickerMeta.name}</h3>
+              </div>
+              <span className="rounded-full bg-primary/10 px-3 py-1.5 text-[10px] font-extrabold text-primary">
+                {pickerMeta.chapters} capítulos
+              </span>
+            </div>
+
+            <div className="mt-3 grid grid-cols-5 gap-2 sm:grid-cols-6">
+              {Array.from({ length: pickerMeta.chapters }, (_, i) => i + 1).map((c) => (
                 <Link
                   key={c}
                   to="/biblia/$book/$chapter"
-                  params={{ book: String(book), chapter: String(c) }}
+                  params={{ book: String(pickerBook), chapter: String(c) }}
                   onClick={() => setChapterPicker(false)}
-                  aria-current={c === chapter ? "page" : undefined}
-                  className={`flex h-11 items-center justify-center rounded-2xl border text-sm font-bold transition-all active:scale-95 ${
-                    c === chapter
-                      ? "border-primary bg-primary text-primary-foreground shadow-[0_0_18px_hsl(var(--primary)/0.35)]"
+                  aria-current={pickerBook === book && c === chapter ? "page" : undefined}
+                  className={`flex h-12 items-center justify-center rounded-2xl border text-sm font-extrabold transition-all active:scale-95 ${
+                    pickerBook === book && c === chapter
+                      ? "border-primary bg-primary text-primary-foreground shadow-[0_0_20px_hsl(var(--primary)/0.35)]"
                       : "border-border bg-surface text-foreground/80 hover:border-primary/40 hover:bg-primary/10"
                   }`}
                 >
@@ -703,7 +753,6 @@ function ChapterReader() {
           </div>
         </div>
       )}
-
       <VersionCompareSheet
         open={compareOpen}
         onOpenChange={setCompareOpen}
