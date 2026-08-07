@@ -104,7 +104,7 @@ function MultiplayerPage() {
   const activePlayers = players.filter((player) => !["declined", "left"].includes(player.state));
   const isHost = room?.host_id === myId;
   const me = players.find((player) => player.user_id === myId);
-  const canStart = isHost && activePlayers.length >= 2 && activePlayers.every((player) => ["ready", "connected"].includes(player.state));
+  const canStart = isHost && activePlayers.length >= 2 && activePlayers.every((player) => player.state === "ready");
 
   const createRoom = async () => {
     if (busy) return;
