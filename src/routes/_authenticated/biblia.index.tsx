@@ -7,13 +7,11 @@ import { useBiblePrefs } from "@/lib/bible-prefs";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useApp } from "@/lib/app-context";
 import {
-  ArrowLeft,
   BookMarked,
   BookOpen,
   Check,
   ChevronDown,
   ChevronRight,
-  Library,
   Loader2,
   Play,
   Search,
@@ -152,23 +150,10 @@ function BibliaIndex() {
     <div className="bible-index-shell pb-28">
       <div className="bible-index-header sticky top-0 z-30 bg-background/80 backdrop-blur-2xl">
         <div className="bible-index-header-inner mx-auto max-w-lg px-4 pb-3 pt-3">
-          <div className="grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-3">
-            <button
-              onClick={() => void nav({ to: "/perfil" })}
-              aria-label="Voltar"
-              className="flex h-10 w-10 items-center justify-center rounded-2xl border border-border/30 bg-surface/80 text-muted-foreground shadow-sm transition-all hover:border-primary/30 hover:text-foreground active:scale-95"
-            >
-              <ArrowLeft className="h-4.5 w-4.5" />
-            </button>
-
-            <div className="flex min-w-0 items-center gap-2.5">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/20">
-                <Library className="h-4.5 w-4.5" />
-              </span>
-              <div className="min-w-0">
-                <h1 className="truncate text-lg font-extrabold leading-tight">Bíblia de Estudos</h1>
-                <p className="mt-0.5 truncate text-[10px] text-muted-foreground">Leia, marque e aprofunde cada passagem</p>
-              </div>
+          <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-3">
+            <div className="min-w-0">
+              <h1 className="truncate text-lg font-extrabold leading-tight">Bíblia de Estudos</h1>
+              <p className="mt-0.5 truncate text-[10px] text-muted-foreground">Leia, marque e aprofunde cada passagem</p>
             </div>
 
             <ThemeToggle className="h-10 w-10 border-border bg-surface/80" />
