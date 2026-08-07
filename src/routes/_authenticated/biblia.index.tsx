@@ -147,34 +147,38 @@ function BibliaIndex() {
 
   return (
     <div className="bible-index-shell pb-28">
-      <div className="bible-index-header sticky top-0 z-30 bg-background/80 backdrop-blur-2xl">
-        <div className="bible-index-header-inner mx-auto max-w-lg px-4 pb-3 pt-3">
-          <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-3">
+      <div className="bible-index-header sticky top-0 z-30 border-b border-border/20 bg-background/85 backdrop-blur-2xl">
+        <div className="bible-index-header-inner mx-auto max-w-lg px-5 pb-4 pt-4">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-2">
             <div className="min-w-0">
-              <h1 className="truncate text-lg font-extrabold leading-tight">Bíblia de Estudos</h1>
-              <p className="mt-0.5 truncate text-[10px] text-muted-foreground">Leia, marque e aprofunde cada passagem</p>
+              <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-muted-foreground/70">
+                Bíblia
+              </p>
+              <h1 className="mt-1 truncate text-[1.35rem] font-semibold leading-none tracking-[-0.02em]">
+                Bíblia de Estudos
+              </h1>
             </div>
 
-            <ThemeToggle className="h-10 w-10 border-border bg-surface/80" />
+            <ThemeToggle className="h-9 w-9 rounded-full border-border/40 bg-transparent" />
             <Link
               to="/biblia/marcados"
               aria-label="Meus marcadores"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary shadow-sm transition-all hover:bg-primary/15 active:scale-95"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border/40 text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary active:scale-95"
             >
-              <BookMarked className="h-4.5 w-4.5" />
+              <BookMarked className="h-4 w-4" />
             </Link>
           </div>
 
-          <div className="bible-search-panel mt-3 rounded-[1.35rem] border border-border/30 bg-surface/85 p-1.5 shadow-lg shadow-black/10">
-            <div className="flex items-center gap-2 px-2">
-              <Search className="h-4.5 w-4.5 shrink-0 text-primary" />
+          <div className="bible-search-bar mt-4">
+            <div className="flex items-center gap-2.5 border-b border-border/40 pb-2 transition-colors focus-within:border-primary/50">
+              <Search className="h-4 w-4 shrink-0 text-muted-foreground/70" />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && void runSearch()}
-                placeholder="Busque livro, referência ou frase"
+                placeholder="Buscar livro, referência ou frase"
                 aria-label="Buscar na Bíblia"
-                className="min-w-0 flex-1 bg-transparent py-2.5 text-[15px] outline-none placeholder:text-muted-foreground/70"
+                className="min-w-0 flex-1 bg-transparent py-1 text-[15px] font-light tracking-[-0.01em] outline-none placeholder:text-muted-foreground/50"
               />
               {searching ? (
                 <Loader2 className="h-4 w-4 shrink-0 animate-spin text-primary" />
@@ -182,27 +186,31 @@ function BibliaIndex() {
                 <button
                   aria-label="Limpar busca"
                   onClick={clearSearch}
-                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground"
+                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  <X className="h-4 w-4" />
+                  <X className="h-3.5 w-3.5" />
                 </button>
               ) : null}
               <button
                 onClick={() => void runSearch()}
                 disabled={q.length < 3 || searching}
-                className="min-h-10 shrink-0 rounded-xl bg-primary px-3.5 py-2 text-[11px] font-bold text-primary-foreground shadow-md shadow-primary/15 transition-all hover:bg-primary-glow disabled:cursor-not-allowed disabled:opacity-40"
+                className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.16em] text-primary transition-opacity disabled:opacity-30"
               >
                 Buscar
               </button>
             </div>
 
-            <div className="mt-1 flex items-center justify-end gap-2 border-t border-border/20 px-2 pb-0.5 pt-2"><label className="flex items-center gap-2"><span className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground">Versão</span>
+            <div className="mt-2.5 flex items-center justify-end">
+              <label className="flex items-center gap-2">
+                <span className="text-[9px] font-semibold uppercase tracking-[0.2em] text-muted-foreground/60">
+                  Versão
+                </span>
                 <span className="relative">
                   <select
                     aria-label="Tradução"
                     value={translation}
                     onChange={(e) => setTranslation(e.target.value)}
-                    className="appearance-none rounded-lg border border-primary/20 bg-primary/10 py-1.5 pl-2.5 pr-7 text-[10px] font-extrabold text-primary outline-none"
+                    className="appearance-none rounded-full border border-border/40 bg-transparent py-1 pl-3 pr-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground/80 outline-none transition-colors hover:border-primary/40"
                   >
                     {availableTranslations.map((t) => (
                       <option key={t.code} value={t.code}>
@@ -210,19 +218,19 @@ function BibliaIndex() {
                       </option>
                     ))}
                   </select>
-                  <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-3 w-3 -translate-y-1/2 text-primary" />
+                  <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-3 w-3 -translate-y-1/2 text-muted-foreground" />
                 </span>
               </label>
             </div>
           </div>
 
           {bookMatches.length > 0 && !hits && (
-            <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+            <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
               {bookMatches.map((b) => (
                 <button
                   key={b.id}
                   onClick={() => openChapters(b.id)}
-                  className="shrink-0 rounded-full border border-border/30 bg-surface px-3 py-1.5 text-[11px] font-semibold shadow-sm transition-colors hover:border-primary/40 hover:text-primary"
+                  className="shrink-0 rounded-full border border-border/40 px-3 py-1.5 text-[11px] font-medium text-foreground/80 transition-colors hover:border-primary/40 hover:text-primary"
                 >
                   {b.name}
                 </button>
@@ -232,66 +240,71 @@ function BibliaIndex() {
         </div>
       </div>
 
-      <main className="bible-index-main mx-auto max-w-lg px-4 pt-5 animate-slide-up">
+      <main className="bible-index-main mx-auto max-w-lg px-5 pt-6 animate-slide-up">
         {searchError && (
-          <div className="mb-3 rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-xs text-destructive">
+          <div className="mb-4 rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-xs text-destructive">
             {searchError}
           </div>
         )}
 
         {readError && (
-          <div className="mb-3 flex items-center justify-between gap-3 rounded-2xl border border-amber-400/25 bg-amber-400/5 px-4 py-3 text-xs text-muted-foreground">
+          <div className="mb-4 flex items-center justify-between gap-3 rounded-xl border border-border/40 px-4 py-3 text-xs text-muted-foreground">
             <span>Não foi possível carregar seu progresso de leitura.</span>
-            <button type="button" onClick={() => void loadReadProgress()} className="shrink-0 rounded-xl bg-primary px-3 py-2 font-bold text-primary-foreground">
+            <button
+              type="button"
+              onClick={() => void loadReadProgress()}
+              className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary"
+            >
               Tentar novamente
             </button>
           </div>
         )}
 
         {hits && (
-          <section aria-live="polite" className="space-y-2.5">
-            <div className="flex items-end justify-between gap-3 px-1">
+          <section aria-live="polite">
+            <div className="flex items-end justify-between gap-3">
               <div>
-                <p className="text-xs font-bold text-foreground">Resultados da busca</p>
-                <p className="mt-0.5 text-[10px] text-muted-foreground">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-muted-foreground/70">
+                  Resultados
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">
                   {hits.length} resultado(s) · {translationByCode(translation).label}
                 </p>
               </div>
               <button
                 onClick={clearSearch}
-                className="rounded-full bg-primary/10 px-3 py-1.5 text-[10px] font-bold text-primary transition-colors hover:bg-primary/15"
+                className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary"
               >
-                Limpar busca
+                Limpar
               </button>
             </div>
 
-            {hits.map((h) => (
-              <Link
-                key={`${h.book}-${h.chapter}-${h.verse}`}
-                to="/biblia/$book/$chapter"
-                params={{ book: String(h.book), chapter: String(h.chapter) }}
-                hash={`v-${h.verse}`}
-                className="group flex items-center gap-3 rounded-2xl border border-border/30 bg-surface/80 p-3.5 shadow-sm transition-all hover:border-primary/30 hover:bg-surface"
-              >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/15">
-                  <BookOpen className="h-4.5 w-4.5" />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-primary">
-                    {bookNameById(h.book)} {h.chapter}:{h.verse}
+            <div className="mt-3 divide-y divide-border/25 border-y border-border/25">
+              {hits.map((h) => (
+                <Link
+                  key={`${h.book}-${h.chapter}-${h.verse}`}
+                  to="/biblia/$book/$chapter"
+                  params={{ book: String(h.book), chapter: String(h.chapter) }}
+                  hash={`v-${h.verse}`}
+                  className="group flex items-start gap-3 py-3.5 transition-colors hover:bg-foreground/[0.02]"
+                >
+                  <span className="min-w-0 flex-1">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">
+                      {bookNameById(h.book)} {h.chapter}:{h.verse}
+                    </span>
+                    <span className="mt-1.5 block line-clamp-2 text-[13px] font-light leading-relaxed text-foreground/75">
+                      {h.text}
+                    </span>
                   </span>
-                  <span className="mt-1 block line-clamp-2 text-xs leading-relaxed text-foreground/75">
-                    {h.text}
-                  </span>
-                </span>
-                <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
-              </Link>
-            ))}
+                  <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground/50 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+                </Link>
+              ))}
+            </div>
 
             {hits.length === 0 && (
-              <div className="rounded-3xl border border-dashed border-border px-6 py-12 text-center">
-                <Search className="mx-auto h-6 w-6 text-muted-foreground/60" />
-                <p className="mt-3 text-sm font-semibold">Nenhum resultado encontrado</p>
+              <div className="px-6 py-16 text-center">
+                <Search className="mx-auto h-5 w-5 text-muted-foreground/50" />
+                <p className="mt-4 text-sm font-medium">Nenhum resultado encontrado</p>
                 <p className="mt-1 text-xs text-muted-foreground">
                   Tente outra palavra, referência ou expressão.
                 </p>
@@ -302,16 +315,13 @@ function BibliaIndex() {
 
         {!hits && (
           <>
-            <section
-              className="bible-journey-card relative isolate overflow-hidden rounded-[1.9rem] border border-primary/20 bg-gradient-to-br from-primary/25 via-surface to-background shadow-xl shadow-black/25"
-            >
-              <div className="pointer-events-none absolute -right-12 -top-16 h-52 w-52 rounded-full bg-primary/20 blur-3xl" />
-              <BookOpen className="pointer-events-none absolute -bottom-7 -right-3 h-36 w-36 rotate-[-8deg] text-foreground/[0.035]" />
+            <section className="bible-journey-panel relative isolate overflow-hidden rounded-[1.5rem] border border-border/30 bg-surface/40 p-5">
+              <div className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-primary/10 blur-3xl" />
 
-              <div className="relative z-10 p-5">
+              <div className="relative z-10">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="h-3.5 w-3.5 text-primary" />
-                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-foreground/60">
+                  <Sparkles className="h-3 w-3 text-primary/70" />
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-muted-foreground/70">
                     Sua jornada na Palavra
                   </p>
                 </div>
@@ -320,64 +330,80 @@ function BibliaIndex() {
                   <Link
                     to="/biblia/$book/$chapter"
                     params={{ book: String(last.book), chapter: String(last.chapter) }}
-                    className="group mt-3 flex items-center gap-3 rounded-2xl border border-border/30 bg-foreground/[0.07] p-3.5 transition-colors hover:bg-foreground/[0.11]"
+                    className="group mt-4 flex items-center gap-3.5"
                   >
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-foreground/10 text-foreground shadow-lg ring-1 ring-foreground/10">
-                      <Play className="ml-0.5 h-5 w-5 fill-current" />
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-primary/25 text-primary transition-colors group-hover:bg-primary/10">
+                      <Play className="ml-0.5 h-4 w-4 fill-current" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-[10px] font-bold uppercase tracking-wider text-primary/80">
+                      <span className="block text-[9px] font-semibold uppercase tracking-[0.2em] text-muted-foreground/70">
                         Continuar de onde parou
                       </span>
-                      <span className="mt-1 block truncate text-base font-extrabold text-foreground">
+                      <span className="mt-1 block truncate text-lg font-semibold tracking-[-0.02em] text-foreground">
                         {bookNameById(last.book)} {last.chapter}
                       </span>
                     </span>
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-foreground/10">
-                      <ChevronRight className="h-4 w-4 text-foreground/75 transition-transform group-hover:translate-x-0.5" />
-                    </span>
+                    <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/60 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
                   </Link>
                 ) : (
-                  <div className="mt-3 rounded-2xl border border-border/30 bg-foreground/[0.06] p-4">
-                    <p className="text-sm font-bold text-foreground">Comece sua leitura hoje</p>
-                    <p className="mt-1 text-xs text-foreground/60">
+                  <div className="mt-4">
+                    <p className="text-lg font-semibold tracking-[-0.02em]">Comece sua leitura hoje</p>
+                    <p className="mt-1 text-xs font-light text-muted-foreground">
                       Escolha um livro abaixo e marque seu primeiro capítulo.
                     </p>
                   </div>
                 )}
 
-                <div className="mt-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="text-[10px] font-semibold text-foreground/55">Progresso completo</span>
-                    <span className="text-[10px] font-bold text-foreground/80">
-                      {readLoading ? "Carregando progresso…" : `${read.length} de 1189 capítulos`}
+                <div className="mt-5">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="text-[9px] font-semibold uppercase tracking-[0.2em] text-muted-foreground/60">
+                      Progresso
+                    </span>
+                    <span className="text-[10px] font-light text-muted-foreground">
+                      {readLoading ? "Carregando…" : `${read.length} de 1189 capítulos · ${progressPct}%`}
                     </span>
                   </div>
-                  <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-background/45 p-[2px] ring-1 ring-foreground/5">
+                  <div className="mt-2 h-px w-full bg-border/50">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-primary via-primary-glow to-primary shadow-[0_0_12px_rgba(167,139,250,.55)] transition-all duration-700"
+                      className="h-px bg-primary transition-all duration-700"
                       style={{ width: `${progressPct}%` }}
                     />
                   </div>
-                  <div className="mt-2 flex justify-end text-[10px]"><span className="font-extrabold text-primary/80">{progressPct}% concluído</span></div>
                 </div>
 
-                <div className="bible-journey-stats mt-4 grid grid-cols-3 gap-2 border-t border-border/30 pt-4">
-                  <div className="rounded-2xl bg-foreground/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-foreground/50">Lidos</p><p className="mt-1 text-sm font-extrabold text-foreground">{read.length}</p></div>
-                  <div className="rounded-2xl bg-foreground/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-foreground/50">Livros</p><p className="mt-1 text-sm font-extrabold text-foreground">{new Set(read.map((item) => item.book)).size}/66</p></div>
-                  <div className="rounded-2xl bg-foreground/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-foreground/50">Versão</p><p className="mt-1 truncate text-sm font-extrabold text-primary/80">{translationByCode(translation).label}</p></div>
+                <div className="bible-journey-stats mt-5 grid grid-cols-3 divide-x divide-border/30 border-t border-border/30 pt-4">
+                  <div className="pr-3">
+                    <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/60">
+                      Lidos
+                    </p>
+                    <p className="mt-1.5 text-base font-semibold tracking-[-0.02em]">{read.length}</p>
+                  </div>
+                  <div className="px-3">
+                    <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/60">
+                      Livros
+                    </p>
+                    <p className="mt-1.5 text-base font-semibold tracking-[-0.02em]">
+                      {new Set(read.map((item) => item.book)).size}/66
+                    </p>
+                  </div>
+                  <div className="pl-3">
+                    <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/60">
+                      Versão
+                    </p>
+                    <p className="mt-1.5 truncate text-base font-semibold tracking-[-0.02em] text-primary/85">
+                      {translationByCode(translation).label}
+                    </p>
+                  </div>
                 </div>
               </div>
             </section>
 
-            <section className="mt-6">
-              <div className="flex items-end justify-between gap-3 px-1">
-                <div>
-                  <h2 className="text-sm font-extrabold">Explore os livros</h2>
-                </div>
-                <span className="rounded-full bg-surface px-2.5 py-1 text-[10px] font-bold text-muted-foreground ring-1 ring-border">
-                  66 livros
-                </span>
+            <section className="mt-9">
+              <div className="flex items-baseline justify-between gap-3">
+                <h2 className="text-[9px] font-semibold uppercase tracking-[0.24em] text-muted-foreground/70">
+                  Explore os livros
+                </h2>
+                <span className="text-[10px] font-light text-muted-foreground/70">66 livros</span>
               </div>
 
               <div className="bible-testament-accordion mt-3">
@@ -387,29 +413,38 @@ function BibliaIndex() {
                   const panelId = `bible-testament-books-${t.toLowerCase()}`;
 
                   return (
-                    <div key={t} className={`bible-testament-group ${expanded ? "is-open" : ""}`}>
+                    <div
+                      key={t}
+                      className={`bible-testament-group border-t border-border/30 last:border-b ${expanded ? "is-open" : ""}`}
+                    >
                       <button
                         type="button"
                         onClick={() => setTestament((current) => (current === t ? null : t))}
                         aria-expanded={expanded}
                         aria-controls={panelId}
-                        className="bible-testament-option group flex w-full items-center gap-3 text-left"
+                        className="bible-testament-toggle group flex w-full items-center gap-3 py-4 text-left"
                       >
                         <span
-                          className={`bible-testament-badge flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-[10px] font-black tracking-wide transition-colors ${expanded ? "bg-primary text-primary-foreground" : "bg-foreground/[0.06] text-muted-foreground"}`}
+                          className={`bible-testament-badge flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-[9px] font-semibold tracking-[0.08em] transition-colors ${
+                            expanded
+                              ? "border-primary/40 text-primary"
+                              : "border-border/50 text-muted-foreground"
+                          }`}
                         >
                           {t}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className={`block text-sm font-black uppercase tracking-[0.06em] ${expanded ? "text-primary" : "text-foreground"}`}>
+                          <span
+                            className={`block text-sm font-medium tracking-[-0.01em] ${expanded ? "text-primary" : "text-foreground"}`}
+                          >
                             {t === "AT" ? "Antigo Testamento" : "Novo Testamento"}
                           </span>
-                          <span className="mt-0.5 block text-[10px] font-semibold text-muted-foreground">
+                          <span className="mt-0.5 block text-[10px] font-light text-muted-foreground">
                             {t === "AT" ? "39 livros" : "27 livros"}
                           </span>
                         </span>
                         <ChevronDown
-                          className={`h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-300 ease-out ${expanded ? "rotate-180 text-primary" : ""}`}
+                          className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-300 ease-out ${expanded ? "rotate-180 text-primary" : ""}`}
                         />
                       </button>
 
@@ -420,7 +455,7 @@ function BibliaIndex() {
                         className={`bible-testament-books ${expanded ? "is-open" : ""}`}
                         aria-hidden={!expanded}
                       >
-                        <div className="bible-testament-books-inner grid grid-cols-2 gap-2.5">
+                        <div className="bible-testament-books-inner divide-y divide-border/20 border-t border-border/20 pb-2">
                           {booksForTestament.map((b) => {
                             const done = readByBook[b.id] ?? 0;
                             const complete = done >= b.chapters;
@@ -433,45 +468,36 @@ function BibliaIndex() {
                                 tabIndex={expanded ? 0 : -1}
                                 onClick={() => openChapters(b.id)}
                                 aria-label={`Abrir ${b.name}`}
-                                className="bible-book-card group relative min-h-[84px] overflow-hidden rounded-[1.05rem] border border-border/30 bg-surface/75 p-2.5 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
+                                className="bible-book-row group flex w-full items-center gap-3.5 py-3 text-left transition-colors hover:bg-foreground/[0.02]"
                               >
-                                <div className="flex items-start gap-2">
-                                  <span
-                                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-[0.7rem] text-[9px] font-black ring-1 shadow-sm ${
-                                      complete
-                                        ? "bg-ancient/15 text-ancient ring-ancient/20"
-                                        : t === "AT"
-                                          ? "bg-amber-400/10 text-amber-300 ring-amber-300/15"
-                                          : "bg-violet-400/10 text-violet-300 ring-violet-300/15"
-                                    }`}
-                                  >
-                                    {complete ? <Check className="h-4 w-4" /> : b.abbr}
-                                  </span>
-                                  <span className="min-w-0 flex-1">
-                                    <span className="block line-clamp-1 text-[13px] font-black leading-tight tracking-[-0.01em]">{b.name}</span>
-                                    <span className="mt-1 block text-[9px] text-muted-foreground">
-                                      {done > 0 ? `${done}/${b.chapters} lidos` : `${b.chapters} capítulos`}
+                                <span
+                                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border text-[9px] font-semibold transition-colors ${
+                                    complete
+                                      ? "border-primary/40 bg-primary/10 text-primary"
+                                      : "border-border/45 text-muted-foreground group-hover:border-primary/30 group-hover:text-primary"
+                                  }`}
+                                >
+                                  {complete ? <Check className="h-3.5 w-3.5" /> : b.abbr}
+                                </span>
+
+                                <span className="min-w-0 flex-1">
+                                  <span className="flex items-baseline justify-between gap-3">
+                                    <span className="truncate text-[14px] font-medium tracking-[-0.01em]">
+                                      {b.name}
+                                    </span>
+                                    <span className="shrink-0 text-[10px] font-light text-muted-foreground/70">
+                                      {done > 0 ? `${done}/${b.chapters}` : `${b.chapters} cap.`}
                                     </span>
                                   </span>
-                                  <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/45 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
-                                </div>
+                                  <span className="mt-2 block h-px w-full bg-border/40">
+                                    <span
+                                      className={`block h-px transition-all duration-500 ${complete ? "bg-primary" : "bg-primary/60"}`}
+                                      style={{ width: `${bookPct}%` }}
+                                    />
+                                  </span>
+                                </span>
 
-                                <div className="mt-1.5 text-[9px] font-semibold text-muted-foreground/75">
-                                  <span>{complete ? "Concluído" : done > 0 ? `${bookPct}% em andamento` : "Pronto para começar"}</span>
-                                </div>
-
-                                <div className="mt-1 h-1 overflow-hidden rounded-full bg-background/70 ring-1 ring-black/10">
-                                  <div
-                                    className={`h-full rounded-full transition-all duration-500 ${
-                                      complete
-                                        ? "bg-ancient"
-                                        : t === "AT"
-                                          ? "bg-gradient-to-r from-amber-500 to-orange-300"
-                                          : "bg-gradient-to-r from-violet-500 to-fuchsia-300"
-                                    }`}
-                                    style={{ width: `${bookPct}%` }}
-                                  />
-                                </div>
+                                <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/40 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
                               </button>
                             );
                           })}
