@@ -107,9 +107,11 @@ function buildQuestions(gameType: SharedGameType, difficulty: GameDifficulty, se
   if (gameType === "versiculo") {
     const preferred = versesForDifficulty(difficulty);
     const fallback = BIBLICAL_VERSES.filter((item) => item.difficulty !== difficulty);
-    const source = uniqueGameContent([...preferred, ...fallback], (item) => item.reference);
-    const shuffled = seed ? shuffleWithSeed(source, seed) : [...source];
-    return uniqueGameContent(shuffled, (item) => item.reference).map((item): SharedQuestion => ({
+    const allCards = seed ? shuffleWithSeed([...preferred, ...fallback], seed) : [...preferred, ...fallback];
+    const uniqueReferences = uniqueGameContent(allCards, (item) => item.reference);
+    const uniqueIds = new Set(uniqueReferences.map((item) => item.id));
+    const shuffled = [...uniqueReferences, ...allCards.filter((item) => !uniqueIds.has(item.id))];
+    return shuffled.map((item): SharedQuestion => ({
       id: item.id,
       prompt: item.text,
       answer: item.reference,
