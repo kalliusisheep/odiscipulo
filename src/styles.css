@@ -3472,7 +3472,7 @@ body,
   transform: scale(0.99);
 }
 
-.bible-book-row > .bible-book-name {
+.bible-book-name {
   font-weight: 750;
   letter-spacing: -0.015em;
 }
