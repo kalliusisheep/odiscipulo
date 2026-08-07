@@ -6,7 +6,7 @@ import { SharedQuestionGame } from "@/components/games/SharedQuestionGame";
 import { MILLION_DIFFICULTY, MILLION_LEVELS, MILLION_QUESTIONS, randomMillionQuestions, randomMillionQuestionsWithSeed, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { recordGameResult } from "@/lib/game-leaderboard";
-import { canonicalGameContentKey, uniqueGameContent } from "@/lib/game-content";
+import { normalizeGameContentKey, uniqueGameVariantContent } from "@/lib/game-content";
 
 export const Route = createFileRoute("/_authenticated/jogos/milhao")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -84,14 +84,14 @@ function MillionPage() {
       ? randomMillionQuestionsWithSeed(difficulty, 999, seed)
       : randomMillionQuestions(difficulty, 999);
     const fallback = MILLION_QUESTIONS.filter((item) => item.difficulty !== difficulty);
-    const pool = uniqueGameContent([...preferred, ...fallback], (item) => item.id);
-    const recentKeys = new Set(recentIds.map(canonicalGameContentKey));
-    const sessionCandidates = pool.filter((candidate) => !sessionSeenRef.current.has(canonicalGameContentKey(candidate.id)));
-    const fresh = sessionCandidates.filter((candidate) => !recentKeys.has(canonicalGameContentKey(candidate.id)));
-    const selectedQuestions = uniqueGameContent([...fresh, ...sessionCandidates], (item) => item.id).slice(0, rounds);
-    selectedQuestions.forEach((item) => sessionSeenRef.current.add(canonicalGameContentKey(item.id)));
-    const storedKeys = selectedQuestions.map((item) => canonicalGameContentKey(item.id));
-    window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds.map(canonicalGameContentKey), ...storedKeys])].slice(-Math.max(rounds * 5, 80))));
+    const pool = uniqueGameVariantContent([...preferred, ...fallback], (item) => item.id);
+    const recentKeys = new Set(recentIds.map(normalizeGameContentKey));
+    const sessionCandidates = pool.filter((candidate) => !sessionSeenRef.current.has(normalizeGameContentKey(candidate.id)));
+    const fresh = sessionCandidates.filter((candidate) => !recentKeys.has(normalizeGameContentKey(candidate.id)));
+    const selectedQuestions = uniqueGameVariantContent([...fresh, ...sessionCandidates], (item) => item.id).slice(0, rounds);
+    selectedQuestions.forEach((item) => sessionSeenRef.current.add(normalizeGameContentKey(item.id)));
+    const storedKeys = selectedQuestions.map((item) => normalizeGameContentKey(item.id));
+    window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds.map(normalizeGameContentKey), ...storedKeys])].slice(-Math.max(rounds * 5, 80))));
     setQuestions(selectedQuestions);
     setScore(0);
     setStreak(0);
