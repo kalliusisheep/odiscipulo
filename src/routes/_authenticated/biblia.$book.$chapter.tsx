@@ -573,14 +573,14 @@ function ChapterReader() {
                       ? "Pausar narração"
                       : "Iniciar narração"
                 }
-                className="bible-chapter-nav-button bible-chapter-nav-play flex shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-all active:scale-90 disabled:cursor-wait disabled:opacity-60"
+                className="bible-chapter-nav-button bible-chapter-nav-play flex shrink-0 items-center justify-center rounded-full text-white transition-all active:scale-90 disabled:cursor-wait disabled:opacity-60"
               >
                 {narrationLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : narrationStarted && !narrationPaused && narrationIndex !== null ? (
                   <Pause className="h-4 w-4" />
                 ) : (
-                  <Play className="ml-0.5 h-3.5 w-3.5 fill-current" strokeWidth={1.6} />
+                  <Play className="ml-0.5 h-4 w-4 fill-current" strokeWidth={1.8} />
                 )}
               </button>
 
@@ -592,7 +592,7 @@ function ChapterReader() {
                   aria-label="Capítulo anterior"
                   className="bible-chapter-nav-pill-button order-1 flex shrink-0 items-center justify-center rounded-full text-muted-foreground transition-all hover:bg-primary/10 hover:text-primary active:scale-90 disabled:opacity-30"
                 >
-                  <ChevronLeft className="h-5 w-5" />
+                  <ChevronLeft className="h-6 w-6" />
                 </button>
                 <button
                   type="button"
@@ -614,7 +614,7 @@ function ChapterReader() {
                   aria-label="Próximo capítulo"
                   className="bible-chapter-nav-pill-button bible-chapter-nav-next order-3 flex shrink-0 items-center justify-center rounded-full transition-all hover:bg-primary/10 hover:text-primary active:scale-90 disabled:opacity-30"
                 >
-                  <ChevronRight className="h-5 w-5" />
+                  <ChevronRight className="h-6 w-6" />
                 </button>
               </div>
             </div>
