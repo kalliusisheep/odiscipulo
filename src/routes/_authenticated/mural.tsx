@@ -8,6 +8,7 @@ import { VoiceNotePlayer } from "@/components/VoiceNotePlayer";
 import { GifPicker } from "@/components/GifPicker";
 import { EmojiPicker } from "@/components/EmojiPicker";
 import { uploadMuralVoiceNote } from "@/lib/voice-upload";
+import { getVisibleUserIds } from "@/lib/contact-scope";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
@@ -697,9 +698,20 @@ function Feed() {
   const { say } = useMascot();
 
   const refresh = async (uid: string | null) => {
+    const visibleIds = uid ? await getVisibleUserIds(uid) : [];
+    if (visibleIds.length === 0) {
+      setItems([]);
+      setLikeCounts({});
+      setMyLikes(new Set());
+      setCommentCounts({});
+      setLoading(false);
+      return;
+    }
+
     const { data: feedItems } = await supabase
       .from("feed_items")
       .select("*")
+      .in("user_id", visibleIds)
       .order("created_at", { ascending: false })
       .limit(150);
     const list = (feedItems ?? []) as FeedItem[];
@@ -1136,9 +1148,19 @@ function Oracoes() {
   }, []);
 
   const refresh = async (uid: string | null) => {
+    const visibleIds = uid ? await getVisibleUserIds(uid) : [];
+    if (visibleIds.length === 0) {
+      setPosts([]);
+      setCounts({});
+      setMyAmens(new Set());
+      setLoading(false);
+      return;
+    }
+
     const { data: p } = await supabase
       .from("mural_posts")
       .select("*")
+      .in("user_id", visibleIds)
       .order("created_at", { ascending: false });
     const list = (p ?? []) as Post[];
     setPosts(list);
