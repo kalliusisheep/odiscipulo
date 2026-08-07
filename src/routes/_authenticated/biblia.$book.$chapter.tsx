@@ -349,7 +349,7 @@ function ChapterReader() {
 
 
   return (
-    <div className="bible-reader-shell min-h-screen bg-background pb-24 text-foreground transition-colors">
+    <div className="bible-reader-shell min-h-screen bg-background pb-16 text-foreground transition-colors">
       {/* Barra superior fixa */}
       <div className={`bible-reader-header sticky top-0 z-30 bg-background/85 backdrop-blur-xl ${readerScrolled ? "is-immersive" : ""}`}>
         <div className="bible-reader-header-inner mx-auto max-w-lg px-3 py-2 sm:px-4">
@@ -494,7 +494,7 @@ function ChapterReader() {
           </div>
         )}
 
-        {verses && verses.length > 0 && <div ref={chapterEndRef} className="h-8" aria-hidden="true" />}
+        {verses && verses.length > 0 && <div ref={chapterEndRef} className="h-2" aria-hidden="true" />}
       </div>
 
       
