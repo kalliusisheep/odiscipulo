@@ -2341,7 +2341,7 @@ body,
 
 
 .bible-reader-shell .bible-chapter-nav {
-  bottom: calc(4.05rem + env(safe-area-inset-bottom)) !important;
+  bottom: calc(3.75rem + env(safe-area-inset-bottom)) !important;
   padding-inline: 0 !important;
   transition: transform 460ms cubic-bezier(0.22, 0.72, 0.26, 1), opacity 320ms ease !important;
 }
@@ -2439,5 +2439,11 @@ body,
     min-width: 2rem !important;
     height: 2.25rem !important;
     min-height: 2.25rem !important;
+  }
+}
+
+.bible-reader-shell .bible-chapter-nav {
+  @media (prefers-reduced-motion: reduce) {
+    transition: none !important;
   }
 }
