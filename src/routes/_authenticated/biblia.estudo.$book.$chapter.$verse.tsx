@@ -382,7 +382,7 @@ function VerseStudy() {
                 <div className="h-4 w-7/12 animate-pulse rounded-full bg-foreground/10" />
               </div>
             ) : (
-              <p className="mt-4 text-[17px] font-semibold leading-relaxed text-foreground">
+              <p className="bible-verse-quote mt-4 text-[17px] font-semibold leading-relaxed text-foreground">
                 “{text ?? UNAVAILABLE}”
               </p>
             )}
