@@ -1,5 +1,62 @@
 import { supabase } from "@/integrations/supabase/client";
 
+const PENDING_RESULTS_KEY = "disciple.pending-game-results";
+
+type StoredGameResult = GameResult & { createdAt: number };
+
+function readPendingResults(): StoredGameResult[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(PENDING_RESULTS_KEY) ?? "[]");
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function savePendingResult(result: GameResult) {
+  if (typeof window === "undefined") return;
+  const pending = readPendingResults();
+  pending.push({ ...result, createdAt: Date.now() });
+  window.localStorage.setItem(PENDING_RESULTS_KEY, JSON.stringify(pending.slice(-20)));
+}
+
+function gameResultPayload(result: GameResult) {
+  return {
+    game_key: result.gameKey,
+    score: Math.max(0, Math.round(result.score)),
+    correct_answers: Math.max(0, Math.round(result.correctAnswers ?? 0)),
+    rounds: Math.max(0, Math.round(result.rounds ?? 0)),
+    best_streak: Math.max(0, Math.round(result.bestStreak ?? 0)),
+  };
+}
+
+async function submitGameResult(result: GameResult) {
+  const payload = gameResultPayload(result);
+  const { error } = await (supabase as any).rpc("record_game_result", {
+    _game_key: payload.game_key,
+    _score: payload.score,
+    _correct_answers: payload.correct_answers,
+    _rounds: payload.rounds,
+    _best_streak: payload.best_streak,
+  });
+  return error ?? null;
+}
+
+export async function flushPendingGameResults() {
+  const pending = readPendingResults();
+  if (!pending.length) return;
+  const remaining: StoredGameResult[] = [];
+  for (const result of pending) {
+    const error = await submitGameResult(result);
+    if (error) remaining.push(result);
+  }
+  if (typeof window !== "undefined") {
+    if (remaining.length) window.localStorage.setItem(PENDING_RESULTS_KEY, JSON.stringify(remaining.slice(-20)));
+    else window.localStorage.removeItem(PENDING_RESULTS_KEY);
+  }
+}
+
 export type GameKey = "milhao" | "personagem" | "versiculo" | "cruzadas";
 
 export type GameLeaderboardRow = {
@@ -24,21 +81,10 @@ export type GameResult = {
 };
 
 export async function recordGameResult(result: GameResult) {
-  const payload = {
-    game_key: result.gameKey,
-    score: Math.max(0, Math.round(result.score)),
-    correct_answers: Math.max(0, Math.round(result.correctAnswers ?? 0)),
-    rounds: Math.max(0, Math.round(result.rounds ?? 0)),
-    best_streak: Math.max(0, Math.round(result.bestStreak ?? 0)),
-  };
-  const { error } = await (supabase as any).rpc("record_game_result", {
-    _game_key: payload.game_key,
-    _score: payload.score,
-    _correct_answers: payload.correct_answers,
-    _rounds: payload.rounds,
-    _best_streak: payload.best_streak,
-  });
-  return error ?? null;
+  await flushPendingGameResults();
+  const error = await submitGameResult(result);
+  if (error) savePendingResult(result);
+  return error;
 }
 
 export async function recordSharedGameResult(roomId: string) {
@@ -49,6 +95,7 @@ export async function recordSharedGameResult(roomId: string) {
 }
 
 export async function fetchGameLeaderboard(gameKey: GameKey, limit = 100) {
+  await flushPendingGameResults();
   const { data, error } = await (supabase as any).rpc("get_game_leaderboard", {
     _game_key: gameKey,
     _limit: limit,
