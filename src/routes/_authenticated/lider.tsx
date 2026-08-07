@@ -14,7 +14,6 @@ import {
   Search,
   Users,
 } from "lucide-react";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
@@ -215,7 +214,6 @@ function LiderPage() {
             </p>
           </div>
         </div>
-        <ThemeToggle />
       </header>
 
       <section className="card-elevated overflow-hidden border-primary/10 bg-gradient-to-b from-surface to-surface/80">
