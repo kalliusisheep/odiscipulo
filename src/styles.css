@@ -1091,6 +1091,7 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
 }
 
 .bible-index-shell .bible-search-panel,
+.bible-index-shell .bible-testament-switcher,
 .bible-index-shell .bible-journey-card,
 .bible-index-shell .bible-book-card,
 .bible-reader-shell .bible-reader-surface,
