@@ -87,6 +87,8 @@ function ChapterReader() {
   const verseRefs = useRef<Record<number, HTMLButtonElement | null>>({});
   const chapterEndRef = useRef<HTMLDivElement | null>(null);
   const [chapterEndVisible, setChapterEndVisible] = useState(false);
+  const [readingProgress, setReadingProgress] = useState(0);
+  const [readerScrolled, setReaderScrolled] = useState(false);
 
   const meta = bookById(book);
 
@@ -220,6 +222,24 @@ function ChapterReader() {
   }, [verses]);
 
   useEffect(() => {
+    const updateReadingProgress = () => {
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollableHeight > 0
+        ? Math.min(100, Math.max(0, (window.scrollY / scrollableHeight) * 100))
+        : 0;
+      setReadingProgress(progress);
+      setReaderScrolled(window.scrollY > 56);
+    };
+    updateReadingProgress();
+    window.addEventListener("scroll", updateReadingProgress, { passive: true });
+    window.addEventListener("resize", updateReadingProgress);
+    return () => {
+      window.removeEventListener("scroll", updateReadingProgress);
+      window.removeEventListener("resize", updateReadingProgress);
+    };
+  }, []);
+
+  useEffect(() => {
     let alive = true;
     setVerses(null);
     setError(null);
@@ -270,10 +290,10 @@ function ChapterReader() {
 
 
   return (
-    <div className={`min-h-screen pb-32 transition-colors ${(theme === "white" || theme === "gray") ? "bg-[#fbfaf7] text-slate-900" : "bg-background text-foreground"}`}>
+    <div className={`bible-reader-shell min-h-screen pb-32 transition-colors ${(theme === "white" || theme === "gray") ? "bg-[#fbfaf7] text-slate-900" : "bg-background text-foreground"}`}>
       {/* Barra superior fixa */}
-      <div className="sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-xl">
-        <div className="mx-auto grid max-w-lg grid-cols-[auto_minmax(0,1fr)_auto_auto_auto] items-center gap-1.5 px-4 py-2.5">
+      <div className={`bible-reader-header sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-xl ${readerScrolled ? "is-immersive" : ""}`}>
+        <div className="bible-reader-header-inner mx-auto grid max-w-lg grid-cols-[auto_minmax(0,1fr)_auto_auto_auto] items-center gap-1.5 px-4 py-2.5">
           <Link
             to="/biblia"
             aria-label="Voltar"
@@ -283,7 +303,7 @@ function ChapterReader() {
           </Link>
           <button
             onClick={() => setChapterPicker(true)}
-            className="min-w-0 rounded-xl px-2 py-1 text-left transition-colors hover:bg-surface"
+            className="bible-chapter-trigger min-w-0 rounded-xl px-2 py-1 text-left transition-colors hover:bg-surface"
           >
             <span className="block truncate text-[15px] font-bold leading-tight">
               {bookNameById(book)} {chapter}
@@ -319,10 +339,12 @@ function ChapterReader() {
           </button>
           <ThemeToggle className="h-9 w-9 border-border bg-surface" />
         </div>
-
+        <div className="bible-reader-progress" aria-hidden="true">
+          <span style={{ width: `${readingProgress}%` }} />
+        </div>
       </div>
 
-      <div className="mx-auto max-w-lg px-4 pt-4 animate-slide-up">
+      <div className="bible-reader-content mx-auto max-w-lg px-4 pt-5 animate-slide-up">
         {!verses && !error && (
           <div className="mt-16 flex justify-center">
             <Loader2 className="h-6 w-6 animate-spin text-primary" />
@@ -357,12 +379,12 @@ function ChapterReader() {
         )}
 
         {verses && verses.length > 0 && (
-          <section className="bible-reader-surface rounded-[1.5rem] border border-border/70 bg-surface/35 p-3 shadow-lg shadow-black/5">
+          <section className="bible-reading-column bible-reader-surface rounded-[1.75rem] border border-border/70 bg-surface/35 p-3 shadow-lg shadow-black/5">
             <div className="mb-3 flex items-center justify-between border-b border-border/60 px-1 pb-3">
               <div><p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">Texto bíblico</p><p className="mt-0.5 text-xs text-muted-foreground">Leia, marque e reflita com calma</p></div>
               <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-extrabold text-primary">{label}</span>
             </div>
-          <div className="space-y-1">
+          <div className="bible-verse-list space-y-1">
             {verses.map((v) => {
               const color = highlightMap[v.verse];
               return (
@@ -373,16 +395,16 @@ function ChapterReader() {
                   }}
                   onClick={() => setSelected(v.verse)}
                   id={`v-${v.verse}`}
-                  className={`block w-full rounded-xl px-2 py-1.5 text-left transition-all ${
+                  className={`bible-verse-row block w-full rounded-xl px-2 py-1.5 text-left transition-all ${
                     narrationIndex === verses.findIndex((item) => item.verse === v.verse)
                       ? "bg-primary/[0.08] shadow-[inset_3px_0_0_hsl(var(--primary)),0_0_22px_hsl(var(--primary)/0.10)]"
                       : color
                         ? highlightClass(color)
-                        : "hover:bg-surface"
+                        : "bible-verse-row-idle"
                   }`}
                 >
-                  <span className="mr-1.5 align-super text-[11px] font-bold text-primary">{v.verse}</span>
-                  <span className="leading-relaxed" style={{ fontSize }}>
+                  <span className="bible-verse-number mr-1.5 align-super text-[11px] font-bold text-primary">{v.verse}</span>
+                  <span className="bible-verse-copy leading-relaxed" style={{ fontSize }}>
                     {v.text}
                   </span>
                   {favorites.includes(v.verse) && (
@@ -399,7 +421,7 @@ function ChapterReader() {
         )}
 
         {notes.length > 0 && (
-          <div className="mt-8 space-y-2">
+          <div className="bible-notes-section mt-8 space-y-2">
             <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
               Suas anotações neste capítulo
             </p>
@@ -419,7 +441,7 @@ function ChapterReader() {
 
       
       {verses && verses.length > 0 && narrationStarted && (
-        <div className="fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-20 px-4">
+        <div className="bible-floating-control fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-20 px-4">
           <div className="mx-auto flex max-w-lg items-center gap-3 rounded-2xl border border-border bg-background/95 px-3 py-2.5 shadow-xl backdrop-blur-xl">
             <button
               onClick={() => {
@@ -481,7 +503,7 @@ function ChapterReader() {
 
       {/* Controles de leitura (player + fonte/versões) */}
       {verses && !narrationStarted && (
-        <div className="fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-20 px-4">
+        <div className="bible-floating-control fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-20 px-4">
           <div className="mx-auto flex max-w-lg justify-end gap-2">
             <button
               onClick={() => startNarration()}
@@ -504,7 +526,7 @@ function ChapterReader() {
 
       {/* Navegação contextual no fim do capítulo */}
       {verses && chapterEndVisible && (
-        <div className="fixed inset-x-0 bottom-[calc(9rem+env(safe-area-inset-bottom))] z-20 flex justify-center px-4 animate-slide-up">
+        <div className="bible-chapter-nav fixed inset-x-0 bottom-[calc(9rem+env(safe-area-inset-bottom))] z-20 flex justify-center px-4 animate-slide-up">
           <div className="flex items-center gap-2 rounded-[1.5rem] border border-primary/20 bg-background/95 p-2 shadow-2xl shadow-primary/15 backdrop-blur-xl">
             <button
               onClick={() => go(-1)}
@@ -546,7 +568,7 @@ function ChapterReader() {
           onClick={() => setSettingsOpen(false)}
         >
           <div
-            className="w-full rounded-t-3xl border-t border-border bg-background p-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] animate-slide-up"
+            className="bible-modal-sheet w-full rounded-t-3xl border-t border-border bg-background p-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] animate-slide-up"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-border" />
@@ -632,7 +654,7 @@ function ChapterReader() {
           onClick={() => setChapterPicker(false)}
         >
           <div
-            className="max-h-[82vh] w-full overflow-y-auto overflow-x-visible rounded-t-3xl border-t border-border bg-background/95 p-5 pt-[calc(1rem+env(safe-area-inset-top))] pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-[0_-20px_80px_rgba(0,0,0,0.45)] backdrop-blur-xl animate-slide-up"
+            className="bible-picker-sheet max-h-[82vh] w-full overflow-y-auto overflow-x-visible rounded-t-3xl border-t border-border bg-background/95 p-5 pt-[calc(1rem+env(safe-area-inset-top))] pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-[0_-20px_80px_rgba(0,0,0,0.45)] backdrop-blur-xl animate-slide-up"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-border" />
