@@ -3424,3 +3424,75 @@ body,
     transition: none;
   }
 }
+
+
+/* Premium Bible book modules */
+.bible-book-list {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.7rem 0.35rem 0.35rem;
+  border-top: 1px solid color-mix(in oklab, var(--border) 42%, transparent);
+}
+
+.bible-book-row {
+  min-height: 4.25rem;
+  padding: 0.62rem 0.72rem;
+  border: 1px solid color-mix(in oklab, var(--border) 56%, transparent);
+  border-radius: 0.95rem;
+  background:
+    linear-gradient(
+      110deg,
+      color-mix(in oklab, var(--surface) 88%, transparent),
+      color-mix(in oklab, var(--surface-2) 34%, transparent)
+    );
+  box-shadow: inset 0 1px 0 color-mix(in oklab, var(--foreground) 5%, transparent);
+  font-family: var(--font-sans);
+  transition:
+    border-color 220ms ease,
+    background 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.bible-book-row:hover {
+  border-color: color-mix(in oklab, var(--primary) 32%, var(--border));
+  background:
+    linear-gradient(
+      110deg,
+      color-mix(in oklab, var(--primary) 7%, var(--surface)),
+      color-mix(in oklab, var(--surface-2) 42%, transparent)
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--foreground) 7%, transparent),
+    0 10px 22px -22px color-mix(in oklab, var(--primary) 76%, transparent);
+  transform: translateY(-1px);
+}
+
+.bible-book-row:active {
+  transform: scale(0.99);
+}
+
+.bible-book-row > .bible-book-name {
+  font-weight: 750;
+  letter-spacing: -0.015em;
+}
+
+.bible-book-row > span:first-child {
+  border-color: color-mix(in oklab, var(--border) 72%, transparent);
+  background: color-mix(in oklab, var(--foreground) 4%, transparent);
+}
+
+.bible-book-row:hover > span:first-child {
+  border-color: color-mix(in oklab, var(--primary) 34%, var(--border));
+  background: color-mix(in oklab, var(--primary) 8%, transparent);
+}
+
+.bible-book-progress {
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bible-book-row {
+    transition: none;
+  }
+}
