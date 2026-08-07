@@ -38,15 +38,7 @@ export async function recordGameResult(result: GameResult) {
     _rounds: payload.rounds,
     _best_streak: payload.best_streak,
   });
-  if (!error) return null;
-
-  const { data: auth } = await supabase.auth.getUser();
-  if (!auth.user) return error;
-  const fallback = await (supabase as any).from("game_scores").insert({
-    user_id: auth.user.id,
-    ...payload,
-  });
-  return fallback.error ?? null;
+  return error ?? null;
 }
 
 export async function fetchGameLeaderboard(gameKey: GameKey, limit = 100) {
