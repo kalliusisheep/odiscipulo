@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useMascot, muralPostLines } from "@/lib/mascot";
 import type { FeedItem, FeedKind } from "@/lib/feed";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { VoiceRecorder } from "@/components/VoiceRecorder";
 import { VoiceNotePlayer } from "@/components/VoiceNotePlayer";
 import { GifPicker } from "@/components/GifPicker";
@@ -102,7 +101,6 @@ function MuralPage() {
           <h1 className="mt-1 text-2xl font-extrabold tracking-tight">Mural</h1>
           <p className="text-xs text-muted-foreground">Um espaço para compartilhar, orar e guardar o que importa</p>
         </div>
-        <ThemeToggle />
       </header>
 
       <section aria-live="polite" className="relative isolate min-h-[164px] overflow-hidden rounded-[30px] border border-white/10 bg-gradient-to-br from-[#2b3364] via-[#1b2344] to-[#101624] text-white shadow-2xl shadow-primary/10">
