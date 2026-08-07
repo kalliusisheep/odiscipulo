@@ -1489,3 +1489,80 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
     width: 2rem;
   }
 }
+
+
+.bible-reading-hero {
+  margin-bottom: 1rem !important;
+  padding: 0.8rem 0.6rem 1.35rem !important;
+  border-top: 0 !important;
+  border-bottom: 1px solid color-mix(in srgb, hsl(var(--border)) 58%, transparent) !important;
+  text-align: center;
+}
+
+.bible-reading-hero-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: color-mix(in srgb, hsl(var(--muted-foreground)) 84%, transparent);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.bible-reading-hero-topline span:first-child {
+  color: hsl(var(--primary));
+}
+
+.bible-reading-hero-kicker {
+  margin: 1.1rem 0 0;
+  color: hsl(var(--primary));
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.bible-reading-hero h1 {
+  margin: 0.35rem 0 0;
+  color: hsl(var(--foreground));
+  font-size: clamp(1.55rem, 7vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+
+.bible-reading-hero-chapter {
+  display: block;
+  margin-top: 0.15rem;
+  color: hsl(var(--foreground));
+  font-family: "Literata";
+  font-size: clamp(4.4rem, 22vw, 6.6rem);
+  font-weight: 600;
+  letter-spacing: -0.1em;
+  line-height: 0.83;
+  text-shadow: 0 8px 30px color-mix(in srgb, hsl(var(--primary)) 16%, transparent);
+}
+
+.bible-reading-hero-caption {
+  margin: 0.85rem 0 0;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 380px) {
+  .bible-reading-hero {
+    padding-bottom: 1.15rem !important;
+  }
+
+  .bible-reading-hero-chapter {
+    font-size: clamp(4rem, 20vw, 5rem);
+  }
+
+  .bible-reading-hero-caption {
+    font-size: 0.62rem;
+  }
+}
