@@ -88,6 +88,7 @@ export type Verse = {
 };
 
 const VERIFIED_NVI_SECTION_HEADINGS: Record<string, BibleSectionHeading[]> = {
+  "1:1": [{ verse: 1, title: "O princípio" }],
   "40:5": [
     { verse: 1, title: "As Bem-aventuranças" },
     { verse: 13, title: "O Sal da Terra e a Luz do Mundo" },
@@ -108,7 +109,11 @@ export function sectionHeadingFor(
     (heading) => heading.verse === verse,
   )?.title;
 }
-const FREE_PT_HEADING_TRANSLATIONS = new Set(PT_TRANSLATIONS.map((translation) => translation.code));
+const FREE_PT_HEADING_TRANSLATIONS = new Set(
+  PT_TRANSLATIONS
+    .filter((translation) => translation.code !== "NVIPT")
+    .map((translation) => translation.code),
+);
 const FREE_SECTION_HEADINGS_BASE = "/data/bible-section-headings-pt-1911";
 type FreeSectionHeading = BibleSectionHeading & { chapter: number };
 const freeSectionHeadingsCache = new Map<number, Promise<FreeSectionHeading[]>>();
