@@ -590,7 +590,7 @@ function ChapterReader() {
                   onClick={() => go(-1)}
                   disabled={chapter <= 1}
                   aria-label="Capítulo anterior"
-                  className="bible-chapter-nav-pill-button order-1 flex shrink-0 items-center justify-center rounded-full text-muted-foreground transition-all hover:bg-primary/10 hover:text-primary active:scale-90 disabled:opacity-30"
+                  className="bible-chapter-nav-pill-button order-1 flex shrink-0 items-center justify-center rounded-full text-white transition-all hover:bg-white/10 active:scale-90 disabled:opacity-100"
                 >
                   <ChevronLeft className="h-6 w-6" />
                 </button>
@@ -612,7 +612,7 @@ function ChapterReader() {
                   onClick={() => go(1)}
                   disabled={!meta || chapter >= meta.chapters}
                   aria-label="Próximo capítulo"
-                  className="bible-chapter-nav-pill-button bible-chapter-nav-next order-3 flex shrink-0 items-center justify-center rounded-full transition-all hover:bg-primary/10 hover:text-primary active:scale-90 disabled:opacity-30"
+                  className="bible-chapter-nav-pill-button bible-chapter-nav-next order-3 flex shrink-0 items-center justify-center rounded-full text-white transition-all hover:bg-white/10 active:scale-90 disabled:opacity-100"
                 >
                   <ChevronRight className="h-6 w-6" />
                 </button>
