@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { BIBLE_BOOKS, bookById, bookNameById } from "@/data/bible-books";
 import { searchBible, translationByCode, translationsForLanguage } from "@/lib/bible-source";
 import { listReadChapters } from "@/lib/bible-user-data";
@@ -63,7 +63,7 @@ function BibliaIndex() {
   const [readError, setReadError] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
 
-  const loadReadProgress = async () => {
+  const loadReadProgress = useCallback(async () => {
     setReadLoading(true);
     setReadError(false);
     try {
@@ -73,11 +73,11 @@ function BibliaIndex() {
     } finally {
       setReadLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     void loadReadProgress();
-  }, []);
+  }, [loadReadProgress]);
 
   const readSet = useMemo(() => new Set(read.map((r) => `${r.book}:${r.chapter}`)), [read]);
   const last = read[read.length - 1];
@@ -104,7 +104,7 @@ function BibliaIndex() {
     if (q.length < 3) return;
     setSearchError(null);
 
-    const reference = q.match(/^(.+?)\\s+(\\d{1,3})(?::|\\.)(\\d{1,3})$/);
+    const reference = q.match(/^(.+?)\s+(\d{1,3})(?::|\.)(\d{1,3})$/);
     if (reference) {
       const normalizedBook = normalize(reference[1]);
       const book = BIBLE_BOOKS.find(
