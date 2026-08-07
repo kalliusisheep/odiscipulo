@@ -75,20 +75,34 @@ function MillionPage() {
 
   const start = () => {
     scoreSaved.current = false;
-    startGameMusic("million"); playGameSfx("start");
+    startGameMusic("million");
+    playGameSfx("start");
     const recentKey = `million_recent_questions_${difficulty}`;
     const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
-    const candidates = seed ? randomMillionQuestionsWithSeed(difficulty, 999, seed) : randomMillionQuestions(difficulty, 999);
-    const sessionCandidates = candidates.filter((candidate) => !sessionSeenRef.current.has(candidate.id));
-    const fresh = sessionCandidates.filter((candidate) => !recentIds.includes(candidate.id));
-    const selectedQuestions = [...fresh, ...sessionCandidates]
-      .filter((question, index, items) => items.findIndex((candidate) => candidate.id === question.id) === index)
-      .slice(0, rounds);
-    selectedQuestions.forEach((question) => sessionSeenRef.current.add(question.id));
-    window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...selectedQuestions.map((question) => question.id)])].slice(-Math.max(rounds * 5, 40))));
-    setQuestions(selectedQuestions); setScore(0); setStreak(0); setBestStreak(0); setUsedLifelines([]); setCorrectAnswers(0); setWeakness({}); setTimeLeft(MILLION_DIFFICULTY[difficulty].timeLimit); setConsultations(null); startedAt.current = Date.now(); setPhase("playing");
+    const preferred = seed
+      ? randomMillionQuestionsWithSeed(difficulty, 999, seed)
+      : randomMillionQuestions(difficulty, 999);
+    const fallback = MILLION_QUESTIONS.filter((item) => item.difficulty !== difficulty);
+    const pool = uniqueGameContent([...preferred, ...fallback], (item) => item.id);
+    const recentKeys = new Set(recentIds.map(canonicalGameContentKey));
+    const sessionCandidates = pool.filter((candidate) => !sessionSeenRef.current.has(canonicalGameContentKey(candidate.id)));
+    const fresh = sessionCandidates.filter((candidate) => !recentKeys.has(canonicalGameContentKey(candidate.id)));
+    const selectedQuestions = uniqueGameContent([...fresh, ...sessionCandidates], (item) => item.id).slice(0, rounds);
+    selectedQuestions.forEach((item) => sessionSeenRef.current.add(canonicalGameContentKey(item.id)));
+    const storedKeys = selectedQuestions.map((item) => canonicalGameContentKey(item.id));
+    window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds.map(canonicalGameContentKey), ...storedKeys])].slice(-Math.max(rounds * 5, 80))));
+    setQuestions(selectedQuestions);
+    setScore(0);
+    setStreak(0);
+    setBestStreak(0);
+    setUsedLifelines([]);
+    setCorrectAnswers(0);
+    setWeakness({});
+    setTimeLeft(MILLION_DIFFICULTY[difficulty].timeLimit);
+    setConsultations(null);
+    startedAt.current = Date.now();
+    setPhase(selectedQuestions.length ? "playing" : "finished");
   };
-
   const answer = useCallback((value: string | null) => {
     if (phase !== "playing" || !question) return;
     const isCorrect = value === question.answer;
