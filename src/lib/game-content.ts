@@ -28,3 +28,16 @@ export function uniqueGameContent<T>(items: T[], getKey: (item: T) => string) {
     return true;
   });
 }
+/**
+ * Removes only exact duplicate variants while preserving generated
+ * variation and question-type suffixes.
+ */
+export function uniqueGameVariantContent<T>(items: T[], getKey: (item: T) => string) {
+  const seen = new Set<string>();
+  return items.filter((item) => {
+    const key = normalizeGameContentKey(getKey(item));
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
