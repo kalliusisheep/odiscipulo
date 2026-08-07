@@ -304,7 +304,7 @@ function BibliaIndex() {
         {!hits && (
           <>
             <section
-              className="bible-journey-card relative isolate overflow-hidden rounded-[1.9rem] border border-primary/20 bg-gradient-to-br from-primary/25 via-surface to-background shadow-xl shadow-black/25"}
+              className="bible-journey-card relative isolate overflow-hidden rounded-[1.9rem] border border-primary/20 bg-gradient-to-br from-primary/25 via-surface to-background shadow-xl shadow-black/25"
             >
               <div className="pointer-events-none absolute -right-12 -top-16 h-52 w-52 rounded-full bg-primary/20 blur-3xl" />
               <BookOpen className="pointer-events-none absolute -bottom-7 -right-3 h-36 w-36 rotate-[-8deg] text-foreground/[0.035]" />
