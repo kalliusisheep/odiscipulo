@@ -143,15 +143,40 @@ function createQuestions(fact: BibleFact): MillionQuestion[] {
   ];
 }
 
+const INVALID_GAME_COPY = /examine|consta nos livros|consulte|sua aparição está registrada|é mencionado nas escrituras|essa personagem|oração|oracao/i;
+
+const isValidFact = (fact: BibleFact) => {
+  const answerOptions = [fact.answer, ...fact.distractors].map((option) => option.trim()).filter(Boolean);
+  const referenceOptions = [fact.reference, ...fact.referenceChoices].map((option) => option.trim()).filter(Boolean);
+  const text = [fact.prompt, fact.answer, fact.statement, fact.completion, fact.reference, fact.explanation].join(" ");
+  return Boolean(
+    fact.id.trim()
+    && fact.prompt.trim()
+    && fact.answer.trim()
+    && fact.statement.trim()
+    && fact.completion.trim()
+    && fact.reference.trim()
+    && fact.explanation.trim()
+  )
+    && answerOptions.length === 4
+    && new Set(answerOptions).size === answerOptions.length
+    && referenceOptions.length === 3
+    && new Set(referenceOptions).size === referenceOptions.length
+    && !INVALID_GAME_COPY.test(text);
+};
+
 const isValidQuestion = (question: MillionQuestion) => {
   const options = question.options.map((option) => option.trim()).filter(Boolean);
+  const text = [question.prompt, question.answer, question.explanation, question.reference].join(" ");
   return Boolean(question.prompt.trim() && question.answer.trim() && question.reference.trim())
     && options.length >= 2
     && new Set(options).size === options.length
-    && options.includes(question.answer);
+    && options.includes(question.answer)
+    && !INVALID_GAME_COPY.test(text);
 };
 
-export const MILLION_QUESTIONS = BIBLE_FACTS.flatMap(createQuestions).filter(isValidQuestion);
+const VALID_BIBLE_FACTS = BIBLE_FACTS.filter(isValidFact);
+export const MILLION_QUESTIONS = VALID_BIBLE_FACTS.flatMap(createQuestions).filter(isValidQuestion);
 export const millionQuestionsForDifficulty = (difficulty: MillionDifficulty) =>
   MILLION_QUESTIONS.filter((question) => {
     if (question.difficulty !== difficulty) return false;
