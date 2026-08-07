@@ -139,6 +139,7 @@ function CrosswordPage() {
   const [selectedCell, setSelectedCell] = useState<string | null>(null);
   const [activeWordId, setActiveWordId] = useState<string | null>(null);
   const [completed, setCompleted] = useState<string[]>([]);
+  const [completedTotal, setCompletedTotal] = useState(0);
   const [errors, setErrors] = useState(0);
   const [hints, setHints] = useState(0);
   const [seconds, setSeconds] = useState(0);
@@ -167,6 +168,7 @@ function CrosswordPage() {
     setSelectedCell(null);
     setActiveWordId(null);
     setCompleted([]);
+    setCompletedTotal(0);
     setErrors(0);
     setHints(0);
     setSeconds(0);
@@ -208,7 +210,7 @@ function CrosswordPage() {
     puzzle.placements.forEach((placement) => {
       const cells = placement.word.word.split("").map((_, index) => key(placement.row + (placement.direction === "down" ? index : 0), placement.col + (placement.direction === "across" ? index : 0)));
       if (cells.every((cellKey, index) => nextLetters[cellKey] === placement.word.word[index]) && !completed.includes(placement.word.id)) {
-        setCompleted((items) => [...items, placement.word.id]); setScore((value) => value + Math.round(placement.word.word.length * 14 * config.multiplier + Math.max(0, 100 - seconds))); tone(true); navigator.vibrate?.([20, 30, 20]);
+        setCompleted((items) => [...items, placement.word.id]); setCompletedTotal((value) => value + 1); setScore((value) => value + Math.round(placement.word.word.length * 14 * config.multiplier + Math.max(0, 100 - seconds))); tone(true); navigator.vibrate?.([20, 30, 20]);
       }
     });
   };
@@ -300,8 +302,8 @@ function CrosswordPage() {
   useEffect(() => {
     if (phase !== "finished" || scoreSaved.current) return;
     scoreSaved.current = true;
-    void recordGameResult({ gameKey: "cruzadas", score, correctAnswers: completed.length, rounds });
-  }, [completed.length, phase, rounds, score]);
+    void recordGameResult({ gameKey: "cruzadas", score, correctAnswers: completedTotal, rounds });
+  }, [completedTotal, phase, rounds, score]);
   if (phase === "setup" && !modeSelected) return <GameModeChooser title="Palavras Cruzadas" description="Escolha uma grade para resolver sozinho ou reúna seus amigos para um desafio bíblico em sala." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=cruzadas"; }} />;
   if (phase === "setup") return <Setup difficulty={difficulty} setDifficulty={setDifficulty} theme={theme} setTheme={setTheme} rounds={rounds} setRounds={setRounds} onStart={start} />;
 
