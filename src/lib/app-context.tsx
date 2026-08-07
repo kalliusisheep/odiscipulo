@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useLayoutEffect, useState, type ReactNode } from "react";
 import type { BibleVersion } from "@/data/content";
+import { startTranslationRuntime } from "@/lib/translation-runtime";
 import {
   type AppLanguage,
   type AppTheme,
@@ -92,6 +93,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
     applyTheme(theme, language);
   }, [language, theme]);
+
+  useEffect(() => startTranslationRuntime(language), [language]);
 
   const setLanguage = (nextLanguage: AppLanguage) => setLanguageState(nextLanguage);
   const setTheme = (nextTheme: AppTheme) => setThemeState(nextTheme);
