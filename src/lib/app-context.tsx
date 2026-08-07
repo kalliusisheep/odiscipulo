@@ -34,7 +34,7 @@ function isLanguage(value: string | null): value is AppLanguage {
 function normalizeTheme(value: string | null): AppTheme {
   if (value === "light") return "white";
   if (value === "dark") return "black";
-  if (value === "white" || value === "gray" || value === "black" || value === "pink") {
+  if (value === "white" || value === "gray" || value === "blue" || value === "black" || value === "pink") {
     return value;
   }
   return "black";
@@ -45,9 +45,9 @@ function applyTheme(theme: AppTheme, language: AppLanguage) {
   const root = document.documentElement;
   root.dataset.theme = theme;
   root.lang = language;
-  root.classList.remove("light", "dark", "theme-white", "theme-gray", "theme-black", "theme-pink");
+  root.classList.remove("light", "dark", "theme-white", "theme-gray", "theme-blue", "theme-black", "theme-pink");
   root.classList.add(`theme-${theme}`);
-  root.classList.add(theme === "black" || theme === "pink" ? "dark" : "light");
+  root.classList.add(theme === "black" || theme === "blue" || theme === "pink" ? "dark" : "light");
   root.style.colorScheme = theme === "black" || theme === "pink" ? "dark" : "light";
   const pageCopy = {
     "pt-BR": { title: "Disciple — Discipulado cristão gamificado", description: "Trilhas de estudo, quizzes e um Mentor IA para crescer na fé um dia por vez." },
@@ -107,7 +107,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const setTheme = (nextTheme: AppTheme) => setThemeState(nextTheme);
   const toggleTheme = () => {
     setThemeState((current) =>
-      current === "black" || current === "pink" ? "white" : "black",
+      current === "black" || current === "blue" || current === "pink" ? "white" : "black",
     );
   };
   const t = (key: I18nKey) => translate(language, key);
