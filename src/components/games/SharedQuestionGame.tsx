@@ -277,10 +277,11 @@ export function SharedQuestionGame({
         _hints: question.hints,
         _answer_hash: answerHash(question.answer),
       });
-      if (roundError) {
-        setError("Não foi possível preparar esta rodada.");
+      if (roundError || !data) {
+        setError("Não foi possível preparar esta rodada. Aguarde a sincronização e tente novamente.");
         return;
       }
+      setError("");
       setRemoteRound(data as RoomRound);
       setPhase(data.status === "active" ? "playing" : "answered");
       setTimeLeft(Math.max(0, timeLimit - Math.floor((Date.now() - new Date(data.opened_at).getTime()) / 1000)));
