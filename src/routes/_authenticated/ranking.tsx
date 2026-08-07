@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Crown, Flame, Gamepad2, Medal, RefreshCw, Sparkles, Trophy, Users, Zap } from "lucide-react";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { Crown, Gamepad2, Medal, RefreshCw, Sparkles, Trophy, Users, Zap } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { fetchGameLeaderboard, type GameKey, type GameLeaderboardRow } from "@/lib/game-leaderboard";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,7 +21,7 @@ function RankingPage() {
   const [refreshing, setRefreshing] = useState(false);
   const [loadError, setLoadError] = useState("");
 
-  const loadRanking = async (refresh = false) => {
+  const loadRanking = useCallback(async (refresh = false) => {
     if (refresh) setRefreshing(true);
     else setLoading(true);
     setLoadError("");
@@ -30,11 +30,11 @@ function RankingPage() {
     if (result.error) setLoadError("Não foi possível sincronizar este ranking agora. Tente atualizar novamente.");
     setLoading(false);
     setRefreshing(false);
-  };
+  }, [selectedGame]);
 
   useEffect(() => {
     void loadRanking();
-  }, [selectedGame]);
+  }, [loadRanking]);
 
   useEffect(() => {
     const channel = supabase
@@ -44,7 +44,7 @@ function RankingPage() {
     return () => {
       void supabase.removeChannel(channel);
     };
-  }, [selectedGame]);
+  }, [loadRanking, selectedGame]);
 
   const selectedTab = GAME_TABS.find((tab) => tab.key === selectedGame) ?? GAME_TABS[0];
   const podium = rows.slice(0, 3);
