@@ -24,7 +24,10 @@ BEGIN
       FOR SELECT TO authenticated
       USING (
         auth.uid() = user_id
-        OR public.are_friends(auth.uid(), user_id)
+        OR (
+          public.are_friends(auth.uid(), user_id)
+          OR public.are_friends(user_id, auth.uid())
+        )
       )';
   END IF;
 
@@ -52,7 +55,10 @@ BEGIN
           WHERE feed_items.id = feed_comments.item_id
             AND (
               auth.uid() = feed_items.user_id
-              OR public.are_friends(auth.uid(), feed_items.user_id)
+              OR (
+                public.are_friends(auth.uid(), feed_items.user_id)
+                OR public.are_friends(feed_items.user_id, auth.uid())
+              )
             )
         )
       )';
@@ -82,7 +88,10 @@ BEGIN
           WHERE feed_items.id = feed_likes.item_id
             AND (
               auth.uid() = feed_items.user_id
-              OR public.are_friends(auth.uid(), feed_items.user_id)
+              OR (
+                public.are_friends(auth.uid(), feed_items.user_id)
+                OR public.are_friends(feed_items.user_id, auth.uid())
+              )
             )
         )
       )';
