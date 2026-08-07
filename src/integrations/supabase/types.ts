@@ -462,6 +462,7 @@ export type Database = {
       }
       character_game_rounds: {
         Row: {
+          answer_hash: string
           character_id: string
           closed_at: string | null
           hints: Json
@@ -475,6 +476,7 @@ export type Database = {
           winner_id: string | null
         }
         Insert: {
+          answer_hash?: string
           character_id: string
           closed_at?: string | null
           hints?: Json
@@ -488,6 +490,7 @@ export type Database = {
           winner_id?: string | null
         }
         Update: {
+          answer_hash?: string
           character_id?: string
           closed_at?: string | null
           hints?: Json
@@ -1118,6 +1121,50 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      game_scores: {
+        Row: {
+          best_streak: number
+          correct_answers: number
+          game_key: string
+          id: string
+          played_at: string
+          room_id: string | null
+          rounds: number
+          score: number
+          user_id: string
+        }
+        Insert: {
+          best_streak?: number
+          correct_answers?: number
+          game_key: string
+          id?: string
+          played_at?: string
+          room_id?: string | null
+          rounds?: number
+          score?: number
+          user_id: string
+        }
+        Update: {
+          best_streak?: number
+          correct_answers?: number
+          game_key?: string
+          id?: string
+          played_at?: string
+          room_id?: string | null
+          rounds?: number
+          score?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_scores_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       group_members: {
         Row: {
@@ -1819,10 +1866,54 @@ export type Database = {
         }
         Returns: string
       }
+      ensure_character_game_round: {
+        Args: {
+          _answer_hash?: string
+          _character_id: string
+          _hints?: Json
+          _room_id: string
+          _round_number: number
+        }
+        Returns: {
+          answer_hash: string
+          character_id: string
+          closed_at: string | null
+          hints: Json
+          id: string
+          opened_at: string
+          points_available: number
+          revealed_hint_indexes: number[]
+          room_id: string
+          round_number: number
+          status: string
+          winner_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "character_game_rounds"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       find_or_create_church: { Args: { _name: string }; Returns: string }
       finish_challenge_step: {
         Args: { _challenge_id: string }
         Returns: undefined
+      }
+      get_game_leaderboard: {
+        Args: { _game_key: string; _limit?: number }
+        Returns: {
+          avatar_char: string
+          avatar_url: string
+          best_score: number
+          best_streak: number
+          display_name: string
+          games_played: number
+          position: number
+          total_score: number
+          user_id: string
+          username: string
+        }[]
       }
       get_my_discipleship_tree: {
         Args: never
@@ -1856,6 +1947,32 @@ export type Database = {
       }
       is_character_game_member: { Args: { _room_id: string }; Returns: boolean }
       normalize_church_name: { Args: { _name: string }; Returns: string }
+      record_game_result: {
+        Args: {
+          _best_streak?: number
+          _correct_answers?: number
+          _game_key: string
+          _rounds?: number
+          _score: number
+        }
+        Returns: {
+          best_streak: number
+          correct_answers: number
+          game_key: string
+          id: string
+          played_at: string
+          room_id: string | null
+          rounds: number
+          score: number
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "game_scores"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       remove_character_game_player: {
         Args: { _room_id: string; _user_id: string }
         Returns: boolean
@@ -1880,6 +1997,7 @@ export type Database = {
       reveal_character_game_hint: {
         Args: { _hint_index: number; _round_id: string }
         Returns: {
+          answer_hash: string
           character_id: string
           closed_at: string | null
           hints: Json
@@ -1902,6 +2020,7 @@ export type Database = {
       submit_character_game_answer: {
         Args: { _answer_hash: string; _is_correct: boolean; _round_id: string }
         Returns: {
+          answer_hash: string
           character_id: string
           closed_at: string | null
           hints: Json
