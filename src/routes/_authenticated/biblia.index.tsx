@@ -415,6 +415,8 @@ function BibliaIndex() {
 
                       <div
                         id={panelId}
+                        role="region"
+                        hidden={!expanded}
                         className={`bible-testament-books ${expanded ? "is-open" : ""}`}
                         aria-hidden={!expanded}
                       >
