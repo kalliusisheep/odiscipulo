@@ -1890,3 +1890,88 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
   border-color: transparent !important;
   box-shadow: inset 0 1px 0 color-mix(in srgb, hsl(var(--foreground)) 3%, transparent) !important;
 }
+
+/* Definitive Bible border pass: use valid OKLCH theme tokens. */
+.bible-index-shell [class*="border-border"],
+.bible-reader-shell [class*="border-border"],
+.bible-secondary-page [class*="border-border"] {
+  border-color: color-mix(in oklab, var(--foreground) 10%, transparent) !important;
+}
+
+.bible-index-shell .bible-search-panel,
+.bible-index-shell .bible-testament-switcher,
+.bible-index-shell .bible-journey-card,
+.bible-index-shell .bible-book-card,
+.bible-reader-shell .bible-reader-surface,
+.bible-secondary-page .bible-mark-card {
+  border-color: color-mix(in oklab, var(--foreground) 10%, transparent) !important;
+}
+
+.bible-index-shell .bible-search-panel:focus-within {
+  border-color: color-mix(in oklab, var(--primary) 42%, transparent) !important;
+}
+
+.bible-index-shell .bible-chapter-option,
+.bible-reader-shell .bible-chapter-option {
+  border-color: transparent !important;
+  box-shadow: inset 0 1px 0 color-mix(in oklab, var(--foreground) 3%, transparent) !important;
+}
+
+.bible-index-shell .bible-chapter-option[aria-current="page"],
+.bible-reader-shell .bible-chapter-option[aria-current="page"] {
+  border-color: color-mix(in oklab, var(--primary) 58%, transparent) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--primary) 16%, transparent),
+    0 8px 20px -16px color-mix(in oklab, var(--primary) 65%, transparent) !important;
+}
+
+.bible-index-shell .bible-chapter-option:hover,
+.bible-reader-shell .bible-chapter-option:hover {
+  border-color: color-mix(in oklab, var(--primary) 34%, transparent) !important;
+}
+
+.bible-reader-shell .bible-reader-header button,
+.bible-reader-shell .bible-reader-header a,
+.bible-reader-shell .bible-reader-action-row button {
+  border-color: transparent !important;
+  box-shadow: inset 0 1px 0 color-mix(in oklab, var(--foreground) 4%, transparent) !important;
+}
+
+.bible-reader-shell .bible-reader-header .bible-reader-version-pill {
+  border-color: color-mix(in oklab, var(--primary) 34%, transparent) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--primary) 12%, transparent),
+    0 8px 20px -16px color-mix(in oklab, var(--primary) 60%, transparent) !important;
+}
+
+.bible-reader-shell .bible-reader-header .bible-chapter-trigger {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.bible-reader-shell .bible-reader-header button:hover,
+.bible-reader-shell .bible-reader-header a:hover,
+.bible-reader-shell .bible-reader-action-row button:hover {
+  border-color: color-mix(in oklab, var(--primary) 28%, transparent) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--primary) 10%, transparent),
+    0 10px 24px -18px color-mix(in oklab, var(--primary) 65%, transparent) !important;
+}
+
+.bible-reader-shell .bible-chapter-nav > div {
+  border-color: color-mix(in oklab, var(--primary) 14%, transparent) !important;
+  box-shadow: 0 14px 30px -26px color-mix(in oklab, var(--primary) 65%, transparent) !important;
+}
+
+.bible-reader-shell .bible-chapter-nav button {
+  border-color: transparent !important;
+}
+
+.bible-reader-shell .bible-reader-header button:focus-visible,
+.bible-reader-shell .bible-reader-header a:focus-visible,
+.bible-reader-shell .bible-reader-action-row button:focus-visible,
+.bible-index-shell .bible-chapter-option:focus-visible,
+.bible-reader-shell .bible-chapter-option:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--primary) 64%, transparent);
+  outline-offset: 2px;
+}
