@@ -550,24 +550,35 @@ function BibliaIndex() {
                 })}
               </div>
 
-              <Link
-                to="/estudos/"
-                aria-label="Abrir Teologia Sistemática"
-                className="bible-testament-group bible-testament-toggle bible-theology-button mt-5 flex w-full items-center gap-3 text-left"
-              >
-                <span className="bible-testament-badge bible-theology-icon flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-[9px] font-semibold tracking-[0.08em]">
-                  <BookOpen className="h-4 w-4" />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block text-xs font-extrabold uppercase tracking-[0.08em]">
-                    Teologia Sistemática
+              <div className="mt-7 space-y-3">
+                <div className="px-1">
+                  <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-muted-foreground">
+                    Aprofundando na Palavra
+                  </p>
+                  <p className="mt-1 text-[10px] font-medium text-muted-foreground/75">
+                    Estudos para ir além da leitura.
+                  </p>
+                </div>
+
+                <Link
+                  to="/estudos/"
+                  aria-label="Abrir Teologia Sistemática"
+                  className="bible-testament-group bible-testament-toggle bible-theology-button mt-0 flex w-full items-center gap-3 text-left"
+                >
+                  <span className="bible-testament-badge bible-theology-icon flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-[9px] font-semibold tracking-[0.08em]">
+                    <BookOpen className="h-4 w-4" />
                   </span>
-                  <span className="mt-0.5 block text-[10px] font-medium text-muted-foreground">
-                    Estude os fundamentos da fé cristã
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-xs font-extrabold uppercase tracking-[0.08em]">
+                      Teologia Sistemática
+                    </span>
+                    <span className="mt-0.5 block text-[10px] font-medium text-muted-foreground">
+                      Estude os fundamentos da fé cristã
+                    </span>
                   </span>
-                </span>
-                <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/60" />
-              </Link>
+                  <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/60" />
+                </Link>
+              </div>
             </section>
           </>
         )}
