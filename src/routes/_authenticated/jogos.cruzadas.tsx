@@ -133,6 +133,8 @@ function generatePuzzle(difficulty: GameDifficulty, theme: CrosswordTheme | "tod
 
 const CROSSWORD_SESSION_HISTORY_KEY = "disciple.crossword-session-history.v2";
 
+type CrosswordMatchHistory = { signatures: Set<string>; wordIds: Set<string> };
+
 type CrosswordSessionHistory = {
   signatures: string[];
   wordIds: string[];
@@ -151,12 +153,16 @@ function readCrosswordSessionHistory(): CrosswordSessionHistory {
   }
 }
 
-function rememberCrosswordPuzzle(puzzle: ReturnType<typeof generatePuzzle>) {
-  if (typeof window === "undefined" || !puzzle.placements.length) return;
-  const signature = puzzle.placements
+function puzzleSignature(puzzle: ReturnType<typeof generatePuzzle>) {
+  return puzzle.placements
     .map((placement) => [placement.word.id, placement.row, placement.col, placement.direction].join(":"))
     .sort()
     .join("|");
+}
+
+function rememberCrosswordPuzzle(puzzle: ReturnType<typeof generatePuzzle>) {
+  if (typeof window === "undefined" || !puzzle.placements.length) return;
+  const signature = puzzleSignature(puzzle);
   const history = readCrosswordSessionHistory();
   const nextHistory: CrosswordSessionHistory = {
     signatures: [...new Set([...history.signatures, signature])].slice(-256),
@@ -174,12 +180,17 @@ function randomCrosswordSeed() {
   return Math.floor(Math.random() * 0x7fffffff);
 }
 
-function chooseCrosswordPuzzle(difficulty: GameDifficulty, theme: CrosswordTheme | "todos", baseSeed?: number) {
+function chooseCrosswordPuzzle(
+  difficulty: GameDifficulty,
+  theme: CrosswordTheme | "todos",
+  baseSeed?: number,
+  matchHistory?: CrosswordMatchHistory,
+) {
   const history = readCrosswordSessionHistory();
-  const knownSignatures = new Set(history.signatures);
-  const usedWordIds = new Set(history.wordIds);
+  const knownSignatures = new Set([...history.signatures, ...(matchHistory?.signatures ?? [])]);
+  const usedWordIds = new Set([...history.wordIds, ...(matchHistory?.wordIds ?? [])]);
   const eligibleVariations = CROSSWORD_VARIATIONS.filter((variation) => variation.difficulty === difficulty);
-  const historyIndex = history.signatures.length;
+  const historyIndex = history.signatures.length + (matchHistory?.signatures.size ?? 0);
   const seed = baseSeed ?? eligibleVariations[historyIndex % Math.max(1, eligibleVariations.length)]?.seed ?? randomCrosswordSeed();
   let best = generatePuzzle(difficulty, theme, seed);
   let bestScore = Number.NEGATIVE_INFINITY;
@@ -190,10 +201,7 @@ function chooseCrosswordPuzzle(difficulty: GameDifficulty, theme: CrosswordTheme
       : seed + attempt * 104729;
     const candidate = generatePuzzle(difficulty, theme, variationSeed);
     if (!candidate.placements.length) continue;
-    const signature = candidate.placements
-      .map((placement) => [placement.word.id, placement.row, placement.col, placement.direction].join(":"))
-      .sort()
-      .join("|");
+    const signature = puzzleSignature(candidate);
     const freshWords = candidate.placements.filter((placement) => !usedWordIds.has(placement.word.id)).length;
     const repeatedWords = candidate.placements.length - freshWords;
     const candidateScore =
@@ -209,6 +217,10 @@ function chooseCrosswordPuzzle(difficulty: GameDifficulty, theme: CrosswordTheme
   }
 
   rememberCrosswordPuzzle(best);
+  if (matchHistory && best.placements.length) {
+    matchHistory.signatures.add(puzzleSignature(best));
+    best.placements.forEach((placement) => matchHistory.wordIds.add(placement.word.id));
+  }
   return best;
 }
 
@@ -237,6 +249,7 @@ function CrosswordPage() {
   const [errorCell, setErrorCell] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const autoStarted = useRef(false);
+  const matchHistoryRef = useRef<CrosswordMatchHistory>({ signatures: new Set(), wordIds: new Set() });
   const config = CROSSWORD_DIFFICULTY[difficulty];
   const cellMap = useMemo(() => new Map(puzzle.cells.map((cell) => [key(cell.row, cell.col), cell])), [puzzle.cells]);
   const activePlacement = puzzle.placements.find((placement) => placement.word.id === activeWordId);
@@ -246,7 +259,8 @@ function CrosswordPage() {
     scoreSaved.current = false;
     startGameMusic();
     playGameSfx("start");
-    const nextPuzzle = chooseCrosswordPuzzle(difficulty, theme, seed);
+    matchHistoryRef.current = { signatures: new Set(), wordIds: new Set() };
+    const nextPuzzle = chooseCrosswordPuzzle(difficulty, theme, seed, matchHistoryRef.current);
     setPuzzle(nextPuzzle);
     setLetters({});
     setSelectedCell(null);
@@ -358,7 +372,7 @@ function CrosswordPage() {
   const startNextRound = useCallback(() => {
     const nextIndex = roundIndex + 1;
     const nextSeed = seed === undefined ? undefined : seed + nextIndex * 104729;
-    const nextPuzzle = chooseCrosswordPuzzle(difficulty, theme, nextSeed);
+    const nextPuzzle = chooseCrosswordPuzzle(difficulty, theme, nextSeed, matchHistoryRef.current);
     setRoundIndex(nextIndex);
     setPuzzle(nextPuzzle);
     setLetters({});
