@@ -150,7 +150,7 @@ function BibliaIndex() {
 
   return (
     <div className="bible-index-shell pb-28">
-      <div className="bible-index-header sticky top-0 z-30 border-b border-primary/10 bg-gradient-to-b from-primary/[0.08] via-background/95 to-background/90 shadow-xl shadow-black/10 backdrop-blur-2xl">
+      <div className="bible-index-header sticky top-0 z-30 bg-background/80 backdrop-blur-2xl">
         <div className="bible-index-header-inner mx-auto max-w-lg px-4 pb-3 pt-3">
           <div className="grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-3">
             <button
@@ -167,9 +167,6 @@ function BibliaIndex() {
               </span>
               <div className="min-w-0">
                 <h1 className="truncate text-lg font-extrabold leading-tight">Bíblia de Estudos</h1>
-                <p className="mt-0.5 truncate text-[10px] text-muted-foreground">
-                  Leia, marque e aprofunde cada passagem
-                </p>
               </div>
             </div>
 
@@ -213,10 +210,7 @@ function BibliaIndex() {
               </button>
             </div>
 
-            <div className="mt-1 flex items-center justify-between gap-3 border-t border-white/[0.06] px-2 pb-0.5 pt-2">
-              <span className="text-[10px] text-muted-foreground">Pesquisar em toda a Bíblia</span>
-              <label className="flex items-center gap-2">
-                <span className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground">Tradução</span>
+            <div className="mt-1 flex items-center justify-end gap-2 border-t border-white/[0.06] px-2 pb-0.5 pt-2"><label className="flex items-center gap-2"><span className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground">Versão</span>
                 <span className="relative">
                   <select
                     aria-label="Tradução"
@@ -383,13 +377,10 @@ function BibliaIndex() {
                       style={{ width: `${progressPct}%` }}
                     />
                   </div>
-                  <div className="mt-2 flex items-center justify-between text-[10px]">
-                    <span className="text-white/45">Toda leitura conta</span>
-                    <span className="font-extrabold text-violet-200">{progressPct}% concluído</span>
-                  </div>
+                  <div className="mt-2 flex justify-end text-[10px]"><span className="font-extrabold text-violet-200">{progressPct}% concluído</span></div>
                 </div>
 
-                <div className="mt-4 grid grid-cols-3 gap-2 border-t border-white/10 pt-4">
+                <div className="bible-journey-stats mt-4 grid grid-cols-3 gap-2 border-t border-white/10 pt-4">
                   <div className="rounded-2xl bg-white/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Lidos</p><p className="mt-1 text-sm font-extrabold text-white">{read.length}</p></div>
                   <div className="rounded-2xl bg-white/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Livros</p><p className="mt-1 text-sm font-extrabold text-white">{new Set(read.map((item) => item.book)).size}/66</p></div>
                   <div className="rounded-2xl bg-white/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Versão</p><p className="mt-1 truncate text-sm font-extrabold text-violet-200">{translationByCode(translation).label}</p></div>
@@ -401,9 +392,6 @@ function BibliaIndex() {
               <div className="flex items-end justify-between gap-3 px-1">
                 <div>
                   <h2 className="text-sm font-extrabold">Explore os livros</h2>
-                  <p className="mt-0.5 text-[10px] text-muted-foreground">
-                    Escolha um livro para ver seus capítulos
-                  </p>
                 </div>
                 <span className="rounded-full bg-surface px-2.5 py-1 text-[10px] font-bold text-muted-foreground ring-1 ring-border">
                   {testament === "AT" ? "39 livros" : "27 livros"}
@@ -435,9 +423,6 @@ function BibliaIndex() {
                         }`}>
                           {t === "AT" ? "39" : "27"}
                         </span>
-                      </span>
-                      <span className="mt-1 block truncate text-[9px] text-muted-foreground/75">
-                        {t === "AT" ? "Gênesis a Malaquias" : "Mateus a Apocalipse"}
                       </span>
                       {active && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-primary" />}
                     </button>
