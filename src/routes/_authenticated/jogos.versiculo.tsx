@@ -28,21 +28,6 @@ const roundOptions = [5, 10, 20, 30];
 
 function playTone(success: boolean) {
   playGameSfx(success ? "success" : "error");
-  return;
-  if (typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  try {
-    const AudioContextConstructor = window.AudioContext ?? (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (!AudioContextConstructor) return;
-    const context = new AudioContextConstructor();
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-    oscillator.type = "sine";
-    oscillator.frequency.value = success ? 660 : 220;
-    gain.gain.setValueAtTime(0.0001, context.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.07, context.currentTime + 0.01);
-    gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.22);
-    oscillator.connect(gain); gain.connect(context.destination); oscillator.start(); oscillator.stop(context.currentTime + 0.24);
-  } catch { /* áudio é um aprimoramento, não bloqueia a partida */ }
 }
 
 function shuffle<T>(items: T[]) { return [...items].sort(() => Math.random() - 0.5); }
