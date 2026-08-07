@@ -483,37 +483,37 @@ function BibliaIndex() {
             className="bible-picker-sheet max-h-[calc(100dvh-1rem)] w-full overflow-y-auto rounded-t-[2rem] border-t border-border/30 bg-background pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl animate-slide-up"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="sticky top-0 z-10 border-b border-border/20 bg-background/95 px-5 pb-4 pt-3 backdrop-blur-xl">
-              <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-white/15" />
-              <div className="flex items-center gap-3">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/20">
-                  <BookOpen className="h-5 w-5" />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <h2 className="truncate text-base font-extrabold">{picker.name}</h2>
-                  <p className="mt-0.5 text-[10px] text-muted-foreground">
-                    {picker.chapters} capítulos · {readByBook[picker.id] ?? 0} lidos
-                  </p>
+            <div className="sticky top-0 z-10 border-b border-border/15 bg-background/95 px-4 pb-3 pt-3 backdrop-blur-xl">
+              <div className="mx-auto mb-4 h-1 w-9 rounded-full bg-foreground/15" />
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-muted-foreground">Capítulos</p>
+                  <h2 className="mt-1 truncate text-xl font-black tracking-tight">{picker.name}</h2>
                 </div>
-                <button
-                  aria-label="Fechar"
-                  onClick={() => setPickerOpen(false)}
-                  className="bible-close-button flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground"
-                >
-                  <X className="h-4 w-4" />
-                </button>
+                <div className="flex items-center gap-2">
+                  <span className="rounded-full bg-primary/10 px-2.5 py-1.5 text-[10px] font-extrabold text-primary">
+                    {picker.chapters} capítulos
+                  </span>
+                  <button
+                    aria-label="Fechar"
+                    onClick={() => setPickerOpen(false)}
+                    className="bible-close-button flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
               <div className="mt-3 flex items-center gap-4 text-[9px] text-muted-foreground">
                 <span className="inline-flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-primary" /> Lido
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" /> Lido
                 </span>
                 <span className="inline-flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-surface ring-1 ring-border" /> Não lido
+                  <span className="h-1.5 w-1.5 rounded-full bg-surface ring-1 ring-border" /> Não lido
                 </span>
               </div>
             </div>
 
-            <div className="grid grid-cols-5 gap-2.5 p-5">
+            <div className="grid grid-cols-5 gap-1.5 px-3 pb-5 pt-4 sm:gap-2 sm:px-5">
               {Array.from({ length: picker.chapters }, (_, i) => i + 1).map((c) => {
                 const done = readSet.has(`${picker.id}:${c}`);
                 return (
@@ -522,7 +522,7 @@ function BibliaIndex() {
                     to="/biblia/$book/$chapter"
                     params={{ book: String(picker.id), chapter: String(c) }}
                     onClick={() => setPickerOpen(false)}
-                    className={`bible-chapter-option relative flex h-12 items-center justify-center rounded-2xl text-sm font-bold shadow-sm transition-all active:scale-95 ${
+                    className={`bible-chapter-option relative flex h-11 items-center justify-center rounded-[0.7rem] text-[13px] font-extrabold shadow-sm transition-all active:scale-[0.98] ${
                       done
                         ? "bg-primary text-primary-foreground shadow-primary/15"
                         : "border border-border/30 bg-surface text-foreground/80 hover:border-primary/30 hover:bg-primary/10"
