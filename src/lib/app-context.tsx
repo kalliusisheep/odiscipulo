@@ -68,7 +68,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return isLanguage(stored) ? stored : "pt-BR";
   });
   const [theme, setThemeState] = useState<AppTheme>(() => {
-    if (typeof window === "undefined") return "black";
+    if (typeof window === "undefined") return "default";
     return normalizeTheme(window.localStorage.getItem("disciple.theme"));
   });
 
