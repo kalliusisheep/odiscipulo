@@ -329,55 +329,66 @@ function ChapterReader() {
     <div className={`bible-reader-shell min-h-screen pb-32 transition-colors ${(theme === "white" || theme === "gray") ? "bg-[#fbfaf7] text-slate-900" : "bg-background text-foreground"}`}>
       {/* Barra superior fixa */}
       <div className={`bible-reader-header sticky top-0 z-30 bg-background/85 backdrop-blur-xl ${readerScrolled ? "is-immersive" : ""}`}>
-        <div className="bible-reader-header-inner relative mx-auto flex min-h-[5rem] max-w-lg items-center gap-2 px-3 py-2 sm:min-h-[4.35rem] sm:px-4 sm:py-0">
-          <Link
-            to="/biblia"
-            aria-label="Voltar"
-            className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border/70 bg-surface/70 text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/10 hover:text-primary active:scale-95"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </Link>
-          <button
-            onClick={openChapterPicker}
-            className="bible-chapter-trigger bible-header-chapter min-w-[7rem] flex-1 rounded-xl px-2 py-1.5 text-center transition-colors hover:bg-surface/70"
-          >
-            <span className="block truncate text-[15px] font-extrabold leading-tight">
-              {bookNameById(book)}
-            </span>
-            <span className="mt-0.5 block text-[11px] font-bold leading-tight text-primary">
-              Capítulo {chapter}
-            </span>
-            <span className="mt-1 block truncate text-[9px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
-              Toque para trocar de capítulo
-            </span>
-          </button>
-          <div className="bible-reader-action-group relative z-10 flex shrink-0 items-center gap-0.5 sm:gap-1">
+        <div className="bible-reader-header-inner mx-auto max-w-lg px-3 py-2 sm:px-4">
+          <div className="bible-reader-primary-row flex min-h-[3rem] items-center gap-2">
+            <Link
+              to="/biblia"
+              aria-label="Voltar"
+              className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border/70 bg-surface/70 text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/10 hover:text-primary active:scale-95"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Link>
             <button
+              type="button"
+              onClick={() => setSettingsOpen(true)}
+              aria-label={`Versão atual: ${label}. Abrir ajustes de leitura`}
+              className="bible-reader-version-pill flex h-9 min-w-[3.75rem] shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 px-2 text-[11px] font-extrabold uppercase tracking-[0.08em] text-primary transition-all hover:border-primary/40 hover:bg-primary/15 active:scale-95"
+            >
+              {translation}
+            </button>
+            <button
+              type="button"
+              onClick={openChapterPicker}
+              className="bible-chapter-trigger bible-header-chapter min-w-0 flex-1 rounded-xl px-2 py-1.5 text-center transition-colors hover:bg-surface/70"
+            >
+              <span className="block truncate text-[15px] font-black leading-tight">
+                {bookNameById(book)} {chapter}
+              </span>
+              <span className="mt-0.5 block truncate text-[9px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                Toque para explorar o capítulo
+              </span>
+            </button>
+            <ThemeToggle className="h-9 w-9 shrink-0 border-border bg-surface" />
+          </div>
+          <div className="bible-reader-action-row mt-1 flex items-center justify-center gap-2 sm:justify-end">
+            <button
+              type="button"
               onClick={() => {
                 if (narrationStarted) toggleNarrationPause();
                 else startNarration();
               }}
               aria-label={narrationStarted && !narrationPaused ? "Pausar narração" : "Ouvir narração"}
               disabled={!verses || narrationLoading}
-              className={`flex h-8 w-8 items-center justify-center rounded-xl border border-primary/20 transition-all active:scale-95 disabled:opacity-40 ${narrationStarted && !narrationPaused ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "bg-primary/10 text-primary"}`}
+              className={`flex h-8 w-8 items-center justify-center rounded-full border border-primary/20 transition-all active:scale-95 disabled:opacity-40 ${narrationStarted && !narrationPaused ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "bg-primary/10 text-primary"}`}
             >
               {narrationStarted && !narrationPaused ? <Pause className="h-4 w-4" /> : <Play className="ml-0.5 h-4 w-4 fill-current" />}
             </button>
             <button
+              type="button"
               onClick={() => setSettingsOpen(true)}
               aria-label="Ajustes de leitura"
-              className="flex h-8 w-8 items-center justify-center rounded-xl border border-border bg-surface text-muted-foreground transition-all hover:border-primary/30 hover:text-primary active:scale-95"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-surface text-muted-foreground transition-all hover:border-primary/30 hover:text-primary active:scale-95"
             >
               <Type className="h-4 w-4" />
             </button>
             <button
+              type="button"
               onClick={() => setCompareOpen(true)}
               aria-label="Comparar versões"
-              className="flex h-8 w-8 items-center justify-center rounded-xl border border-border bg-surface text-muted-foreground transition-all hover:border-primary/30 hover:text-primary active:scale-95"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-surface text-muted-foreground transition-all hover:border-primary/30 hover:text-primary active:scale-95"
             >
               <GitCompareArrows className="h-4 w-4" />
             </button>
-            <ThemeToggle className="h-8 w-8 border-border bg-surface" />
           </div>
         </div>
         <div className="bible-reader-progress" aria-hidden="true">
