@@ -94,6 +94,9 @@ function ChapterReader() {
   const [chapterEndVisible, setChapterEndVisible] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
   const [readerScrolled, setReaderScrolled] = useState(false);
+  const [chapterNavVisible, setChapterNavVisible] = useState(true);
+  const chapterNavIdleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastScrollYRef = useRef(0);
 
   const meta = bookById(book);
 
@@ -240,19 +243,37 @@ function ChapterReader() {
 
   useEffect(() => {
     const updateReadingProgress = () => {
+      const currentY = window.scrollY;
       const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = scrollableHeight > 0
-        ? Math.min(100, Math.max(0, (window.scrollY / scrollableHeight) * 100))
+        ? Math.min(100, Math.max(0, (currentY / scrollableHeight) * 100))
         : 0;
+      const delta = currentY - lastScrollYRef.current;
+
       setReadingProgress(progress);
-      setReaderScrolled(window.scrollY > 56);
+      setReaderScrolled(currentY > 56);
+
+      if (Math.abs(delta) > 2) {
+        if (delta > 0 && currentY > 24) {
+          setChapterNavVisible(false);
+        } else if (delta < 0) {
+          setChapterNavVisible(true);
+        }
+      }
+
+      lastScrollYRef.current = currentY;
+      if (chapterNavIdleTimer.current) clearTimeout(chapterNavIdleTimer.current);
+      chapterNavIdleTimer.current = setTimeout(() => setChapterNavVisible(true), 220);
     };
+
+    lastScrollYRef.current = window.scrollY;
     updateReadingProgress();
     window.addEventListener("scroll", updateReadingProgress, { passive: true });
     window.addEventListener("resize", updateReadingProgress);
     return () => {
       window.removeEventListener("scroll", updateReadingProgress);
       window.removeEventListener("resize", updateReadingProgress);
+      if (chapterNavIdleTimer.current) clearTimeout(chapterNavIdleTimer.current);
     };
   }, []);
 
@@ -533,7 +554,7 @@ function ChapterReader() {
             </div>
           )}
 
-          <div className="bible-chapter-nav fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-30 flex justify-center px-3 animate-slide-up">
+          <div className={`bible-chapter-nav fixed inset-x-0 bottom-[calc(4.25rem+env(safe-area-inset-bottom))] z-30 flex justify-center px-3 animate-slide-up ${chapterNavVisible ? "is-visible" : "is-hidden"}`}>
             <div className="bible-chapter-nav-panel flex w-full max-w-md items-center gap-2 rounded-[1.35rem] border border-primary/20 bg-background/95 p-1.5 shadow-2xl shadow-primary/15 backdrop-blur-xl">
               <button
                 type="button"
@@ -590,7 +611,7 @@ function ChapterReader() {
                   onClick={() => go(1)}
                   disabled={!meta || chapter >= meta.chapters}
                   aria-label="Próximo capítulo"
-                  className="bible-chapter-nav-pill-button bible-chapter-nav-next flex shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:bg-primary-glow active:scale-90 disabled:opacity-30"
+                  className="bible-chapter-nav-pill-button bible-chapter-nav-next flex shrink-0 items-center justify-center rounded-full transition-all hover:bg-primary/10 hover:text-primary active:scale-90 disabled:opacity-30"
                 >
                   <ChevronRight className="h-5 w-5" />
                 </button>
