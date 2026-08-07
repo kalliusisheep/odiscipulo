@@ -24,7 +24,6 @@ type Row = {
   streak: number;
   isMe?: boolean;
   isFriend?: boolean;
-  isDemo?: boolean;
 };
 
 function RankingPage() {
