@@ -343,9 +343,9 @@ function ChapterReader() {
             <button
               type="button"
               onClick={openChapterPicker}
-              className="bible-chapter-trigger bible-header-chapter min-w-0 max-w-[12rem] rounded-xl px-2 py-1.5 text-center transition-colors hover:bg-surface/70"
+              className="bible-chapter-trigger bible-header-chapter group min-w-[7.5rem] max-w-[10rem] rounded-2xl border border-primary/20 bg-surface/80 px-3 py-2 text-center shadow-lg shadow-primary/10 transition-all hover:border-primary/45 hover:bg-surface-2/85 hover:shadow-xl hover:shadow-primary/15"
             >
-              <span className="block truncate text-[15px] font-black leading-tight">
+              <span className="block truncate text-base font-black leading-tight tracking-[-0.02em]">
                 {bookNameById(book)} {chapter}
               </span>
             </button>
