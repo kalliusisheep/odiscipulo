@@ -41,6 +41,13 @@ export async function recordGameResult(result: GameResult) {
   return error ?? null;
 }
 
+export async function recordSharedGameResult(roomId: string) {
+  const { error } = await (supabase as any).rpc("record_shared_game_result", {
+    _room_id: roomId,
+  });
+  return error ?? null;
+}
+
 export async function fetchGameLeaderboard(gameKey: GameKey, limit = 100) {
   const { data, error } = await (supabase as any).rpc("get_game_leaderboard", {
     _game_key: gameKey,
