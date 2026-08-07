@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowDown, ArrowLeft, ArrowRight, Check, Clock3, Eye, Flame, Lightbulb, RotateCcw, Sparkles, Trophy, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import type { GameDifficulty } from "@/data/biblical-characters";
-import { CROSSWORD_DIFFICULTY, CROSSWORD_THEMES, CROSSWORD_WORDS, crosswordWordsFor, type CrosswordTheme, type CrosswordWord } from "@/data/biblical-crosswords";
+import { CROSSWORD_DIFFICULTY, CROSSWORD_THEMES, CROSSWORD_VARIATIONS, CROSSWORD_WORDS, crosswordWordsFor, type CrosswordTheme, type CrosswordWord } from "@/data/biblical-crosswords";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { recordGameResult } from "@/lib/game-leaderboard";
@@ -172,12 +172,17 @@ function chooseCrosswordPuzzle(difficulty: GameDifficulty, theme: CrosswordTheme
   const history = readCrosswordSessionHistory();
   const knownSignatures = new Set(history.signatures);
   const usedWordIds = new Set(history.wordIds);
-  const seed = baseSeed ?? randomCrosswordSeed();
+  const eligibleVariations = CROSSWORD_VARIATIONS.filter((variation) => variation.difficulty === difficulty);
+  const historyIndex = history.signatures.length;
+  const seed = baseSeed ?? eligibleVariations[historyIndex % Math.max(1, eligibleVariations.length)]?.seed ?? randomCrosswordSeed();
   let best = generatePuzzle(difficulty, theme, seed);
   let bestScore = Number.NEGATIVE_INFINITY;
 
   for (let attempt = 0; attempt < 48; attempt += 1) {
-    const candidate = generatePuzzle(difficulty, theme, seed + attempt * 104729);
+    const variationSeed = baseSeed === undefined
+      ? eligibleVariations[(historyIndex + attempt) % Math.max(1, eligibleVariations.length)]?.seed ?? seed + attempt * 104729
+      : seed + attempt * 104729;
+    const candidate = generatePuzzle(difficulty, theme, variationSeed);
     if (!candidate.placements.length) continue;
     const signature = candidate.placements
       .map((placement) => [placement.word.id, placement.row, placement.col, placement.direction].join(":"))
