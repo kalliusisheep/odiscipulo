@@ -19,7 +19,6 @@ export const Route = createFileRoute("/_authenticated/biblia/teologia")({
 
 function TeologiaSistematicaPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [selectedChapterId, setSelectedChapterId] = useState<string | null>(null);
 
   return (
     <div className="bible-index-shell min-h-screen pb-28">
@@ -69,9 +68,6 @@ function TeologiaSistematicaPage() {
           {theologyModules.map((topic, index) => {
             const isOpen = expandedId === topic.id;
             const panelId = `theology-topic-${topic.id}`;
-            const selectedChapter = topic.chapters.find(
-              (chapter) => chapter.id === selectedChapterId,
-            );
 
             return (
               <div key={topic.id} className={`bible-testament-group ${isOpen ? "is-open" : ""}`}>
@@ -125,79 +121,27 @@ function TeologiaSistematicaPage() {
                     </p>
                   )}
                   <div className="bible-book-list">
-                    {topic.chapters.map((chapter, chapterIndex) => {
-                      const isSelected = selectedChapterId === chapter.id;
-
-                      return (
-                        <div key={chapter.id}>
-                          <button
-                            type="button"
-                            aria-expanded={isSelected}
-                            onClick={() =>
-                              setSelectedChapterId((current) =>
-                                current === chapter.id ? null : chapter.id,
-                              )
-                            }
-                            className={`bible-book-row flex w-full items-center gap-3 text-left transition-colors ${
-                              isSelected ? "bg-primary/10" : ""
-                            }`}
-                          >
-                            <span
-                              className={`bible-book-abbr flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-[10px] font-bold ${
-                                isSelected
-                                  ? "border-primary/40 text-primary"
-                                  : "border-border/40 text-muted-foreground"
-                              }`}
-                            >
-                              {String(chapterIndex + 1).padStart(2, "0")}
-                            </span>
-                            <span className="min-w-0 flex-1">
-                              <span
-                                className={`block text-sm font-semibold ${
-                                  isSelected ? "text-primary" : "text-foreground"
-                                }`}
-                              >
-                                {chapter.title}
-                              </span>
-                              <span className="mt-0.5 block text-[10px] text-muted-foreground">
-                                Leia o capítulo e consulte as referências
-                              </span>
-                            </span>
-                            <ChevronRight
-                              className={`h-4 w-4 shrink-0 text-muted-foreground/55 transition-transform ${
-                                isSelected ? "rotate-90 text-primary" : ""
-                              }`}
-                            />
-                          </button>
-
-                          {isSelected && selectedChapter && (
-                            <article className="mx-3 mb-3 rounded-2xl border border-border/30 bg-background/35 p-4">
-                              <h3 className="text-base font-bold tracking-[-0.01em] text-foreground">
-                                {selectedChapter.title}
-                              </h3>
-                              <p className="mt-3 whitespace-pre-line text-sm leading-7 text-muted-foreground">
-                                {selectedChapter.content}
-                              </p>
-                              <div className="mt-4 border-t border-border/20 pt-3">
-                                <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">
-                                  Referências bíblicas
-                                </p>
-                                <div className="mt-2 flex flex-wrap gap-2">
-                                  {selectedChapter.references.map((reference) => (
-                                    <span
-                                      key={reference}
-                                      className="rounded-full border border-primary/20 bg-primary/5 px-2.5 py-1 text-[10px] font-semibold text-primary"
-                                    >
-                                      {reference}
-                                    </span>
-                                  ))}
-                                </div>
-                              </div>
-                            </article>
-                          )}
-                        </div>
-                      );
-                    })}
+                    {topic.chapters.map((chapter, chapterIndex) => (
+                      <Link
+                        key={chapter.id}
+                        to="/biblia/teologia/$module/$chapter"
+                        params={{ module: topic.id, chapter: chapter.id }}
+                        className="bible-book-row flex w-full items-center gap-3 text-left transition-colors hover:bg-primary/5 active:scale-[0.99]"
+                      >
+                        <span className="bible-book-abbr flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border/40 text-[10px] font-bold text-muted-foreground">
+                          {String(chapterIndex + 1).padStart(2, "0")}
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block text-sm font-semibold text-foreground">
+                            {chapter.title}
+                          </span>
+                          <span className="mt-0.5 block text-[10px] text-muted-foreground">
+                            Abrir estudo completo e referências
+                          </span>
+                        </span>
+                        <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/55" />
+                      </Link>
+                    ))}
                   </div>
                 </div>
               </div>
