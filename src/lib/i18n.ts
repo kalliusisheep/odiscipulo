@@ -22,6 +22,7 @@ export const APP_LANGUAGES = [
 export type AppLanguage = (typeof APP_LANGUAGES)[number]["code"];
 
 export const THEME_OPTIONS = [
+  { id: "default", labelKey: "theme.default", descriptionKey: "theme.defaultDescription" },
   { id: "white", labelKey: "theme.white", descriptionKey: "theme.whiteDescription" },
   { id: "gray", labelKey: "theme.gray", descriptionKey: "theme.grayDescription" },
   { id: "blue", labelKey: "theme.blue", descriptionKey: "theme.blueDescription" },
@@ -68,6 +69,8 @@ const MESSAGES = {
     "bible.indexOccurrences": "ocorrências no índice bíblico",
     "common.close": "Fechar",
     "bible.indexNote": "O índice mantém a contagem e as referências inicial e final para abrir o contexto com rapidez.",
+    "theme.default": "Padrão",
+    "theme.defaultDescription": "Roxo e azul originais",
     "theme.white": "Branco",
     "theme.whiteDescription": "Claro e arejado",
     "theme.gray": "Cinza",
@@ -117,6 +120,8 @@ const MESSAGES = {
     "bible.indexOccurrences": "occurrences in the Bible index",
     "common.close": "Close",
     "bible.indexNote": "The index keeps the count and the first and last references for quick context access.",
+    "theme.default": "Default",
+    "theme.defaultDescription": "Original purple and blue",
     "theme.white": "White",
     "theme.whiteDescription": "Light and airy",
     "theme.gray": "Gray",
@@ -166,6 +171,8 @@ const MESSAGES = {
     "bible.indexOccurrences": "ocurrencias en el índice bíblico",
     "common.close": "Cerrar",
     "bible.indexNote": "El índice conserva el recuento y las referencias inicial y final para abrir el contexto rápidamente.",
+    "theme.default": "Predeterminado",
+    "theme.defaultDescription": "Morado y azul originales",
     "theme.white": "Blanco",
     "theme.whiteDescription": "Claro y aireado",
     "theme.gray": "Gris",
