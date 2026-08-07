@@ -144,9 +144,17 @@ function ChapterReader() {
           setNarrationIndex(index);
           setNarrationLoading(false);
           setNarrationPaused(false);
-          void audio.play();
+          void audio.play().catch(() => {
+            if (token !== speechTokenRef.current || audioRef.current !== audio) return;
+            failNarration();
+            toast.error("Toque novamente para iniciar a narração.");
+          });
         };
         audio.onended = () => {
+          if (audioUrlRef.current === url) {
+            URL.revokeObjectURL(url);
+            audioUrlRef.current = null;
+          }
           if (token === speechTokenRef.current) speakVerseRef.current(index + 1, token);
         };
         audio.onerror = () => {
