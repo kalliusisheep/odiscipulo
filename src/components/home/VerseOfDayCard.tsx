@@ -80,7 +80,7 @@ export function VerseOfDayCard() {
       to="/versiculo"
       className="group relative block overflow-hidden transition-transform duration-300 hover:scale-[1.01]"
       style={{
-        minHeight: "10rem",
+        minHeight: "9.5rem",
         border: "1px solid rgba(255, 255, 255, 0.18)",
         borderRadius: "1.5rem",
         background:
@@ -114,8 +114,8 @@ export function VerseOfDayCard() {
       <div
         className="relative z-10"
         style={{
-          padding: "1rem 8.5rem 0.85rem 1rem",
-          minHeight: "11.5rem",
+          padding: "0.85rem 8.5rem 0.65rem 1rem",
+          minHeight: "9.5rem",
         }}
       >
         <div className="flex items-center gap-2">
@@ -135,7 +135,7 @@ export function VerseOfDayCard() {
         </div>
 
         <p
-          className="mt-3 text-[13px] font-medium leading-6"
+          className="mt-2 text-[13px] font-medium leading-5"
           style={{
             color: "rgba(255, 255, 255, 0.94)",
             fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif",
@@ -145,7 +145,7 @@ export function VerseOfDayCard() {
           {text ? `"${text}"` : "Carregando..."}
         </p>
 
-        <div className="mt-2">
+        <div className="mt-1">
           <span
             className="text-xs font-semibold"
             style={{
@@ -157,7 +157,7 @@ export function VerseOfDayCard() {
           </span>
         </div>
 
-        <div className="mt-3 flex items-center gap-3 text-sm text-white/70">
+        <div className="mt-2 flex items-center gap-3 text-sm text-white/70">
           <span className="inline-flex items-center gap-1">
             <Heart
               className={`h-5 w-5 ${
