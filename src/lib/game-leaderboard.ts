@@ -2,6 +2,16 @@ import { supabase } from "@/integrations/supabase/client";
 
 const PENDING_RESULTS_KEY = "disciple.pending-game-results";
 
+export type GameKey = "milhao" | "personagem" | "versiculo" | "cruzadas";
+
+export type GameResult = {
+  gameKey: GameKey;
+  score: number;
+  correctAnswers?: number;
+  rounds?: number;
+  bestStreak?: number;
+};
+
 type StoredGameResult = GameResult & { createdAt: number };
 
 function readPendingResults(): StoredGameResult[] {
@@ -17,6 +27,8 @@ function readPendingResults(): StoredGameResult[] {
 function savePendingResult(result: GameResult) {
   if (typeof window === "undefined") return;
   const pending = readPendingResults();
+  const duplicate = pending.some((item) => item.gameKey === result.gameKey && item.score === result.score && item.rounds === result.rounds && item.correctAnswers === result.correctAnswers && item.bestStreak === result.bestStreak);
+  if (duplicate) return;
   pending.push({ ...result, createdAt: Date.now() });
   window.localStorage.setItem(PENDING_RESULTS_KEY, JSON.stringify(pending.slice(-20)));
 }
@@ -72,14 +84,6 @@ export type GameLeaderboardRow = {
   best_streak: number;
 };
 
-export type GameResult = {
-  gameKey: GameKey;
-  score: number;
-  correctAnswers?: number;
-  rounds?: number;
-  bestStreak?: number;
-};
-
 export async function recordGameResult(result: GameResult) {
   await flushPendingGameResults();
   const error = await submitGameResult(result);
@@ -87,11 +91,20 @@ export async function recordGameResult(result: GameResult) {
   return error;
 }
 
-export async function recordSharedGameResult(roomId: string) {
+export async function recordSharedGameResult(roomId: string, fallback?: GameResult) {
+  await flushPendingGameResults();
   const { error } = await (supabase as any).rpc("record_shared_game_result", {
     _room_id: roomId,
   });
-  return error ?? null;
+  if (!error) return null;
+
+  // Permite registrar a pontuação durante uma implantação em que a função
+  // específica de sala ainda não tenha sido aplicada no Supabase.
+  if (fallback) {
+    const fallbackError = await recordGameResult(fallback);
+    if (!fallbackError) return null;
+  }
+  return error;
 }
 
 export async function fetchGameLeaderboard(gameKey: GameKey, limit = 100) {
