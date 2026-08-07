@@ -17,7 +17,6 @@ import {
   DEFAULT_MODULE_GRADIENT,
   DEFAULT_MODULE_RGB,
 } from "@/data/module-visuals";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { MessagesLinkButton } from "@/components/MessagesLinkButton";
 import { VerseOfDayCard } from "@/components/home/VerseOfDayCard";
 import { useApp } from "@/lib/app-context";
@@ -173,7 +172,6 @@ function HomePage() {
         </div>
         <div className="flex items-center gap-2">
           <MessagesLinkButton />
-          <ThemeToggle />
         </div>
       </header>
 
@@ -454,7 +452,6 @@ function LiderInline() {
             Cuide de pessoas, forme discípulos e sirva com propósito.
           </p>
         </div>
-        <ThemeToggle />
       </header>
 
       <section className="relative isolate overflow-hidden rounded-[28px] border border-violet-300/15 bg-gradient-to-br from-[#312663] via-[#1a2040] to-[#101827] shadow-2xl shadow-primary/10">
