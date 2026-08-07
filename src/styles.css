@@ -2442,8 +2442,8 @@ body,
   }
 }
 
-.bible-reader-shell .bible-chapter-nav {
-  @media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) {
+  .bible-reader-shell .bible-chapter-nav {
     transition: none !important;
   }
 }
