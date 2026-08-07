@@ -210,7 +210,7 @@ function BibliaIndex() {
                     aria-label="Tradução"
                     value={translation}
                     onChange={(e) => setTranslation(e.target.value)}
-                    className="appearance-none rounded-full border border-border/40 bg-transparent py-1 pl-3 pr-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground/80 outline-none transition-colors hover:border-primary/40"
+                    className="bible-translation-select appearance-none rounded-full border border-border/40 bg-transparent py-1 pl-3 pr-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground/80 outline-none transition-colors hover:border-primary/40"
                   >
                     {availableTranslations.map((t) => (
                       <option key={t.code} value={t.code}>
@@ -415,14 +415,14 @@ function BibliaIndex() {
                   return (
                     <div
                       key={t}
-                      className={`bible-testament-group border-t border-border/30 last:border-b ${expanded ? "is-open" : ""}`}
+                      className={`bible-testament-group ${expanded ? "is-open" : ""}`}
                     >
                       <button
                         type="button"
                         onClick={() => setTestament((current) => (current === t ? null : t))}
                         aria-expanded={expanded}
                         aria-controls={panelId}
-                        className="bible-testament-toggle group flex w-full items-center gap-3 py-4 text-left"
+                        className="bible-testament-toggle group flex w-full items-center gap-3 text-left"
                       >
                         <span
                           className={`bible-testament-badge flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-[9px] font-semibold tracking-[0.08em] transition-colors ${
