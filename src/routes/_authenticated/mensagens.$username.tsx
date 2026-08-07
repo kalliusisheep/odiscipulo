@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, Send } from "lucide-react";
 import { format, isSameDay } from "date-fns";
+import { toast } from "sonner";
 import { ptBR } from "date-fns/locale";
 import { EmojiPicker } from "@/components/EmojiPicker";
 import { VoiceRecorder } from "@/components/VoiceRecorder";
@@ -154,9 +155,7 @@ function MessagesPage() {
       if (data)
         setMessages((prev) => (prev.some((x) => x.id === data.id) ? prev : [...prev, data as Msg]));
     } catch {
-      window.dispatchEvent(new CustomEvent("disciple:toast", {
-        detail: { type: "error", message: "Não foi possível enviar o áudio. Tente novamente." },
-      }));
+      toast.error("Não foi possível enviar o áudio. Tente novamente.");
     }
   };
 
