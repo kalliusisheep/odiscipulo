@@ -211,9 +211,13 @@ function VerseStudy() {
         if (!cancelled) setXrefsLoading(false);
       });
 
-    void loadOccurrences().then((occurrences) => {
-      if (!cancelled) setOcc(occurrences as never);
-    });
+    void loadOccurrences()
+      .then((occurrences) => {
+        if (!cancelled) setOcc(occurrences as never);
+      })
+      .catch(() => {
+        if (!cancelled) setOcc({});
+      });
 
     setOrigError(false);
     setWords(null);
@@ -262,6 +266,7 @@ function VerseStudy() {
   // da tradução, para a IA receber os dados já em português).
   useEffect(() => {
     if (!words || words.length === 0 || Object.keys(entries).length === 0) return;
+    let cancelled = false;
     setAnalysisLoading(true);
     setAnalysisError(false);
     const payload = words.map((w) => ({
@@ -270,21 +275,32 @@ function VerseStudy() {
       partOfSpeech: w.strong ? (entries[w.strong]?.partOfSpeech ?? null) : null,
       meaning: w.strong ? (entries[w.strong]?.meaning ?? null) : null,
     }));
-    supabase.functions
+
+    void supabase.functions
       .invoke<VerseAnalysis>("verse-analysis", { body: { words: payload } })
       .then(({ data, error }) => {
+        if (cancelled) return;
         if (error || !data) {
           setAnalysisError(true);
           return;
         }
         setAnalysis(data);
       })
-      .catch(() => setAnalysisError(true))
-      .finally(() => setAnalysisLoading(false));
+      .catch(() => {
+        if (!cancelled) setAnalysisError(true);
+      })
+      .finally(() => {
+        if (!cancelled) setAnalysisLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [words, entries]);
 
   const speak = (word: string) => {
     if (typeof window === "undefined" || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(word);
     u.lang = lang === "grego" ? "el-GR" : "he-IL";
     window.speechSynthesis.speak(u);
