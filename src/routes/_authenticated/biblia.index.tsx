@@ -549,6 +549,25 @@ function BibliaIndex() {
                   );
                 })}
               </div>
+
+              <Link
+                to="/estudos/"
+                aria-label="Abrir Teologia Sistemática"
+                className="bible-theology-button mt-3 flex items-center gap-3"
+              >
+                <span className="bible-theology-icon flex h-9 w-9 shrink-0 items-center justify-center rounded-xl">
+                  <BookOpen className="h-4 w-4" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-xs font-extrabold uppercase tracking-[0.08em]">
+                    Teologia Sistemática
+                  </span>
+                  <span className="mt-0.5 block text-[10px] font-medium text-muted-foreground">
+                    Estude os fundamentos da fé cristã
+                  </span>
+                </span>
+                <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/60" />
+              </Link>
             </section>
           </>
         )}
