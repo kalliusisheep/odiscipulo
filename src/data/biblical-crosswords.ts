@@ -73,10 +73,9 @@ const normalizeCrosswordWord = (value: string) =>
   value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Za-z]/g, "").toUpperCase();
 
 const maskCrosswordAnswer = (text: string, answer: string) => {
-  const escapedAnswer = answer.replace(/[.*+?^${}()|[\]\\]/g, "\\const maskCrosswordAnswer = (text: string, answer: string) => text.split(answer).join("Esta resposta");");
+  const escapedAnswer = answer.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   return text.replace(new RegExp(escapedAnswer, "giu"), "Esta resposta");
 };
-
 const themesForCategory = (category: string): CrosswordTheme[] => {
   if (/evangelho|ensino/i.test(category)) return ["evangelhos", "personagens"];
   if (/profeta|daniel/i.test(category)) return ["profetas", "personagens"];
