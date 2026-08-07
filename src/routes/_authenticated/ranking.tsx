@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { normalizeUsername } from "@/lib/username";
 import { Flame, Users, UserPlus, Share2, Copy, Search, Link2, Check, Crown, AtSign } from "lucide-react";
 import { getMyChallengePartnerIds } from "@/lib/challenges";
+import { getContactIds } from "@/lib/contact-scope";
 
 export const Route = createFileRoute("/_authenticated/ranking")({
   component: RankingPage,
@@ -51,11 +52,10 @@ function RankingPage() {
       : { data: null };
     if (me?.username) setMyUsername(me.username);
 
-    // Friends
+    // Comunidade: somente o usuário e os contatos aceitos.
     let friendProfiles: Row[] = [];
     if (myId) {
-      const { data: fr } = await supabase.from("friendships").select("friend_id").eq("user_id", myId);
-      const friendIds = (fr ?? []).map((r) => r.friend_id);
+      const friendIds = await getContactIds(myId);
       if (friendIds.length > 0) {
         const { data: fp } = await supabase
           .from("profiles")
@@ -65,9 +65,7 @@ function RankingPage() {
       }
     }
 
-    const { data: demo } = await supabase.from("demo_users").select("id, display_name, avatar_char, xp, streak");
     const merged: Row[] = [
-      ...(demo ?? []).map((d) => ({ ...d, username: null, avatar_url: null, isDemo: true }) as Row),
       ...friendProfiles,
       ...(me ? [{ ...me, isMe: true } as Row] : []),
     ].sort((a, b) => b.xp - a.xp);
