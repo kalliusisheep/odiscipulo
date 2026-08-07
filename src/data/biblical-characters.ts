@@ -184,7 +184,7 @@ export const BIBLICAL_CHARACTER_ROUNDS: BiblicalCharacter[] = BIBLICAL_CHARACTER
     id: character.id + "-var-" + (variationIndex + 1),
     hints: order.map((hintIndex) => character.hints[hintIndex]) as BiblicalCharacter["hints"],
   })))
-  .slice(0, 256);
+  .slice(0, 512);
 
 export const CHARACTER_VARIATION_COUNT = BIBLICAL_CHARACTER_ROUNDS.length;
 
