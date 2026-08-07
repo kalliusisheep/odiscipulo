@@ -6,7 +6,7 @@ import { SharedQuestionGame } from "@/components/games/SharedQuestionGame";
 import { BIBLICAL_CHARACTER_ROUNDS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { shuffleWithSeed } from "@/lib/seeded-random";
-import { canonicalGameContentKey, uniqueGameContent } from "@/lib/game-content";
+import { normalizeGameContentKey, uniqueGameVariantContent } from "@/lib/game-content";
 import { recordGameResult } from "@/lib/game-leaderboard";
 
 export const Route = createFileRoute("/_authenticated/jogos/personagem")({
@@ -91,17 +91,17 @@ function PersonagemPage() {
     playGameSfx("start");
     const preferred = BIBLICAL_CHARACTER_ROUNDS.filter((item) => item.difficulty === difficulty);
     const fallback = BIBLICAL_CHARACTER_ROUNDS.filter((item) => item.difficulty !== difficulty);
-    const source = uniqueGameContent([...preferred, ...fallback], (item) => item.id);
+    const source = uniqueGameVariantContent([...preferred, ...fallback], (item) => item.id);
     const shuffled = seed ? shuffleWithSeed(source, seed) : [...source].sort(() => Math.random() - 0.5);
     const recentKey = `character_recent_questions_${difficulty}`;
     const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
-    const recentKeys = new Set(recentIds.map(canonicalGameContentKey));
-    const sessionCandidates = shuffled.filter((item) => !sessionSeenRef.current.has(canonicalGameContentKey(item.id)));
-    const fresh = sessionCandidates.filter((item) => !recentKeys.has(canonicalGameContentKey(item.id)));
-    const selected = uniqueGameContent([...fresh, ...sessionCandidates], (item) => item.id).slice(0, rounds);
-    selected.forEach((item) => sessionSeenRef.current.add(canonicalGameContentKey(item.id)));
-    const storedKeys = selected.map((item) => canonicalGameContentKey(item.id));
-    window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds.map(canonicalGameContentKey), ...storedKeys])].slice(-Math.max(rounds * 5, 40))));
+    const recentKeys = new Set(recentIds.map(normalizeGameContentKey));
+    const sessionCandidates = shuffled.filter((item) => !sessionSeenRef.current.has(normalizeGameContentKey(item.id)));
+    const fresh = sessionCandidates.filter((item) => !recentKeys.has(normalizeGameContentKey(item.id)));
+    const selected = uniqueGameVariantContent([...fresh, ...sessionCandidates], (item) => item.id).slice(0, rounds);
+    selected.forEach((item) => sessionSeenRef.current.add(normalizeGameContentKey(item.id)));
+    const storedKeys = selected.map((item) => normalizeGameContentKey(item.id));
+    window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds.map(normalizeGameContentKey), ...storedKeys])].slice(-Math.max(rounds * 5, 40))));
     setQueue(selected);
     setRound(0);
     setScore(0);
