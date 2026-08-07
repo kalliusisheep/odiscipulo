@@ -114,11 +114,11 @@ export function VersionCompareSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="bottom"
-        className="max-h-[92vh] overflow-y-auto rounded-t-[30px] border-t border-primary/20 bg-background p-0 pb-[env(safe-area-inset-bottom)]"
+        className="bible-compare-sheet max-h-[92vh] overflow-y-auto rounded-t-[2rem] border-t border-primary/20 bg-background p-0 pb-[env(safe-area-inset-bottom)]"
       >
         <div className="mx-auto w-full max-w-2xl px-5 pb-8 pt-4">
           <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-muted-foreground/30" />
-          <header className="flex items-start gap-3">
+          <header className="bible-sheet-header flex items-start gap-3">
             <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
               <GitCompareArrows className="h-5 w-5" />
             </span>
@@ -138,7 +138,7 @@ export function VersionCompareSheet({
             <p className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.16em] text-muted-foreground">
               Versões selecionadas
             </p>
-            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="bible-version-grid grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {translations.map((translation) => {
                 const active = selected.includes(translation.code);
                 const locked = active && selected.length === 2;
@@ -149,7 +149,7 @@ export function VersionCompareSheet({
                     aria-pressed={active}
                     disabled={locked}
                     onClick={() => toggleVersion(translation.code)}
-                    className={`flex items-center gap-3 rounded-2xl border px-3.5 py-3 text-left transition-all active:scale-[0.98] ${
+                    className={`bible-version-option flex items-center gap-3 rounded-2xl border px-3.5 py-3 text-left transition-all active:scale-[0.98] ${
                       active
                         ? "border-primary bg-primary/10 text-foreground shadow-sm shadow-primary/10"
                         : "border-border bg-surface text-muted-foreground hover:border-primary/40"
