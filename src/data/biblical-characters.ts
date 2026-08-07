@@ -92,6 +92,23 @@ const NON_CHARACTER_FACT_IDS = new Set([
   "habacuque-fe", "maria-magnificat", "zacqueu",
 ]);
 
+const NON_CHARACTER_FACT_ANSWERS = new Set([
+  "sinai",
+  "jerico",
+  "belem",
+  "damasco",
+  "mana",
+  "magnificat",
+  "verdadeiro",
+  "falso",
+  "senhor",
+  "oracao",
+  "oração",
+]);
+
+const normalizeFactAnswer = (value: string) =>
+  value.normalize("NFD").replace(/[\\u0300-\\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+
 const maskCharacterAnswer = (text: string, answer: string) => text.split(answer).join("Este personagem");
 
 const neutralizeCharacterPrompt = (prompt: string) =>
@@ -108,6 +125,7 @@ const neutralizeCharacterPrompt = (prompt: string) =>
 const FACT_CHARACTER_POOL: BiblicalCharacter[] = BIBLE_FACTS
   .filter((fact) =>
     !NON_CHARACTER_FACT_IDS.has(fact.id)
+    && !NON_CHARACTER_FACT_ANSWERS.has(normalizeFactAnswer(fact.answer))
     && /^[A-Za-zÀ-ÿ]+(?:-[A-Za-zÀ-ÿ]+)?$/.test(fact.answer.trim())
     && fact.answer.trim().length >= 3,
   )
