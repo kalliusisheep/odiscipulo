@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, Check, Flame, Lightbulb, RotateCcw, Sparkles, Tr
 import { useEffect, useMemo, useRef, useState } from "react";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { SharedQuestionGame } from "@/components/games/SharedQuestionGame";
-import { BIBLICAL_CHARACTERS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
+import { BIBLICAL_CHARACTER_ROUNDS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { shuffleWithSeed } from "@/lib/seeded-random";
 import { recordGameResult } from "@/lib/game-leaderboard";
@@ -59,7 +59,7 @@ function PersonagemPage() {
   const firstHint = orderedHints[0] ? formatFirstHint(orderedHints[0]) : "";
 
   const filteredCharacters = useMemo(
-    () => BIBLICAL_CHARACTERS.filter((item) => item.difficulty === difficulty),
+    () => BIBLICAL_CHARACTER_ROUNDS.filter((item) => item.difficulty === difficulty),
     [difficulty],
   );
 
@@ -68,7 +68,7 @@ function PersonagemPage() {
     playGameSfx("start");
     const source = filteredCharacters.length >= rounds
       ? filteredCharacters
-      : [...filteredCharacters, ...BIBLICAL_CHARACTERS.filter((item) => item.difficulty !== difficulty)];
+      : [...filteredCharacters, ...BIBLICAL_CHARACTER_ROUNDS.filter((item) => item.difficulty !== difficulty)];
     const shuffled = seed ? shuffleWithSeed(source, seed) : [...source].sort(() => Math.random() - 0.5);
     const recentKey = `character_recent_questions_${difficulty}`;
     const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
