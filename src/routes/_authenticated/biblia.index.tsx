@@ -541,7 +541,7 @@ function BibliaIndex() {
                     to="/biblia/$book/$chapter"
                     params={{ book: String(picker.id), chapter: String(c) }}
                     onClick={() => setPickerOpen(false)}
-                    className={`relative flex h-12 items-center justify-center rounded-2xl text-sm font-bold shadow-sm transition-all active:scale-95 ${
+                    className={`bible-chapter-option relative flex h-12 items-center justify-center rounded-2xl text-sm font-bold shadow-sm transition-all active:scale-95 ${
                       done
                         ? "bg-primary text-primary-foreground shadow-primary/15"
                         : "border border-border/30 bg-surface text-foreground/80 hover:border-primary/30 hover:bg-primary/10"
