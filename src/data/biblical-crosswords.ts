@@ -146,7 +146,7 @@ export type CrosswordVariation = {
   difficulty: GameDifficulty;
 };
 
-export const CROSSWORD_VARIATIONS: CrosswordVariation[] = Array.from({ length: 250 }, (_, index) => {
+export const CROSSWORD_VARIATIONS: CrosswordVariation[] = Array.from({ length: 512 }, (_, index) => {
   const difficulty = (["facil", "medio", "dificil", "bereano"] as GameDifficulty[])[index % 4];
   return {
     id: "crossword-variation-" + String(index + 1).padStart(3, "0"),
