@@ -325,6 +325,9 @@ export function SharedQuestionGame({
 
   const submitAnswer = useCallback(async (value: string) => {
     if (!remoteRound || answered || !question || phase !== "playing") return;
+    if (gameType === "personagem" && typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
     setAnswered(true);
     setSelected(value);
     const correct = gameType === "personagem"
