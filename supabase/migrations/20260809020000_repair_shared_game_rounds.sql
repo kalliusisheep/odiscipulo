@@ -29,11 +29,6 @@ ALTER TABLE public.character_game_rounds
 
 ALTER TABLE public.character_game_rounds ENABLE ROW LEVEL SECURITY;
 
-DROP POLICY IF EXISTS "members can read rounds" ON public.character_game_rounds;
-CREATE POLICY "members can read rounds"
-  ON public.character_game_rounds FOR SELECT TO authenticated
-  USING (public.is_character_game_member(room_id));
-
 CREATE OR REPLACE FUNCTION public.is_character_game_member(_room_id uuid)
 RETURNS boolean
 LANGUAGE sql
@@ -49,6 +44,11 @@ AS $$
       AND state IN ('connected', 'ready')
   );
 $$;
+
+DROP POLICY IF EXISTS "members can read rounds" ON public.character_game_rounds;
+CREATE POLICY "members can read rounds"
+  ON public.character_game_rounds FOR SELECT TO authenticated
+  USING (public.is_character_game_member(room_id));
 
 DROP FUNCTION IF EXISTS public.ensure_character_game_round(uuid, smallint, text, jsonb, text);
 
