@@ -1221,7 +1221,7 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
   padding: 0.42rem 0.55rem;
   border: 1px solid transparent;
   border-radius: 0.85rem;
-  line-height: 1.94;
+  line-height: 1.62;
   box-shadow: none;
 }
 
@@ -1249,7 +1249,7 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
 .bible-verse-quote {
   font-family: "Crimson Pro";
   letter-spacing: 0.002em;
-  line-height: 1.94;
+  line-height: 1.62;
 }
 
 .bible-floating-control > div {
@@ -1404,4 +1404,39 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
 .bible-book-card {
   min-height: 6.35rem !important;
   border-color: color-mix(in srgb, hsl(var(--border)) 72%, transparent) !important;
+}
+
+
+.bible-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 1.1rem 0.2rem 0.3rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid color-mix(in srgb, hsl(var(--border)) 58%, transparent);
+}
+
+.bible-section-heading:first-child {
+  margin-top: 0.25rem;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.bible-section-heading-rule {
+  flex: 0 0 0.28rem;
+  width: 0.28rem;
+  height: 1.25rem;
+  border-radius: 999px;
+  background: hsl(var(--primary));
+  box-shadow: 0 0 14px color-mix(in srgb, hsl(var(--primary)) 42%, transparent);
+}
+
+.bible-section-heading h3 {
+  margin: 0;
+  color: hsl(var(--foreground));
+  font-family: "Crimson Pro";
+  font-size: 1.12rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0.005em;
 }
