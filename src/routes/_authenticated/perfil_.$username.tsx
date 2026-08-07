@@ -6,7 +6,7 @@ import { CHARACTERS } from "@/data/content";
 import { toast } from "sonner";
 import { ArrowLeft, MessageCircle, Flame, Trophy, BookOpen, Clock, UserPlus, Check, Copy, Sparkles, Church } from "lucide-react";
 import { ChallengeButton } from "@/components/ChallengeButton";
-import { formatPresence } from "@/lib/presence";
+import { formatPresence, isPresenceOnline } from "@/lib/presence";
 
 export const Route = createFileRoute("/_authenticated/perfil_/$username")({
   component: PublicProfilePage,
@@ -112,7 +112,7 @@ function PublicProfilePage() {
   const ch = CHARACTERS.find((c) => c.id === profile.avatar_char) ?? CHARACTERS[0];
   const isSelf = myId === profile.id;
   const presence = formatPresence(profile.last_seen_at);
-  const isOnline = presence === "Online agora";
+  const isOnline = isPresenceOnline(profile.last_seen_at);
 
   const currentLevelXp = xpForLevel(level.level);
   const nextLevelXp = xpForLevel(level.level + 1);
