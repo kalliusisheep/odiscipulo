@@ -367,7 +367,13 @@ export function SharedQuestionGame({
     void (async () => {
       const finalPlayers = await loadPlayers(userId);
       const finalMe = finalPlayers.find((player) => player.user_id === userId);
-      const resultError = await recordSharedGameResult(roomId);
+      const resultError = await recordSharedGameResult(roomId, finalMe ? {
+        gameKey: gameType,
+        score: finalMe.score,
+        correctAnswers: finalMe.correct_answers,
+        rounds,
+        bestStreak: finalMe.best_streak,
+      } : undefined);
       if (resultError) {
         setError("O placar foi concluído, mas ainda não foi sincronizado com o ranking.");
       }
@@ -375,7 +381,7 @@ export function SharedQuestionGame({
         finishSoundPlayed.current = true;
         const finalWinner = [...finalPlayers].sort((first, second) => second.score - first.score || second.correct_answers - first.correct_answers)[0];
         const tied = finalWinner && finalPlayers.filter((player) => player.score === finalWinner.score).length > 1;
-        playGameSfx(tied ? "complete" : finalWinner?.user_id === finalMe?.user_id ? "success" : "error");
+        playGameSfx(tied ? "complete" : finalWinner?.user_id === finalMe?.user_id ? "victory" : "defeat");
       }
     })();
   }, [loadPlayers, phase, roomId, userId]);
