@@ -1566,3 +1566,13 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
     font-size: 0.62rem;
   }
 }
+
+
+.bible-reader-header {
+  border-bottom: 0 !important;
+}
+
+.bible-reader-progress {
+  height: 0 !important;
+  background: transparent !important;
+}
