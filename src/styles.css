@@ -1231,9 +1231,10 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
 }
 
 .bible-book-card > div:first-child > span:first-child {
-  height: 2.65rem;
-  width: 2.65rem;
-  border-radius: 0.9rem;
+  height: 2.15rem;
+  width: 2.15rem;
+  border-radius: 0.72rem;
+  font-size: 0.5rem;
 }
 
 .bible-book-card .text-\[15px\] {
