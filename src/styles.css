@@ -2447,3 +2447,48 @@ body,
     transition: none !important;
   }
 }
+
+
+.bible-index-shell .bible-picker-sheet,
+.bible-reader-shell .bible-picker-sheet {
+  border-radius: 1.25rem 1.25rem 0 0 !important;
+}
+
+.bible-index-shell .bible-picker-sheet .bible-chapter-option,
+.bible-reader-shell .bible-picker-sheet .bible-chapter-option {
+  height: 2.6rem !important;
+  min-height: 2.6rem !important;
+  border-radius: 0.68rem !important;
+  border-color: transparent !important;
+  background: color-mix(in oklab, var(--surface) 72%, var(--background)) !important;
+  box-shadow: inset 0 1px 0 color-mix(in oklab, var(--foreground) 4%, transparent) !important;
+  color: color-mix(in oklab, var(--foreground) 86%, transparent) !important;
+}
+
+.bible-index-shell .bible-picker-sheet .bible-chapter-option[aria-current="page"],
+.bible-reader-shell .bible-picker-sheet .bible-chapter-option[aria-current="page"] {
+  border-color: color-mix(in oklab, var(--primary) 55%, transparent) !important;
+  background: linear-gradient(
+    145deg,
+    color-mix(in oklab, var(--primary) 92%, white 8%),
+    color-mix(in oklab, var(--primary) 76%, black 24%)
+  ) !important;
+  box-shadow:
+    0 8px 18px -12px color-mix(in oklab, var(--primary) 70%, transparent),
+    inset 0 1px 0 color-mix(in oklab, white 15%, transparent) !important;
+  color: var(--primary-foreground) !important;
+}
+
+.bible-index-shell .bible-picker-sheet .bible-chapter-option:hover,
+.bible-reader-shell .bible-picker-sheet .bible-chapter-option:hover {
+  background: color-mix(in oklab, var(--primary) 12%, var(--surface)) !important;
+}
+
+@media (max-width: 380px) {
+  .bible-index-shell .bible-picker-sheet .bible-chapter-option,
+  .bible-reader-shell .bible-picker-sheet .bible-chapter-option {
+    height: 2.45rem !important;
+    min-height: 2.45rem !important;
+    border-radius: 0.62rem !important;
+  }
+}
