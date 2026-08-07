@@ -364,6 +364,9 @@ export function normalizeBibleSectionHeading(value?: string): string | undefined
     .normalize("NFC")
     .replace(/'/g, "’")
     .replace(/\s*\[[A-Z]{3}\]/g, "")
+    .replace(/\banti[- ]?christo(s)?\b/gi, (_, plural: string) =>
+      plural ? "anticristos" : "anticristo",
+    )
     .replace(/\s+/g, " ")
     .trim();
 
