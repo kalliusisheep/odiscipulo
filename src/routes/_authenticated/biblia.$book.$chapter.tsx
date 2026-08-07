@@ -747,7 +747,6 @@ function ChapterReader() {
             <div className="mt-2 grid gap-2">
               {(["AT", "NT"] as const).map((value) => {
                 const active = pickerTestament === value;
-                const total = BIBLE_BOOKS.filter((item) => item.testament === value).length;
                 return (
                   <button
                     key={value}
@@ -775,9 +774,6 @@ function ChapterReader() {
                       <span className="block truncate text-[12px] font-black uppercase tracking-[0.1em] text-primary">
                         {value === "AT" ? "Antigo Testamento" : "Novo Testamento"}
                       </span>
-                    </span>
-                    <span className="mr-1 rounded-full bg-surface-2 px-2.5 py-1 text-[9px] font-bold text-muted-foreground">
-                      {total} livros
                     </span>
                     <ChevronDown className={[
                       "h-4 w-4 shrink-0 text-primary transition-transform",
