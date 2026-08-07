@@ -1,4 +1,4 @@
-export type GameSfx = "start" | "tap" | "reveal" | "success" | "error" | "complete";
+export type GameSfx = "start" | "tap" | "reveal" | "success" | "error" | "complete" | "victory" | "defeat";
 export type GameMusicTheme = "character" | "verse" | "crossword" | "million";
 
 export type GameAudioState = {
@@ -77,7 +77,7 @@ function playMusicStep() {
     oscillator.type = index === 0 ? "sine" : "triangle";
     oscillator.frequency.setValueAtTime(frequency, now);
     gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(index === 0 ? 0.46 : 0.22, now + 0.24);
+    gain.gain.exponentialRampToValueAtTime(index === 0 ? 0.52 : 0.25, now + 0.24);
     gain.gain.exponentialRampToValueAtTime(0.0001, now + 3.1);
     oscillator.connect(gain);
     gain.connect(destination);
@@ -110,6 +110,21 @@ function playMusicStep() {
     bell.start(now + 0.55);
     bell.stop(now + 2.3);
   }
+  chord.slice(1).forEach((frequency, index) => {
+    const arp = context.createOscillator();
+    const arpGain = context.createGain();
+    const startAt = now + 0.35 + index * 0.38;
+    arp.type = "triangle";
+    arp.frequency.setValueAtTime(frequency * 2, startAt);
+    arpGain.gain.setValueAtTime(0.0001, startAt);
+    arpGain.gain.exponentialRampToValueAtTime(0.11, startAt + 0.02);
+    arpGain.gain.exponentialRampToValueAtTime(0.0001, startAt + 0.28);
+    arp.connect(arpGain);
+    arpGain.connect(destination);
+    arp.start(startAt);
+    arp.stop(startAt + 0.32);
+  });
+
   musicStep += 1;
 }
 
@@ -133,7 +148,7 @@ export function startGameMusic(theme?: GameMusicTheme) {
   void context.resume();
   if (musicGain) {
     musicGain.gain.cancelScheduledValues(context.currentTime);
-    musicGain.gain.setTargetAtTime(0.82, context.currentTime, 0.45);
+    musicGain.gain.setTargetAtTime(0.92, context.currentTime, 0.45);
   }
   playMusicStep();
   musicTimer = window.setInterval(playMusicStep, 3200);
@@ -176,16 +191,18 @@ export function playGameSfx(kind: GameSfx) {
     success: [523.25, 659.25, 783.99, 1046.5],
     error: [329.63, 246.94, 196],
     complete: [392, 523.25, 659.25, 783.99, 1046.5],
+    victory: [523.25, 659.25, 783.99, 1046.5, 1318.51],
+    defeat: [392, 329.63, 261.63, 196],
   };
-  const durations: Record<GameSfx, number> = { start: 0.13, tap: 0.08, reveal: 0.16, success: 0.14, error: 0.16, complete: 0.18 };
+  const durations: Record<GameSfx, number> = { start: 0.13, tap: 0.08, reveal: 0.16, success: 0.14, error: 0.16, complete: 0.18, victory: 0.2, defeat: 0.2 };
   notes[kind].forEach((frequency, index) => {
     const oscillator = context.createOscillator();
     const gain = context.createGain();
     const startAt = now + index * (kind === "tap" ? 0 : 0.075);
-    oscillator.type = kind === "error" ? "sawtooth" : "triangle";
+    oscillator.type = kind === "error" || kind === "defeat" ? "sawtooth" : "triangle";
     oscillator.frequency.setValueAtTime(frequency, startAt);
     gain.gain.setValueAtTime(0.0001, startAt);
-    gain.gain.exponentialRampToValueAtTime(kind === "tap" ? 0.09 : kind === "error" ? 0.19 : 0.24, startAt + 0.012);
+    gain.gain.exponentialRampToValueAtTime(kind === "tap" ? 0.09 : kind === "error" || kind === "defeat" ? 0.22 : 0.28, startAt + 0.012);
     gain.gain.exponentialRampToValueAtTime(0.0001, startAt + durations[kind]);
     oscillator.connect(gain);
     gain.connect(context.destination);
