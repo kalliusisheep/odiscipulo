@@ -74,7 +74,38 @@ export function translationByCode(code: string): BibleTranslation {
   return BIBLE_TRANSLATIONS.find((translation) => translation.code === code) ?? PT_TRANSLATIONS[0];
 }
 
-export type Verse = { verse: number; text: string };
+export type BibleSectionHeading = {
+  verse: number;
+  title: string;
+};
+
+export type Verse = {
+  verse: number;
+  text: string;
+  heading?: string;
+};
+
+const VERIFIED_NVI_SECTION_HEADINGS: Record<string, BibleSectionHeading[]> = {
+  "40:5": [
+    { verse: 1, title: "As Bem-aventuranças" },
+    { verse: 13, title: "O Sal da Terra e a Luz do Mundo" },
+  ],
+  "43:1": [{ verse: 1, title: "A Palavra Tornou-se Carne" }],
+  "44:2": [{ verse: 42, title: "A Comunhão dos Cristãos" }],
+  "45:8": [{ verse: 1, title: "A Vida pelo Espírito" }],
+};
+
+export function sectionHeadingFor(
+  translation: string,
+  book: number,
+  chapter: number,
+  verse: number,
+): string | undefined {
+  if (translation !== "NVIPT") return undefined;
+  return VERIFIED_NVI_SECTION_HEADINGS[`${book}:${chapter}`]?.find(
+    (heading) => heading.verse === verse,
+  )?.title;
+}
 export type OriginalWord = { word: string; strong: string | null; index: number };
 export type OriginalVerse = { verse: number; words: OriginalWord[] };
 
@@ -130,12 +161,17 @@ export async function fetchChapter(
   book: number,
   chapter: number,
 ): Promise<Verse[]> {
-  return cached(`bib:${translation}:${book}:${chapter}`, async () => {
+  const verses = await cached(`bib:${translation}:${book}:${chapter}`, async () => {
     const res = await fetchWithTimeout(`${API}/get-text/${translation}/${book}/${chapter}/`);
     if (!res.ok) throw new Error("Não foi possível carregar o capítulo.");
     const json = (await res.json()) as { verse: number; text: string }[];
     return json.map((v) => ({ verse: v.verse, text: stripTags(v.text) }));
   });
+
+  return verses.map((verse) => ({
+    ...verse,
+    heading: sectionHeadingFor(translation, book, chapter, verse.verse),
+  }));
 }
 
 export function originalTranslationFor(book: number): { code: string; lang: "grego" | "hebraico" } {
