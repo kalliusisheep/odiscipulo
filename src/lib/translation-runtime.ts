@@ -792,7 +792,7 @@ export function startTranslationRuntime(language: AppLanguage): () => void {
     subtree: true,
     characterData: true,
     attributes: true,
-    attributeFilter: ["placeholder", "aria-label", "title"],
+    attributeFilter: ["placeholder", "aria-label", "title", "alt"],
   });
   return () => observer.disconnect();
 }
