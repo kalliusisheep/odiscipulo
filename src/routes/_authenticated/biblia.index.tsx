@@ -167,6 +167,7 @@ function BibliaIndex() {
               </span>
               <div className="min-w-0">
                 <h1 className="truncate text-lg font-extrabold leading-tight">Bíblia de Estudos</h1>
+                <p className="mt-0.5 truncate text-[10px] text-muted-foreground">Leia, marque e aprofunde cada passagem</p>
               </div>
             </div>
 
@@ -188,6 +189,7 @@ function BibliaIndex() {
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && void runSearch()}
                 placeholder="Busque livro, referência ou frase"
+                aria-label="Buscar na Bíblia"
                 className="min-w-0 flex-1 bg-transparent py-2.5 text-[15px] outline-none placeholder:text-muted-foreground/70"
               />
               {searching ? (
@@ -246,7 +248,7 @@ function BibliaIndex() {
         </div>
       </div>
 
-      <main className="bible-index-main mx-auto max-w-lg px-4 pt-4 animate-slide-up">
+      <main className="bible-index-main mx-auto max-w-lg px-4 pt-5 animate-slide-up">
         {searchError && (
           <div className="mb-3 rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-xs text-destructive">
             {searchError}
@@ -263,7 +265,7 @@ function BibliaIndex() {
         )}
 
         {hits && (
-          <section className="space-y-2.5">
+          <section aria-live="polite" className="space-y-2.5">
             <div className="flex items-end justify-between gap-3 px-1">
               <div>
                 <p className="text-xs font-bold text-foreground">Resultados da busca</p>
@@ -440,7 +442,7 @@ function BibliaIndex() {
                       key={b.id}
                       onClick={() => openChapters(b.id)}
                       aria-label={`Abrir ${b.name}`}
-                      className="bible-book-card group relative min-h-[112px] overflow-hidden rounded-[1.25rem] border border-white/10 bg-surface/75 p-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
+                      className="bible-book-card group relative min-h-[100px] overflow-hidden rounded-[1.25rem] border border-white/10 bg-surface/75 p-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-surface active:scale-[0.98]"
                     >
                       <div className="flex items-start gap-2.5">
                         <span
@@ -455,7 +457,7 @@ function BibliaIndex() {
                           {complete ? <Check className="h-4 w-4" /> : b.abbr}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block line-clamp-2 text-[15px] font-extrabold leading-snug">{b.name}</span>
+                          <span className="block line-clamp-2 text-[14px] font-extrabold leading-snug">{b.name}</span>
                           <span className="mt-1 block text-[10px] text-muted-foreground">
                             {done > 0 ? `${done}/${b.chapters} lidos` : `${b.chapters} capítulos`}
                           </span>
