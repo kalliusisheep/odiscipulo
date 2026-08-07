@@ -2069,3 +2069,32 @@ body,
   --highlight-color: oklch(0.68 0.02 260);
   background: color-mix(in oklab, var(--highlight-color) 88%, var(--surface)) !important;
 }
+
+
+/* Premium chapter trigger: a clear, centered touch target for navigation. */
+.bible-reader-shell .bible-reader-header .bible-chapter-trigger.bible-header-chapter {
+  border: 1px solid color-mix(in oklab, var(--primary) 24%, transparent) !important;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--primary) 14%, var(--surface)),
+      color-mix(in oklab, var(--surface-2) 55%, var(--surface))
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--foreground) 8%, transparent),
+    0 10px 24px -18px color-mix(in oklab, var(--primary) 70%, transparent) !important;
+}
+
+.bible-reader-shell .bible-reader-header .bible-chapter-trigger.bible-header-chapter:hover,
+.bible-reader-shell .bible-reader-header .bible-chapter-trigger.bible-header-chapter:focus-visible {
+  border-color: color-mix(in oklab, var(--primary) 58%, transparent) !important;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--primary) 22%, var(--surface)),
+      color-mix(in oklab, var(--surface-2) 72%, var(--surface))
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--foreground) 12%, transparent),
+    0 14px 28px -18px color-mix(in oklab, var(--primary) 85%, transparent) !important;
+}
