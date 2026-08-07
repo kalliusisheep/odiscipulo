@@ -69,7 +69,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   });
   const [theme, setThemeState] = useState<AppTheme>(() => {
     if (typeof window === "undefined") return "default";
-    return normalizeTheme(window.localStorage.getItem("disciple.theme"));
+    const storedTheme = normalizeTheme(window.localStorage.getItem("disciple.theme"));
+    const explicitlySelected = window.localStorage.getItem("disciple.themeSelected") === "true";
+    return storedTheme === "black" && !explicitlySelected ? "default" : storedTheme;
   });
 
   useEffect(() => {
@@ -104,8 +106,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => startTranslationRuntime(language), [language]);
 
   const setLanguage = (nextLanguage: AppLanguage) => setLanguageState(nextLanguage);
-  const setTheme = (nextTheme: AppTheme) => setThemeState(nextTheme);
+  const markThemeSelected = () => {
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("disciple.themeSelected", "true");
+    }
+  };
+
+  const setTheme = (nextTheme: AppTheme) => {
+    markThemeSelected();
+    setThemeState(nextTheme);
+  };
+
   const toggleTheme = () => {
+    markThemeSelected();
     setThemeState((current) =>
       current === "black" || current === "blue" || current === "pink" ? "white" : "black",
     );
