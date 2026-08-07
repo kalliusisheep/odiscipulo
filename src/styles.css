@@ -2199,10 +2199,25 @@ body,
 }
 
 .bible-reader-shell .bible-chapter-nav-play {
-  border-color: color-mix(in srgb, var(--primary) 62%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary) 40%, var(--background)) !important;
+  outline: none;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--primary) 94%, white 6%),
+      color-mix(in srgb, var(--primary) 76%, black 24%)
+    ) !important;
   box-shadow:
-    0 8px 18px color-mix(in srgb, var(--primary) 34%, transparent),
-    inset 0 1px 0 color-mix(in srgb, white 22%, transparent);
+    0 8px 18px color-mix(in srgb, var(--primary) 30%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 14%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, black 22%, transparent);
+}
+
+.bible-reader-shell .bible-chapter-nav-play:focus-visible {
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--primary) 24%, transparent),
+    0 8px 18px color-mix(in srgb, var(--primary) 30%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 14%, transparent);
 }
 
 .bible-reader-shell .bible-chapter-nav-pill {
