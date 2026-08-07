@@ -354,7 +354,7 @@ function ChapterReader() {
       {/* Barra superior fixa */}
       <div className={`bible-reader-header sticky top-0 z-30 bg-background/85 backdrop-blur-xl ${readerScrolled ? "is-immersive" : ""}`}>
         <div className="bible-reader-header-inner mx-auto max-w-lg px-3 py-2 sm:px-4">
-          <div className="bible-reader-primary-row grid min-h-[3rem] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2">
+          <div className="bible-reader-primary-row grid min-h-[3rem] grid-cols-[2.25rem_minmax(0,1fr)_auto_auto] items-center gap-2">
             <div className="justify-self-start">
               <Link
                 to="/biblia"
@@ -368,23 +368,23 @@ function ChapterReader() {
             <button
               type="button"
               onClick={openChapterPicker}
-              className="bible-chapter-trigger bible-header-chapter group min-w-[7.5rem] max-w-[10rem] rounded-2xl border border-primary/20 bg-surface/80 px-3 py-2 text-center shadow-lg shadow-primary/10 transition-all hover:border-primary/45 hover:bg-surface-2/85 hover:shadow-xl hover:shadow-primary/15"
+              className="bible-chapter-trigger bible-header-chapter group min-w-[7.5rem] max-w-[10rem] justify-self-center rounded-2xl border border-primary/20 bg-surface/80 px-3 py-2 text-center shadow-lg shadow-primary/10 transition-all hover:border-primary/45 hover:bg-surface-2/85 hover:shadow-xl hover:shadow-primary/15"
             >
-              <span className="block truncate text-base font-black leading-tight tracking-[-0.02em]">
+              <span className="bible-header-chapter-label block truncate text-lg font-black leading-tight tracking-[-0.02em]">
                 {bookNameById(book)} {chapter}
               </span>
             </button>
 
-            <div className="flex items-center justify-self-end gap-2">
+            <div className="contents">
               <button
                 type="button"
                 onClick={() => setSettingsOpen(true)}
                 aria-label={`Versão atual: ${label}. Abrir ajustes de leitura`}
-                className="bible-reader-version-pill flex h-9 min-w-[3.75rem] shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 px-2 text-[11px] font-extrabold uppercase tracking-[0.08em] text-primary transition-all hover:border-primary/40 hover:bg-primary/15 active:scale-95"
+                className="bible-reader-version-pill flex h-9 min-w-[3.75rem] shrink-0 items-center justify-self-end justify-center rounded-xl border border-primary/20 bg-primary/10 px-2 text-[11px] font-extrabold uppercase tracking-[0.08em] text-primary transition-all hover:border-primary/40 hover:bg-primary/15 active:scale-95"
               >
                 {label}
               </button>
-              <ThemeToggle className="h-9 w-9 shrink-0 border-border bg-surface" />
+              <ThemeToggle className="h-9 w-9 shrink-0 justify-self-end border-border bg-surface" />
             </div>
           </div>
         </div>
