@@ -1210,7 +1210,7 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
 }
 
 .bible-book-card {
-  min-height: 6.6rem !important;
+  min-height: 5.5rem !important;
   border-radius: 1.15rem !important;
   background:
     linear-gradient(145deg, color-mix(in srgb, hsl(var(--surface)) 94%, transparent), color-mix(in srgb, hsl(var(--surface-2)) 66%, transparent)),
