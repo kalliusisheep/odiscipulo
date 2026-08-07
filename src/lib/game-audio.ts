@@ -14,6 +14,14 @@ type MusicThemeConfig = {
   arrangement: "heroic" | "calm" | "puzzle" | "arena";
 };
 
+type SfxToneOptions = {
+  attack?: number;
+  pan?: number;
+  detune?: number;
+  filter?: number;
+  glideTo?: number;
+};
+
 const listeners = new Set<() => void>();
 const musicThemes: Record<GameMusicTheme, MusicThemeConfig> = {
   character: {
@@ -66,6 +74,8 @@ let audioContext: AudioContext | null = null;
 let musicGain: GainNode | null = null;
 let musicCompressor: DynamicsCompressorNode | null = null;
 let musicFilter: BiquadFilterNode | null = null;
+let sfxGain: GainNode | null = null;
+let sfxCompressor: DynamicsCompressorNode | null = null;
 let musicTimer: number | null = null;
 let musicStep = 0;
 let musicEnabled = true;
@@ -108,6 +118,8 @@ function ensureContext() {
   musicGain = audioContext.createGain();
   musicFilter = audioContext.createBiquadFilter();
   musicCompressor = audioContext.createDynamicsCompressor();
+  sfxGain = audioContext.createGain();
+  sfxCompressor = audioContext.createDynamicsCompressor();
 
   musicFilter.type = "lowpass";
   musicFilter.frequency.value = 5200;
@@ -119,10 +131,20 @@ function ensureContext() {
   musicCompressor.attack.value = 0.004;
   musicCompressor.release.value = 0.16;
 
+  sfxCompressor.threshold.value = -16;
+  sfxCompressor.knee.value = 8;
+  sfxCompressor.ratio.value = 6;
+  sfxCompressor.attack.value = 0.003;
+  sfxCompressor.release.value = 0.12;
+
   musicGain.gain.value = 0;
+  sfxGain.gain.value = 0.88;
+
   musicGain.connect(musicFilter);
   musicFilter.connect(musicCompressor);
   musicCompressor.connect(audioContext.destination);
+  sfxGain.connect(sfxCompressor);
+  sfxCompressor.connect(audioContext.destination);
 
   return audioContext;
 }
@@ -310,6 +332,169 @@ function playMusicBar() {
   musicStep += 1;
 }
 
+function scheduleSfxTone(
+  context: AudioContext,
+  destination: AudioNode,
+  frequency: number,
+  startAt: number,
+  duration: number,
+  peak: number,
+  type: OscillatorType,
+  options: SfxToneOptions = {},
+) {
+  const oscillator = context.createOscillator();
+  const gain = context.createGain();
+  const attack = options.attack ?? Math.min(0.018, duration * 0.25);
+  let output: AudioNode = gain;
+
+  oscillator.type = type;
+  oscillator.frequency.setValueAtTime(frequency, startAt);
+  oscillator.detune.setValueAtTime(options.detune ?? 0, startAt);
+  if (options.glideTo) {
+    oscillator.frequency.exponentialRampToValueAtTime(options.glideTo, startAt + duration * 0.8);
+  }
+
+  if (options.filter) {
+    const filter = context.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(options.filter, startAt);
+    filter.Q.value = 0.9;
+    gain.connect(filter);
+    output = filter;
+  }
+
+  if (options.pan !== undefined && typeof context.createStereoPanner === "function") {
+    const panner = context.createStereoPanner();
+    panner.pan.setValueAtTime(options.pan, startAt);
+    output.connect(panner);
+    output = panner;
+  }
+
+  output.connect(destination);
+  gain.gain.setValueAtTime(0.0001, startAt);
+  gain.gain.exponentialRampToValueAtTime(peak, startAt + attack);
+  gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
+
+  oscillator.connect(gain);
+  oscillator.start(startAt);
+  oscillator.stop(startAt + duration + 0.035);
+}
+
+function scheduleSfxNoise(
+  context: AudioContext,
+  destination: AudioNode,
+  startAt: number,
+  duration: number,
+  peak: number,
+  frequency: number,
+  type: BiquadFilterType = "bandpass",
+) {
+  const source = context.createBufferSource();
+  const filter = context.createBiquadFilter();
+  const gain = context.createGain();
+
+  source.buffer = getNoiseBuffer(context);
+  filter.type = type;
+  filter.frequency.setValueAtTime(frequency, startAt);
+  filter.Q.value = type === "highpass" ? 0.3 : 1.1;
+  gain.gain.setValueAtTime(0.0001, startAt);
+  gain.gain.exponentialRampToValueAtTime(peak, startAt + 0.004);
+  gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
+
+  source.connect(filter);
+  filter.connect(gain);
+  gain.connect(destination);
+  source.start(startAt);
+  source.stop(startAt + duration + 0.025);
+}
+
+function playSfxStart(context: AudioContext, destination: AudioNode, now: number) {
+  scheduleSfxTone(context, destination, 65.41, now, 0.42, 0.38, "sine", { glideTo: 48, filter: 380 });
+  scheduleSfxNoise(context, destination, now, 0.18, 0.16, 900, "lowpass");
+  [261.63, 329.63, 392, 523.25].forEach((frequency, index) => {
+    scheduleSfxTone(context, destination, frequency, now + 0.12 + index * 0.09, 0.32, 0.22, "sawtooth", {
+      filter: 2600 + index * 500,
+      pan: index % 2 === 0 ? -0.18 : 0.18,
+    });
+  });
+  scheduleSfxTone(context, destination, 1046.5, now + 0.5, 0.5, 0.16, "sine", {
+    filter: 7000,
+    pan: 0.2,
+  });
+}
+
+function playSfxTap(context: AudioContext, destination: AudioNode, now: number) {
+  scheduleSfxNoise(context, destination, now, 0.025, 0.11, 3200, "highpass");
+  scheduleSfxTone(context, destination, 920, now, 0.075, 0.13, "triangle", {
+    glideTo: 560,
+    filter: 4200,
+  });
+}
+
+function playSfxReveal(context: AudioContext, destination: AudioNode, now: number) {
+  scheduleSfxNoise(context, destination, now, 0.28, 0.1, 2400, "highpass");
+  [392, 523.25, 659.25, 783.99].forEach((frequency, index) => {
+    scheduleSfxTone(context, destination, frequency, now + index * 0.055, 0.22, 0.16, "triangle", {
+      filter: 5200,
+      pan: index % 2 === 0 ? -0.16 : 0.16,
+    });
+  });
+}
+
+function playSfxSuccess(context: AudioContext, destination: AudioNode, now: number) {
+  scheduleSfxTone(context, destination, 82.41, now, 0.3, 0.28, "sine", { glideTo: 55, filter: 520 });
+  scheduleSfxNoise(context, destination, now, 0.08, 0.12, 1900, "lowpass");
+  [523.25, 659.25, 783.99, 1046.5].forEach((frequency, index) => {
+    scheduleSfxTone(context, destination, frequency, now + 0.08 + index * 0.065, 0.3, 0.2, "sine", {
+      filter: 6200,
+      pan: index % 2 === 0 ? -0.2 : 0.2,
+    });
+  });
+}
+
+function playSfxError(context: AudioContext, destination: AudioNode, now: number) {
+  scheduleSfxTone(context, destination, 98, now, 0.38, 0.3, "sine", { glideTo: 54, filter: 680 });
+  scheduleSfxTone(context, destination, 233.08, now, 0.34, 0.15, "sawtooth", { glideTo: 155.56, filter: 1100 });
+  scheduleSfxNoise(context, destination, now + 0.015, 0.09, 0.1, 760, "lowpass");
+}
+
+function playSfxComplete(context: AudioContext, destination: AudioNode, now: number) {
+  scheduleSfxTone(context, destination, 73.42, now, 0.52, 0.32, "sine", { glideTo: 49, filter: 420 });
+  [392, 523.25, 659.25, 783.99, 1046.5].forEach((frequency, index) => {
+    scheduleSfxTone(context, destination, frequency, now + 0.12 + index * 0.075, 0.42, 0.18, "triangle", {
+      filter: 5600,
+      pan: index % 2 === 0 ? -0.18 : 0.18,
+    });
+  });
+  scheduleSfxNoise(context, destination, now + 0.38, 0.2, 0.08, 6400, "highpass");
+}
+
+function playSfxVictory(context: AudioContext, destination: AudioNode, now: number) {
+  scheduleSfxTone(context, destination, 55, now, 0.72, 0.42, "sine", { glideTo: 40, filter: 380 });
+  scheduleSfxNoise(context, destination, now, 0.18, 0.16, 520, "lowpass");
+  [261.63, 329.63, 392, 523.25, 659.25, 783.99, 1046.5, 1318.51].forEach((frequency, index) => {
+    scheduleSfxTone(context, destination, frequency, now + 0.1 + index * 0.075, 0.56, 0.2, index < 4 ? "sawtooth" : "sine", {
+      filter: index < 4 ? 3200 : 7200,
+      pan: index % 2 === 0 ? -0.2 : 0.2,
+    });
+  });
+  scheduleSfxTone(context, destination, 1567.98, now + 0.86, 0.72, 0.16, "sine", {
+    filter: 9000,
+    pan: 0.24,
+  });
+}
+
+function playSfxDefeat(context: AudioContext, destination: AudioNode, now: number) {
+  scheduleSfxTone(context, destination, 73.42, now, 0.64, 0.34, "sine", { glideTo: 43.65, filter: 420 });
+  [293.66, 246.94, 196, 146.83].forEach((frequency, index) => {
+    scheduleSfxTone(context, destination, frequency, now + 0.08 + index * 0.1, 0.44, 0.16, "sawtooth", {
+      glideTo: frequency * 0.82,
+      filter: 1500,
+    });
+  });
+  scheduleSfxNoise(context, destination, now + 0.16, 0.18, 0.08, 520, "lowpass");
+}
+
 export function startGameMusic(theme?: GameMusicTheme) {
   musicStarted = true;
   const pathName = typeof window !== "undefined" ? window.location.pathname : "";
@@ -387,48 +572,36 @@ export function playGameSfx(kind: GameSfx) {
   if (!sfxEnabled) return;
 
   const context = ensureContext();
-  if (!context) return;
+  if (!context || !sfxGain) return;
   void context.resume();
 
   const now = context.currentTime;
-  const notes: Record<GameSfx, number[]> = {
-    start: [261.63, 329.63, 392, 523.25],
-    tap: [440],
-    reveal: [392, 523.25, 659.25],
-    success: [523.25, 659.25, 783.99, 1046.5],
-    error: [329.63, 246.94, 196],
-    complete: [392, 523.25, 659.25, 783.99, 1046.5],
-    victory: [523.25, 659.25, 783.99, 1046.5, 1318.51],
-    defeat: [392, 329.63, 261.63, 196],
-  };
-  const durations: Record<GameSfx, number> = {
-    start: 0.13,
-    tap: 0.08,
-    reveal: 0.16,
-    success: 0.14,
-    error: 0.16,
-    complete: 0.18,
-    victory: 0.2,
-    defeat: 0.2,
-  };
+  const destination = sfxGain;
 
-  notes[kind].forEach((frequency, index) => {
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-    const startAt = now + index * (kind === "tap" ? 0 : 0.075);
-
-    oscillator.type = kind === "error" || kind === "defeat" ? "sawtooth" : "triangle";
-    oscillator.frequency.setValueAtTime(frequency, startAt);
-    gain.gain.setValueAtTime(0.0001, startAt);
-    gain.gain.exponentialRampToValueAtTime(
-      kind === "tap" ? 0.09 : kind === "error" || kind === "defeat" ? 0.22 : 0.28,
-      startAt + 0.012,
-    );
-    gain.gain.exponentialRampToValueAtTime(0.0001, startAt + durations[kind]);
-
-    oscillator.connect(gain);
-    gain.connect(context.destination);
-    oscillator.start(startAt);
-    oscillator.stop(startAt + durations[kind] + 0.02);
-  });
+  switch (kind) {
+    case "start":
+      playSfxStart(context, destination, now);
+      break;
+    case "tap":
+      playSfxTap(context, destination, now);
+      break;
+    case "reveal":
+      playSfxReveal(context, destination, now);
+      break;
+    case "success":
+      playSfxSuccess(context, destination, now);
+      break;
+    case "error":
+      playSfxError(context, destination, now);
+      break;
+    case "complete":
+      playSfxComplete(context, destination, now);
+      break;
+    case "victory":
+      playSfxVictory(context, destination, now);
+      break;
+    case "defeat":
+      playSfxDefeat(context, destination, now);
+      break;
+  }
 }
