@@ -1029,3 +1029,338 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
     animation: none;
   }
 }
+
+
+.bible-index-shell,
+.bible-reader-shell {
+  background:
+    radial-gradient(circle at 10% 0%, color-mix(in srgb, hsl(var(--primary)) 10%, transparent), transparent 28rem),
+    radial-gradient(circle at 100% 22%, color-mix(in srgb, hsl(var(--ancient)) 5%, transparent), transparent 24rem),
+    hsl(var(--background));
+}
+
+.bible-index-header,
+.bible-reader-header {
+  background: color-mix(in srgb, hsl(var(--background)) 90%, transparent) !important;
+  border-color: color-mix(in srgb, hsl(var(--primary)) 14%, hsl(var(--border))) !important;
+  box-shadow: 0 12px 34px color-mix(in srgb, hsl(var(--background)) 36%, transparent);
+  backdrop-filter: blur(24px) saturate(135%);
+}
+
+.bible-index-header-inner,
+.bible-reader-header-inner {
+  min-height: 0;
+}
+
+.bible-index-header-inner {
+  padding-bottom: 0.7rem;
+}
+
+.bible-guided-banner {
+  border-radius: 1.2rem;
+  background:
+    linear-gradient(105deg, color-mix(in srgb, hsl(var(--primary)) 13%, hsl(var(--surface))) 0%, color-mix(in srgb, hsl(var(--surface)) 96%, transparent) 72%),
+    hsl(var(--surface));
+  box-shadow:
+    0 10px 24px color-mix(in srgb, hsl(var(--background)) 24%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 7%, transparent);
+}
+
+.bible-index-main {
+  padding-top: 1.15rem;
+}
+
+.bible-search-panel {
+  border-radius: 1.15rem;
+  background: color-mix(in srgb, hsl(var(--surface)) 86%, transparent) !important;
+  border-color: color-mix(in srgb, hsl(var(--border)) 82%, transparent) !important;
+  box-shadow:
+    0 8px 20px color-mix(in srgb, hsl(var(--background)) 20%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 5%, transparent);
+  backdrop-filter: blur(18px);
+}
+
+.bible-search-panel input {
+  caret-color: hsl(var(--primary));
+}
+
+.bible-journey-card {
+  border-radius: 1.55rem !important;
+  box-shadow:
+    0 18px 34px color-mix(in srgb, hsl(var(--background)) 34%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 8%, transparent);
+}
+
+.bible-testament-switcher {
+  gap: 0.2rem;
+  padding: 0.2rem;
+  border: 1px solid color-mix(in srgb, hsl(var(--border)) 88%, transparent);
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, hsl(var(--surface)) 68%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 4%, transparent);
+}
+
+.bible-testament-option {
+  min-height: 3.2rem !important;
+  border: 0 !important;
+  border-radius: 1rem !important;
+  padding: 0.62rem 0.7rem !important;
+  background: transparent !important;
+}
+
+.bible-testament-option[aria-pressed="true"] {
+  background: color-mix(in srgb, hsl(var(--primary)) 15%, hsl(var(--surface))) !important;
+  box-shadow:
+    0 5px 14px color-mix(in srgb, hsl(var(--primary)) 14%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 7%, transparent);
+}
+
+.bible-testament-option[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0.7rem;
+  bottom: 0.1rem;
+  height: 0.16rem;
+  border-radius: 999px;
+  background: hsl(var(--primary));
+  box-shadow: 0 0 12px color-mix(in srgb, hsl(var(--primary)) 55%, transparent);
+}
+
+.bible-book-card {
+  min-height: 6.6rem !important;
+  border-radius: 1.15rem !important;
+  background:
+    linear-gradient(145deg, color-mix(in srgb, hsl(var(--surface)) 94%, transparent), color-mix(in srgb, hsl(var(--surface-2)) 66%, transparent)),
+    hsl(var(--surface));
+  box-shadow:
+    0 8px 18px color-mix(in srgb, hsl(var(--background)) 20%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 4%, transparent);
+}
+
+.bible-book-card:hover {
+  box-shadow:
+    0 12px 24px color-mix(in srgb, hsl(var(--primary)) 12%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
+}
+
+.bible-book-card > div:first-child {
+  align-items: center;
+}
+
+.bible-book-card > div:first-child > span:first-child {
+  height: 2.65rem;
+  width: 2.65rem;
+  border-radius: 0.9rem;
+}
+
+.bible-book-card .text-\[15px\] {
+  font-size: 0.92rem;
+}
+
+.bible-picker-overlay {
+  padding-top: 0.5rem;
+  overscroll-behavior: contain;
+}
+
+.bible-picker-sheet,
+.bible-modal-sheet,
+.bible-verse-actions-sheet,
+.bible-compare-sheet {
+  border-color: color-mix(in srgb, hsl(var(--primary)) 15%, hsl(var(--border))) !important;
+  box-shadow:
+    0 -18px 48px color-mix(in srgb, hsl(var(--background)) 48%, transparent),
+    0 1px 0 color-mix(in srgb, white 7%, transparent) inset !important;
+}
+
+.bible-picker-sheet {
+  border-radius: 1.75rem 1.75rem 0 0 !important;
+}
+
+.bible-picker-sheet > div:first-child {
+  padding-top: 0.7rem;
+}
+
+.bible-picker-sheet .bible-close-button {
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  margin-inline-end: 0.1rem;
+}
+
+.bible-reader-header.is-immersive {
+  background: color-mix(in srgb, hsl(var(--background)) 78%, transparent) !important;
+  box-shadow: 0 8px 26px color-mix(in srgb, hsl(var(--background)) 28%, transparent);
+}
+
+.bible-reader-header.is-immersive .bible-reader-header-inner {
+  min-height: 2.95rem;
+  padding-top: 0.45rem;
+  padding-bottom: 0.45rem;
+}
+
+.bible-reader-header.is-immersive .bible-chapter-trigger p:last-child {
+  max-height: 0;
+  margin-top: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 180ms ease, opacity 180ms ease, margin 180ms ease;
+}
+
+.bible-reading-column.bible-reader-surface {
+  max-width: 42rem;
+  padding: 0.2rem 0 !important;
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.bible-reading-column.bible-reader-surface > div:first-child {
+  margin-bottom: 0.75rem;
+  padding-inline: 0.2rem;
+  border-color: color-mix(in srgb, hsl(var(--border)) 68%, transparent);
+}
+
+.bible-reading-column .bible-verse-list {
+  gap: 0.15rem;
+}
+
+.bible-reading-column .bible-verse-row {
+  min-height: 2.6rem;
+  margin-inline: -0.35rem;
+  padding: 0.42rem 0.55rem;
+  border: 1px solid transparent;
+  border-radius: 0.85rem;
+  line-height: 1.94;
+  box-shadow: none;
+}
+
+.bible-reading-column .bible-verse-row-idle:hover,
+.bible-reading-column .bible-verse-row-idle:focus-visible {
+  border-color: color-mix(in srgb, hsl(var(--primary)) 18%, transparent);
+  background: color-mix(in srgb, hsl(var(--primary)) 5%, transparent);
+}
+
+.bible-reading-column .bible-verse-row:not(.bible-verse-row-idle) {
+  border-color: color-mix(in srgb, hsl(var(--primary)) 16%, transparent);
+  background: color-mix(in srgb, hsl(var(--primary)) 7%, transparent);
+}
+
+.bible-reading-column .bible-verse-number {
+  min-width: 1.2rem;
+  padding: 0;
+  background: transparent;
+  color: color-mix(in srgb, hsl(var(--primary)) 78%, hsl(var(--muted-foreground)));
+  font-size: 0.68rem;
+  box-shadow: none;
+}
+
+.bible-reading-column .bible-verse-copy {
+  font-family: var(--font-serif), Georgia, serif;
+  letter-spacing: 0.002em;
+  line-height: 1.94;
+}
+
+.bible-floating-control > div {
+  border-color: color-mix(in srgb, hsl(var(--primary)) 18%, hsl(var(--border))) !important;
+  box-shadow:
+    0 14px 34px color-mix(in srgb, hsl(var(--background)) 38%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
+}
+
+.bible-chapter-nav > div {
+  border-radius: 1.35rem;
+  padding: 0.35rem;
+  background: color-mix(in srgb, hsl(var(--background)) 91%, transparent) !important;
+  border-color: color-mix(in srgb, hsl(var(--primary)) 22%, hsl(var(--border))) !important;
+  box-shadow:
+    0 18px 38px color-mix(in srgb, hsl(var(--background)) 46%, transparent),
+    0 0 24px color-mix(in srgb, hsl(var(--primary)) 12%, transparent);
+}
+
+.bible-chapter-nav button {
+  min-height: 2.9rem;
+  min-width: 2.9rem;
+  border-radius: 1rem;
+}
+
+.bible-chapter-nav button:nth-child(2) {
+  min-width: 6.6rem;
+  padding-inline: 0.9rem;
+  background: color-mix(in srgb, hsl(var(--primary)) 11%, hsl(var(--surface)));
+  color: hsl(var(--foreground));
+}
+
+.bible-sheet-header {
+  padding-top: 0.35rem;
+}
+
+.bible-sheet-header::before {
+  content: "";
+  display: block;
+  width: 2.6rem;
+  height: 0.25rem;
+  margin: 0 auto 0.85rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, hsl(var(--muted-foreground)) 35%, transparent);
+}
+
+.bible-action-grid {
+  gap: 0.65rem;
+}
+
+.bible-sheet-action,
+.bible-version-option {
+  min-height: 3.35rem;
+  border-radius: 1rem;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.bible-sheet-action:active,
+.bible-version-option:active {
+  transform: scale(0.98);
+}
+
+.bible-secondary-page {
+  background:
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, hsl(var(--primary)) 9%, transparent), transparent 24rem),
+    hsl(var(--background));
+}
+
+.bible-mark-card {
+  border-radius: 1.15rem;
+  box-shadow: 0 8px 20px color-mix(in srgb, hsl(var(--background)) 20%, transparent);
+}
+
+@media (max-width: 380px) {
+  .bible-index-header-inner {
+    padding-inline: 0.75rem;
+  }
+
+  .bible-index-main {
+    padding-inline: 0.75rem;
+  }
+
+  .bible-book-card {
+    min-height: 6.35rem !important;
+    padding: 0.65rem !important;
+  }
+
+  .bible-reading-column .bible-verse-row {
+    margin-inline: -0.15rem;
+    padding-inline: 0.42rem;
+  }
+
+  .bible-chapter-nav button:nth-child(2) {
+    min-width: 5.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bible-guided-banner,
+  .bible-book-card,
+  .bible-testament-option,
+  .bible-sheet-action,
+  .bible-version-option,
+  .bible-verse-row {
+    transition: none !important;
+  }
+}
