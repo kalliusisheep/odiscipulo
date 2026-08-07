@@ -170,7 +170,7 @@ function TeologiaSistematicaPage() {
                               <h3 className="text-base font-bold tracking-[-0.01em] text-foreground">
                                 {selectedChapter.title}
                               </h3>
-                              <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                              <p className="mt-3 whitespace-pre-line text-sm leading-7 text-muted-foreground">
                                 {selectedChapter.content}
                               </p>
                               <div className="mt-4 border-t border-border/20 pt-3">
