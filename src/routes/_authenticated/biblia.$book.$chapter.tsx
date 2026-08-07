@@ -474,102 +474,132 @@ function ChapterReader() {
       </div>
 
       
-      {verses && verses.length > 0 && narrationStarted && (
-        <div className="bible-floating-control fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-20 px-4">
-          <div className="mx-auto flex max-w-lg items-center gap-3 rounded-2xl border border-border bg-background/95 px-3 py-2.5 shadow-xl backdrop-blur-xl">
-            <button
-              onClick={() => {
-                if (narrationError) startNarration(narrationIndex ?? 0);
-                else if (narrationIndex !== null) toggleNarrationPause();
-              }}
-              aria-label={
-                narrationLoading
-                  ? "Carregando narração"
-                  : narrationError
-                    ? "Tentar narração novamente"
-                    : narrationPaused
-                      ? "Continuar narração"
-                      : "Pausar narração"
-              }
-              disabled={narrationLoading}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/20 transition-transform active:scale-95 disabled:cursor-wait disabled:opacity-70"
-            >
-              {narrationLoading ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
-              ) : narrationError || narrationIndex === null || narrationPaused ? (
-                <Play className="ml-0.5 h-5 w-5 fill-current" />
-              ) : (
-                <Pause className="h-5 w-5" />
-              )}
-            </button>
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-1.5">
+      {verses && verses.length > 0 && (
+        <>
+          {narrationStarted && (
+            <div className="bible-narration-status fixed inset-x-0 bottom-[calc(8.5rem+env(safe-area-inset-bottom))] z-30 px-3">
+              <div className="mx-auto flex max-w-md items-center gap-2.5 rounded-2xl border border-primary/15 bg-background/95 px-3 py-2 shadow-xl shadow-primary/10 backdrop-blur-xl">
                 <Volume2 className="h-3.5 w-3.5 shrink-0 text-primary" />
-                <span className="truncate text-[11px] font-bold">
-                  {narrationError
-                    ? "Não foi possível carregar · toque para tentar novamente"
-                    : narrationIndex === null
-                      ? "Ouvir capítulo"
-                      : narrationPaused
-                        ? "Narração pausada"
-                        : "Narrando versículo"}
-                </span>
-                {narrationIndex !== null && <span className="ml-auto shrink-0 text-[10px] font-semibold text-muted-foreground">{narrationIndex + 1}/{verses.length}</span>}
-              </div>
-              <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-surface-2">
-                <div className="h-full rounded-full bg-primary transition-all duration-300" style={{ width: `${narrationIndex === null ? 0 : ((narrationIndex + 1) / verses.length) * 100}%` }} />
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1.5">
+                    <span className="truncate text-[10px] font-bold">
+                      {narrationError
+                        ? "Narração indisponível"
+                        : narrationLoading
+                          ? "Carregando narração"
+                          : narrationIndex === null
+                            ? "Ouvir capítulo"
+                            : narrationPaused
+                              ? "Narração pausada"
+                              : "Narrando versículo"}
+                    </span>
+                    {narrationIndex !== null && (
+                      <span className="ml-auto shrink-0 text-[9px] font-semibold text-muted-foreground">
+                        {narrationIndex + 1}/{verses.length}
+                      </span>
+                    )}
+                  </div>
+                  <div className="mt-1 h-1 overflow-hidden rounded-full bg-surface-2">
+                    <div
+                      className="h-full rounded-full bg-primary transition-all duration-300"
+                      style={{ width: String(narrationIndex === null ? 0 : ((narrationIndex + 1) / verses.length) * 100) + "%" }}
+                    />
+                  </div>
+                </div>
+                <select
+                  aria-label="Velocidade da narração"
+                  value={narrationRate}
+                  onChange={(event) => setNarrationRate(Number(event.target.value))}
+                  className="rounded-lg border border-border bg-surface px-1.5 py-1 text-[9px] font-bold text-foreground outline-none"
+                >
+                  {[0.8, 1, 1.2, 1.5].map((rate) => (
+                    <option key={rate} value={rate}>{rate}x</option>
+                  ))}
+                </select>
+                {narrationIndex !== null && (
+                  <button
+                    type="button"
+                    onClick={stopNarration}
+                    aria-label="Parar narração"
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-surface hover:text-foreground"
+                  >
+                    <Square className="h-3.5 w-3.5 fill-current" />
+                  </button>
+                )}
               </div>
             </div>
-            <select aria-label="Velocidade da narração" value={narrationRate} onChange={(event) => setNarrationRate(Number(event.target.value))} className="rounded-lg border border-border bg-surface px-1.5 py-1 text-[10px] font-bold text-foreground outline-none">
-              {[0.8, 1, 1.2, 1.5].map((rate) => <option key={rate} value={rate}>{rate}x</option>)}
-            </select>
-            {narrationIndex !== null && <button onClick={stopNarration} aria-label="Parar narração" className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-surface hover:text-foreground"><Square className="h-3.5 w-3.5 fill-current" /></button>}
-            <button
-              onClick={() => setSettingsOpen(true)}
-              aria-label="Fonte e versões da Bíblia"
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-primary transition-transform active:scale-95"
-            >
-              <Type className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-      )}
+          )}
 
-      {/* Navegação contextual no fim do capítulo */}
-      {verses && chapterEndVisible && (
-        <div className="bible-chapter-nav fixed inset-x-0 bottom-[calc(9rem+env(safe-area-inset-bottom))] z-20 flex justify-center px-4 animate-slide-up">
-          <div className="flex items-center gap-2 rounded-[1.5rem] border border-primary/20 bg-background/95 p-2 shadow-2xl shadow-primary/15 backdrop-blur-xl">
-            <button
-              onClick={() => go(-1)}
-              disabled={chapter <= 1}
-              aria-label="Capítulo anterior"
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-border bg-surface text-muted-foreground transition-all hover:border-primary/40 hover:text-primary active:scale-95 disabled:opacity-30"
-            >
-              <ChevronLeft className="h-6 w-6" />
-            </button>
-            <button
-              onClick={openChapterPicker}
-              aria-label="Escolher capítulo"
-              className="min-w-[132px] rounded-2xl px-3 py-1.5 text-center transition-colors hover:bg-surface"
-            >
-              <span className="block text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">
-                Capítulo atual
-              </span>
-              <span className="mt-0.5 block text-base font-extrabold">
-                {meta?.abbr} {chapter}
-                <span className="ml-1 text-muted-foreground">/ {meta?.chapters}</span>
-              </span>
-            </button>
-            <button
-              onClick={() => go(1)}
-              disabled={!meta || chapter >= meta.chapters}
-              aria-label="Próximo capítulo"
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/25 transition-all active:scale-95 disabled:opacity-30"
-            >
-              <ChevronRight className="h-6 w-6" />
-            </button>
+          <div className="bible-chapter-nav fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-30 flex justify-center px-3 animate-slide-up">
+            <div className="flex w-full max-w-md items-center justify-center gap-1.5 rounded-[1.5rem] border border-primary/20 bg-background/95 p-1.5 shadow-2xl shadow-primary/15 backdrop-blur-xl">
+              <button
+                type="button"
+                onClick={() => {
+                  if (narrationError) startNarration(narrationIndex ?? 0);
+                  else if (!narrationStarted) startNarration(0);
+                  else if (narrationIndex !== null) toggleNarrationPause();
+                  else startNarration(0);
+                }}
+                disabled={narrationLoading}
+                aria-label={
+                  narrationLoading
+                    ? "Carregando narração"
+                    : narrationStarted && !narrationPaused && narrationIndex !== null
+                      ? "Pausar narração"
+                      : "Iniciar narração"
+                }
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/25 transition-all active:scale-95 disabled:cursor-wait disabled:opacity-60"
+              >
+                {narrationLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : narrationStarted && !narrationPaused && narrationIndex !== null ? (
+                  <Pause className="h-4 w-4" />
+                ) : (
+                  <Play className="ml-0.5 h-4 w-4 fill-current" />
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={() => go(-1)}
+                disabled={chapter <= 1}
+                aria-label="Capítulo anterior"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-all hover:bg-surface hover:text-primary active:scale-95 disabled:opacity-30"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <button
+                type="button"
+                onClick={openChapterPicker}
+                aria-label="Escolher capítulo"
+                className="min-w-0 flex-1 rounded-2xl px-2 py-1.5 text-center transition-colors hover:bg-surface"
+              >
+                <span className="block truncate text-sm font-extrabold">
+                  {meta?.name ?? bookNameById(book)} {chapter}
+                </span>
+                <span className="block text-[9px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                  Capítulo {chapter} de {meta?.chapters ?? "—"}
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => go(1)}
+                disabled={!meta || chapter >= meta.chapters}
+                aria-label="Próximo capítulo"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/25 transition-all active:scale-95 disabled:opacity-30"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setSettingsOpen(true)}
+                aria-label="Ajustar fonte e versões da Bíblia"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-primary transition-all hover:border-primary/40 hover:bg-primary/10 active:scale-95"
+              >
+                <Type className="h-4 w-4" />
+              </button>
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       {/* Sheet de ajustes */}
