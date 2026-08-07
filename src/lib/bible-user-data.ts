@@ -99,6 +99,19 @@ export async function toggleHighlight(ref: VerseRef, color: HighlightColor) {
   return (data ?? null) as BibleHighlight | null;
 }
 
+
+export async function clearHighlight(ref: VerseRef) {
+  const userId = await uid();
+  if (!userId) return;
+  await supabase
+    .from("bible_highlights")
+    .delete()
+    .eq("user_id", userId)
+    .eq("book", ref.book)
+    .eq("chapter", ref.chapter)
+    .eq("verse", ref.verse);
+}
+
 export async function toggleFavorite(ref: VerseRef) {
   const userId = await uid();
   if (!userId) return false;
