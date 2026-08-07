@@ -3389,14 +3389,14 @@ body,
 }
 
 .bible-testament-toggle span span:first-child {
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   font-weight: 800;
   letter-spacing: 0.075em;
   text-transform: uppercase;
 }
 
 .bible-testament-toggle span span:last-child {
-  font-size: 0.66rem;
+  font-size: 0.72rem;
   letter-spacing: 0.01em;
 }
 
