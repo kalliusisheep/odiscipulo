@@ -8,6 +8,7 @@ import { SharedQuestionGame } from "@/components/games/SharedQuestionGame";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { recordGameResult } from "@/lib/game-leaderboard";
 import { shuffleWithSeed } from "@/lib/seeded-random";
+import { canonicalGameContentKey, uniqueGameContent } from "@/lib/game-content";
 
 export const Route = createFileRoute("/_authenticated/jogos/versiculo")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -69,22 +70,39 @@ function VersiculoPage() {
     scoreSaved.current = false;
     startGameMusic("verse");
     playGameSfx("start");
-    const pool = versesForDifficulty(difficulty);
-    const fallbackPool = pool.length >= rounds ? pool : [...pool, ...BIBLICAL_VERSES.filter((item) => item.difficulty !== "bereano")];
+    const preferred = versesForDifficulty(difficulty);
+    const fallback = BIBLICAL_VERSES.filter((item) => item.difficulty !== difficulty);
+    const allCards = shuffle([...preferred, ...fallback]);
+    const uniqueReferences = uniqueGameContent(allCards, (item) => item.reference);
     const recentKey = `verse_recent_questions_${difficulty}`;
     const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
-    const shuffled = shuffle(fallbackPool);
-    const sessionCandidates = shuffled.filter((item) => !sessionSeenRef.current.has(item.id));
-    const fresh = sessionCandidates.filter((item) => !recentIds.includes(item.id));
-    const list = [...fresh, ...sessionCandidates]
-      .filter((item, index, items) => items.findIndex((candidate) => candidate.id === item.id) === index)
-      .slice(0, rounds);
-    list.forEach((item) => sessionSeenRef.current.add(item.id));
-    window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...list.map((item) => item.id)])].slice(-Math.max(rounds * 5, 40))));
-    setQuestions(list); setRound(0); setScore(0); setStreak(0); setBestStreak(0); setResults([]); setLastPoints(0);
-    setOptions(seed ? shuffleWithSeed([list[0].reference, ...list[0].alternatives], seed) : shuffle([list[0].reference, ...list[0].alternatives])); setSelected(null); setTimeLeft(VERSE_DIFFICULTY[difficulty].timeLimit); startedAtRef.current = Date.now(); setPhase("answering");
+    const recentKeys = new Set(recentIds.map(canonicalGameContentKey));
+    const sessionCandidates = uniqueReferences.filter((item) => !sessionSeenRef.current.has(canonicalGameContentKey(item.reference)));
+    const fresh = sessionCandidates.filter((item) => !recentKeys.has(canonicalGameContentKey(item.reference)));
+    const primary = uniqueGameContent([...fresh, ...sessionCandidates], (item) => item.reference).slice(0, rounds);
+    const selectedIds = new Set(primary.map((item) => item.id));
+    const unusedCards = allCards.filter((item) => !selectedIds.has(item.id) && !recentIds.includes(item.id));
+    const list = [...primary, ...unusedCards, ...allCards.filter((item) => !selectedIds.has(item.id))].slice(0, rounds);
+    primary.forEach((item) => sessionSeenRef.current.add(canonicalGameContentKey(item.reference)));
+    window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...list.map((item) => item.id)])].slice(-Math.max(rounds * 5, 80))));
+    setQuestions(list);
+    setRound(0);
+    setScore(0);
+    setStreak(0);
+    setBestStreak(0);
+    setResults([]);
+    setLastPoints(0);
+    const first = list[0];
+    if (!first) {
+      setPhase("finished");
+      return;
+    }
+    setOptions(seed ? shuffleWithSeed([first.reference, ...first.alternatives], seed) : shuffle([first.reference, ...first.alternatives]));
+    setSelected(null);
+    setTimeLeft(VERSE_DIFFICULTY[difficulty].timeLimit);
+    startedAtRef.current = Date.now();
+    setPhase("answering");
   };
-
   const answer = useCallback((value: string | null) => {
     if (phase !== "answering" || !question) return;
     const correct = value === question.reference;
