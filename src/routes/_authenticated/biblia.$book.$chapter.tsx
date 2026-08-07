@@ -38,7 +38,6 @@ import {
   StickyNote,
   Type,
   X,
-  GitCompareArrows,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/biblia/$book/$chapter")({
@@ -380,14 +379,6 @@ function ChapterReader() {
               className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-surface text-muted-foreground transition-all hover:border-primary/30 hover:text-primary active:scale-95"
             >
               <Type className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              onClick={() => setCompareOpen(true)}
-              aria-label="Comparar versões"
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-surface text-muted-foreground transition-all hover:border-primary/30 hover:text-primary active:scale-95"
-            >
-              <GitCompareArrows className="h-4 w-4" />
             </button>
           </div>
         </div>
@@ -926,6 +917,10 @@ function ChapterReader() {
             await navigator.clipboard.writeText(`"${selectedText}"\n— ${fullRef}`);
             toast.success("Versículo copiado");
             setSelected(null);
+          }}
+          onCompare={() => {
+            setSelected(null);
+            setCompareOpen(true);
           }}
         />
       )}
