@@ -329,26 +329,28 @@ function ChapterReader() {
       {/* Barra superior fixa */}
       <div className={`bible-reader-header sticky top-0 z-30 bg-background/85 backdrop-blur-xl ${readerScrolled ? "is-immersive" : ""}`}>
         <div className="bible-reader-header-inner mx-auto max-w-lg px-3 py-2 sm:px-4">
-          <div className="bible-reader-primary-row relative flex min-h-[3rem] items-center justify-between gap-2">
-            <Link
-              to="/biblia"
-              aria-label="Voltar"
-              className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border/70 bg-surface/70 text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/10 hover:text-primary active:scale-95"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </Link>
+          <div className="bible-reader-primary-row grid min-h-[3rem] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2">
+            <div className="justify-self-start">
+              <Link
+                to="/biblia"
+                aria-label="Voltar"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border/70 bg-surface/70 text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/10 hover:text-primary active:scale-95"
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </Link>
+            </div>
 
             <button
               type="button"
               onClick={openChapterPicker}
-              className="bible-chapter-trigger bible-header-chapter absolute left-1/2 max-w-[7.5rem] -translate-x-1/2 rounded-xl px-2 py-1.5 text-center transition-colors hover:bg-surface/70 sm:max-w-[12rem]"
+              className="bible-chapter-trigger bible-header-chapter min-w-0 max-w-[12rem] rounded-xl px-2 py-1.5 text-center transition-colors hover:bg-surface/70"
             >
               <span className="block truncate text-[15px] font-black leading-tight">
                 {bookNameById(book)} {chapter}
               </span>
             </button>
 
-            <div className="ml-auto flex items-center gap-2">
+            <div className="flex items-center justify-self-end gap-2">
               <button
                 type="button"
                 onClick={() => setSettingsOpen(true)}
