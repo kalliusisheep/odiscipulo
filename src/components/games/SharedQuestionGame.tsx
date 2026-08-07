@@ -1,6 +1,6 @@
 import { ArrowLeft, ArrowRight, Check, Clock3, Crown, Flame, Lightbulb, RotateCcw, Sparkles, Trophy, Users, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { BIBLICAL_CHARACTERS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
+import { BIBLICAL_CHARACTER_ROUNDS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
 import { VERSE_DIFFICULTY, versesForDifficulty } from "@/data/biblical-verses";
 import { MILLION_DIFFICULTY, randomMillionQuestions, randomMillionQuestionsWithSeed, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
@@ -81,8 +81,8 @@ function firstCharacterHint(value: string) {
 
 function buildQuestions(gameType: SharedGameType, difficulty: GameDifficulty, seed: number) {
   if (gameType === "personagem") {
-    const characters = BIBLICAL_CHARACTERS.filter((item) => item.difficulty === difficulty);
-    const source = characters.length > 0 ? characters : BIBLICAL_CHARACTERS;
+    const characters = BIBLICAL_CHARACTER_ROUNDS.filter((item) => item.difficulty === difficulty);
+    const source = characters.length > 0 ? characters : BIBLICAL_CHARACTER_ROUNDS;
     const shuffled = seed ? shuffleWithSeed(source, seed) : [...source];
     return shuffled.map((item: BiblicalCharacter): SharedQuestion => {
       const order = difficulty === "bereano" ? [2, 3, 1, 0] : difficulty === "dificil" ? [1, 2, 3, 0] : [0, 1, 2, 3];
