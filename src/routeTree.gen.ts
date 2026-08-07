@@ -286,6 +286,7 @@ export interface FileRoutesByFullPath {
   '/bem-vindo': typeof AuthenticatedBemVindoRoute
   '/home': typeof AuthenticatedHomeRoute
   '/jogos': typeof AuthenticatedJogosRouteWithChildren
+  '/jogos/ranking': typeof AuthenticatedJogosRankingRoute
   '/lider': typeof AuthenticatedLiderRoute
   '/mural': typeof AuthenticatedMuralRoute
   '/niveis': typeof AuthenticatedNiveisRoute
@@ -327,6 +328,7 @@ export interface FileRoutesByTo {
   '/bem-vindo': typeof AuthenticatedBemVindoRoute
   '/home': typeof AuthenticatedHomeRoute
   '/jogos': typeof AuthenticatedJogosRouteWithChildren
+  '/jogos/ranking': typeof AuthenticatedJogosRankingRoute
   '/lider': typeof AuthenticatedLiderRoute
   '/mural': typeof AuthenticatedMuralRoute
   '/niveis': typeof AuthenticatedNiveisRoute
@@ -370,7 +372,8 @@ export interface FileRoutesById {
   '/_authenticated/bem-vindo': typeof AuthenticatedBemVindoRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/jogos': typeof AuthenticatedJogosRouteWithChildren
-  '/_authenticated/jogos/ranking': typeof AuthenticatedJogosRankingRoute  '/_authenticated/lider': typeof AuthenticatedLiderRoute
+  '/_authenticated/jogos/ranking': typeof AuthenticatedJogosRankingRoute
+  '/_authenticated/lider': typeof AuthenticatedLiderRoute
   '/_authenticated/mural': typeof AuthenticatedMuralRoute
   '/_authenticated/niveis': typeof AuthenticatedNiveisRoute
   '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
@@ -413,7 +416,8 @@ export interface FileRouteTypes {
     | '/bem-vindo'
     | '/home'
     | '/jogos'
-    | '/jogos/ranking'    | '/lider'
+    | '/jogos/ranking'
+    | '/lider'
     | '/mural'
     | '/niveis'
     | '/perfil'
@@ -454,6 +458,7 @@ export interface FileRouteTypes {
     | '/bem-vindo'
     | '/home'
     | '/jogos'
+    | '/jogos/ranking'
     | '/lider'
     | '/mural'
     | '/niveis'
@@ -496,7 +501,8 @@ export interface FileRouteTypes {
     | '/_authenticated/bem-vindo'
     | '/_authenticated/home'
     | '/_authenticated/jogos'
-    | '/_authenticated/jogos/ranking'    | '/_authenticated/lider'
+    | '/_authenticated/jogos/ranking'
+    | '/_authenticated/lider'
     | '/_authenticated/mural'
     | '/_authenticated/niveis'
     | '/_authenticated/perfil'
@@ -856,7 +862,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedBemVindoRoute: typeof AuthenticatedBemVindoRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedJogosRoute: typeof AuthenticatedJogosRouteWithChildren
-  '/jogos/ranking': typeof AuthenticatedJogosRankingRoute  AuthenticatedLiderRoute: typeof AuthenticatedLiderRoute
+  AuthenticatedLiderRoute: typeof AuthenticatedLiderRoute
   AuthenticatedMuralRoute: typeof AuthenticatedMuralRoute
   AuthenticatedNiveisRoute: typeof AuthenticatedNiveisRoute
   AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRoute
