@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap");
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
@@ -874,7 +874,7 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
 
 .bible-verse-copy {
   color: color-mix(in oklab, var(--foreground) 93%, transparent);
-  font-family: "Crimson Pro";
+  font-family: "Literata";
   letter-spacing: 0.002em;
 }
 
@@ -1247,7 +1247,7 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
 
 .bible-reading-column .bible-verse-copy,
 .bible-verse-quote {
-  font-family: "Crimson Pro";
+  font-family: "Literata";
   letter-spacing: 0.002em;
   line-height: 1.62;
 }
@@ -1434,7 +1434,7 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
 .bible-section-heading h3 {
   margin: 0;
   color: hsl(var(--foreground));
-  font-family: "Crimson Pro";
+  font-family: "Literata";
   font-size: 1.12rem;
   font-weight: 600;
   line-height: 1.15;
