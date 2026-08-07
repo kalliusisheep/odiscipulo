@@ -1,5 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import { checkFinishChallenges } from "@/lib/challenges";
+import { computeStreak, todayStr } from "@/lib/streak";
 
 const STREAK_BONUS_XP = 10;
 
@@ -44,17 +45,13 @@ export async function awardXpAndStreak(userId: string, xp: number) {
     .select("xp, streak, last_activity_date")
     .eq("id", userId)
     .maybeSingle();
-  const today = new Date().toISOString().slice(0, 10);
+  const today = todayStr();
   const last = p?.last_activity_date ?? null;
-  const diff = last
-    ? Math.floor((new Date(today).getTime() - new Date(last).getTime()) / 86400000)
-    : null;
   const prevStreak = p?.streak ?? 0;
   const prevXp = p?.xp ?? 0;
-
-  const newStreak =
-    diff === null ? 1 : diff === 0 ? (prevStreak || 1) : diff === 1 ? prevStreak + 1 : 1;
-  const streakAdvanced = diff === null || diff >= 1;
+  const streakState = computeStreak(prevStreak, last);
+  const newStreak = streakState.streak;
+  const streakAdvanced = !streakState.today;
   const bonus = streakAdvanced ? STREAK_BONUS_XP : 0;
   const newXp = prevXp + xp + bonus;
 
