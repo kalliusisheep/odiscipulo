@@ -30,19 +30,32 @@ async function uid(): Promise<string | null> {
 }
 
 export async function listChapterMarks(book: number, chapter: number) {
+  const userId = await uid();
+  if (!userId) {
+    return { highlights: [], notes: [], favorites: [] };
+  }
+
   const [h, n, f] = await Promise.all([
-    supabase.from("bible_highlights").select("id, book, chapter, verse, color").eq("book", book).eq("chapter", chapter),
+    supabase
+      .from("bible_highlights")
+      .select("id, book, chapter, verse, color")
+      .eq("user_id", userId)
+      .eq("book", book)
+      .eq("chapter", chapter),
     supabase
       .from("bible_notes")
       .select("id, book, chapter, verse, content, created_at")
+      .eq("user_id", userId)
       .eq("book", book)
       .eq("chapter", chapter),
     supabase
       .from("bible_favorites")
       .select("id, book, chapter, verse, created_at")
+      .eq("user_id", userId)
       .eq("book", book)
       .eq("chapter", chapter),
   ]);
+
   return {
     highlights: (h.data ?? []) as BibleHighlight[],
     notes: (n.data ?? []) as BibleNote[],
@@ -56,12 +69,13 @@ export async function toggleHighlight(ref: VerseRef, color: HighlightColor) {
   const { data: existing } = await supabase
     .from("bible_highlights")
     .select("id, color")
+    .eq("user_id", userId)
     .eq("book", ref.book)
     .eq("chapter", ref.chapter)
     .eq("verse", ref.verse)
     .maybeSingle();
   if (existing && existing.color === color) {
-    await supabase.from("bible_highlights").delete().eq("id", existing.id);
+    await supabase.from("bible_highlights").delete().eq("id", existing.id).eq("user_id", userId);
     return null;
   }
   const { data } = await supabase
@@ -102,7 +116,9 @@ export async function addNote(ref: VerseRef, content: string) {
 }
 
 export async function deleteNote(id: string) {
-  await supabase.from("bible_notes").delete().eq("id", id);
+  const userId = await uid();
+  if (!userId) return;
+  await supabase.from("bible_notes").delete().eq("id", id).eq("user_id", userId);
 }
 
 export async function toggleBookmark(ref: VerseRef, label?: string) {
@@ -132,27 +148,43 @@ export async function markChapterRead(book: number, chapter: number) {
 }
 
 export async function listReadChapters(): Promise<{ book: number; chapter: number }[]> {
-  const { data } = await supabase.from("bible_reading_progress").select("book, chapter");
+  const userId = await uid();
+  if (!userId) return [];
+
+  const { data } = await supabase
+    .from("bible_reading_progress")
+    .select("book, chapter")
+    .eq("user_id", userId);
+
   return (data ?? []) as { book: number; chapter: number }[];
 }
 
 export async function listAllMarks() {
+  const userId = await uid();
+  if (!userId) {
+    return { highlights: [], notes: [], favorites: [], bookmarks: [] };
+  }
+
   const [h, n, f, b] = await Promise.all([
     supabase
       .from("bible_highlights")
       .select("id, book, chapter, verse, color")
+      .eq("user_id", userId)
       .order("created_at", { ascending: false }),
     supabase
       .from("bible_notes")
       .select("id, book, chapter, verse, content, created_at")
+      .eq("user_id", userId)
       .order("created_at", { ascending: false }),
     supabase
       .from("bible_favorites")
       .select("id, book, chapter, verse, created_at")
+      .eq("user_id", userId)
       .order("created_at", { ascending: false }),
     supabase
       .from("bible_bookmarks")
       .select("id, book, chapter, verse, label, created_at")
+      .eq("user_id", userId)
       .order("created_at", { ascending: false }),
   ]);
   return {
