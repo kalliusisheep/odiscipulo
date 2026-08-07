@@ -3325,3 +3325,102 @@ body,
     transition: none;
   }
 }
+
+
+/* Premium testament controls and themed translation menu */
+.bible-testament-group {
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--border) 62%, transparent);
+  border-radius: 1.05rem;
+  background:
+    linear-gradient(
+      120deg,
+      color-mix(in oklab, var(--surface) 82%, transparent),
+      color-mix(in oklab, var(--background) 38%, transparent)
+    );
+  transition:
+    border-color 300ms ease,
+    background 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.bible-testament-group.is-open {
+  border-color: color-mix(in oklab, var(--primary) 42%, var(--border));
+  background:
+    linear-gradient(
+      120deg,
+      color-mix(in oklab, var(--primary) 9%, var(--surface)),
+      color-mix(in oklab, var(--background) 34%, transparent)
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--foreground) 7%, transparent),
+    0 18px 34px -28px color-mix(in oklab, var(--primary) 74%, transparent);
+}
+
+.bible-testament-toggle {
+  height: 4.25rem;
+  min-height: 4.25rem;
+  padding: 0.7rem 0.85rem;
+  letter-spacing: 0.01em;
+  transition:
+    background 260ms ease,
+    color 260ms ease,
+    transform 260ms ease;
+}
+
+.bible-testament-toggle:hover {
+  background: color-mix(in oklab, var(--foreground) 4%, transparent);
+}
+
+.bible-testament-toggle:active {
+  transform: scale(0.99);
+}
+
+.bible-testament-toggle > .bible-testament-badge {
+  height: 2rem;
+  width: 2rem;
+  border-color: color-mix(in oklab, var(--border) 72%, transparent);
+  background: color-mix(in oklab, var(--foreground) 4%, transparent);
+}
+
+.bible-testament-group.is-open .bible-testament-toggle > .bible-testament-badge {
+  border-color: color-mix(in oklab, var(--primary) 48%, transparent);
+  background: color-mix(in oklab, var(--primary) 16%, transparent);
+}
+
+.bible-testament-toggle span span:first-child {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+.bible-testament-toggle span span:last-child {
+  font-size: 0.66rem;
+  letter-spacing: 0.01em;
+}
+
+.bible-translation-select {
+  color-scheme: dark;
+}
+
+.bible-translation-select option {
+  background-color: var(--surface-2);
+  color: var(--foreground);
+}
+
+.theme-white .bible-translation-select {
+  color-scheme: light;
+}
+
+.theme-white .bible-translation-select option {
+  background-color: var(--surface);
+  color: var(--foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bible-testament-group,
+  .bible-testament-toggle {
+    transition: none;
+  }
+}
