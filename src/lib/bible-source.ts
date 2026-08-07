@@ -2,6 +2,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { bookById } from "@/data/bible-books";
 import type { AppLanguage } from "@/lib/i18n";
 import { normalizeBibleSectionHeading } from "@/lib/bible-heading-normalizer";
+import { NVI_SECTION_HEADINGS } from "@/data/nvi-section-headings";
 
 const API = "https://bolls.life";
 const REQUEST_TIMEOUT_MS = 15_000;
@@ -88,7 +89,6 @@ export type Verse = {
 };
 
 const VERIFIED_NVI_SECTION_HEADINGS: Record<string, BibleSectionHeading[]> = {
-  "1:1": [{ verse: 1, title: "O princípio" }],
   "40:5": [
     { verse: 1, title: "As Bem-aventuranças" },
     { verse: 13, title: "O Sal da Terra e a Luz do Mundo" },
@@ -96,6 +96,7 @@ const VERIFIED_NVI_SECTION_HEADINGS: Record<string, BibleSectionHeading[]> = {
   "43:1": [{ verse: 1, title: "A Palavra Tornou-se Carne" }],
   "44:2": [{ verse: 42, title: "A Comunhão dos Cristãos" }],
   "45:8": [{ verse: 1, title: "A Vida pelo Espírito" }],
+  ...NVI_SECTION_HEADINGS,
 };
 
 export function sectionHeadingFor(
