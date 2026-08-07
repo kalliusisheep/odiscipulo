@@ -1,6 +1,6 @@
 const APP_TIME_ZONE = "America/Sao_Paulo";
 
-function getDatePart(parts: Intl.DateTimeFormatPart[], type: Intl.DateTimeFormatPartTypes) {
+function getDatePart(parts: Intl.DateTimeFormatPart[], type: string) {
   return parts.find((part) => part.type === type)?.value ?? "";
 }
 
