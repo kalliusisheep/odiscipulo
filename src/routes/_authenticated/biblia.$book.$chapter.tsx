@@ -6,6 +6,7 @@ import { BIBLE_BOOKS, bookById, bookNameById } from "@/data/bible-books";
 import { fetchChapter, translationByCode, translationsForLanguage, type Verse } from "@/lib/bible-source";
 import {
   addNote,
+  clearHighlight,
   highlightClass,
   listChapterMarks,
   markChapterRead,
@@ -920,6 +921,10 @@ function ChapterReader() {
           currentColor={highlightMap[selected]}
           onHighlight={async (c: HighlightColor) => {
             await toggleHighlight({ book, chapter, verse: selected }, c);
+            await reloadMarks();
+          }}
+          onClearHighlight={async () => {
+            await clearHighlight({ book, chapter, verse: selected });
             await reloadMarks();
           }}
           onFavorite={async () => {
