@@ -4,7 +4,7 @@ import { BIBLICAL_CHARACTERS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, ty
 import { VERSE_DIFFICULTY, versesForDifficulty } from "@/data/biblical-verses";
 import { MILLION_DIFFICULTY, randomMillionQuestions, randomMillionQuestionsWithSeed, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
-import { recordGameResult, type GameKey } from "@/lib/game-leaderboard";
+import { recordSharedGameResult, type GameKey } from "@/lib/game-leaderboard";
 import { shuffleWithSeed } from "@/lib/seeded-random";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -279,6 +279,7 @@ export function SharedQuestionGame({
         _round_number: roundNumber,
         _character_id: question.id,
         _hints: question.hints,
+        _answer_hash: answerHash(question.answer),
       });
       if (roundError) {
         setError("Não foi possível preparar esta rodada.");
@@ -301,7 +302,7 @@ export function SharedQuestionGame({
     playGameSfx(correct ? "success" : "error");
     const { data, error: submitError } = await gameDb.rpc("submit_character_game_response", {
       _round_id: remoteRound.id,
-      _answer_hash: answerHash(value),
+      _answer_hash: answerHash(correct ? question.answer : value),
       _is_correct: correct,
       _points: points,
       _streak: (players.find((player) => player.user_id === userId)?.best_streak ?? 0) + (correct ? 1 : 0),
@@ -342,7 +343,11 @@ export function SharedQuestionGame({
   const advance = useCallback(async () => {
     if (!remoteRound || remoteRound.status === "active") return;
     if (roundNumber >= rounds) {
-      await gameDb.rpc("finish_character_game_room", { _room_id: roomId });
+      const { error: finishError } = await gameDb.rpc("finish_character_game_room", { _room_id: roomId });
+      if (finishError) {
+        setError("A partida ainda está encerrando a última rodada. Aguarde um instante.");
+        return;
+      }
       setPhase("finished");
       return;
     }
@@ -368,19 +373,18 @@ export function SharedQuestionGame({
     void (async () => {
       const finalPlayers = await loadPlayers(userId);
       const finalMe = finalPlayers.find((player) => player.user_id === userId);
-      await recordGameResult({
-        gameKey: gameKeys[gameType],
-        score: finalMe?.score ?? 0,
-        correctAnswers: finalMe?.correct_answers ?? 0,
-        rounds,
-        bestStreak: finalMe?.best_streak ?? 0,
-      });
+      const resultError = await recordSharedGameResult(roomId);
+      if (resultError) {
+        setError("O placar foi concluído, mas ainda não foi sincronizado com o ranking.");
+      }
+      if (!finishSoundPlayed.current) {
+        finishSoundPlayed.current = true;
+        const finalWinner = [...finalPlayers].sort((first, second) => second.score - first.score || second.correct_answers - first.correct_answers)[0];
+        const tied = finalWinner && finalPlayers.filter((player) => player.score === finalWinner.score).length > 1;
+        playGameSfx(tied ? "complete" : finalWinner?.user_id === finalMe?.user_id ? "success" : "error");
+      }
     })();
-    if (!finishSoundPlayed.current) {
-      finishSoundPlayed.current = true;
-      playGameSfx("complete");
-    }
-  }, [gameType, loadPlayers, phase, rounds, userId]);
+  }, [loadPlayers, phase, roomId, userId]);
 
   const me = players.find((player) => player.user_id === userId);
   const sortedPlayers = [...players].sort((first, second) => second.score - first.score || second.correct_answers - first.correct_answers);
