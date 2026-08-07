@@ -66,7 +66,10 @@ function PersonagemPage() {
   const start = () => {
     startGameMusic("character");
     playGameSfx("start");
-    const shuffled = seed ? shuffleWithSeed(filteredCharacters, seed) : [...filteredCharacters].sort(() => Math.random() - 0.5);
+    const source = filteredCharacters.length >= rounds
+      ? filteredCharacters
+      : [...filteredCharacters, ...BIBLICAL_CHARACTERS.filter((item) => item.difficulty !== difficulty)];
+    const shuffled = seed ? shuffleWithSeed(source, seed) : [...source].sort(() => Math.random() - 0.5);
     const recentKey = `character_recent_questions_${difficulty}`;
     const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
     const sessionCandidates = shuffled.filter((item) => !sessionSeenRef.current.has(item.id));
