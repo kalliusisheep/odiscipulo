@@ -103,12 +103,12 @@ function PersonagemPage() {
     const earned = isCorrect ? Math.round(base * difficultyData.multiplier) : 0;
     setRoundScore(earned);
     setScore((value) => value + earned);
-    setStreak((value) => {
-      const nextStreak = isCorrect ? value + 1 : 0;
-      if (isCorrect) setBestStreak((best) => Math.max(best, nextStreak));
-      return nextStreak;
-    });
-    if (isCorrect) setCorrectAnswers((value) => value + 1);
+    const nextStreak = isCorrect ? streak + 1 : 0;
+    setStreak(nextStreak);
+    if (isCorrect) {
+      setCorrectAnswers((value) => value + 1);
+      setBestStreak((value) => Math.max(value, nextStreak));
+    }
     setCorrect(isCorrect);
     setPhase("round-result");
   };
