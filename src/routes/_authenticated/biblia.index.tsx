@@ -50,7 +50,7 @@ function BibliaIndex() {
   const { translation, setTranslation } = useBiblePrefs();
   const { language } = useApp();
   const availableTranslations = useMemo(() => translationsForLanguage(language), [language]);
-  const [testament, setTestament] = useState<"AT" | "NT">("AT");
+  const [testament, setTestament] = useState<"AT" | "NT" | null>("AT");
   const [openBook, setOpenBook] = useState<number | null>(null);
   const [query, setQuery] = useState("");
   const [searching, setSearching] = useState(false);
@@ -390,7 +390,7 @@ function BibliaIndex() {
                     <div key={t} className={`bible-testament-group ${expanded ? "is-open" : ""}`}>
                       <button
                         type="button"
-                        onClick={() => setTestament(t)}
+                        onClick={() => setTestament((current) => (current === t ? null : t))}
                         aria-expanded={expanded}
                         aria-controls={panelId}
                         className="bible-testament-option group flex w-full items-center gap-3 text-left"
