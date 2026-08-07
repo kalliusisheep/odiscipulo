@@ -783,7 +783,7 @@ function ChapterReader() {
                     const testamentBooks = filteredPickerBooks.filter((item) => item.testament === testament);
                     if (testamentBooks.length === 0) return null;
                     return (
-                      <div key={testament} className="not-first:mt-3">
+                      <div key={testament} className="mt-3 first:mt-0">
                         <div className="mb-1.5 flex items-center gap-2 px-1">
                           <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                           <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">
