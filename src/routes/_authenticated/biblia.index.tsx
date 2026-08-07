@@ -169,7 +169,7 @@ function BibliaIndex() {
             </Link>
           </div>
 
-          <div className="bible-search-panel mt-4">
+          <div className="bible-search-bar mt-4">
             <div className="flex items-center gap-2.5 border-b border-border/40 pb-2 transition-colors focus-within:border-primary/50">
               <Search className="h-4 w-4 shrink-0 text-muted-foreground/70" />
               <input
@@ -315,7 +315,7 @@ function BibliaIndex() {
 
         {!hits && (
           <>
-            <section className="bible-journey-card relative isolate overflow-hidden rounded-[1.5rem] border border-border/30 bg-surface/40 p-5">
+            <section className="bible-journey-panel relative isolate overflow-hidden rounded-[1.5rem] border border-border/30 bg-surface/40 p-5">
               <div className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-primary/10 blur-3xl" />
 
               <div className="relative z-10">
@@ -422,7 +422,7 @@ function BibliaIndex() {
                         onClick={() => setTestament((current) => (current === t ? null : t))}
                         aria-expanded={expanded}
                         aria-controls={panelId}
-                        className="bible-testament-option group flex w-full items-center gap-3 py-4 text-left"
+                        className="bible-testament-toggle group flex w-full items-center gap-3 py-4 text-left"
                       >
                         <span
                           className={`bible-testament-badge flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-[9px] font-semibold tracking-[0.08em] transition-colors ${
@@ -468,7 +468,7 @@ function BibliaIndex() {
                                 tabIndex={expanded ? 0 : -1}
                                 onClick={() => openChapters(b.id)}
                                 aria-label={`Abrir ${b.name}`}
-                                className="bible-book-card group flex w-full items-center gap-3.5 py-3 text-left transition-colors hover:bg-foreground/[0.02]"
+                                className="bible-book-row group flex w-full items-center gap-3.5 py-3 text-left transition-colors hover:bg-foreground/[0.02]"
                               >
                                 <span
                                   className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border text-[9px] font-semibold transition-colors ${
