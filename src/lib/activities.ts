@@ -20,17 +20,18 @@ type LogActivityParams = {
  * a aba Feed do Mural (visível para os amigos adicionados, via RLS).
  * Best-effort: nunca deve travar o fluxo principal da tela que a chama.
  */
-export async function logActivity({ userId, type, title, subtitle, imageUrl }: LogActivityParams) {
+export async function logActivity({ userId, type, title, subtitle, imageUrl }: LogActivityParams): Promise<boolean> {
   try {
-    await supabase.from("activities").insert({
+    const { error } = await supabase.from("activities").insert({
       user_id: userId,
       type,
       title,
       subtitle: subtitle ?? null,
       image_url: imageUrl ?? null,
     });
+    return !error;
   } catch {
-    /* silencioso — não deve bloquear a UX da tela de origem */
+    return false;
   }
 }
 
@@ -43,6 +44,6 @@ export async function logActivityOnce(key: string, params: LogActivityParams) {
   if (typeof window === "undefined") return;
   const storageKey = `disciple.activity-once.${key}`;
   if (window.localStorage.getItem(storageKey)) return;
-  window.localStorage.setItem(storageKey, "1");
-  await logActivity(params);
+  const logged = await logActivity(params);
+  if (logged) window.localStorage.setItem(storageKey, "1");
 }
