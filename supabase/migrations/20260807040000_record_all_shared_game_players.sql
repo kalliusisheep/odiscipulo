@@ -45,6 +45,8 @@ BEGIN
     WHERE room_id = _room_id
       AND state IN ('connected', 'ready')
   LOOP
+    result_row := NULL;
+
     UPDATE public.game_scores
     SET score = GREATEST(0, player_row.score),
         correct_answers = GREATEST(0, player_row.correct_answers),
@@ -56,6 +58,8 @@ BEGIN
     RETURNING * INTO result_row;
 
     IF result_row.id IS NULL THEN
+      result_row := NULL;
+
       INSERT INTO public.game_scores (
         user_id,
         room_id,
