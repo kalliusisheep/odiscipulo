@@ -3,9 +3,10 @@ import { ArrowLeft, ArrowRight, Check, Clock3, Flame, HelpCircle, Lightbulb, Rot
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { SharedQuestionGame } from "@/components/games/SharedQuestionGame";
-import { MILLION_DIFFICULTY, MILLION_LEVELS, randomMillionQuestions, randomMillionQuestionsWithSeed, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
+import { MILLION_DIFFICULTY, MILLION_LEVELS, MILLION_QUESTIONS, randomMillionQuestions, randomMillionQuestionsWithSeed, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { recordGameResult } from "@/lib/game-leaderboard";
+import { canonicalGameContentKey, uniqueGameContent } from "@/lib/game-content";
 
 export const Route = createFileRoute("/_authenticated/jogos/milhao")({
   validateSearch: (search: Record<string, unknown>) => ({
