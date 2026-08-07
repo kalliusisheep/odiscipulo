@@ -122,10 +122,10 @@ function TeologiaSistematicaPage() {
                   )}
                   <div className="bible-book-list">
                     {topic.chapters.map((chapter, chapterIndex) => (
-                      <Link
+                      <a
                         key={chapter.id}
-                        to="/biblia/teologia/$module/$chapter"
-                        params={{ module: topic.id, chapter: chapter.id }}
+                        href={`/biblia/teologia/${topic.id}/${chapter.id}`}
+                        aria-label={`Abrir estudo: ${chapter.title}`}
                         className="bible-book-row flex w-full items-center gap-3 text-left transition-colors hover:bg-primary/5 active:scale-[0.99]"
                       >
                         <span className="bible-book-abbr flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border/40 text-[10px] font-bold text-muted-foreground">
@@ -140,7 +140,7 @@ function TeologiaSistematicaPage() {
                           </span>
                         </span>
                         <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/55" />
-                      </Link>
+                      </a>
                     ))}
                   </div>
                 </div>
