@@ -149,9 +149,9 @@ function BibliaIndex() {
   const picker = openBook ? bookById(openBook) : null;
 
   return (
-    <div className="pb-28">
-      <div className="sticky top-0 z-30 border-b border-white/[0.06] bg-background/90 shadow-lg shadow-black/5 backdrop-blur-2xl">
-        <div className="mx-auto max-w-lg px-4 pb-3 pt-3">
+    <div className="bible-index-shell pb-28">
+      <div className="bible-index-header sticky top-0 z-30 border-b border-white/[0.06] bg-background/90 shadow-lg shadow-black/5 backdrop-blur-2xl">
+        <div className="bible-index-header-inner mx-auto max-w-lg px-4 pb-3 pt-3">
           <div className="grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-3">
             <button
               onClick={() => void nav({ to: "/perfil" })}
@@ -252,7 +252,7 @@ function BibliaIndex() {
         </div>
       </div>
 
-      <main className="mx-auto max-w-lg px-4 pt-4 animate-slide-up">
+      <main className="bible-index-main mx-auto max-w-lg px-4 pt-4 animate-slide-up">
         {searchError && (
           <div className="mb-3 rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-xs text-destructive">
             {searchError}
@@ -410,7 +410,7 @@ function BibliaIndex() {
                 </span>
               </div>
 
-              <div className="mt-3 grid grid-cols-2 gap-2">
+              <div className="bible-testament-switcher mt-3 grid grid-cols-2 gap-2">
                 {(["AT", "NT"] as const).map((t) => {
                   const active = testament === t;
                   return (
@@ -418,7 +418,7 @@ function BibliaIndex() {
                       key={t}
                       onClick={() => setTestament(t)}
                       aria-pressed={active}
-                      className={`group relative overflow-hidden rounded-2xl border px-3 py-2.5 text-left transition-all ${
+                      className={`bible-testament-option group relative overflow-hidden rounded-2xl border px-3 py-2.5 text-left transition-all ${
                         active
                           ? "border-primary/45 bg-primary/10 shadow-sm shadow-primary/15"
                           : "border-white/10 bg-surface/50 hover:border-primary/20 hover:bg-surface/80"
@@ -506,11 +506,11 @@ function BibliaIndex() {
 
       {pickerOpen && picker && (
         <div
-          className="fixed inset-0 z-50 flex items-end bg-black/65 backdrop-blur-sm animate-fade-in"
+          className="bible-picker-overlay fixed inset-0 z-50 flex items-end bg-black/65 backdrop-blur-sm animate-fade-in"
           onClick={() => setPickerOpen(false)}
         >
           <div
-            className="max-h-[82vh] w-full overflow-y-auto rounded-t-[2rem] border-t border-white/10 bg-background pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl animate-slide-up"
+            className="bible-picker-sheet max-h-[82vh] w-full overflow-y-auto rounded-t-[2rem] border-t border-white/10 bg-background pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl animate-slide-up"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="sticky top-0 z-10 border-b border-white/[0.06] bg-background/95 px-5 pb-4 pt-3 backdrop-blur-xl">
@@ -528,7 +528,7 @@ function BibliaIndex() {
                 <button
                   aria-label="Fechar"
                   onClick={() => setPickerOpen(false)}
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-surface text-muted-foreground transition-colors hover:text-foreground"
+                  className="bible-close-button flex h-10 w-10 items-center justify-center rounded-full bg-surface text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground"
                 >
                   <X className="h-4 w-4" />
                 </button>
