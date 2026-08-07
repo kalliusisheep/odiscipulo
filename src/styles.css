@@ -750,6 +750,19 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
   min-height: 2.75rem;
 }
 
+.bible-library-tabs {
+  scrollbar-width: none;
+  box-shadow: inset 0 1px 0 color-mix(in oklab, var(--foreground) 5%, transparent);
+}
+
+.bible-library-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.bible-library-tabs button[aria-pressed="true"] {
+  box-shadow: 0 8px 20px -16px color-mix(in oklab, var(--primary) 85%, transparent);
+}
+
 
 .bible-index-shell,
 .bible-reader-shell {
