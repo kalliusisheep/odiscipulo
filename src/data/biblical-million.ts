@@ -143,7 +143,7 @@ function createQuestions(fact: BibleFact): MillionQuestion[] {
   ];
 }
 
-const INVALID_GAME_COPY = /examine|consta nos livros|consulte|sua aparição está registrada|é mencionado nas escrituras|essa personagem|oração|oracao/i;
+const INVALID_GAME_COPY = /examine|consta nos livros|consulte|sua aparição está registrada|é mencionado nas escrituras|essa personagem/i;
 
 const isValidFact = (fact: BibleFact) => {
   const answerOptions = [fact.answer, ...fact.distractors].map((option) => option.trim()).filter(Boolean);
