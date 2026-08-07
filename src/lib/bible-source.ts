@@ -1,6 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { bookById } from "@/data/bible-books";
 import type { AppLanguage } from "@/lib/i18n";
+import { normalizeBibleSectionHeading } from "@/lib/bible-heading-normalizer";
 
 const API = "https://bolls.life";
 const REQUEST_TIMEOUT_MS = 15_000;
@@ -234,9 +235,10 @@ export async function fetchChapter(
 
   return verses.map((verse) => ({
     ...verse,
-    heading:
+    heading: normalizeBibleSectionHeading(
       sectionHeadingFor(translation, book, chapter, verse.verse) ??
-      freeHeadingByVerse.get(verse.verse),
+        freeHeadingByVerse.get(verse.verse),
+    ),
   }));
 }
 
