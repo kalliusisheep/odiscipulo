@@ -556,7 +556,7 @@ function ChapterReader() {
           )}
 
           <div className={`bible-chapter-nav fixed inset-x-0 bottom-[calc(3.75rem+env(safe-area-inset-bottom))] z-30 flex justify-center px-0 ${chapterNavVisible ? "is-visible" : "is-hidden"}`}>
-            <div className="bible-chapter-nav-panel flex w-full max-w-lg items-center gap-1 rounded-t-[1.15rem] rounded-b-none border border-primary/20 bg-background/95 p-1 shadow-2xl shadow-primary/15 backdrop-blur-xl">
+            <div className="bible-chapter-nav-panel flex w-full max-w-lg items-center gap-1 rounded-t-[1.15rem] rounded-b-none border border-primary/20 bg-surface p-1 shadow-2xl shadow-primary/15">
               <button
                 type="button"
                 onClick={() => {
