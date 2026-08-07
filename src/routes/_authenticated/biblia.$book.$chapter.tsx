@@ -803,12 +803,17 @@ function ChapterReader() {
                     const testamentBooks = filteredPickerBooks.filter((item) => item.testament === testament);
                     if (testamentBooks.length === 0) return null;
                     return (
-                      <div key={testament} className="mt-3 first:mt-0">
-                        <div className="mb-1.5 flex items-center gap-2 px-1">
-                          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                          <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">
+                      <div key={testament} className="bible-picker-testament-group mt-4 first:mt-0">
+                        <div className="bible-picker-testament-heading mb-2.5 flex items-center gap-2.5 rounded-2xl px-3 py-2.5">
+                          <span className="bible-picker-testament-mark flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-xs font-black text-primary">
+                            {testament}
+                          </span>
+                          <p className="text-[13px] font-black uppercase tracking-[0.12em] text-primary">
                             {testament === "AT" ? "Antigo Testamento" : "Novo Testamento"}
                           </p>
+                          <span className="ml-auto text-[10px] font-bold text-muted-foreground">
+                            {testamentBooks.length} livros
+                          </span>
                         </div>
                         <div className="grid grid-cols-2 gap-1.5">
                           {testamentBooks.map((item) => {
