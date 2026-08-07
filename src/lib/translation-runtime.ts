@@ -566,27 +566,27 @@ const dynamicPatterns: Array<{
     render: (match, language) => language === "en" ? match[1] + " ago" : language === "es" ? "hace " + match[1] : match[0],
   },
   {
-    pattern: /^(\\d+)\s+XP(?:\s+total)?$/,
+    pattern: /^(\d+)\s+XP(?:\s+total)?$/,
     render: (match, language) => language === "en" ? match[1] + " XP" + (match[0].includes("total") ? " total" : "") : language === "es" ? match[1] + " XP" + (match[0].includes("total") ? " total" : "") : match[0],
   },
   {
-    pattern: /^(\\d+)\s+registros$/,
+    pattern: /^(\d+)\s+registros$/,
     render: (match, language) => language === "en" ? match[1] + " records" : language === "es" ? match[1] + " registros" : match[0],
   },
   {
-    pattern: /^(\\d+)\s+conversas$/,
+    pattern: /^(\d+)\s+conversas$/,
     render: (match, language) => language === "en" ? match[1] + " conversations" : language === "es" ? match[1] + " conversaciones" : match[0],
   },
   {
-    pattern: /^(\\d+)\s+amigos?$/,
+    pattern: /^(\d+)\s+amigos?$/,
     render: (match, language) => language === "en" ? match[1] + (match[0].endsWith("amigo") ? " friend" : " friends") : language === "es" ? match[1] + (match[0].endsWith("amigo") ? " amigo" : " amigos") : match[0],
   },
   {
-    pattern: /^(\\d+)\s+rodadas?$/,
+    pattern: /^(\d+)\s+rodadas?$/,
     render: (match, language) => language === "en" ? match[1] + (match[0].endsWith("rodada") ? " round" : " rounds") : language === "es" ? match[1] + (match[0].endsWith("rodada") ? " ronda" : " rondas") : match[0],
   },
   {
-    pattern: /^(\\d+)\s+pistas?$/,
+    pattern: /^(\d+)\s+pistas?$/,
     render: (match, language) => language === "en" ? match[1] + (match[0].endsWith("pista") ? " clue" : " clues") : language === "es" ? match[1] + (match[0].endsWith("pista") ? " pista" : " pistas") : match[0],
   },
   {
@@ -661,7 +661,7 @@ function translateValue(value: string, language: AppLanguage): { source: string;
   const entry = aliases[normalized];
   if (entry) return { source: entry[0], value: targetFor(entry, language) };
   for (const referenceEntry of ENTRIES) {
-    if (normalized.startsWith(referenceEntry[0] + " ") && /^\s+\\d+(?::\\d+(?:-\\d+)?)?$/.test(normalized.slice(referenceEntry[0].length))) {
+    if (normalized.startsWith(referenceEntry[0] + " ") && /^\s+\d+(?::\d+(?:-\d+)?)?$/.test(normalized.slice(referenceEntry[0].length))) {
       return { source: normalized, value: targetFor(referenceEntry, language) + normalized.slice(referenceEntry[0].length) };
     }
   }
