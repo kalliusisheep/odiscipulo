@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowDown, ArrowLeft, ArrowRight, Check, Clock3, Eye, Flame, Lightbulb, RotateCcw, Sparkles, Trophy, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import type { GameDifficulty } from "@/data/biblical-characters";
-import { CROSSWORD_DIFFICULTY, CROSSWORD_THEMES, crosswordWordsFor, type CrosswordTheme, type CrosswordWord } from "@/data/biblical-crosswords";
+import { CROSSWORD_DIFFICULTY, CROSSWORD_THEMES, CROSSWORD_WORDS, crosswordWordsFor, type CrosswordTheme, type CrosswordWord } from "@/data/biblical-crosswords";
 import { GameModeChooser } from "@/components/games/GameModeChooser";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { recordGameResult } from "@/lib/game-leaderboard";
@@ -52,10 +52,12 @@ function canPlace(grid: string[][], word: string, row: number, col: number, dire
 
 function generatePuzzleAttempt(difficulty: GameDifficulty, theme: CrosswordTheme | "todos", seed?: number) {
   const config = CROSSWORD_DIFFICULTY[difficulty];
-  const pool = crosswordWordsFor(difficulty, theme).length >= config.words ? crosswordWordsFor(difficulty, theme) : crosswordWordsFor(difficulty, "todos");
+  const preferredPool = crosswordWordsFor(difficulty, theme);
+  const themedExpansion = CROSSWORD_WORDS.filter((entry) => (!theme || theme === "todos" || entry.themes.includes(theme)) && !preferredPool.some((candidate) => candidate.id === entry.id));
+  const pool = [...preferredPool, ...themedExpansion];
   const eligiblePool = pool.filter((entry) => entry.word.length <= config.size);
   const randomizedPool = seed !== undefined ? shuffleWithSeed(eligiblePool, seed) : [...eligiblePool].sort(() => Math.random() - 0.5);
-  const words = randomizedPool.slice(0, config.words).sort((a, b) => b.word.length - a.word.length);
+  const words = randomizedPool.slice(0, Math.min(randomizedPool.length, config.words + 8)).sort((a, b) => b.word.length - a.word.length);
   const grid = Array.from({ length: config.size }, () => Array<string>(config.size).fill(""));
   const placements: Placement[] = [];
   const first = words[0];
@@ -65,6 +67,7 @@ function generatePuzzleAttempt(difficulty: GameDifficulty, theme: CrosswordTheme
   for (let index = 0; index < first.word.length; index += 1) grid[firstRow][firstCol + index] = first.word[index];
   placements.push({ word: first, row: firstRow, col: firstCol, direction: "across" });
   for (const word of words.slice(1)) {
+    if (placements.length >= config.words) break;
     let placed = false;
     for (const existing of [...placements]) {
       for (let existingIndex = 0; existingIndex < existing.word.word.length && !placed; existingIndex += 1) {
@@ -113,12 +116,88 @@ function generatePuzzle(difficulty: GameDifficulty, theme: CrosswordTheme | "tod
   const target = CROSSWORD_DIFFICULTY[difficulty].words;
   let best = generatePuzzleAttempt(difficulty, theme, seed);
 
-  for (let attempt = 1; attempt < 8 && best.placements.length < target; attempt += 1) {
+  for (let attempt = 1; attempt < 32 && best.placements.length < target; attempt += 1) {
     const attemptSeed = seed === undefined ? undefined : seed + attempt * 7919;
     const candidate = generatePuzzleAttempt(difficulty, theme, attemptSeed);
     if (candidate.placements.length > best.placements.length) best = candidate;
   }
 
+  return best;
+}
+
+const CROSSWORD_SESSION_HISTORY_KEY = "disciple.crossword-session-history.v2";
+
+type CrosswordSessionHistory = {
+  signatures: string[];
+  wordIds: string[];
+};
+
+function readCrosswordSessionHistory(): CrosswordSessionHistory {
+  if (typeof window === "undefined") return { signatures: [], wordIds: [] };
+  try {
+    const parsed = JSON.parse(window.sessionStorage.getItem(CROSSWORD_SESSION_HISTORY_KEY) ?? "{}") as Partial<CrosswordSessionHistory>;
+    return {
+      signatures: Array.isArray(parsed.signatures) ? parsed.signatures.filter((value): value is string => typeof value === "string") : [],
+      wordIds: Array.isArray(parsed.wordIds) ? parsed.wordIds.filter((value): value is string => typeof value === "string") : [],
+    };
+  } catch {
+    return { signatures: [], wordIds: [] };
+  }
+}
+
+function rememberCrosswordPuzzle(puzzle: ReturnType<typeof generatePuzzle>) {
+  if (typeof window === "undefined" || !puzzle.placements.length) return;
+  const signature = puzzle.placements
+    .map((placement) => [placement.word.id, placement.row, placement.col, placement.direction].join(":"))
+    .sort()
+    .join("|");
+  const history = readCrosswordSessionHistory();
+  const nextHistory: CrosswordSessionHistory = {
+    signatures: [...new Set([...history.signatures, signature])].slice(-256),
+    wordIds: [...new Set([...history.wordIds, ...puzzle.placements.map((placement) => placement.word.id)])].slice(-512),
+  };
+  window.sessionStorage.setItem(CROSSWORD_SESSION_HISTORY_KEY, JSON.stringify(nextHistory));
+}
+
+function randomCrosswordSeed() {
+  if (typeof crypto !== "undefined" && typeof crypto.getRandomValues === "function") {
+    const values = new Uint32Array(1);
+    crypto.getRandomValues(values);
+    return values[0] & 0x7fffffff;
+  }
+  return Math.floor(Math.random() * 0x7fffffff);
+}
+
+function chooseCrosswordPuzzle(difficulty: GameDifficulty, theme: CrosswordTheme | "todos", baseSeed?: number) {
+  const history = readCrosswordSessionHistory();
+  const knownSignatures = new Set(history.signatures);
+  const usedWordIds = new Set(history.wordIds);
+  const seed = baseSeed ?? randomCrosswordSeed();
+  let best = generatePuzzle(difficulty, theme, seed);
+  let bestScore = Number.NEGATIVE_INFINITY;
+
+  for (let attempt = 0; attempt < 48; attempt += 1) {
+    const candidate = generatePuzzle(difficulty, theme, seed + attempt * 104729);
+    if (!candidate.placements.length) continue;
+    const signature = candidate.placements
+      .map((placement) => [placement.word.id, placement.row, placement.col, placement.direction].join(":"))
+      .sort()
+      .join("|");
+    const freshWords = candidate.placements.filter((placement) => !usedWordIds.has(placement.word.id)).length;
+    const repeatedWords = candidate.placements.length - freshWords;
+    const candidateScore =
+      (knownSignatures.has(signature) ? -10000 : 10000)
+      + freshWords * 180
+      - repeatedWords * 90
+      + candidate.placements.length * 35
+      + (candidate === best ? 0 : attempt);
+    if (candidateScore > bestScore) {
+      best = candidate;
+      bestScore = candidateScore;
+    }
+  }
+
+  rememberCrosswordPuzzle(best);
   return best;
 }
 
@@ -147,7 +226,6 @@ function CrosswordPage() {
   const [errorCell, setErrorCell] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const autoStarted = useRef(false);
-  const sessionUsedWordIds = useRef<Set<string>>(new Set());
   const config = CROSSWORD_DIFFICULTY[difficulty];
   const cellMap = useMemo(() => new Map(puzzle.cells.map((cell) => [key(cell.row, cell.col), cell])), [puzzle.cells]);
   const activePlacement = puzzle.placements.find((placement) => placement.word.id === activeWordId);
@@ -157,12 +235,7 @@ function CrosswordPage() {
     scoreSaved.current = false;
     startGameMusic();
     playGameSfx("start");
-    let nextPuzzle = generatePuzzle(difficulty, theme, seed);
-    for (let attempt = 1; attempt < 8 && nextPuzzle.placements.some((placement) => sessionUsedWordIds.current.has(placement.word.id)); attempt += 1) {
-      const attemptSeed = seed === undefined ? undefined : seed + attempt * 104729;
-      nextPuzzle = generatePuzzle(difficulty, theme, attemptSeed);
-    }
-    nextPuzzle.placements.forEach((placement) => sessionUsedWordIds.current.add(placement.word.id));
+    const nextPuzzle = chooseCrosswordPuzzle(difficulty, theme, seed);
     setPuzzle(nextPuzzle);
     setLetters({});
     setSelectedCell(null);
@@ -274,7 +347,7 @@ function CrosswordPage() {
   const startNextRound = useCallback(() => {
     const nextIndex = roundIndex + 1;
     const nextSeed = seed === undefined ? undefined : seed + nextIndex * 104729;
-    const nextPuzzle = generatePuzzle(difficulty, theme, nextSeed);
+    const nextPuzzle = chooseCrosswordPuzzle(difficulty, theme, nextSeed);
     setRoundIndex(nextIndex);
     setPuzzle(nextPuzzle);
     setLetters({});
