@@ -321,7 +321,7 @@ function VerseStudy() {
 
   return (
     <div className="bible-secondary-page mx-auto min-h-screen max-w-lg overflow-x-hidden pb-28">
-      <header className="sticky top-0 z-30 border-b border-border/70 bg-background/90 backdrop-blur-xl">
+      <header className="bible-study-header sticky top-0 z-30 bg-background/90 backdrop-blur-xl">
         <div className="px-4 pb-2 pt-3">
           <div className="flex items-center gap-3">
             <Link
@@ -349,7 +349,7 @@ function VerseStudy() {
 
           <nav
             aria-label="Ferramentas de estudo"
-            className="bible-study-tabs -mx-1 mt-3 flex snap-x gap-2 overflow-x-auto rounded-2xl border border-border/60 bg-surface/45 p-1.5 px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="bible-study-tabs -mx-1 mt-3 flex snap-x gap-2 overflow-x-auto rounded-2xl border border-border/60 bg-surface/30 p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {TABS.map((tab) => {
               const TabIcon = tab.icon;
@@ -362,7 +362,7 @@ function VerseStudy() {
                   aria-selected={selected}
                   onClick={() => setTab(tab.id)}
                   className={
-                    "flex min-h-12 shrink-0 snap-start items-center gap-2 rounded-[1.05rem] border px-3.5 py-2 text-xs font-bold transition-all active:scale-[0.98] " +
+                    "flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-[0.95rem] border px-3 py-2 text-xs font-bold transition-all active:scale-[0.98] " +
                     (selected
                       ? "border-primary/45 bg-primary text-primary-foreground shadow-[0_8px_24px_-12px_hsl(var(--primary))]"
                       : "border-border/70 bg-surface text-muted-foreground hover:border-primary/25 hover:text-foreground")
@@ -377,8 +377,8 @@ function VerseStudy() {
         </div>
       </header>
 
-      <main className="space-y-5 px-4 pt-4">
-        <section className="relative overflow-hidden rounded-[28px] border border-primary/20 bg-gradient-to-br from-primary/20 via-surface to-surface p-5 shadow-[0_20px_60px_-42px_hsl(var(--primary))]">
+      <main className="space-y-4 px-4 pt-4">
+        <section className="relative overflow-hidden rounded-[24px] border border-primary/20 bg-gradient-to-br from-primary/20 via-surface to-surface p-5 shadow-[0_20px_60px_-42px_hsl(var(--primary))]">
           <Quote className="absolute -right-3 -top-4 h-24 w-24 rotate-12 text-primary/[0.08]" />
           <div className="relative">
             <div className="flex items-center justify-between gap-3">
