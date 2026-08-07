@@ -55,8 +55,18 @@ async function resolveInvite(roomId: string, fallbackName = "Um amigo"): Promise
 }
 
 export function GameInviteOverlay() {
-  const [invite, setInvite] = useState<GameInvite | null>(null);
+  const [pendingInvites, setPendingInvites] = useState<GameInvite[]>([]);
   const [responding, setResponding] = useState(false);
+  const invite = pendingInvites[0] ?? null;
+
+  const enqueueInvite = (nextInvite: GameInvite | null) => {
+    if (!nextInvite) return;
+    setPendingInvites((current) =>
+      current.some((item) => item.roomId === nextInvite.roomId)
+        ? current
+        : [...current, nextInvite],
+    );
+  };
 
   useEffect(() => {
     let channel: ReturnType<typeof supabase.channel> | null = null;
@@ -71,14 +81,15 @@ export function GameInviteOverlay() {
         .select("room_id")
         .eq("user_id", auth.user.id)
         .eq("state", "invited")
-        .limit(1)
-        .maybeSingle();
+        .limit(10);
 
-      if (pending.data?.room_id) {
-        const pendingInvite = await resolveInvite(pending.data.room_id);
-        if (!cancelled) {
-          setInvite(pendingInvite);
-        }
+      const pendingInvites = await Promise.all(
+        (pending.data ?? []).map((row: { room_id?: string }) =>
+          typeof row.room_id === "string" ? resolveInvite(row.room_id) : Promise.resolve(null),
+        ),
+      );
+      if (!cancelled) {
+        pendingInvites.forEach(enqueueInvite);
       }
 
       channel = supabase
@@ -90,7 +101,7 @@ export function GameInviteOverlay() {
             const nextInvite = notificationToInvite(payload.new);
             if (nextInvite) {
               const resolvedInvite = await resolveInvite(nextInvite.roomId, nextInvite.inviterName);
-              if (!cancelled) setInvite(resolvedInvite ?? nextInvite);
+              if (!cancelled) enqueueInvite(resolvedInvite ?? nextInvite);
             }
           },
         )
@@ -101,7 +112,7 @@ export function GameInviteOverlay() {
             const row = payload.new as { state?: string; room_id?: string };
             if (row.state !== "invited" || typeof row.room_id !== "string") return;
             const resolvedInvite = await resolveInvite(row.room_id);
-            if (!cancelled) setInvite(resolvedInvite);
+            if (!cancelled) enqueueInvite(resolvedInvite);
           },
         )
         .subscribe();
@@ -124,7 +135,7 @@ export function GameInviteOverlay() {
       });
       if (error) throw error;
       const roomId = invite.roomId;
-      setInvite(null);
+      setPendingInvites((current) => current.slice(1));
       if (accept) {
         window.location.href = `/jogos/${invite.gameType}?mode=multi&roomId=${roomId}&seed=${invite.seed}&difficulty=${invite.difficulty}&rounds=${invite.rounds}`;
       } else {
