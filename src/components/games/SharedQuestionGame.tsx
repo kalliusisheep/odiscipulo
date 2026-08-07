@@ -191,7 +191,9 @@ export function SharedQuestionGame({
     const profiles = ids.length
       ? (await gameDb.from("profiles").select("id,display_name,avatar_url").in("id", ids)).data ?? []
       : [];
-    const profileMap = new Map(profiles.map((profile: { id: string; display_name: string; avatar_url: string | null }) => [profile.id, profile] as const));
+    const profileMap = new Map<string, { id: string; display_name: string; avatar_url: string | null }>(
+      profiles.map((profile: { id: string; display_name: string; avatar_url: string | null }) => [profile.id, profile] as const),
+    );
     const nextPlayers = rows.map((row: RoomPlayer) => ({
       ...row,
       score: Number(row.score ?? 0),
@@ -201,7 +203,7 @@ export function SharedQuestionGame({
       avatar_url: profileMap.get(row.user_id)?.avatar_url ?? null,
     }));
     setPlayers(nextPlayers);
-    const me = nextPlayers.find((player) => player.user_id === currentUserId);
+    const me = nextPlayers.find((player: { user_id: string }) => player.user_id === currentUserId);
     if (me) {
       setError("");
     }

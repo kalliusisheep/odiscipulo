@@ -127,7 +127,6 @@ function ChapterReader() {
       try {
         const { data, error } = await supabase.functions.invoke<Blob>("bible-tts", {
           body: { text: verses[index].text, rate: narrationRate },
-          responseType: "blob",
         });
         if (error || !(data instanceof Blob)) throw error ?? new Error("Áudio inválido");
         if (token !== speechTokenRef.current) return;
