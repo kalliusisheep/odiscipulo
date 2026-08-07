@@ -45,6 +45,8 @@ function PersonagemPage() {
   const [score, setScore] = useState(0);
   const [roundScore, setRoundScore] = useState(0);
   const [streak, setStreak] = useState(0);
+  const [bestStreak, setBestStreak] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
   const [correct, setCorrect] = useState<boolean | null>(null);
   const sessionSeenRef = useRef<Set<string>>(new Set());
   const character = queue[round];
@@ -78,6 +80,8 @@ function PersonagemPage() {
     setRound(0);
     setScore(0);
     setStreak(0);
+    setBestStreak(0);
+    setCorrectAnswers(0);
     setRevealed([0]);
     setAnswer("");
     setCorrect(null);
@@ -99,7 +103,12 @@ function PersonagemPage() {
     const earned = isCorrect ? Math.round(base * difficultyData.multiplier) : 0;
     setRoundScore(earned);
     setScore((value) => value + earned);
-    setStreak((value) => (isCorrect ? value + 1 : 0));
+    setStreak((value) => {
+      const nextStreak = isCorrect ? value + 1 : 0;
+      if (isCorrect) setBestStreak((best) => Math.max(best, nextStreak));
+      return nextStreak;
+    });
+    if (isCorrect) setCorrectAnswers((value) => value + 1);
     setCorrect(isCorrect);
     setPhase("round-result");
   };
@@ -123,8 +132,8 @@ function PersonagemPage() {
   useEffect(() => {
     if (phase !== "finished" || scoreSaved.current) return;
     scoreSaved.current = true;
-    void recordGameResult({ gameKey: "personagem", score, rounds });
-  }, [phase, rounds, score]);
+    void recordGameResult({ gameKey: "personagem", score, correctAnswers, rounds, bestStreak });
+  }, [bestStreak, correctAnswers, phase, rounds, score]);
 
   if (phase === "setup" && !modeSelected) {
     return <GameModeChooser title="Quem é o personagem?" heroImage="/game-quem-e-o-personagem.jpeg" heroImageAlt="Ovelha apresentando o jogo Quem é o personagem?" description="Escolha uma experiência rápida para testar sua memória bíblica ou reúna seus amigos para uma disputa em sala." onBack={() => window.history.back()} onSinglePlayer={() => setModeSelected(true)} onMultiplayer={() => { window.location.href = "/jogos/multiplayer?game=personagem"; }} />;
