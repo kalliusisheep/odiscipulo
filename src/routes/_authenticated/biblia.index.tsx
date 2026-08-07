@@ -50,6 +50,10 @@ function BibliaIndex() {
   const { translation, setTranslation } = useBiblePrefs();
   const { language } = useApp();
   const availableTranslations = useMemo(() => translationsForLanguage(language), [language]);
+  const selectedTranslationLabel = useMemo(
+    () => availableTranslations.find((item) => item.code === translation)?.label ?? translation,
+    [availableTranslations, translation],
+  );
   const [testament, setTestament] = useState<"AT" | "NT" | null>("AT");
   const [openBook, setOpenBook] = useState<number | null>(null);
   const [query, setQuery] = useState("");
@@ -227,7 +231,7 @@ function BibliaIndex() {
                     }}
                     className="bible-translation-trigger flex items-center gap-2 rounded-full border border-border/40 bg-transparent py-1 pl-3 pr-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-foreground/80 outline-none transition-colors hover:border-primary/40 focus-visible:border-primary/60"
                   >
-                    <span>{translation}</span>
+                    <span>{selectedTranslationLabel}</span>
                     <ChevronDown
                       className={`h-3 w-3 text-muted-foreground transition-transform duration-200 ${translationMenuOpen ? "rotate-180" : ""}`}
                     />
@@ -250,12 +254,9 @@ function BibliaIndex() {
                             setTranslation(t.code);
                             setTranslationMenuOpen(false);
                           }}
-                          className={`bible-translation-option flex w-full items-center justify-between gap-4 text-left ${t.code === translation ? "is-selected" : ""}`}
+                          className={`bible-translation-option flex w-full items-center justify-center text-center ${t.code === translation ? "is-selected" : ""}`}
                         >
-                          <span className="font-bold">{t.code}</span>
-                          <span className="truncate text-[10px] font-medium text-muted-foreground">
-                            {t.label}
-                          </span>
+                          <span className="font-bold">{t.label}</span>
                         </button>
                       ))}
                     </div>
