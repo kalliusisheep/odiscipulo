@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { readingPlans, bibleStudies, aiMeditations } from "@/data/estudos";
 import { planStorageKey } from "./estudos.plano.$id";
 
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { Clock, CalendarDays, BookOpen, Sparkles, ArrowRight, ChevronRight, Compass } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/estudos/")({
@@ -40,7 +39,6 @@ function EstudosPage() {
       <div className="mx-auto max-w-lg px-4 pb-28 pt-5">
         <header className="flex items-center justify-between">
           <div><p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">Biblioteca</p><h1 className="mt-1 text-2xl font-extrabold tracking-tight">Estudos</h1></div>
-          <ThemeToggle />
         </header>
         <section className="relative mt-5 overflow-hidden rounded-[1.75rem] border border-primary/15 shadow-xl shadow-black/20">
           <img src="/sheep-scholar.jpeg" alt="" className="h-52 w-full object-cover" />
