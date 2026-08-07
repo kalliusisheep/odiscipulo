@@ -27,6 +27,7 @@ import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as AuthenticatedAdminPregerarNarracaoRouteImport } from './routes/_authenticated/admin.pregerar-narracao'
 import { Route as AuthenticatedAdminPregerarTextosRouteImport } from './routes/_authenticated/admin.pregerar-textos'
 import { Route as AuthenticatedBibliaIndexRouteImport } from './routes/_authenticated/biblia.index'
+import { Route as AuthenticatedBibliaTeologiaRouteImport } from './routes/_authenticated/biblia.teologia'
 import { Route as AuthenticatedBibliaMarcadosRouteImport } from './routes/_authenticated/biblia.marcados'
 import { Route as AuthenticatedEstudosIndexRouteImport } from './routes/_authenticated/estudos.index'
 import { Route as AuthenticatedJogosCruzadasRouteImport } from './routes/_authenticated/jogos.cruzadas'
@@ -143,6 +144,12 @@ const AuthenticatedBibliaIndexRoute =
   AuthenticatedBibliaIndexRouteImport.update({
     id: '/biblia/',
     path: '/biblia/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedBibliaTeologiaRoute =
+  AuthenticatedBibliaTeologiaRouteImport.update({
+    id: '/biblia/teologia',
+    path: '/biblia/teologia',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedBibliaMarcadosRoute =
@@ -298,6 +305,7 @@ export interface FileRoutesByFullPath {
   '/admin/pregerar-narracao': typeof AuthenticatedAdminPregerarNarracaoRoute
   '/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
   '/biblia/marcados': typeof AuthenticatedBibliaMarcadosRoute
+  '/biblia/teologia': typeof AuthenticatedBibliaTeologiaRoute
   '/jogos/cruzadas': typeof AuthenticatedJogosCruzadasRoute
   '/jogos/milhao': typeof AuthenticatedJogosMilhaoRoute
   '/jogos/multiplayer': typeof AuthenticatedJogosMultiplayerRoute
@@ -340,6 +348,7 @@ export interface FileRoutesByTo {
   '/admin/pregerar-narracao': typeof AuthenticatedAdminPregerarNarracaoRoute
   '/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
   '/biblia/marcados': typeof AuthenticatedBibliaMarcadosRoute
+  '/biblia/teologia': typeof AuthenticatedBibliaTeologiaRoute
   '/jogos/cruzadas': typeof AuthenticatedJogosCruzadasRoute
   '/jogos/milhao': typeof AuthenticatedJogosMilhaoRoute
   '/jogos/multiplayer': typeof AuthenticatedJogosMultiplayerRoute
@@ -354,6 +363,7 @@ export interface FileRoutesByTo {
   '/notas/$id': typeof AuthenticatedNotasIdRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
   '/biblia': typeof AuthenticatedBibliaIndexRoute
+  '/biblia/teologia': typeof AuthenticatedBibliaTeologiaRoute
   '/estudos': typeof AuthenticatedEstudosIndexRoute
   '/mensagens': typeof AuthenticatedMensagensIndexRoute
   '/notas': typeof AuthenticatedNotasIndexRoute
@@ -384,6 +394,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/pregerar-narracao': typeof AuthenticatedAdminPregerarNarracaoRoute
   '/_authenticated/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
   '/_authenticated/biblia/marcados': typeof AuthenticatedBibliaMarcadosRoute
+  '/_authenticated/biblia/teologia': typeof AuthenticatedBibliaTeologiaRoute
   '/_authenticated/jogos/cruzadas': typeof AuthenticatedJogosCruzadasRoute
   '/_authenticated/jogos/milhao': typeof AuthenticatedJogosMilhaoRoute
   '/_authenticated/jogos/multiplayer': typeof AuthenticatedJogosMultiplayerRoute
@@ -428,6 +439,7 @@ export interface FileRouteTypes {
     | '/admin/pregerar-narracao'
     | '/admin/pregerar-textos'
     | '/biblia/marcados'
+    | '/biblia/teologia'
     | '/jogos/cruzadas'
     | '/jogos/milhao'
     | '/jogos/multiplayer'
@@ -470,6 +482,7 @@ export interface FileRouteTypes {
     | '/admin/pregerar-narracao'
     | '/admin/pregerar-textos'
     | '/biblia/marcados'
+    | '/biblia/teologia'
     | '/jogos/cruzadas'
     | '/jogos/milhao'
     | '/jogos/multiplayer'
@@ -484,6 +497,7 @@ export interface FileRouteTypes {
     | '/notas/$id'
     | '/perfil/$username'
     | '/biblia'
+    | '/biblia/teologia'
     | '/estudos'
     | '/mensagens'
     | '/notas'
@@ -513,6 +527,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/pregerar-narracao'
     | '/_authenticated/admin/pregerar-textos'
     | '/_authenticated/biblia/marcados'
+    | '/_authenticated/biblia/teologia'
     | '/_authenticated/jogos/cruzadas'
     | '/_authenticated/jogos/milhao'
     | '/_authenticated/jogos/multiplayer'
@@ -671,6 +686,13 @@ declare module '@tanstack/react-router' {
       path: '/biblia'
       fullPath: '/biblia/'
       preLoaderRoute: typeof AuthenticatedBibliaIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/biblia/teologia': {
+      id: '/_authenticated/biblia/teologia'
+      path: '/biblia/teologia'
+      fullPath: '/biblia/teologia'
+      preLoaderRoute: typeof AuthenticatedBibliaTeologiaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/biblia/marcados': {
@@ -881,6 +903,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedNotasIdRoute: typeof AuthenticatedNotasIdRoute
   AuthenticatedPerfilUsernameRoute: typeof AuthenticatedPerfilUsernameRoute
   AuthenticatedBibliaIndexRoute: typeof AuthenticatedBibliaIndexRoute
+  AuthenticatedBibliaTeologiaRoute: typeof AuthenticatedBibliaTeologiaRoute
   AuthenticatedEstudosIndexRoute: typeof AuthenticatedEstudosIndexRoute
   AuthenticatedMensagensIndexRoute: typeof AuthenticatedMensagensIndexRoute
   AuthenticatedNotasIndexRoute: typeof AuthenticatedNotasIndexRoute
@@ -916,6 +939,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedNotasIdRoute: AuthenticatedNotasIdRoute,
   AuthenticatedPerfilUsernameRoute: AuthenticatedPerfilUsernameRoute,
   AuthenticatedBibliaIndexRoute: AuthenticatedBibliaIndexRoute,
+  AuthenticatedBibliaTeologiaRoute: AuthenticatedBibliaTeologiaRoute,
   AuthenticatedEstudosIndexRoute: AuthenticatedEstudosIndexRoute,
   AuthenticatedMensagensIndexRoute: AuthenticatedMensagensIndexRoute,
   AuthenticatedNotasIndexRoute: AuthenticatedNotasIndexRoute,
