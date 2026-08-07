@@ -249,33 +249,45 @@ BEGIN
     RAISE EXCEPTION 'not_allowed';
   END IF;
 
-  INSERT INTO public.game_scores (
-    user_id,
-    room_id,
-    game_key,
-    score,
-    correct_answers,
-    rounds,
-    best_streak
-  )
-  VALUES (
-    auth.uid(),
-    _room_id,
-    room_row.game_type,
-    GREATEST(0, player_row.score),
-    GREATEST(0, player_row.correct_answers),
-    room_row.rounds,
-    GREATEST(0, player_row.best_streak)
-  )
-  ON CONFLICT (room_id, user_id)
-  WHERE room_id IS NOT NULL
-  DO UPDATE SET
-    score = EXCLUDED.score,
-    correct_answers = EXCLUDED.correct_answers,
-    rounds = EXCLUDED.rounds,
-    best_streak = EXCLUDED.best_streak,
-    played_at = now()
+  UPDATE public.game_scores
+  SET score = GREATEST(0, player_row.score),
+      correct_answers = GREATEST(0, player_row.correct_answers),
+      rounds = room_row.rounds,
+      best_streak = GREATEST(0, player_row.best_streak),
+      played_at = now()
+  WHERE room_id = _room_id
+    AND user_id = auth.uid()
   RETURNING * INTO result_row;
+
+  IF result_row.id IS NULL THEN
+    INSERT INTO public.game_scores (
+      user_id,
+      room_id,
+      game_key,
+      score,
+      correct_answers,
+      rounds,
+      best_streak
+    )
+    VALUES (
+      auth.uid(),
+      _room_id,
+      room_row.game_type,
+      GREATEST(0, player_row.score),
+      GREATEST(0, player_row.correct_answers),
+      room_row.rounds,
+      GREATEST(0, player_row.best_streak)
+    )
+    ON CONFLICT DO NOTHING
+    RETURNING * INTO result_row;
+
+    IF result_row.id IS NULL THEN
+      SELECT * INTO result_row
+      FROM public.game_scores
+      WHERE room_id = _room_id
+        AND user_id = auth.uid();
+    END IF;
+  END IF;
 
   RETURN result_row;
 END;
