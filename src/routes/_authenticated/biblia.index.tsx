@@ -319,19 +319,15 @@ function BibliaIndex() {
         {!hits && (
           <>
             <section
-              className="bible-journey-card relative isolate overflow-hidden rounded-[1.9rem] border border-violet-300/15 shadow-xl shadow-black/25"
-              style={{
-                background:
-                  "linear-gradient(145deg, rgba(55, 48, 163, 0.70) 0%, rgba(30, 41, 59, 0.92) 52%, rgba(15, 23, 42, 0.98) 100%)",
-              }}
+              className="bible-journey-card relative isolate overflow-hidden rounded-[1.9rem] border border-primary/20 bg-gradient-to-br from-primary/25 via-surface to-background shadow-xl shadow-black/25"}
             >
-              <div className="pointer-events-none absolute -right-12 -top-16 h-52 w-52 rounded-full bg-violet-400/20 blur-3xl" />
-              <BookOpen className="pointer-events-none absolute -bottom-7 -right-3 h-36 w-36 rotate-[-8deg] text-white/[0.035]" />
+              <div className="pointer-events-none absolute -right-12 -top-16 h-52 w-52 rounded-full bg-primary/20 blur-3xl" />
+              <BookOpen className="pointer-events-none absolute -bottom-7 -right-3 h-36 w-36 rotate-[-8deg] text-foreground/[0.035]" />
 
               <div className="relative z-10 p-5">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="h-3.5 w-3.5 text-violet-300" />
-                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-violet-100/65">
+                  <Sparkles className="h-3.5 w-3.5 text-primary" />
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-foreground/60">
                     Sua jornada na Palavra
                   </p>
                 </div>
@@ -340,27 +336,27 @@ function BibliaIndex() {
                   <Link
                     to="/biblia/$book/$chapter"
                     params={{ book: String(last.book), chapter: String(last.chapter) }}
-                    className="group mt-3 flex items-center gap-3 rounded-2xl border border-border/30 bg-white/[0.07] p-3.5 transition-colors hover:bg-white/[0.11]"
+                    className="group mt-3 flex items-center gap-3 rounded-2xl border border-border/30 bg-foreground/[0.07] p-3.5 transition-colors hover:bg-foreground/[0.11]"
                   >
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-white shadow-lg ring-1 ring-white/10">
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-foreground/10 text-foreground shadow-lg ring-1 ring-foreground/10">
                       <Play className="ml-0.5 h-5 w-5 fill-current" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-[10px] font-bold uppercase tracking-wider text-violet-200">
+                      <span className="block text-[10px] font-bold uppercase tracking-wider text-primary/80">
                         Continuar de onde parou
                       </span>
-                      <span className="mt-1 block truncate text-base font-extrabold text-white">
+                      <span className="mt-1 block truncate text-base font-extrabold text-foreground">
                         {bookNameById(last.book)} {last.chapter}
                       </span>
                     </span>
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10">
-                      <ChevronRight className="h-4 w-4 text-white/75 transition-transform group-hover:translate-x-0.5" />
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-foreground/10">
+                      <ChevronRight className="h-4 w-4 text-foreground/75 transition-transform group-hover:translate-x-0.5" />
                     </span>
                   </Link>
                 ) : (
-                  <div className="mt-3 rounded-2xl border border-border/30 bg-white/[0.06] p-4">
-                    <p className="text-sm font-bold text-white">Comece sua leitura hoje</p>
-                    <p className="mt-1 text-xs text-white/60">
+                  <div className="mt-3 rounded-2xl border border-border/30 bg-foreground/[0.06] p-4">
+                    <p className="text-sm font-bold text-foreground">Comece sua leitura hoje</p>
+                    <p className="mt-1 text-xs text-foreground/60">
                       Escolha um livro abaixo e marque seu primeiro capítulo.
                     </p>
                   </div>
@@ -368,24 +364,24 @@ function BibliaIndex() {
 
                 <div className="mt-4">
                   <div className="flex items-center justify-between gap-3">
-                    <span className="text-[10px] font-semibold text-white/55">Progresso completo</span>
-                    <span className="text-[10px] font-bold text-white/80">
+                    <span className="text-[10px] font-semibold text-foreground/55">Progresso completo</span>
+                    <span className="text-[10px] font-bold text-foreground/80">
                       {readLoading ? "Carregando progresso…" : `${read.length} de 1189 capítulos`}
                     </span>
                   </div>
-                  <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-slate-950/45 p-[2px] ring-1 ring-white/5">
+                  <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-background/45 p-[2px] ring-1 ring-foreground/5">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-violet-500 via-primary-glow to-fuchsia-300 shadow-[0_0_12px_rgba(167,139,250,.55)] transition-all duration-700"
+                      className="h-full rounded-full bg-gradient-to-r from-primary via-primary-glow to-primary shadow-[0_0_12px_rgba(167,139,250,.55)] transition-all duration-700"
                       style={{ width: `${progressPct}%` }}
                     />
                   </div>
-                  <div className="mt-2 flex justify-end text-[10px]"><span className="font-extrabold text-violet-200">{progressPct}% concluído</span></div>
+                  <div className="mt-2 flex justify-end text-[10px]"><span className="font-extrabold text-primary/80">{progressPct}% concluído</span></div>
                 </div>
 
                 <div className="bible-journey-stats mt-4 grid grid-cols-3 gap-2 border-t border-border/30 pt-4">
-                  <div className="rounded-2xl bg-white/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Lidos</p><p className="mt-1 text-sm font-extrabold text-white">{read.length}</p></div>
-                  <div className="rounded-2xl bg-white/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Livros</p><p className="mt-1 text-sm font-extrabold text-white">{new Set(read.map((item) => item.book)).size}/66</p></div>
-                  <div className="rounded-2xl bg-white/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Versão</p><p className="mt-1 truncate text-sm font-extrabold text-violet-200">{translationByCode(translation).label}</p></div>
+                  <div className="rounded-2xl bg-foreground/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-foreground/50">Lidos</p><p className="mt-1 text-sm font-extrabold text-foreground">{read.length}</p></div>
+                  <div className="rounded-2xl bg-foreground/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-foreground/50">Livros</p><p className="mt-1 text-sm font-extrabold text-foreground">{new Set(read.map((item) => item.book)).size}/66</p></div>
+                  <div className="rounded-2xl bg-foreground/[0.06] px-2.5 py-2.5"><p className="text-[9px] font-bold uppercase tracking-wider text-foreground/50">Versão</p><p className="mt-1 truncate text-sm font-extrabold text-primary/80">{translationByCode(translation).label}</p></div>
                 </div>
               </div>
             </section>
