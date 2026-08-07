@@ -387,32 +387,39 @@ function ChapterReader() {
             {verses.map((v) => {
               const color = highlightMap[v.verse];
               return (
-                <button
-                  key={v.verse}
-                  ref={(element) => {
-                    verseRefs.current[v.verse] = element;
-                  }}
-                  onClick={() => setSelected(v.verse)}
-                  id={`v-${v.verse}`}
-                  className={`bible-verse-row block w-full rounded-xl px-2 py-1.5 text-left transition-all ${
-                    narrationIndex === verses.findIndex((item) => item.verse === v.verse)
-                      ? "bg-primary/[0.08] shadow-[inset_3px_0_0_hsl(var(--primary)),0_0_22px_hsl(var(--primary)/0.10)]"
-                      : color
-                        ? highlightClass(color)
-                        : "bible-verse-row-idle"
-                  }`}
-                >
-                  <span className="bible-verse-number mr-1.5 align-super text-[11px] font-bold text-primary">{v.verse}</span>
-                  <span className="bible-verse-copy leading-relaxed" style={{ fontSize }}>
-                    {v.text}
-                  </span>
-                  {favorites.includes(v.verse) && (
-                    <Star className="ml-1 inline h-3.5 w-3.5 fill-current text-ancient" />
+                <div key={v.verse}>
+                  {v.heading && (
+                    <div className="bible-section-heading">
+                      <span className="bible-section-heading-rule" aria-hidden="true" />
+                      <h3>{v.heading}</h3>
+                    </div>
                   )}
-                  {notesByVerse[v.verse] && (
-                    <StickyNote className="ml-1 inline h-3.5 w-3.5 text-primary" />
-                  )}
-                </button>
+                  <button
+                    ref={(element) => {
+                      verseRefs.current[v.verse] = element;
+                    }}
+                    onClick={() => setSelected(v.verse)}
+                    id={`v-${v.verse}`}
+                    className={`bible-verse-row block w-full rounded-xl px-2 py-1.5 text-left transition-all ${
+                      narrationIndex === verses.findIndex((item) => item.verse === v.verse)
+                        ? "bg-primary/[0.08] shadow-[inset_3px_0_0_hsl(var(--primary)),0_0_22px_hsl(var(--primary)/0.10)]"
+                        : color
+                          ? highlightClass(color)
+                          : "bible-verse-row-idle"
+                    }`}
+                  >
+                    <span className="bible-verse-number mr-1.5 align-super text-[11px] font-bold text-primary">{v.verse}</span>
+                    <span className="bible-verse-copy leading-relaxed" style={{ fontSize }}>
+                      {v.text}
+                    </span>
+                    {favorites.includes(v.verse) && (
+                      <Star className="ml-1 inline h-3.5 w-3.5 fill-current text-ancient" />
+                    )}
+                    {notesByVerse[v.verse] && (
+                      <StickyNote className="ml-1 inline h-3.5 w-3.5 text-primary" />
+                    )}
+                  </button>
+                </div>
               );
             })}
           </div>
