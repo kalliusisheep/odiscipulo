@@ -9,6 +9,7 @@ export type TheologyModule = {
   id: string;
   title: string;
   subtitle: string;
+  introduction?: string;
   chapters: TheologyChapter[];
 };
 
@@ -796,8 +797,5 @@ const theologyModuleExpansions: Record<string, string> = {
 
 export const theologyModules: TheologyModule[] = theologyModulesData.map((module) => ({
   ...module,
-  chapters: module.chapters.map((chapter) => ({
-    ...chapter,
-    content: chapter.content + "\n\n" + theologyModuleExpansions[module.id],
-  })),
+  introduction: theologyModuleExpansions[module.id],
 }));
