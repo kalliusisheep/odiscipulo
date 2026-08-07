@@ -177,14 +177,14 @@ export function MentorFAB() {
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
-        aria-label="Abrir Barnabéé, Mentor IA (arraste para mover)"
+        aria-label="Abrir Barnabé, Mentor IA (arraste para mover)"
         style={{ touchAction: "none" }}
         className={`relative h-14 w-14 cursor-grab overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-glow shadow-2xl shadow-primary/40 transition-transform active:scale-95 active:cursor-grabbing ${animClass}`}
       >
         <div className="h-full w-full" style={{ transform: "scale(1.08)" }}>
           <img
             src={FALLBACK_SRC}
-            alt="Barnabéé, Mentor IA"
+            alt="Barnabé, Mentor IA"
             className="pointer-events-none h-full w-full animate-mascot-face object-cover"
             draggable={false}
           />
@@ -249,7 +249,7 @@ export function MentorChat() {
     {
       role: "assistant",
       content:
-        "Paz de Cristo, irmão(ã). Sou o Barnabéé, seu Mentor IA — estou aqui para te ajudar a compreender a Palavra, mas jamais para substituir seu pastor, discipulador ou igreja local. Como posso servir você hoje?",
+        "Paz de Cristo, irmão(ã). Sou o Barnabé, seu Mentor IA — estou aqui para te ajudar a compreender a Palavra, mas jamais para substituir seu pastor, discipulador ou igreja local. Como posso servir você hoje?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -419,12 +419,12 @@ export function MentorChat() {
             <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary-glow p-0.5 shadow-lg shadow-primary/35 ring-2 ring-white/20">
               <img
                 src="/isheep-img.png"
-                alt="Barnabéé, Mentor IA"
+                alt="Barnabé, Mentor IA"
                 className="h-full w-full rounded-[0.85rem] object-cover"
               />
             </div>
             <div>
-              <h2 className="text-base font-extrabold tracking-tight">Barnabéé</h2>
+              <h2 className="text-base font-extrabold tracking-tight">Barnabé</h2>
               <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-muted-foreground">
                 <History className="h-3.5 w-3.5 text-primary" />
                 <span>Histórico salvo · não substitui o cuidado pastoral</span>
@@ -508,7 +508,7 @@ export function MentorChat() {
             )}
           </div>
           <p className="mt-2 px-1 text-[10px] text-muted-foreground">
-            Você pode escrever ou enviar uma mensagem de voz para Barnabéé.
+            Você pode escrever ou enviar uma mensagem de voz para Barnabé.
           </p>
         </form>
       </div>
