@@ -244,7 +244,11 @@ function ChapterReader() {
     setVerses(null);
     setError(null);
     fetchChapter(translation, book, chapter)
-      .then((v) => alive && setVerses(v))
+      .then((v) => {
+        if (!alive) return;
+        setVerses(v);
+        if (v.length > 0) void markChapterRead(book, chapter);
+      })
       .catch(() => alive && setError("Não foi possível carregar este capítulo."));
     return () => {
       alive = false;
@@ -260,7 +264,6 @@ function ChapterReader() {
 
   useEffect(() => {
     void reloadMarks();
-    void markChapterRead(book, chapter);
     window.scrollTo(0, 0);
   }, [reloadMarks, book, chapter]);
 
