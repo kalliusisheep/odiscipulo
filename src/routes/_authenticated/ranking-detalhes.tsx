@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { getContactIds } from "@/lib/contact-scope";
 import { getLevel, xpToNextLevel, levelProgressPct, MAX_LEVEL } from "@/data/levels";
 import { CHARACTERS } from "@/data/content";
 import { toast } from "sonner";
@@ -52,8 +53,14 @@ function RankingDetalhesPage() {
         .eq("user_id", u.user.id);
       setLessonsCount(count ?? 0);
 
-      const { data: demo } = await supabase.from("demo_users").select("xp");
-      const all = [...(demo ?? []).map((d) => d.xp), ...(p ? [p.xp] : [])].sort((a, b) => b - a);
+      const friendIds = await getContactIds(u.user.id);
+      const { data: friends } =
+        friendIds.length > 0
+          ? await supabase.from("profiles").select("xp").in("id", friendIds)
+          : { data: [] as Array<{ xp: number }> };
+      const all = [...(friends ?? []).map((friend) => friend.xp), ...(p ? [p.xp] : [])].sort(
+        (a, b) => b - a,
+      );
       if (p) {
         const pos = all.findIndex((x) => x === p.xp) + 1;
         setRankPos({ pos, total: all.length });
