@@ -182,7 +182,22 @@ function TeologiaCapituloPage() {
 
 
 function TheologyContent({ chapter }: { chapter: TheologyChapter }) {
-  const blocks = (chapter.blocks ?? [{ type: "paragraph" as const, text: chapter.content }]).reduce<
+  const sourceBlocks = chapter.blocks ?? [{ type: "paragraph" as const, text: chapter.content }];
+
+  const blocks = sourceBlocks.filter((block) => {
+    if (block.type !== "verse") return true;
+
+    const reference = block.reference?.trim() ?? "";
+    const hasBibleReference = /^(?:[1-3]\\s*)?[A-Za-zÀ-ÿ]+(?:\\s+[A-Za-zÀ-ÿ]+)*\\s+\\d+(?::\\d+(?:[-–]\\d+)?)?(?:,\\s*\\d+)?$/u.test(
+      reference,
+    );
+    const hasLegacyExplanatoryText =
+      /vara de medir|regra de medir|conjunto fechado de 66 livros|39 livros do Antigo Testamento|criou[”"']? o cânon|reconheceu a autoridade/i.test(
+        block.text,
+      );
+
+    return hasBibleReference && !hasLegacyExplanatoryText;
+  }).reduce<
     TheologyContentBlock[]
   >((normalized, block) => {
     const text = block.text.replace(/\s+/g, " ").trim();
