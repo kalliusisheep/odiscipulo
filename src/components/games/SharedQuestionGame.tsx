@@ -368,7 +368,7 @@ export function SharedQuestionGame({
     resultSaved.current = true;
     void (async () => {
       const finalPlayers = await loadPlayers(userId);
-      const finalMe = finalPlayers.find((player) => player.user_id === userId);
+      const finalMe = finalPlayers.find((player: { user_id: string }) => player.user_id === userId);
       const resultError = await recordSharedGameResult(roomId, finalMe ? {
         gameKey: gameType,
         score: finalMe.score,
@@ -382,7 +382,7 @@ export function SharedQuestionGame({
       if (!finishSoundPlayed.current) {
         finishSoundPlayed.current = true;
         const finalWinner = [...finalPlayers].sort((first, second) => second.score - first.score || second.correct_answers - first.correct_answers)[0];
-        const tied = finalWinner && finalPlayers.filter((player) => player.score === finalWinner.score).length > 1;
+        const tied = finalWinner && finalPlayers.filter((player: { score: number }) => player.score === finalWinner.score).length > 1;
         playGameSfx(tied ? "complete" : finalWinner?.user_id === finalMe?.user_id ? "victory" : "defeat");
       }
     })();
