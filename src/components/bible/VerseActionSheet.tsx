@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { HIGHLIGHT_COLORS, type HighlightColor } from "@/lib/bible-user-data";
 import { bookNameById } from "@/data/bible-books";
-import { BookOpen, Copy, Highlighter, Library, PenLine, Star } from "lucide-react";
+import { BookOpen, Copy, GitCompareArrows, Highlighter, Library, PenLine, Star } from "lucide-react";
 import { ShareLessonButton } from "@/components/ShareLessonButton";
 
 type Props = {
@@ -19,6 +19,7 @@ type Props = {
   onFavorite: () => void;
   onNote: () => void;
   onCopy: () => void;
+  onCompare: () => void;
 };
 
 export function VerseActionSheet(props: Props) {
@@ -72,15 +73,28 @@ export function VerseActionSheet(props: Props) {
         </div>
 
         <div className="bible-action-grid mt-4 grid grid-cols-2 gap-2 px-5 pb-6">
-          <Link
-            to="/biblia/estudo/$book/$chapter/$verse"
-            params={{ book: String(book), chapter: String(chapter), verse: String(verse) }}
-            onClick={() => props.onOpenChange(false)}
-            className="col-span-2 flex items-center gap-3 rounded-2xl bg-primary px-4 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-transform active:scale-[0.98]"
-          >
-            <BookOpen className="h-4.5 w-4.5" /> Estudar versículo
-          </Link>
-
+          <div className="col-span-2 grid grid-cols-2 gap-2">
+            <Link
+              to="/biblia/estudo/$book/$chapter/$verse"
+              params={{ book: String(book), chapter: String(chapter), verse: String(verse) }}
+              onClick={() => props.onOpenChange(false)}
+              className="flex min-h-12 items-center gap-2 rounded-2xl bg-primary px-3 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-transform active:scale-[0.98]"
+            >
+              <BookOpen className="h-4 w-4 shrink-0" />
+              <span className="leading-tight">Estudar versículo</span>
+            </Link>
+            <button
+              type="button"
+              onClick={() => {
+                props.onOpenChange(false);
+                props.onCompare();
+              }}
+              className="flex min-h-12 items-center gap-2 rounded-2xl border border-primary/25 bg-primary/10 px-3 py-3 text-sm font-semibold text-primary transition-all hover:bg-primary/15 active:scale-[0.98]"
+            >
+              <GitCompareArrows className="h-4 w-4 shrink-0" />
+              <span className="leading-tight">Comparar versões</span>
+            </button>
+          </div>
           {actions.map((a) => (
             <Link
               key={a.label}
