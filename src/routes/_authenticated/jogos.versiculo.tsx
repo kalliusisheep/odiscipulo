@@ -8,7 +8,7 @@ import { SharedQuestionGame } from "@/components/games/SharedQuestionGame";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { recordGameResult } from "@/lib/game-leaderboard";
 import { shuffleWithSeed } from "@/lib/seeded-random";
-import { canonicalGameContentKey, uniqueGameContent } from "@/lib/game-content";
+import { normalizeGameContentKey, uniqueGameVariantContent } from "@/lib/game-content";
 
 export const Route = createFileRoute("/_authenticated/jogos/versiculo")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -73,18 +73,19 @@ function VersiculoPage() {
     const preferred = versesForDifficulty(difficulty);
     const fallback = BIBLICAL_VERSES.filter((item) => item.difficulty !== difficulty);
     const allCards = shuffle([...preferred, ...fallback]);
-    const uniqueReferences = uniqueGameContent(allCards, (item) => item.reference);
+    const uniqueCards = uniqueGameVariantContent(allCards, (item) => item.id);
     const recentKey = `verse_recent_questions_${difficulty}`;
     const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
-    const recentKeys = new Set(recentIds.map(canonicalGameContentKey));
-    const sessionCandidates = uniqueReferences.filter((item) => !sessionSeenRef.current.has(canonicalGameContentKey(item.reference)));
-    const fresh = sessionCandidates.filter((item) => !recentKeys.has(canonicalGameContentKey(item.reference)));
-    const primary = uniqueGameContent([...fresh, ...sessionCandidates], (item) => item.reference).slice(0, rounds);
+    const recentKeys = new Set(recentIds.map(normalizeGameContentKey));
+    const sessionCandidates = uniqueCards.filter((item) => !sessionSeenRef.current.has(normalizeGameContentKey(item.id)));
+    const fresh = sessionCandidates.filter((item) => !recentKeys.has(normalizeGameContentKey(item.id)));
+    const primary = uniqueGameVariantContent([...fresh, ...sessionCandidates], (item) => item.id).slice(0, rounds);
     const selectedIds = new Set(primary.map((item) => item.id));
-    const unusedCards = allCards.filter((item) => !selectedIds.has(item.id) && !recentIds.includes(item.id));
-    const list = [...primary, ...unusedCards, ...allCards.filter((item) => !selectedIds.has(item.id))].slice(0, rounds);
-    primary.forEach((item) => sessionSeenRef.current.add(canonicalGameContentKey(item.reference)));
-    window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...list.map((item) => item.id)])].slice(-Math.max(rounds * 5, 80))));
+    const recentIdSet = new Set(recentIds.map(normalizeGameContentKey));
+    const unusedCards = uniqueCards.filter((item) => !selectedIds.has(item.id) && !recentIdSet.has(normalizeGameContentKey(item.id)));
+    const list = uniqueGameVariantContent([...primary, ...unusedCards], (item) => item.id).slice(0, rounds);
+    list.forEach((item) => sessionSeenRef.current.add(normalizeGameContentKey(item.id)));
+    window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds, ...list.map((item) => normalizeGameContentKey(item.id))])].slice(-Math.max(rounds * 5, 80))));
     setQuestions(list);
     setRound(0);
     setScore(0);
