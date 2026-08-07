@@ -253,22 +253,6 @@ function BibliaIndex() {
       </div>
 
       <main className="bible-index-main mx-auto max-w-lg px-4 pt-4 animate-slide-up">
-          <div className="bible-guided-banner mt-3 flex items-center justify-between gap-3 rounded-2xl border border-primary/15 bg-gradient-to-r from-primary/10 via-surface/70 to-ancient/5 px-3.5 py-2.5 shadow-sm">
-            <div className="flex min-w-0 items-center gap-2.5">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
-                <Sparkles className="h-4 w-4" />
-              </span>
-              <span className="min-w-0">
-                <span className="block text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">Leitura guiada</span>
-                <span className="mt-0.5 block truncate text-[11px] text-muted-foreground">Leia, compare e aprofunde cada passagem</span>
-              </span>
-            </div>
-            <span className="shrink-0 rounded-full border border-ancient/20 bg-ancient/10 px-2 py-1 text-[9px] font-extrabold text-ancient">
-              {translationByCode(translation).label}
-            </span>
-          </div>
-
-
         {searchError && (
           <div className="mb-3 rounded-2xl border border-destructive/20 bg-destructive/10 px-4 py-3 text-xs text-destructive">
             {searchError}
