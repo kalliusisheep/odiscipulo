@@ -2199,18 +2199,23 @@ body,
 }
 
 .bible-reader-shell .bible-chapter-nav-play {
-  border: 1px solid color-mix(in srgb, var(--primary) 40%, var(--background)) !important;
+  border: 1px solid color-mix(in srgb, var(--primary) 46%, var(--border)) !important;
   outline: none;
   background:
+    radial-gradient(
+      circle at 30% 24%,
+      color-mix(in srgb, white 16%, transparent),
+      transparent 38%
+    ),
     linear-gradient(
       145deg,
-      color-mix(in srgb, var(--primary) 94%, white 6%),
-      color-mix(in srgb, var(--primary) 76%, black 24%)
+      color-mix(in srgb, var(--primary) 78%, white 22%),
+      color-mix(in srgb, var(--primary) 58%, black 42%)
     ) !important;
   box-shadow:
-    0 8px 18px color-mix(in srgb, var(--primary) 30%, transparent),
-    inset 0 1px 0 color-mix(in srgb, white 14%, transparent),
-    inset 0 -1px 0 color-mix(in srgb, black 22%, transparent);
+    0 10px 24px color-mix(in srgb, var(--primary) 24%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 20%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, black 28%, transparent);
 }
 
 .bible-reader-shell .bible-chapter-nav-play:focus-visible {
@@ -2246,7 +2251,9 @@ body,
 }
 
 .bible-reader-shell .bible-chapter-nav-next {
+  order: 3;
   border: 0;
+  color: var(--foreground);
 }
 
 .bible-reader-shell .bible-chapter-nav-current {
