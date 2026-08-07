@@ -38,10 +38,10 @@ export function VerseActionSheet(props: Props) {
     <Sheet open={props.open} onOpenChange={props.onOpenChange}>
       <SheetContent
         side="bottom"
-        className="rounded-t-3xl border-border bg-background p-0 pb-[env(safe-area-inset-bottom)]"
+        className="bible-verse-actions-sheet rounded-t-[2rem] border-primary/15 bg-background p-0 pb-[env(safe-area-inset-bottom)]"
       >
         <div className="mx-auto mt-3 h-1.5 w-10 rounded-full bg-muted-foreground/30" />
-        <div className="px-5 pt-4">
+        <div className="bible-sheet-header px-5 pt-4">
           <div className="flex items-center justify-between gap-3">
             <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">Ações do versículo</p>
             <span className="rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-bold text-muted-foreground">Toque para agir</span>
@@ -71,7 +71,7 @@ export function VerseActionSheet(props: Props) {
           </span>
         </div>
 
-        <div className="mt-4 grid grid-cols-2 gap-2 px-5 pb-6">
+        <div className="bible-action-grid mt-4 grid grid-cols-2 gap-2 px-5 pb-6">
           <Link
             to="/biblia/estudo/$book/$chapter/$verse"
             params={{ book: String(book), chapter: String(chapter), verse: String(verse) }}
@@ -132,7 +132,7 @@ function SheetAction({
     <button
       type="button"
       onClick={onClick}
-      className={`flex items-center gap-2.5 rounded-2xl border px-3.5 py-3 text-left text-sm font-medium transition-all active:scale-[0.97] ${
+      className={`bible-sheet-action flex items-center gap-2.5 rounded-2xl border px-3.5 py-3 text-left text-sm font-medium transition-all active:scale-[0.97] ${
         active
           ? "border-primary/50 bg-primary/10 text-primary"
           : "border-border bg-surface hover:border-primary/40"
