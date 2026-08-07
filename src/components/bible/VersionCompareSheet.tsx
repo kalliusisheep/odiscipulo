@@ -19,14 +19,16 @@ type Props = {
 };
 
 function initialSelection(currentTranslation: string, translations: ReturnType<typeof translationsForLanguage>) {
+  if (translations.length === 0) return [];
+
   const availableCurrent = translations.some((translation) => translation.code === currentTranslation)
     ? currentTranslation
     : translations[0].code;
   const second =
     translations.find((translation) => translation.code !== availableCurrent)?.code ??
-    translations[1]?.code ??
-    translations[0].code;
-  return [availableCurrent, second];
+    translations[1]?.code;
+
+  return second ? [availableCurrent, second] : [availableCurrent];
 }
 
 export function VersionCompareSheet({
