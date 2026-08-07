@@ -15,6 +15,7 @@ import {
 } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { xpToNextLevel } from "@/data/levels";
+import { calendarDayDifference, todayStr } from "@/lib/streak";
 
 export type MascotEvent = "wave" | "jump" | "dance" | "streak" | "sad" | "pet" | null;
 
@@ -568,11 +569,9 @@ export function MascotProvider({ children }: { children: ReactNode }) {
       });
       const contextualPool = [...CONTEXTUAL_LINES, ...progressLines];
 
-      const todayStr = new Date().toISOString().slice(0, 10);
+      const today = todayStr();
       const last = (p?.last_activity_date as string | null) ?? null;
-      const diffDays = last
-        ? Math.floor((new Date(todayStr).getTime() - new Date(last).getTime()) / 86400000)
-        : null;
+      const diffDays = last ? calendarDayDifference(today, last) : null;
       const missedDays = diffDays !== null && diffDays >= 2;
 
       if (missedDays) {
