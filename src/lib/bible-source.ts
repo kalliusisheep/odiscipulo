@@ -106,6 +106,26 @@ export function sectionHeadingFor(
     (heading) => heading.verse === verse,
   )?.title;
 }
+const FREE_PT_HEADING_TRANSLATIONS = new Set(PT_TRANSLATIONS.map((translation) => translation.code));
+const FREE_SECTION_HEADINGS_BASE = "/data/bible-section-headings-pt-1911";
+type FreeSectionHeading = BibleSectionHeading & { chapter: number };
+const freeSectionHeadingsCache = new Map<number, Promise<FreeSectionHeading[]>>();
+
+function loadFreePortugueseSectionHeadings(book: number): Promise<FreeSectionHeading[]> {
+  const cachedHeadings = freeSectionHeadingsCache.get(book);
+  if (cachedHeadings) return cachedHeadings;
+
+  const request = fetch(`${FREE_SECTION_HEADINGS_BASE}/${String(book).padStart(2, "0")}.json`)
+    .then(async (response) => {
+      if (!response.ok) return [];
+      const data = (await response.json()) as FreeSectionHeading[];
+      return Array.isArray(data) ? data : [];
+    })
+    .catch(() => []);
+
+  freeSectionHeadingsCache.set(book, request);
+  return request;
+}
 export type OriginalWord = { word: string; strong: string | null; index: number };
 export type OriginalVerse = { verse: number; words: OriginalWord[] };
 
@@ -161,16 +181,28 @@ export async function fetchChapter(
   book: number,
   chapter: number,
 ): Promise<Verse[]> {
-  const verses = await cached(`bib:${translation}:${book}:${chapter}`, async () => {
-    const res = await fetchWithTimeout(`${API}/get-text/${translation}/${book}/${chapter}/`);
-    if (!res.ok) throw new Error("Não foi possível carregar o capítulo.");
-    const json = (await res.json()) as { verse: number; text: string }[];
-    return json.map((v) => ({ verse: v.verse, text: stripTags(v.text) }));
-  });
+  const [verses, freeHeadings] = await Promise.all([
+    cached(`bib:${translation}:${book}:${chapter}`, async () => {
+      const res = await fetchWithTimeout(`${API}/get-text/${translation}/${book}/${chapter}/`);
+      if (!res.ok) throw new Error("Não foi possível carregar o capítulo.");
+      const json = (await res.json()) as { verse: number; text: string }[];
+      return json.map((v) => ({ verse: v.verse, text: stripTags(v.text) }));
+    }),
+    FREE_PT_HEADING_TRANSLATIONS.has(translation)
+      ? loadFreePortugueseSectionHeadings(book)
+      : Promise.resolve([] as FreeSectionHeading[]),
+  ]);
+  const freeHeadingByVerse = new Map(
+    freeHeadings
+      .filter((heading) => heading.chapter === chapter)
+      .map((heading) => [heading.verse, heading.title]),
+  );
 
   return verses.map((verse) => ({
     ...verse,
-    heading: sectionHeadingFor(translation, book, chapter, verse.verse),
+    heading:
+      sectionHeadingFor(translation, book, chapter, verse.verse) ??
+      freeHeadingByVerse.get(verse.verse),
   }));
 }
 
