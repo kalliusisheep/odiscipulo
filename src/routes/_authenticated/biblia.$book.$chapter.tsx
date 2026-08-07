@@ -353,25 +353,10 @@ function ChapterReader() {
               <span className="block truncate text-[15px] font-black leading-tight">
                 {bookNameById(book)} {chapter}
               </span>
-              <span className="mt-0.5 block truncate text-[9px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                Toque para explorar o capítulo
-              </span>
             </button>
             <ThemeToggle className="h-9 w-9 shrink-0 border-border bg-surface" />
           </div>
           <div className="bible-reader-action-row mt-1 flex items-center justify-center gap-2 sm:justify-end">
-            <button
-              type="button"
-              onClick={() => {
-                if (narrationStarted) toggleNarrationPause();
-                else startNarration();
-              }}
-              aria-label={narrationStarted && !narrationPaused ? "Pausar narração" : "Ouvir narração"}
-              disabled={!verses || narrationLoading}
-              className={`flex h-8 w-8 items-center justify-center rounded-full border border-primary/20 transition-all active:scale-95 disabled:opacity-40 ${narrationStarted && !narrationPaused ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "bg-primary/10 text-primary"}`}
-            >
-              {narrationStarted && !narrationPaused ? <Pause className="h-4 w-4" /> : <Play className="ml-0.5 h-4 w-4 fill-current" />}
-            </button>
             <button
               type="button"
               onClick={() => setSettingsOpen(true)}
