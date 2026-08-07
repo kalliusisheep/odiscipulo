@@ -1576,3 +1576,47 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
   height: 0 !important;
   background: transparent !important;
 }
+
+
+/* Compact bible reading rhythm */
+.bible-reading-column .bible-verse-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+}
+
+.bible-reading-column .bible-verse-list > div + div {
+  margin-top: 0 !important;
+}
+
+.bible-reading-column .bible-verse-row {
+  min-height: 2.2rem;
+  margin-inline: -0.25rem;
+  padding: 0.24rem 0.55rem;
+  line-height: 1.48;
+}
+
+.bible-reading-column .bible-verse-copy,
+.bible-reading-column .bible-verse-copy.leading-relaxed,
+.bible-verse-quote {
+  line-height: 1.48;
+}
+
+.bible-reading-column .bible-section-heading {
+  margin-top: 0.78rem;
+  margin-bottom: 0.16rem;
+  padding-top: 0.55rem;
+}
+
+@media (max-width: 380px) {
+  .bible-reading-column .bible-verse-row {
+    margin-inline: -0.15rem;
+    padding: 0.2rem 0.42rem;
+    line-height: 1.46;
+  }
+
+  .bible-reading-column .bible-verse-copy,
+  .bible-reading-column .bible-verse-copy.leading-relaxed {
+    line-height: 1.46;
+  }
+}
