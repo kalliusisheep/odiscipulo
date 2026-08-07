@@ -17,6 +17,7 @@ const progressions: Record<GameMusicTheme, number[][]> = {
 
 let audioContext: AudioContext | null = null;
 let musicGain: GainNode | null = null;
+let musicCompressor: DynamicsCompressorNode | null = null;
 let musicTimer: number | null = null;
 let musicStep = 0;
 let musicEnabled = true;
@@ -50,8 +51,15 @@ function ensureContext() {
   if (!AudioContextConstructor) return null;
   audioContext = new AudioContextConstructor();
   musicGain = audioContext.createGain();
+  musicCompressor = audioContext.createDynamicsCompressor();
+  musicCompressor.threshold.value = -18;
+  musicCompressor.knee.value = 12;
+  musicCompressor.ratio.value = 4;
+  musicCompressor.attack.value = 0.008;
+  musicCompressor.release.value = 0.18;
   musicGain.gain.value = 0;
-  musicGain.connect(audioContext.destination);
+  musicGain.connect(musicCompressor);
+  musicCompressor.connect(audioContext.destination);
   return audioContext;
 }
 
@@ -69,7 +77,7 @@ function playMusicStep() {
     oscillator.type = index === 0 ? "sine" : "triangle";
     oscillator.frequency.setValueAtTime(frequency, now);
     gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(index === 0 ? 0.34 : 0.16, now + 0.24);
+    gain.gain.exponentialRampToValueAtTime(index === 0 ? 0.46 : 0.22, now + 0.24);
     gain.gain.exponentialRampToValueAtTime(0.0001, now + 3.1);
     oscillator.connect(gain);
     gain.connect(destination);
@@ -82,7 +90,7 @@ function playMusicStep() {
   bass.type = "sine";
   bass.frequency.setValueAtTime(chord[0] / 2, now);
   bassGain.gain.setValueAtTime(0.0001, now);
-  bassGain.gain.exponentialRampToValueAtTime(0.24, now + 0.3);
+  bassGain.gain.exponentialRampToValueAtTime(0.34, now + 0.3);
   bassGain.gain.exponentialRampToValueAtTime(0.0001, now + 3.1);
   bass.connect(bassGain);
   bassGain.connect(destination);
@@ -95,7 +103,7 @@ function playMusicStep() {
     bell.type = "sine";
     bell.frequency.setValueAtTime(chord[3] * 2, now + 0.55);
     bellGain.gain.setValueAtTime(0.0001, now);
-    bellGain.gain.exponentialRampToValueAtTime(0.09, now + 0.62);
+    bellGain.gain.exponentialRampToValueAtTime(0.14, now + 0.62);
     bellGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.2);
     bell.connect(bellGain);
     bellGain.connect(destination);
@@ -125,7 +133,7 @@ export function startGameMusic(theme?: GameMusicTheme) {
   void context.resume();
   if (musicGain) {
     musicGain.gain.cancelScheduledValues(context.currentTime);
-    musicGain.gain.setTargetAtTime(0.52, context.currentTime, 0.7);
+    musicGain.gain.setTargetAtTime(0.82, context.currentTime, 0.45);
   }
   playMusicStep();
   musicTimer = window.setInterval(playMusicStep, 3200);
@@ -177,7 +185,7 @@ export function playGameSfx(kind: GameSfx) {
     oscillator.type = kind === "error" ? "sawtooth" : "triangle";
     oscillator.frequency.setValueAtTime(frequency, startAt);
     gain.gain.setValueAtTime(0.0001, startAt);
-    gain.gain.exponentialRampToValueAtTime(kind === "tap" ? 0.06 : 0.14, startAt + 0.012);
+    gain.gain.exponentialRampToValueAtTime(kind === "tap" ? 0.09 : kind === "error" ? 0.19 : 0.24, startAt + 0.012);
     gain.gain.exponentialRampToValueAtTime(0.0001, startAt + durations[kind]);
     oscillator.connect(gain);
     gain.connect(context.destination);
