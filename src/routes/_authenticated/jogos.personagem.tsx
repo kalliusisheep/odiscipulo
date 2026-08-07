@@ -121,6 +121,9 @@ function PersonagemPage() {
 
   const submit = () => {
     if (!character || !answer.trim() || correct !== null) return;
+    if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
     const isCorrect = isCorrectCharacterAnswer(character, answer);
     playGameSfx(isCorrect ? "success" : "error");
     const extraHints = Math.max(0, revealed.length - 1);
