@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { bookById } from "@/data/bible-books";
 import type { AppLanguage } from "@/lib/i18n";
 
 const API = "https://bolls.life";
@@ -175,18 +176,51 @@ function stripTags(html: string): string {
     .trim();
 }
 
+function assertValidBibleReference(book: number, chapter: number) {
+  const meta = bookById(book);
+  if (
+    !meta ||
+    !Number.isInteger(book) ||
+    !Number.isInteger(chapter) ||
+    chapter < 1 ||
+    chapter > meta.chapters
+  ) {
+    throw new Error("Referência bíblica inválida.");
+  }
+}
+
+function assertSupportedTranslation(translation: string) {
+  if (!BIBLE_TRANSLATIONS.some((item) => item.code === translation)) {
+    throw new Error("Tradução bíblica inválida.");
+  }
+}
+
 /** Capítulo em português. */
 export async function fetchChapter(
   translation: string,
   book: number,
   chapter: number,
 ): Promise<Verse[]> {
+  assertSupportedTranslation(translation);
+  assertValidBibleReference(book, chapter);
+
   const [verses, freeHeadings] = await Promise.all([
     cached(`bib:${translation}:${book}:${chapter}`, async () => {
       const res = await fetchWithTimeout(`${API}/get-text/${translation}/${book}/${chapter}/`);
       if (!res.ok) throw new Error("Não foi possível carregar o capítulo.");
-      const json = (await res.json()) as { verse: number; text: string }[];
-      return json.map((v) => ({ verse: v.verse, text: stripTags(v.text) }));
+      const json = (await res.json()) as unknown;
+      if (!Array.isArray(json)) throw new Error("A fonte retornou um capítulo inválido.");
+
+      const parsed = json
+        .filter((item): item is { verse: number; text: string } => {
+          if (!item || typeof item !== "object") return false;
+          const value = item as { verse?: unknown; text?: unknown };
+          return Number.isInteger(value.verse) && typeof value.text === "string";
+        })
+        .map((item) => ({ verse: item.verse, text: stripTags(item.text) }));
+
+      if (parsed.length === 0) throw new Error("A fonte não retornou versículos.");
+      return parsed;
     }),
     FREE_PT_HEADING_TRANSLATIONS.has(translation)
       ? loadFreePortugueseSectionHeadings(book)
@@ -227,6 +261,7 @@ export async function fetchOriginalChapter(
   book: number,
   chapter: number,
 ): Promise<OriginalVerse[]> {
+  assertValidBibleReference(book, chapter);
   const { code } = originalTranslationFor(book);
   const prefix = book >= 40 ? "G" : "H";
   return cached(`orig:${code}:${book}:${chapter}`, async () => {
@@ -1251,7 +1286,11 @@ export async function searchBible(
   translation: string,
   query: string,
 ): Promise<{ book: number; chapter: number; verse: number; text: string }[]> {
-  const url = `${API}/v2/find/${translation}?search=${encodeURIComponent(query)}&match_case=false&match_whole=false`;
+  assertSupportedTranslation(translation);
+  const normalizedQuery = query.trim();
+  if (normalizedQuery.length < 3) return [];
+
+  const url = `${API}/v2/find/${translation}?search=${encodeURIComponent(normalizedQuery)}&match_case=false&match_whole=false`;
   const res = await fetchWithTimeout(url);
   if (!res.ok) throw new Error("Busca indisponível no momento.");
   const json = (await res.json()) as {
