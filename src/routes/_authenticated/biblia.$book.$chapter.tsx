@@ -343,7 +343,7 @@ function ChapterReader() {
               aria-label={`Versão atual: ${label}. Abrir ajustes de leitura`}
               className="bible-reader-version-pill flex h-9 min-w-[3.75rem] shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 px-2 text-[11px] font-extrabold uppercase tracking-[0.08em] text-primary transition-all hover:border-primary/40 hover:bg-primary/15 active:scale-95"
             >
-              {translation}
+              {label}
             </button>
             <button
               type="button"
