@@ -53,6 +53,23 @@ function PersonagemPage() {
   const [bestStreak, setBestStreak] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [correct, setCorrect] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const viewport = window.visualViewport;
+    if (!viewport) return;
+    const updateKeyboardInset = () => {
+      const inset = Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop);
+      document.documentElement.style.setProperty("--game-keyboard-inset", `${inset}px`);
+    };
+    updateKeyboardInset();
+    viewport.addEventListener("resize", updateKeyboardInset);
+    viewport.addEventListener("scroll", updateKeyboardInset);
+    return () => {
+      viewport.removeEventListener("resize", updateKeyboardInset);
+      viewport.removeEventListener("scroll", updateKeyboardInset);
+      document.documentElement.style.removeProperty("--game-keyboard-inset");
+    };
+  }, []);
   const sessionSeenRef = useRef<Set<string>>(new Set());
   const character = queue[round];
   const difficultyData = CHARACTER_DIFFICULTY[difficulty];
@@ -162,9 +179,9 @@ function PersonagemPage() {
   if (!character) return null;
 
   return (
-    <main className="game-play-page min-h-screen bg-background">
-      <div className="mx-auto max-w-lg px-4 pb-28 pt-5">
-        <header className="flex items-center justify-between">
+    <main className="game-play-page game-character-page min-h-screen bg-background" data-game-phase={phase}>
+      <div className="game-character-content mx-auto max-w-lg px-4 pb-28 pt-5">
+        <header className="game-character-header flex items-center justify-between">
           <Link to="/jogos" className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Jogos</Link>
           <div className="flex items-center gap-2">
             {streak > 0 && <span className="inline-flex items-center gap-1 rounded-full bg-ancient/10 px-3 py-1 text-xs font-extrabold text-ancient"><Flame className="h-3.5 w-3.5" /> {streak}x combo</span>}
@@ -178,18 +195,18 @@ function PersonagemPage() {
         </div>
         <div className="mt-4 h-2 overflow-hidden rounded-full bg-surface-2"><div className="h-full rounded-full bg-gradient-to-r from-primary via-primary to-ancient transition-all" style={{ width: `${((round + (phase === "round-result" ? 1 : 0)) / rounds) * 100}%` }} /></div>
 
-        <section className="mt-5 overflow-hidden rounded-[1.75rem] border border-primary/30 bg-gradient-to-br from-primary/20 via-surface to-surface p-5 shadow-xl shadow-primary/5">
+        <section className="game-character-clue mt-5 overflow-hidden rounded-[1.75rem] border border-primary/30 bg-gradient-to-br from-primary/20 via-surface to-surface p-5 shadow-xl shadow-primary/5">
           <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary"><span className="flex h-7 w-7 items-center justify-center rounded-xl bg-primary/15"><Lightbulb className="h-4 w-4" /></span> Pista inicial</span><span className="rounded-full bg-success/10 px-2.5 py-1 text-[10px] font-extrabold uppercase text-success">Grátis</span></div>
           <p className="mt-4 text-base font-semibold leading-relaxed text-foreground">{firstHint}</p>
           <p className="mt-3 text-[11px] font-medium text-muted-foreground">Comece pelo que você já sabe. As pistas extras reduzem a pontuação.</p>
         </section>
 
-        <section className="mt-4 rounded-[1.75rem] border border-border bg-surface p-5 shadow-lg shadow-black/10">
+        <section className="game-character-hints mt-4 rounded-[1.75rem] border border-border bg-surface p-5 shadow-lg shadow-black/10">
           <div className="flex items-center justify-between"><div><p className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">Desbloqueie mais pistas</p><p className="mt-1 text-xs text-muted-foreground">Quanto menos ajuda, maior o desafio.</p></div><span className={`rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-extrabold uppercase ${difficultyData.tone}`}>{difficultyData.label} · {difficultyData.multiplier}x</span></div>
           <div className="mt-4 space-y-3">{orderedHints.slice(1).map((hint, offset) => { const index = offset + 1; const isRevealed = revealed.includes(index); return <div key={hint} className={`rounded-2xl border p-4 transition-colors ${isRevealed ? "border-primary/30 bg-primary/5" : "border-border/70 bg-background/50"}`}>{isRevealed ? <div className="flex gap-3"><span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary"><Check className="h-4 w-4" /></span><p className="text-sm leading-relaxed">{hint}</p></div> : <button type="button" onClick={() => revealHint(index)} className="flex w-full items-center gap-3 text-left text-sm font-bold text-muted-foreground hover:text-foreground"><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary"><Lightbulb className="h-4 w-4" /></span><span>Pista {index + 1}</span><span className="ml-auto inline-flex items-center gap-1 text-xs font-medium text-primary">Revelar <ArrowRight className="h-3.5 w-3.5" /></span></button>}</div>; })}</div>
         </section>
 
-        <section className="mt-4 rounded-[1.5rem] border border-border bg-surface/70 p-4"><label className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground" htmlFor="answer">Sua resposta</label><div className="mt-2 flex gap-2"><input id="answer" value={answer} onChange={(event) => setAnswer(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") submit(); }} disabled={phase !== "playing"} placeholder="Digite o nome do personagem" className="min-w-0 flex-1 rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10" /><button type="button" onClick={submit} disabled={!answer.trim()} className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 disabled:opacity-50"><Check className="h-5 w-5" /></button></div><p className="mt-3 text-[11px] text-muted-foreground">Digite e confirme. A resposta certa encerra a rodada.</p></section>
+        <section className={`game-character-answer-panel mt-4 rounded-[1.5rem] border border-border bg-surface/70 p-4 ${phase === "playing" ? "game-response-dock" : ""}`}><label className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground" htmlFor="answer">Sua resposta</label><div className="mt-2 flex gap-2"><input id="answer" value={answer} onChange={(event) => setAnswer(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") submit(); }} onFocus={(event) => { const input = event.currentTarget; window.setTimeout(() => input.scrollIntoView({ behavior: "smooth", block: "center" }), 120); }} enterKeyHint="done" autoComplete="off" disabled={phase !== "playing"} placeholder="Digite o nome do personagem" className="min-w-0 flex-1 rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10" /><button type="button" onClick={submit} disabled={!answer.trim()} className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20 disabled:opacity-50"><Check className="h-5 w-5" /></button></div><p className="mt-3 text-[11px] text-muted-foreground">Digite e confirme. A resposta certa encerra a rodada.</p></section>
 
         {phase === "round-result" && <section className={`game-answer-feedback mt-4 rounded-3xl border p-5 shadow-lg ${correct ? "border-success/40 bg-success/10 shadow-success/5" : "border-ancient/40 bg-ancient/10 shadow-ancient/5"}`}><div className="flex items-start gap-3"><span className={`flex h-10 w-10 items-center justify-center rounded-2xl ${correct ? "bg-success/15 text-success" : "bg-ancient/15 text-ancient"}`}>{correct ? <Check /> : <X />}</span><div className="min-w-0 flex-1"><p className="font-extrabold">{correct ? `Acertou! +${roundScore} pontos` : `A resposta era ${character.name}`}</p><p className="mt-1 text-xs leading-relaxed text-muted-foreground">{character.summary}</p><p className="mt-3 text-[11px] font-bold text-muted-foreground">Referências: {character.references.join(" · ")}</p></div></div><button type="button" onClick={next} className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-extrabold text-primary-foreground">{round + 1 >= rounds ? "Ver resultado" : "Próxima rodada"}<ArrowRight className="h-4 w-4" /></button></section>}
       </div>
