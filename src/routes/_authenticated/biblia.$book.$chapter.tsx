@@ -316,7 +316,7 @@ function ChapterReader() {
   return (
     <div className={`bible-reader-shell min-h-screen pb-32 transition-colors ${(theme === "white" || theme === "gray") ? "bg-[#fbfaf7] text-slate-900" : "bg-background text-foreground"}`}>
       {/* Barra superior fixa */}
-      <div className={`bible-reader-header sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-xl ${readerScrolled ? "is-immersive" : ""}`}>
+      <div className={`bible-reader-header sticky top-0 z-30 bg-background/85 backdrop-blur-xl ${readerScrolled ? "is-immersive" : ""}`}>
         <div className="bible-reader-header-inner relative mx-auto grid min-h-[4.35rem] max-w-lg grid-cols-[2.25rem_minmax(0,1fr)_auto] items-center gap-2 px-4">
           <Link
             to="/biblia"
@@ -336,7 +336,7 @@ function ChapterReader() {
               Capítulo {chapter}
             </span>
             <span className="mt-1 block truncate text-[8px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-              {label} · toque para trocar
+              Toque para trocar de capítulo
             </span>
           </button>
           <div className="bible-reader-action-group relative z-10 flex shrink-0 items-center gap-1">
@@ -409,13 +409,13 @@ function ChapterReader() {
 
         {verses && verses.length > 0 && (
           <>
-            <div className="bible-reading-meta mx-auto max-w-lg px-4 pb-2 pt-3">
+            <div className="bible-reading-meta mx-auto max-w-lg px-0 pb-2 pt-3">
               <div className="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-[0.16em] text-muted-foreground">
                 <span>{label}</span>
                 <span>{verses.length} versículos</span>
               </div>
             </div>
-            <section className="bible-reading-column mx-auto max-w-lg px-4">
+            <section className="bible-reading-column mx-auto max-w-lg px-0">
               <div className="bible-verse-list space-y-0.5">
                 {verses.map((v) => {
                   const color = highlightMap[v.verse];
