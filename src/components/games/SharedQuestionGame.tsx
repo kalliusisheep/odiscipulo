@@ -181,6 +181,23 @@ export function SharedQuestionGame({
   const question = questions[(roundNumber - 1) % Math.max(1, questions.length)];
   const timeLimit = timeLimitFor(gameType, difficulty);
 
+  useEffect(() => {
+    const viewport = window.visualViewport;
+    if (!viewport) return;
+    const updateKeyboardInset = () => {
+      const inset = Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop);
+      document.documentElement.style.setProperty("--game-keyboard-inset", `${inset}px`);
+    };
+    updateKeyboardInset();
+    viewport.addEventListener("resize", updateKeyboardInset);
+    viewport.addEventListener("scroll", updateKeyboardInset);
+    return () => {
+      viewport.removeEventListener("resize", updateKeyboardInset);
+      viewport.removeEventListener("scroll", updateKeyboardInset);
+      document.documentElement.style.removeProperty("--game-keyboard-inset");
+    };
+  }, []);
+
   const loadPlayers = useCallback(async (currentUserId = userId) => {
     const { data } = await gameDb
       .from("character_game_room_players")
@@ -453,8 +470,8 @@ export function SharedQuestionGame({
   const showWaiting = answered && !roundClosed;
 
   return (
-    <main className="game-play-page min-h-screen bg-background">
-      <div className="mx-auto max-w-lg px-4 pb-28 pt-5">
+    <main className="game-play-page game-shared-page min-h-screen bg-background" data-game-phase={phase}>
+      <div className="game-shared-content mx-auto max-w-lg px-4 pb-28 pt-5">
         <header className="flex items-center justify-between"><a href={"/jogos/" + gameType} className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground"><ArrowLeft className="h-4 w-4" /> Jogos</a><div className="flex items-center gap-2"><span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">Rodada {roundNumber}/{rounds}</span><span className="rounded-full bg-ancient/10 px-3 py-1 text-xs font-black text-ancient">{me?.score ?? 0} pts</span></div></header>
         <div className="mt-6 flex items-end justify-between"><div><p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">{gameLabels[gameType]}</p><h1 className="mt-1 text-2xl font-black">{gameType === "personagem" ? "Descubra pela pista :)" : gameType === "versiculo" ? "Reconheça a passagem" : "Desafio compartilhado"}</h1></div><div className="text-right"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Na sala</p><p className="text-xl font-black text-ancient">{players.length}</p></div></div>
         <div className="mt-4 flex items-center gap-3"><div className="h-2 flex-1 overflow-hidden rounded-full bg-surface-2"><div className="h-full rounded-full bg-gradient-to-r from-primary to-ancient" style={{ width: String(Math.max(0, Math.min(100, (timeLeft / timeLimit) * 100))) + "%" }} /></div><span className={"inline-flex items-center gap-1 text-sm font-black " + (timeLeft <= 5 ? "text-red-300" : "text-foreground")}><Clock3 className="h-4 w-4" /><span role="timer" aria-live="polite" aria-atomic="true">{timeLeft}</span></span></div>
@@ -462,7 +479,7 @@ export function SharedQuestionGame({
           <div className="flex items-center justify-between"><span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">{currentQuestion.category}</span><span className="inline-flex items-center gap-1 text-[10px] font-extrabold text-ancient"><Flame className="h-3.5 w-3.5" /> {me?.best_streak ?? 0} combo</span></div>
           <p className="mt-5 text-lg font-extrabold leading-relaxed">{currentQuestion.prompt}</p>
           {currentQuestion.isCharacter ? <div className="mt-4 space-y-2">{currentQuestion.hints.slice(0, 4).map((hint, index) => { const open = revealed.has(index); return <div key={hint} className={"rounded-2xl border p-3 " + (open ? "border-primary/30 bg-primary/5" : "border-border bg-background/50")}>{open ? <div className="flex gap-2 text-sm leading-relaxed"><Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />{hint}</div> : <button type="button" onClick={() => void revealHint(index)} className="flex w-full items-center gap-2 text-left text-sm font-bold text-muted-foreground"><Lightbulb className="h-4 w-4 text-primary" /> Pista {index + 1}<span className="ml-auto text-xs text-primary">Revelar</span></button>}</div>; })}</div> : <div className="mt-4 grid gap-2">{currentQuestion.options.map((option, index) => { const chosen = selected === option; const right = roundClosed && normalize(option) === normalize(currentQuestion.answer); const wrong = roundClosed && chosen && !right; return <button type="button" key={option} onClick={() => void submitAnswer(option)} disabled={answered || roundClosed} className={"flex items-center gap-3 rounded-2xl border p-4 text-left text-sm font-extrabold transition " + (right ? "border-success bg-success/10 text-success" : wrong ? "border-red-400/50 bg-red-400/10 text-red-300" : chosen ? "border-primary bg-primary/10 text-primary" : "border-border bg-background/50 hover:border-primary/50")}><span className="flex h-8 w-8 items-center justify-center rounded-xl bg-background/70 text-xs font-black text-muted-foreground">{String.fromCharCode(65 + index)}</span><span className="flex-1">{option}</span>{right && <Check className="h-5 w-5" />}{wrong && <X className="h-5 w-5" />}</button>; })}</div>}
-          {currentQuestion.isCharacter && <div className="mt-4 flex gap-2"><input value={selected} onChange={(event) => setSelected(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") void submitAnswer(selected); }} disabled={answered || roundClosed} placeholder="Digite sua resposta" className="min-w-0 flex-1 rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none focus:border-primary" /><button type="button" onClick={() => void submitAnswer(selected)} disabled={!selected.trim() || answered || roundClosed} className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground disabled:opacity-40"><Check className="h-5 w-5" /></button></div>}
+          {currentQuestion.isCharacter && <div className="game-shared-answer-row mt-4 flex gap-2"><input value={selected} onChange={(event) => setSelected(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") void submitAnswer(selected); }} onFocus={(event) => { const input = event.currentTarget; window.setTimeout(() => input.scrollIntoView({ behavior: "smooth", block: "center" }), 120); }} enterKeyHint="done" autoComplete="off" disabled={answered || roundClosed} placeholder="Digite sua resposta" className="min-w-0 flex-1 rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none focus:border-primary" /><button type="button" onClick={() => void submitAnswer(selected)} disabled={!selected.trim() || answered || roundClosed} className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground disabled:opacity-40"><Check className="h-5 w-5" /></button></div>}
         </section>
         {roundClosed && <section className={"game-answer-feedback mt-4 rounded-3xl border p-5 " + (remoteRound.winner_id === userId ? "border-success/40 bg-success/10" : "border-ancient/35 bg-ancient/10")}><div className="flex items-start gap-3"><span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-background/60 text-ancient">{remoteRound.winner_id === userId ? <Trophy className="h-5 w-5" /> : <Crown className="h-5 w-5" />}</span><div><p className="font-extrabold">{remoteRound.status === "all_wrong" ? "Ninguém acertou desta vez." : winningName + " respondeu primeiro!"}</p><p className="mt-1 text-xs leading-relaxed text-muted-foreground">{currentQuestion.explanation}</p><p className="mt-3 text-[11px] font-bold text-primary">{currentQuestion.reference}</p></div></div><button type="button" onClick={() => void advance()} className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-extrabold text-primary-foreground">{roundNumber >= rounds ? "Ver resultado" : "Próxima rodada"}<ArrowRight className="h-4 w-4" /></button></section>}
         {showWaiting && <p className="mt-4 rounded-2xl border border-ancient/25 bg-ancient/10 p-4 text-center text-xs font-bold text-muted-foreground">Resposta enviada. Aguarde os outros jogadores.</p>}
