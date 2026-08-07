@@ -561,7 +561,7 @@ function BibliaIndex() {
                 </div>
 
                 <Link
-                  to="/estudos/"
+                  to="/biblia/teologia"
                   aria-label="Abrir Teologia Sistemática"
                   className="bible-testament-group bible-testament-toggle bible-theology-button mt-0 flex w-full items-center gap-3 text-left"
                 >
