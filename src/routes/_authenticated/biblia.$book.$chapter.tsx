@@ -573,14 +573,14 @@ function ChapterReader() {
                       ? "Pausar narração"
                       : "Iniciar narração"
                 }
-                className="bible-chapter-nav-button bible-chapter-nav-play flex shrink-0 items-center justify-center rounded-full text-white transition-all active:scale-90 disabled:cursor-wait disabled:opacity-60"
+                className="bible-chapter-nav-button bible-chapter-nav-play flex shrink-0 items-center justify-center rounded-full text-white transition-all active:scale-[0.96] disabled:cursor-wait disabled:opacity-60"
               >
                 {narrationLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-5 w-5 animate-spin" strokeWidth={2.2} />
                 ) : narrationStarted && !narrationPaused && narrationIndex !== null ? (
-                  <Pause className="h-4 w-4" />
+                  <Pause className="h-5 w-5" strokeWidth={2.2} />
                 ) : (
-                  <Play className="ml-0.5 h-4 w-4 fill-current" strokeWidth={1.8} />
+                  <Play className="ml-0.5 h-5 w-5 fill-current" strokeWidth={2.2} />
                 )}
               </button>
 
