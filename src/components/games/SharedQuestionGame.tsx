@@ -2,10 +2,11 @@ import { ArrowLeft, ArrowRight, Check, Clock3, Crown, Flame, Lightbulb, RotateCc
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BIBLICAL_CHARACTER_ROUNDS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
 import { VERSE_DIFFICULTY, versesForDifficulty } from "@/data/biblical-verses";
-import { MILLION_DIFFICULTY, randomMillionQuestions, randomMillionQuestionsWithSeed, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
+import { MILLION_DIFFICULTY, MILLION_QUESTIONS, randomMillionQuestions, randomMillionQuestionsWithSeed, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { recordSharedGameResult } from "@/lib/game-leaderboard";
 import { shuffleWithSeed } from "@/lib/seeded-random";
+import { canonicalGameContentKey, uniqueGameContent } from "@/lib/game-content";
 import { supabase } from "@/integrations/supabase/client";
 
 type SharedGameType = "personagem" | "versiculo" | "milhao";
@@ -81,10 +82,11 @@ function firstCharacterHint(value: string) {
 
 function buildQuestions(gameType: SharedGameType, difficulty: GameDifficulty, seed: number) {
   if (gameType === "personagem") {
-    const characters = BIBLICAL_CHARACTER_ROUNDS.filter((item) => item.difficulty === difficulty);
-    const source = characters.length > 0 ? characters : BIBLICAL_CHARACTER_ROUNDS;
+    const preferred = BIBLICAL_CHARACTER_ROUNDS.filter((item) => item.difficulty === difficulty);
+    const fallback = BIBLICAL_CHARACTER_ROUNDS.filter((item) => item.difficulty !== difficulty);
+    const source = uniqueGameContent([...preferred, ...fallback], (item) => item.id);
     const shuffled = seed ? shuffleWithSeed(source, seed) : [...source];
-    return shuffled.map((item: BiblicalCharacter): SharedQuestion => {
+    return uniqueGameContent(shuffled, (item) => item.id).map((item: BiblicalCharacter): SharedQuestion => {
       const order = difficulty === "bereano" ? [2, 3, 1, 0] : difficulty === "dificil" ? [1, 2, 3, 0] : [0, 1, 2, 3];
       const hints = order.map((index) => item.hints[index]);
       return {
@@ -103,9 +105,11 @@ function buildQuestions(gameType: SharedGameType, difficulty: GameDifficulty, se
   }
 
   if (gameType === "versiculo") {
-    const verses = versesForDifficulty(difficulty);
-    const shuffled = seed ? shuffleWithSeed(verses, seed) : [...verses];
-    return shuffled.map((item): SharedQuestion => ({
+    const preferred = versesForDifficulty(difficulty);
+    const fallback = BIBLICAL_VERSES.filter((item) => item.difficulty !== difficulty);
+    const source = uniqueGameContent([...preferred, ...fallback], (item) => item.reference);
+    const shuffled = seed ? shuffleWithSeed(source, seed) : [...source];
+    return uniqueGameContent(shuffled, (item) => item.reference).map((item): SharedQuestion => ({
       id: item.id,
       prompt: item.text,
       answer: item.reference,
@@ -119,9 +123,12 @@ function buildQuestions(gameType: SharedGameType, difficulty: GameDifficulty, se
   }
 
   const millionDifficulty = difficulty as MillionDifficulty;
-  const questions: MillionQuestion[] = seed
+  const preferred = seed
     ? randomMillionQuestionsWithSeed(millionDifficulty, 999, seed)
     : randomMillionQuestions(millionDifficulty, 999);
+  const fallback = MILLION_QUESTIONS.filter((item) => item.difficulty !== millionDifficulty);
+  const source = uniqueGameContent([...preferred, ...fallback], (item) => item.id);
+  const questions = uniqueGameContent(source, (item) => canonicalGameContentKey(item.id));
   return questions.map((item): SharedQuestion => ({
     id: item.id,
     prompt: item.prompt,
@@ -134,7 +141,6 @@ function buildQuestions(gameType: SharedGameType, difficulty: GameDifficulty, se
     isCharacter: false,
   }));
 }
-
 function timeLimitFor(gameType: SharedGameType, difficulty: GameDifficulty) {
   if (gameType === "versiculo") return VERSE_DIFFICULTY[difficulty].timeLimit;
   if (gameType === "milhao") return MILLION_DIFFICULTY[difficulty].timeLimit;
@@ -178,7 +184,7 @@ export function SharedQuestionGame({
   const finishSoundPlayed = useRef(false);
   const preparedRoundRef = useRef<string | null>(null);
   const questions = useMemo(() => buildQuestions(gameType, difficulty, seed), [difficulty, gameType, seed]);
-  const question = questions[(roundNumber - 1) % Math.max(1, questions.length)];
+  const question = questions[Math.min(roundNumber - 1, Math.max(0, questions.length - 1))];
   const timeLimit = timeLimitFor(gameType, difficulty);
 
   useEffect(() => {
