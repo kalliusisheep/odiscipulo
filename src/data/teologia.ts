@@ -19,7 +19,7 @@ const chapter = (
   references: string[],
 ): TheologyChapter => ({ id, title, content, references });
 
-export const theologyModules: TheologyModule[] = [
+const theologyModulesData: TheologyModule[] = [
   {
     id: "prolegomenos",
     title: "Prolegômenos",
@@ -765,3 +765,39 @@ export const theologyModules: TheologyModule[] = [
     ],
   },
 ];
+
+
+const theologyModuleExpansions: Record<string, string> = {
+  prolegomenos:
+    "Este módulo fornece o ponto de partida para ler toda a teologia com responsabilidade. Ele mostra como a revelação bíblica, a interpretação cuidadosa, a tradição cristã e a razão podem cooperar sem competir com a autoridade das Escrituras. O objetivo não é apenas organizar informações, mas formar um leitor capaz de reconhecer afirmações diretas do texto, inferências legítimas e opiniões que permanecem debatidas.",
+  bibliologia:
+    "A doutrina das Escrituras sustenta todos os demais módulos: antes de perguntar o que a Igreja crê sobre Deus, pecado ou salvação, precisamos saber como ouvimos a voz de Deus com fidelidade. Este estudo distingue revelação, inspiração, canonização, transmissão e interpretação, evitando tanto o ceticismo que esvazia a Bíblia quanto uma visão simplista que ignora gêneros literários, história e variantes textuais. A finalidade da Escritura é conduzir a Cristo e equipar o povo de Deus para uma vida obediente.",
+  teontologia:
+    "Aqui, os atributos e as obras de Deus são lidos juntos. A soberania não pode ser separada da bondade, a santidade não pode ser separada da misericórdia e a transcendência não pode ser usada para negar a presença de Deus na história. A doutrina da Trindade protege o testemunho bíblico de que o Pai, o Filho e o Espírito são um só Deus e, ao mesmo tempo, pessoas distintas. Toda afirmação sobre Deus deve terminar em adoração, confiança e imitação santa.",
+  angelologia:
+    "A Bíblia trata os anjos com reverência e sobriedade: eles são criaturas que servem ao Deus Criador e participam de sua missão, mas nunca ocupam o centro da fé. O estudo correto evita invocação, curiosidade especulativa e atribuição de autoridade espiritual a experiências particulares. Quando aparecem na narrativa bíblica, os anjos confirmam a ação de Deus e direcionam a atenção para sua Palavra e para o senhorio de Cristo.",
+  demonologia:
+    "O ensino bíblico sobre o mal espiritual deve produzir vigilância sem pânico e discernimento sem superstição. Satanás e os demônios são reais, mas não são rivais equivalentes de Deus; sua atividade é limitada e seu destino foi decidido pela vitória de Cristo. A batalha espiritual inclui resistência à mentira, ao pecado e à injustiça, além de oração, verdade, cuidado pastoral e responsabilidade diante de situações que também podem ter causas físicas, psicológicas ou sociais.",
+  antropologia:
+    "A visão bíblica do ser humano começa na criação à imagem de Deus e encontra sua restauração em Cristo. Ela preserva simultaneamente dignidade e fragilidade, corpo e interioridade, liberdade responsável e dependência do Criador. Por isso, este módulo rejeita tanto o materialismo que reduz a pessoa ao funcionamento biológico quanto o espiritualismo que despreza o corpo. A antropologia cristã sempre conduz ao cuidado com o próximo, à justiça e à esperança da ressurreição.",
+  hamartiologia:
+    "Estudar o pecado é compreender por que a criação boa está quebrada e por que a graça de Cristo é necessária. Pecado não é somente uma lista de atos; envolve uma orientação do coração contra Deus, relações deformadas, estruturas injustas e a incapacidade humana de produzir reconciliação por suas próprias forças. A doutrina deve denunciar o mal sem desumanizar o pecador, porque o mesmo Evangelho que revela a culpa anuncia perdão, arrependimento e restauração.",
+  cristologia:
+    "Cristo é o centro integrador de toda a teologia. Sua preexistência, divindade, humanidade real, união hipostática, ministérios e obra salvadora não podem ser separados: o mesmo Jesus que revela perfeitamente o Pai entra na condição humana, vive em obediência, morre pelos pecadores, ressuscita corporalmente e reina. As diferentes imagens da expiação devem ser recebidas em conjunto, sem reduzir a cruz a uma única metáfora ou transformar a salvação em teoria abstrata.",
+  pneumatologia:
+    "O Espírito Santo não é uma força impessoal nem um recurso para experiências isoladas; ele é Deus presente, pessoal e atuante na criação, na aliança, na missão de Cristo e na vida da Igreja. Sua obra conduz à exaltação de Jesus, produz santidade, distribui dons para o serviço e forma um povo unido. As diferenças entre cristãos sobre dons e sua continuidade devem ser tratadas com humildade, submissão bíblica e fruto visível, nunca como medida de superioridade espiritual.",
+  soteriologia:
+    "A salvação é a obra graciosa de Deus que alcança a pessoa inteira: chamado, arrependimento, fé, regeneração, justificação, adoção, santificação, perseverança e glorificação. Esses aspectos não são degraus para o mérito humano, mas dimensões da graça recebida em Cristo. Há leituras cristãs diferentes sobre presciência, eleição e perseverança; este módulo apresenta a posição adotada com honestidade, reconhece os textos relevantes e mantém a urgência do chamado universal do Evangelho.",
+  eclesiologia:
+    "A doutrina da Igreja transforma salvação individual em vida compartilhada. A comunidade cristã recebe a Palavra, celebra as ordenanças, exerce cuidado, reconhece liderança, pratica disciplina, serve os vulneráveis e anuncia o Reino. A Igreja universal e a assembleia local precisam permanecer juntas: uma amplia a visão do corpo de Cristo, a outra torna o amor, a doutrina e a missão concretos. Toda estrutura de governo deve ser julgada pelo caráter de Cristo, pelo serviço e pela prestação de contas.",
+  escatologia:
+    "A escatologia bíblica vive entre o já e o ainda não: o Reino começou na morte, ressurreição e exaltação de Cristo, mas aguarda sua consumação. As diferentes leituras sobre o milênio merecem tratamento justo, porém nenhuma deve apagar as certezas comuns: Jesus voltará, os mortos ressuscitarão, Deus julgará com justiça, o mal será vencido e a criação será renovada. A esperança futura não serve para marcar datas, mas para sustentar santidade, perseverança, consolo e missão.",
+};
+
+export const theologyModules: TheologyModule[] = theologyModulesData.map((module) => ({
+  ...module,
+  chapters: module.chapters.map((chapter) => ({
+    ...chapter,
+    content: chapter.content + "\n\n" + theologyModuleExpansions[module.id],
+  })),
+}));
