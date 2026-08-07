@@ -39,7 +39,7 @@ export function VerseActionSheet(props: Props) {
     <Sheet open={props.open} onOpenChange={props.onOpenChange}>
       <SheetContent
         side="bottom"
-        className="bible-verse-actions-sheet rounded-t-[2rem] border-primary/15 bg-background p-0 pb-[env(safe-area-inset-bottom)]"
+        className="bible-verse-actions-sheet max-h-[90vh] overflow-y-auto overscroll-contain rounded-t-[2rem] border-primary/15 bg-background p-0 pb-[env(safe-area-inset-bottom)]"
       >
         <div className="mx-auto mt-3 h-1.5 w-10 rounded-full bg-muted-foreground/30" />
         <div className="bible-sheet-header px-5 pt-4">
@@ -55,21 +55,29 @@ export function VerseActionSheet(props: Props) {
           </p>
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center gap-1.5 px-5">
-          {HIGHLIGHT_COLORS.map((c) => (
-            <button
-              key={c.id}
-              type="button"
-              aria-label={`Destacar em ${c.label}`}
-              onClick={() => props.onHighlight(c.id)}
-              className={`h-8 w-8 shrink-0 rounded-full border-2 transition-transform active:scale-90 ${c.className} ${
-                normalizeHighlightColor(props.currentColor) === c.id ? "border-primary" : "border-transparent"
-              }`}
-            />
-          ))}
-          <span className="ml-1 flex items-center gap-1 text-[11px] text-muted-foreground">
-            <Highlighter className="h-3.5 w-3.5" /> Destacar
-          </span>
+        <div className="bible-highlight-palette mt-4 px-5" aria-label="Cores do marcador">
+          <div className="mb-2 flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-muted-foreground">
+            <Highlighter className="h-3.5 w-3.5 text-primary" />
+            <span>Escolha uma cor para marcar</span>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {HIGHLIGHT_COLORS.map((c) => (
+              <button
+                key={c.id}
+                type="button"
+                aria-label={`Destacar em ${c.label}`}
+                aria-pressed={normalizeHighlightColor(props.currentColor) === c.id}
+                data-highlight-color={c.id}
+                onClick={() => props.onHighlight(c.id)}
+                className={`bible-highlight-swatch h-9 w-9 shrink-0 rounded-full border-2 transition-transform active:scale-90 ${c.className} ${
+                  normalizeHighlightColor(props.currentColor) === c.id ? "border-primary ring-2 ring-primary/25 ring-offset-2 ring-offset-background" : "border-foreground/15"
+                }`}
+              />
+            ))}
+            <span className="ml-1 text-[11px] text-muted-foreground">
+              Toque para aplicar
+            </span>
+          </div>
         </div>
 
         <div className="bible-action-grid mt-4 grid grid-cols-2 gap-2 px-5 pb-6">
