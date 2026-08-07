@@ -408,30 +408,32 @@ function BibliaIndex() {
                       key={t}
                       onClick={() => setTestament(t)}
                       aria-pressed={active}
-                      className={`bible-testament-option group relative overflow-hidden rounded-2xl border px-3 py-2.5 text-left transition-all ${
+                      className={`bible-testament-option group relative overflow-hidden rounded-2xl border px-3 py-3 text-left transition-all ${
                         active
                           ? "border-primary/45 bg-primary/10 shadow-sm shadow-primary/15"
-                          : "border-white/10 bg-surface/50 hover:border-primary/20 hover:bg-surface/80"
+                          : "border-border/40 bg-surface/50 hover:border-primary/20 hover:bg-surface/80"
                       }`}
                     >
                       <span className="flex items-center justify-between gap-2">
-                        <span className={`text-[10px] font-black uppercase tracking-[0.08em] ${
-                          active ? "text-primary" : "text-muted-foreground"
+                        <span className={`text-[12px] font-black uppercase tracking-[0.04em] ${
+                          active ? "text-primary" : "text-foreground/80"
                         }`}>
                           {t === "AT" ? "Antigo Testamento" : "Novo Testamento"}
                         </span>
-                        <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-bold ${
-                          active ? "bg-primary/15 text-primary" : "bg-background/60 text-muted-foreground/70"
+                        <span className={`rounded-full px-2 py-1 text-[10px] font-extrabold ${
+                          active ? "bg-primary/15 text-primary" : "bg-background/60 text-muted-foreground"
                         }`}>
                           {t === "AT" ? "39" : "27"}
                         </span>
+                      </span>
+                      <span className="mt-1 block text-[10px] font-semibold text-muted-foreground">
+                        {active ? "Livros selecionados" : "Explorar livros"}
                       </span>
                       {active && <span className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-primary" />}
                     </button>
                   );
                 })}
               </div>
-
               <div className="mt-3 grid grid-cols-2 gap-2.5">
                 {books.map((b) => {
                   const done = readByBook[b.id] ?? 0;
