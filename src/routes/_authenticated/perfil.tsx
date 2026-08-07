@@ -34,7 +34,6 @@ import {
   Sparkles,
   NotebookPen,
   ArrowUpRight,
-  Crown,
   Settings2,
   ShieldCheck,
   Trophy,
