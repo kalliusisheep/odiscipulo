@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedBemVindoRouteImport } from './routes/_authenticated/bem-vindo'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedJogosRouteImport } from './routes/_authenticated/jogos'
+import { Route as AuthenticatedJogosRankingRouteImport } from './routes/_authenticated/jogos.ranking'
 import { Route as AuthenticatedLiderRouteImport } from './routes/_authenticated/lider'
 import { Route as AuthenticatedMuralRouteImport } from './routes/_authenticated/mural'
 import { Route as AuthenticatedNiveisRouteImport } from './routes/_authenticated/niveis'
@@ -79,6 +80,12 @@ const AuthenticatedJogosRoute = AuthenticatedJogosRouteImport.update({
   path: '/jogos',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedJogosRankingRoute =
+  AuthenticatedJogosRankingRouteImport.update({
+    id: '/ranking',
+    path: '/ranking',
+    getParentRoute: () => AuthenticatedJogosRoute,
+  } as any)
 const AuthenticatedLiderRoute = AuthenticatedLiderRouteImport.update({
   id: '/lider',
   path: '/lider',
@@ -363,7 +370,7 @@ export interface FileRoutesById {
   '/_authenticated/bem-vindo': typeof AuthenticatedBemVindoRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/jogos': typeof AuthenticatedJogosRouteWithChildren
-  '/_authenticated/lider': typeof AuthenticatedLiderRoute
+  '/_authenticated/jogos/ranking': typeof AuthenticatedJogosRankingRoute  '/_authenticated/lider': typeof AuthenticatedLiderRoute
   '/_authenticated/mural': typeof AuthenticatedMuralRoute
   '/_authenticated/niveis': typeof AuthenticatedNiveisRoute
   '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
@@ -406,7 +413,7 @@ export interface FileRouteTypes {
     | '/bem-vindo'
     | '/home'
     | '/jogos'
-    | '/lider'
+    | '/jogos/ranking'    | '/lider'
     | '/mural'
     | '/niveis'
     | '/perfil'
@@ -489,7 +496,7 @@ export interface FileRouteTypes {
     | '/_authenticated/bem-vindo'
     | '/_authenticated/home'
     | '/_authenticated/jogos'
-    | '/_authenticated/lider'
+    | '/_authenticated/jogos/ranking'    | '/_authenticated/lider'
     | '/_authenticated/mural'
     | '/_authenticated/niveis'
     | '/_authenticated/perfil'
@@ -575,6 +582,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/jogos'
       preLoaderRoute: typeof AuthenticatedJogosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/jogos/ranking': {
+      id: '/_authenticated/jogos/ranking'
+      path: '/ranking'
+      fullPath: '/jogos/ranking'
+      preLoaderRoute: typeof AuthenticatedJogosRankingRouteImport
+      parentRoute: typeof AuthenticatedJogosRoute
     }
     '/_authenticated/lider': {
       id: '/_authenticated/lider'
@@ -818,6 +832,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedJogosRouteChildren {
+  AuthenticatedJogosRankingRoute: typeof AuthenticatedJogosRankingRoute
   AuthenticatedJogosCruzadasRoute: typeof AuthenticatedJogosCruzadasRoute
   AuthenticatedJogosMilhaoRoute: typeof AuthenticatedJogosMilhaoRoute
   AuthenticatedJogosMultiplayerRoute: typeof AuthenticatedJogosMultiplayerRoute
@@ -826,6 +841,7 @@ interface AuthenticatedJogosRouteChildren {
 }
 
 const AuthenticatedJogosRouteChildren: AuthenticatedJogosRouteChildren = {
+  AuthenticatedJogosRankingRoute: AuthenticatedJogosRankingRoute,
   AuthenticatedJogosCruzadasRoute: AuthenticatedJogosCruzadasRoute,
   AuthenticatedJogosMilhaoRoute: AuthenticatedJogosMilhaoRoute,
   AuthenticatedJogosMultiplayerRoute: AuthenticatedJogosMultiplayerRoute,
@@ -840,7 +856,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedBemVindoRoute: typeof AuthenticatedBemVindoRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedJogosRoute: typeof AuthenticatedJogosRouteWithChildren
-  AuthenticatedLiderRoute: typeof AuthenticatedLiderRoute
+  '/jogos/ranking': typeof AuthenticatedJogosRankingRoute  AuthenticatedLiderRoute: typeof AuthenticatedLiderRoute
   AuthenticatedMuralRoute: typeof AuthenticatedMuralRoute
   AuthenticatedNiveisRoute: typeof AuthenticatedNiveisRoute
   AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRoute
