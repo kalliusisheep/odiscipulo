@@ -2634,3 +2634,68 @@ body,
 .theme-black :where([class*="shadow-purple-"], [class*="shadow-violet-"], [class*="shadow-indigo-"], [class*="shadow-fuchsia-"]) {
   --tw-shadow-color: color-mix(in oklab, var(--primary) 24%, transparent) !important;
 }
+
+
+.game-play-page .game-answer-feedback {
+  position: relative;
+  isolation: isolate;
+}
+
+@media (max-width: 640px) {
+  .game-play-page .game-answer-feedback {
+    position: fixed !important;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: calc(4.5rem + env(safe-area-inset-bottom));
+    z-index: 60;
+    width: auto;
+    max-height: min(42dvh, 19rem);
+    margin-top: 0 !important;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0.9rem !important;
+    border-radius: 1.45rem !important;
+    border-color: color-mix(in srgb, var(--foreground) 12%, var(--border)) !important;
+    background:
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--surface) 94%, var(--primary) 6%),
+        color-mix(in srgb, var(--background) 96%, black 4%)
+      ) !important;
+    box-shadow:
+      0 20px 55px rgb(0 0 0 / 0.46),
+      0 0 0 1px rgb(255 255 255 / 0.04),
+      inset 0 1px 0 rgb(255 255 255 / 0.08);
+    backdrop-filter: blur(22px) saturate(1.12);
+    -webkit-backdrop-filter: blur(22px) saturate(1.12);
+    scrollbar-width: thin;
+    animation: game-answer-feedback-enter 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .game-play-page .game-answer-feedback > div:first-child {
+    align-items: center;
+  }
+
+  .game-play-page .game-answer-feedback > div:last-child {
+    gap: 0.5rem;
+  }
+
+  .game-play-page .game-answer-feedback > div:last-child > a,
+  .game-play-page .game-answer-feedback > div:last-child > button {
+    min-height: 2.9rem;
+    padding: 0.7rem 0.65rem;
+    border-radius: 1rem;
+  }
+}
+
+@keyframes game-answer-feedback-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
