@@ -56,12 +56,6 @@ const gameLabels: Record<SharedGameType, string> = {
   milhao: "Quiz do Milhão",
 };
 
-const gameKeys: Record<SharedGameType, GameKey> = {
-  personagem: "personagem",
-  versiculo: "versiculo",
-  milhao: "milhao",
-};
-
 const gameDb = supabase as any;
 
 function normalize(value: string) {
