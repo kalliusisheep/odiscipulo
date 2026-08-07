@@ -150,7 +150,7 @@ function BibliaIndex() {
 
   return (
     <div className="bible-index-shell pb-28">
-      <div className="bible-index-header sticky top-0 z-30 border-b border-white/[0.06] bg-background/90 shadow-lg shadow-black/5 backdrop-blur-2xl">
+      <div className="bible-index-header sticky top-0 z-30 border-b border-primary/10 bg-gradient-to-b from-primary/[0.08] via-background/95 to-background/90 shadow-xl shadow-black/10 backdrop-blur-2xl">
         <div className="bible-index-header-inner mx-auto max-w-lg px-4 pb-3 pt-3">
           <div className="grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-3">
             <button
@@ -234,6 +234,21 @@ function BibliaIndex() {
                 </span>
               </label>
             </div>
+          </div>
+
+          <div className="mt-3 flex items-center justify-between gap-3 rounded-2xl border border-primary/15 bg-gradient-to-r from-primary/10 via-surface/70 to-ancient/5 px-3.5 py-2.5 shadow-sm">
+            <div className="flex min-w-0 items-center gap-2.5">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                <Sparkles className="h-4 w-4" />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">Leitura guiada</span>
+                <span className="mt-0.5 block truncate text-[11px] text-muted-foreground">Leia, compare e aprofunde cada passagem</span>
+              </span>
+            </div>
+            <span className="shrink-0 rounded-full border border-ancient/20 bg-ancient/10 px-2 py-1 text-[9px] font-extrabold text-ancient">
+              {translationByCode(translation).label}
+            </span>
           </div>
 
           {bookMatches.length > 0 && !hits && (
@@ -510,7 +525,7 @@ function BibliaIndex() {
           onClick={() => setPickerOpen(false)}
         >
           <div
-            className="bible-picker-sheet max-h-[82vh] w-full overflow-y-auto rounded-t-[2rem] border-t border-white/10 bg-background pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl animate-slide-up"
+            className="bible-picker-sheet max-h-[calc(100dvh-1rem)] w-full overflow-y-auto rounded-t-[2rem] border-t border-white/10 bg-background pb-[calc(1.5rem+env(safe-area-inset-bottom))] shadow-2xl animate-slide-up"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="sticky top-0 z-10 border-b border-white/[0.06] bg-background/95 px-5 pb-4 pt-3 backdrop-blur-xl">
@@ -528,7 +543,7 @@ function BibliaIndex() {
                 <button
                   aria-label="Fechar"
                   onClick={() => setPickerOpen(false)}
-                  className="bible-close-button flex h-10 w-10 items-center justify-center rounded-full bg-surface text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground"
+                  className="bible-close-button flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground"
                 >
                   <X className="h-4 w-4" />
                 </button>
