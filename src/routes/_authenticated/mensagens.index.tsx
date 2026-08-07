@@ -5,7 +5,7 @@ import { ArrowLeft, MessageCircle, Plus, Search, Flame } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { listMyChallenges, getChallengeProgressPct, checkFinishChallenges } from "@/lib/challenges";
-import { formatPresence } from "@/lib/presence";
+import { formatPresence, isPresenceOnline } from "@/lib/presence";
 
 export const Route = createFileRoute("/_authenticated/mensagens/")({
   component: MensagensListPage,
@@ -224,11 +224,11 @@ function MensagensListPage() {
                     </div>
                     <span
                       className={`absolute -bottom-1 -right-1 z-10 h-4 w-4 rounded-full border-2 border-background ${
-                        formatPresence(c.peer.last_seen_at) === "Online agora"
+                        isPresenceOnline(c.peer.last_seen_at)
                           ? "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.85)]"
                           : "bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.7)]"
                       }`}
-                      aria-label={formatPresence(c.peer.last_seen_at) === "Online agora" ? "Online" : "Offline"}
+                      aria-label={isPresenceOnline(c.peer.last_seen_at) ? "Online" : "Offline"}
                     />
                   </Link>
 
@@ -242,7 +242,7 @@ function MensagensListPage() {
                       <div className="min-w-0">
                         <p className="truncate text-sm font-semibold">{c.peer.display_name}</p>
                         <p className={`truncate text-[10px] ${
-                          formatPresence(c.peer.last_seen_at) === "Online agora"
+                          isPresenceOnline(c.peer.last_seen_at)
                             ? "font-semibold text-emerald-400"
                             : "text-muted-foreground"
                         }`}>
