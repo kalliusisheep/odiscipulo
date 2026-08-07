@@ -2492,3 +2492,30 @@ body,
     border-radius: 0.62rem !important;
   }
 }
+
+
+.bible-reader-shell .bible-chapter-nav-panel {
+  position: relative;
+}
+
+.bible-reader-shell .bible-chapter-nav-current {
+  position: absolute !important;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: min(10rem, calc(100% - 8.5rem)) !important;
+  height: calc(100% - 0.5rem);
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
+.bible-reader-shell .bible-chapter-nav-pill-button {
+  position: relative;
+  z-index: 3;
+}
+
+@media (max-width: 380px) {
+  .bible-reader-shell .bible-chapter-nav-current {
+    width: min(9rem, calc(100% - 7.5rem)) !important;
+  }
+}
