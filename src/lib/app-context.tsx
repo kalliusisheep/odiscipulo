@@ -34,10 +34,10 @@ function isLanguage(value: string | null): value is AppLanguage {
 function normalizeTheme(value: string | null): AppTheme {
   if (value === "light") return "white";
   if (value === "dark") return "black";
-  if (value === "white" || value === "gray" || value === "blue" || value === "black" || value === "pink") {
+  if (value === "default" || value === "white" || value === "gray" || value === "blue" || value === "black" || value === "pink") {
     return value;
   }
-  return "black";
+  return "default";
 }
 
 function applyTheme(theme: AppTheme, language: AppLanguage) {
@@ -45,10 +45,10 @@ function applyTheme(theme: AppTheme, language: AppLanguage) {
   const root = document.documentElement;
   root.dataset.theme = theme;
   root.lang = language;
-  root.classList.remove("light", "dark", "theme-white", "theme-gray", "theme-blue", "theme-black", "theme-pink");
+  root.classList.remove("light", "dark", "theme-default", "theme-white", "theme-gray", "theme-blue", "theme-black", "theme-pink");
   root.classList.add(`theme-${theme}`);
-  root.classList.add(theme === "black" || theme === "blue" || theme === "pink" ? "dark" : "light");
-  root.style.colorScheme = theme === "black" || theme === "blue" || theme === "pink" ? "dark" : "light";
+  root.classList.add(theme === "default" || theme === "black" || theme === "blue" || theme === "pink" ? "dark" : "light");
+  root.style.colorScheme = theme === "default" || theme === "black" || theme === "blue" || theme === "pink" ? "dark" : "light";
   const pageCopy = {
     "pt-BR": { title: "Disciple — Discipulado cristão gamificado", description: "Trilhas de estudo, quizzes e um Mentor IA para crescer na fé um dia por vez." },
     en: { title: "Disciple — Gamified Christian discipleship", description: "Study paths, quizzes, and an AI Mentor to grow in faith one day at a time." },
