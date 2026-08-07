@@ -24,7 +24,6 @@ import {
   type DailyVerseComment,
 } from "@/lib/daily-verse-social";
 import { generateShareImage } from "@/lib/share-image";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { EmojiPicker } from "@/components/EmojiPicker";
 import { GifPicker } from "@/components/GifPicker";
 import {
@@ -299,7 +298,6 @@ function VerseOfDayPage() {
           <ArrowLeft className="h-4 w-4" />
         </Link>
         <h1 className="text-lg font-semibold">Versículo do dia</h1>
-        <ThemeToggle />
       </header>
 
       {!verse ? (
