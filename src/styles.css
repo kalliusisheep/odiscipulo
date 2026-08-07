@@ -2129,3 +2129,53 @@ body,
   background: transparent;
   color: var(--foreground);
 }
+
+
+/* Keep verse highlight controls visible inside the mobile action sheet. */
+.bible-verse-actions-sheet {
+  max-height: min(90vh, 42rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bible-highlight-palette {
+  position: relative;
+  z-index: 1;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.bible-highlight-swatch {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 18%, transparent),
+    0 4px 12px color-mix(in srgb, black 24%, transparent);
+}
+
+.bible-highlight-swatch[data-highlight-color="white"] {
+  background: #f6f7fb !important;
+}
+
+.bible-highlight-swatch[data-highlight-color="yellow"] {
+  background: #f2c94c !important;
+}
+
+.bible-highlight-swatch[data-highlight-color="blue"] {
+  background: #42a5d9 !important;
+}
+
+.bible-highlight-swatch[data-highlight-color="green"] {
+  background: #39b982 !important;
+}
+
+.bible-highlight-swatch[data-highlight-color="pink"] {
+  background: #e878a9 !important;
+}
+
+.bible-highlight-swatch[data-highlight-color="gray"] {
+  background: #8993a6 !important;
+}
