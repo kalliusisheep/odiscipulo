@@ -3622,3 +3622,42 @@ body,
     transition: none;
   }
 }
+
+
+/* Match the systematic theology entry to the testament modules */
+.bible-testament-group.bible-theology-button {
+  height: 4.25rem;
+  min-height: 4.25rem;
+  margin-top: 1.25rem;
+  padding: 0.7rem 0.85rem;
+  border-color: color-mix(in oklab, var(--border) 62%, transparent);
+  border-radius: 1.05rem;
+  background:
+    linear-gradient(
+      120deg,
+      color-mix(in oklab, var(--surface) 82%, transparent),
+      color-mix(in oklab, var(--background) 38%, transparent)
+    );
+  box-shadow: none;
+}
+
+.bible-testament-group.bible-theology-button:hover {
+  border-color: color-mix(in oklab, var(--primary) 32%, var(--border));
+  background:
+    linear-gradient(
+      120deg,
+      color-mix(in oklab, var(--surface) 88%, transparent),
+      color-mix(in oklab, var(--background) 32%, transparent)
+    );
+  box-shadow: inset 0 1px 0 color-mix(in oklab, var(--foreground) 5%, transparent);
+}
+
+.bible-testament-group.bible-theology-button:active {
+  transform: scale(0.99);
+}
+
+.bible-testament-toggle > .bible-theology-icon {
+  color: var(--muted-foreground);
+  border-color: color-mix(in oklab, var(--border) 72%, transparent);
+  background: color-mix(in oklab, var(--foreground) 4%, transparent);
+}
