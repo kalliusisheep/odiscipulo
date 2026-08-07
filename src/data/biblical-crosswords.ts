@@ -89,6 +89,9 @@ const CROSSWORD_NON_WORD_FACT_ANSWERS = new Set([
   "FE",
   "TRES",
   "TREZENTOS",
+  // Respostas compostas/genericamente descritivas não são uma única entrada.
+  "UMSAMARITANO",
+  "PRISCILAEAQUILA",
 ]);
 
 const normalizeCrosswordWord = (value: string) =>
@@ -146,7 +149,7 @@ export type CrosswordVariation = {
   difficulty: GameDifficulty;
 };
 
-export const CROSSWORD_VARIATIONS: CrosswordVariation[] = Array.from({ length: 512 }, (_, index) => {
+export const CROSSWORD_VARIATIONS: CrosswordVariation[] = Array.from({ length: 1024 }, (_, index) => {
   const difficulty = (["facil", "medio", "dificil", "bereano"] as GameDifficulty[])[index % 4];
   return {
     id: "crossword-variation-" + String(index + 1).padStart(3, "0"),
