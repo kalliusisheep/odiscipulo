@@ -2029,3 +2029,37 @@ body,
   color: var(--primary-foreground) !important;
   border-color: color-mix(in oklab, var(--primary) 58%, transparent) !important;
 }
+
+
+/* Bible highlights: visible on every theme and applied to the verse row itself. */
+.bible-reading-column .bible-verse-row.bible-highlight {
+  border-color: color-mix(in oklab, var(--highlight-color) 42%, transparent) !important;
+  background: color-mix(in oklab, var(--highlight-color) 24%, var(--surface)) !important;
+  box-shadow:
+    inset 0.2rem 0 0 var(--highlight-color),
+    inset 0 0 0 1px color-mix(in oklab, var(--highlight-color) 12%, transparent) !important;
+}
+
+.bible-reading-column .bible-highlight-white {
+  --highlight-color: oklch(0.98 0 0);
+}
+
+.bible-reading-column .bible-highlight-yellow {
+  --highlight-color: oklch(0.88 0.18 95);
+}
+
+.bible-reading-column .bible-highlight-blue {
+  --highlight-color: oklch(0.78 0.15 240);
+}
+
+.bible-reading-column .bible-highlight-green {
+  --highlight-color: oklch(0.78 0.15 150);
+}
+
+.bible-reading-column .bible-highlight-pink {
+  --highlight-color: oklch(0.78 0.18 350);
+}
+
+.bible-reading-column .bible-highlight-gray {
+  --highlight-color: oklch(0.68 0.02 260);
+}
