@@ -45,7 +45,7 @@ BEGIN
 END
 $$;
 
-GRANT SELECT, INSERT ON public.app_notifications TO authenticated;
+GRANT SELECT ON public.app_notifications TO authenticated;
 
 CREATE OR REPLACE FUNCTION public.is_character_game_member(_room_id uuid)
 RETURNS boolean
