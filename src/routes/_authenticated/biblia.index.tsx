@@ -455,7 +455,7 @@ function BibliaIndex() {
                         className={`bible-testament-books ${expanded ? "is-open" : ""}`}
                         aria-hidden={!expanded}
                       >
-                        <div className="bible-testament-books-inner divide-y divide-border/20 border-t border-border/20 pb-2">
+                        <div className="bible-testament-books-inner bible-book-list pb-2">
                           {booksForTestament.map((b) => {
                             const done = readByBook[b.id] ?? 0;
                             const complete = done >= b.chapters;
@@ -468,7 +468,7 @@ function BibliaIndex() {
                                 tabIndex={expanded ? 0 : -1}
                                 onClick={() => openChapters(b.id)}
                                 aria-label={`Abrir ${b.name}`}
-                                className="bible-book-row group flex w-full items-center gap-3.5 py-3 text-left transition-colors hover:bg-foreground/[0.02]"
+                                className="bible-book-row group flex w-full items-center gap-3 text-left"
                               >
                                 <span
                                   className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border text-[9px] font-semibold transition-colors ${
@@ -482,16 +482,16 @@ function BibliaIndex() {
 
                                 <span className="min-w-0 flex-1">
                                   <span className="flex items-baseline justify-between gap-3">
-                                    <span className="truncate text-[14px] font-medium tracking-[-0.01em]">
+                                    <span className="bible-book-name truncate text-[14px] font-bold tracking-[-0.01em]">
                                       {b.name}
                                     </span>
                                     <span className="shrink-0 text-[10px] font-light text-muted-foreground/70">
                                       {done > 0 ? `${done}/${b.chapters}` : `${b.chapters} cap.`}
                                     </span>
                                   </span>
-                                  <span className="mt-2 block h-px w-full bg-border/40">
+                                  <span className="bible-book-progress mt-2 block h-1 w-full overflow-hidden rounded-full bg-border/35">
                                     <span
-                                      className={`block h-px transition-all duration-500 ${complete ? "bg-primary" : "bg-primary/60"}`}
+                                      className={`block h-full rounded-full transition-all duration-500 ${complete ? "bg-primary" : "bg-primary/60"}`}
                                       style={{ width: `${bookPct}%` }}
                                     />
                                   </span>
