@@ -69,8 +69,6 @@ export async function flushPendingGameResults() {
   }
 }
 
-export type GameKey = "milhao" | "personagem" | "versiculo" | "cruzadas";
-
 export type GameLeaderboardRow = {
   position: number;
   user_id: string;
@@ -98,8 +96,6 @@ export async function recordSharedGameResult(roomId: string, fallback?: GameResu
   });
   if (!error) return null;
 
-  // Permite registrar a pontuação durante uma implantação em que a função
-  // específica de sala ainda não tenha sido aplicada no Supabase.
   if (fallback) {
     const fallbackError = await recordGameResult(fallback);
     if (!fallbackError) return null;
