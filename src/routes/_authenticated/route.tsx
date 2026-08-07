@@ -84,7 +84,7 @@ function AuthedLayout() {
           <div className={`min-h-screen bg-background ${isPrivateChat ? "" : "pb-24"}`}>
             <Outlet />
             <GameInviteOverlay />
-            <PushNotifications />
+            {!isBibleOrGames && <PushNotifications />}
             {!isPrivateChat && (
               <>
                 <MentorLayer hidden={isBibleOrGames} />
