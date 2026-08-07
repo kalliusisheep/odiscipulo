@@ -107,7 +107,7 @@ const NON_CHARACTER_FACT_ANSWERS = new Set([
 ]);
 
 const normalizeFactAnswer = (value: string) =>
-  value.normalize("NFD").replace(/[\\u0300-\\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
 const maskCharacterAnswer = (text: string, answer: string) => text.split(answer).join("Este personagem");
 
