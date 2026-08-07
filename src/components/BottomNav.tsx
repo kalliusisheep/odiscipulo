@@ -15,7 +15,7 @@ export function BottomNav() {
   const { t } = useApp();
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface/95 shadow-[0_-8px_24px_-18px_rgba(0,0,0,0.7)] backdrop-blur-lg">
+    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border/40 bg-background/92 pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_28px_-20px_rgba(0,0,0,0.85)] backdrop-blur-xl">
       <ul className="mx-auto flex max-w-lg items-stretch justify-around">
         {tabs.map(({ to, labelKey, icon: Icon }) => {
           const active = pathname === to || pathname.startsWith(to + "/");
@@ -24,7 +24,7 @@ export function BottomNav() {
               <Link
                 to={to}
                 aria-current={active ? "page" : undefined}
-                className={`relative flex flex-col items-center justify-center gap-1 py-2.5 text-xs transition-all ${
+                className={`relative flex min-h-16 flex-col items-center justify-center gap-1 rounded-2xl py-2.5 text-xs transition-all ${
                   active ? "text-primary" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
