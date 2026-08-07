@@ -78,7 +78,7 @@ export function VerseActionSheet(props: Props) {
               to="/biblia/estudo/$book/$chapter/$verse"
               params={{ book: String(book), chapter: String(chapter), verse: String(verse) }}
               onClick={() => props.onOpenChange(false)}
-              className="flex min-h-12 items-center gap-2 rounded-2xl bg-primary px-3 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-transform active:scale-[0.98]"
+              className="flex min-h-12 items-center justify-center gap-2 rounded-2xl text-center bg-primary px-3 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-transform active:scale-[0.98]"
             >
               <BookOpen className="h-4 w-4 shrink-0" />
               <span className="leading-tight">Estudar versículo</span>
@@ -89,7 +89,7 @@ export function VerseActionSheet(props: Props) {
                 props.onOpenChange(false);
                 props.onCompare();
               }}
-              className="flex min-h-12 items-center gap-2 rounded-2xl border border-primary/25 bg-primary/10 px-3 py-3 text-sm font-semibold text-primary transition-all hover:bg-primary/15 active:scale-[0.98]"
+              className="flex min-h-12 items-center justify-center gap-2 rounded-2xl text-center border border-primary/25 bg-primary/10 px-3 py-3 text-sm font-semibold text-primary transition-all hover:bg-primary/15 active:scale-[0.98]"
             >
               <GitCompareArrows className="h-4 w-4 shrink-0" />
               <span className="leading-tight">Comparar versões</span>
@@ -102,7 +102,7 @@ export function VerseActionSheet(props: Props) {
               params={{ book: String(book), chapter: String(chapter), verse: String(verse) }}
               search={a.search}
               onClick={() => props.onOpenChange(false)}
-              className="col-span-2 flex items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-3 text-sm font-medium transition-colors hover:border-primary/40"
+              className="col-span-2 flex items-center justify-center gap-3 rounded-2xl border border-border text-center bg-surface px-4 py-3 text-sm font-medium transition-colors hover:border-primary/40"
             >
               <a.icon className="h-4.5 w-4.5 text-primary" /> {a.label}
             </Link>
