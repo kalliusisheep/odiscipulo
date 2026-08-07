@@ -2040,26 +2040,32 @@ body,
     inset 0 0 0 1px color-mix(in oklab, var(--highlight-color) 12%, transparent) !important;
 }
 
-.bible-reading-column .bible-highlight-white {
+.bible-highlight-white {
   --highlight-color: oklch(0.98 0 0);
+  background: color-mix(in oklab, var(--highlight-color) 88%, var(--surface)) !important;
 }
 
-.bible-reading-column .bible-highlight-yellow {
+.bible-highlight-yellow {
   --highlight-color: oklch(0.88 0.18 95);
+  background: color-mix(in oklab, var(--highlight-color) 88%, var(--surface)) !important;
 }
 
-.bible-reading-column .bible-highlight-blue {
+.bible-highlight-blue {
   --highlight-color: oklch(0.78 0.15 240);
+  background: color-mix(in oklab, var(--highlight-color) 88%, var(--surface)) !important;
 }
 
-.bible-reading-column .bible-highlight-green {
+.bible-highlight-green {
   --highlight-color: oklch(0.78 0.15 150);
+  background: color-mix(in oklab, var(--highlight-color) 88%, var(--surface)) !important;
 }
 
-.bible-reading-column .bible-highlight-pink {
+.bible-highlight-pink {
   --highlight-color: oklch(0.78 0.18 350);
+  background: color-mix(in oklab, var(--highlight-color) 88%, var(--surface)) !important;
 }
 
-.bible-reading-column .bible-highlight-gray {
+.bible-highlight-gray {
   --highlight-color: oklch(0.68 0.02 260);
+  background: color-mix(in oklab, var(--highlight-color) 88%, var(--surface)) !important;
 }
