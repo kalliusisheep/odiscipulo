@@ -108,14 +108,18 @@ export function VerseActionSheet(props: Props) {
             </Link>
           ))}
 
-          <SheetAction icon={PenLine} label="Adicionar anotação" onClick={props.onNote} />
-          <SheetAction
-            icon={Star}
-            label={props.isFavorite ? "Remover favorito" : "Favoritar"}
-            onClick={props.onFavorite}
-            active={props.isFavorite}
-          />
-          <SheetAction icon={Copy} label="Copiar" onClick={props.onCopy} />
+          <div className="col-span-2">
+            <SheetAction icon={PenLine} label="Adicionar anotação" onClick={props.onNote} />
+          </div>
+          <div className="col-span-2 grid grid-cols-2 gap-2">
+            <SheetAction icon={Copy} label="Copiar" onClick={props.onCopy} />
+            <SheetAction
+              icon={Star}
+              label={props.isFavorite ? "Remover favorito" : "Favoritar"}
+              onClick={props.onFavorite}
+              active={props.isFavorite}
+            />
+          </div>
           <div className="col-span-2">
             <ShareLessonButton
               lessonId={`bible:${book}:${chapter}:${verse}`}
@@ -146,7 +150,7 @@ function SheetAction({
     <button
       type="button"
       onClick={onClick}
-      className={`bible-sheet-action flex items-center gap-2.5 rounded-2xl border px-3.5 py-3 text-left text-sm font-medium transition-all active:scale-[0.97] ${
+      className={`bible-sheet-action flex w-full items-center justify-center gap-2.5 rounded-2xl border px-3.5 py-3 text-center text-sm font-medium transition-all active:scale-[0.97] ${
         active
           ? "border-primary/50 bg-primary/10 text-primary"
           : "border-border bg-surface hover:border-primary/40"
