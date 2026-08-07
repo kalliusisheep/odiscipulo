@@ -2338,3 +2338,106 @@ body,
     transition: none;
   }
 }
+
+
+.bible-reader-shell .bible-chapter-nav {
+  bottom: calc(4.05rem + env(safe-area-inset-bottom)) !important;
+  padding-inline: 0 !important;
+  transition: transform 460ms cubic-bezier(0.22, 0.72, 0.26, 1), opacity 320ms ease !important;
+}
+
+.bible-reader-shell .bible-chapter-nav.is-hidden {
+  transform: translateY(calc(100% + 0.75rem));
+}
+
+.bible-reader-shell .bible-chapter-nav-panel {
+  display: grid !important;
+  grid-template-columns: 2.4rem minmax(0, 1fr);
+  width: 100% !important;
+  max-width: 32rem !important;
+  min-height: 3.1rem !important;
+  gap: 0.35rem !important;
+  padding: 0.35rem !important;
+  border-radius: 1.15rem 1.15rem 0 0 !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+  box-shadow:
+    0 -12px 30px color-mix(in oklab, var(--background) 34%, transparent),
+    inset 0 1px 0 color-mix(in oklab, var(--foreground) 7%, transparent) !important;
+}
+
+.bible-reader-shell .bible-chapter-nav-button {
+  width: 2.4rem !important;
+  min-width: 2.4rem !important;
+  height: 2.4rem !important;
+  min-height: 2.4rem !important;
+}
+
+.bible-reader-shell .bible-chapter-nav-pill {
+  display: grid !important;
+  grid-template-columns: 2.15rem minmax(0, 1fr) 2.15rem;
+  min-height: 2.4rem !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.bible-reader-shell .bible-chapter-nav-pill-button {
+  width: 2.15rem !important;
+  min-width: 2.15rem !important;
+  height: 2.4rem !important;
+  min-height: 2.4rem !important;
+  border-radius: 0.8rem !important;
+}
+
+.bible-reader-shell .bible-chapter-nav-current {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.2rem !important;
+  text-align: center;
+}
+
+.bible-reader-shell .bible-chapter-nav-book {
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.78rem !important;
+}
+
+.bible-reader-shell .bible-chapter-nav-label {
+  font-size: 0.45rem !important;
+  line-height: 1.1;
+}
+
+@media (max-width: 380px) {
+  .bible-reader-shell .bible-chapter-nav-panel {
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    gap: 0.25rem !important;
+    padding: 0.25rem !important;
+  }
+
+  .bible-reader-shell .bible-chapter-nav-button {
+    width: 2.25rem !important;
+    min-width: 2.25rem !important;
+    height: 2.25rem !important;
+    min-height: 2.25rem !important;
+  }
+
+  .bible-reader-shell .bible-chapter-nav-pill {
+    grid-template-columns: 2rem minmax(0, 1fr) 2rem;
+    min-height: 2.25rem !important;
+  }
+
+  .bible-reader-shell .bible-chapter-nav-pill-button {
+    width: 2rem !important;
+    min-width: 2rem !important;
+    height: 2.25rem !important;
+    min-height: 2.25rem !important;
+  }
+}
