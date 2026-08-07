@@ -599,6 +599,38 @@ const dynamicPatterns: Array<{
   render: (match: RegExpMatchArray, language: AppLanguage) => string;
 }> = [
   {
+    pattern: /^Online agora$/,
+    render: (_match, language) => language === "en" ? "Online now" : language === "es" ? "En línea ahora" : "Online agora",
+  },
+  {
+    pattern: /^Visto hoje às (\d{2}:\d{2})$/,
+    render: (match, language) => language === "en" ? "Seen today at " + match[1] : language === "es" ? "Visto hoy a las " + match[1] : match[0],
+  },
+  {
+    pattern: /^Visto ontem às (\d{2}:\d{2})$/,
+    render: (match, language) => language === "en" ? "Seen yesterday at " + match[1] : language === "es" ? "Visto ayer a las " + match[1] : match[0],
+  },
+  {
+    pattern: /^Visto em (\d{2}\/\d{2}\/\d{4}) às (\d{2}:\d{2})$/,
+    render: (match, language) => language === "en" ? "Seen on " + match[1] + " at " + match[2] : language === "es" ? "Visto el " + match[1] + " a las " + match[2] : match[0],
+  },
+  {
+    pattern: /^Offline · hoje às (\d{2}:\d{2})$/,
+    render: (match, language) => language === "en" ? "Offline · today at " + match[1] : language === "es" ? "Desconectado · hoy a las " + match[1] : match[0],
+  },
+  {
+    pattern: /^Offline · ontem às (\d{2}:\d{2})$/,
+    render: (match, language) => language === "en" ? "Offline · yesterday at " + match[1] : language === "es" ? "Desconectado · ayer a las " + match[1] : match[0],
+  },
+  {
+    pattern: /^Offline · em (\d{2}\/\d{2}\/\d{4}) às (\d{2}:\d{2})$/,
+    render: (match, language) => language === "en" ? "Offline · on " + match[1] + " at " + match[2] : language === "es" ? "Desconectado · el " + match[1] + " a las " + match[2] : match[0],
+  },
+  {
+    pattern: /^Offline · Último acesso indisponível$/,
+    render: (_match, language) => language === "en" ? "Offline · Last seen unavailable" : language === "es" ? "Desconectado · Último acceso no disponible" : "Offline · Último acesso indisponível",
+  },
+  {
     pattern: /^há\s+(.+)$/,
     render: (match, language) => language === "en" ? match[1] + " ago" : language === "es" ? "hace " + match[1] : match[0],
   },
