@@ -1480,23 +1480,22 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
 
 .bible-section-heading {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.65rem;
-  margin: 1.1rem 0.2rem 0.3rem;
-  padding-top: 0.8rem;
-  border-top: 1px solid color-mix(in srgb, hsl(var(--border)) 58%, transparent);
+  gap: 0.7rem;
+  margin: 2.35rem 0.2rem 1.15rem;
+  padding: 0.9rem 0.5rem 0;
+  text-align: center;
 }
 
 .bible-section-heading:first-child {
-  margin-top: 0.25rem;
-  padding-top: 0;
-  border-top: 0;
+  margin-top: 1.15rem;
 }
 
 .bible-section-heading-rule {
-  flex: 0 0 0.28rem;
-  width: 0.28rem;
-  height: 1.25rem;
+  flex: 0 0 0.16rem;
+  width: 2.4rem;
+  height: 0.16rem;
   border-radius: 999px;
   background: hsl(var(--primary));
   box-shadow: 0 0 14px color-mix(in srgb, hsl(var(--primary)) 42%, transparent);
@@ -1508,27 +1507,24 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
   font-family: "Literata";
   font-size: 1.12rem;
   font-weight: 600;
-  line-height: 1.15;
+  line-height: 1.25;
   letter-spacing: 0.005em;
 }
 
 
 .bible-header-chapter {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(12rem, 40vw);
-  transform: translate(-50%, -50%);
-  border: 1px solid color-mix(in srgb, hsl(var(--primary)) 24%, hsl(var(--border)));
-  background: color-mix(in srgb, hsl(var(--surface)) 72%, transparent);
-  box-shadow:
-    0 10px 26px color-mix(in srgb, hsl(var(--background)) 32%, transparent),
-    inset 0 1px 0 color-mix(in srgb, white 7%, transparent);
-  backdrop-filter: blur(14px);
+  position: relative;
+  width: auto;
+  transform: none;
+  border: 1px solid transparent;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
 .bible-header-chapter:hover {
-  border-color: color-mix(in srgb, hsl(var(--primary)) 44%, hsl(var(--border)));
+  border-color: color-mix(in srgb, hsl(var(--primary)) 24%, transparent);
+  background: color-mix(in srgb, hsl(var(--surface)) 62%, transparent);
 }
 
 .bible-reader-action-group {
@@ -1541,15 +1537,6 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
 }
 
 @media (max-width: 380px) {
-  .bible-header-chapter {
-    width: min(9.5rem, 39vw);
-    padding-inline: 0.5rem;
-  }
-
-  .bible-header-chapter > span:last-child {
-    display: none;
-  }
-
   .bible-reader-action-group {
     gap: 0.15rem;
   }
