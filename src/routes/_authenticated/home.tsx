@@ -281,18 +281,14 @@ function HomePage() {
           </div>
         )}
 
-        <Link
-          to="/niveis"
-          className="group relative z-10 flex items-center justify-between gap-3 border-t border-foreground/10 bg-foreground/[0.045] px-5 py-3.5 transition-colors hover:bg-foreground/[0.08]"
-        >
-          <div>
-            <p className="text-xs font-bold text-foreground">Mapa da jornada</p>
-            <p className="mt-0.5 text-[10px] text-foreground/50">Explore níveis, títulos e conquistas</p>
-          </div>
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-foreground/10 ring-1 ring-foreground/10 transition-transform group-hover:translate-x-0.5">
-            <ChevronRight className="h-4 w-4 text-foreground/80" />
-          </span>
-        </Link>
+        <div className="relative z-10 flex justify-end px-5 pb-4 pt-1">
+          <Link
+            to="/niveis"
+            className="group inline-flex items-center text-xs font-bold text-primary/80 transition-colors hover:text-primary hover:underline hover:underline-offset-4"
+          >
+            Mapa da jornada
+          </Link>
+        </div>
       </section>
 
       {userId && <ChallengePanel myId={userId} />}
