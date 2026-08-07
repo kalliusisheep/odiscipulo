@@ -1798,3 +1798,12 @@ main:has(> div.mx-auto.max-w-lg a[href="/jogos"]) button.bg-primary {
 .bible-picker-testament-group + .bible-picker-testament-group {
   margin-top: 1.25rem;
 }
+
+
+.bible-chapter-nav > div {
+  border-color: color-mix(in srgb, hsl(var(--primary)) 18%, transparent) !important;
+}
+
+.bible-chapter-nav > div > button:first-child {
+  border-color: color-mix(in srgb, hsl(var(--foreground)) 14%, transparent) !important;
+}
