@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft, BookOpen, ChevronDown, ChevronRight, Sparkles } from "lucide-react";
-import { BottomNav } from "@/components/BottomNav";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const Route = createFileRoute("/_authenticated/biblia/teologia")({
@@ -222,7 +221,6 @@ function TeologiaSistematicaPage() {
         </div>
       </main>
 
-      <BottomNav />
     </div>
   );
 }
