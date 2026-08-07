@@ -155,18 +155,18 @@
   --card-foreground: oklch(0.18 0.03 265);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.18 0.03 265);
-  --primary: oklch(0.55 0.22 292);
-  --primary-foreground: oklch(0.99 0.005 292);
-  --primary-glow: oklch(0.65 0.2 285);
-  --secondary: oklch(0.94 0.012 265);
-  --secondary-foreground: oklch(0.22 0.03 265);
-  --muted: oklch(0.94 0.012 265);
-  --muted-foreground: oklch(0.45 0.02 265);
-  --accent: oklch(0.92 0.03 285);
-  --accent-foreground: oklch(0.22 0.05 285);
-  --border: oklch(0.86 0.012 265);
-  --input: oklch(0.93 0.012 265);
-  --ring: oklch(0.55 0.22 292);
+  --primary: oklch(0.27 0.012 265);
+  --primary-foreground: oklch(0.99 0 0);
+  --primary-glow: oklch(0.42 0.012 265);
+  --secondary: oklch(0.94 0.008 265);
+  --secondary-foreground: oklch(0.2 0.018 265);
+  --muted: oklch(0.94 0.008 265);
+  --muted-foreground: oklch(0.43 0.012 265);
+  --accent: oklch(0.91 0.008 265);
+  --accent-foreground: oklch(0.2 0.018 265);
+  --border: oklch(0.84 0.012 265);
+  --input: oklch(0.92 0.008 265);
+  --ring: oklch(0.32 0.016 265);
 }
 
 .theme-gray {
@@ -2927,4 +2927,118 @@ body,
   .bible-reader-shell .bible-reader-header .bible-header-chapter-label {
     font-size: 1.05rem !important;
   }
+}
+
+
+/* Ajuste premium do tema claro: navegação da Bíblia com contraste neutro */
+.theme-white .bible-reader-shell .bible-reader-header {
+  background: rgb(248 250 252 / 0.94) !important;
+  border-bottom: 1px solid rgb(15 23 42 / 0.1) !important;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 0.06) !important;
+}
+
+.theme-white .bible-reader-shell .bible-reader-header a,
+.theme-white .bible-reader-shell .bible-reader-header button {
+  color: #111827 !important;
+  border-color: rgb(15 23 42 / 0.14) !important;
+  background: rgb(255 255 255 / 0.82) !important;
+  box-shadow:
+    0 2px 5px rgb(15 23 42 / 0.08),
+    inset 0 1px 0 rgb(255 255 255 / 0.92) !important;
+}
+
+.theme-white .bible-reader-shell .bible-reader-header a svg,
+.theme-white .bible-reader-shell .bible-reader-header button svg {
+  color: #111827 !important;
+}
+
+.theme-white .bible-reader-shell .bible-reader-header a:hover,
+.theme-white .bible-reader-shell .bible-reader-header button:hover,
+.theme-white .bible-reader-shell .bible-reader-header a:focus-visible,
+.theme-white .bible-reader-shell .bible-reader-header button:focus-visible {
+  color: #111827 !important;
+  border-color: rgb(15 23 42 / 0.28) !important;
+  background: #eef1f5 !important;
+  box-shadow: 0 4px 10px rgb(15 23 42 / 0.1) !important;
+}
+
+.theme-white .bible-reader-shell .bible-reader-header .bible-chapter-trigger,
+.theme-white .bible-reader-shell .bible-reader-header .bible-reader-version-pill {
+  color: #111827 !important;
+  border-color: rgb(15 23 42 / 0.16) !important;
+  background: #ffffff !important;
+  box-shadow:
+    0 3px 8px rgb(15 23 42 / 0.08),
+    inset 0 1px 0 rgb(255 255 255 / 0.96) !important;
+}
+
+.theme-white .bible-reader-shell .bible-reader-header .bible-chapter-trigger:hover,
+.theme-white .bible-reader-shell .bible-reader-header .bible-reader-version-pill:hover {
+  color: #111827 !important;
+  border-color: rgb(15 23 42 / 0.3) !important;
+  background: #f0f2f5 !important;
+}
+
+.theme-white .bible-reader-shell .bible-reader-progress {
+  background: rgb(15 23 42 / 0.08) !important;
+}
+
+.theme-white .bible-reader-shell .bible-reader-progress > span {
+  background: linear-gradient(90deg, #111827, #6b7280) !important;
+}
+
+.theme-white .bible-reader-shell .bible-chapter-nav-panel {
+  border-color: rgb(15 23 42 / 0.14) !important;
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 0.98), rgb(239 242 246 / 0.98)) !important;
+  box-shadow:
+    0 -14px 32px rgb(15 23 42 / 0.14),
+    inset 0 1px 0 rgb(255 255 255 / 0.96) !important;
+}
+
+.theme-white .bible-reader-shell .bible-chapter-nav-play {
+  border-color: rgb(15 23 42 / 0.18) !important;
+  background:
+    radial-gradient(circle at 30% 20%, rgb(255 255 255 / 0.98), transparent 36%),
+    linear-gradient(145deg, #f7f8fa, #d9dee6) !important;
+  box-shadow:
+    0 8px 18px rgb(15 23 42 / 0.18),
+    inset 0 1px 0 rgb(255 255 255 / 0.98),
+    inset 0 -2px 5px rgb(15 23 42 / 0.14) !important;
+  color: #111827 !important;
+}
+
+.theme-white .bible-reader-shell .bible-chapter-nav-play:hover,
+.theme-white .bible-reader-shell .bible-chapter-nav-play:focus-visible {
+  border-color: rgb(15 23 42 / 0.3) !important;
+  background:
+    radial-gradient(circle at 30% 20%, #ffffff, transparent 36%),
+    linear-gradient(145deg, #ffffff, #d2d8e1) !important;
+  color: #111827 !important;
+  filter: none !important;
+}
+
+.theme-white .bible-reader-shell .bible-chapter-nav-pill {
+  background: rgb(229 233 239 / 0.94) !important;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8) !important;
+}
+
+.theme-white .bible-reader-shell .bible-chapter-nav-pill-button,
+.theme-white .bible-reader-shell .bible-chapter-nav-pill-button:disabled,
+.theme-white .bible-reader-shell .bible-chapter-nav-current,
+.theme-white .bible-reader-shell .bible-chapter-nav-book {
+  color: #111827 !important;
+  opacity: 1 !important;
+}
+
+.theme-white .bible-reader-shell .bible-chapter-nav-label {
+  color: #4b5563 !important;
+}
+
+.theme-white .bible-reader-shell .bible-chapter-nav-pill-button:hover,
+.theme-white .bible-reader-shell .bible-chapter-nav-pill-button:focus-visible,
+.theme-white .bible-reader-shell .bible-chapter-nav-current:hover {
+  background: rgb(15 23 42 / 0.08) !important;
+  box-shadow: none !important;
+  color: #111827 !important;
 }
