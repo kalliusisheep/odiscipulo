@@ -529,7 +529,7 @@ function VerseStudy() {
                               <p className="text-center text-[9px] font-bold uppercase tracking-[0.12em] text-primary/75">
                                 Sentido no versículo
                               </p>
-                              <p className="mt-1 truncate text-xs font-semibold text-foreground">
+                              <p className="mt-1 truncate text-center text-xs font-semibold text-foreground">
                                 {sense}
                               </p>
                             </div>
