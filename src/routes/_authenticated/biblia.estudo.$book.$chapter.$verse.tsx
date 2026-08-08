@@ -621,9 +621,9 @@ function VerseStudy() {
                     <Loader2 className="h-5 w-5 animate-spin" />
                   </span>
                   <div>
-                    <p className="text-sm font-bold">Preparando análise</p>
+                    <p className="text-sm font-bold">{t("bible.preparingAnalysis")}</p>
                     <p className="text-xs text-muted-foreground">
-                      Identificando a estrutura do versículo…
+                      {t("bible.identifyingStructure")}
                     </p>
                   </div>
                 </div>
@@ -659,8 +659,8 @@ function VerseStudy() {
 
               {!analysisLoading && analysisError && (
                 <UnavailableState
-                  title="Análise temporariamente indisponível"
-                  description="As palavras e o léxico continuam disponíveis normalmente."
+                  title={t("bible.analysisUnavailable")}
+                  description={t("bible.wordsAndLexiconAvailable")}
                 />
               )}
             </div>
@@ -718,7 +718,7 @@ function VerseStudy() {
 
           {aba === "lexico" && !wordsLoading && words && words.length > 0 && (
             <div className="space-y-3">
-              {lexiconLoading && <StudyLoading label="Carregando verbetes do léxico…" compact />}
+              {lexiconLoading && <StudyLoading label={t("bible.loadingLexicon")} compact />}
 
               {!lexiconLoading && lexicalEntries.length === 0 && (
                 <UnavailableState
@@ -821,12 +821,13 @@ function VerseStudy() {
 }
 
 function StudyLoading({
-  label = "Consultando as fontes acadêmicas…",
+  label,
   compact = false,
 }: {
   label?: string;
   compact?: boolean;
 }) {
+  const { t } = useApp();
   return (
     <div
       className={
@@ -838,8 +839,8 @@ function StudyLoading({
         <Loader2 className="h-5 w-5 animate-spin" />
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-bold">Preparando seu estudo</p>
-        <p className="mt-0.5 text-xs text-muted-foreground">{label}</p>
+        <p className="text-sm font-bold">{t("bible.preparingStudy")}</p>
+        <p className="mt-0.5 text-xs text-muted-foreground">{label ?? t("bible.loadingAcademic")}</p>
       </div>
     </div>
   );
@@ -875,6 +876,7 @@ function SourceNote({ children }: { children: ReactNode }) {
 }
 
 function AnalysisTags({ label, items }: { label: string; items: string[] }) {
+  const { t } = useApp();
   return (
     <div>
       <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
@@ -891,7 +893,7 @@ function AnalysisTags({ label, items }: { label: string; items: string[] }) {
             </span>
           ))
         ) : (
-          <span className="text-xs text-muted-foreground">{UNAVAILABLE}</span>
+          <span className="text-xs text-muted-foreground">{t("bible.infoUnavailable")}</span>
         )}
       </div>
     </div>
@@ -1026,7 +1028,7 @@ function WordDetail({
               ))}
             </ol>
           ) : (
-            <p className="mt-2 text-sm text-muted-foreground">{UNAVAILABLE}</p>
+            <p className="mt-2 text-sm text-muted-foreground">{t("bible.infoUnavailable")}</p>
           )}
         </section>
 
