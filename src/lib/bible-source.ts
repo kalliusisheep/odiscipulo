@@ -415,6 +415,14 @@ function concisePortugueseMeaning(value: string | null | undefined): string | nu
   return first || null;
 }
 
+function isUnavailableContextualMeaning(value: string): boolean {
+  const normalized = value.toLocaleLowerCase("pt-BR");
+  return (
+    normalized.includes("indisponível") ||
+    (normalized.includes("tradução") && normalized.includes("isolada"))
+  );
+}
+
 /**
  * Retorna apenas um significado contextual em português. Quando a tradução
  * contextual ainda não chegou ou a fonte deixou inglês residual, não exibe
@@ -451,7 +459,7 @@ export function contextualMeaningFor(
   if (
     contextual &&
     !containsEnglishLexicon(contextual) &&
-    !/sem tradução isolada|sentido contextual indisponível|informação indisponível/i.test(contextual)
+    !isUnavailableContextualMeaning(contextual)
   ) {
     return contextual;
   }
