@@ -33,7 +33,7 @@ const NODE_CARD_H = 84;
 const NODE_RADIUS = 18;
 const COL_W = 216;
 const ROW_H = 156;
-const PAD = 76;
+const PAD = 112;
 const HEADER_H = 104; // espaço reservado só no PDF pra faixa de título + legenda
 const FOOTER_H = 70; // espaço reservado só no PDF pra separador, copyright pequeno e mascote pequena no canto
 const MIN_CANVAS_W = 480; // largura mínima da página exportada, pra cabeçalho/rodapé nunca ficarem espremidos em árvores pequenas
@@ -62,6 +62,13 @@ const C = {
 
 function ringColorFor(direction: TreeNode["direction"]) {
   return direction === "self" ? C.primary : direction === "up" ? C.ancient : C.success;
+}
+
+function connectorPath(parent: { x: number; y: number }, child: { x: number; y: number }) {
+  const startY = parent.y + NODE_CARD_H / 2;
+  const endY = child.y - NODE_CARD_H / 2;
+  const middleY = startY + (endY - startY) / 2;
+  return `M ${parent.x} ${startY} V ${middleY} H ${child.x} V ${endY}`;
 }
 function computeLayout(nodes: TreeNode[]): { positions: Positions; width: number; height: number; root: TreeNode | null } {
   const root = nodes.find((n) => n.direction === "self") ?? null;
@@ -630,6 +637,25 @@ function ArvorePage() {
             >
               <svg width={layout.width} height={layout.height} viewBox={`0 0 ${layout.width} ${layout.height}`}>
                 <rect x={0} y={0} width={layout.width} height={layout.height} fill={C.bg} />
+
+                {nodes.map((node) => {
+                  if (!node.parent_id) return null;
+                  const parent = layout.positions.get(node.parent_id);
+                  const child = layout.positions.get(node.id);
+                  if (!parent || !child) return null;
+                  return (
+                    <path
+                      key={`edge-${node.id}`}
+                      d={connectorPath(parent, child)}
+                      fill="none"
+                      stroke={node.direction === "up" ? C.ancient : C.success}
+                      strokeOpacity={0.78}
+                      strokeWidth={3}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  );
+                })}
 
                 {nodes.map((node) => {
                   const pos = layout.positions.get(node.id);
