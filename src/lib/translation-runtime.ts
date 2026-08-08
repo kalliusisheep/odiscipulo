@@ -975,6 +975,7 @@ export function startTranslationRuntime(language: AppLanguage): () => void {
       run();
     });
   });
+  rerunTranslation = run;
   run();
   observer.observe(document.body, {
     childList: true,
@@ -983,5 +984,9 @@ export function startTranslationRuntime(language: AppLanguage): () => void {
     attributes: true,
     attributeFilter: ["placeholder", "aria-label", "title", "alt"],
   });
-  return () => observer.disconnect();
+  return () => {
+    if (rerunTranslation === run) rerunTranslation = null;
+    observer.disconnect();
+  };
 }
+
