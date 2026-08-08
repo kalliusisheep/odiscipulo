@@ -159,11 +159,11 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A palavra cânon deriva do grego kanon, que significa \"vara de medir\" ou \"regra de medir\". Na teologia sistemática, o cânon refere-se ao conjunto fechado de 66 livros inspirados por Deus que constituem a regra de fé e prática para a igreja de Cristo (39 livros do Antigo Testamento e 27 do Novo Testamento"
+            "text": "A palavra cânon deriva do grego kanon, que significa \"vara de medir\" ou \"regra de medir\". Na teologia sistemática, cânon é o conjunto dos livros reconhecidos como Escritura Sagrada e usados como regra de fé e prática. Na tradição protestante, a Bíblia reúne 66 livros: 39 no Antigo Testamento e 27 no Novo Testamento."
           },
           {
             "type": "paragraph",
-            "text": "A formação do cânon foi um processo de reconhecimento histórico sob a soberania de Deus. A igreja primitiva não \"criou\" o cânon, mas reconheceu a autoridade divina inerente dos livros que apresentavam apostolicidade, coerência doutrinária com o ensino de Cristo e o testemunho interno do Espírito Santo. O apóstolo Paulo indica que a igreja está edificada sobre a base apostólica e profética"
+            "text": "A formação do cânon foi um processo de reconhecimento histórico sob a soberania de Deus. A igreja primitiva não “criou” o cânon, mas reconheceu a autoridade dos livros que apresentavam apostolicidade, coerência doutrinária com o ensino de Cristo e o testemunho interno do Espírito Santo."
           },
           {
             "type": "verse",
