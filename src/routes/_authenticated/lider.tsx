@@ -14,6 +14,7 @@ import {
   Plus,
   Search,
   Sparkles,
+  UserRound,
   Users,
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
