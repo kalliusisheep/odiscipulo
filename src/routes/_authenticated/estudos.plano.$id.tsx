@@ -346,13 +346,13 @@ function DayDetails({
         </Section>
 
         <Section title="Contexto">
-          <p className="text-base leading-7 text-foreground/90" data-narrate>{day.context}</p>
+          <p className="text-base font-normal leading-7 text-foreground/90" data-narrate>{day.context}</p>
         </Section>
 
         <Section title="Reflexão devocional">
           <div className="space-y-2">
             {day.reflection.split("\n").filter(Boolean).map((p, i) => (
-              <p key={i} className="text-base leading-7 text-foreground/90" data-narrate>
+              <p key={i} className="text-base font-normal leading-7 text-foreground/90" data-narrate>
                 {p}
               </p>
             ))}
@@ -360,11 +360,11 @@ function DayDetails({
         </Section>
 
         <Section title="Aplicação prática">
-          <p className="text-base leading-7 text-foreground/90" data-narrate>{day.application}</p>
+          <p className="text-base font-normal leading-7 text-foreground/90" data-narrate>{day.application}</p>
         </Section>
 
         <Section title="Oração">
-          <p className="!font-sans text-lg font-normal leading-8 text-foreground/90 !not-italic" data-narrate>
+          <p className="text-base font-normal leading-7 text-foreground/90" data-narrate>
             {day.prayer}
           </p>
         </Section>
@@ -459,7 +459,7 @@ function PassageBlock({
       )}
       {text && (
         <p
-          className="!font-sans text-lg font-normal leading-8 text-foreground/90 !not-italic"
+          className="text-base font-normal leading-7 text-foreground/90"
           data-narrate
           data-narrate-text={stripVerseNumbers(text)}
         >
