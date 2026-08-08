@@ -431,11 +431,42 @@ function LessonFlow({
   const { bibleVersion } = useApp();
   const [step, setStep] = useState<Step>("estudo");
   const [completionSaved, setCompletionSaved] = useState(false);
+  const reflectionStorageKey = `support-lesson-reflection:${lesson.id}`;
+  const [reflectionAnswer, setReflectionAnswer] = useState("");
+  const [reflectionSaved, setReflectionSaved] = useState(false);
+
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem(reflectionStorageKey) ?? "";
+      setReflectionAnswer(saved);
+      setReflectionSaved(Boolean(saved.trim()));
+    } catch {
+      setReflectionAnswer("");
+      setReflectionSaved(false);
+    }
+  }, [reflectionStorageKey]);
 
   const completeLesson = async () => {
     if (!onComplete || completionSaved) return;
     await onComplete();
     setCompletionSaved(true);
+  };
+
+  const saveReflection = () => {
+    const answer = reflectionAnswer.trim();
+    if (!answer) {
+      toast.error("Escreva sua resposta antes de salvar.");
+      return;
+    }
+
+    try {
+      window.localStorage.setItem(reflectionStorageKey, answer);
+      setReflectionAnswer(answer);
+      setReflectionSaved(true);
+      toast.success("Reflexão salva.");
+    } catch {
+      toast.error("Não foi possível salvar sua reflexão neste dispositivo.");
+    }
   };
 
   const [quizAnswers, setQuizAnswers] = useState<Record<number, number>>({});
@@ -867,11 +898,46 @@ function LessonFlow({
             <p className="mt-2 scripture text-base leading-relaxed">{lesson.prayer}</p>
           </div>
 
-          <div className="card-elevated p-5">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">
-              Pergunta de reflexão
-            </p>
-            <p className="mt-2 text-[15px] leading-7">{lesson.reflectionQuestion}</p>
+          <div className="card-elevated space-y-3 p-5">
+            <div>
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">
+                Pergunta de reflexão
+              </p>
+              <p className="mt-2 text-[15px] leading-7">{lesson.reflectionQuestion}</p>
+            </div>
+
+            <div className="space-y-2">
+              <label
+                htmlFor={`reflection-${lesson.id}`}
+                className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
+              >
+                Sua resposta
+              </label>
+              <textarea
+                id={`reflection-${lesson.id}`}
+                value={reflectionAnswer}
+                onChange={(event) => {
+                  setReflectionAnswer(event.target.value);
+                  setReflectionSaved(false);
+                }}
+                rows={4}
+                maxLength={1200}
+                placeholder="Escreva com suas próprias palavras..."
+                className="w-full resize-none rounded-2xl border border-border bg-background/70 p-3 text-sm leading-6 text-foreground outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-primary focus:ring-2 focus:ring-primary/20"
+              />
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-[11px] leading-relaxed text-muted-foreground">
+                  Esta resposta fica salva para você continuar sua reflexão.
+                </p>
+                <button
+                  type="button"
+                  onClick={saveReflection}
+                  className="shrink-0 rounded-xl bg-primary/10 px-3 py-2 text-xs font-bold text-primary transition-colors hover:bg-primary/20"
+                >
+                  {reflectionSaved ? "Salva" : "Salvar"}
+                </button>
+              </div>
+            </div>
           </div>
 
           {onComplete ? (
