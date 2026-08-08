@@ -308,7 +308,81 @@ export type StrongEntry = {
    * ou seja, não depende da heurística de leitura do HTML da fonte. */
   curated: boolean;
   translationSource?: "curated" | "local" | "ai" | "source";
+  /** Um único sentido selecionado para a ocorrência deste versículo. */
+  contextualMeaning?: string | null;
 };
+
+export type LexiconContext = {
+  book: number;
+  chapter: number;
+  verse: number;
+  verseText: string | null;
+  originalWords?: OriginalWord[];
+  wordIndex?: number | null;
+  word?: string | null;
+};
+
+/**
+ * Alinhamentos contextuais revisados manualmente para ocorrências sensíveis.
+ * H853 é uma partícula acusativa: não deve receber uma tradução lexical
+ * inventada nem aparecer como se fosse uma palavra independente em português.
+ */
+const VERIFIED_CONTEXTUAL_MEANINGS: Record<string, string> = {
+  "1:1:1:H7225": "No princípio",
+  "1:1:1:H1254": "criou",
+  "1:1:1:H430": "Deus",
+  "1:1:1:H853": "marcador do objeto direto (sem tradução isolada)",
+  "1:1:1:H8064": "os céus",
+  "1:1:1:H776": "a terra",
+  "1:1:2:H776": "a terra",
+  "1:1:2:H1961": "era",
+  "1:1:2:H8415": "sem forma",
+  "1:1:2:H922": "vazia",
+  "1:1:2:H2822": "trevas",
+  "1:1:2:H6440": "face",
+  "1:1:2:H7307": "Espírito",
+  "1:1:2:H4325": "águas",
+};
+
+function concisePortugueseMeaning(value: string | null | undefined): string | null {
+  if (!value) return null;
+  const first = value
+    .split(/\s*;\s*/)[0]
+    .replace(/\s+/g, " ")
+    .trim();
+  return first || null;
+}
+
+/**
+ * Retorna apenas um significado contextual em português. Quando a tradução
+ * contextual ainda não chegou ou a fonte deixou inglês residual, não exibe
+ * um glossário genérico como se fosse a tradução daquele versículo.
+ */
+export function contextualMeaningFor(
+  book: number,
+  chapter: number,
+  verse: number,
+  index: number,
+  word: OriginalWord | null | undefined,
+  entry: StrongEntry | null | undefined,
+): string {
+  const code = entry?.code ?? word?.strong ?? null;
+  const verified = code
+    ? VERIFIED_CONTEXTUAL_MEANINGS[book + ":" + chapter + ":" + verse + ":" + code]
+    : null;
+  if (verified) return verified;
+
+  const contextual = concisePortugueseMeaning(entry?.contextualMeaning);
+  if (contextual && !containsEnglishLexicon(contextual)) return contextual;
+
+  const curated = entry?.curated ? concisePortugueseMeaning(entry.meaning) : null;
+  if (curated && !containsEnglishLexicon(curated)) return curated;
+
+  const fallback = concisePortugueseMeaning(entry?.meaning ?? entry?.definitions?.[0]);
+  if (fallback && !containsEnglishLexicon(fallback)) return fallback;
+
+  return "Sentido contextual indisponível nesta fonte.";
+}
 
 /**
  * Traduz os termos gramaticais recorrentes que vêm em inglês na fonte
@@ -1116,7 +1190,7 @@ function buildStrongEntry(hit: BollsDictHit): StrongEntry {
 
 export async function fetchStrongEntry(code: string): Promise<StrongEntry | null> {
   const upperCode = code.toUpperCase();
-  const cacheKey = `strong:v6:${upperCode}`;
+  const cacheKey = `strong:v7:${upperCode}`;
   const override = CORE_TERMS[upperCode];
 
   if (override) {
@@ -1135,6 +1209,7 @@ export async function fetchStrongEntry(code: string): Promise<StrongEntry | null
         related: [],
         curated: true,
         translationSource: "curated",
+        contextualMeaning: null,
       };
     });
   }
@@ -1211,19 +1286,42 @@ export async function fetchStrongEntries(codes: string[]): Promise<Record<string
  * número de Strong, então cada palavra só passa pela tradução uma única
  * vez neste dispositivo. Verbetes da lista curada (CORE_TERMS) já estão em
  * português e não passam por aqui. */
-export async function translateStrongEntry(entry: StrongEntry): Promise<StrongEntry> {
-  if (entry.curated || (entry.translationSource === "local" && !entryNeedsTranslation(entry))) return entry;
-  return cached(`xlex:v2:${entry.code}`, async () => {
+export async function translateStrongEntry(
+  entry: StrongEntry,
+  context?: LexiconContext,
+): Promise<StrongEntry> {
+  if (!context && (entry.curated || (entry.translationSource === "local" && !entryNeedsTranslation(entry)))) {
+    return entry;
+  }
+
+  const contextKey = context
+    ? String(context.book) + ":" + String(context.chapter) + ":" + String(context.verse) + ":" + String(context.wordIndex ?? "na")
+    : "generic";
+
+  return cached("xlex:v3:" + entry.code + ":" + contextKey, async () => {
     try {
       const { data, error } = await supabase.functions.invoke<{
         meaning: string | null;
         definitions: string[];
         strongsGloss: string | null;
+        contextualMeaning: string | null;
       }>("translate-lexicon", {
         body: {
           meaning: entry.meaning,
           definitions: entry.definitions,
           strongsGloss: entry.strongsGloss,
+          contextual: context
+            ? {
+                reference: String(context.book) + ":" + String(context.chapter) + ":" + String(context.verse),
+                verseText: context.verseText,
+                word: context.word,
+                strong: entry.code,
+                originalWords: context.originalWords?.map((item) => ({
+                  word: item.word,
+                  strong: item.strong,
+                })),
+              }
+            : null,
         },
       });
       if (error || !data) return entry;
@@ -1232,6 +1330,7 @@ export async function translateStrongEntry(entry: StrongEntry): Promise<StrongEn
         meaning: data.meaning ?? entry.meaning,
         definitions: data.definitions?.length ? data.definitions : entry.definitions,
         strongsGloss: data.strongsGloss ?? entry.strongsGloss,
+        contextualMeaning: data.contextualMeaning ?? entry.contextualMeaning ?? null,
         translationSource: "ai",
       };
     } catch {
@@ -1242,9 +1341,27 @@ export async function translateStrongEntry(entry: StrongEntry): Promise<StrongEn
 
 export async function translateStrongEntries(
   entries: Record<string, StrongEntry>,
+  context?: Omit<LexiconContext, "wordIndex" | "word">,
 ): Promise<Record<string, StrongEntry>> {
   const codes = Object.keys(entries);
-  const translated = await Promise.all(codes.map((c) => translateStrongEntry(entries[c])));
+  const translated = await Promise.all(
+    codes.map((code) => {
+      const wordIndex = context?.originalWords?.findIndex(
+        (word) => word.strong?.toUpperCase() === code.toUpperCase(),
+      );
+      const word = wordIndex !== undefined && wordIndex >= 0 ? context?.originalWords?.[wordIndex] : undefined;
+      return translateStrongEntry(
+        entries[code],
+        context
+          ? {
+              ...context,
+              wordIndex: wordIndex !== undefined && wordIndex >= 0 ? wordIndex : null,
+              word: word?.word ?? null,
+            }
+          : undefined,
+      );
+    }),
+  );
   const out: Record<string, StrongEntry> = {};
   codes.forEach((c, i) => (out[c] = translated[i]));
   return out;
