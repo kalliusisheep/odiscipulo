@@ -84,9 +84,14 @@ function buildQuestions(gameType: SharedGameType, difficulty: GameDifficulty, se
   if (gameType === "personagem") {
     const preferred = BIBLICAL_CHARACTER_ROUNDS.filter((item) => item.difficulty === difficulty);
     const fallback = BIBLICAL_CHARACTER_ROUNDS.filter((item) => item.difficulty !== difficulty);
-    const source = uniqueGameContent([...preferred, ...fallback], (item) => item.id);
+    const source = uniqueGameVariantContent([...preferred, ...fallback], (item) => item.id);
     const shuffled = seed ? shuffleWithSeed(source, seed) : [...source];
-    return uniqueGameContent(shuffled, (item) => item.id).map((item: BiblicalCharacter): SharedQuestion => {
+    const familyCards = uniqueGameContent(shuffled, (item) => item.id);
+    const primaryKeys = new Set(familyCards.map((item) => normalizeGameContentKey(item.id)));
+    const variantCards = uniqueGameVariantContent(shuffled, (item) => item.id)
+      .filter((item) => !primaryKeys.has(normalizeGameContentKey(item.id)));
+    const uniqueCards = [...familyCards, ...variantCards];
+    return uniqueCards.map((item: BiblicalCharacter): SharedQuestion => {
       const order = difficulty === "bereano" ? [2, 3, 1, 0] : difficulty === "dificil" ? [1, 2, 3, 0] : [0, 1, 2, 3];
       const hints = order.map((index) => item.hints[index]);
       return {
