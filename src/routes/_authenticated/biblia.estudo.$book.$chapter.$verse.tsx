@@ -99,7 +99,7 @@ export const Route = createFileRoute("/_authenticated/biblia/estudo/$book/$chapt
   component: VerseStudy,
 });
 
-const UNAVAILABLE = "Informação indisponível na base consultada.";
+
 
 /**
  * A interface mostra um único sentido contextual por ocorrência. A seleção
@@ -468,14 +468,14 @@ function VerseStudy() {
               <div className="flex items-end justify-between gap-3 px-1">
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
-                    Linha a linha
+                    {t("bible.lineByLine")}
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    Palavra original e sentido neste versículo
+                    {t("bible.wordOriginalMeaning")}
                   </p>
                 </div>
                 <span className="shrink-0 rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-bold text-muted-foreground">
-                  {words.length} termos
+                  {words.length} {t("bible.terms")}
                 </span>
               </div>
 
@@ -489,7 +489,7 @@ function VerseStudy() {
                       key={word.index}
                       type="button"
                       onClick={() => setOpenWord(word)}
-                      aria-label={"Abrir análise de " + word.word}
+                      aria-label={t("bible.openAnalysis") + " " + word.word}
                       className={
                         "group relative w-full rounded-[22px] px-3.5 py-4 text-left transition-all duration-200 " +
                         (index > 0 ? "border-t border-border/40 " : "") +
@@ -554,8 +554,7 @@ function VerseStudy() {
               </section>
 
               <SourceNote>
-                O sentido em português é selecionado para esta ocorrência. Toque em qualquer termo para
-                consultar o idioma original, Strong, ocorrências e pronúncia.
+                {t("bible.interlinearNote")}
               </SourceNote>
             </div>
           )}
@@ -651,8 +650,7 @@ function VerseStudy() {
                   </div>
 
                   <p className="mt-4 border-t border-border/60 pt-3 text-[10px] leading-relaxed text-muted-foreground">
-                    Análise assistida por IA a partir do texto original anotado. Confira os verbetes
-                    do léxico para aprofundar o estudo.
+                    {t("bible.aiAnalysisNote")}
                   </p>
                 </section>
               )}
@@ -776,8 +774,7 @@ function VerseStudy() {
                     </ol>
 
                     <p className="mt-3 rounded-2xl border border-border/60 bg-background/50 p-3 text-[10px] leading-relaxed text-muted-foreground">
-                      O sentido exibido foi selecionado para esta ocorrência. Os dados do idioma original
-                      e os códigos de Strong permanecem vinculados à fonte acadêmica consultada.
+                      {t("bible.lexiconSourceNote")}
                     </p>
                   </div>
                 </details>
@@ -978,7 +975,7 @@ function WordDetail({
               </p>
               {pronunciation && (
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  Pronúncia aproximada: <strong className="text-foreground">{pronunciation}</strong>
+                  {t("bible.approximatePronunciation")}: <strong className="text-foreground">{pronunciation}</strong>
                 </p>
               )}
             </div>
@@ -1123,8 +1120,7 @@ function WordDetail({
 
         {entry && (
           <SourceNote>
-            O sentido apresentado é contextual à ocorrência deste versículo; o texto original e o código
-            de Strong permitem conferir a análise na fonte acadêmica.
+            {t("bible.contextSourceNote")}
           </SourceNote>
         )}
       </div>
