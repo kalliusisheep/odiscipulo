@@ -421,7 +421,6 @@ function PersonCard({ person }: { person: Person }) {
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <p className="truncate text-sm font-bold">{person.display_name}</p>
-          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-success" title="Acompanhado" />
         </div>
         <p className="mt-1 truncate text-[11px] text-muted-foreground">@{person.username ?? "sem ID"} · {person.streak ?? 0} dias de ofensiva</p>
       </div>
