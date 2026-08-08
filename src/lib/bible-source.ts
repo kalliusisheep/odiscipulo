@@ -1584,7 +1584,8 @@ export async function translateStrongEntries(
   context?: Omit<LexiconContext, "wordIndex" | "word">,
 ): Promise<Record<string, StrongEntry>> {
   const codes = Object.keys(entries);
-  const originalWords = context?.originalWords ?? [];
+  if (!context) return entries;
+  const originalWords = context.originalWords ?? [];
   const translated = await Promise.all(
     codes.map(async (code) => {
       const occurrences = originalWords.filter(
