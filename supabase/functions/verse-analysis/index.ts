@@ -133,9 +133,11 @@ Deno.serve(async (req) => {
     return jsonResponse({ error: "Método não permitido" }, 405);
   }
 
+  let words: WordInput[] = [];
+
   try {
     const body = await req.json().catch(() => null);
-    const words = sanitizeWords(body);
+    words = sanitizeWords(body);
 
     if (words.length === 0) {
       return jsonResponse(
@@ -229,6 +231,14 @@ Deno.serve(async (req) => {
   } catch (error) {
     const details = error instanceof Error ? error.message : String(error);
     console.error("verse-analysis: erro inesperado —", details);
-    return jsonResponse({ error: "Erro interno ao analisar o versículo" }, 500);
+
+    if (words.length > 0) {
+      return jsonResponse(fallbackAnalysis(words));
+    }
+
+    return jsonResponse(
+      { error: "Envie ao menos uma palavra válida no campo words." },
+      400,
+    );
   }
 });
