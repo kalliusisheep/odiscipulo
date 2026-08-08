@@ -417,8 +417,11 @@ function contextualFallbackFromEntry(
   entry: StrongEntry | null | undefined,
   verseText: string | null = null,
 ): string {
-  if (code && CONTEXTUAL_STRONG_FALLBACKS[code]) {
-    return CONTEXTUAL_STRONG_FALLBACKS[code];
+  if (code === "H853") return CONTEXTUAL_STRONG_FALLBACKS.H853;
+
+  const fallback = code ? CONTEXTUAL_STRONG_FALLBACKS[code] : null;
+  if (fallback && contextualMeaningMatchesVerse(fallback, verseText)) {
+    return fallback;
   }
 
   const candidates = [
@@ -431,11 +434,16 @@ function contextualFallbackFromEntry(
     if (concise && !containsEnglishLexicon(concise)) {
       const beforeExplanation = concise.split(/\s+[—–-]\s+/)[0]?.trim() ?? concise;
       const firstMeaning = beforeExplanation.split(/[,;:]/)[0]?.trim() ?? beforeExplanation;
-      if (firstMeaning.length > 0) return firstMeaning;
+      if (
+        firstMeaning.length > 0 &&
+        contextualMeaningMatchesVerse(firstMeaning, verseText)
+      ) {
+        return firstMeaning;
+      }
     }
   }
 
-  return "sentido determinado pelo contexto";
+  return "sentido contextual não disponível";
 }
 
 function concisePortugueseMeaning(value: string | null | undefined): string | null {
@@ -528,6 +536,7 @@ export function contextualMeaningFor(
   index: number,
   word: OriginalWord | null | undefined,
   entry: StrongEntry | null | undefined,
+  verseText: string | null = null,
 ): string {
   const code = (entry?.code ?? word?.strong ?? null)?.toUpperCase() ?? null;
   const occurrenceKey = code
@@ -558,7 +567,7 @@ export function contextualMeaningFor(
     return contextual;
   }
 
-  return contextualFallbackFromEntry(code, entry);
+  return contextualFallbackFromEntry(code, entry, verseText);
 }
 
 /**
@@ -1515,13 +1524,20 @@ export async function translateStrongEntry(
         typeof data.strongsGloss === "string" && !containsEnglishLexicon(data.strongsGloss)
           ? data.strongsGloss.trim()
           : entry.strongsGloss;
-      const translatedContext =
-        typeof data.contextualMeaning === "string" &&
-        !containsEnglishLexicon(data.contextualMeaning) &&
-        !isUnavailableContextualMeaning(data.contextualMeaning) &&
-        contextualMeaningMatchesVerse(data.contextualMeaning, context?.verseText)
+      const translatedContextCandidate =
+        typeof data.contextualMeaning === "string"
           ? data.contextualMeaning.trim()
-          : entry.contextualMeaning ?? null;
+          : null;
+      const translatedContext =
+        translatedContextCandidate &&
+        !containsEnglishLexicon(translatedContextCandidate) &&
+        !isUnavailableContextualMeaning(translatedContextCandidate) &&
+        contextualMeaningMatchesVerse(translatedContextCandidate, context?.verseText)
+          ? translatedContextCandidate
+          : entry.contextualMeaning &&
+              contextualMeaningMatchesVerse(entry.contextualMeaning, context?.verseText)
+            ? entry.contextualMeaning
+            : null;
 
       return {
         ...entry,
