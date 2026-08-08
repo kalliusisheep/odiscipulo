@@ -151,14 +151,21 @@ function computeLayout(nodes: TreeNode[]): { positions: Positions; width: number
 }
 
 
-function computePortraitLayout(nodes: TreeNode[]): { positions: Positions; width: number; height: number; root: TreeNode | null } {
+function computePortraitLayout(
+  nodes: TreeNode[],
+  requestedColumns = 2,
+): { positions: Positions; width: number; height: number; root: TreeNode | null } {
   const root = nodes.find((node) => node.direction === "self") ?? null;
   const positions: Positions = new Map();
   if (!root) return { positions, width: 0, height: 0, root };
 
+  const columns = Math.min(5, Math.max(2, Math.floor(requestedColumns)));
   const columnGap = 32;
   const rowGap = 42;
-  const width = Math.max(MIN_CANVAS_W, NODE_CARD_W * 2 + columnGap + PAD * 2);
+  const width = Math.max(
+    MIN_CANVAS_W,
+    NODE_CARD_W * columns + columnGap * (columns - 1) + PAD * 2,
+  );
   const centerX = width / 2;
   const rowStep = NODE_CARD_H + rowGap;
   const ancestors = nodes
@@ -177,7 +184,7 @@ function computePortraitLayout(nodes: TreeNode[]): { positions: Positions; width
 
   const firstChildY = rootY + NODE_CARD_H + rowGap + NODE_CARD_H / 2;
   descendants.forEach((node, index) => {
-    const column = index % 2;
+    const column = index % columns;
     const row = Math.floor(index / 2);
     const x = PAD + NODE_CARD_W / 2 + column * (NODE_CARD_W + columnGap);
     positions.set(node.id, { x, y: firstChildY + row * rowStep });
@@ -433,7 +440,10 @@ function ArvorePage() {
 
 
   async function exportPdf() {
-    const layout = computePortraitLayout(nodes);
+    const discipleCount = nodes.filter((node) => node.direction === "down").length;
+    const exportColumns =
+      discipleCount <= 8 ? 2 : discipleCount <= 16 ? 3 : discipleCount <= 30 ? 4 : 5;
+    const layout = computePortraitLayout(nodes, exportColumns);
     if (!layout.root) return;
     setExporting(true);
     try {
