@@ -55,6 +55,7 @@ function LiderPage() {
   const [studySearch, setStudySearch] = useState("");
   const [selectedLessonId, setSelectedLessonId] = useState("");
   const [removingDisciple, setRemovingDisciple] = useState(false);
+  const [progressVersion, setProgressVersion] = useState(0);
   const [search, setSearch] = useState("");
   const [results, setResults] = useState<Person[]>([]);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -171,6 +172,7 @@ function LiderPage() {
     toast.success((lesson?.title ?? "Estudo") + " atribuído a " + selectedDisciple.display_name + ".");
     setDialog(null);
     setSelectedDisciple(null);
+    setProgressVersion((value) => value + 1);
     if (myId) await load(myId);
   };
 
@@ -200,6 +202,7 @@ function LiderPage() {
     toast.success(selectedDisciple.display_name + " foi removido do seu discipulado.");
     setDialog(null);
     setSelectedDisciple(null);
+    setProgressVersion((value) => value + 1);
     await load(myId);
   };
 
@@ -318,7 +321,7 @@ function LiderPage() {
 
         <Link to="/lider/arvore" className="group flex items-center gap-3 rounded-[22px] border border-primary/20 bg-primary/5 p-4 transition-all hover:-translate-y-0.5 hover:border-primary/45 hover:bg-primary/10"><span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/15 text-primary"><Network className="h-5 w-5" /></span><span className="min-w-0 flex-1"><span className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">Visão da jornada <span className="h-1 w-1 rounded-full bg-primary" /></span><span className="mt-1 block text-sm font-bold">Árvore de discipulado</span><span className="mt-0.5 block text-xs text-muted-foreground">Veja sua linha de discipulado, de cima a baixo</span></span><ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1" /></Link>
 
-        {myId && <DiscipleshipProgress leaderId={myId} />}
+        {myId && <DiscipleshipProgress key={progressVersion} leaderId={myId} />}
 
         {meetings.length > 0 && <section className="space-y-3"><div className="flex items-end justify-between gap-3 px-1"><div><p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-muted-foreground">Agenda</p><h2 className="mt-1 text-lg font-extrabold tracking-tight">Próximos encontros</h2></div><span className="rounded-full bg-ancient/10 px-2 py-1 text-[10px] font-bold text-ancient">{meetings.length} agendado{meetings.length === 1 ? "" : "s"}</span></div><div className="space-y-2.5">{meetings.map((meeting) => <div key={meeting.id} className="flex items-center gap-3 rounded-2xl border border-border/70 bg-surface/75 p-3.5"><span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ancient/10 text-ancient"><Clock3 className="h-4 w-4" /></span><div className="min-w-0 flex-1"><p className="truncate text-sm font-bold">{meeting.title}</p><p className="mt-1 truncate text-[11px] text-muted-foreground">{new Intl.DateTimeFormat("pt-BR", { dateStyle: "medium", timeStyle: "short" }).format(new Date(meeting.scheduled_at))}{meeting.location ? " · " + meeting.location : ""}</p></div></div>)}</div></section>}
 
