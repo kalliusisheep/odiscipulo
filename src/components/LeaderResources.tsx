@@ -286,7 +286,7 @@ export function LeaderResources({ completedLessons }: { completedLessons?: numbe
                       </span>
                       <span className="min-w-0">
                         <span className="block truncate text-sm font-semibold">{lesson.title}</span>
-                        <span className="block truncate text-xs text-muted-foreground">{lesson.verse.ref}</span>
+                        <span className="block truncate text-xs text-muted-foreground">{lesson.verses[0]?.ref}</span>
                       </span>
                       <ChevronRight className="ml-auto h-4 w-4 shrink-0 text-muted-foreground" />
                     </button>
@@ -438,20 +438,24 @@ function LessonFlow({
     setCompletionSaved(true);
   };
 
-  // ── Fixar: quiz ──────────────────────────────────────────────
-  const [quizAnswer, setQuizAnswer] = useState<number | null>(null);
-  const quizCorrect = quizAnswer === lesson.quiz.correctIndex;
+  const [quizAnswers, setQuizAnswers] = useState<Record<number, number>>({});
+  const allQuizzesCorrect = lesson.quizzes.every(
+    (quiz, quizIndex) => quizAnswers[quizIndex] === quiz.correctIndex,
+  );
 
-  // ── Fixar: relacione os termos (termo original ↔ significado) ─
-  const meaningOptions = useMemo(() => shuffled(lesson.keywords.map((k, i) => i)), [lesson.id]);
+  const meaningOptions = useMemo(
+    () => shuffled(lesson.keywords.map((_, index) => index)),
+    [lesson.id],
+  );
   const [armedTerm, setArmedTerm] = useState<number | null>(null);
   const [matches, setMatches] = useState<Record<number, number>>({});
   const [wrongPulse, setWrongPulse] = useState<number | null>(null);
   const allMatched = Object.keys(matches).length === lesson.keywords.length;
+  const canAdvanceFixar = allQuizzesCorrect && allMatched;
 
   const tryMatch = (termIndex: number, meaningIndex: number) => {
     if (termIndex === meaningIndex) {
-      setMatches((prev) => ({ ...prev, [termIndex]: meaningIndex }));
+      setMatches((previous) => ({ ...previous, [termIndex]: meaningIndex }));
       setArmedTerm(null);
     } else {
       setWrongPulse(meaningIndex);
@@ -460,11 +464,9 @@ function LessonFlow({
     }
   };
 
-  const canAdvanceFixar = quizCorrect && allMatched;
-
   const resetAndBack = () => {
     setStep("estudo");
-    setQuizAnswer(null);
+    setQuizAnswers({});
     setMatches({});
     setArmedTerm(null);
     onBack();
@@ -485,67 +487,177 @@ function LessonFlow({
           <div className="h-1.5 overflow-hidden rounded-full bg-surface">
             <div
               className="h-full bg-primary transition-all"
-              style={{ width: step === "estudo" ? "33%" : step === "fixar" ? "66%" : "100%" }}
+              style={{
+                width:
+                  step === "estudo" ? "33%" : step === "fixar" ? "66%" : "100%",
+              }}
             />
           </div>
           <div className="mt-1 flex justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
-            <span className={step === "estudo" ? "font-bold text-primary" : ""}>Estudo</span>
-            <span className={step === "fixar" ? "font-bold text-primary" : ""}>Fixar</span>
-            <span className={step === "aplicar" ? "font-bold text-primary" : ""}>Aplicar</span>
+            <span className={step === "estudo" ? "font-bold text-primary" : ""}>
+              Estudo
+            </span>
+            <span className={step === "fixar" ? "font-bold text-primary" : ""}>
+              Fixar
+            </span>
+            <span className={step === "aplicar" ? "font-bold text-primary" : ""}>
+              Aplicar
+            </span>
           </div>
         </div>
       </div>
 
       {step === "estudo" && (
-        <div className="space-y-4">
+        <div className="space-y-5">
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Tema</p>
-            <h3 className="text-xl font-bold">{lesson.title}</h3>
-          </div>
-
-          <div className="card-elevated space-y-3 p-4">
-            {lesson.intro.map((p, i) => (
-              <p key={i} className="text-sm leading-relaxed text-foreground/90">
-                {p}
-              </p>
-            ))}
-          </div>
-
-          <div className="rounded-2xl border border-border bg-surface p-4">
-            <p className="text-xs font-semibold uppercase tracking-wider text-primary">{lesson.verse.ref}</p>
-            <p className="scripture mt-2 text-base leading-relaxed">
-              {verseText(lesson.verse, bibleVersion)}
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Tema
             </p>
-            {lesson.verse.originals && lesson.verse.originals.length > 0 && (
-              <div className="mt-3 space-y-1.5 border-t border-border pt-3">
-                {lesson.verse.originals.map((o, i) => (
-                  <p key={i} className="text-xs leading-relaxed text-muted-foreground">
-                    <span className="font-semibold text-foreground">
-                      {o.word} <span className="italic">({o.translit})</span>:
-                    </span>{" "}
-                    {o.meaning}
-                  </p>
-                ))}
+            <h3 className="text-2xl font-extrabold tracking-tight">{lesson.title}</h3>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Conteúdo {lesson.difficulty ? `· nível ${lesson.difficulty}` : ""} · {lesson.xp} XP
+            </p>
+          </div>
+
+          <section className="rounded-[1.75rem] border border-border bg-surface/70 p-5 shadow-sm">
+            <div className="mb-4 flex items-center gap-2">
+              <span className="rounded-full bg-primary/15 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">
+                A ideia central
+              </span>
+              <Sparkles className="h-4 w-4 text-primary" />
+            </div>
+            <div className="space-y-4">
+              {lesson.intro.map((paragraph, index) => (
+                <p key={index} className="text-[15px] leading-7 text-foreground/90">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </section>
+
+          <div className="flex items-end justify-between gap-3 px-1 pt-1">
+            <div>
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">
+                Base bíblica
+              </p>
+              <h2 className="mt-1 text-xl font-extrabold">O que a Bíblia diz</h2>
+            </div>
+            <span className="rounded-full border border-border bg-surface px-2.5 py-1 text-[10px] font-bold text-muted-foreground">
+              {lesson.verses.length}{" "}
+              {lesson.verses.length === 1 ? "versículo" : "versículos"}
+            </span>
+          </div>
+
+          {lesson.verses.map((verse, verseIndex) => (
+            <div
+              key={`${verse.ref}-${verseIndex}`}
+              className="rounded-[1.75rem] border border-ancient/30 bg-gradient-to-br from-ancient/10 to-surface p-5 shadow-sm shadow-ancient/5"
+            >
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
+                {verse.ref} · {bibleVersion}
+              </p>
+              <p className="mt-2 block scripture text-base leading-relaxed">
+                “{verseText(verse, bibleVersion)}”
+              </p>
+              {verse.originals && verse.originals.length > 0 && (
+                <div className="mt-3 space-y-1.5 border-t border-ancient/20 pt-3">
+                  {verse.originals.map((original, originalIndex) => (
+                    <div key={originalIndex} className="text-xs">
+                      <span className="font-semibold text-ancient">{original.word}</span>
+                      <span className="text-muted-foreground">
+                        {" "}
+                        ({original.translit}, {original.lang}) —{" "}
+                      </span>
+                      <span className="text-foreground/80">{original.meaning}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+
+          <section className="rounded-[1.75rem] border border-border bg-surface/70 p-5 shadow-sm">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="rounded-full bg-primary/15 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">
+                Leitura guiada
+              </span>
+            </div>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+              Explicação
+            </p>
+            <p className="mt-2 text-[15px] leading-7 text-foreground/90">
+              {lesson.deepDive}
+            </p>
+          </section>
+
+          {lesson.deepen && (
+            <section className="space-y-3">
+              <div className="px-1">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">
+                  Aprofundamento
+                </p>
+                <h2 className="mt-1 text-xl font-extrabold">Olhar mais atento</h2>
               </div>
-            )}
-          </div>
+              {lesson.deepen.historicalContext && (
+                <div className="card-elevated p-5">
+                  <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">
+                    Contexto
+                  </p>
+                  <p className="mt-2 text-sm leading-7 text-foreground/90">
+                    {lesson.deepen.historicalContext}
+                  </p>
+                </div>
+              )}
+              {lesson.deepen.exegeticalNotes && (
+                <div className="card-elevated p-5">
+                  <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">
+                    Leitura do texto
+                  </p>
+                  <p className="mt-2 text-sm leading-7 text-foreground/90">
+                    {lesson.deepen.exegeticalNotes}
+                  </p>
+                </div>
+              )}
+              {lesson.deepen.theologicalDebate && (
+                <div className="card-elevated p-5">
+                  <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">
+                    Discernimento
+                  </p>
+                  <p className="mt-2 text-sm leading-7 text-foreground/90">
+                    {lesson.deepen.theologicalDebate}
+                  </p>
+                </div>
+              )}
+              {lesson.deepen.additionalVerses?.map((verse, verseIndex) => (
+                <div
+                  key={`additional-${verse.ref}-${verseIndex}`}
+                  className="rounded-[1.75rem] border border-ancient/30 bg-ancient/5 p-5"
+                >
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">
+                    {verse.ref} · {bibleVersion}
+                  </p>
+                  <p className="mt-2 scripture text-base leading-relaxed">
+                    “{verseText(verse, bibleVersion)}”
+                  </p>
+                </div>
+              ))}
+            </section>
+          )}
 
-          <div className="card-elevated p-4">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Aprofundando</p>
-            <p className="mt-2 text-sm leading-relaxed text-foreground/90">{lesson.deepDive}</p>
-          </div>
-
-          <blockquote className="rounded-2xl border-l-4 border-l-ancient bg-ancient/5 p-4">
-            <p className="scripture text-sm leading-relaxed">"{lesson.theologianQuote.text}"</p>
-            <p className="mt-2 text-xs font-semibold text-ancient">
+          <blockquote className="rounded-[1.75rem] border border-ancient/25 bg-ancient/5 p-5 shadow-sm">
+            <p className="scripture text-base leading-relaxed text-ancient">
+              “{lesson.theologianQuote.text}”
+            </p>
+            <p className="mt-2 text-xs font-semibold text-ancient/80">
               — {lesson.theologianQuote.author}
               {lesson.theologianQuote.source ? `, ${lesson.theologianQuote.source}` : ""}
             </p>
           </blockquote>
 
           <button
+            type="button"
             onClick={() => setStep("fixar")}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition-all hover:bg-primary-glow"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition-all hover:bg-primary-glow"
           >
             Continuar para Fixar <ArrowRight className="h-4 w-4" />
           </button>
@@ -554,52 +666,98 @@ function LessonFlow({
 
       {step === "fixar" && (
         <div className="space-y-5">
-          <div className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-primary" />
-            <h3 className="text-xl font-bold">Fixar</h3>
-          </div>
-
-          <div className="card-elevated p-4">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Quiz</p>
-            <p className="mt-1 text-sm font-medium">{lesson.quiz.question}</p>
-            <div className="mt-3 space-y-2">
-              {lesson.quiz.options.map((opt, i) => {
-                const isChosen = quizAnswer === i;
-                const isCorrectOpt = i === lesson.quiz.correctIndex;
-                let cls = "border-border bg-surface hover:border-primary/40";
-                if (quizAnswer !== null) {
-                  if (isChosen && isCorrectOpt) cls = "border-success bg-success/15 text-success";
-                  else if (isChosen) cls = "border-destructive bg-destructive/15 text-destructive";
-                  else if (isCorrectOpt && !quizCorrect) cls = "border-success/40 bg-success/5";
-                  else cls = "border-border bg-surface opacity-60";
-                }
-                return (
-                  <button
-                    key={i}
-                    disabled={quizCorrect}
-                    onClick={() => setQuizAnswer(i)}
-                    className={`w-full rounded-xl border p-3 text-left text-sm font-medium transition-all ${cls}`}
-                  >
-                    <div className="flex items-center gap-2">
-                      {quizAnswer !== null && isChosen && isCorrectOpt && <Check className="h-4 w-4" />}
-                      {quizAnswer !== null && isChosen && !isCorrectOpt && <X className="h-4 w-4" />}
-                      <span>{opt}</span>
-                    </div>
-                  </button>
-                );
-              })}
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Brain className="h-5 w-5 text-primary" />
+              <h3 className="text-xl font-bold">Fixar o aprendizado</h3>
             </div>
-            {quizAnswer !== null && lesson.quiz.explanation && (
-              <p className={`mt-3 rounded-xl p-3 text-xs ${quizCorrect ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"}`}>
-                {quizCorrect ? "Correto — " : "Não é essa. "} {lesson.quiz.explanation}
-              </p>
-            )}
+            <span className="text-xs font-semibold text-muted-foreground">
+              {Object.keys(quizAnswers).filter(
+                (index) => quizAnswers[Number(index)] !== undefined,
+              ).length}/{lesson.quizzes.length} perguntas
+            </span>
           </div>
 
-          <div className="card-elevated p-4">
+          <div className="rounded-[1.75rem] border border-primary/20 bg-primary/10 p-5">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary">
+              Agora, reflita
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-foreground/80">
+              Responda às perguntas para transformar a leitura em memória. Você pode tentar novamente até acertar.
+            </p>
+          </div>
+
+          {lesson.quizzes.map((quiz, quizIndex) => {
+            const chosen = quizAnswers[quizIndex];
+            const answered = chosen !== undefined;
+            const isCorrect = answered && chosen === quiz.correctIndex;
+            return (
+              <div key={quizIndex} className="card-elevated p-5">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  Pergunta {quizIndex + 1} de {lesson.quizzes.length}
+                </p>
+                <p className="mt-1 text-sm font-medium">{quiz.question}</p>
+                <div className="mt-3 space-y-2">
+                  {quiz.options.map((option, optionIndex) => {
+                    const isChosen = chosen === optionIndex;
+                    const isCorrectOption = optionIndex === quiz.correctIndex;
+                    let className = "border-border bg-surface hover:border-primary/40";
+                    if (answered) {
+                      if (isChosen && isCorrectOption) {
+                        className = "border-success bg-success/15 text-success";
+                      } else if (isChosen) {
+                        className = "border-destructive bg-destructive/15 text-destructive";
+                      } else if (isCorrectOption && !isCorrect) {
+                        className = "border-success/40 bg-success/5";
+                      } else {
+                        className = "border-border bg-surface opacity-60";
+                      }
+                    }
+                    return (
+                      <button
+                        key={optionIndex}
+                        type="button"
+                        disabled={isCorrect}
+                        onClick={() =>
+                          setQuizAnswers((previous) => ({
+                            ...previous,
+                            [quizIndex]: optionIndex,
+                          }))
+                        }
+                        className={`w-full rounded-2xl border p-3 text-left text-sm font-medium transition-all ${className}`}
+                      >
+                        <div className="flex items-center gap-2">
+                          {answered && isChosen && isCorrectOption && (
+                            <Check className="h-4 w-4" />
+                          )}
+                          {answered && isChosen && !isCorrectOption && (
+                            <X className="h-4 w-4" />
+                          )}
+                          <span>{option}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+                {answered && quiz.explanation && (
+                  <p
+                    className={`mt-3 rounded-xl p-3 text-xs ${
+                      isCorrect
+                        ? "bg-success/10 text-success"
+                        : "bg-destructive/10 text-destructive"
+                    }`}
+                  >
+                    {isCorrect ? "Correto — " : "Não é essa. "} {quiz.explanation}
+                  </p>
+                )}
+              </div>
+            );
+          })}
+
+          <div className="card-elevated p-5">
             <div className="flex items-center gap-2">
               <Shuffle className="h-4 w-4 text-primary" />
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-muted-foreground">
                 Relacione os termos
               </p>
             </div>
@@ -609,12 +767,13 @@ function LessonFlow({
 
             <div className="mt-3 grid grid-cols-2 gap-3">
               <div className="space-y-2">
-                {lesson.keywords.map((k, termIndex) => {
+                {lesson.keywords.map((keyword, termIndex) => {
                   const isMatched = matches[termIndex] !== undefined;
                   const isArmed = armedTerm === termIndex;
                   return (
                     <button
                       key={termIndex}
+                      type="button"
                       disabled={isMatched}
                       onClick={() => setArmedTerm(termIndex)}
                       className={`w-full rounded-xl border p-2.5 text-left text-xs font-semibold transition-all ${
@@ -625,8 +784,10 @@ function LessonFlow({
                             : "border-border bg-surface hover:border-primary/40"
                       }`}
                     >
-                      {k.word}
-                      <span className="block font-normal italic text-muted-foreground">({k.translit})</span>
+                      {keyword.word}
+                      <span className="block font-normal italic text-muted-foreground">
+                        ({keyword.translit})
+                      </span>
                     </button>
                   );
                 })}
@@ -638,8 +799,11 @@ function LessonFlow({
                   return (
                     <button
                       key={meaningIndex}
+                      type="button"
                       disabled={alreadyUsed || armedTerm === null}
-                      onClick={() => armedTerm !== null && tryMatch(armedTerm, meaningIndex)}
+                      onClick={() =>
+                        armedTerm !== null && tryMatch(armedTerm, meaningIndex)
+                      }
                       className={`w-full rounded-xl border p-2.5 text-left text-[11px] leading-snug transition-all ${
                         alreadyUsed
                           ? "border-success bg-success/15 text-success opacity-70"
@@ -660,45 +824,54 @@ function LessonFlow({
           </div>
 
           <button
+            type="button"
             onClick={() => setStep("aplicar")}
             disabled={!canAdvanceFixar}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary-glow disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary-glow disabled:opacity-50"
           >
             Continuar para Aplicar <ArrowRight className="h-4 w-4" />
           </button>
           {!canAdvanceFixar && (
             <p className="text-center text-[11px] text-muted-foreground">
-              Acerte o quiz e relacione todos os termos para prosseguir.
+              Acerte as perguntas e relacione todos os termos para prosseguir.
             </p>
           )}
         </div>
       )}
 
       {step === "aplicar" && (
-        <div className="space-y-4">
+        <div className="space-y-5">
           <div className="flex items-center gap-2">
             <Target className="h-5 w-5 text-primary" />
-            <h3 className="text-xl font-bold">Aplicar</h3>
+            <h3 className="text-xl font-bold">Levar para a vida</h3>
           </div>
 
-          <div className="card-elevated p-4">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Passo prático</p>
-            <p className="mt-2 text-sm leading-relaxed">{lesson.application}</p>
+          <div className="card-elevated p-5">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">
+              Aplicação prática
+            </p>
+            <p className="mt-2 text-[15px] leading-7">{lesson.application}</p>
           </div>
 
-          <div className="card-elevated border-l-4 border-l-ancient p-4">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-ancient">Desafio da semana</p>
-            <p className="mt-2 text-sm leading-relaxed">{lesson.weeklyChallenge}</p>
+          <div className="card-elevated border-l-4 border-l-ancient p-5">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-ancient">
+              Desafio da semana
+            </p>
+            <p className="mt-2 text-[15px] leading-7">{lesson.weeklyChallenge}</p>
           </div>
 
-          <div className="card-elevated p-4">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Oração sugerida</p>
+          <div className="card-elevated p-5">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">
+              Oração sugerida
+            </p>
             <p className="mt-2 scripture text-base leading-relaxed">{lesson.prayer}</p>
           </div>
 
-          <div className="card-elevated p-4">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">Pergunta de reflexão</p>
-            <p className="mt-2 text-sm font-medium">{lesson.reflectionQuestion}</p>
+          <div className="card-elevated p-5">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary">
+              Pergunta de reflexão
+            </p>
+            <p className="mt-2 text-[15px] leading-7">{lesson.reflectionQuestion}</p>
           </div>
 
           {onComplete ? (
@@ -706,10 +879,10 @@ function LessonFlow({
               type="button"
               onClick={() => void completeLesson()}
               disabled={completionSaved}
-              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 disabled:opacity-70"
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/20 disabled:opacity-70"
             >
               <Check className="h-4 w-4" />
-              {completionSaved ? "Conteúdo concluído" : "Concluir conteúdo"}
+              {completionSaved ? "Conteúdo concluído" : `Concluir conteúdo · ${lesson.xp} XP`}
             </button>
           ) : (
             <div className="flex items-center justify-center gap-2 rounded-2xl bg-primary/10 py-3 text-xs font-semibold text-primary">
@@ -739,3 +912,4 @@ function LessonFlow({
     </div>
   );
 }
+
