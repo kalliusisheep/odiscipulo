@@ -682,16 +682,17 @@ function ArvorePage() {
   const temLiderAcima = nodes.some((n) => n.direction === "up");
 
   return (
-    <div className="mx-auto max-w-xl space-y-5 px-4 pb-24 pt-6">
-      <header className="rounded-2xl border border-border/70 bg-card/45 px-4 py-4 shadow-[0_16px_48px_rgba(0,0,0,.14)]">
-        <div className="flex items-center gap-2">
-          <Link to="/lider" className="rounded-full p-2 hover:bg-surface">
-            <ArrowLeft className="h-5 w-5" />
-          </Link>
-          <div>
-            <p className="text-xs text-muted-foreground">Painel do Líder</p>
-            <h1 className="text-xl font-semibold">Árvore de Discipulado</h1>
-          </div>
+    <div className="mx-auto max-w-xl space-y-4 px-4 pb-24 pt-6">
+      <header className="flex items-center gap-3">
+        <Link
+          to="/lider"
+          className="-ml-1 rounded-full border border-border/60 p-2 text-muted-foreground transition hover:border-border hover:text-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </Link>
+        <div className="min-w-0">
+          <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">Painel do Líder</p>
+          <h1 className="truncate text-lg font-semibold tracking-tight">Árvore de Discipulado</h1>
         </div>
       </header>
 
@@ -705,12 +706,12 @@ function ArvorePage() {
         </div>
       ) : (
         <>
-          <p className="px-1 text-xs text-muted-foreground">
+          <p className="text-xs leading-relaxed text-muted-foreground">
             {temLiderAcima ? "Você tem um líder acima na cadeia. " : "Você está no topo da sua cadeia de discipulado. "}
             {totalAbaixo > 0 ? `${totalAbaixo} pessoa${totalAbaixo === 1 ? "" : "s"} abaixo de você.` : "Você ainda não tem discípulos."}
           </p>
 
-          <div className="flex items-center justify-center gap-4 rounded-xl border border-border bg-surface px-3 py-2 font-mono text-[10px] uppercase tracking-wide text-muted-foreground">
+          <div className="flex items-center justify-center gap-5 border-y border-border/50 py-2.5 text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
             <Legend color={C.primary} label="Você" />
             <Legend color={C.ancient} label="Liderança acima" />
             <Legend color={C.success} label="Discípulos" />
@@ -718,7 +719,7 @@ function ArvorePage() {
 
           <div
             ref={containerRef}
-            className="relative h-[62vh] w-full touch-none overflow-hidden rounded-[28px] border border-border/80 bg-background shadow-[0_24px_70px_rgba(0,0,0,.24)]"
+            className="relative h-[62vh] w-full touch-none overflow-hidden rounded-[24px] border border-border/60 bg-background"
             style={{ backgroundColor: C.bg }}
             onWheel={onWheel}
             onPointerDown={onPointerDown}
@@ -726,6 +727,11 @@ function ArvorePage() {
             onPointerUp={onPointerUp}
             onPointerCancel={onPointerUp}
           >
+            <div
+              className="pointer-events-none absolute inset-0 z-10 rounded-[24px]"
+              style={{ boxShadow: "inset 0 0 90px rgba(0,0,0,.45)" }}
+            />
+
             <div
               style={{
                 transform: `translate(${currentView.tx}px, ${currentView.ty}px) scale(${currentView.scale})`,
