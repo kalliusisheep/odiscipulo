@@ -114,8 +114,9 @@ function sensesFor(
   index: number,
   word: OriginalWord | null | undefined,
   entry: StrongEntry | null | undefined,
+  verseText: string | null = null,
 ): string[] {
-  return [contextualMeaningFor(book, chapter, verse, index, word, entry)];
+  return [contextualMeaningFor(book, chapter, verse, index, word, entry, verseText)];
 }
 
 function contextualMeaningForEntry(
@@ -493,7 +494,7 @@ function VerseStudy() {
               <section className="overflow-hidden rounded-[28px] border border-border/50 bg-surface/[0.72] p-1 shadow-[0_18px_48px_-38px_hsl(var(--primary))]">
                 {words.map((word, index) => {
                   const entry = word.strong ? entries[word.strong] : null;
-                  const sense = sensesFor(book, chapter, verse, index, word, entry)[0] ?? t("bible.infoUnavailable");
+                  const sense = sensesFor(book, chapter, verse, index, word, entry, text)[0] ?? t("bible.infoUnavailable");
 
                   return (
                     <button
@@ -574,7 +575,7 @@ function VerseStudy() {
             <div className="space-y-3">
               {words.map((word, index) => {
                 const entry = word.strong ? entries[word.strong] : null;
-                const senses = sensesFor(book, chapter, verse, index, word, entry);
+                const senses = sensesFor(book, chapter, verse, index, word, entry, text);
                 return (
                   <article
                     key={word.index}
