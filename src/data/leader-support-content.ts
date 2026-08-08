@@ -236,6 +236,21 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
       action: "Conversem sobre o que vocês entendem por casamento e quais sinais de maturidade ainda precisam crescer.",
       challenge: "Façam uma lista de áreas a amadurecer antes de qualquer noivado e revisem-na com um conselheiro.",
     },
+    {
+      title: "Futuro com sabedoria",
+      ref: "Provérbios 16:9",
+      verse: "Em seu coração o homem planeja o seu caminho, mas o Senhor determina os seus passos.",
+      keyword: ["מַחֲשָׁבָה", "machashavah", "planejamento — intenção humana submetida à direção soberana de Deus", "hebraico"],
+      focus: "Um relacionamento maduro conversa sobre futuro sem transformar seus planos em uma tentativa de controlar Deus.",
+      teaching: "Provérbios reconhece a responsabilidade de planejar e, ao mesmo tempo, lembra que a direção final pertence ao Senhor. No namoro, isso impede tanto a passividade quanto a presunção. O casal pode conversar sobre vocação, cidade, trabalho e casamento, mantendo humildade para rever caminhos quando Deus fechar uma porta ou mostrar uma direção melhor.",
+      question: "O que Provérbios 16:9 coloca lado a lado?",
+      options: ["Planejamento humano e direção do Senhor", "Pressa e impulsividade", "Riqueza e status", "Isolamento e controle"],
+      correctIndex: 0,
+      explanation: "O ser humano planeja, mas reconhece que o Senhor dirige os passos.",
+      action: "Conversem sobre um plano de futuro e escrevam também quais princípios não podem ser negociados para realizá-lo.",
+      challenge: "Ore durante trinta dias por direção sem usar a oração apenas para confirmar uma decisão já tomada.",
+    },
+
   ]),
   buildSupportModule("pornografia", "Pornografia", [
     {
@@ -648,6 +663,21 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
       action: "Ore especificamente por uma decisão financeira e escreva os conselhos responsáveis que receber.",
       challenge: "Antes de qualquer compra não essencial, espere 24 horas e peça sabedoria sobre ela.",
     },
+    {
+      title: "Mordomia fiel",
+      ref: "Mateus 25:21",
+      verse: "Muito bem, servo bom e fiel! Você foi fiel no pouco; eu o porei sobre o muito.",
+      keyword: ["πιστός", "pistos", "fiel — administrar com constância aquilo que Deus confiou, seja muito ou pouco", "grego"],
+      focus: "A fidelidade financeira começa no pouco que está nas mãos hoje, sem esperar uma condição ideal para agir com responsabilidade.",
+      teaching: "Na parábola dos talentos, Jesus elogia a fidelidade, não apenas o tamanho do resultado. O discípulo em dificuldade pode organizar, comunicar, trabalhar e cuidar do pouco recebido. Isso não romantiza a escassez nem culpa quem enfrenta estruturas injustas; oferece um princípio de responsabilidade possível agora. Recursos pequenos também podem ser administrados com verdade e propósito.",
+      question: "O que Jesus elogia no servo de Mateus 25:21?",
+      options: ["A quantidade que recebeu", "A fidelidade no pouco", "A aparência de sucesso", "A comparação com outros"],
+      correctIndex: 1,
+      explanation: "Jesus elogia a fidelidade do servo no que lhe foi confiado, antes de falar do muito.",
+      action: "Escolha um recurso pequeno — dinheiro, tempo ou habilidade — e defina uma administração fiel para ele.",
+      challenge: "Durante um mês, acompanhe esse recurso semanalmente e compartilhe o aprendizado com alguém maduro.",
+    },
+
   ]),
   buildSupportModule("vida-devocional", "Vida devocional", [
     {
@@ -776,6 +806,21 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
       action: "Use três alarmes discretos no dia para lembrar uma oração curta e uma gratidão específica.",
       challenge: "Ore por uma mesma pessoa ou situação durante sete dias e registre como sua percepção muda.",
     },
+    {
+      title: "Uma comunidade de oração",
+      ref: "Atos 2:42",
+      verse: "Eles se dedicavam ao ensino dos apóstolos e à comunhão, ao partir do pão e às orações.",
+      keyword: ["κοινωνία", "koinōnia", "comunhão — participação perseverante na vida espiritual compartilhada", "grego"],
+      focus: "A vida devocional não foi desenhada para ser uma experiência solitária; a igreja aprende a buscar Deus em conjunto.",
+      teaching: "Atos 2:42 apresenta quatro práticas que sustentavam a comunidade: ensino, comunhão, mesa e oração. O devocional pessoal é importante, mas não substitui a correção, o consolo e a adoração compartilhada. Participar de uma comunidade também torna a oração mais concreta, porque o discípulo aprende a carregar nomes, necessidades e gratidão de outras pessoas.",
+      question: "Quais práticas Atos 2:42 apresenta como parte da vida da igreja?",
+      options: ["Ensino, comunhão, partir do pão e orações", "Apenas reuniões de liderança", "Competição e silêncio", "Riqueza e influência"],
+      correctIndex: 0,
+      explanation: "A comunidade perseverava em ensino, comunhão, mesa e oração.",
+      action: "Escolha uma reunião ou pequeno grupo em que você possa participar regularmente e não apenas assistir.",
+      challenge: "Ore com outras pessoas em três dias diferentes desta semana, levando pedidos e gratidão reais.",
+    },
+
   ]),
   buildSupportModule("perdao", "Perdão", [
     {
@@ -904,6 +949,21 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
       action: "Escolha uma queixa recorrente e transforme-a em uma conversa ou decisão de soltá-la diante de Deus.",
       challenge: "Durante a semana, não use uma fragilidade conhecida do outro para ganhar uma discussão.",
     },
+    {
+      title: "Ministério da reconciliação",
+      ref: "2 Coríntios 5:18-19",
+      verse: "Deus nos reconciliou consigo mesmo por meio de Cristo e nos deu o ministério da reconciliação.",
+      keyword: ["καταλλάσσω", "katallassō", "reconciliar — restaurar uma relação rompida por meio de uma nova iniciativa", "grego"],
+      focus: "Quem recebe reconciliação com Deus torna-se participante de uma missão que procura pontes, verdade e restauração.",
+      teaching: "Paulo fundamenta o ministério da reconciliação na iniciativa de Deus em Cristo. Isso impede que o cristão trate perdão como uma habilidade moral isolada. Somos enviados como embaixadores, mas não como controladores da resposta do outro. Reconciliação responsável busca contato, confissão e reparação quando há segurança; também reconhece quando a restauração completa ainda depende de tempo e de arrependimento.",
+      question: "O que Deus confiou aos reconciliados em 2 Coríntios 5?",
+      options: ["Um ministério de vingança", "O ministério da reconciliação", "A obrigação de esquecer tudo", "O direito de controlar o outro"],
+      correctIndex: 1,
+      explanation: "Deus reconcilia em Cristo e envia seus discípulos como mensageiros dessa reconciliação.",
+      action: "Ore por uma relação rompida e escolha um passo seguro que dependa de você.",
+      challenge: "Faça um pedido de perdão ou uma iniciativa de paz sem exigir que a outra pessoa responda no mesmo momento.",
+    },
+
   ]),
   buildSupportModule("empatia", "Empatia", [
     {
@@ -1174,6 +1234,21 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
       action: "Escolha uma pessoa para acompanhar com regularidade em uma área de crescimento espiritual.",
       challenge: "Marque quatro encontros de discipulado e termine cada um com uma prática de obediência.",
     },
+    {
+      title: "Remir o tempo",
+      ref: "Efésios 5:15-16",
+      verse: "Tenham cuidado com a maneira como vocês vivem... aproveitando ao máximo cada oportunidade, porque os dias são maus.",
+      keyword: ["ἐξαγοράζω", "exagorazō", "aproveitar — resgatar oportunidades para o bem em vez de desperdiçá-las", "grego"],
+      focus: "Mordomia inclui tempo e atenção; servir bem exige escolher o que merece presença, não apenas acumular tarefas.",
+      teaching: "Paulo chama os cristãos a viver com cuidado e sabedoria em dias difíceis. Aproveitar o tempo não é produzir sem parar, mas perceber oportunidades de amor, testemunho e serviço. Uma agenda lotada pode continuar sendo infiel se nunca houver espaço para pessoas. O discípulo administra energia, descanso e atenção para estar disponível ao que Deus coloca diante dele.",
+      question: "O que Efésios 5:16 chama o cristão a fazer?",
+      options: ["Desperdiçar oportunidades", "Aproveitar ao máximo cada oportunidade", "Viver sem planejamento", "Trabalhar sem descanso"],
+      correctIndex: 1,
+      explanation: "Paulo chama a resgatar oportunidades para viver sabiamente em dias difíceis.",
+      action: "Revise sua semana e proteja um horário para serviço, descanso e presença com pessoas.",
+      challenge: "Elimine uma atividade que só ocupa espaço e use esse tempo em um serviço concreto.",
+    },
+
   ]),
   buildSupportModule("preparo-para-liderar", "Preparo para liderar", [
     {
@@ -1302,6 +1377,21 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
       action: "Prepare uma conversa difícil com conteúdo bíblico, objetivo claro e tempo para ouvir.",
       challenge: "Continue acompanhando uma pessoa por quatro semanas sem medir o cuidado apenas pela resposta dela.",
     },
+    {
+      title: "Cuide de si e do ensino",
+      ref: "1 Timóteo 4:16",
+      verse: "Atente bem para a sua própria vida e para a doutrina. Persevere nesses deveres, pois, agindo assim, você salvará tanto a si mesmo quanto aos que o ouvem.",
+      keyword: ["ἐπέχω", "epechō", "atentar — manter atenção cuidadosa à própria vida e ao ensino transmitido", "grego"],
+      focus: "Antes de liderar os outros por palavras, o líder precisa vigiar a própria vida, doutrina e perseverança.",
+      teaching: "Paulo não separa caráter e conteúdo. Timóteo deve cuidar de si e do ensino porque os dois influenciam as pessoas. Isso não significa que um líder seja o salvador do rebanho; significa que sua coerência pode proteger ou ferir quem o ouve. Revisão pessoal, estudo, descanso, supervisão e disposição para correção fazem parte da preparação.",
+      question: "Quais duas áreas Timóteo deveria vigiar?",
+      options: ["Sua popularidade e sua riqueza", "Sua vida e sua doutrina", "Sua aparência e seus títulos", "Sua agenda e seus seguidores"],
+      correctIndex: 1,
+      explanation: "Paulo une cuidado pessoal e fidelidade doutrinária como responsabilidades do líder.",
+      action: "Faça uma revisão mensal de vida, ensino, relacionamentos e limites com um mentor.",
+      challenge: "Escolha uma área negligenciada e estabeleça um ajuste pequeno, mensurável e acompanhado.",
+    },
+
   ]),
   buildSupportModule("batismo", "Batismo", [
     {
@@ -1430,6 +1520,20 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
       action: "Escolha um mandamento de Jesus e transforme-o em uma prática acompanhada nesta semana.",
       challenge: "Convide alguém para caminhar com você por trinta dias em uma área de obediência.",
     },
+    {
+      title: "Invocar o nome do Senhor",
+      ref: "Atos 22:16",
+      verse: "E agora, que está esperando? Levante-se, seja batizado e lave os seus pecados, invocando o nome dele.",
+      keyword: ["ἐπικαλέω", "epikaleō", "invocar — chamar pelo nome de Jesus em confiança e compromisso público", "grego"],
+      focus: "O batismo aponta para uma resposta pessoal: invocar Jesus e assumir publicamente uma nova direção.",
+      teaching: "A narrativa de Paulo mostra que fé não precisa permanecer indefinidamente em intenção privada. Ananias chama Paulo a levantar-se e responder ao que recebeu. O batismo não é um prêmio para quem já alcançou maturidade completa; é um passo consciente de fé que inaugura uma caminhada de obediência e comunidade.",
+      question: "Que resposta Atos 22:16 associa ao batismo?",
+      options: ["Esperar indefinidamente", "Levantar-se e invocar o nome do Senhor", "Buscar status", "Evitar a comunidade"],
+      correctIndex: 1,
+      explanation: "O texto chama Paulo a responder publicamente, invocando o nome de Jesus.",
+      action: "Se você ainda não foi batizado, converse com a igreja sobre preparo; se já foi, relembre a confissão que fez.",
+      challenge: "Compartilhe com alguém a razão bíblica pela qual o batismo representa uma decisão de seguir Jesus.",
+    
   ]),
 ];
 
