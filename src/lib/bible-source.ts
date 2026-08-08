@@ -1502,6 +1502,7 @@ export async function translateStrongEntry(
                 verseText: context.verseText,
                 word: context.word,
                 strong: entry.code,
+                wordIndex: context.wordIndex,
                 originalWords: context.originalWords?.map((item) => ({
                   word: item.word,
                   strong: item.strong,
