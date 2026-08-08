@@ -520,7 +520,7 @@ function VerseStudy() {
                               <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
                                 Pronúncia
                               </p>
-                              <p className="mt-1 truncate text-center text-xs font-semibold text-foreground">
+                              <p className="mt-1 truncate text-xs font-semibold text-foreground">
                                 {approximatePtBr(entry?.transliteration ?? null) ?? "—"}
                               </p>
                             </div>
