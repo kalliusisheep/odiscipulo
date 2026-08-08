@@ -12,6 +12,46 @@ function parseInput(data: unknown): TranslateInput {
 }
 
 /**
+ * Tradutor gratuito (endpoint público do Google Tradutor). Não consome
+ * créditos e cobre qualquer texto da interface. Usado como caminho principal.
+ */
+async function translateWithFreeService(text: string, language: "en" | "es"): Promise<string | null> {
+  try {
+    const url =
+      "https://translate.googleapis.com/translate_a/single?client=gtx&sl=pt-BR&dt=t&tl=" +
+      language +
+      "&q=" +
+      encodeURIComponent(text);
+    const response = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
+    if (!response.ok) return null;
+    const json = (await response.json()) as unknown;
+    const segments = Array.isArray(json) && Array.isArray(json[0]) ? (json[0] as unknown[]) : null;
+    if (!segments) return null;
+    const out = segments
+      .map((segment) => (Array.isArray(segment) && typeof segment[0] === "string" ? segment[0] : ""))
+      .join("");
+    const trimmed = out.trim();
+    return trimmed.length > 0 ? trimmed : null;
+  } catch {
+    return null;
+  }
+}
+
+async function translateAllFree(texts: string[], language: "en" | "es"): Promise<(string | null)[]> {
+  const results: (string | null)[] = new Array(texts.length).fill(null);
+  const CONCURRENCY = 8;
+  let cursor = 0;
+  const workers = Array.from({ length: Math.min(CONCURRENCY, texts.length) }, async () => {
+    while (cursor < texts.length) {
+      const index = cursor++;
+      results[index] = await translateWithFreeService(texts[index]!, language);
+    }
+  });
+  await Promise.all(workers);
+  return results;
+}
+
+/**
  * Tradução automática de qualquer texto da interface que não esteja no
  * dicionário estático. Usada pelo runtime de tradução para cobrir 100% do
  * conteúdo (lições, módulos, estudos etc.). O resultado é cacheado no cliente.
@@ -20,8 +60,16 @@ export const translateTexts = createServerFn({ method: "POST" })
   .inputValidator(parseInput)
   .handler(async ({ data }): Promise<{ translations: string[] }> => {
     if (data.texts.length === 0) return { translations: [] };
+
+    const free = await translateAllFree(data.texts, data.language);
+    const missing = data.texts.filter((_, index) => free[index] === null);
+    if (missing.length === 0) {
+      return { translations: data.texts.map((text, index) => free[index] ?? text) };
+    }
+
     const apiKey = process.env["LOVABLE_API_KEY"];
-    if (!apiKey) return { translations: data.texts };
+    if (!apiKey) return { translations: data.texts.map((text, index) => free[index] ?? text) };
+
 
     const targetName = data.language === "es" ? "Spanish (Spain/Latin America neutral)" : "English (US)";
     const payload = data.texts.map((text, index) => ({ id: index, text }));
