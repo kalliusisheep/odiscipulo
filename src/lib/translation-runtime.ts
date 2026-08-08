@@ -1,6 +1,8 @@
 import type { AppLanguage } from "@/lib/i18n";
+import { translateTexts } from "@/lib/translate.functions";
 
 type TranslationEntry = readonly [string, string, string];
+
 
 const ENTRIES: TranslationEntry[] = [
   ["Inicial", "Home", "Inicio"],
@@ -738,8 +740,165 @@ function translateValue(value: string, language: AppLanguage): { source: string;
     const match = normalized.match(item.pattern);
     if (match) return { source: normalized, value: item.render(match, language) };
   }
+  const original = reverseLookup(normalized) ?? normalized;
+  if (language === "pt-BR") {
+    return original === normalized ? null : { source: original, value: original };
+  }
+  const machine = machineLookup(original, language);
+  if (machine) return { source: original, value: machine };
+  enqueueForMachineTranslation(original, language);
   return null;
 }
+
+
+/* ------------------------------------------------------------------
+ * Tradução automática (IA) para tudo que não está no dicionário acima.
+ * Cada frase é traduzida uma única vez e guardada no localStorage, então
+ * a partir da segunda visita a troca de idioma é instantânea.
+ * ------------------------------------------------------------------ */
+
+const MACHINE_STORAGE_PREFIX = "disciple.autoTranslate.v2.";
+const machineCache = new Map<AppLanguage, Map<string, string>>();
+const pendingByLanguage = new Map<AppLanguage, Set<string>>();
+const inFlight = new Set<string>();
+let flushTimer: ReturnType<typeof setTimeout> | null = null;
+let rerunTranslation: (() => void) | null = null;
+
+function cacheFor(language: AppLanguage): Map<string, string> {
+  let cache = machineCache.get(language);
+  if (cache) return cache;
+  cache = new Map();
+  if (typeof window !== "undefined") {
+    try {
+      const raw = window.localStorage.getItem(MACHINE_STORAGE_PREFIX + language);
+      if (raw) {
+        const parsed = JSON.parse(raw) as Record<string, string>;
+        for (const [key, value] of Object.entries(parsed)) cache.set(key, value);
+      }
+    } catch {
+      /* cache corrompido: começa vazio */
+    }
+  }
+  machineCache.set(language, cache);
+  reverseDirty.add(language);
+  return cache;
+}
+
+const reverseCache = new Map<AppLanguage, Map<string, string>>();
+const reverseDirty = new Set<AppLanguage>();
+
+function reverseCacheFor(language: AppLanguage): Map<string, string> {
+  let reverse = reverseCache.get(language);
+  if (!reverse || reverseDirty.has(language)) {
+    reverse = new Map();
+    for (const [source, value] of cacheFor(language)) reverse.set(value, source);
+    reverseCache.set(language, reverse);
+    reverseDirty.delete(language);
+  }
+  return reverse;
+}
+
+
+
+function persistCache(language: AppLanguage) {
+  if (typeof window === "undefined") return;
+  try {
+    const cache = cacheFor(language);
+    window.localStorage.setItem(
+      MACHINE_STORAGE_PREFIX + language,
+      JSON.stringify(Object.fromEntries(cache)),
+    );
+  } catch {
+    /* quota cheia: segue apenas com o cache em memória */
+  }
+}
+
+function machineLookup(text: string, language: AppLanguage): string | null {
+  if (language === "pt-BR") return null;
+  return cacheFor(language).get(text) ?? null;
+}
+
+/** Dado um texto já traduzido, devolve o original em português (se conhecido). */
+function reverseLookup(text: string): string | null {
+  for (const language of ["en", "es"] as const) {
+    const reverse = reverseCacheFor(language);
+    const original = reverse.get(text);
+    if (original) return original;
+  }
+  return null;
+}
+
+
+/** Evita mandar para a IA coisas que não são texto de interface. */
+function shouldMachineTranslate(text: string): boolean {
+  if (text.length < 2 || text.length > 700) return false;
+  if (!/\p{L}{2}/u.test(text)) return false;
+  if (/^[\d\s.,:;%/+·×–—-]+$/.test(text)) return false;
+  if (/^[@#]/.test(text)) return false;
+  if (/^https?:\/\//i.test(text)) return false;
+  if (/^[\w.+-]+@[\w-]+\.[\w.]+$/.test(text)) return false;
+  return true;
+}
+
+function enqueueForMachineTranslation(text: string, language: AppLanguage) {
+  if (language === "pt-BR") return;
+  if (typeof window === "undefined") return;
+  if (!shouldMachineTranslate(text)) return;
+  if (cacheFor(language).has(text)) return;
+  if (inFlight.has(language + "\u0000" + text)) return;
+  let pending = pendingByLanguage.get(language);
+  if (!pending) {
+    pending = new Set();
+    pendingByLanguage.set(language, pending);
+  }
+  pending.add(text);
+  if (flushTimer) return;
+  flushTimer = setTimeout(() => {
+    flushTimer = null;
+    void flushMachineQueue();
+  }, 250);
+}
+
+async function flushMachineQueue() {
+  for (const [language, pending] of pendingByLanguage) {
+    if (language === "pt-BR" || pending.size === 0) continue;
+    const batch = [...pending].slice(0, 50);
+    batch.forEach((text) => {
+      pending.delete(text);
+      inFlight.add(language + "\u0000" + text);
+    });
+    try {
+      const result = await translateTexts({
+        data: { language: language === "es" ? "es" : "en", texts: batch },
+      });
+      const cache = cacheFor(language);
+      result.translations.forEach((value, index) => {
+        const source = batch[index];
+        // Guardar traduções idênticas ao original congelaria o texto em
+        // português caso o serviço estivesse indisponível naquele momento.
+        if (source && value && value !== source) cache.set(source, value);
+      });
+
+      reverseDirty.add(language);
+      persistCache(language);
+
+      rerunTranslation?.();
+    } catch {
+      /* falha de rede: o texto original continua visível */
+    } finally {
+      batch.forEach((text) => inFlight.delete(language + "\u0000" + text));
+    }
+  }
+  const stillPending = [...pendingByLanguage.values()].some((set) => set.size > 0);
+  if (stillPending && !flushTimer) {
+    flushTimer = setTimeout(() => {
+      flushTimer = null;
+      void flushMachineQueue();
+    }, 250);
+  }
+}
+
+
 
 const sourceByNode = new WeakMap<Text, string>();
 const renderedByNode = new WeakMap<Text, string>();
@@ -819,6 +978,7 @@ export function startTranslationRuntime(language: AppLanguage): () => void {
       run();
     });
   });
+  rerunTranslation = run;
   run();
   observer.observe(document.body, {
     childList: true,
@@ -827,5 +987,9 @@ export function startTranslationRuntime(language: AppLanguage): () => void {
     attributes: true,
     attributeFilter: ["placeholder", "aria-label", "title", "alt"],
   });
-  return () => observer.disconnect();
+  return () => {
+    if (rerunTranslation === run) rerunTranslation = null;
+    observer.disconnect();
+  };
 }
+
