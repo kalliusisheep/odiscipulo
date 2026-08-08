@@ -6,23 +6,34 @@ const corsHeaders = {
 const GATEWAY_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
 const MODELS = ["gemini-3.6-flash", "gemini-flash-latest"];
 
-// Traduz o "significado" e os sentidos do léxico (Brown-Driver-Briggs para
-// hebraico, Thayer para grego, via bolls.life) de inglês para português.
-// A fonte é acadêmica em inglês — aqui só traduzimos o texto exibido na
-// interface, sem alterar nem resumir o conteúdo. Chamado por
-// translateStrongEntry em src/lib/bible-source.ts, que cacheia o
-// resultado para sempre por número de Strong (cada palavra só passa por
-// aqui uma vez).
-const SYSTEM_PROMPT = `Você traduz verbetes de léxico bíblico acadêmico (Brown-Driver-Briggs para hebraico, Thayer para grego) do inglês para português do Brasil. Regras:
-- Tradução literal e precisa do sentido, sem paráfrase, sem resumir, sem adicionar informação.
-- Preserve números de Strong (ex. G1510, H3068), nomes próprios bíblicos e transliterações exatamente como estão.
-- Se um campo vier vazio ou nulo, devolva-o vazio ou nulo do mesmo jeito.
-- Responda APENAS com um JSON válido no formato exato recebido (mesmas chaves), sem markdown, sem texto fora do JSON.`;
+// Traduz os dados do léxico e, quando recebe uma referência concreta,
+// escolhe somente o sentido contextual daquela ocorrência bíblica.
+const SYSTEM_PROMPT = `Você é um tradutor técnico de léxico bíblico.
+Trabalhe com verbetes Brown-Driver-Briggs (hebraico) e Thayer (grego).
+Responda sempre em português do Brasil.
+Regras obrigatórias:
+- Traduza meaning, definitions e strongsGloss com fidelidade literal, sem inventar, resumir ou acrescentar comentário.
+- Quando contextual.reference, contextual.verseText e contextual.word estiverem presentes, produza contextualMeaning com UM ÚNICO sentido que se encaixe naquela ocorrência.
+- contextualMeaning deve ter de 1 a 8 palavras, sem lista de possibilidades, sem ponto e vírgula e sem explicação teológica.
+- Use a função gramatical contextual para partículas sem equivalente lexical. Para אֵת/H853, por exemplo, escreva: marcador do objeto direto (sem tradução isolada).
+- Não escolha um significado apenas porque é o mais comum no dicionário; respeite o texto do versículo e a função da palavra.
+- Se não houver dados contextuais suficientes, contextualMeaning deve ser null.
+- Preserve códigos Strong, nomes próprios e transliterações.
+- Responda APENAS com JSON válido, sem markdown, no formato exato recebido.`;
+
+type ContextualPayload = {
+  reference?: string;
+  verseText?: string | null;
+  word?: string | null;
+  strong?: string | null;
+  originalWords?: { word: string; strong: string | null }[];
+};
 
 type RequestBody = {
   meaning?: string | null;
   definitions?: string[];
   strongsGloss?: string | null;
+  contextual?: ContextualPayload | null;
 };
 
 Deno.serve(async (req) => {
@@ -37,9 +48,10 @@ Deno.serve(async (req) => {
       meaning: body.meaning ?? null,
       definitions: body.definitions ?? [],
       strongsGloss: body.strongsGloss ?? null,
+      contextual: body.contextual ?? null,
     };
-    if (!payload.meaning && payload.definitions.length === 0 && !payload.strongsGloss) {
-      return Response.json(payload, { headers: corsHeaders });
+    if (!payload.meaning && payload.definitions.length === 0 && !payload.strongsGloss && !payload.contextual) {
+      return Response.json({ ...payload, contextualMeaning: null }, { headers: corsHeaders });
     }
 
     let lastError = "";
@@ -62,25 +74,29 @@ Deno.serve(async (req) => {
         const raw = (data.choices?.[0]?.message?.content ?? "{}").replace(/```json|```/g, "").trim();
         try {
           const parsed = JSON.parse(raw);
+          const contextualMeaning = typeof parsed.contextualMeaning === "string"
+            ? parsed.contextualMeaning.trim()
+            : null;
           return Response.json(
             {
               meaning: typeof parsed.meaning === "string" ? parsed.meaning : payload.meaning,
               definitions: Array.isArray(parsed.definitions) ? parsed.definitions : payload.definitions,
               strongsGloss: typeof parsed.strongsGloss === "string" ? parsed.strongsGloss : payload.strongsGloss,
+              contextualMeaning: contextualMeaning || null,
             },
             { headers: corsHeaders },
           );
         } catch {
-          return Response.json(payload, { headers: corsHeaders });
+          return Response.json({ ...payload, contextualMeaning: null }, { headers: corsHeaders });
         }
       }
       lastError = `${res.status}: ${(await res.text().catch(() => "")).slice(0, 200)}`;
     }
 
     console.error("translate-lexicon:", lastError);
-    return Response.json(payload, { headers: corsHeaders });
+    return Response.json({ ...payload, contextualMeaning: null }, { headers: corsHeaders });
   } catch (e) {
     console.error("translate-lexicon:", e instanceof Error ? e.message : e);
-    return Response.json({ meaning: null, definitions: [], strongsGloss: null }, { headers: corsHeaders });
+    return Response.json({ meaning: null, definitions: [], strongsGloss: null, contextualMeaning: null }, { headers: corsHeaders });
   }
 });
