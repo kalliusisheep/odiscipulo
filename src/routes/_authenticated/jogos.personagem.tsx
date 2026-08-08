@@ -80,6 +80,13 @@ function PersonagemPage() {
   }, [character, difficulty]);
   const firstHint = orderedHints[0] ? formatFirstHint(orderedHints[0]) : "";
 
+  useEffect(() => {
+    if (phase !== "round-result") return;
+    window.requestAnimationFrame(() => {
+      document.querySelector(".game-answer-feedback")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }, [phase]);
+
   const filteredCharacters = useMemo(
     () => BIBLICAL_CHARACTER_ROUNDS.filter((item) => item.difficulty === difficulty),
     [difficulty],
