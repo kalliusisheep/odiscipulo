@@ -331,7 +331,6 @@ const VERIFIED_CONTEXTUAL_MEANINGS: Record<string, string> = {
   "1:1:1:H7225": "No princípio",
   "1:1:1:H1254": "criou",
   "1:1:1:H430": "Deus",
-  "1:1:1:H853": "marcador do objeto direto (sem tradução isolada)",
   "1:1:1:H8064": "os céus",
   "1:1:1:H776": "a terra",
   "1:1:2:H776": "a terra",
@@ -344,6 +343,12 @@ const VERIFIED_CONTEXTUAL_MEANINGS: Record<string, string> = {
   "1:1:2:H4325": "águas",
   "1:1:2:H5921": "sobre",
   "1:1:2:H7363": "pairava",
+};
+
+/** Sentidos específicos quando a mesma partícula aparece mais de uma vez na ocorrência. */
+const VERIFIED_CONTEXTUAL_OCCURRENCES: Record<string, string> = {
+  "1:1:1:3:H853": "objeto direto: os céus",
+  "1:1:1:5:H853": "objeto direto: a terra",
 };
 
 const CONTEXTUAL_STRONG_FALLBACKS: Record<string, string> = {
@@ -361,7 +366,7 @@ const CONTEXTUAL_STRONG_FALLBACKS: Record<string, string> = {
   H1961: "era",
   H1254: "criou",
   H7225: "No princípio",
-  H853: "marcador do objeto direto (sem tradução isolada)",
+  H853: "marca o objeto direto",
   G2532: "e",
   G3588: "o",
   G2316: "Deus",
@@ -424,14 +429,32 @@ export function contextualMeaningFor(
   entry: StrongEntry | null | undefined,
 ): string {
   const code = entry?.code ?? word?.strong ?? null;
+  const occurrenceKey = code
+    ? book + ":" + chapter + ":" + verse + ":" + index + ":" + code
+    : null;
+  const occurrenceMeaning = occurrenceKey
+    ? VERIFIED_CONTEXTUAL_OCCURRENCES[occurrenceKey]
+    : null;
+  if (occurrenceMeaning) return occurrenceMeaning;
+
+  // אֵת (H853) exerce função gramatical no hebraico bíblico; no português,
+  // a forma correta de apresentar seu valor é explicar a função na frase.
+  // Isso evita exibir um rótulo vazio ou sugerir uma tradução lexical inexistente.
+  if (code === "H853") return CONTEXTUAL_STRONG_FALLBACKS.H853;
+
   const verified = code
     ? VERIFIED_CONTEXTUAL_MEANINGS[book + ":" + chapter + ":" + verse + ":" + code]
     : null;
   if (verified) return verified;
 
-  void index;
   const contextual = concisePortugueseMeaning(entry?.contextualMeaning);
-  if (contextual && !containsEnglishLexicon(contextual)) return contextual;
+  if (
+    contextual &&
+    !containsEnglishLexicon(contextual) &&
+    !/sem tradução isolada|sentido contextual indisponível|informação indisponível/i.test(contextual)
+  ) {
+    return contextual;
+  }
 
   return contextualFallbackFromEntry(code, entry);
 }
