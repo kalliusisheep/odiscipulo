@@ -202,16 +202,29 @@ const MIN_SCALE = 0.25;
 const MAX_SCALE = 3;
 const clampScale = (s: number) => Math.min(MAX_SCALE, Math.max(MIN_SCALE, s));
 
+type ViewState = {
+  scale: number;
+  tx: number;
+  ty: number;
+};
+
+const DEFAULT_VIEW: ViewState = {
+  scale: 1,
+  tx: PAD,
+  ty: PAD,
+};
+
 function ArvorePage() {
   const [nodes, setNodes] = useState<TreeNode[]>([]);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
-  const [view, setView] = useState({ scale: 1, tx: PAD, ty: PAD });
+  const [view, setView] = useState<ViewState>(DEFAULT_VIEW);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const pointers = useRef(new Map<number, { x: number; y: number }>());
   const dragRef = useRef<{ x: number; y: number; tx: number; ty: number } | null>(null);
   const pinchRef = useRef<{ dist: number; scale: number } | null>(null);
+  const currentView = view ?? DEFAULT_VIEW;
 
   useEffect(() => {
     let cancelled = false;
@@ -295,15 +308,16 @@ function ArvorePage() {
 
   useEffect(() => {
     if (layout.width && layout.height) {
-      setView((v) => ({ ...v, tx: 24, ty: 24 }));
+      setView((v) => ({ ...(v ?? DEFAULT_VIEW), tx: 24, ty: 24 }));
     }
   }, [layout.width, layout.height]);
 
   function zoomAt(cx: number, cy: number, newScaleRaw: number) {
     setView((v) => {
+      const current = v ?? DEFAULT_VIEW;
       const newScale = clampScale(newScaleRaw);
-      const k = newScale / v.scale;
-      return { scale: newScale, tx: cx - k * (cx - v.tx), ty: cy - k * (cy - v.ty) };
+      const k = newScale / current.scale;
+      return { scale: newScale, tx: cx - k * (cx - current.tx), ty: cy - k * (cy - current.ty) };
     });
   }
 
@@ -311,18 +325,18 @@ function ArvorePage() {
     e.preventDefault();
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect) return;
-    zoomAt(e.clientX - rect.left, e.clientY - rect.top, view.scale * (1 - e.deltaY * 0.0015));
+    zoomAt(e.clientX - rect.left, e.clientY - rect.top, currentView.scale * (1 - e.deltaY * 0.0015));
   }
 
   function onPointerDown(e: React.PointerEvent) {
     (e.target as Element).setPointerCapture?.(e.pointerId);
     pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (pointers.current.size === 1) {
-      dragRef.current = { x: e.clientX, y: e.clientY, tx: view.tx, ty: view.ty };
+      dragRef.current = { x: e.clientX, y: e.clientY, tx: currentView.tx, ty: currentView.ty };
       pinchRef.current = null;
     } else if (pointers.current.size === 2) {
       const pts = [...pointers.current.values()];
-      pinchRef.current = { dist: Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y), scale: view.scale };
+      pinchRef.current = { dist: Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y), scale: currentView.scale };
       dragRef.current = null;
     }
   }
@@ -333,11 +347,11 @@ function ArvorePage() {
     if (pointers.current.size === 2 && pinchRef.current) {
       const pts = [...pointers.current.values()];
       const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
-      setView((v) => ({ ...v, scale: clampScale(pinchRef.current!.scale * (dist / pinchRef.current!.dist)) }));
+      setView((v) => ({ ...(v ?? DEFAULT_VIEW), scale: clampScale(pinchRef.current!.scale * (dist / pinchRef.current!.dist)) }));
     } else if (pointers.current.size === 1 && dragRef.current) {
       const dx = e.clientX - dragRef.current.x;
       const dy = e.clientY - dragRef.current.y;
-      setView((v) => ({ ...v, tx: dragRef.current!.tx + dx, ty: dragRef.current!.ty + dy }));
+      setView((v) => ({ ...(v ?? DEFAULT_VIEW), tx: dragRef.current!.tx + dx, ty: dragRef.current!.ty + dy }));
     }
   }
 
@@ -345,7 +359,7 @@ function ArvorePage() {
     pointers.current.delete(e.pointerId);
     if (pointers.current.size === 1) {
       const [[, p]] = [...pointers.current.entries()];
-      dragRef.current = { x: p.x, y: p.y, tx: view.tx, ty: view.ty };
+      dragRef.current = { x: p.x, y: p.y, tx: currentView.tx, ty: currentView.ty };
     } else {
       dragRef.current = null;
       pinchRef.current = null;
@@ -356,7 +370,7 @@ function ArvorePage() {
     const rect = containerRef.current?.getBoundingClientRect();
     const cx = rect ? rect.width / 2 : 0;
     const cy = rect ? rect.height / 2 : 0;
-    zoomAt(cx, cy, view.scale * factor);
+    zoomAt(cx, cy, currentView.scale * factor);
   }
 
   function resetView() {
@@ -675,7 +689,7 @@ function ArvorePage() {
           >
             <div
               style={{
-                transform: `translate(${view.tx}px, ${view.ty}px) scale(${view.scale})`,
+                transform: `translate(${currentView.tx}px, ${currentView.ty}px) scale(${currentView.scale})`,
                 transformOrigin: "0 0",
                 width: layout.width,
                 height: layout.height,
