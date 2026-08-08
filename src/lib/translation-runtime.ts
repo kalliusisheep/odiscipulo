@@ -801,6 +801,17 @@ function machineLookup(text: string, language: AppLanguage): string | null {
   return cacheFor(language).get(text) ?? null;
 }
 
+/** Dado um texto já traduzido, devolve o original em português (se conhecido). */
+function reverseLookup(text: string): string | null {
+  for (const language of ["en", "es"] as const) {
+    const reverse = reverseCacheFor(language);
+    const original = reverse.get(text);
+    if (original) return original;
+  }
+  return null;
+}
+
+
 /** Evita mandar para a IA coisas que não são texto de interface. */
 function shouldMachineTranslate(text: string): boolean {
   if (text.length < 2 || text.length > 700) return false;
