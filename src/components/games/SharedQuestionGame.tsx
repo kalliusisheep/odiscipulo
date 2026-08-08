@@ -194,6 +194,13 @@ export function SharedQuestionGame({
   const timeLimit = timeLimitFor(gameType, difficulty);
 
   useEffect(() => {
+    if (phase !== "answered") return;
+    window.requestAnimationFrame(() => {
+      document.querySelector(".game-answer-feedback")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }, [phase]);
+
+  useEffect(() => {
     const viewport = window.visualViewport;
     if (!viewport) return;
     const updateKeyboardInset = () => {
