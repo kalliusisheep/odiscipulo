@@ -10,6 +10,21 @@ export function normalizeGameContentKey(value: string) {
     .replace(/^-+|-+$/g, "");
 }
 
+export function readRecentGameKeys(storageKey: string) {
+  if (typeof window === "undefined") return [] as string[];
+
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(storageKey) ?? "[]");
+    if (!Array.isArray(parsed)) return [];
+
+    return parsed
+      .filter((value): value is string => typeof value === "string")
+      .map(normalizeGameContentKey);
+  } catch {
+    return [];
+  }
+}
+
 export function canonicalGameContentKey(value: string) {
   return normalizeGameContentKey(
     value
