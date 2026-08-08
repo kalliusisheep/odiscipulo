@@ -44,25 +44,25 @@ function normalizeSupportText(value: string): string {
 
 const COMPLETE_SUPPORT_VERSES: Record<string, string> = {
   "Efésios 4:31-32":
-    "Livrem-se de toda amargura, indignação e ira, gritaria e calúnia, bem como de toda maldade. Sejam bondosos e compassivos uns para com os outros, perdoando-se mutuamente, assim como Deus perdoou vocês em Cristo.",
+    "Livrem-se de toda amargura, indignação e ira, gritaria e calúnia, bem como de toda maldade. Sejam bondosos e compassivos uns para com os outros, perdoando-se mutuamente, como Deus os perdoou em Cristo.",
   "Efésios 5:15-16":
-    "Tenham cuidado com a maneira como vocês vivem; que não seja como insensatos, mas como sábios, aproveitando ao máximo cada oportunidade, porque os dias são maus.",
+    "Tenham cuidado com a sua maneira de viver: que não seja como insensatos, mas como sábios, aproveitando ao máximo cada oportunidade, porque os dias são maus.",
   "João 21:15-17":
-    "Quando terminaram de comer, Jesus disse a Simão Pedro: “Simão, filho de João, você me ama mais do que estes?” Disse ele: “Sim, Senhor, tu sabes que te amo”. Disse Jesus: “Cuide dos meus cordeiros”. Pela segunda vez Jesus disse: “Simão, filho de João, você me ama?” Ele respondeu: “Sim, Senhor, tu sabes que te amo”. Disse Jesus: “Pastoreie as minhas ovelhas”. Pela terceira vez ele lhe disse: “Simão, filho de João, você me ama?” Pedro ficou magoado por Jesus lhe ter perguntado pela terceira vez “Você me ama?” e lhe disse: “Senhor, tu sabes todas as coisas e sabes que te amo”. Jesus disse: “Cuide das minhas ovelhas.”",
+    "Depois de comerem, Jesus perguntou a Simão Pedro: “Simão, filho de João, você me ama mais do que estes?” Ele disse: “Sim, Senhor, tu sabes que te amo”. Jesus disse: “Cuide dos meus cordeiros”. Novamente, Jesus disse: “Simão, filho de João, você me ama?” Ele respondeu: “Sim, Senhor, tu sabes que te amo”. Disse Jesus: “Pastoreie as minhas ovelhas”. Pela terceira vez, ele lhe disse: “Simão, filho de João, você me ama?” Pedro ficou triste porque Jesus lhe perguntou pela terceira vez “Você me ama?” e lhe disse: “Senhor, tu sabes todas as coisas e sabes que te amo”. Jesus lhe disse: “Cuide das minhas ovelhas.”",
   "Atos 17:11":
-    "Os bereanos eram mais nobres do que os tessalonicenses, pois receberam a mensagem com grande interesse, examinando todos os dias as Escrituras para ver se tudo era assim mesmo.",
+    "Os bereanos eram mais nobres do que os de Tessalônica, pois receberam a mensagem com grande interesse, examinando todos os dias as Escrituras, para ver se era verdade o que eles anunciavam.",
   "Atos 8:36-38":
-    "Prosseguindo pela estrada, chegaram a um lugar onde havia água. O eunuco disse: “Olhe, aqui há água. Que me impede de ser batizado?” Então mandou parar a carruagem. Filipe e o eunuco desceram à água, e Filipe o batizou.",
+    "Prosseguindo pela estrada, chegaram a um lugar onde havia água. O eunuco disse: “Olhe, aqui há água. Que me impede de ser batizado?” Assim, deu ordem para parar a carruagem. Então, Filipe e o eunuco desceram à água, e Filipe o batizou.",
   "Gálatas 3:27-28":
-    "Pois os que em Cristo foram batizados, de Cristo se revestiram. Não há judeu nem grego, escravo nem livre, homem nem mulher; pois todos são um em Cristo Jesus.",
+    "Pois os que em Cristo foram batizados vestiram-se de Cristo. Não há judeu nem grego, nem escravo nem livre, nem homem nem mulher, pois todos são um em Cristo Jesus.",
   "Atos 2:41-42":
-    "Os que aceitaram a mensagem foram batizados, e naquele dia houve um acréscimo de cerca de três mil pessoas. Eles se dedicavam ao ensino dos apóstolos e à comunhão, ao partir do pão e às orações.",
+    "Os que aceitaram a mensagem foram batizados, e naquele dia houve um acréscimo ao número de seguidores de aproximadamente três mil pessoas. Eles se dedicavam ao ensino dos apóstolos e à comunhão, ao partir do pão e às orações.",
   "Isaías 14:13-14":
-    "Você dizia no coração: “Subirei aos céus; erguerei o meu trono acima das estrelas de Deus; sentar-me-ei no monte da assembleia, no ponto mais elevado do monte santo. Subirei mais alto que as nuvens; serei como o Altíssimo”.",
+    "Você, que dizia no seu coração: “Subirei aos céus, erguerei o meu trono acima das estrelas de Deus; eu me assentarei no monte da assembleia, no ponto mais elevado do monte santo. Subirei acima das mais altas nuvens; serei como o Altíssimo”.",
   "Miqueias 6:8":
-    "Ele mostrou a você, ó homem, o que é bom e o que o Senhor exige: que você pratique a justiça, ame a fidelidade e ande humildemente com o seu Deus.",
+    "Ele mostrou a você, ó homem, o que é bom e o que o Senhor exige de você: pratique a justiça, ame a lealdade e ande humildemente com o seu Deus.",
   "1 Coríntios 7:3-4":
-    "O marido cumpra os seus deveres conjugais para com a sua mulher, e da mesma forma a mulher para com o seu marido. A mulher não tem autoridade sobre o seu próprio corpo, mas sim o marido. Da mesma forma, o marido não tem autoridade sobre o seu próprio corpo, mas sim a mulher.",
+    "O marido deve cumprir os deveres conjugais para com a sua mulher, e, da mesma forma, a mulher, para com o seu marido. A mulher não tem autoridade sobre o próprio corpo, mas sim o marido. Da mesma forma, o marido não tem autoridade sobre o próprio corpo, mas sim a mulher.",
 };
 
 function normalizeSupportVerse(verse: Verse): Verse {
@@ -1055,7 +1055,7 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
     {
       title: "Perdoar como fomos perdoados",
       ref: "Efésios 4:31-32",
-      verse: "Livrem-se de toda amargura, indignação e ira, gritaria e calúnia, bem como de toda maldade. Sejam bondosos e compassivos uns para com os outros, perdoando-se mutuamente, assim como Deus perdoou vocês em Cristo.",
+      verse: "Livrem-se de toda amargura, indignação e ira, gritaria e calúnia, bem como de toda maldade. Sejam bondosos e compassivos uns para com os outros, perdoando-se mutuamente, como Deus os perdoou em Cristo.",
       keyword: ["χαρίζομαι", "charizomai", "perdoar por graça — conceder perdão como um presente, não como pagamento do outro", "grego"],
       focus: "Paulo não manda fingir que nada aconteceu; ele chama a substituir amargura por bondade e perdão ancorado em Cristo.",
       teaching: "O texto nomeia sentimentos que podem criar moradia na pessoa: amargura, indignação e ira. Perdoar é um processo de entregar a Deus o direito de vingança e escolher não alimentar a dívida como identidade. Isso pode coexistir com distância, denúncia e limites quando há abuso. A reconciliação exige verdade e segurança; o perdão não exige exposição ao perigo.",
@@ -1452,7 +1452,7 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
     {
       title: "Remir o tempo",
       ref: "Efésios 5:15-16",
-      verse: "Tenham cuidado com a maneira como vocês vivem; que não seja como insensatos, mas como sábios, aproveitando ao máximo cada oportunidade, porque os dias são maus.",
+      verse: "Tenham cuidado com a sua maneira de viver: que não seja como insensatos, mas como sábios, aproveitando ao máximo cada oportunidade, porque os dias são maus.",
       keyword: ["ἐξαγοράζω", "exagorazō", "aproveitar — resgatar oportunidades para o bem em vez de desperdiçá-las", "grego"],
       focus: "Mordomia inclui tempo e atenção; servir bem exige escolher o que merece presença, não apenas acumular tarefas.",
       teaching: "Paulo chama os cristãos a viver com cuidado e sabedoria em dias difíceis. Aproveitar o tempo não é produzir sem parar, mas perceber oportunidades de amor, testemunho e serviço. Uma agenda lotada pode continuar sendo infiel se nunca houver espaço para pessoas. O discípulo administra energia, descanso e atenção para estar disponível ao que Deus coloca diante dele.",
@@ -1525,7 +1525,7 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
     {
       title: "Cuidar de pessoas",
       ref: "João 21:15-17",
-      verse: "Quando terminaram de comer, Jesus disse a Simão Pedro: “Simão, filho de João, você me ama mais do que estes?” Disse ele: “Sim, Senhor, tu sabes que te amo”. Disse Jesus: “Cuide dos meus cordeiros”. Pela segunda vez Jesus disse: “Simão, filho de João, você me ama?” Ele respondeu: “Sim, Senhor, tu sabes que te amo”. Disse Jesus: “Pastoreie as minhas ovelhas”. Pela terceira vez ele lhe disse: “Simão, filho de João, você me ama?” Pedro ficou magoado por Jesus lhe ter perguntado pela terceira vez “Você me ama?” e lhe disse: “Senhor, tu sabes todas as coisas e sabes que te amo”. Jesus disse: “Cuide das minhas ovelhas.”",
+      verse: "Depois de comerem, Jesus perguntou a Simão Pedro: “Simão, filho de João, você me ama mais do que estes?” Ele disse: “Sim, Senhor, tu sabes que te amo”. Jesus disse: “Cuide dos meus cordeiros”. Novamente, Jesus disse: “Simão, filho de João, você me ama?” Ele respondeu: “Sim, Senhor, tu sabes que te amo”. Disse Jesus: “Pastoreie as minhas ovelhas”. Pela terceira vez, ele lhe disse: “Simão, filho de João, você me ama?” Pedro ficou triste porque Jesus lhe perguntou pela terceira vez “Você me ama?” e lhe disse: “Senhor, tu sabes todas as coisas e sabes que te amo”. Jesus lhe disse: “Cuide das minhas ovelhas.”",
       keyword: ["βόσκω", "boskō", "alimentar — oferecer cuidado, ensino e proteção ao povo de Jesus", "grego"],
       focus: "Jesus restaura Pedro e transforma sua relação com ele em chamado para cuidar de pessoas.",
       teaching: "As três perguntas de Jesus não são uma humilhação pública, mas uma restauração profunda que reconecta amor e responsabilidade. Pedro não recebe um palco; recebe cordeiros e ovelhas. Liderar é lembrar que as pessoas pertencem a Cristo, que algumas estão feridas e que o cuidado inclui alimento, proteção e presença.",
@@ -1567,7 +1567,7 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
     {
       title: "Examinar as Escrituras",
       ref: "Atos 17:11",
-      verse: "Os bereanos eram mais nobres do que os tessalonicenses, pois receberam a mensagem com grande interesse, examinando todos os dias as Escrituras para ver se tudo era assim mesmo.",
+      verse: "Os bereanos eram mais nobres do que os de Tessalônica, pois receberam a mensagem com grande interesse, examinando todos os dias as Escrituras, para ver se era verdade o que eles anunciavam.",
       keyword: ["ἀνακρίνω", "anakrinō", "examinar — investigar com atenção antes de aceitar uma afirmação", "grego"],
       focus: "Líderes não formam dependentes de sua voz; ensinam pessoas a verificar tudo à luz das Escrituras.",
       teaching: "Os bereanos recebem o ensino com interesse, mas não suspendem o discernimento. Liderança saudável não teme perguntas nem exige confiança cega. O líder precisa estudar contexto, reconhecer limites e ensinar o povo a abrir a Bíblia. Isso também protege contra frases impactantes sem fundamento.",
@@ -1654,7 +1654,7 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
     {
       title: "Fé que confessa",
       ref: "Atos 8:36-38",
-      verse: "Prosseguindo pela estrada, chegaram a um lugar onde havia água. O eunuco disse: “Olhe, aqui há água. Que me impede de ser batizado?” Então mandou parar a carruagem. Filipe e o eunuco desceram à água, e Filipe o batizou.",
+      verse: "Prosseguindo pela estrada, chegaram a um lugar onde havia água. O eunuco disse: “Olhe, aqui há água. Que me impede de ser batizado?” Assim, deu ordem para parar a carruagem. Então, Filipe e o eunuco desceram à água, e Filipe o batizou.",
       keyword: ["πιστεύω", "pisteuō", "crer — confiar pessoalmente em Jesus e responder a ele", "grego"],
       focus: "O encontro do eunuco mostra que o batismo é resposta de fé e alegria, com ensino e compreensão.",
       teaching: "Filipe começa pela Escritura e anuncia Jesus. O eunuco responde com desejo de obedecer. O relato não trata o batismo como pressão social; ele nasce de uma confissão e de uma compreensão do evangelho. A igreja deve explicar com clareza, acolher perguntas e não usar urgência emocional para substituir convicção.",
@@ -1668,7 +1668,7 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
     {
       title: "Vestidos de Cristo",
       ref: "Gálatas 3:27-28",
-      verse: "Pois os que em Cristo foram batizados, de Cristo se revestiram. Não há judeu nem grego, escravo nem livre, homem nem mulher; pois todos são um em Cristo Jesus.",
+      verse: "Pois os que em Cristo foram batizados vestiram-se de Cristo. Não há judeu nem grego, nem escravo nem livre, nem homem nem mulher, pois todos são um em Cristo Jesus.",
       keyword: ["ἐνδύω", "endyō", "revestir-se — assumir uma nova identidade e pertencimento em Cristo", "grego"],
       focus: "O batismo comunica pertencimento a Cristo e uma nova comunidade que supera barreiras de status e origem.",
       teaching: "Paulo não apaga diferenças culturais, mas afirma que elas não definem valor ou acesso à graça. Revestir-se de Cristo significa que a identidade central é recebida nele. A igreja batizada precisa praticar essa unidade: acolher, corrigir favoritismos e reconhecer irmãos como membros do mesmo corpo.",
@@ -1710,7 +1710,7 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
     {
       title: "Uma comunidade perseverante",
       ref: "Atos 2:41-42",
-      verse: "Os que aceitaram a mensagem foram batizados, e naquele dia houve um acréscimo de cerca de três mil pessoas. Eles se dedicavam ao ensino dos apóstolos e à comunhão, ao partir do pão e às orações.",
+      verse: "Os que aceitaram a mensagem foram batizados, e naquele dia houve um acréscimo ao número de seguidores de aproximadamente três mil pessoas. Eles se dedicavam ao ensino dos apóstolos e à comunhão, ao partir do pão e às orações.",
       keyword: ["προσκαρτερέω", "proskartereō", "dedicar-se — perseverar regularmente em ensino, comunhão e oração", "grego"],
       focus: "O batismo em Atos introduz pessoas em uma comunidade que aprende, compartilha e ora.",
       teaching: "O relato não termina na água. Os batizados passam a perseverar em práticas comunitárias. Isso corrige uma visão individualista do batismo: seguir Jesus inclui receber ensino, participar da mesa, orar e viver em comunhão. A igreja precisa acolher o recém-batizado em relacionamentos reais, não apenas registrar seu nome.",
@@ -1794,7 +1794,7 @@ const SUPPORT_MODULES_SOURCE: SupportModuleSource[] = [
         title: "Coração e Trono",
         verse: {
           ref: "Isaías 14:13-14",
-          textByVersion: { NVI: "Você dizia no coração: “Subirei aos céus; erguerei o meu trono acima das estrelas de Deus; sentar-me-ei no monte da assembleia, no ponto mais elevado do monte santo. Subirei mais alto que as nuvens; serei como o Altíssimo”." },
+          textByVersion: { NVI: "Você, que dizia no seu coração: “Subirei aos céus, erguerei o meu trono acima das estrelas de Deus; eu me assentarei no monte da assembleia, no ponto mais elevado do monte santo. Subirei acima das mais altas nuvens; serei como o Altíssimo”." },
         },
         keywords: [
           { word: "אֶעֱלֶה", translit: "e'ele", meaning: "'subirei' — verbo repetido cinco vezes no oráculo, mostrando a escalada da autoexaltação", lang: "hebraico" },
@@ -2015,7 +2015,7 @@ const SUPPORT_MODULES_SOURCE: SupportModuleSource[] = [
         title: "Caminho Constante",
         verse: {
           ref: "Miqueias 6:8",
-          textByVersion: { NVI: "Ele mostrou a você, ó homem, o que é bom e o que o Senhor exige: que você pratique a justiça, ame a fidelidade e ande humildemente com o seu Deus." },
+          textByVersion: { NVI: "Ele mostrou a você, ó homem, o que é bom e o que o Senhor exige de você: pratique a justiça, ame a lealdade e ande humildemente com o seu Deus." },
         },
         keywords: [
           { word: "הַצְנֵעַ לֶכֶת", translit: "hatsnéa léchet", meaning: "'andar humildemente' — expressão hebraica para uma caminhada discreta e constante, sem exibição", lang: "hebraico" },
@@ -2488,7 +2488,7 @@ const SUPPORT_MODULES_SOURCE: SupportModuleSource[] = [
         title: "Fidelidade e Corpo",
         verse: {
           ref: "1 Coríntios 7:3-4",
-          textByVersion: { NVI: "O marido cumpra os seus deveres conjugais para com a sua mulher, e da mesma forma a mulher para com o seu marido. A mulher não tem autoridade sobre o seu próprio corpo, mas sim o marido. Da mesma forma, o marido não tem autoridade sobre o seu próprio corpo, mas sim a mulher." },
+          textByVersion: { NVI: "O marido deve cumprir os deveres conjugais para com a sua mulher, e, da mesma forma, a mulher, para com o seu marido. A mulher não tem autoridade sobre o próprio corpo, mas sim o marido. Da mesma forma, o marido não tem autoridade sobre o próprio corpo, mas sim a mulher." },
         },
         keywords: [
           { word: "ὀφειλὴν", translit: "ofeilên", meaning: "'dever, obrigação' — a intimidade conjugal descrita como cuidado mútuo, não como direito unilateral", lang: "grego" },
