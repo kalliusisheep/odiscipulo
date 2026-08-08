@@ -780,8 +780,25 @@ function cacheFor(language: AppLanguage): Map<string, string> {
     }
   }
   machineCache.set(language, cache);
+  reverseDirty.add(language);
   return cache;
 }
+
+const reverseCache = new Map<AppLanguage, Map<string, string>>();
+const reverseDirty = new Set<AppLanguage>();
+
+function reverseCacheFor(language: AppLanguage): Map<string, string> {
+  let reverse = reverseCache.get(language);
+  if (!reverse || reverseDirty.has(language)) {
+    reverse = new Map();
+    for (const [source, value] of cacheFor(language)) reverse.set(value, source);
+    reverseCache.set(language, reverse);
+    reverseDirty.delete(language);
+  }
+  return reverse;
+}
+
+
 
 function persistCache(language: AppLanguage) {
   if (typeof window === "undefined") return;
