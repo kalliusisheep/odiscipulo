@@ -520,13 +520,13 @@ function VerseStudy() {
                               <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
                                 Pronúncia
                               </p>
-                              <p className="mt-1 truncate text-xs font-semibold text-foreground">
+                              <p className="mt-1 truncate text-center text-xs font-semibold text-foreground">
                                 {approximatePtBr(entry?.transliteration ?? null) ?? "—"}
                               </p>
                             </div>
 
-                            <div className="min-w-0 rounded-2xl bg-primary/[0.07] px-3 py-2.5">
-                              <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary/75">
+                            <div className="min-w-0 rounded-2xl bg-primary/[0.07] px-3 py-2.5 text-center">
+                              <p className="text-center text-[9px] font-bold uppercase tracking-[0.12em] text-primary/75">
                                 Sentido no versículo
                               </p>
                               <p className="mt-1 truncate text-xs font-semibold text-foreground">
