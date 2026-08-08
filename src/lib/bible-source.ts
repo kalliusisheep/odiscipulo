@@ -344,6 +344,61 @@ const VERIFIED_CONTEXTUAL_MEANINGS: Record<string, string> = {
   "1:1:2:H4325": "águas",
 };
 
+const CONTEXTUAL_STRONG_FALLBACKS: Record<string, string> = {
+  H5921: "sobre",
+  H8414: "sem forma",
+  H8415: "sem forma",
+  H7307: "Espírito",
+  H7363: "pairava",
+  H430: "Deus",
+  H2822: "trevas",
+  H6440: "face",
+  H4325: "águas",
+  H8064: "os céus",
+  H776: "a terra",
+  H1961: "era",
+  H1254: "criou",
+  H7225: "No princípio",
+  H853: "marcador do objeto direto (sem tradução isolada)",
+  G2532: "e",
+  G3588: "o",
+  G2316: "Deus",
+  G2962: "Senhor",
+  G2424: "Jesus",
+  G5547: "Cristo",
+  G4151: "Espírito",
+  G3056: "Palavra",
+  G26: "amor",
+  G5485: "graça",
+  G4102: "fé",
+  G4991: "salvação",
+};
+
+function contextualFallbackFromEntry(
+  code: string | null,
+  entry: StrongEntry | null | undefined,
+): string {
+  if (code && CONTEXTUAL_STRONG_FALLBACKS[code]) {
+    return CONTEXTUAL_STRONG_FALLBACKS[code];
+  }
+
+  const candidates = [
+    entry?.meaning,
+    entry?.strongsGloss,
+    ...(entry?.definitions ?? []),
+  ];
+  for (const candidate of candidates) {
+    const concise = concisePortugueseMeaning(candidate);
+    if (concise && !containsEnglishLexicon(concise)) {
+      const beforeExplanation = concise.split(/\s+[—–-]\s+/)[0]?.trim() ?? concise;
+      const firstMeaning = beforeExplanation.split(/[,;:]/)[0]?.trim() ?? beforeExplanation;
+      if (firstMeaning.length > 0) return firstMeaning;
+    }
+  }
+
+  return "sentido determinado pelo contexto";
+}
+
 function concisePortugueseMeaning(value: string | null | undefined): string | null {
   if (!value) return null;
   const first = value
@@ -376,7 +431,7 @@ export function contextualMeaningFor(
   const contextual = concisePortugueseMeaning(entry?.contextualMeaning);
   if (contextual && !containsEnglishLexicon(contextual)) return contextual;
 
-  return "Sentido contextual indisponível nesta fonte.";
+  return contextualFallbackFromEntry(code, entry);
 }
 
 /**
