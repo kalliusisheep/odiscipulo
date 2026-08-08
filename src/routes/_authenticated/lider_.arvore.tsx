@@ -60,6 +60,22 @@ const C = {
   gold: "#e6c36d",
 };
 
+const PDF_C = {
+  bg: "#ffffff",
+  bg2: "#f8fafc",
+  surface: "#ffffff",
+  border: "#d9e0ea",
+  primary: "#5b4bdb",
+  primaryGlow: "#4438a8",
+  ancient: "#b88722",
+  ancientFg: "#4b3410",
+  success: "#159a80",
+  text: "#172033",
+  mutedText: "#667085",
+  shadow: "rgba(15, 23, 42, 0.14)",
+  gold: "#b88722",
+};
+
 function ringColorFor(direction: TreeNode["direction"]) {
   return direction === "self" ? C.primary : direction === "up" ? C.ancient : C.success;
 }
@@ -434,15 +450,21 @@ function ArvorePage() {
 
       // fundo "pixelado" (xadrez sutil) cobrindo a página inteira
       const background = ctx.createLinearGradient(0, 0, canvasW, totalHeight);
-      background.addColorStop(0, C.bg);
-      background.addColorStop(1, C.bg2);
+      background.addColorStop(0, PDF_C.bg);
+      background.addColorStop(1, PDF_C.bg2);
       ctx.fillStyle = background;
       ctx.fillRect(0, 0, canvasW, totalHeight);
 
       // ---------- CABEÇALHO (3 linhas centralizadas — nunca colidem, a
       // largura de cada elemento é medida antes de posicionar) ----------
-      ctx.fillStyle = C.surface;
-      ctx.fillRect(0, 0, canvasW, HEADER_H);
+      const accent = ctx.createLinearGradient(0, 0, canvasW, 0);
+      accent.addColorStop(0, PDF_C.primary);
+      accent.addColorStop(0.5, PDF_C.ancient);
+      accent.addColorStop(1, PDF_C.success);
+      ctx.fillStyle = accent;
+      ctx.fillRect(0, 0, canvasW, 4);
+      ctx.fillStyle = PDF_C.surface;
+      ctx.fillRect(0, 4, canvasW, HEADER_H - 4);
 
       const headerMascot = await loadImage("/sheep-mascot.png");
       const hmSize = 22;
@@ -455,27 +477,27 @@ function ArvorePage() {
       if (headerMascot) ctx.drawImage(headerMascot, rowAStart, 12, hmSize, hmSize);
       ctx.textAlign = "left";
       ctx.textBaseline = "alphabetic";
-      ctx.fillStyle = C.primaryGlow;
+      ctx.fillStyle = PDF_C.primaryGlow;
       ctx.font = "800 12px ui-monospace, Menlo, monospace";
       ctx.fillText("iSheep", rowAStart + hmSize + 6, 27);
-      ctx.fillStyle = C.mutedText;
+      ctx.fillStyle = PDF_C.mutedText;
       ctx.font = "600 9.5px system-ui, sans-serif";
       ctx.fillText(" · Painel do Líder", rowAStart + hmSize + 6 + wBrand, 27);
 
       ctx.textAlign = "center";
-      ctx.fillStyle = C.text;
-      ctx.font = "800 17px ui-monospace, Menlo, monospace";
-      const titleY = 54;
+      ctx.fillStyle = PDF_C.text;
+      ctx.font = "800 22px system-ui, -apple-system, sans-serif";
+      const titleY = 58;
       ctx.fillText("Árvore de Discipulado", canvasW / 2, titleY);
       const titleWidth = ctx.measureText("Árvore de Discipulado").width;
-      ctx.fillStyle = C.primary;
-      ctx.fillRect(canvasW / 2 - titleWidth / 2, titleY + 8, titleWidth, 3);
+      ctx.fillStyle = PDF_C.primary;
+      ctx.fillRect(canvasW / 2 - titleWidth / 2, titleY + 12, titleWidth, 4);
 
       // legenda: linha centralizada, cada item medido antes de posicionar
       const legendItems: [string, string][] = [
-        [C.primary, "Você"],
-        [C.ancient, "Liderança acima"],
-        [C.success, "Discípulos"],
+        [PDF_C.primary, "Você"],
+        [PDF_C.ancient, "Liderança acima"],
+        [PDF_C.success, "Discípulos"],
       ];
       ctx.font = "700 9px ui-monospace, Menlo, monospace";
       const legendGap = 16;
@@ -488,12 +510,12 @@ function ArvorePage() {
         ctx.fillStyle = color;
         pixelRoundRect(ctx, legendX, legendY - 8, 9, 9, 2);
         ctx.fill();
-        ctx.fillStyle = C.mutedText;
+        ctx.fillStyle = PDF_C.mutedText;
         ctx.fillText(label, legendX + 14, legendY);
         legendX += chipWidths[i] + legendGap;
       });
 
-      ctx.strokeStyle = C.border;
+      ctx.strokeStyle = PDF_C.border;
       ctx.setLineDash([6, 4]);
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -509,7 +531,7 @@ function ArvorePage() {
       ctx.translate(treeOffsetX, HEADER_H);
 
       // conexões em estilo "árvore de habilidades" (linha em ângulo reto, tracejada)
-      ctx.strokeStyle = C.border;
+      ctx.strokeStyle = PDF_C.border;
       ctx.lineWidth = 3;
       ctx.setLineDash([]);
       ctx.lineCap = "square";
@@ -528,7 +550,7 @@ function ArvorePage() {
 
         // "nó de circuito" no cotovelo da conexão, toque de tabuleiro de jogo
         ctx.setLineDash([]);
-        ctx.fillStyle = C.border;
+        ctx.fillStyle = PDF_C.border;
         ctx.fillRect(p1.x - 2.5, midY - 2.5, 5, 5);
         ctx.setLineDash([]);
       }
@@ -540,7 +562,12 @@ function ArvorePage() {
         if (!pos) continue;
         const img = node.avatar_url ? await loadImage(node.avatar_url) : null;
         if (node.avatar_url && !img) anyImageFailed = true;
-        const ring = ringColorFor(node.direction);
+        const ring =
+          node.direction === "self"
+            ? PDF_C.primary
+            : node.direction === "up"
+              ? PDF_C.ancient
+              : PDF_C.success;
         const level = getLevel(node.xp ?? 0).level;
         const cardX = pos.x - NODE_CARD_W / 2;
         const cardY = pos.y - NODE_CARD_H / 2;
@@ -554,10 +581,10 @@ function ArvorePage() {
               : "Discípulo";
 
         ctx.save();
-        ctx.shadowColor = C.shadow;
+        ctx.shadowColor = PDF_C.shadow;
         ctx.shadowBlur = 18;
         ctx.shadowOffsetY = 8;
-        ctx.fillStyle = C.surface;
+        ctx.fillStyle = PDF_C.surface;
         pixelRoundRect(ctx, cardX, cardY, NODE_CARD_W, NODE_CARD_H, NODE_RADIUS);
         ctx.fill();
         ctx.restore();
@@ -578,7 +605,7 @@ function ArvorePage() {
           ctx.globalAlpha = 0.22;
           ctx.fillRect(avatarX - 21, pos.y - 21, 42, 42);
           ctx.globalAlpha = 1;
-          ctx.fillStyle = C.text;
+          ctx.fillStyle = PDF_C.text;
           ctx.font = "700 17px system-ui, sans-serif";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
@@ -594,10 +621,10 @@ function ArvorePage() {
 
         ctx.textAlign = "left";
         ctx.textBaseline = "alphabetic";
-        ctx.fillStyle = C.text;
+        ctx.fillStyle = PDF_C.text;
         ctx.font = "700 11px system-ui, sans-serif";
         ctx.fillText(truncate(node.display_name, 17), cardX + 58, pos.y - 8);
-        ctx.fillStyle = C.mutedText;
+        ctx.fillStyle = PDF_C.mutedText;
         ctx.font = "500 8.5px system-ui, sans-serif";
         ctx.fillText(handle, cardX + 58, pos.y + 8);
 
@@ -606,17 +633,17 @@ function ArvorePage() {
         pixelRoundRect(ctx, cardX + 58, pos.y + 17, 44, 16, 8);
         ctx.fill();
         ctx.globalAlpha = 1;
-        ctx.fillStyle = ring === C.ancient ? C.ancient : C.primaryGlow;
+        ctx.fillStyle = ring === PDF_C.ancient ? PDF_C.ancient : PDF_C.primaryGlow;
         ctx.font = "700 8px ui-monospace, Menlo, monospace";
         ctx.fillText("NÍVEL " + level, cardX + 66, pos.y + 28);
 
         if (node.direction === "self") {
-          ctx.fillStyle = C.primary;
+          ctx.fillStyle = PDF_C.primary;
           ctx.globalAlpha = 0.14;
           pixelRoundRect(ctx, cardX + NODE_CARD_W - 48, cardY + 10, 36, 16, 8);
           ctx.fill();
           ctx.globalAlpha = 1;
-          ctx.fillStyle = C.primaryGlow;
+          ctx.fillStyle = PDF_C.primaryGlow;
           ctx.font = "700 8px ui-monospace, Menlo, monospace";
           ctx.textAlign = "center";
           ctx.fillText("VOCÊ", cardX + NODE_CARD_W - 30, cardY + 21);
@@ -626,7 +653,7 @@ function ArvorePage() {
 
       // ---------- RODAPÉ (faixa baixa: texto pequeno à esquerda, mascote pequena no canto inferior direito) ----------
       const footerTop = HEADER_H + layout.height;
-      ctx.strokeStyle = C.border;
+      ctx.strokeStyle = PDF_C.border;
       ctx.setLineDash([6, 4]);
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -643,7 +670,7 @@ function ArvorePage() {
         ctx.drawImage(mascot, mascotX, mascotY, mascotSize, mascotSize);
       }
 
-      ctx.fillStyle = C.mutedText;
+      ctx.fillStyle = PDF_C.mutedText;
       ctx.font = "600 12px system-ui, sans-serif";
       ctx.textAlign = "left";
       ctx.fillText("© 2026 iSheep. All Rights Reserved.", PAD / 2, footerTop + FOOTER_H - 14 - mascotSize / 2 + 4);
@@ -662,7 +689,7 @@ function ArvorePage() {
       const drawH = totalHeight * scale;
       const offsetX = (pageW - drawW) / 2;
       const offsetY = (pageH - drawH) / 2;
-      pdf.setFillColor(28, 26, 38);
+      pdf.setFillColor(255, 255, 255);
       pdf.rect(0, 0, pageW, pageH, "F");
       pdf.addImage(dataUrl, "PNG", offsetX, offsetY, drawW, drawH);
       pdf.save("arvore-de-discipulado.pdf");
