@@ -740,11 +740,16 @@ function translateValue(value: string, language: AppLanguage): { source: string;
     const match = normalized.match(item.pattern);
     if (match) return { source: normalized, value: item.render(match, language) };
   }
-  const machine = machineLookup(normalized, language);
-  if (machine) return { source: normalized, value: machine };
-  enqueueForMachineTranslation(normalized, language);
+  const original = reverseLookup(normalized) ?? normalized;
+  if (language === "pt-BR") {
+    return original === normalized ? null : { source: original, value: original };
+  }
+  const machine = machineLookup(original, language);
+  if (machine) return { source: original, value: machine };
+  enqueueForMachineTranslation(original, language);
   return null;
 }
+
 
 /* ------------------------------------------------------------------
  * Tradução automática (IA) para tudo que não está no dicionário acima.
