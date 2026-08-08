@@ -320,7 +320,7 @@ function VerseStudy() {
             <Link
               to="/biblia/$book/$chapter"
               params={{ book: String(book), chapter: String(chapter) }}
-              aria-label="Voltar para o capítulo"
+              aria-label={t("bible.backToChapter")}
               className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-border/70 bg-surface text-muted-foreground shadow-sm transition-all hover:border-primary/40 hover:text-primary active:scale-95"
             >
               <ArrowLeft className="h-5 w-5" />
@@ -942,13 +942,13 @@ function WordDetail({
   const stats: { label: string; value: string }[] = [
     { label: t("bible.occurrences"), value: occurrence ? String(occurrence.c) : "—" },
     {
-      label: "Primeira vez",
+      label: t("bible.firstOccurrence"),
       value: occurrence
         ? bookNameById(occurrence.f[0]) + " " + occurrence.f[1] + ":" + occurrence.f[2]
         : "—",
     },
     {
-      label: "Última vez",
+      label: t("bible.lastOccurrence"),
       value: occurrence
         ? bookNameById(occurrence.l[0]) + " " + occurrence.l[1] + ":" + occurrence.l[2]
         : "—",
