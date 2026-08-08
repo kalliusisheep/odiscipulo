@@ -5,8 +5,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPreparedLessonShareText } from "@/data/lesson-share-texts";
 import { generateShareImage } from "@/lib/share-image";
 
+const PUBLIC_ASSET_BASE = `${import.meta.env.BASE_URL.replace(/\/?$/, "/")}`;
 const SHARE_BACKGROUND_BASE = `${import.meta.env.BASE_URL.replace(/\/?$/, "/")}share-backgrounds/`;
 const SHARE_BACKGROUNDS = [
+  { src: `${PUBLIC_ASSET_BASE}share-bg-cross.jpg`, label: "Cruz e esperança" },
   { src: `${SHARE_BACKGROUND_BASE}design-sem-nome.jpg`, label: "Horizonte" },
   { src: `${SHARE_BACKGROUND_BASE}design-sem-nome-1.jpg`, label: "Caminho dourado" },
   { src: `${SHARE_BACKGROUND_BASE}design-sem-nome-2.jpg`, label: "Montanhas" },
