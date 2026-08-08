@@ -423,6 +423,42 @@ function isUnavailableContextualMeaning(value: string): boolean {
   );
 }
 
+function normalizedPortugueseSense(value: string | null | undefined): string | null {
+  if (!value) return null;
+  const normalized = value.replace(/\\s+/g, " ").trim();
+  if (normalized.length < 2 || normalized.length > 240) return null;
+  if (containsEnglishLexicon(normalized) || isUnavailableContextualMeaning(normalized)) {
+    return null;
+  }
+  return normalized;
+}
+
+/**
+ * Retorna variantes lexicais reais do verbete original, já traduzidas para
+ * português. Não cria sinônimos: usa somente meaning, strongsGloss e
+ * definitions que vieram do BDB/Thayer ou da lista curada.
+ */
+export function verifiedLexicalVariants(entry: StrongEntry | null | undefined): string[] {
+  if (!entry) return [];
+
+  const candidates = [
+    ...(entry.meaning?.split(/\\s*;\\s*/) ?? []),
+    ...(entry.definitions ?? []),
+    entry.strongsGloss ?? null,
+  ];
+  const seen = new Set<string>();
+
+  return candidates.reduce<string[]>((result, candidate) => {
+    const normalized = normalizedPortugueseSense(candidate);
+    if (!normalized) return result;
+
+    const key = normalized.toLocaleLowerCase("pt-BR");
+    if (seen.has(key)) return result;
+    seen.add(key);
+    result.push(normalized);
+    return result;
+  }, []);
+}
 /**
  * Retorna apenas um significado contextual em português. Quando a tradução
  * contextual ainda não chegou ou a fonte deixou inglês residual, não exibe
@@ -1381,7 +1417,7 @@ export async function translateStrongEntry(
     ? String(context.book) + ":" + String(context.chapter) + ":" + String(context.verse) + ":" + String(context.wordIndex ?? "na")
     : "generic";
 
-  return cached("xlex:v3:" + entry.code + ":" + contextKey, async () => {
+  return cached("xlex:v4:" + entry.code + ":" + contextKey, async () => {
     try {
       const { data, error } = await supabase.functions.invoke<{
         meaning: string | null;
@@ -1408,12 +1444,32 @@ export async function translateStrongEntry(
         },
       });
       if (error || !data) return entry;
+      const translatedMeaning =
+        typeof data.meaning === "string" && !containsEnglishLexicon(data.meaning)
+          ? data.meaning.trim()
+          : entry.meaning;
+      const translatedDefinitions = Array.isArray(data.definitions)
+        ? data.definitions
+            .map((definition) => normalizedPortugueseSense(definition))
+            .filter((definition): definition is string => Boolean(definition))
+        : [];
+      const translatedGloss =
+        typeof data.strongsGloss === "string" && !containsEnglishLexicon(data.strongsGloss)
+          ? data.strongsGloss.trim()
+          : entry.strongsGloss;
+      const translatedContext =
+        typeof data.contextualMeaning === "string" &&
+        !containsEnglishLexicon(data.contextualMeaning) &&
+        !isUnavailableContextualMeaning(data.contextualMeaning)
+          ? data.contextualMeaning.trim()
+          : entry.contextualMeaning ?? null;
+
       return {
         ...entry,
-        meaning: data.meaning ?? entry.meaning,
-        definitions: data.definitions?.length ? data.definitions : entry.definitions,
-        strongsGloss: data.strongsGloss ?? entry.strongsGloss,
-        contextualMeaning: data.contextualMeaning ?? entry.contextualMeaning ?? null,
+        meaning: translatedMeaning,
+        definitions: translatedDefinitions.length ? translatedDefinitions : entry.definitions,
+        strongsGloss: translatedGloss,
+        contextualMeaning: translatedContext,
         translationSource: "ai",
       };
     } catch {
