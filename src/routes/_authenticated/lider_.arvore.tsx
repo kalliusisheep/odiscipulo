@@ -129,8 +129,7 @@ function loadImage(src: string): Promise<HTMLImageElement | null> {
   });
 }
 
-// jsPDF carregado sob demanda via CDN, só quando a pessoa clica em exportar —
-// não pesa no bundle do app pro dia a dia.
+// jsPDF é importado pelo bundle da rota e funciona mesmo sem conexão externa.
 function pixelRoundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath();
   ctx.moveTo(x + r, y);
@@ -564,14 +563,7 @@ function ArvorePage() {
               }}
             >
               <svg width={layout.width} height={layout.height} viewBox={`0 0 ${layout.width} ${layout.height}`}>
-                <defs>
-                  <pattern id="pixelGrid" width="16" height="16" patternUnits="userSpaceOnUse">
-                    <rect width="16" height="16" fill={C.bg} />
-                    <rect width="8" height="8" fill={C.bg2} />
-                    <rect x="8" y="8" width="8" height="8" fill={C.bg2} />
-                  </pattern>
-                </defs>
-                <rect x={0} y={0} width={layout.width} height={layout.height} fill="url(#pixelGrid)" />
+                <rect x={0} y={0} width={layout.width} height={layout.height} fill={C.bg} />
 
                 {nodes.map((node) => {
                   const pos = layout.positions.get(node.id);
