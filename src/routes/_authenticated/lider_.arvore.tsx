@@ -854,29 +854,46 @@ function ArvorePage() {
               </svg>
             </div>
 
-            <div className="absolute bottom-3 right-3 flex flex-col gap-1.5">
-              <button onClick={() => zoomButton(1.25)} className="h-10 w-10 rounded-2xl border border-border/80 bg-card/90 p-2.5 shadow-lg backdrop-blur-sm transition hover:border-primary/60 hover:bg-card" aria-label="Aumentar zoom">
+            <div className="absolute bottom-3 right-3 z-20 flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-background/70 backdrop-blur-md">
+              <button
+                onClick={() => zoomButton(1.25)}
+                className="flex h-9 w-9 items-center justify-center text-muted-foreground transition hover:bg-foreground/5 hover:text-foreground"
+                aria-label="Aumentar zoom"
+              >
                 <PlusIcon className="h-4 w-4" />
               </button>
-              <button onClick={() => zoomButton(0.8)} className="rounded-full bg-background/90 p-2 shadow-md border border-border" aria-label="Diminuir zoom">
+              <span className="h-px w-full bg-border/60" />
+              <button
+                onClick={() => zoomButton(0.8)}
+                className="flex h-9 w-9 items-center justify-center text-muted-foreground transition hover:bg-foreground/5 hover:text-foreground"
+                aria-label="Diminuir zoom"
+              >
                 <Minus className="h-4 w-4" />
               </button>
-              <button onClick={resetView} className="rounded-full bg-background/90 p-2 shadow-md border border-border" aria-label="Centralizar">
+              <span className="h-px w-full bg-border/60" />
+              <button
+                onClick={resetView}
+                className="flex h-9 w-9 items-center justify-center text-muted-foreground transition hover:bg-foreground/5 hover:text-foreground"
+                aria-label="Centralizar"
+              >
                 <RotateCcw className="h-4 w-4" />
               </button>
             </div>
           </div>
 
-          <p className="px-1 text-center text-[11px] text-muted-foreground">Arraste para mover · belisque ou use a roda do mouse para dar zoom</p>
+          <p className="text-center text-[11px] text-muted-foreground/80">
+            Arraste para mover · belisque ou use a roda do mouse para dar zoom
+          </p>
 
           <button
             onClick={() => void exportPdf()}
             disabled={exporting}
-            className="flex w-full items-center justify-center gap-3 rounded-2xl bg-primary px-4 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_12px_28px_rgba(154,123,255,.22)] transition hover:brightness-105 disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2.5 rounded-2xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm font-semibold text-primary transition hover:bg-primary/15 disabled:opacity-60"
           >
             {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
             {exporting ? "Gerando PDF…" : "Exportar como PDF"}
           </button>
+
         </>
       )}
     </div>
