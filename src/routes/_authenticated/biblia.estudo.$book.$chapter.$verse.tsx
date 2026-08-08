@@ -355,8 +355,8 @@ function VerseStudy() {
                   aria-selected={selected}
                   onClick={() => setTab(tab.id)}
                   className={
-                    "col-span-2 flex min-h-12 min-w-0 flex-col items-center justify-center gap-1 rounded-[15px] border px-1.5 py-2 text-[10px] font-bold leading-tight transition-all active:scale-[0.98] " +
-                    (tab.id === "referencias" || tab.id === "lexico" ? "col-span-3 " : "") +
+                    "flex min-h-12 min-w-0 flex-col items-center justify-center gap-1 rounded-[15px] border px-1.5 py-2 text-[10px] font-bold leading-tight transition-all active:scale-[0.98] " +
+                    (tab.id === "referencias" || tab.id === "lexico" ? "col-span-3 " : "col-span-2 ") +
                     (selected
                       ? "border-primary/45 bg-primary text-primary-foreground shadow-[0_8px_24px_-12px_hsl(var(--primary))]"
                       : "border-transparent bg-transparent text-muted-foreground hover:border-primary/20 hover:bg-surface hover:text-foreground")
