@@ -436,7 +436,7 @@ export function contextualMeaningFor(
   word: OriginalWord | null | undefined,
   entry: StrongEntry | null | undefined,
 ): string {
-  const code = entry?.code ?? word?.strong ?? null;
+  const code = (entry?.code ?? word?.strong ?? null)?.toUpperCase() ?? null;
   const occurrenceKey = code
     ? book + ":" + chapter + ":" + verse + ":" + index + ":" + code
     : null;
