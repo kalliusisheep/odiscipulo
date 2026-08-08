@@ -6,7 +6,7 @@ import { SharedQuestionGame } from "@/components/games/SharedQuestionGame";
 import { BIBLICAL_CHARACTER_ROUNDS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { shuffleWithSeed } from "@/lib/seeded-random";
-import { normalizeGameContentKey, uniqueGameVariantContent } from "@/lib/game-content";
+import { normalizeGameContentKey, selectFreshGameVariants, uniqueGameContent } from "@/lib/game-content";
 import { recordGameResult } from "@/lib/game-leaderboard";
 
 export const Route = createFileRoute("/_authenticated/jogos/personagem")({
@@ -71,7 +71,6 @@ function PersonagemPage() {
       document.documentElement.style.removeProperty("--game-keyboard-inset");
     };
   }, []);
-  const sessionSeenRef = useRef<Set<string>>(new Set());
   const character = queue[round];
   const difficultyData = CHARACTER_DIFFICULTY[difficulty];
   const orderedHints = useMemo(() => {
@@ -91,15 +90,24 @@ function PersonagemPage() {
     playGameSfx("start");
     const preferred = BIBLICAL_CHARACTER_ROUNDS.filter((item) => item.difficulty === difficulty);
     const fallback = BIBLICAL_CHARACTER_ROUNDS.filter((item) => item.difficulty !== difficulty);
-    const source = uniqueGameVariantContent([...preferred, ...fallback], (item) => item.id);
+    // Keep one card per character in the pool. The generated hint order is a
+    // presentation variant, not a new character and should not repeat in a match.
+    const source = uniqueGameContent([...preferred, ...fallback], (item) => item.id);
     const shuffled = seed ? shuffleWithSeed(source, seed) : [...source].sort(() => Math.random() - 0.5);
     const recentKey = `character_recent_questions_${difficulty}`;
     const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
     const recentKeys = new Set(recentIds.map(normalizeGameContentKey));
-    const sessionCandidates = shuffled.filter((item) => !sessionSeenRef.current.has(normalizeGameContentKey(item.id)));
-    const fresh = sessionCandidates.filter((item) => !recentKeys.has(normalizeGameContentKey(item.id)));
-    const selected = uniqueGameVariantContent([...fresh, ...sessionCandidates], (item) => item.id).slice(0, rounds);
-    selected.forEach((item) => sessionSeenRef.current.add(normalizeGameContentKey(item.id)));
+    const recentFirst = [...shuffled].sort((first, second) => {
+      const firstRecent = recentKeys.has(normalizeGameContentKey(first.id)) ? 1 : 0;
+      const secondRecent = recentKeys.has(normalizeGameContentKey(second.id)) ? 1 : 0;
+      return firstRecent - secondRecent;
+    });
+    const selected = selectFreshGameVariants({
+      gameKey: "personagem",
+      items: recentFirst,
+      amount: rounds,
+      getKey: (item) => item.id,
+    });
     const storedKeys = selected.map((item) => normalizeGameContentKey(item.id));
     window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds.map(normalizeGameContentKey), ...storedKeys])].slice(-Math.max(rounds * 5, 40))));
     setQueue(selected);
