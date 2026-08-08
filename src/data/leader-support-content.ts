@@ -1533,7 +1533,7 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
       explanation: "O texto chama Paulo a responder publicamente, invocando o nome de Jesus.",
       action: "Se você ainda não foi batizado, converse com a igreja sobre preparo; se já foi, relembre a confissão que fez.",
       challenge: "Compartilhe com alguém a razão bíblica pela qual o batismo representa uma decisão de seguir Jesus.",
-    
+    },
   ]),
 ];
 
