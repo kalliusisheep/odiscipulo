@@ -3661,3 +3661,83 @@ body,
   border-color: color-mix(in oklab, var(--border) 72%, transparent);
   background: color-mix(in oklab, var(--foreground) 4%, transparent);
 }
+
+
+/* Mobile game ergonomics: keep the answer action reachable above the
+   browser keyboard and the app navigation bar. */
+.game-play-page {
+  min-height: 100dvh;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.game-response-dock {
+  position: sticky;
+  bottom: calc(0.75rem + env(safe-area-inset-bottom));
+  z-index: 30;
+  margin-inline: -0.2rem;
+  border-color: color-mix(in oklab, var(--primary) 24%, var(--border)) !important;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--surface) 96%, var(--background)),
+      color-mix(in oklab, var(--background) 92%, var(--surface))
+    ) !important;
+  box-shadow:
+    0 18px 38px -24px color-mix(in oklab, var(--background) 90%, transparent),
+    0 0 24px -16px color-mix(in oklab, var(--primary) 70%, transparent);
+  backdrop-filter: blur(18px) saturate(125%);
+  scroll-margin-bottom: calc(5.5rem + var(--game-keyboard-inset, 0px));
+}
+
+.game-response-dock:focus-within {
+  border-color: color-mix(in oklab, var(--primary) 56%, transparent) !important;
+  box-shadow:
+    0 18px 38px -24px color-mix(in oklab, var(--background) 90%, transparent),
+    0 0 28px -12px color-mix(in oklab, var(--primary) 78%, transparent);
+}
+
+.game-response-dock input {
+  min-height: 3rem;
+  scroll-margin-bottom: calc(6rem + var(--game-keyboard-inset, 0px));
+}
+
+.game-answer-feedback {
+  scroll-margin-top: 1.5rem;
+  scroll-margin-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+}
+
+.game-play-page [aria-label="Digite a letra da célula selecionada"] {
+  position: fixed;
+  left: 0.5rem;
+  bottom: calc(5.25rem + env(safe-area-inset-bottom));
+  z-index: 40;
+  width: 2px;
+  height: 2px;
+}
+
+@media (max-width: 640px) {
+  .game-play-page > div {
+    padding-bottom: calc(7rem + var(--game-keyboard-inset, 0px) + env(safe-area-inset-bottom));
+  }
+
+  .game-response-dock {
+    bottom: calc(0.5rem + env(safe-area-inset-bottom));
+    margin-inline: -0.1rem;
+    padding: 0.75rem;
+  }
+
+  .game-response-dock button {
+    min-height: 3rem;
+  }
+
+  .game-answer-feedback {
+    scroll-margin-bottom: calc(6rem + env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-response-dock {
+    backdrop-filter: none;
+    transition: none;
+  }
+}
