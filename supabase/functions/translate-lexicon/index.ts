@@ -15,7 +15,7 @@ Regras obrigatórias:
 - Traduza meaning, definitions e strongsGloss com fidelidade literal, sem inventar, resumir ou acrescentar comentário.
 - Quando contextual.reference, contextual.verseText e contextual.word estiverem presentes, produza contextualMeaning com UM ÚNICO sentido que se encaixe naquela ocorrência.
 - contextualMeaning deve ter de 1 a 8 palavras, sem lista de possibilidades, sem ponto e vírgula e sem explicação teológica.
-- Use a função gramatical contextual para partículas sem equivalente lexical. Para אֵת/H853, por exemplo, escreva: marcador do objeto direto (sem tradução isolada).
+- Use a função gramatical contextual para partículas sem equivalente lexical. Para אֵת/H853, escreva: marca o objeto direto.
 - Não escolha um significado apenas porque é o mais comum no dicionário; respeite o texto do versículo e a função da palavra.
 - Quando houver referência, texto do versículo ou palavra original, escolha o melhor sentido contextual disponível e não retorne null; use null somente quando não existir nenhum dado lexical.
 - Preserve códigos Strong, nomes próprios e transliterações.
@@ -51,7 +51,7 @@ const CONTEXTUAL_FALLBACKS: Record<string, string> = {
   H1961: "era",
   H1254: "criou",
   H7225: "No princípio",
-  H853: "marcador do objeto direto (sem tradução isolada)",
+  H853: "marca o objeto direto",
   G2532: "e",
   G3588: "o",
   G2316: "Deus",
