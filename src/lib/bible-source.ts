@@ -347,6 +347,8 @@ export type LexiconContext = {
   book: number;
   chapter: number;
   verse: number;
+  /** Código da tradução que gerou o texto contextual. */
+  translation?: string;
   verseText: string | null;
   originalWords?: OriginalWord[];
   wordIndex?: number | null;
@@ -1497,6 +1499,23 @@ export async function fetchStrongEntries(codes: string[]): Promise<Record<string
  * número de Strong, então cada palavra só passa pela tradução uma única
  * vez neste dispositivo. Verbetes da lista curada (CORE_TERMS) já estão em
  * português e não passam por aqui. */
+function fallbackTranslatedEntry(
+  entry: StrongEntry,
+  context?: LexiconContext,
+): StrongEntry {
+  const contextualMeaning = context
+    ? contextualFallbackFromEntry(entry.code.toUpperCase(), entry, context.verseText)
+    : entry.contextualMeaning ?? null;
+
+  return {
+    ...entry,
+    meaning: containsEnglishLexicon(entry.meaning) ? null : entry.meaning,
+    definitions: entry.definitions.filter((definition) => !containsEnglishLexicon(definition)),
+    strongsGloss: containsEnglishLexicon(entry.strongsGloss) ? null : entry.strongsGloss,
+    contextualMeaning,
+  };
+}
+
 export async function translateStrongEntry(
   entry: StrongEntry,
   context?: LexiconContext,
@@ -1506,7 +1525,15 @@ export async function translateStrongEntry(
   }
 
   const contextKey = context
-    ? String(context.book) + ":" + String(context.chapter) + ":" + String(context.verse) + ":" + String(context.wordIndex ?? "na")
+    ? String(context.translation ?? "default") +
+      ":" +
+      String(context.book) +
+      ":" +
+      String(context.chapter) +
+      ":" +
+      String(context.verse) +
+      ":" +
+      String(context.wordIndex ?? "na")
     : "generic";
 
   return cached("xlex:v6:" + entry.code + ":" + contextKey, async () => {
@@ -1524,6 +1551,7 @@ export async function translateStrongEntry(
           contextual: context
             ? {
                 reference: String(context.book) + ":" + String(context.chapter) + ":" + String(context.verse),
+                translation: context.translation,
                 verseText: context.verseText,
                 word: context.word,
                 strong: entry.code,
@@ -1536,7 +1564,7 @@ export async function translateStrongEntry(
             : null,
         },
       });
-      if (error || !data) return entry;
+      if (error || !data) return fallbackTranslatedEntry(entry, context);
       const translatedMeaning =
         typeof data.meaning === "string" && !containsEnglishLexicon(data.meaning)
           ? data.meaning.trim()
@@ -1574,7 +1602,7 @@ export async function translateStrongEntry(
         translationSource: "ai",
       };
     } catch {
-      return entry;
+      return fallbackTranslatedEntry(entry, context);
     }
   });
 }
