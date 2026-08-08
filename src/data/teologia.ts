@@ -18,12 +18,7 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A Teologia Sistemática é o estudo ordenado e coerente das verdades reveladas por Deus nas Escrituras Sagradas. Ela busca organizar os ensinamentos bíblicos em tópicos estruturados, permitindo-nos compreender o caráter de Deus, Sua criação, a redenção e o destino final da humanidade. O termo deriva das palavras gregas Theos (Deus) e logos (estudo ou discurso), significando, em sua essência, o discurso racional sobre Deus. Ao contrário de outras disciplinas, como a teologia histórica ou bíblica, a teologia sistemática foca na síntese doutrinária para a vida contemporânea. Ela é inegociavelmente cristocêntrica, tendo Cristo como o centro de toda a revelação e o cumprimento final das promessas divinas. Como nos ensina o apóstolo Paulo:"
-          },
-          {
-            "type": "verse",
-            "text": "Ele é a imagem do Deus invisível, o primogênito de toda a criação. Pois nele foram criadas todas as coisas nos céus e na terra, as visíveis e as invisíveis...",
-            "reference": "Colossenses 1:15-16"
+            "text": "A Teologia Sistemática é o estudo ordenado e coerente das verdades reveladas por Deus nas Escrituras Sagradas. Ela busca organizar os ensinamentos bíblicos em tópicos estruturados, permitindo-nos compreender o caráter de Deus, Sua criação, a redenção e o destino final da humanidade. O termo deriva das palavras gregas Theos (Deus) e logos (estudo ou discurso), significando, em sua essência, o discurso racional sobre Deus. Ao contrário de outras disciplinas, como a teologia histórica ou bíblica, a teologia sistemática foca na síntese doutrinária para a vida contemporânea. Ela é inegociavelmente cristocêntrica, tendo Cristo como o centro de toda a revelação e o cumprimento final das promessas divinas. Como nos ensina o apóstolo Paulo: Ele é a imagem do Deus invisível, o primogênito de toda a criação. Pois nele foram criadas todas as coisas nos céus e na terra, as visíveis e as invisíveis... (Colossenses 1:15-16)"
           },
           {
             "type": "paragraph",
@@ -56,12 +51,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "No entanto, o labor teológico exige discernimento espiritual e oração, pois as verdades divinas são discernidas pelo Espírito:"
-          },
-          {
-            "type": "verse",
-            "text": "Quem não tem o Espírito não aceita as coisas que vêm do Espírito de Deus, pois lhe são loucura...",
-            "reference": "1Coríntios 2:14"
+            "text": "No entanto, o labor teológico exige discernimento espiritual e oração, pois as verdades divinas são discernidas pelo Espírito: Quem não tem o Espírito não aceita as coisas que vêm do Espírito de Deus, pois lhe são loucura... (1Coríntios 2:14)"
           }
         ]
       }
@@ -93,12 +83,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "A criação visível serve como uma prova irrefutável do Criador invisível. O apóstolo Paulo argumenta em Romanos que a existência de Deus é manifesta e compreendida por meio das coisas criadas, tornando os ímpios inescusáveis:"
-          },
-          {
-            "type": "verse",
-            "text": "Pois desde a criação do mundo os atributos invisíveis de Deus, seu eterno poder e divindade, têm sido vistos claramente, sendo compreendidos por meio das coisas criadas, de forma que tais homens são indesculpáveis...",
-            "reference": "Romanos 1:20"
+            "text": "A criação visível serve como uma prova irrefutável do Criador invisível. O apóstolo Paulo argumenta em Romanos que a existência de Deus é manifesta e compreendida por meio das coisas criadas, tornando os ímpios inescusáveis: Pois desde a criação do mundo os atributos invisíveis de Deus, seu eterno poder e divindade, têm sido vistos claramente, sendo compreendidos por meio das coisas criadas, de forma que tais homens são indesculpáveis... (Romanos 1:20)"
           },
           {
             "type": "paragraph",
@@ -116,12 +101,7 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Enquanto a revelação geral manifesta a existência e a lei moral de Deus a toda a criação, ela é insuficiente para conduzir o ser humano à salvação e a uma comunhão pessoal com o Criador. Diante disso, Deus intervém na história por meio da Revelação Especial, que consiste em Sua comunicação direta a pessoas específicas em tempos históricos e locais definidos. Toda a Escritura Sagrada consiste em revelação especial registrada sob a inspiração do Espírito Santo. O autor da epístola aos Hebreus abre seu tratado teológico resumindo este movimento divino de comunicação:"
-          },
-          {
-            "type": "verse",
-            "text": "Havendo Deus, outrora, falado, muitas vezes e de muitas maneiras, aos pais, pelos profetas, nestes últimos dias, nos falou pelo Filho...",
-            "reference": "Hebreus 1:1-2"
+            "text": "Enquanto a revelação geral manifesta a existência e a lei moral de Deus a toda a criação, ela é insuficiente para conduzir o ser humano à salvação e a uma comunhão pessoal com o Criador. Diante disso, Deus intervém na história por meio da Revelação Especial, que consiste em Sua comunicação direta a pessoas específicas em tempos históricos e locais definidos. Toda a Escritura Sagrada consiste em revelação especial registrada sob a inspiração do Espírito Santo. O autor da epístola aos Hebreus abre seu tratado teológico resumindo este movimento divino de comunicação: Havendo Deus, outrora, falado, muitas vezes e de muitas maneiras, aos pais, pelos profetas, nestes últimos dias, nos falou pelo Filho... (Hebreus 1:1-2)"
           },
           {
             "type": "paragraph",
@@ -162,12 +142,7 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A Autoridade das Escrituras significa que todas as palavras da Bíblia são palavras de Deus e, portanto, descrer ou desobedecer a qualquer palavra bíblica é descrer ou desobedecer ao próprio Deus. O fundamento supremo desta autoridade reside no sopro divino (Theopneustos) que deu origem ao texto sagrado:"
-          },
-          {
-            "type": "verse",
-            "text": "Toda a Escritura é inspirada por Deus e útil para o ensino, para a repreensão, para a correção e para a instrução na justiça...",
-            "reference": "2Timóteo 3:16"
+            "text": "A Autoridade das Escrituras significa que todas as palavras da Bíblia são palavras de Deus e, portanto, descrer ou desobedecer a qualquer palavra bíblica é descrer ou desobedecer ao próprio Deus. O fundamento supremo desta autoridade reside no sopro divino (Theopneustos) que deu origem ao texto sagrado: Toda a Escritura é inspirada por Deus e útil para o ensino, para a repreensão, para a correção e para a instrução na justiça... (2Timóteo 3:16)"
           },
           {
             "type": "paragraph",
@@ -260,12 +235,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "O próprio Jesus Cristo, ao debater com os líderes religiosos de Sua época e defender a Sua filiação divina, validou de forma inequívoca o caráter indestrutível e infalível de cada palavra das Escrituras ao pronunciar a famosa máxima hermenêutica:"
-          },
-          {
-            "type": "verse",
-            "text": "Se ele chamou deuses àqueles a quem a palavra de Deus foi dirigida (e a Escritura não pode ser anulada)...",
-            "reference": "João 10:35"
+            "text": "O próprio Jesus Cristo, ao debater com os líderes religiosos de Sua época e defender a Sua filiação divina, validou de forma inequívoca o caráter indestrutível e infalível de cada palavra das Escrituras ao pronunciar a famosa máxima hermenêutica: Se ele chamou deuses àqueles a quem a palavra de Deus foi dirigida (e a Escritura não pode ser anulada)... (João 10:35)"
           },
           {
             "type": "paragraph",
@@ -287,12 +257,7 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Uma das maiores conquistas da Reforma Protestante do século XVI foi o resgate da doutrina da Clareza das Escrituras (frequentemente denominada de perspicuidade). Contra a alegação medieval de que a Bíblia seria um livro tão obscuro, misterioso e complexo que apenas uma elite de clérigos autorizados ou o magistério da igreja poderiam interpretá-la corretamente, os reformadores evangélicos demonstraram que Deus dirigiu a redação de Sua Palavra escrita de tal maneira que as coisas necessárias para alguém se tornar um cristão, viver como um cristão e desenvolver-se como um cristão estão acessíveis e claras a qualquer leitor sincero. A doutrina da clareza não afirma que todas as passagens bíblicas são igualmente fáceis de compreender à primeira leitura, ou que não existem profundidades intelectuais e mistérios exegéticos na Bíblia. O próprio apóstolo Pedro reconheceu de forma humilde que os escritos de Paulo continham"
-          },
-          {
-            "type": "verse",
-            "text": "algumas coisas difíceis de entender",
-            "reference": "2Pedro 3:16"
+            "text": "Uma das maiores conquistas da Reforma Protestante do século XVI foi o resgate da doutrina da Clareza das Escrituras (frequentemente denominada de perspicuidade). Contra a alegação medieval de que a Bíblia seria um livro tão obscuro, misterioso e complexo que apenas uma elite de clérigos autorizados ou o magistério da igreja poderiam interpretá-la corretamente, os reformadores evangélicos demonstraram que Deus dirigiu a redação de Sua Palavra escrita de tal maneira que as coisas necessárias para alguém se tornar um cristão, viver como um cristão e desenvolver-se como um cristão estão acessíveis e claras a qualquer leitor sincero. A doutrina da clareza não afirma que todas as passagens bíblicas são igualmente fáceis de compreender à primeira leitura, ou que não existem profundidades intelectuais e mistérios exegéticos na Bíblia. O próprio apóstolo Pedro reconheceu de forma humilde que os escritos de Paulo continham algumas coisas difíceis de entender (2Pedro 3:16)."
           },
           {
             "type": "paragraph",
@@ -323,16 +288,11 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "Para o homem natural, cego em seus próprios pecados e endurecido pela rebeldia contra Deus, as palavras mais claras das Escrituras parecerão sem sentido ou tolices intelectuais. Isso nos ensina que o mal-entendido ou a rejeição das Escrituras não é uma falha de clareza do texto bíblico em si, mas sim o resultado da nossa própria cegueira moral e espiritual. Muitas vezes, os próprios discípulos de Jesus falharam em entender Suas palavras claras devido ao endurecimento temporário de seus corações (Lucas 24:"
-          },
-          {
-            "type": "verse",
-            "text": "25) ou porque precisavam aguardar o tempo providencial da iluminação divina",
-            "reference": "João 12:16"
+            "text": "Para o homem natural, cego em seus próprios pecados e endurecido pela rebeldia contra Deus, as palavras mais claras das Escrituras parecerão sem sentido ou tolices intelectuais. Isso nos ensina que o mal-entendido ou a rejeição das Escrituras não é uma falha de clareza do texto bíblico em si, mas sim o resultado da nossa própria cegueira moral e espiritual. Muitas vezes, os próprios discípulos de Jesus falharam em entender Suas palavras claras devido ao endurecimento temporário de seus corações (Lucas 24:25) ou porque precisavam aguardar o tempo providencial da iluminação divina (João 12:16)."
           },
           {
             "type": "paragraph",
-            "text": "). Quando membros da Igreja ou teólogos sinceros discordam sobre a interpretação de uma passagem bíblica específica, a causa do conflito interpretativo nunca reside nas Escrituras Sagradas — pois Deus inspirou o texto para ser compreendido —, mas sim em nossas próprias limitações humanas, preconceitos denominacionais, falhas exegéticas ou falta de oração sincera. Para contornar essas fraquezas inerentes da nossa mente finita, devemos nos aproximar do texto sagrado com profunda humildade intelectual, fazendo uso das ferramentas gramático-históricas corretas e clamando continuamente pela iluminação do Espírito Santo, que habita em cada crente regenerado. Como aplicação prática de nossa fé, a clareza das Escrituras nos incentiva a sermos leitores assíduos, constantes e fervorosos da Bíblia em nossos lares e comunidades. Ela valida o princípio batista histórico do livre exame das Escrituras e do sacerdócio universal dos crentes, no qual cada cristão individual tem a responsabilidade e o privilégio de se banquetear diretamente na Palavra de Deus de forma diária, extraindo dela a luz moral para os seus caminhos e o sustento espiritual para o crescimento de sua alma."
+            "text": "Quando membros da Igreja ou teólogos sinceros discordam sobre a interpretação de uma passagem bíblica específica, a causa do conflito interpretativo nunca reside nas Escrituras Sagradas — pois Deus inspirou o texto para ser compreendido —, mas sim em nossas próprias limitações humanas, preconceitos denominacionais, falhas exegéticas ou falta de oração sincera. Para contornar essas fraquezas inerentes da nossa mente finita, devemos nos aproximar do texto sagrado com profunda humildade intelectual, fazendo uso das ferramentas gramático-históricas corretas e clamando continuamente pela iluminação do Espírito Santo, que habita em cada crente regenerado. Como aplicação prática de nossa fé, a clareza das Escrituras nos incentiva a sermos leitores assíduos, constantes e fervorosos da Bíblia em nossos lares e comunidades. Ela valida o princípio batista histórico do livre exame das Escrituras e do sacerdócio universal dos crentes, no qual cada cristão individual tem a responsabilidade e o privilégio de se banquetear diretamente na Palavra de Deus de forma diária, extraindo dela a luz moral para os seus caminhos e o sustento espiritual para o crescimento de sua alma."
           }
         ]
       },
@@ -349,16 +309,11 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A doutrina da Necessidade das Escrituras afirma que, embora a Revelação Geral de Deus na natureza e na consciência humana seja plenamente suficiente para manifestar a existência do Criador e estabelecer a responsabilidade moral de todos os homens diante de Seu tribunal, o ser humano necessita indispensavelmente das Escrituras Sagradas — ou de alguém que proclame a sua mensagem — para obter o conhecimento pessoal e salvífico de Deus, alcançar o pleno perdão de seus pecados e discernir com exatidão a Sua vontade moral para a vida prática. O apóstolo Paulo estabelece essa verdade de forma lógica e irrefutável em sua exposição soteriológica na carta aos Romanos. Ele argumenta que ninguém pode ser justificado ou invocar o nome do Senhor para a salvação sem que antes tenha ouvido a proclamação objetiva do Evangelho de Cristo, o qual provém exclusivamente da revelação especial escrita:"
-          },
-          {
-            "type": "verse",
-            "text": "Como, pois, invocarão aquele em quem não creram? E como crerão naquele de quem não ouviram? E como ouvirão, se não houver quem pregue? (...) Consequentemente, a fé vem por se ouvir a mensagem, e a mensagem é ouvida mediante a palavra de Cristo.",
-            "reference": "Romanos 10:14"
+            "text": "A doutrina da Necessidade das Escrituras afirma que, embora a Revelação Geral de Deus na natureza e na consciência humana seja plenamente suficiente para manifestar a existência do Criador e estabelecer a responsabilidade moral de todos os homens diante de Seu tribunal, o ser humano necessita indispensavelmente das Escrituras Sagradas — ou de alguém que proclame a sua mensagem — para obter o conhecimento pessoal e salvífico de Deus, alcançar o pleno perdão de seus pecados e discernir com exatidão a Sua vontade moral para a vida prática. O apóstolo Paulo estabelece essa verdade de forma lógica e irrefutável em sua exposição soteriológica na carta aos Romanos. Ele argumenta que ninguém pode ser justificado ou invocar o nome do Senhor para a salvação sem que antes tenha ouvido a proclamação objetiva do Evangelho de Cristo, o qual provém exclusivamente da revelação especial escrita: Como, pois, invocarão aquele em quem não creram? E como crerão naquele de quem não ouviram? E como ouvirão, se não houver quem pregue? (...) Consequentemente, a fé vem por se ouvir a mensagem, e a mensagem é ouvida mediante a palavra de Cristo. (Romanos 10:14)"
           },
           {
             "type": "paragraph",
-            "text": "17) Esta passagem exclui qualquer possibilidade de salvação por meio do mero misticismo natural ou da sincera contemplação da criação física. A criação revela o poder divino e a lei moral, mas não contém nenhuma linha sobre o sacrifício substitutivo de Jesus na cruz ou a justificação forense pela fé somente. Para que o pecador seja resgatado de seu estado de condenação, as palavras das Escrituras Sagradas devem alcançar o seu entendimento. Como Paulo asseverou a Timóteo sobre a infalibilidade do texto escrito para a salvação:"
+            "text": "Esta passagem exclui qualquer possibilidade de salvação por meio do mero misticismo natural ou da sincera contemplação da criação física. A criação revela o poder divino e a lei moral, mas não contém nenhuma linha sobre o sacrifício substitutivo de Jesus na cruz ou a justificação forense pela fé somente. Para que o pecador seja resgatado de seu estado de condenação, as palavras das Escrituras Sagradas devem alcançar o seu entendimento. Como Paulo asseverou a Timóteo sobre a infalibilidade do texto escrito para a salvação:"
           },
           {
             "type": "verse",
@@ -390,12 +345,7 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A Suficiência das Escrituras Sagradas significa que a Bíblia contém todas as palavras divinas necessárias de que a humanidade precisa para a salvação, para crer de forma correta, obedecer perfeitamente à vontade de Deus e crescer espiritualmente rumo à maturidade cristã. Nada precisa ser adicionado e nada pode ser retirado do texto sagrado. Como lemos em Deuteronômio:"
-          },
-          {
-            "type": "verse",
-            "text": "Não acrescentem nada às palavras que eu lhes ordeno e delas não retirem nada, para que guardem os mandamentos do Senhor, o seu Deus...",
-            "reference": "Deuteronômio 4:2"
+            "text": "A Suficiência das Escrituras Sagradas significa que a Bíblia contém todas as palavras divinas necessárias de que a humanidade precisa para a salvação, para crer de forma correta, obedecer perfeitamente à vontade de Deus e crescer espiritualmente rumo à maturidade cristã. Nada precisa ser adicionado e nada pode ser retirado do texto sagrado. Como lemos em Deuteronômio: Não acrescentem nada às palavras que eu lhes ordeno e delas não retirem nada, para que guardem os mandamentos do Senhor, o seu Deus... (Deuteronômio 4:2)"
           },
           {
             "type": "paragraph",
@@ -498,12 +448,12 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "verse",
-            "text": "Assim diz o Senhor: 'Não se glorie o sábio em sua sabedoria nem o forte em sua força nem o rico em sua riqueza, mas quem se gloriar, glorie-se nisto: em compreender-me e conhecer-me, pois eu sou o Senhor, que pratica o amor, a justiça e a retidão na terra, pois de tais coisas me agrado",
+            "text": "Assim diz o Senhor: ‘Não se glorie o sábio em sua sabedoria nem o forte em sua força nem o rico em sua riqueza, mas quem se gloriar, glorie-se nisto: em compreender-me e conhecer-me, pois eu sou o Senhor, que pratica o amor, a justiça e a retidão na terra, pois de tais coisas me agrado’, declara o Senhor.",
             "reference": "Jeremias 9:23-24"
           },
           {
             "type": "paragraph",
-            "text": "declara o Senhor.” A cognoscibilidade de Deus nos desafia a buscar um equilíbrio saudável: devemos nos aproximar do trono da graça com confiança e sede de conhecê-Lo mais, mas também com profunda reverência, despindo os nossos sapatos intelectuais diante da sarça ardente de Sua majestade inefável. O fim último de conhecer a Deus é a adoração prática e o amor ao próximo, transformando a teologia em doxologia viva."
+            "text": "A cognoscibilidade de Deus nos desafia a buscar um equilíbrio saudável: devemos nos aproximar do trono da graça com confiança e sede de conhecê-Lo mais, mas também com profunda reverência, despindo os nossos sapatos intelectuais diante da sarça ardente de Sua majestade inefável. O fim último de conhecer a Deus é a adoração prática e o amor ao próximo, transformando a teologia em doxologia viva."
           }
         ]
       },
@@ -548,11 +498,11 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "E em Tiago 1:17, lemos que no Pai das luzes"
+            "text": "E em Tiago 1:17, lemos sobre a bondade imutável do Pai das luzes:"
           },
           {
             "type": "verse",
-            "text": "não há variação nem sombra de mudança",
+            "text": "Toda boa dádiva e todo dom perfeito vêm do alto, descendo do Pai das luzes, que não muda como sombras inconstantes.",
             "reference": "Tiago 1:17"
           },
           {
@@ -566,7 +516,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "declara o Senhor. Contemplar os atributos incomunicáveis de Deus deve gerar em nossa alma uma profunda humildade epistemológica e espiritual. Reconhecer a asseidade, a imutabilidade, a eternidade e a onipresença do Criador destrona o nosso orgulho antropocêntrico, lembrando-nos de que somos pó e cinza dependentes de Sua graça soberana. Em contrapartida, para o crente que confia em Cristo, estes atributos são a rocha inabalável de nossa segurança: se o Deus que nos ama é eterno, imutável e onipresente, nenhuma tempestade ou circunstância deste mundo passageiro poderá nos afastar de Sua mão amorosa."
+            "text": "Contemplar os atributos incomunicáveis de Deus deve gerar em nossa alma uma profunda humildade epistemológica e espiritual. Reconhecer a asseidade, a imutabilidade, a eternidade e a onipresença do Criador destrona o nosso orgulho antropocêntrico, lembrando-nos de que somos pó e cinza dependentes de Sua graça soberana. Em contrapartida, para o crente que confia em Cristo, estes atributos são a rocha inabalável de nossa segurança: se o Deus que nos ama é eterno, imutável e onipresente, nenhuma tempestade ou circunstância deste mundo passageiro poderá nos afastar de Sua mão amorosa."
           }
         ]
       },
@@ -611,16 +561,25 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "A santidade cristã, operada pelo Espírito Santo na santificação progressiva, nos chama a viver de maneira irrepreensível, abandonando as práticas deste mundo corrompido e buscando a pureza moral em todos os nossos caminhos. Outros atributos comunicáveis essenciais incluem a sabedoria, a justiça e a veracidade. A sabedoria de Deus é a Sua perfeita habilidade de escolher os melhores propósitos e os meios mais excelentes para alcançá-los. Nós podemos participar dessa sabedoria ao estudar Sua Palavra e pedir Sua orientação sob oração humilde, como Tiago promete que Deus a concede livremente aos que pedirem (Tiago 1:"
+            "text": "A santidade cristã, operada pelo Espírito Santo na santificação progressiva, nos chama a viver de maneira irrepreensível, abandonando as práticas deste mundo corrompido e buscando a pureza moral em todos os nossos caminhos. Outros atributos comunicáveis essenciais incluem a sabedoria, a justiça e a veracidade. A sabedoria de Deus é a Sua perfeita habilidade de escolher os melhores propósitos e os meios mais excelentes para alcançá-los. Nós podemos participar dessa sabedoria ao estudar Sua Palavra e pedir Sua orientação sob oração humilde, como Tiago promete que Deus a concede livremente aos que pedirem:"
           },
           {
             "type": "verse",
-            "text": "5). A justiça de Deus garante que Ele sempre faz o que é correto e trata a criação com perfeita retidão",
+            "text": "Se algum de vocês tem falta de sabedoria, peça-a a Deus, que a todos dá livremente, de boa vontade; e lhe será concedida.",
+            "reference": "Tiago 1:5"
+          },
+          {
+            "type": "paragraph",
+            "text": "A justiça de Deus garante que Ele sempre faz o que é correto e trata a criação com perfeita retidão, como afirma Deuteronômio 32:4:"
+          },
+          {
+            "type": "verse",
+            "text": "Ele é a Rocha, suas obras são perfeitas, e todos os seus caminhos são justos. É Deus fiel, que não comete erros; justo e reto ele é.",
             "reference": "Deuteronômio 32:4"
           },
           {
             "type": "paragraph",
-            "text": "). Saber que Deus possui atributos comunicáveis nos dá uma visão elevada e nobre da vida cristã. Não fomos salvos apenas para escapar da ira futura, mas para sermos transformados diariamente à imagem e semelhança daquele que nos criou. Ao buscarmos a santidade, praticarmos o amor abnegado, defendermos a justiça e vivermos na verdade, estamos testemunhando ao mundo as cores e a beleza do caráter de Deus, cumprindo o propósito para o qual fomos criados."
+            "text": "Saber que Deus possui atributos comunicáveis nos dá uma visão elevada e nobre da vida cristã. Não fomos salvos apenas para escapar da ira futura, mas para sermos transformados diariamente à imagem e semelhança daquele que nos criou. Ao buscarmos a santidade, praticarmos o amor abnegado, defendermos a justiça e vivermos na verdade, estamos testemunhando ao mundo as cores e a beleza do caráter de Deus, cumprindo o propósito para o qual fomos criados."
           }
         ]
       },
@@ -829,12 +788,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "E o autor de Hebreus 1:3 corrobora essa afirmação, revelando que o Filho é:"
-          },
-          {
-            "type": "verse",
-            "text": "o resplendor da glória de Deus e a expressão exata do seu ser, sustentando todas as coisas por sua palavra poderosa.",
-            "reference": "Hebreus 1:3"
+            "text": "E o autor de Hebreus 1:3 corrobora essa afirmação, revelando que o Filho é: o resplendor da glória de Deus e a expressão exata do seu ser, sustentando todas as coisas por sua palavra poderosa. (Hebreus 1:3)"
           },
           {
             "type": "paragraph",
@@ -1147,12 +1101,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "Além de guardarem os indivíduos, os anjos estão presentes de forma invisível nas reuniões da igreja local, unindo-se ao nosso louvor, e desempenharão um papel proeminente e público no retorno de Jesus Cristo. Ele virá"
-          },
-          {
-            "type": "verse",
-            "text": "com os seus anjos poderosos",
-            "reference": "2Tessalonicenses 1:7"
+            "text": "Além de guardarem os indivíduos, os anjos estão presentes de forma invisível nas reuniões da igreja local, unindo-se ao nosso louvor, e desempenharão um papel proeminente e público no retorno de Jesus Cristo. Ele virá com os seus anjos poderosos (2Tessalonicenses 1:7)"
           },
           {
             "type": "paragraph",
@@ -1415,12 +1364,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "A obra de salvação nos renova progressivamente à imagem de Cristo, que é a imagem perfeita do Deus invisível, como Paulo assevera em Colossenses 3:10:"
-          },
-          {
-            "type": "verse",
-            "text": "e se revestiram do novo, que está sendo renovado em conhecimento, à imagem do seu Criador.",
-            "reference": "Colossenses 3:10"
+            "text": "A obra de salvação nos renova progressivamente à imagem de Cristo, que é a imagem perfeita do Deus invisível, como Paulo assevera em Colossenses 3:10: e se revestiram do novo, que está sendo renovado em conhecimento, à imagem do seu Criador. (Colossenses 3:10)"
           },
           {
             "type": "paragraph",
@@ -1691,12 +1635,7 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "As alianças bíblicas são as estruturas teológicas e históricas através das quais Deus escolheu relacionar-Se com a humanidade ao longo da história da salvação, estabelecendo promessas, mandamentos e termos de comunhão sob o selo de Seu compromisso inabalável de graça e fidelidade. Da aliança com Noé à Nova Aliança em Cristo, elas revelam o desenrolar progressivo do Seu plano de redenção. A Escritura Sagrada apresenta a plenitude e a superioridade da Nova Aliança estabelecida no sangue expiatório de Cristo, descrita profeticamente por Jeremias e reafirmada em Hebreus 8:10-12:"
-          },
-          {
-            "type": "verse",
-            "text": "Esta é a aliança que farei com a comunidade de Israel depois daqueles dias, declara o Senhor. Porei minhas leis em suas mentes e as escreverei em seus corações. Serei o seu Deus, e eles serão o meu povo... Pois eu perdoarei a sua maldade e não me lembrarei mais dos seus pecados.",
-            "reference": "Hebreus 8:10-12"
+            "text": "As alianças bíblicas são as estruturas teológicas e históricas através das quais Deus escolheu relacionar-Se com a humanidade ao longo da história da salvação, estabelecendo promessas, mandamentos e termos de comunhão sob o selo de Seu compromisso inabalável de graça e fidelidade. Da aliança com Noé à Nova Aliança em Cristo, elas revelam o desenrolar progressivo do Seu plano de redenção. A Escritura Sagrada apresenta a plenitude e a superioridade da Nova Aliança estabelecida no sangue expiatório de Cristo, descrita profeticamente por Jeremias e reafirmada em Hebreus 8:10-12: Esta é a aliança que farei com a comunidade de Israel depois daqueles dias, declara o Senhor. Porei minhas leis em suas mentes e as escreverei em seus corações. Serei o seu Deus, e eles serão o meu povo... Pois eu perdoarei a sua maldade e não me lembrarei mais dos seus pecados. (Hebreus 8:10-12)"
           },
           {
             "type": "paragraph",
@@ -1775,12 +1714,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "E o apóstolo Paulo exorta a nossa expectativa no retorno de Cristo, descrevendo Sua identidade divina em Tito 2:13:"
-          },
-          {
-            "type": "verse",
-            "text": "enquanto aguardamos a bendita esperança: a gloriosa manifestação de nosso grande Deus e Salvador, Jesus Cristo.",
-            "reference": "Tito 2:13"
+            "text": "E o apóstolo Paulo exorta a nossa expectativa no retorno de Cristo, descrevendo Sua identidade divina em Tito 2:13: enquanto aguardamos a bendita esperança: a gloriosa manifestação de nosso grande Deus e Salvador, Jesus Cristo. (Tito 2:13)"
           },
           {
             "type": "paragraph",
@@ -1940,12 +1874,7 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Cristo como Sacerdote é o ministério messiânico pelo qual Jesus atua como o mediador supremo entre o Deus santo e a humanidade culpada, oferecendo-Se a Si mesmo na cruz como o sacrifício perfeito e suficiente para cobrir os nossos pecados e reconciliar-nos com Deus, e intercedendo perpetuamente em nosso favor diante do trono do Pai celestial. O autor de Hebreus detalha a superioridade e a eternidade do sacerdócio de Cristo em passagens gloriosas como Hebreus 7:24-25:"
-          },
-          {
-            "type": "verse",
-            "text": "mas, visto que vive para sempre, Jesus tem um sacerdócio permanente. Consequentemente, ele é capaz de salvar definitivamente aqueles que, por meio dele, aproximam-se de Deus, pois vive sempre para interceder por eles.",
-            "reference": "Hebreus 7:24-25"
+            "text": "Cristo como Sacerdote é o ministério messiânico pelo qual Jesus atua como o mediador supremo entre o Deus santo e a humanidade culpada, oferecendo-Se a Si mesmo na cruz como o sacrifício perfeito e suficiente para cobrir os nossos pecados e reconciliar-nos com Deus, e intercedendo perpetuamente em nosso favor diante do trono do Pai celestial. O autor de Hebreus detalha a superioridade e a eternidade do sacerdócio de Cristo em passagens gloriosas como Hebreus 7:24-25: mas, visto que vive para sempre, Jesus tem um sacerdócio permanente. Consequentemente, ele é capaz de salvar definitivamente aqueles que, por meio dele, aproximam-se de Deus, pois vive sempre para interceder por eles. (Hebreus 7:24-25)"
           },
           {
             "type": "paragraph",
@@ -2006,12 +1935,7 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "O significado da expiação é a essência e o propósito central de toda a obra redentora de Jesus Cristo na cruz, onde Ele, motivado exclusivamente pela Sua imensa graça e pelo amor soberano de Deus Pai, ofereceu o Seu próprio sangue puro para suportar e satisfazer a justa e santa ira divina contra o nosso pecado, operando a nossa reconciliação, justificação e libertação de toda culpa e condenação eterna. A Bíblia apresenta o sentido da cruz em termos de amor gracioso e justiça exemplar unificados de forma perfeita. Em Romanos 3:25-26, lemos sob profunda gratidão:"
-          },
-          {
-            "type": "verse",
-            "text": "Deus O apresentou como propiciação, mediante a fé, pelo seu sangue, para demonstrar a sua justiça... para demonstrar a sua justiça no tempo presente, a fim de ser justo e justificador daquele que tem fé em Jesus.",
-            "reference": "Romanos 3:25-26"
+            "text": "O significado da expiação é a essência e o propósito central de toda a obra redentora de Jesus Cristo na cruz, onde Ele, motivado exclusivamente pela Sua imensa graça e pelo amor soberano de Deus Pai, ofereceu o Seu próprio sangue puro para suportar e satisfazer a justa e santa ira divina contra o nosso pecado, operando a nossa reconciliação, justificação e libertação de toda culpa e condenação eterna. A Bíblia apresenta o sentido da cruz em termos de amor gracioso e justiça exemplar unificados de forma perfeita. Em Romanos 3:25-26, lemos sob profunda gratidão: Deus O apresentou como propiciação, mediante a fé, pelo seu sangue, para demonstrar a sua justiça... para demonstrar a sua justiça no tempo presente, a fim de ser justo e justificador daquele que tem fé em Jesus. (Romanos 3:25-26)"
           },
           {
             "type": "paragraph",
@@ -2101,11 +2025,11 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "E em 2Coríntios 5:19, onde lemos que Deus em Cristo estava"
+            "text": "E em 2Coríntios 5:19, onde lemos:"
           },
           {
             "type": "verse",
-            "text": "reconciliando consigo o mundo",
+            "text": "Deus estava em Cristo reconciliando consigo o mundo, não levando em conta os pecados dos homens, e nos confiou a mensagem da reconciliação.",
             "reference": "2Coríntios 5:19"
           },
           {
@@ -2222,18 +2146,18 @@ export const theologyModules: TheologyModule[] = [
         "content": "A sessão à direita do Pai é a doutrina bíblica e gloriosa que revela que, após a Sua ascensão triunfante ao céu, Jesus Cristo assentou-Se no lugar supremo de autoridade, honra, soberania e poder universal ao lado do Pai, governando sobre todas as coisas e aguardando o momento predeterminado de colocar todos os Seus inimigos sob os Seus pés. A Escritura Sagrada declara a excelência dessa posição real e de herança em passagens gloriosas como o Salmo 110;1:\n\nDisse o Senhor ao meu Senhor: 'Senta-te à minha direita, até que eu faça dos teus inimigos um estrado para os teus pés (Salmo 110)\n\nE em Hebreus 1:3, lemos sobre a conclusão de Sua obra expiatória que O conduziu ao trono da glória divina:\n\nDepois de ter realizado a purificação dos pecados, ele se assentou à direita da Majestade nas alturas. (Hebreus 1:3)\n\nE o apóstolo Paulo exalta a exaltação suprema de Cristo sobre cada potestade invisível em Filipenses 2:9-11, Estar assentado à direita do Pai significa que a obra salvífica de Cristo na terra foi plenamente consumada e aceita pelo Criador (Hebreus 10:12). Ele não precisa mais oferecer sacrifícios; Ele reina vitorioso, intercedendo perpetuamente em favor de nossa justificação e segurança espiritual. Essa verdade enche a nossa alma de profunda segurança existencial, sabendo que o nosso amado Salvador e Mediador governa soberanamente sobre toda a história humana.",
         "references": [
           "Hebreus 10:12",
-          "Salmo 110",
+          "Salmo 110:1",
           "Hebreus 1:3"
         ],
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A sessão à direita do Pai é a doutrina bíblica e gloriosa que revela que, após a Sua ascensão triunfante ao céu, Jesus Cristo assentou-Se no lugar supremo de autoridade, honra, soberania e poder universal ao lado do Pai, governando sobre todas as coisas e aguardando o momento predeterminado de colocar todos os Seus inimigos sob os Seus pés. A Escritura Sagrada declara a excelência dessa posição real e de herança em passagens gloriosas como o Salmo 110;1:"
+            "text": "A sessão à direita do Pai é a doutrina bíblica e gloriosa que revela que, após a Sua ascensão triunfante ao céu, Jesus Cristo assentou-Se no lugar supremo de autoridade, honra, soberania e poder universal ao lado do Pai, governando sobre todas as coisas e aguardando o momento predeterminado de colocar todos os Seus inimigos sob os Seus pés. A Escritura Sagrada declara a excelência dessa posição real e de herança em passagens gloriosas como o Salmo 110:1:"
           },
           {
             "type": "verse",
-            "text": "Disse o Senhor ao meu Senhor: 'Senta-te à minha direita, até que eu faça dos teus inimigos um estrado para os teus pés",
-            "reference": "Salmo 110"
+            "text": "Disse o Senhor ao meu Senhor: ‘Senta-te à minha direita, até que eu faça dos teus inimigos um estrado para os teus pés.’",
+            "reference": "Salmo 110:1"
           },
           {
             "type": "paragraph",
@@ -2312,21 +2236,11 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A deidade do Espírito Santo é a verdade de que o Espírito de Deus é plenamente Deus, consubstancial e coeteo com o Pai e com o Filho, possuindo em Si mesmo todas as perfeições, atributos e glória divina da única e indivisível essência trinitária de Deus. Ele não é uma criatura angélica ou deidade menor; Ele é o Senhor e Doador da Vida. A Escritura Sagrada identifica o Espírito diretamente com a pessoa divina de Deus em passagens marcantes como Atos 5:3-4, onde Pedro confronta a mentira de Ananias:"
-          },
-          {
-            "type": "verse",
-            "text": "Disse então Pedro: 'Ananias, como você permitiu que Satanás enchesse o seu coração, a ponto de você mentir ao Espírito Santo?... Você não mentiu aos homens, mas sim a Deus.",
-            "reference": "Atos 5:3-4"
+            "text": "A deidade do Espírito Santo é a verdade de que o Espírito de Deus é plenamente Deus, consubstancial e coeteo com o Pai e com o Filho, possuindo em Si mesmo todas as perfeições, atributos e glória divina da única e indivisível essência trinitária de Deus. Ele não é uma criatura angélica ou deidade menor; Ele é o Senhor e Doador da Vida. A Escritura Sagrada identifica o Espírito diretamente com a pessoa divina de Deus em passagens marcantes como Atos 5:3-4, onde Pedro confronta a mentira de Ananias: Disse então Pedro: 'Ananias, como você permitiu que Satanás enchesse o seu coração, a ponto de você mentir ao Espírito Santo?... Você não mentiu aos homens, mas sim a Deus. (Atos 5:3-4)"
           },
           {
             "type": "paragraph",
-            "text": "E o apóstolo Paulo atribui ao Espírito a onisciência infinita que pertence exclusiva e unicamente ao caráter divino em 1Coríntios 2:10-11:"
-          },
-          {
-            "type": "verse",
-            "text": "pois o Espírito sonda todas as coisas, até mesmo as coisas mais profundas de Deus. Pois quem conhece os pensamentos do homem, a não ser o espírito do homem que nele está? Da mesma forma, ninguém conhece os pensamentos de Deus, a não ser o Espírito de Deus.",
-            "reference": "1Coríntios 2:10-11"
+            "text": "E o apóstolo Paulo atribui ao Espírito a onisciência infinita que pertence exclusiva e unicamente ao caráter divino em 1Coríntios 2:10-11: pois o Espírito sonda todas as coisas, até mesmo as coisas mais profundas de Deus. Pois quem conhece os pensamentos do homem, a não ser o espírito do homem que nele está? Da mesma forma, ninguém conhece os pensamentos de Deus, a não ser o Espírito de Deus. (1Coríntios 2:10-11)"
           },
           {
             "type": "paragraph",
@@ -2453,12 +2367,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "E o apóstolo Paulo descreve as consequências práticas e relacionais desse viver cheio de Deus nos versículos seguintes, em Efésios 5:19-20:"
-          },
-          {
-            "type": "verse",
-            "text": "falando entre vocês com salmos, hinos e cânticos espirituais, cantando e louvando de coração ao Senhor, dando graças constantemente a Deus Pai por todas as coisas, em nome de nosso Senhor Jesus Cristo.",
-            "reference": "Efésios 5:19-20"
+            "text": "E o apóstolo Paulo descreve as consequências práticas e relacionais desse viver cheio de Deus nos versículos seguintes, em Efésios 5:19-20: falando entre vocês com salmos, hinos e cânticos espirituais, cantando e louvando de coração ao Senhor, dando graças constantemente a Deus Pai por todas as coisas, em nome de nosso Senhor Jesus Cristo. (Efésios 5:19-20)"
           },
           {
             "type": "paragraph",
@@ -2673,12 +2582,7 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A regeneração é o ato secreto, soberano e instantâneo de Deus pelo qual Ele, por meio do Espírito Santo de Sua graça, comunica uma nova vida espiritual ao coração do crente arrependido que respondeu ao chamado de Deus, transformando a sua essência moral caída em uma nova criatura e capacitando-o de forma real para a comunhão viva com o Criador. A Escritura retrata essa ressurreição espiritual de forma marcante em passagens bíblicas clássicas como Tito 3:5:"
-          },
-          {
-            "type": "verse",
-            "text": "ele nos salvou, não por causa de atos de justiça que tivéssemos praticado, mas devido à sua misericórdia, mediante o lavar regenerador e renovador do Espírito Santo.",
-            "reference": "Tito 3:5"
+            "text": "A regeneração é o ato secreto, soberano e instantâneo de Deus pelo qual Ele, por meio do Espírito Santo de Sua graça, comunica uma nova vida espiritual ao coração do crente arrependido que respondeu ao chamado de Deus, transformando a sua essência moral caída em uma nova criatura e capacitando-o de forma real para a comunhão viva com o Criador. A Escritura retrata essa ressurreição espiritual de forma marcante em passagens bíblicas clássicas como Tito 3:5: ele nos salvou, não por causa de atos de justiça que tivéssemos praticado, mas devido à sua misericórdia, mediante o lavar regenerador e renovador do Espírito Santo. (Tito 3:5)"
           },
           {
             "type": "paragraph",
@@ -2791,12 +2695,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "A verdadeira fé salvadora vai além do mero assentimento intelectual aos fatos históricos de salvação; ela envolve o compromisso pessoal do coração que confia de forma ativa na pessoa viva de Jesus, como o apóstolo Paulo afirma em Romanos 10:9:"
-          },
-          {
-            "type": "verse",
-            "text": "se você confessar com a sua boca que Jesus é Senhor e crer em seu coração que Deus o ressuscitou dos mortos, será salvo.",
-            "reference": "Romanos 10:9"
+            "text": "A verdadeira fé salvadora vai além do mero assentimento intelectual aos fatos históricos de salvação; ela envolve o compromisso pessoal do coração que confia de forma ativa na pessoa viva de Jesus, como o apóstolo Paulo afirma em Romanos 10:9: se você confessar com a sua boca que Jesus é Senhor e crer em seu coração que Deus o ressuscitou dos mortos, será salvo. (Romanos 10:9)"
           },
           {
             "type": "paragraph",
@@ -2877,12 +2776,7 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A santificação progressiva é a obra cooperativa, progressiva e vitalícia de Deus e do homem na Nova Aliança, pela qual o crente regenerado é libertado de forma regular do poder e do domínio do pecado em sua vida e transformado à imagem moral e espiritual de Jesus Cristo em suas atitudes, pensamentos, palavras e ações diárias. A Escritura Sagrada exorta à nossa cooperação ativa e dependência graciosa na busca diária da santidade em Filipenses 2:12-13:"
-          },
-          {
-            "type": "verse",
-            "text": "coloquem em ação a salvação de vocês com temor e tremor, pois é Deus quem efetua em vocês tanto o querer quanto o realizar, de acordo com a boa vontade dele.",
-            "reference": "Filipenses 2:12-13"
+            "text": "A santificação progressiva é a obra cooperativa, progressiva e vitalícia de Deus e do homem na Nova Aliança, pela qual o crente regenerado é libertado de forma regular do poder e do domínio do pecado em sua vida e transformado à imagem moral e espiritual de Jesus Cristo em suas atitudes, pensamentos, palavras e ações diárias. A Escritura Sagrada exorta à nossa cooperação ativa e dependência graciosa na busca diária da santidade em Filipenses 2:12-13: coloquem em ação a salvação de vocês com temor e tremor, pois é Deus quem efetua em vocês tanto o querer quanto o realizar, de acordo com a boa vontade dele. (Filipenses 2:12-13)"
           },
           {
             "type": "paragraph",
@@ -3008,12 +2902,7 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "O alerta bíblico contra a apostasia é a séria e pastoral exortação das Escrituras que adverte os crentes sobre a necessidade inegociável de perseverarem firmes na fé, na doutrina sã e na obediência moral até ao fim de sua jornada de vida, advertindo de forma dramática que a negligência espiritual e a rebeldia deliberada podem desviar a pessoa da verdade de Deus. A Escritura apresenta esses alertas severos para a integridade de nossa vigilância diária em passagens como Hebreus 3:12-14:"
-          },
-          {
-            "type": "verse",
-            "text": "Vejam, irmãos, que nenhum de vocês tenha coração perverso e incrédulo, que se afaste do Deus vivo... Pois passamos a ser participantes de Cristo, desde que nos apeguemos firmemente até o fim à confiança que tivemos no princípio.",
-            "reference": "Hebreus 3:12-14"
+            "text": "O alerta bíblico contra a apostasia é a séria e pastoral exortação das Escrituras que adverte os crentes sobre a necessidade inegociável de perseverarem firmes na fé, na doutrina sã e na obediência moral até ao fim de sua jornada de vida, advertindo de forma dramática que a negligência espiritual e a rebeldia deliberada podem desviar a pessoa da verdade de Deus. A Escritura apresenta esses alertas severos para a integridade de nossa vigilância diária em passagens como Hebreus 3:12-14: Vejam, irmãos, que nenhum de vocês tenha coração perverso e incrédulo, que se afaste do Deus vivo... Pois passamos a ser participantes de Cristo, desde que nos apeguemos firmemente até o fim à confiança que tivemos no princípio. (Hebreus 3:12-14)"
           },
           {
             "type": "paragraph",
@@ -3032,12 +2921,7 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A glorificação é o ponto culminante e final de todo o processo de salvação do crente, no qual, no retorno vitorioso de Jesus Cristo, as almas dos justos serão perfeitamente unidas aos seus corpos físicos ressuscitados, os quais serão transformados em corpos imortais, perfeitos, livres de toda a corrupção do pecado e revestidos da mesma glória celestial do Salvador. A Escritura Sagrada declara a realidade inegável dessa promessa cósmica de salvação total em 1Coríntios 15:52-53:"
-          },
-          {
-            "type": "verse",
-            "text": "os mortos ressuscitarão incorruptíveis, e nós seremos transformados. Pois é necessário que aquilo que é corruptível se revista de incorruptibilidade, e aquilo que é mortal se revista de imortalidade.",
-            "reference": "1Coríntios 15:52-53"
+            "text": "A glorificação é o ponto culminante e final de todo o processo de salvação do crente, no qual, no retorno vitorioso de Jesus Cristo, as almas dos justos serão perfeitamente unidas aos seus corpos físicos ressuscitados, os quais serão transformados em corpos imortais, perfeitos, livres de toda a corrupção do pecado e revestidos da mesma glória celestial do Salvador. A Escritura Sagrada declara a realidade inegável dessa promessa cósmica de salvação total em 1Coríntios 15:52-53: os mortos ressuscitarão incorruptíveis, e nós seremos transformados. Pois é necessário que aquilo que é corruptível se revista de incorruptibilidade, e aquilo que é mortal se revista de imortalidade. (1Coríntios 15:52-53)"
           },
           {
             "type": "paragraph",
@@ -3082,12 +2966,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "E o apóstolo Paulo exalta a nossa união cooperativa no corpo em 1Coríntios 12:12-13:"
-          },
-          {
-            "type": "verse",
-            "text": "Pois em um só Espírito fomos todos nós batizados em um único corpo... e a todos nós foi dado beber de um único Espírito.",
-            "reference": "1Coríntios 12:12-13"
+            "text": "E o apóstolo Paulo exalta a nossa união cooperativa no corpo em 1Coríntios 12:12-13: Pois em um só Espírito fomos todos nós batizados em um único corpo... e a todos nós foi dado beber de um único Espírito. (1Coríntios 12:12-13)"
           },
           {
             "type": "paragraph",
@@ -3135,7 +3014,7 @@ export const theologyModules: TheologyModule[] = [
         "references": [
           "2Timóteo 4:2",
           "Mateus 28:19",
-          "1Coríntios 11:23-26",
+          "1Coríntios 11:23-24",
           "Mateus 18:15-17"
         ],
         "blocks": [
@@ -3164,7 +3043,7 @@ export const theologyModules: TheologyModule[] = [
           {
             "type": "verse",
             "text": "Porque eu recebi do Senhor o que também lhes entreguei: que o Senhor Jesus, na noite em que foi traído, tomou o pão, e, tendo dado graças, o partiu e disse: “Isto é o meu corpo, que é dado em favor de vocês; façam isto em memória de mim.”",
-            "reference": "1Coríntios 11:23-26"
+            "reference": "1Coríntios 11:23-24"
           },
           {
             "type": "paragraph",
@@ -3262,21 +3141,11 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "O ofício pastoral (também designado pelas Escrituras como ancião, presbítero ou bispo) é a liderança espiritual e o pastoreio ativo estabelecidos por Jesus Cristo na Nova Aliança para alimentar, pregar a sã doutrina, guiar e guardar a igreja local de falsos ensinos éticos e espirituais, agindo com coração humilde de servo e imitando o caráter amoroso do Supremo Pastor. O apóstolo Paulo descreve as qualificações morais e espirituais indispensáveis para o exercício do episcopado em 1Timóteo 3:1-2:"
-          },
-          {
-            "type": "verse",
-            "text": "Esta palavra é digna de confiança: Se alguém deseja ser bispo, deseja uma nobre função. É necessário, pois, que o bispo seja irrepreensível, marido de uma só mulher, moderado, sensato, respeitável, hospitaleiro e apto para ensinar...",
-            "reference": "1Timóteo 3:1-2"
+            "text": "O ofício pastoral (também designado pelas Escrituras como ancião, presbítero ou bispo) é a liderança espiritual e o pastoreio ativo estabelecidos por Jesus Cristo na Nova Aliança para alimentar, pregar a sã doutrina, guiar e guardar a igreja local de falsos ensinos éticos e espirituais, agindo com coração humilde de servo e imitando o caráter amoroso do Supremo Pastor. O apóstolo Paulo descreve as qualificações morais e espirituais indispensáveis para o exercício do episcopado em 1Timóteo 3:1-2: Esta palavra é digna de confiança: Se alguém deseja ser bispo, deseja uma nobre função. É necessário, pois, que o bispo seja irrepreensível, marido de uma só mulher, moderado, sensato, respeitável, hospitaleiro e apto para ensinar... (1Timóteo 3:1-2)"
           },
           {
             "type": "paragraph",
-            "text": "E o apóstolo Pedro destaca a atitude e as motivações corretas do labor de pastoreio em 1Pedro 5:2-3:"
-          },
-          {
-            "type": "verse",
-            "text": "Pastoreiem o rebanho de Deus que está aos seus cuidados... não por ganância, mas com o desejo de servir; não agindo como dominadores dos que lhes foram confiados, mas como exemplos para o rebanho.",
-            "reference": "1Pedro 5:2-3"
+            "text": "E o apóstolo Pedro destaca a atitude e as motivações corretas do labor de pastoreio em 1Pedro 5:2-3: Pastoreiem o rebanho de Deus que está aos seus cuidados... não por ganância, mas com o desejo de servir; não agindo como dominadores dos que lhes foram confiados, mas como exemplos para o rebanho. (1Pedro 5:2-3)"
           },
           {
             "type": "paragraph",
@@ -3328,12 +3197,7 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A ordenança do batismo é o ato bíblico, solene e público de obediência instituído por Jesus Cristo na Nova Aliança, pelo qual o crente que tem fé viva e arrependimento sincero de pecados é imerso na água em nome do Pai, do Filho e do Espírito Santo, confessando de forma visível a sua morte espiritual para o pecado e a sua ressurreição triunfante para uma nova vida com Deus. A Escritura Sagrada ordena a prática do batismo de forma prioritária em Mateus 28:19:"
-          },
-          {
-            "type": "verse",
-            "text": "Portanto, vão e façam discípulos de todas as nações, batizando-os em nome do Pai e do Filho e do Espírito Santo...",
-            "reference": "Mateus 28:19"
+            "text": "A ordenança do batismo é o ato bíblico, solene e público de obediência instituído por Jesus Cristo na Nova Aliança, pelo qual o crente que tem fé viva e arrependimento sincero de pecados é imerso na água em nome do Pai, do Filho e do Espírito Santo, confessando de forma visível a sua morte espiritual para o pecado e a sua ressurreição triunfante para uma nova vida com Deus. A Escritura Sagrada ordena a prática do batismo de forma prioritária em Mateus 28:19: Portanto, vão e façam discípulos de todas as nações, batizando-os em nome do Pai e do Filho e do Espírito Santo... (Mateus 28:19)"
           },
           {
             "type": "paragraph",
@@ -3361,12 +3225,7 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A ordenança da Ceia do Senhor é o ato litúrgico de fé, adoração sincera e comemoração comunitária instituído por Jesus Cristo na véspera de Sua crucificação, no qual a igreja local visível partilha do pão e do cálice do fruto da videira, recordando o Seu sacrifício substitutivo na cruz, celebrando a nossa união espiritual presente com Ele e antecipando o Seu retorno glorioso no banquete celestial final. O apóstolo Paulo detalha a instituição e as instruções de sã prática na administração da Ceia em 1Coríntios 11:23-26:"
-          },
-          {
-            "type": "verse",
-            "text": "Porque eu recebi do Senhor o que também lhes entreguei: que o Senhor Jesus, na noite em que foi traído, tomou o pão e, tendo dado graças, o partiu e disse: “Isto é o meu corpo, que é dado em favor de vocês; façam isto em memória de mim... façam isto, sempre que o beberem, em memória de mim. Porque, sempre que comerem deste pão e beberem deste cálice, vocês anunciam a morte do Senhor, até que ele venha.",
-            "reference": "1Coríntios 11:23-26"
+            "text": "A ordenança da Ceia do Senhor é o ato litúrgico de fé, adoração sincera e comemoração comunitária instituído por Jesus Cristo na véspera de Sua crucificação, no qual a igreja local visível partilha do pão e do cálice do fruto da videira, recordando o Seu sacrifício substitutivo na cruz, celebrando a nossa união espiritual presente com Ele e antecipando o Seu retorno glorioso no banquete celestial final. O apóstolo Paulo detalha a instituição e as instruções de sã prática na administração da Ceia em 1Coríntios 11:23-26: Porque eu recebi do Senhor o que também lhes entreguei: que o Senhor Jesus, na noite em que foi traído, tomou o pão e, tendo dado graças, o partiu e disse: “Isto é o meu corpo, que é dado em favor de vocês; façam isto em memória de mim... façam isto, sempre que o beberem, em memória de mim. Porque, sempre que comerem deste pão e beberem deste cálice, vocês anunciam a morte do Senhor, até que ele venha. (1Coríntios 11:23-26)"
           },
           {
             "type": "paragraph",
@@ -3394,21 +3253,11 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "O sacerdócio universal dos crentes é a gloriosa verdade bíblica redescoberta na Reforma Protestante, de que, devido à mediação sacerdotal única de Jesus Cristo e de Sua expiação penal consumada na cruz, cada crente em Cristo possui livre e total acesso à presença soberana de Deus, sem qualquer necessidade de mediadores humanos, padres ou intercessores de santos falecidos. A Escritura Sagrada proclama essa dignidade inalienável e a nossa responsabilidade ministerial ativa em 1Pedro 2:5:"
-          },
-          {
-            "type": "verse",
-            "text": "vocês também, como pedras vivas, estão sendo edificados como casa espiritual para serem sacerdócio santo, oferecendo sacrifícios espirituais agradáveis a Deus por meio de Jesus Cristo.",
-            "reference": "1Pedro 2:5"
+            "text": "O sacerdócio universal dos crentes é a gloriosa verdade bíblica redescoberta na Reforma Protestante, de que, devido à mediação sacerdotal única de Jesus Cristo e de Sua expiação penal consumada na cruz, cada crente em Cristo possui livre e total acesso à presença soberana de Deus, sem qualquer necessidade de mediadores humanos, padres ou intercessores de santos falecidos. A Escritura Sagrada proclama essa dignidade inalienável e a nossa responsabilidade ministerial ativa em 1Pedro 2:5: vocês também, como pedras vivas, estão sendo edificados como casa espiritual para serem sacerdócio santo, oferecendo sacrifícios espirituais agradáveis a Deus por meio de Jesus Cristo. (1Pedro 2:5)"
           },
           {
             "type": "paragraph",
-            "text": "E em Apocalipse 1:6, lemos a consolidação de nossa nova identidade de comunhão diante de Deus:"
-          },
-          {
-            "type": "verse",
-            "text": "e nos constituiu reino e sacerdotes para servir a seu Deus e Pai. A ele sejam a glória e o poder para todo o sempre! Amém.",
-            "reference": "Apocalipse 1:6"
+            "text": "E em Apocalipse 1:6, lemos a consolidação de nossa nova identidade de comunhão diante de Deus: e nos constituiu reino e sacerdotes para servir a seu Deus e Pai. A ele sejam a glória e o poder para todo o sempre! Amém. (Apocalipse 1:6)"
           },
           {
             "type": "paragraph",
@@ -3544,12 +3393,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "E o apóstolo Paulo exalta a nossa esperança e o ganho glorioso de partir para a presença inefável do Criador, em Filipenses 1:21-23:"
-          },
-          {
-            "type": "verse",
-            "text": "Porque para mim o viver é Cristo, e o morrer é lucro... desejo partir e estar com Cristo, o que é muito melhor.",
-            "reference": "Filipenses 1:21-23"
+            "text": "E o apóstolo Paulo exalta a nossa esperança e o ganho glorioso de partir para a presença inefável do Criador, em Filipenses 1:21-23: Porque para mim o viver é Cristo, e o morrer é lucro... desejo partir e estar com Cristo, o que é muito melhor. (Filipenses 1:21-23)"
           },
           {
             "type": "paragraph",
@@ -3639,12 +3483,7 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "O pré-milenarismo é a visão escatológica clássica que sustenta que a segunda vinda de Jesus Cristo ocorrerá antes do estabelecimento de Seu reinado literal de mil anos de paz e justiça na terra (conforme mencionado em Apocalipse 20:1-6), durante o qual Satanás e as suas hostes invisíveis do mal serão completamente aprisionados e impedidos de exercer influência no mundo físico. Os defensores desta interpretação (que conta com forte e histórico apoio desde a igreja primitiva e na teologia bíblica sistemática de Wayne Grudem e de muitos batistas tradicionais) baseiam-se em textos como Apocalipse 20:4:"
-          },
-          {
-            "type": "verse",
-            "text": "Vi tronos nos quais se assentaram aqueles a quem foi dada autoridade para julgar. Vi as almas dos que foram decapitados por causa do testemunho de Jesus... Eles ressuscitaram e reinaram com Cristo durante mil anos.",
-            "reference": "Apocalipse 20:4"
+            "text": "O pré-milenarismo é a visão escatológica clássica que sustenta que a segunda vinda de Jesus Cristo ocorrerá antes do estabelecimento de Seu reinado literal de mil anos de paz e justiça na terra (conforme mencionado em Apocalipse 20:1-6), durante o qual Satanás e as suas hostes invisíveis do mal serão completamente aprisionados e impedidos de exercer influência no mundo físico. Os defensores desta interpretação (que conta com forte e histórico apoio desde a igreja primitiva e na teologia bíblica sistemática de Wayne Grudem e de muitos batistas tradicionais) baseiam-se em textos como Apocalipse 20:4: Vi tronos nos quais se assentaram aqueles a quem foi dada autoridade para julgar. Vi as almas dos que foram decapitados por causa do testemunho de Jesus... Eles ressuscitaram e reinaram com Cristo durante mil anos. (Apocalipse 20:4)"
           },
           {
             "type": "paragraph",
@@ -3672,11 +3511,11 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "E em Efésios 2:6, onde lemos que os crentes já estão espiritualmente assentados"
+            "text": "E em Efésios 2:6, onde lemos que os crentes já estão espiritualmente assentados:"
           },
           {
             "type": "verse",
-            "text": "nos lugares celestiais com Cristo",
+            "text": "Deus nos ressuscitou com Cristo e com ele nos fez assentar nos lugares celestiais em Cristo Jesus.",
             "reference": "Efésios 2:6"
           },
           {
@@ -3688,7 +3527,7 @@ export const theologyModules: TheologyModule[] = [
       {
         "id": "pos-milenarismo",
         "title": "O Pós-milenarismo",
-        "content": "O pós-milenarismo é a perspectiva escatológica clássica que sustenta que a segunda vinda de Jesus Cristo ocorrerá após o estabelecimento gradual de uma longa era de paz, justiça, retidão e progresso social na terra, operada pelo poder transformador do Espírito Santo através da pregação do evangelho e da influência santificadora e ética da igreja local em todas as esferas da sociedade. Os defensores desta interpretação (que contava com forte apoio no movimento puritano e entre teólogos evangélicos históricos como John Wesley e Charles Spurgeon) dão ênfase a passagens e parábolas que ilustram a expansão silenciosa, porém constante e inabalável, do Reino de Deus em toda a terra. Em Mateus 13:33, Jesus ensina:\n\nQ reino dos céus é como o fermento que uma mulher tomou e misturou com uma grande quantidade de farinha, e toda a massa ficou fermentada. (Mateus 13:33)\n\nE em Salmo 72:8, lemos sobre a herança régia e messiânica do Filho:\n\nGoverne ele de mar a mar, e desde o rio Eufrates até os confins da terra. (Salmo 72:8)\n\nNo pós-milenarismo, a era milenar não exige a presença física e visível de Jesus Cristo na terra; o Seu reinado é espiritual e social exercido através de Sua noiva. Ao final dessa cra de bênção evangélica universal, Cristo retornará para o julgamento final e a glorificação eterna.",
+        "content": "O pós-milenarismo é a perspectiva escatológica clássica que sustenta que a segunda vinda de Jesus Cristo ocorrerá após o estabelecimento gradual de uma longa era de paz, justiça, retidão e progresso social na terra, operada pelo poder transformador do Espírito Santo através da pregação do evangelho e da influência santificadora e ética da igreja local em todas as esferas da sociedade. Os defensores desta interpretação (que contava com forte apoio no movimento puritano e entre teólogos evangélicos históricos como John Wesley e Charles Spurgeon) dão ênfase a passagens e parábolas que ilustram a expansão silenciosa, porém constante e inabalável, do Reino de Deus em toda a terra. Em Mateus 13:33, Jesus ensina:\n\nO reino dos céus é como o fermento que uma mulher tomou e misturou com uma grande quantidade de farinha, e toda a massa ficou fermentada. (Mateus 13:33)\n\nE em Salmo 72:8, lemos sobre a herança régia e messiânica do Filho:\n\nGoverne ele de mar a mar, e desde o rio Eufrates até os confins da terra. (Salmo 72:8)\n\nNo pós-milenarismo, a era milenar não exige a presença física e visível de Jesus Cristo na terra; o Seu reinado é espiritual e social exercido através de Sua noiva. Ao final dessa era de bênção evangélica universal, Cristo retornará para o julgamento final e a glorificação eterna.",
         "references": [
           "Mateus 13:33",
           "Salmo 72:8"
@@ -3700,7 +3539,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "verse",
-            "text": "Q reino dos céus é como o fermento que uma mulher tomou e misturou com uma grande quantidade de farinha, e toda a massa ficou fermentada.",
+            "text": "O reino dos céus é como o fermento que uma mulher tomou e misturou com uma grande quantidade de farinha, e toda a massa ficou fermentada.",
             "reference": "Mateus 13:33"
           },
           {
@@ -3714,7 +3553,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "No pós-milenarismo, a era milenar não exige a presença física e visível de Jesus Cristo na terra; o Seu reinado é espiritual e social exercido através de Sua noiva. Ao final dessa cra de bênção evangélica universal, Cristo retornará para o julgamento final e a glorificação eterna."
+            "text": "No pós-milenarismo, a era milenar não exige a presença física e visível de Jesus Cristo na terra; o Seu reinado é espiritual e social exercido através de Sua noiva. Ao final dessa era de bênção evangélica universal, Cristo retornará para o julgamento final e a glorificação eterna."
           }
         ]
       },
@@ -3738,12 +3577,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "E o apóstolo Paulo confessa essa mesma fé profética diante do conselho judaico, em Atos 24:15:"
-          },
-          {
-            "type": "verse",
-            "text": "e tenho em Deus a mesma esperança desses homens: de que haverá ressurreição tanto de justos como de injustos.",
-            "reference": "Atos 24:15"
+            "text": "E o apóstolo Paulo confessa essa mesma fé profética diante do conselho judaico, em Atos 24:15: e tenho em Deus a mesma esperança desses homens: de que haverá ressurreição tanto de justos como de injustos. (Atos 24:15)"
           },
           {
             "type": "paragraph",
@@ -3763,12 +3597,7 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "O juízo final é o evento judicial definitivo de proporções universais no qual Jesus Cristo, assentado em Seu majestoso trono branco de glória, julgará com perfeita retidão, imparcialidade e justiça moral toda a humanidade — tanto justos como injustos — e os anjos rebeldes, expondo cada atitude, motivação e obra praticada por meio do corpo e aplicando o Seu veredito de recompensa gloriosa ou de condenação perpétua. A Escritura retrata o cenário desse tribunal cósmico com profunda solenidade e temor no livro de Apocalipse 20:11-12:"
-          },
-          {
-            "type": "verse",
-            "text": "Depois vi um grande trono branco e aquele que nele estava assentado... Vi também os mortos, grandes e pequenos, em pé diante do trono, e livros foram abertos. Outro livro foi aberto, o livro da vida. Os mortos foram “julgados de acordo com o que tinham feito, segundo o que estava registrado nos livros.",
-            "reference": "Apocalipse 20:11-12"
+            "text": "O juízo final é o evento judicial definitivo de proporções universais no qual Jesus Cristo, assentado em Seu majestoso trono branco de glória, julgará com perfeita retidão, imparcialidade e justiça moral toda a humanidade — tanto justos como injustos — e os anjos rebeldes, expondo cada atitude, motivação e obra praticada por meio do corpo e aplicando o Seu veredito de recompensa gloriosa ou de condenação perpétua. A Escritura retrata o cenário desse tribunal cósmico com profunda solenidade e temor no livro de Apocalipse 20:11-12: Depois vi um grande trono branco e aquele que nele estava assentado... Vi também os mortos, grandes e pequenos, em pé diante do trono, e livros foram abertos. Outro livro foi aberto, o livro da vida. Os mortos foram “julgados de acordo com o que tinham feito, segundo o que estava registrado nos livros. (Apocalipse 20:11-12)"
           },
           {
             "type": "paragraph",
@@ -3800,12 +3629,12 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "verse",
-            "text": "Deus 'retribuirá a cada um conforme o seu procedimento",
+            "text": "Deus ‘retribuirá a cada um conforme o seu procedimento’. Ele dará vida eterna aos que, persistindo em fazer o bem, buscam glória, honra e imortalidade. Mas haverá ira e indignação para os que são egoístas, que rejeitam a verdade e seguem a injustiça.",
             "reference": "Romanos 2:6-8"
           },
           {
             "type": "paragraph",
-            "text": "Dará vida eterna aos que, persistindo em fazer o bem, buscam glória, honra e imortalidade. Mas haverá ira e indignação para os que são egoístas, que rejeitam a verdade e seguem a injustiça.\" E o apóstolo Paulo conforta as almas que sofrem opressões ou perseguições injustas neste mundo passageiro em Colossenses 3:25:"
+            "text": "\" E o apóstolo Paulo conforta as almas que sofrem opressões ou perseguições injustas neste mundo passageiro em Colossenses 3:25:"
           },
           {
             "type": "verse",
@@ -3838,12 +3667,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "E o apóstolo João decreta a extensão perpétua dessa ruína moral e espiritual no livro de Apocalipse 14:11:"
-          },
-          {
-            "type": "verse",
-            "text": "A fumaça do tormento de tais pessoas sobe para todo o sempre. Para todos os que adoram a besta e a sua imagem... não há descanso, dia e noite.",
-            "reference": "Apocalipse 14:11"
+            "text": "E o apóstolo João decreta a extensão perpétua dessa ruína moral e espiritual no livro de Apocalipse 14:11: A fumaça do tormento de tais pessoas sobe para todo o sempre. Para todos os que adoram a besta e a sua imagem... não há descanso, dia e noite. (Apocalipse 14:11)"
           },
           {
             "type": "paragraph",
