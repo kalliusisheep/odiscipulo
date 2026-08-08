@@ -27,9 +27,8 @@ import { Route as ApiTtsRouteImport } from './routes/api/tts'
 import { Route as AuthenticatedAdminPregerarNarracaoRouteImport } from './routes/_authenticated/admin.pregerar-narracao'
 import { Route as AuthenticatedAdminPregerarTextosRouteImport } from './routes/_authenticated/admin.pregerar-textos'
 import { Route as AuthenticatedBibliaIndexRouteImport } from './routes/_authenticated/biblia.index'
-import { Route as AuthenticatedBibliaTeologiaRouteImport } from './routes/_authenticated/biblia.teologia'
-import { Route as AuthenticatedBibliaTeologiaModuleChapterRouteImport } from './routes/_authenticated/biblia.teologia.$module.$chapter'
 import { Route as AuthenticatedBibliaMarcadosRouteImport } from './routes/_authenticated/biblia.marcados'
+import { Route as AuthenticatedBibliaTeologiaRouteImport } from './routes/_authenticated/biblia.teologia'
 import { Route as AuthenticatedEstudosIndexRouteImport } from './routes/_authenticated/estudos.index'
 import { Route as AuthenticatedJogosCruzadasRouteImport } from './routes/_authenticated/jogos.cruzadas'
 import { Route as AuthenticatedJogosMilhaoRouteImport } from './routes/_authenticated/jogos.milhao'
@@ -51,6 +50,7 @@ import { Route as AuthenticatedEstudosBiblicoIdRouteImport } from './routes/_aut
 import { Route as AuthenticatedEstudosMeditacaoIdRouteImport } from './routes/_authenticated/estudos.meditacao.$id'
 import { Route as AuthenticatedEstudosPlanoIdRouteImport } from './routes/_authenticated/estudos.plano.$id'
 import { Route as AuthenticatedLicaoIdAprofundarRouteImport } from './routes/_authenticated/licao.$id_.aprofundar'
+import { Route as AuthenticatedBibliaTeologiaModuleChapterRouteImport } from './routes/_authenticated/biblia.teologia.$module.$chapter'
 import { Route as AuthenticatedBibliaEstudoBookChapterVerseRouteImport } from './routes/_authenticated/biblia.estudo.$book.$chapter.$verse'
 
 const IndexRoute = IndexRouteImport.update({
@@ -147,22 +147,16 @@ const AuthenticatedBibliaIndexRoute =
     path: '/biblia/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedBibliaTeologiaRoute =
-  AuthenticatedBibliaTeologiaRouteImport.update({
-    id: '/biblia/teologia',
-    path: '/biblia/teologia',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedBibliaTeologiaModuleChapterRoute =
-  AuthenticatedBibliaTeologiaModuleChapterRouteImport.update({
-    id: '/biblia/teologia/$module/$chapter',
-    path: '/biblia/teologia/$module/$chapter',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 const AuthenticatedBibliaMarcadosRoute =
   AuthenticatedBibliaMarcadosRouteImport.update({
     id: '/biblia/marcados',
     path: '/biblia/marcados',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedBibliaTeologiaRoute =
+  AuthenticatedBibliaTeologiaRouteImport.update({
+    id: '/biblia/teologia',
+    path: '/biblia/teologia',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedEstudosIndexRoute =
@@ -287,6 +281,12 @@ const AuthenticatedLicaoIdAprofundarRoute =
     path: '/licao/$id/aprofundar',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedBibliaTeologiaModuleChapterRoute =
+  AuthenticatedBibliaTeologiaModuleChapterRouteImport.update({
+    id: '/$module/$chapter',
+    path: '/$module/$chapter',
+    getParentRoute: () => AuthenticatedBibliaTeologiaRoute,
+  } as any)
 const AuthenticatedBibliaEstudoBookChapterVerseRoute =
   AuthenticatedBibliaEstudoBookChapterVerseRouteImport.update({
     id: '/biblia/estudo/$book/$chapter/$verse',
@@ -312,8 +312,7 @@ export interface FileRoutesByFullPath {
   '/admin/pregerar-narracao': typeof AuthenticatedAdminPregerarNarracaoRoute
   '/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
   '/biblia/marcados': typeof AuthenticatedBibliaMarcadosRoute
-  '/biblia/teologia': typeof AuthenticatedBibliaTeologiaRoute
-  '/biblia/teologia/$module/$chapter': typeof AuthenticatedBibliaTeologiaModuleChapterRoute
+  '/biblia/teologia': typeof AuthenticatedBibliaTeologiaRouteWithChildren
   '/jogos/cruzadas': typeof AuthenticatedJogosCruzadasRoute
   '/jogos/milhao': typeof AuthenticatedJogosMilhaoRoute
   '/jogos/multiplayer': typeof AuthenticatedJogosMultiplayerRoute
@@ -336,6 +335,7 @@ export interface FileRoutesByFullPath {
   '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
   '/licao/$id/aprofundar': typeof AuthenticatedLicaoIdAprofundarRoute
+  '/biblia/teologia/$module/$chapter': typeof AuthenticatedBibliaTeologiaModuleChapterRoute
   '/biblia/estudo/$book/$chapter/$verse': typeof AuthenticatedBibliaEstudoBookChapterVerseRoute
 }
 export interface FileRoutesByTo {
@@ -356,8 +356,7 @@ export interface FileRoutesByTo {
   '/admin/pregerar-narracao': typeof AuthenticatedAdminPregerarNarracaoRoute
   '/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
   '/biblia/marcados': typeof AuthenticatedBibliaMarcadosRoute
-  '/biblia/teologia': typeof AuthenticatedBibliaTeologiaRoute
-  '/biblia/teologia/$module/$chapter': typeof AuthenticatedBibliaTeologiaModuleChapterRoute
+  '/biblia/teologia': typeof AuthenticatedBibliaTeologiaRouteWithChildren
   '/jogos/cruzadas': typeof AuthenticatedJogosCruzadasRoute
   '/jogos/milhao': typeof AuthenticatedJogosMilhaoRoute
   '/jogos/multiplayer': typeof AuthenticatedJogosMultiplayerRoute
@@ -372,8 +371,6 @@ export interface FileRoutesByTo {
   '/notas/$id': typeof AuthenticatedNotasIdRoute
   '/perfil/$username': typeof AuthenticatedPerfilUsernameRoute
   '/biblia': typeof AuthenticatedBibliaIndexRoute
-  '/biblia/teologia': typeof AuthenticatedBibliaTeologiaRoute
-  '/biblia/teologia/$module/$chapter': typeof AuthenticatedBibliaTeologiaModuleChapterRoute
   '/estudos': typeof AuthenticatedEstudosIndexRoute
   '/mensagens': typeof AuthenticatedMensagensIndexRoute
   '/notas': typeof AuthenticatedNotasIndexRoute
@@ -382,6 +379,7 @@ export interface FileRoutesByTo {
   '/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
   '/licao/$id/aprofundar': typeof AuthenticatedLicaoIdAprofundarRoute
+  '/biblia/teologia/$module/$chapter': typeof AuthenticatedBibliaTeologiaModuleChapterRoute
   '/biblia/estudo/$book/$chapter/$verse': typeof AuthenticatedBibliaEstudoBookChapterVerseRoute
 }
 export interface FileRoutesById {
@@ -404,7 +402,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/pregerar-narracao': typeof AuthenticatedAdminPregerarNarracaoRoute
   '/_authenticated/admin/pregerar-textos': typeof AuthenticatedAdminPregerarTextosRoute
   '/_authenticated/biblia/marcados': typeof AuthenticatedBibliaMarcadosRoute
-  '/_authenticated/biblia/teologia': typeof AuthenticatedBibliaTeologiaRoute
+  '/_authenticated/biblia/teologia': typeof AuthenticatedBibliaTeologiaRouteWithChildren
   '/_authenticated/jogos/cruzadas': typeof AuthenticatedJogosCruzadasRoute
   '/_authenticated/jogos/milhao': typeof AuthenticatedJogosMilhaoRoute
   '/_authenticated/jogos/multiplayer': typeof AuthenticatedJogosMultiplayerRoute
@@ -427,6 +425,7 @@ export interface FileRoutesById {
   '/_authenticated/estudos/meditacao/$id': typeof AuthenticatedEstudosMeditacaoIdRoute
   '/_authenticated/estudos/plano/$id': typeof AuthenticatedEstudosPlanoIdRoute
   '/_authenticated/licao/$id_/aprofundar': typeof AuthenticatedLicaoIdAprofundarRoute
+  '/_authenticated/biblia/teologia/$module/$chapter': typeof AuthenticatedBibliaTeologiaModuleChapterRoute
   '/_authenticated/biblia/estudo/$book/$chapter/$verse': typeof AuthenticatedBibliaEstudoBookChapterVerseRoute
 }
 export interface FileRouteTypes {
@@ -450,7 +449,6 @@ export interface FileRouteTypes {
     | '/admin/pregerar-textos'
     | '/biblia/marcados'
     | '/biblia/teologia'
-    | '/biblia/teologia/$module/$chapter'
     | '/jogos/cruzadas'
     | '/jogos/milhao'
     | '/jogos/multiplayer'
@@ -473,6 +471,7 @@ export interface FileRouteTypes {
     | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
     | '/licao/$id/aprofundar'
+    | '/biblia/teologia/$module/$chapter'
     | '/biblia/estudo/$book/$chapter/$verse'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -494,7 +493,6 @@ export interface FileRouteTypes {
     | '/admin/pregerar-textos'
     | '/biblia/marcados'
     | '/biblia/teologia'
-    | '/biblia/teologia/$module/$chapter'
     | '/jogos/cruzadas'
     | '/jogos/milhao'
     | '/jogos/multiplayer'
@@ -509,8 +507,6 @@ export interface FileRouteTypes {
     | '/notas/$id'
     | '/perfil/$username'
     | '/biblia'
-    | '/biblia/teologia'
-    | '/biblia/teologia/$module/$chapter'
     | '/estudos'
     | '/mensagens'
     | '/notas'
@@ -519,6 +515,7 @@ export interface FileRouteTypes {
     | '/estudos/meditacao/$id'
     | '/estudos/plano/$id'
     | '/licao/$id/aprofundar'
+    | '/biblia/teologia/$module/$chapter'
     | '/biblia/estudo/$book/$chapter/$verse'
   id:
     | '__root__'
@@ -541,7 +538,6 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/pregerar-textos'
     | '/_authenticated/biblia/marcados'
     | '/_authenticated/biblia/teologia'
-    | '/_authenticated/biblia/teologia/$module/$chapter'
     | '/_authenticated/jogos/cruzadas'
     | '/_authenticated/jogos/milhao'
     | '/_authenticated/jogos/multiplayer'
@@ -564,6 +560,7 @@ export interface FileRouteTypes {
     | '/_authenticated/estudos/meditacao/$id'
     | '/_authenticated/estudos/plano/$id'
     | '/_authenticated/licao/$id_/aprofundar'
+    | '/_authenticated/biblia/teologia/$module/$chapter'
     | '/_authenticated/biblia/estudo/$book/$chapter/$verse'
   fileRoutesById: FileRoutesById
 }
@@ -702,25 +699,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBibliaIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/biblia/teologia': {
-      id: '/_authenticated/biblia/teologia'
-      path: '/biblia/teologia'
-      fullPath: '/biblia/teologia'
-      preLoaderRoute: typeof AuthenticatedBibliaTeologiaRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/biblia/teologia/$module/$chapter': {
-      id: '/_authenticated/biblia/teologia/$module/$chapter'
-      path: '/biblia/teologia/$module/$chapter'
-      fullPath: '/biblia/teologia/$module/$chapter'
-      preLoaderRoute: typeof AuthenticatedBibliaTeologiaModuleChapterRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/biblia/marcados': {
       id: '/_authenticated/biblia/marcados'
       path: '/biblia/marcados'
       fullPath: '/biblia/marcados'
       preLoaderRoute: typeof AuthenticatedBibliaMarcadosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/biblia/teologia': {
+      id: '/_authenticated/biblia/teologia'
+      path: '/biblia/teologia'
+      fullPath: '/biblia/teologia'
+      preLoaderRoute: typeof AuthenticatedBibliaTeologiaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/estudos/': {
@@ -870,6 +860,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLicaoIdAprofundarRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/biblia/teologia/$module/$chapter': {
+      id: '/_authenticated/biblia/teologia/$module/$chapter'
+      path: '/$module/$chapter'
+      fullPath: '/biblia/teologia/$module/$chapter'
+      preLoaderRoute: typeof AuthenticatedBibliaTeologiaModuleChapterRouteImport
+      parentRoute: typeof AuthenticatedBibliaTeologiaRoute
+    }
     '/_authenticated/biblia/estudo/$book/$chapter/$verse': {
       id: '/_authenticated/biblia/estudo/$book/$chapter/$verse'
       path: '/biblia/estudo/$book/$chapter/$verse'
@@ -901,6 +898,21 @@ const AuthenticatedJogosRouteChildren: AuthenticatedJogosRouteChildren = {
 const AuthenticatedJogosRouteWithChildren =
   AuthenticatedJogosRoute._addFileChildren(AuthenticatedJogosRouteChildren)
 
+interface AuthenticatedBibliaTeologiaRouteChildren {
+  AuthenticatedBibliaTeologiaModuleChapterRoute: typeof AuthenticatedBibliaTeologiaModuleChapterRoute
+}
+
+const AuthenticatedBibliaTeologiaRouteChildren: AuthenticatedBibliaTeologiaRouteChildren =
+  {
+    AuthenticatedBibliaTeologiaModuleChapterRoute:
+      AuthenticatedBibliaTeologiaModuleChapterRoute,
+  }
+
+const AuthenticatedBibliaTeologiaRouteWithChildren =
+  AuthenticatedBibliaTeologiaRoute._addFileChildren(
+    AuthenticatedBibliaTeologiaRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedBemVindoRoute: typeof AuthenticatedBemVindoRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
@@ -916,6 +928,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminPregerarNarracaoRoute: typeof AuthenticatedAdminPregerarNarracaoRoute
   AuthenticatedAdminPregerarTextosRoute: typeof AuthenticatedAdminPregerarTextosRoute
   AuthenticatedBibliaMarcadosRoute: typeof AuthenticatedBibliaMarcadosRoute
+  AuthenticatedBibliaTeologiaRoute: typeof AuthenticatedBibliaTeologiaRouteWithChildren
   AuthenticatedLicaoIdRoute: typeof AuthenticatedLicaoIdRoute
   AuthenticatedLiderArvoreRoute: typeof AuthenticatedLiderArvoreRoute
   AuthenticatedMensagensUsernameRoute: typeof AuthenticatedMensagensUsernameRoute
@@ -924,8 +937,6 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedNotasIdRoute: typeof AuthenticatedNotasIdRoute
   AuthenticatedPerfilUsernameRoute: typeof AuthenticatedPerfilUsernameRoute
   AuthenticatedBibliaIndexRoute: typeof AuthenticatedBibliaIndexRoute
-  AuthenticatedBibliaTeologiaRoute: typeof AuthenticatedBibliaTeologiaRoute
-  AuthenticatedBibliaTeologiaModuleChapterRoute: typeof AuthenticatedBibliaTeologiaModuleChapterRoute
   AuthenticatedEstudosIndexRoute: typeof AuthenticatedEstudosIndexRoute
   AuthenticatedMensagensIndexRoute: typeof AuthenticatedMensagensIndexRoute
   AuthenticatedNotasIndexRoute: typeof AuthenticatedNotasIndexRoute
@@ -953,6 +964,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedAdminPregerarNarracaoRoute,
   AuthenticatedAdminPregerarTextosRoute: AuthenticatedAdminPregerarTextosRoute,
   AuthenticatedBibliaMarcadosRoute: AuthenticatedBibliaMarcadosRoute,
+  AuthenticatedBibliaTeologiaRoute:
+    AuthenticatedBibliaTeologiaRouteWithChildren,
   AuthenticatedLicaoIdRoute: AuthenticatedLicaoIdRoute,
   AuthenticatedLiderArvoreRoute: AuthenticatedLiderArvoreRoute,
   AuthenticatedMensagensUsernameRoute: AuthenticatedMensagensUsernameRoute,
@@ -961,8 +974,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedNotasIdRoute: AuthenticatedNotasIdRoute,
   AuthenticatedPerfilUsernameRoute: AuthenticatedPerfilUsernameRoute,
   AuthenticatedBibliaIndexRoute: AuthenticatedBibliaIndexRoute,
-  AuthenticatedBibliaTeologiaRoute: AuthenticatedBibliaTeologiaRoute,
-  AuthenticatedBibliaTeologiaModuleChapterRoute: AuthenticatedBibliaTeologiaModuleChapterRoute,
   AuthenticatedEstudosIndexRoute: AuthenticatedEstudosIndexRoute,
   AuthenticatedMensagensIndexRoute: AuthenticatedMensagensIndexRoute,
   AuthenticatedNotasIndexRoute: AuthenticatedNotasIndexRoute,

@@ -20,7 +20,7 @@ import {
 import { MessagesLinkButton } from "@/components/MessagesLinkButton";
 import { VerseOfDayCard } from "@/components/home/VerseOfDayCard";
 import { useApp } from "@/lib/app-context";
-import { ArrowUpRight, Check, ChevronRight, Crown, Flame, HeartHandshake, Sparkles } from "lucide-react";
+import { ArrowUpRight, BookOpen, Check, ChevronRight, Crown, Flame, HeartHandshake, Sparkles } from "lucide-react";
 import { ChallengePanel } from "@/components/ChallengeProgressBar";
 import { LeaderResources } from "@/components/LeaderResources";
 

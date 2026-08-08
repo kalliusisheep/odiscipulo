@@ -1,6 +1,6 @@
 export type TheologyContentBlock = { type: "paragraph" | "verse"; text: string; reference?: string };
 export type TheologyChapter = { id: string; title: string; content: string; references: string[]; blocks?: TheologyContentBlock[] };
-export type TheologyModule = { id: string; title: string; subtitle: string; chapters: TheologyChapter[] };
+export type TheologyModule = { id: string; title: string; subtitle: string; introduction?: string; chapters: TheologyChapter[] };
 export const theologyModules: TheologyModule[] = [
   {
     "id": "prolegomenos",
