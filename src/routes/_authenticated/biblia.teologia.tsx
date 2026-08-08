@@ -350,37 +350,4 @@ function TheologyContent({ chapter }: { chapter: TheologyChapter }) {
 
       const previous = normalized.at(-1);
       if (block.type === "paragraph" && previous?.type === "paragraph") {
-        previous.text = \`${previous.text} \`${text}\`;
-        return normalized;
-      }
-
-      normalized.push({ ...block, text });
-      return normalized;
-    }, []);
-
-  return (
-    <div className="space-y-5">
-      {blocks.map((block, index) =>
-        block.type === "verse" ? (
-          <blockquote
-            key={"verse-" + index}
-            className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.08] via-card to-background px-5 py-5 shadow-[0_12px_30px_-22px_hsl(var(--primary)/0.8)] before:pointer-events-none before:absolute before:inset-y-0 before:left-0 before:w-1 before:bg-primary/55 before:content-['']"
-          >
-            {block.reference && (
-              <cite className="mb-3 block text-[0.68rem] font-bold uppercase tracking-[0.16em] text-primary not-italic">
-                {block.reference} · NVI
-              </cite>
-            )}
-            <p className="text-[0.98rem] font-medium italic leading-7 text-foreground">
-              {block.text}
-            </p>
-          </blockquote>
-        ) : (
-          <p key={"paragraph-" + index} className="text-[0.98rem] leading-7 text-foreground/90">
-            {block.text}
-          </p>
-        ),
-      )}
-    </div>
-  );
-}
+        previous.text = previous.text + " " + text;
