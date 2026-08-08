@@ -219,9 +219,9 @@ function TheologyContent({ chapter }: { chapter: TheologyChapter }) {
         block.type === "verse" ? (
           <blockquote
             key={"verse-" + index}
-            className="rounded-2xl border-l-2 border-primary/45 bg-primary/5 px-4 py-4"
+            className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.08] via-card to-background px-5 py-5 shadow-[0_12px_30px_-22px_hsl(var(--primary)/0.8)] before:pointer-events-none before:absolute before:inset-y-0 before:left-0 before:w-1 before:bg-primary/55 before:content-['']"
           >
-            <p className="text-[0.98rem] font-bold leading-7 text-foreground">
+            <p className="text-[0.98rem] font-medium italic leading-7 text-foreground">
               {block.text}
             </p>
             {block.reference && (
