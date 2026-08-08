@@ -17,7 +17,7 @@ Regras obrigatórias:
 - contextualMeaning deve ter de 1 a 8 palavras, sem lista de possibilidades, sem ponto e vírgula e sem explicação teológica.
 - Use a função gramatical contextual para partículas sem equivalente lexical. Para אֵת/H853, por exemplo, escreva: marcador do objeto direto (sem tradução isolada).
 - Não escolha um significado apenas porque é o mais comum no dicionário; respeite o texto do versículo e a função da palavra.
-- Se não houver dados contextuais suficientes, contextualMeaning deve ser null.
+- Quando houver referência, texto do versículo ou palavra original, escolha o melhor sentido contextual disponível e não retorne null; use null somente quando não existir nenhum dado lexical.
 - Preserve códigos Strong, nomes próprios e transliterações.
 - Responda APENAS com JSON válido, sem markdown, no formato exato recebido.`;
 
