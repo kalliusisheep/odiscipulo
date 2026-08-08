@@ -6,7 +6,7 @@ import { SharedQuestionGame } from "@/components/games/SharedQuestionGame";
 import { BIBLICAL_CHARACTER_ROUNDS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { shuffleWithSeed } from "@/lib/seeded-random";
-import { normalizeGameContentKey, readRecentGameKeys, selectFreshGameVariants, uniqueGameContent } from "@/lib/game-content";
+import { normalizeGameContentKey, readRecentGameKeys, selectFreshGameVariants, uniqueGameVariantContent } from "@/lib/game-content";
 import { recordGameResult } from "@/lib/game-leaderboard";
 
 export const Route = createFileRoute("/_authenticated/jogos/personagem")({
@@ -99,7 +99,7 @@ function PersonagemPage() {
     const fallback = BIBLICAL_CHARACTER_ROUNDS.filter((item) => item.difficulty !== difficulty);
     // Keep one card per character in the pool. The generated hint order is a
     // presentation variant, not a new character and should not repeat in a match.
-    const source = uniqueGameContent([...preferred, ...fallback], (item) => item.id);
+    const source = uniqueGameVariantContent([...preferred, ...fallback], (item) => item.id);
     const shuffled = seed ? shuffleWithSeed(source, seed) : [...source].sort(() => Math.random() - 0.5);
     const recentKey = `character_recent_questions_${difficulty}`;
     const recentIds = readRecentGameKeys(recentKey);
