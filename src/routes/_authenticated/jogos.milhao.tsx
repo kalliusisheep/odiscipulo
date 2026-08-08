@@ -226,28 +226,31 @@ function Setup({
             ))}
           </div>
 
-          <div className="mt-3 grid grid-cols-3 gap-1.5">
+          <div className="mt-3 space-y-1.5">
             {MILLION_LEVELS.map((item, index) => (
               <div
                 key={item.title}
-                className="flex min-w-0 items-center gap-1.5 rounded-xl bg-background/45 px-1.5 py-2"
+                className="flex min-h-11 items-center gap-3 rounded-2xl border border-border/70 bg-background/35 px-3 py-2 transition-colors"
               >
                 <span
                   className={
                     index === MILLION_LEVELS.length - 1
-                      ? "flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-ancient/15 text-ancient"
-                      : "flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"
+                      ? "flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-ancient/15 text-ancient"
+                      : "flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary"
                   }
                 >
-                  <Trophy className="h-3.5 w-3.5" />
+                  <Trophy className="h-4 w-4" />
                 </span>
-                <span className="min-w-0">
-                  <span className="block truncate text-[10px] font-extrabold leading-tight">
+                <span className="min-w-0 flex-1">
+                  <span className="block text-xs font-extrabold leading-tight">
                     {item.title}
                   </span>
-                  <span className="mt-0.5 block text-[9px] font-bold text-muted-foreground">
-                    {item.points} pts
+                  <span className="mt-0.5 block text-[9px] font-bold uppercase tracking-[0.08em] text-muted-foreground">
+                    Nível de conhecimento
                   </span>
+                </span>
+                <span className="shrink-0 text-xs font-extrabold text-foreground">
+                  {item.points} pts
                 </span>
               </div>
             ))}
