@@ -138,6 +138,7 @@ export type OriginalWord = { word: string; strong: string | null; index: number 
 export type OriginalVerse = { verse: number; words: OriginalWord[] };
 
 const mem = new Map<string, unknown>();
+const pending = new Map<string, Promise<unknown>>();
 
 function lsGet<T>(key: string): T | null {
   if (typeof window === "undefined") return null;
@@ -158,20 +159,48 @@ function lsSet(key: string, value: unknown) {
   }
 }
 
-async function cached<T>(key: string, loader: () => Promise<T>, persist = true): Promise<T> {
-  const hit = mem.get(key);
-  if (hit) return hit as T;
-  if (persist) {
-    const stored = lsGet<T>(key);
-    if (stored) {
-      mem.set(key, stored);
-      return stored;
-    }
+function persistWhenIdle(key: string, value: unknown) {
+  if (typeof window === "undefined") return;
+
+  const write = () => lsSet(key, value);
+  const idleWindow = window as Window & {
+    requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
+  };
+
+  if (idleWindow.requestIdleCallback) {
+    idleWindow.requestIdleCallback(write, { timeout: 1200 });
+  } else {
+    window.setTimeout(write, 0);
   }
-  const value = await loader();
-  mem.set(key, value);
-  if (persist) lsSet(key, value);
-  return value;
+}
+
+async function cached<T>(key: string, loader: () => Promise<T>, persist = true): Promise<T> {
+  if (mem.has(key)) return mem.get(key) as T;
+
+  const running = pending.get(key);
+  if (running) return running as Promise<T>;
+
+  const request = (async () => {
+    if (persist) {
+      const stored = lsGet<T>(key);
+      if (stored !== null) {
+        mem.set(key, stored);
+        return stored;
+      }
+    }
+
+    const value = await loader();
+    mem.set(key, value);
+    if (persist) persistWhenIdle(key, value);
+    return value;
+  })();
+
+  pending.set(key, request);
+  try {
+    return await request;
+  } finally {
+    pending.delete(key);
+  }
 }
 
 function stripTags(html: string): string {
