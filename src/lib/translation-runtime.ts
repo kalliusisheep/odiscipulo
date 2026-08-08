@@ -1,6 +1,8 @@
 import type { AppLanguage } from "@/lib/i18n";
+import { translateTexts } from "@/lib/translate.functions";
 
 type TranslationEntry = readonly [string, string, string];
+
 
 const ENTRIES: TranslationEntry[] = [
   ["Inicial", "Home", "Inicio"],
