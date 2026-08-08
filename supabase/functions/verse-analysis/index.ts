@@ -79,11 +79,14 @@ function stringList(value: unknown): string[] {
 
 function parseAnalysisResponse(rawText: string): AnalysisResult {
   let candidate = rawText.trim();
+  const fence = String.fromCharCode(96).repeat(3);
 
-  candidate = candidate
-    .replace(/^\`\`\`(?:json)?\s*/i, "")
-    .replace(/\s*\`\`\`$/, "")
-    .trim();
+  if (candidate.startsWith(fence)) {
+    candidate = candidate.slice(fence.length).replace(/^json\s*/i, "").trim();
+    if (candidate.endsWith(fence)) {
+      candidate = candidate.slice(0, -fence.length).trim();
+    }
+  }
 
   const firstBrace = candidate.indexOf("{");
   const lastBrace = candidate.lastIndexOf("}");
