@@ -117,6 +117,51 @@ function computeLayout(nodes: TreeNode[]): { positions: Positions; width: number
   return { positions, width: maxGx * COL_W + PAD * 2, height: maxGy * ROW_H + PAD * 2, root };
 }
 
+function computePortraitLayout(nodes: TreeNode[]): { positions: Positions; width: number; height: number; root: TreeNode | null } {
+  const root = nodes.find((node) => node.direction === "self") ?? null;
+  const positions: Positions = new Map();
+  if (!root) return { positions, width: 0, height: 0, root };
+
+  const columnGap = 32;
+  const rowGap = 42;
+  const width = Math.max(MIN_CANVAS_W, NODE_CARD_W * 2 + columnGap + PAD * 2);
+  const centerX = width / 2;
+  const rowStep = NODE_CARD_H + rowGap;
+  const ancestors = nodes
+    .filter((node) => node.direction === "up")
+    .sort((a, b) => a.depth - b.depth);
+  const rootY = PAD + ancestors.length * rowStep;
+
+  ancestors.forEach((node, index) => {
+    positions.set(node.id, { x: centerX, y: PAD + index * rowStep });
+  });
+  positions.set(root.id, { x: centerX, y: rootY });
+
+  const descendants = nodes
+    .filter((node) => node.direction === "down" && node.id !== root.id)
+    .sort((a, b) => a.depth - b.depth || a.display_name.localeCompare(b.display_name));
+
+  const firstChildY = rootY + NODE_CARD_H + rowGap + NODE_CARD_H / 2;
+  descendants.forEach((node, index) => {
+    const column = index % 2;
+    const row = Math.floor(index / 2);
+    const x = PAD + NODE_CARD_W / 2 + column * (NODE_CARD_W + columnGap);
+    positions.set(node.id, { x, y: firstChildY + row * rowStep });
+  });
+
+  const maxY = Math.max(
+    rootY + NODE_CARD_H / 2,
+    ...[...positions.values()].map((position) => position.y + NODE_CARD_H / 2),
+  );
+
+  return {
+    positions,
+    width,
+    height: maxY + PAD,
+    root,
+  };
+}
+
 function initials(name: string) {
   return (name || "?").trim().charAt(0).toUpperCase();
 }
@@ -319,6 +364,7 @@ function ArvorePage() {
   }
 
   async function exportPdf() {
+    const layout = computePortraitLayout(nodes);
     if (!layout.root) return;
     setExporting(true);
     try {
@@ -553,7 +599,7 @@ function ArvorePage() {
       // ampliando) a arte pra caber com margem — assim o arquivo sempre
       // imprime certo, do jeito que a árvore tiver: pequena ou grande. ----------
       const dataUrl = canvas.toDataURL("image/png");
-      const orientation = canvasW > totalHeight ? "l" : "p";
+      const orientation = "p";
       const pdf = new jsPDF({ orientation, unit: "pt", format: "a4" });
       const pageW = pdf.internal.pageSize.getWidth();
       const pageH = pdf.internal.pageSize.getHeight();
