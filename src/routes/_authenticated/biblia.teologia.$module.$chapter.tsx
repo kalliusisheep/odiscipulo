@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { ArrowLeft, BookOpen, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { theologyModules, type TheologyChapter, type TheologyContentBlock } from "@/data/teologia";
@@ -22,6 +23,18 @@ function TeologiaCapituloPage() {
   const module = theologyModules[moduleIndex];
   const chapterIndex = module?.chapters.findIndex((item) => item.id === chapterId) ?? -1;
   const chapter = module?.chapters[chapterIndex];
+
+  useEffect(() => {
+    const resetScroll = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+
+    resetScroll();
+    const frame = window.requestAnimationFrame(resetScroll);
+    return () => window.cancelAnimationFrame(frame);
+  }, [moduleId, chapterId]);
 
   if (!module || !chapter) {
     return (
