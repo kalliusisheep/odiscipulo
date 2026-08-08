@@ -21,7 +21,9 @@ export type SupportModule = {
 };
 
 
-type SupportLessonSource = Omit<SupportLesson, "quizzes"> & {
+type SupportLessonSource = Omit<SupportLesson, "quizzes" | "verses"> & {
+  verse?: Verse;
+  verses?: Verse[];
   quiz?: Quiz;
   quizzes?: Quiz[];
 };
@@ -145,7 +147,13 @@ function normalizeSupportLesson(
   source: SupportLessonSource,
   lessonKey: string,
 ): SupportLesson {
-  const { quiz: legacyQuiz, quizzes: sourceQuizzes, ...lesson } = source;
+  const {
+    quiz: legacyQuiz,
+    quizzes: sourceQuizzes,
+    verse: singularVerse,
+    verses: sourceVerses,
+    ...lesson
+  } = source;
   const rawQuizzes = sourceQuizzes?.length
     ? sourceQuizzes
     : legacyQuiz
@@ -166,7 +174,15 @@ function normalizeSupportLesson(
           normalizeQuiz(buildApplicationQuiz(source, lessonKey), source.title, 1),
         ];
 
-  const verses = source.verses.map(normalizeSupportVerse);
+  const normalizedVerses = sourceVerses?.length
+    ? sourceVerses
+    : singularVerse
+      ? [singularVerse]
+      : [];
+  if (!normalizedVerses.length) {
+    throw new Error(`A trilha "${source.id}" não possui uma passagem bíblica.`);
+  }
+  const verses = normalizedVerses.map(normalizeSupportVerse);
   const firstVerse = verses[0];
   const reference = firstVerse?.ref ?? "a passagem principal";
   const reflection = normalizeSupportText(source.reflectionQuestion);
