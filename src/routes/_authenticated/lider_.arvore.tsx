@@ -345,13 +345,16 @@ function ArvorePage() {
     if (!pointers.current.has(e.pointerId)) return;
     pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (pointers.current.size === 2 && pinchRef.current) {
+      const pinch = pinchRef.current;
       const pts = [...pointers.current.values()];
       const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
-      setView((v) => ({ ...(v ?? DEFAULT_VIEW), scale: clampScale(pinchRef.current!.scale * (dist / pinchRef.current!.dist)) }));
+      if (!pinch.dist) return;
+      setView((v) => ({ ...(v ?? DEFAULT_VIEW), scale: clampScale(pinch.scale * (dist / pinch.dist)) }));
     } else if (pointers.current.size === 1 && dragRef.current) {
-      const dx = e.clientX - dragRef.current.x;
-      const dy = e.clientY - dragRef.current.y;
-      setView((v) => ({ ...(v ?? DEFAULT_VIEW), tx: dragRef.current!.tx + dx, ty: dragRef.current!.ty + dy }));
+      const drag = dragRef.current;
+      const dx = e.clientX - drag.x;
+      const dy = e.clientY - drag.y;
+      setView((v) => ({ ...(v ?? DEFAULT_VIEW), tx: drag.tx + dx, ty: drag.ty + dy }));
     }
   }
 
