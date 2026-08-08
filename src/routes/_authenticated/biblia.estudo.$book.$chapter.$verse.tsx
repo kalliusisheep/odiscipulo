@@ -342,7 +342,7 @@ function VerseStudy() {
 
           <nav
             aria-label="Ferramentas de estudo"
-            className="bible-study-tabs -mx-1 mt-3 flex snap-x gap-2 overflow-x-auto rounded-2xl border border-border/60 bg-surface/30 p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="bible-study-tabs -mx-1 mt-3 grid grid-cols-6 gap-1 rounded-[22px] border border-border/60 bg-surface/30 p-1.5 shadow-[inset_0_1px_0_color-mix(in_oklab,var(--foreground)_5%,transparent)]"
           >
             {tabs.map((tab) => {
               const TabIcon = tab.icon;
@@ -355,14 +355,15 @@ function VerseStudy() {
                   aria-selected={selected}
                   onClick={() => setTab(tab.id)}
                   className={
-                    "flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-[0.95rem] border px-3 py-2 text-xs font-bold transition-all active:scale-[0.98] " +
+                    "col-span-2 flex min-h-12 min-w-0 flex-col items-center justify-center gap-1 rounded-[15px] border px-1.5 py-2 text-[10px] font-bold leading-tight transition-all active:scale-[0.98] " +
+                    (tab.id === "referencias" || tab.id === "lexico" ? "col-span-3 " : "") +
                     (selected
                       ? "border-primary/45 bg-primary text-primary-foreground shadow-[0_8px_24px_-12px_hsl(var(--primary))]"
-                      : "border-border/70 bg-surface text-muted-foreground hover:border-primary/25 hover:text-foreground")
+                      : "border-transparent bg-transparent text-muted-foreground hover:border-primary/20 hover:bg-surface hover:text-foreground")
                   }
                 >
                   <TabIcon className="h-4 w-4" />
-                  {tab.label}
+                  <span className="max-w-full whitespace-normal break-words text-center">{tab.label}</span>
                 </button>
               );
             })}
