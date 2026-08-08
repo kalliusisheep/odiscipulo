@@ -72,7 +72,9 @@ export const translateTexts = createServerFn({ method: "POST" })
 
 
     const targetName = data.language === "es" ? "Spanish (Spain/Latin America neutral)" : "English (US)";
-    const payload = data.texts.map((text, index) => ({ id: index, text }));
+    const missingIndexes = data.texts.map((_, index) => index).filter((index) => free[index] === null);
+    const payload = missingIndexes.map((index) => ({ id: index, text: data.texts[index]! }));
+    const fallback = () => ({ translations: data.texts.map((text, index) => free[index] ?? text) });
 
     try {
       const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -97,21 +99,22 @@ export const translateTexts = createServerFn({ method: "POST" })
         }),
       });
 
-      if (!response.ok) return { translations: data.texts };
+      if (!response.ok) return fallback();
       const json = (await response.json()) as {
         choices?: { message?: { content?: string } }[];
       };
       const content = json.choices?.[0]?.message?.content ?? "";
       const match = content.match(/\[[\s\S]*\]/);
-      if (!match) return { translations: data.texts };
+      if (!match) return fallback();
       const parsed = JSON.parse(match[0]) as { id?: number; text?: string }[];
       const byId = new Map<number, string>();
       parsed.forEach((item, position) => {
-        const id = typeof item.id === "number" ? item.id : position;
+        const id = typeof item.id === "number" ? item.id : (missingIndexes[position] ?? position);
         if (typeof item.text === "string") byId.set(id, item.text);
       });
-      return { translations: data.texts.map((text, index) => byId.get(index) ?? text) };
+      return { translations: data.texts.map((text, index) => free[index] ?? byId.get(index) ?? text) };
     } catch {
-      return { translations: data.texts };
+      return fallback();
+
     }
   });
