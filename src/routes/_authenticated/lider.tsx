@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState, type ElementType } from "react";
 import { toast } from "sonner";
 import {
   ArrowLeft,
+  BookOpen,
   Building2,
   Calendar,
   Check,
@@ -14,6 +15,7 @@ import {
   Plus,
   Search,
   Sparkles,
+  Trash2,
   UserRound,
   Users,
 } from "lucide-react";
@@ -22,6 +24,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { supabase } from "@/integrations/supabase/client";
 import { normalizeUsername } from "@/lib/username";
 import { DiscipleshipProgress } from "@/components/DiscipleshipProgress";
+import { SUPPORT_MODULES } from "@/data/leader-support-content";
 
 export const Route = createFileRoute("/_authenticated/lider")({
   component: LiderPage,
@@ -46,8 +49,12 @@ function LiderPage() {
   const [groups, setGroups] = useState<Group[]>([]);
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [loading, setLoading] = useState(true);
-  const [dialog, setDialog] = useState<"disciple" | "group" | "meeting" | null>(null);
+  const [dialog, setDialog] = useState<"disciple" | "discipleActions" | "group" | "meeting" | null>(null);
   const [saving, setSaving] = useState(false);
+  const [selectedDisciple, setSelectedDisciple] = useState<Person | null>(null);
+  const [studySearch, setStudySearch] = useState("");
+  const [selectedLessonId, setSelectedLessonId] = useState("");
+  const [removingDisciple, setRemovingDisciple] = useState(false);
   const [search, setSearch] = useState("");
   const [results, setResults] = useState<Person[]>([]);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -120,6 +127,81 @@ function LiderPage() {
     [...contacts, ...discipulos].forEach((person) => byId.set(person.id, person));
     return [...byId.values()].sort((a, b) => a.display_name.localeCompare(b.display_name));
   }, [contacts, discipulos]);
+
+  const supportLessons = useMemo(
+    () => SUPPORT_MODULES.flatMap((module) => module.lessons.map((lesson) => ({ ...lesson, moduleTitle: module.title }))),
+    [],
+  );
+  const filteredSupportLessons = useMemo(() => {
+    const query = studySearch.trim().toLocaleLowerCase();
+    if (!query) return supportLessons;
+    return supportLessons.filter((lesson) => (lesson.moduleTitle + " " + lesson.title).toLocaleLowerCase().includes(query));
+  }, [studySearch, supportLessons]);
+
+  const openDisciple = (person: Person) => {
+    setSelectedDisciple(person);
+    setStudySearch("");
+    setSelectedLessonId(supportLessons[0]?.id ?? "");
+    setDialog("discipleActions");
+  };
+
+  const assignStudy = async () => {
+    if (!myId || !selectedDisciple || !selectedLessonId) {
+      toast.error("Escolha um estudo para atribuir.");
+      return;
+    }
+    setSaving(true);
+    const { error } = await db.from("discipleship_assignments").upsert(
+      [{
+        leader_id: myId,
+        disciple_id: selectedDisciple.id,
+        group_id: null,
+        content_type: "support_lesson",
+        content_id: selectedLessonId,
+        status: "active",
+      }],
+      { onConflict: "leader_id,disciple_id,content_type,content_id", ignoreDuplicates: true },
+    );
+    setSaving(false);
+    if (error) {
+      toast.error("Não foi possível atribuir este estudo.");
+      return;
+    }
+    const lesson = supportLessons.find((item) => item.id === selectedLessonId);
+    toast.success((lesson?.title ?? "Estudo") + " atribuído a " + selectedDisciple.display_name + ".");
+    setDialog(null);
+    setSelectedDisciple(null);
+    if (myId) await load(myId);
+  };
+
+  const removeDisciple = async () => {
+    if (!myId || !selectedDisciple) return;
+    setRemovingDisciple(true);
+    const { error } = await db
+      .from("leader_disciples")
+      .delete()
+      .eq("leader_id", myId)
+      .eq("disciple_id", selectedDisciple.id);
+
+    if (!error) {
+      const { data: leaderGroups } = await db.from("groups").select("id").eq("leader_id", myId);
+      const groupIds = (leaderGroups ?? []).map((group: { id: string }) => group.id);
+      if (groupIds.length) {
+        await db.from("group_members").delete().eq("disciple_id", selectedDisciple.id).in("group_id", groupIds);
+      }
+      await db.from("discipleship_assignments").delete().eq("leader_id", myId).eq("disciple_id", selectedDisciple.id).eq("status", "active");
+    }
+
+    setRemovingDisciple(false);
+    if (error) {
+      toast.error("Não foi possível remover este discípulo.");
+      return;
+    }
+    toast.success(selectedDisciple.display_name + " foi removido do seu discipulado.");
+    setDialog(null);
+    setSelectedDisciple(null);
+    await load(myId);
+  };
 
   const addDisciple = async (person: Person) => {
     if (!myId) return;
@@ -242,7 +324,63 @@ function LiderPage() {
 
         <section className="space-y-3"><div className="flex items-end justify-between gap-3 px-1"><div><p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-muted-foreground">Comunidade</p><h2 className="mt-1 text-lg font-extrabold tracking-tight">Grupos de discipulado</h2></div><span className="text-[10px] font-medium text-muted-foreground">{groups.length} grupo{groups.length === 1 ? "" : "s"}</span></div>{groups.length === 0 ? <Empty text="Crie um grupo para caminhar com mais pessoas." /> : <div className="space-y-2.5">{groups.map((group) => <div key={group.id} className="flex items-center gap-3 rounded-2xl border border-border/70 bg-surface/75 p-3.5 transition-colors hover:border-primary/30"><span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-success/10 text-success"><Users className="h-4 w-4" /></span><div className="min-w-0 flex-1"><p className="truncate text-sm font-bold">{group.name}</p><p className="mt-1 truncate text-[11px] text-muted-foreground">{group.topic} · {group.members} membro{group.members === 1 ? "" : "s"}</p></div><span className="rounded-full bg-background/60 px-2 py-1 text-[10px] font-semibold text-muted-foreground">Ativo</span></div>)}</div>}</section>
 
-        <section className="space-y-3"><div className="flex items-end justify-between gap-3 px-1"><div><p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-muted-foreground">Acompanhamento</p><h2 className="mt-1 text-lg font-extrabold tracking-tight">Seus discípulos</h2></div><span className="text-[10px] font-medium text-muted-foreground">{discipulos.length} pessoa{discipulos.length === 1 ? "" : "s"}</span></div>{!loading && discipulos.length === 0 ? <Empty text="Adicione seu primeiro discípulo para começar." /> : <div className="space-y-2.5">{discipulos.map((person) => <PersonCard key={person.id} person={person} />)}</div>}</section>
+        <section className="space-y-3"><div className="flex items-end justify-between gap-3 px-1"><div><p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-muted-foreground">Acompanhamento</p><h2 className="mt-1 text-lg font-extrabold tracking-tight">Seus discípulos</h2></div><span className="text-[10px] font-medium text-muted-foreground">{discipulos.length} pessoa{discipulos.length === 1 ? "" : "s"}</span></div>{!loading && discipulos.length === 0 ? <Empty text="Adicione seu primeiro discípulo para começar." /> : <div className="space-y-2.5">{discipulos.map((person) => <PersonCard key={person.id} person={person} onClick={() => openDisciple(person)} />)}</div>}</section>
+
+        <Dialog open={dialog === "discipleActions"} onOpenChange={(open) => { if (!open) { setDialog(null); setSelectedDisciple(null); } }}>
+          <DialogContent className="max-h-[88vh] overflow-y-auto sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>{selectedDisciple ? selectedDisciple.display_name : "Discípulo"}</DialogTitle>
+              <DialogDescription>Atribua um estudo, acompanhe o vínculo e gerencie este discípulo.</DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              {selectedDisciple && (
+                <div className="flex items-center gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-3">
+                  <Avatar person={selectedDisciple} />
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-bold">{selectedDisciple.display_name}</p>
+                    <p className="mt-1 truncate text-[11px] text-muted-foreground">@{selectedDisciple.username ?? "sem ID"} · {selectedDisciple.streak ?? 0} dias de ofensiva</p>
+                  </div>
+                </div>
+              )}
+              <div className="space-y-2">
+                <div className="flex items-end justify-between gap-3">
+                  <div>
+                    <p className="flex items-center gap-2 text-sm font-bold"><BookOpen className="h-4 w-4 text-primary" /> Atribuir estudo</p>
+                    <p className="mt-1 text-[11px] text-muted-foreground">O progresso aparecerá no painel do líder.</p>
+                  </div>
+                  <span className="text-[10px] font-bold text-primary">{supportLessons.length} estudos</span>
+                </div>
+                <SearchInput value={studySearch} onChange={setStudySearch} placeholder="Buscar por título ou módulo" />
+                <div className="max-h-56 space-y-2 overflow-y-auto pr-1">
+                  {filteredSupportLessons.length ? filteredSupportLessons.map((lesson) => (
+                    <button
+                      key={lesson.id}
+                      type="button"
+                      onClick={() => setSelectedLessonId(lesson.id)}
+                      className={"flex w-full items-center gap-3 rounded-xl border p-3 text-left transition-colors " + (selectedLessonId === lesson.id ? "border-primary/60 bg-primary/10" : "border-border/70 bg-surface/60 hover:border-primary/35")}
+                    >
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-[10px] font-bold text-primary">{lesson.moduleTitle.slice(0, 2).toUpperCase()}</span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted-foreground">{lesson.moduleTitle}</span>
+                        <span className="mt-0.5 block truncate text-sm font-bold">{lesson.title}</span>
+                      </span>
+                      {selectedLessonId === lesson.id && <Check className="h-4 w-4 shrink-0 text-primary" />}
+                    </button>
+                  )) : <Empty text="Nenhum estudo encontrado." />}
+                </div>
+                <button type="button" onClick={() => void assignStudy()} disabled={saving || !selectedLessonId} className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/15 transition-all hover:brightness-110 disabled:opacity-60">
+                  {saving && <Loader2 className="h-4 w-4 animate-spin" />} Atribuir estudo selecionado
+                </button>
+              </div>
+              <div className="border-t border-border/70 pt-4">
+                <p className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.16em] text-muted-foreground">Gerenciar vínculo</p>
+                <button type="button" onClick={() => void removeDisciple()} disabled={removingDisciple} className="flex w-full items-center justify-center gap-2 rounded-xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm font-bold text-destructive transition-colors hover:bg-destructive/10 disabled:opacity-60">
+                  {removingDisciple && <Loader2 className="h-4 w-4 animate-spin" />}<Trash2 className="h-4 w-4" /> Remover discípulo
+                </button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
 
         <Dialog open={dialog === "disciple"} onOpenChange={(open) => !open && setDialog(null)}><DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-lg"><DialogHeader><DialogTitle>Adicionar discípulo</DialogTitle><DialogDescription>Escolha um contato já adicionado ou procure pelo ID real do usuário.</DialogDescription></DialogHeader><div className="space-y-3"><SearchInput value={search} onChange={setSearch} placeholder="Buscar por ID (ex.: joao.silva)" /><p className="text-[11px] text-muted-foreground">{search.trim().length >= 2 ? "Resultados para sua busca" : "Seus contatos disponíveis"}</p>{search.trim().length >= 2 ? <PersonList people={results} existingIds={new Set(discipulos.map((person) => person.id))} onChoose={addDisciple} saving={saving} /> : <PersonList people={contacts} existingIds={new Set(discipulos.map((person) => person.id))} onChoose={addDisciple} saving={saving} empty="Você ainda não possui contatos adicionados." />}</div></DialogContent></Dialog>
 
@@ -265,8 +403,8 @@ function Empty({ text }: { text: string }) {
 function Avatar({ person }: { person: Person }) {
   return <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-primary/10 text-sm font-bold text-primary">{person.avatar_url ? <img src={person.avatar_url} alt="" className="h-full w-full object-cover" /> : person.display_name[0]}</div>;
 }
-function PersonCard({ person }: { person: Person }) {
-  return <div className="group flex items-center gap-3 rounded-2xl border border-border/70 bg-surface/75 p-3.5 transition-all hover:-translate-y-0.5 hover:border-primary/35"><Avatar person={person} /><div className="min-w-0 flex-1"><p className="truncate text-sm font-bold">{person.display_name}</p><p className="mt-1 truncate text-[11px] text-muted-foreground">@{person.username ?? "sem ID"} · {person.streak ?? 0} dias de ofensiva</p></div><ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/50 transition-transform group-hover:translate-x-0.5" /></div>;
+function PersonCard({ person, onClick }: { person: Person; onClick: () => void }) {
+  return <button type="button" onClick={onClick} className="group flex w-full items-center gap-3 rounded-2xl border border-border/70 bg-surface/75 p-3.5 text-left transition-all hover:-translate-y-0.5 hover:border-primary/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"><Avatar person={person} /><span className="min-w-0 flex-1"><span className="block truncate text-sm font-bold">{person.display_name}</span><span className="mt-1 block truncate text-[11px] text-muted-foreground">@{person.username ?? "sem ID"} · {person.streak ?? 0} dias de ofensiva</span></span><ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/50 transition-transform group-hover:translate-x-0.5" /></button>;
 }
 function SearchInput({ value, onChange, placeholder }: { value: string; onChange: (value: string) => void; placeholder: string }) {
   return <div className="relative"><Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className="w-full rounded-xl border border-border bg-input py-3 pl-10 pr-3 text-sm outline-none transition-colors focus:border-primary" /></div>;
@@ -275,4 +413,3 @@ function PersonList({ people, existingIds, onChoose, saving, empty = "Nenhum usu
   if (!people.length) return <Empty text={empty} />;
   return <div className="space-y-2">{people.map((person) => { const exists = existingIds.has(person.id); return <div key={person.id} className="flex items-center gap-3 rounded-xl border border-border/70 bg-surface/60 p-3"><Avatar person={person} /><div className="min-w-0 flex-1"><p className="truncate text-sm font-bold">{person.display_name}</p><p className="truncate text-xs text-muted-foreground">@{person.username ?? "sem ID"}</p></div>{exists ? <span className="flex items-center gap-1 text-xs font-semibold text-success"><Check className="h-4 w-4" /> Adicionado</span> : <button type="button" disabled={saving} onClick={() => void onChoose(person)} className="rounded-xl bg-primary px-3 py-2 text-xs font-bold text-primary-foreground transition-opacity disabled:opacity-60">Adicionar</button>}</div>; })}</div>;
 }
-
