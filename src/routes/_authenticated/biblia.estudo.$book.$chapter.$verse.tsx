@@ -867,6 +867,7 @@ function AnalysisTags({ label, items }: { label: string; items: string[] }) {
 function WordDetail({
   word,
   entry,
+  contextualMeaning,
   occurrence,
   onSpeak,
 }: {
