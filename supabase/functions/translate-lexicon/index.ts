@@ -17,6 +17,8 @@ const SYSTEM_PROMPT = [
   "contextualMeaning deve ter de 1 a 8 palavras, sem lista de possibilidades, ponto e vírgula ou explicação teológica.",
   "Para אֵת/H853, escreva exatamente: marca o objeto direto.",
   "Quando houver contexto suficiente, escolha o melhor sentido contextual disponível e não retorne null.",
+  "contextualMeaning deve ser uma palavra ou expressão que apareça no versículo em português (ou uma forma flexionada claramente correspondente). Nunca retorne apenas “não”, “nao”, “sim”, uma classe gramatical ou um sentido que não esteja ancorado no texto.",
+
   "Preserve códigos Strong, nomes próprios e transliterações.",
   "Responda APENAS com JSON válido no mesmo formato do objeto recebido.",
 ].join("\n");
@@ -27,6 +29,7 @@ type ContextualPayload = {
   word?: string | null;
   strong?: string | null;
   originalWords?: { word: string; strong: string | null }[];
+  wordIndex?: number | null;
 };
 
 type RequestBody = {
@@ -58,6 +61,7 @@ const CONTEXTUAL_FALLBACKS: Record<string, string> = {
   H1961: "era",
   H1254: "criou",
   H7225: "No princípio",
+  H7121: "chamou",
   H853: "marca o objeto direto",
   G2532: "e",
   G3588: "o",
@@ -108,6 +112,44 @@ function normalizePayload(body: unknown): LexiconPayload {
     strongsGloss: textValue(input.strongsGloss),
     contextual,
   };
+}
+
+function normalizeContextMatchText(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\\u0300-\\u036f]/g, "")
+    .replace(/[^\\p{L}\\p{N}\\s]/gu, " ")
+    .replace(/\\s+/g, " ")
+    .trim()
+    .toLocaleLowerCase("pt-BR");
+}
+
+function contextualMeaningMatchesVerse(
+  value: string,
+  verseText: string | null | undefined,
+): boolean {
+  if (!verseText) return true;
+  const meaning = normalizeContextMatchText(value);
+  const verse = normalizeContextMatchText(verseText);
+  if (meaning.length < 2 || verse.length === 0) return false;
+  if (verse.includes(meaning)) return true;
+  const words = meaning.split(" ").filter((word) => word.length >= 3);
+  return words.length > 0 && words.every((word) => verse.includes(word));
+}
+
+function contextualCandidate(
+  payload: LexiconPayload,
+  candidate: unknown,
+): string | null {
+  const value = textValue(candidate);
+  if (
+    value &&
+    !/^(?:nao|não|sim)$/i.test(value) &&
+    contextualMeaningMatchesVerse(value, payload.contextual?.verseText)
+  ) {
+    return value;
+  }
+  return fallbackContextualMeaning(payload);
 }
 
 function fallbackContextualMeaning(payload: LexiconPayload): string | null {
@@ -232,10 +274,7 @@ Deno.serve(async (req) => {
 
         try {
           const parsed = parseJson(raw);
-          const contextualMeaning =
-            typeof parsed.contextualMeaning === "string" && parsed.contextualMeaning.trim()
-              ? parsed.contextualMeaning.trim()
-              : fallbackContextualMeaning(payload);
+          const contextualMeaning = contextualCandidate(payload, parsed.contextualMeaning);
 
           return jsonResponse({
             meaning: typeof parsed.meaning === "string" ? parsed.meaning.trim() : payload.meaning,
