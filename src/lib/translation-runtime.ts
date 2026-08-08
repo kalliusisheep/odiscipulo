@@ -876,7 +876,9 @@ async function flushMachineQueue() {
         const source = batch[index];
         if (source && value) cache.set(source, value);
       });
+      reverseDirty.add(language);
       persistCache(language);
+
       rerunTranslation?.();
     } catch {
       /* falha de rede: o texto original continua visível */
