@@ -874,8 +874,11 @@ async function flushMachineQueue() {
       const cache = cacheFor(language);
       result.translations.forEach((value, index) => {
         const source = batch[index];
-        if (source && value) cache.set(source, value);
+        // Guardar traduções idênticas ao original congelaria o texto em
+        // português caso o serviço estivesse indisponível naquele momento.
+        if (source && value && value !== source) cache.set(source, value);
       });
+
       reverseDirty.add(language);
       persistCache(language);
 
