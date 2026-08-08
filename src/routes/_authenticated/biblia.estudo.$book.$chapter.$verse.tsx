@@ -238,6 +238,7 @@ function VerseStudy() {
           book,
           chapter,
           verse,
+          translation,
           verseText: contextText,
           originalWords: loadedWords,
         });
