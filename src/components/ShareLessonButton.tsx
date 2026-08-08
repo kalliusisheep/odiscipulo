@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Check, Loader2, Share2, X } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { getPreparedLessonShareText } from "@/data/lesson-share-texts";
 import { generateShareImage } from "@/lib/share-image";
 
 const SHARE_BACKGROUND_BASE = `${import.meta.env.BASE_URL.replace(/\/?$/, "/")}share-backgrounds/`;
@@ -71,13 +72,16 @@ export function ShareLessonButton({
     setPickerOpen(false);
     setSharing(true);
     try {
-      let shareText = fallbackShareText(title);
+      let shareText = getPreparedLessonShareText(lessonId) ?? fallbackShareText(title);
       try {
-        const { data, error } = await supabase.functions.invoke<{ text?: string }>("generate-share-text", {
+        const { data, error } = await supabase.functions.invoke<{ text?: string; cached?: boolean }>("generate-share-text", {
           body: { lessonId, title, context: shareContext },
         });
         if (!error && data?.text) {
-          shareText = data.text;
+          shareText =
+            data.cached === false
+              ? (getPreparedLessonShareText(lessonId) ?? data.text)
+              : data.text;
         }
       } catch (fnError) {
         console.error("Não foi possível gerar o texto de compartilhamento, usando texto padrão:", fnError);
