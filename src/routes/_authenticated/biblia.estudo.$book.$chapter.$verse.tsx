@@ -12,6 +12,7 @@ import {
   originalTranslationFor,
   translateStrongEntries,
   translationByCode,
+  verifiedLexicalVariants,
   type OriginalWord,
   type StrongEntry,
 } from "@/lib/bible-source";
@@ -911,7 +912,14 @@ function WordDetail({
   occurrence?: { c: number; f: number[]; l: number[] };
   onSpeak: () => void;
 }) {
-  const senses = [contextualMeaning];
+  const senses = Array.from(
+    new Map(
+      [contextualMeaning, ...verifiedLexicalVariants(entry)].map((sense) => [
+        sense.trim().toLocaleLowerCase("pt-BR"),
+        sense.trim(),
+      ]),
+    ).values(),
+  ).slice(0, 6);
   const pronunciation = approximatePtBr(entry?.transliteration ?? null);
   const { t } = useApp();
 
