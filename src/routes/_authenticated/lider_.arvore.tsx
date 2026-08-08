@@ -162,15 +162,81 @@ function ArvorePage() {
   const pinchRef = useRef<{ dist: number; scale: number } | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
+
     void (async () => {
-      const { data, error } = await supabase.rpc("get_my_discipleship_tree");
-      if (error) {
-        toast.error("Não foi possível carregar sua árvore de discipulado.");
-      } else {
-        setNodes((data ?? []) as TreeNode[]);
+      const [{ data: authData }, { data, error }] = await Promise.all([
+        supabase.auth.getUser(),
+        supabase.rpc("get_my_discipleship_tree"),
+      ]);
+
+      if (cancelled) return;
+
+      const user = authData.user;
+      const rawNodes = Array.isArray(data) ? (data as Partial<TreeNode>[]) : [];
+      let nextNodes: TreeNode[] = rawNodes
+        .filter((node): node is Partial<TreeNode> & { id: string } => Boolean(node && typeof node.id === "string"))
+        .map((node) => ({
+          id: node.id,
+          display_name: typeof node.display_name === "string" && node.display_name.trim() ? node.display_name : "Sem nome",
+          username: typeof node.username === "string" ? node.username : null,
+          avatar_url: typeof node.avatar_url === "string" ? node.avatar_url : null,
+          xp: typeof node.xp === "number" ? node.xp : Number(node.xp ?? 0),
+          parent_id: typeof node.parent_id === "string" ? node.parent_id : null,
+          direction:
+            node.id === user?.id || node.direction === "self"
+              ? "self"
+              : node.direction === "up"
+                ? "up"
+                : "down",
+          depth: Number.isFinite(Number(node.depth)) ? Number(node.depth) : 0,
+        }));
+
+      if (user && !nextNodes.some((node) => node.direction === "self")) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("id, display_name, username, avatar_url, xp")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        const metadata = user.user_metadata ?? {};
+        const fallbackName =
+          profile?.display_name ||
+          (typeof metadata.display_name === "string" && metadata.display_name) ||
+          (typeof metadata.full_name === "string" && metadata.full_name) ||
+          (typeof metadata.name === "string" && metadata.name) ||
+          (typeof metadata.username === "string" && metadata.username) ||
+          user.email?.split("@")[0] ||
+          "Você";
+
+        nextNodes = [
+          {
+            id: user.id,
+            display_name: fallbackName,
+            username: profile?.username ?? (typeof metadata.username === "string" ? metadata.username : null),
+            avatar_url: profile?.avatar_url ?? (typeof metadata.avatar_url === "string" ? metadata.avatar_url : null),
+            xp: profile?.xp ?? 0,
+            parent_id: null,
+            direction: "self",
+            depth: 0,
+          },
+          ...nextNodes,
+        ];
       }
+
+      if (error && !user) {
+        toast.error("Não foi possível carregar sua árvore de discipulado.");
+      } else if (error) {
+        console.warn("Árvore de discipulado carregada com fallback:", error);
+      }
+
+      setNodes(nextNodes);
       setLoading(false);
     })();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const layout = useMemo(() => computeLayout(nodes), [nodes]);
