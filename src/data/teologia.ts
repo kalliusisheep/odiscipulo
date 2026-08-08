@@ -4088,7 +4088,9 @@ export const theologyModules: TheologyModule[] = [
       {
         "id": "pre-milenarismo",
         "title": "O Pré-milenarismo",
-        "content": "O pré-milenarismo é a visão escatológica clássica que sustenta que a segunda vinda de Jesus Cristo ocorrerá antes do estabelecimento de Seu reinado literal de mil anos de paz e justiça na terra (conforme mencionado em Apocalipse 20:1-6), durante o qual Satanás e as suas hostes invisíveis do mal serão completamente aprisionados e impedidos de exercer influência no mundo físico. Seus defensores recorrem a Apocalipse 20:1-6 e a outros textos que entendem como compatíveis com um reino futuro de Cristo na terra. A forma como esses textos se relacionam com o restante da escatologia é debatida entre intérpretes evangélicos: Vi tronos nos quais se assentaram aqueles a quem foi dada autoridade para julgar. Vi as almas dos que foram decapitados por causa do testemunho de Jesus... Eles ressuscitaram e reinaram com Cristo durante mil anos. (Apocalipse 20:4)\n\nNesta perspectiva, quando Cristo retornar, haverá a ressurreição dos crentes para reinar com Ele sobre a terra em paz perfeita e sob a manifestação gloriosa de Sua justiça ética e física. Embora o pecado ainda exista de forma latente entre os habitantes sobreviventes, a rebelião será contida de forma soberana até ao conflito final predeterminado pelo Criador, que abrirá as portas para o juízo final e a criação do novo céu e da nova terra. Apresentamos esta posição de forma respeitosa e biblicamente fundamentada, como a perspectiva preferencial desta obra.",
+        "content": "O pré-milenarismo é a visão escatológica clássica que sustenta que a segunda vinda de Jesus Cristo ocorrerá antes do estabelecimento de Seu reinado literal de mil anos de paz e justiça na terra (conforme mencionado em Apocalipse 20:1-6), durante o qual Satanás e as suas hostes invisíveis do mal serão completamente aprisionados e impedidos de exercer influência no mundo físico. Seus defensores recorrem a Apocalipse 20:1-6 e a outros textos que entendem como compatíveis com um reino futuro de Cristo na terra. A forma como esses textos se relacionam com o restante da escatologia é debatida entre intérpretes evangélicos:
+
+Vi tronos nos quais se assentaram aqueles a quem foi dada autoridade para julgar. Vi as almas dos que foram decapitados por causa do testemunho de Jesus... Eles ressuscitaram e reinaram com Cristo durante mil anos. (Apocalipse 20:4)\n\nNesta perspectiva, quando Cristo retornar, haverá a ressurreição dos crentes para reinar com Ele sobre a terra em paz perfeita e sob a manifestação gloriosa de Sua justiça ética e física. Embora o pecado ainda exista de forma latente entre os habitantes sobreviventes, a rebelião será contida até o conflito final no tempo determinado por Deus, que abrirá as portas para o juízo final e a criação do novo céu e da nova terra. Apresentamos esta posição de forma respeitosa como uma leitura escatológica secundária entre cristãos evangélicos; a escolha entre modelos deve ser feita com humildade e sem quebrar a comunhão cristã.",
         "references": [
           "Apocalipse 20:4"
         ],
@@ -4099,7 +4101,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "Os defensores desta interpretação (que conta com forte e histórico apoio desde a igreja primitiva e na teologia bíblica sistemática de Wayne Grudem e de muitos batistas tradicionais) baseiam-se em textos como Apocalipse 20:4"
+            "text": "Seus defensores recorrem a Apocalipse 20:1-6 e a outros textos que entendem como compatíveis com um reino futuro de Cristo na terra"
           },
           {
             "type": "verse",
@@ -4108,7 +4110,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "Nesta perspectiva, quando Cristo retornar, haverá a ressurreição dos crentes para reinar com Ele sobre a terra em paz perfeita e sob a manifestação gloriosa de Sua justiça ética e física. Embora o pecado ainda exista de forma latente entre os habitantes sobreviventes, a rebelião será contida de forma soberana até ao conflito final predeterminado pelo Criador, que abrirá as portas para o juízo final e a criação do novo céu e da nova terra. Apresentamos esta posição de forma respeitosa e biblicamente grounded, como a perspectiva preferencial desta obra"
+            "text": "Nesta perspectiva, quando Cristo retornar, haverá a ressurreição dos crentes para reinar com Ele sobre a terra. A forma como essa leitura entende a sequência dos acontecimentos é debatida entre cristãos; por isso, ela deve ser estudada em diálogo com o amilenarismo e o pós-milenarismo, mantendo as certezas comuns da volta de Cristo, da ressurreição e do juízo final."
           }
         ]
       },
