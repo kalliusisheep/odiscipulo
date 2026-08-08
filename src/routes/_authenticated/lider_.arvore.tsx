@@ -324,11 +324,28 @@ function ArvorePage() {
 
   const layout = useMemo(() => computeLayout(nodes), [nodes]);
 
+  // Centraliza a árvore (foco no card "Você") assim que ela é carregada e
+  // sempre que o usuário toca em "centralizar".
+  function computeCenteredView(scale = 1): ViewState {
+    const rect = containerRef.current?.getBoundingClientRect();
+    const rootPos = layout.root ? layout.positions.get(layout.root.id) : null;
+    if (!rect || !rootPos) return { scale, tx: 24, ty: 24 };
+    const tx = rect.width / 2 - rootPos.x * scale;
+    const contentH = layout.height * scale;
+    const ty =
+      contentH <= rect.height
+        ? (rect.height - contentH) / 2
+        : Math.min(24, rect.height * 0.32 - rootPos.y * scale);
+    return { scale, tx, ty };
+  }
+
   useEffect(() => {
-    if (layout.width && layout.height) {
-      setView((v) => ({ ...(v ?? DEFAULT_VIEW), tx: 24, ty: 24 }));
-    }
-  }, [layout.width, layout.height]);
+    if (!layout.width || !layout.height) return;
+    const id = requestAnimationFrame(() => setView(computeCenteredView(1)));
+    return () => cancelAnimationFrame(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [layout.width, layout.height, layout.root?.id]);
+
 
   function zoomAt(cx: number, cy: number, newScaleRaw: number) {
     setView((v) => {
