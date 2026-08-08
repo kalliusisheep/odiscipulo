@@ -38,7 +38,7 @@ export function VersionCompareSheet({
   chapter,
   currentTranslation,
 }: Props) {
-  const { language } = useApp();
+  const { language, t } = useApp();
   const translations = useMemo(() => translationsForLanguage(language), [language]);
   const [selected, setSelected] = useState(() => initialSelection(currentTranslation, translations));
   const [chapters, setChapters] = useState<Record<string, Verse[]>>({});
@@ -126,19 +126,19 @@ export function VersionCompareSheet({
             </span>
             <div className="min-w-0 flex-1">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-primary">
-                Estudo comparativo
+                {t("bible.comparativeStudy")}
               </p>
-              <h2 className="mt-1 text-xl font-extrabold">Comparar versões</h2>
+              <h2 className="mt-1 text-xl font-extrabold">{t("bible.compareVersions")}</h2>
               <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                {bookNameById(book)} {chapter} · escolha de 2 a 3 traduções para ler o mesmo
-                versículo em paralelo.
+                {bookNameById(book)} {chapter} · {t("bible.compareDescription")}
+
               </p>
             </div>
           </header>
 
           <div className="mt-5">
             <p className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.16em] text-muted-foreground">
-              Versões selecionadas
+              {t("bible.selectedVersions")}
             </p>
             <div className="bible-version-grid grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {translations.map((translation) => {
@@ -175,22 +175,22 @@ export function VersionCompareSheet({
               })}
             </div>
             <p className="mt-2 text-[10px] text-muted-foreground">
-              Você pode comparar até três versões. Mantenha pelo menos duas selecionadas.
+              {t("bible.compareHelp")}
             </p>
           </div>
 
           {loading && (
             <div className="mt-6 flex items-center justify-center gap-2 rounded-2xl border border-border bg-surface/60 p-6 text-sm text-muted-foreground">
               <Loader2 className="h-4 w-4 animate-spin text-primary" />
-              Carregando versões…
+              {t("bible.loadingVersions")}
             </div>
           )}
 
           {error && !loading && (
             <div className="mt-6 rounded-2xl border border-destructive/25 bg-destructive/5 p-5 text-center">
-              <p className="text-sm font-bold">Não foi possível carregar a comparação</p>
+              <p className="text-sm font-bold">{t("bible.compareLoadError")}</p>
               <p className="mt-1 text-xs text-muted-foreground">
-                Verifique sua conexão e tente novamente.
+                {t("bible.checkConnection")}
               </p>
               <button
                 type="button"
@@ -198,14 +198,14 @@ export function VersionCompareSheet({
                 className="mt-3 inline-flex items-center gap-2 rounded-xl bg-primary px-3.5 py-2 text-xs font-bold text-primary-foreground"
               >
                 <RefreshCw className="h-3.5 w-3.5" />
-                Tentar novamente
+                {t("bible.tryAgain")}
               </button>
             </div>
           )}
 
           {!loading && !error && failedVersions.length > 0 && (
             <div className="mt-6 rounded-2xl border border-amber-400/25 bg-amber-400/5 px-4 py-3 text-xs text-muted-foreground">
-              Algumas versões não responderam agora. As demais continuam disponíveis para comparação.
+              {t("bible.partialVersions")}
             </div>
           )}
 
@@ -214,7 +214,7 @@ export function VersionCompareSheet({
               {verseNumbers.map((number) => (
                 <div key={number} className="rounded-2xl border border-border bg-surface/50 p-3.5">
                   <span className="mb-3 inline-flex rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-extrabold text-primary">
-                    Versículo {number}
+                    {t("bible.verse")} {number}
                   </span>
                   <div className="space-y-3">
                     {selected.map((code) => {
@@ -229,7 +229,7 @@ export function VersionCompareSheet({
                             </span>
                           </div>
                           <p className="mt-2 text-sm leading-7 text-foreground/90">
-                            {verse?.text ?? "Esta versão não retornou este versículo agora."}
+                            {verse?.text ?? t("bible.unavailableVersionVerse")}
                           </p>
                         </div>
                       );
@@ -242,7 +242,7 @@ export function VersionCompareSheet({
 
           {!loading && !error && verseNumbers.length === 0 && (
             <div className="mt-6 rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
-              Nenhum texto disponível para comparar neste capítulo.
+              {t("bible.noCompareText")}
             </div>
           )}
         </div>
