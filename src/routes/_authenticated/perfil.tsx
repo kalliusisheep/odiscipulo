@@ -90,6 +90,9 @@ function PerfilPage() {
   const [bioDraft, setBioDraft] = useState("");
   const [uploading, setUploading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [editingDisplayName, setEditingDisplayName] = useState(false);
+  const [displayNameDraft, setDisplayNameDraft] = useState("");
+  const [savingDisplayName, setSavingDisplayName] = useState(false);
   const [editingUsername, setEditingUsername] = useState(false);
   const [usernameDraft, setUsernameDraft] = useState("");
   const [savingUsername, setSavingUsername] = useState(false);
@@ -114,6 +117,7 @@ function PerfilPage() {
         .maybeSingle();
       if (p) {
         setProfile(p as Profile);
+        setDisplayNameDraft((p as Profile).display_name ?? "");
         setBioDraft((p as Profile).bio ?? "");
         setBibleVersion(p.bible_version as (typeof BIBLE_VERSIONS)[number]);
       }
@@ -163,6 +167,42 @@ function PerfilPage() {
 
   const saveBio = async () => {
     await update({ bio: bioDraft.trim() || null });
+  };
+
+  const startEditDisplayName = () => {
+    setDisplayNameDraft(profile?.display_name ?? "");
+    setEditingDisplayName(true);
+  };
+
+  const saveDisplayName = async () => {
+    if (!profile) return;
+    const name = displayNameDraft.trim().replace(/\s+/g, " ");
+
+    if (name.length < 2 || name.length > 48) {
+      toast.error("O nome deve ter entre 2 e 48 caracteres.");
+      return;
+    }
+
+    if (name === profile.display_name) {
+      setEditingDisplayName(false);
+      return;
+    }
+
+    setSavingDisplayName(true);
+    const { error } = await supabase
+      .from("profiles")
+      .update({ display_name: name })
+      .eq("id", profile.id);
+
+    if (error) {
+      toast.error("Não foi possível atualizar seu nome.");
+    } else {
+      setProfile((current) => (current ? { ...current, display_name: name } : current));
+      setDisplayNameDraft(name);
+      setEditingDisplayName(false);
+      toast.success("Nome atualizado!");
+    }
+    setSavingDisplayName(false);
   };
 
   const toggleDevotionalReminder = async () => {
@@ -334,9 +374,57 @@ function PerfilPage() {
               <p className="flex items-center gap-1 text-[9px] font-extrabold uppercase tracking-[0.16em] text-white/55">
                 <Sparkles className="h-3 w-3 text-primary" /> Seu perfil
               </p>
-              <h2 className="mt-1 truncate text-lg font-extrabold leading-tight">
-                {profile.display_name}
-              </h2>
+              {editingDisplayName ? (
+                <div className="mt-1 flex min-w-0 items-center gap-1.5">
+                  <input
+                    autoFocus
+                    value={displayNameDraft}
+                    maxLength={48}
+                    onChange={(e) => setDisplayNameDraft(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") void saveDisplayName();
+                      if (e.key === "Escape") setEditingDisplayName(false);
+                    }}
+                    className="min-w-0 flex-1 rounded-xl border border-white/20 bg-black/25 px-2.5 py-1 text-base font-extrabold leading-tight text-white outline-none ring-primary/30 focus:ring-2"
+                    aria-label="Nome público"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => void saveDisplayName()}
+                    disabled={savingDisplayName}
+                    className="rounded-full bg-primary p-1.5 text-primary-foreground disabled:opacity-50"
+                    aria-label="Salvar nome"
+                  >
+                    {savingDisplayName ? (
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    ) : (
+                      <Check className="h-3 w-3" />
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEditingDisplayName(false)}
+                    className="rounded-full bg-white/10 p-1.5 text-white/70"
+                    aria-label="Cancelar edição do nome"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ) : (
+                <div className="mt-1 flex min-w-0 items-center gap-1">
+                  <h2 className="truncate text-lg font-extrabold leading-tight">
+                    {profile.display_name}
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={startEditDisplayName}
+                    className="shrink-0 rounded-full p-1 text-white/55 transition-colors hover:bg-white/10 hover:text-white"
+                    aria-label="Editar nome"
+                  >
+                    <Pencil className="h-3 w-3" />
+                  </button>
+                </div>
+              )}
 
               <div className="mt-1.5 flex min-h-7 items-center gap-1">
                 {editingUsername ? (
