@@ -339,6 +339,8 @@ export type StrongEntry = {
   translationSource?: "curated" | "local" | "ai" | "source";
   /** Um único sentido selecionado para a ocorrência deste versículo. */
   contextualMeaning?: string | null;
+  /** Sentidos contextuais por posição da palavra no versículo. */
+  contextualMeanings?: Record<string, string>;
 };
 
 export type LexiconContext = {
@@ -503,6 +505,17 @@ function normalizedPortugueseSense(value: string | null | undefined): string | n
  * português. Não cria sinônimos: usa somente meaning, strongsGloss e
  * definitions que vieram do BDB/Thayer ou da lista curada.
  */
+function conciseLexicalVariant(value: string | null | undefined): string | null {
+  const normalized = normalizedPortugueseSense(value);
+  if (!normalized) return null;
+
+  const firstClause = normalized.split(/\s*;\s*/)[0]?.trim() ?? normalized;
+  const beforeExplanation = firstClause.split(/\s+[—–-]\s+/)[0]?.trim() ?? firstClause;
+  return beforeExplanation.length >= 2 && beforeExplanation.length <= 120
+    ? beforeExplanation
+    : normalized;
+}
+
 export function verifiedLexicalVariants(entry: StrongEntry | null | undefined): string[] {
   if (!entry) return [];
 
@@ -514,7 +527,7 @@ export function verifiedLexicalVariants(entry: StrongEntry | null | undefined): 
   const seen = new Set<string>();
 
   return candidates.reduce<string[]>((result, candidate) => {
-    const normalized = normalizedPortugueseSense(candidate);
+    const normalized = conciseLexicalVariant(candidate);
     if (!normalized) return result;
 
     const key = normalized.toLocaleLowerCase("pt-BR");
@@ -546,6 +559,18 @@ export function contextualMeaningFor(
     ? VERIFIED_CONTEXTUAL_OCCURRENCES[occurrenceKey]
     : null;
   if (occurrenceMeaning) return occurrenceMeaning;
+
+  const occurrenceContextual = word?.index !== undefined
+    ? entry?.contextualMeanings?.[String(word.index)] ?? null
+    : null;
+  if (
+    occurrenceContextual &&
+    !containsEnglishLexicon(occurrenceContextual) &&
+    !isUnavailableContextualMeaning(occurrenceContextual) &&
+    contextualMeaningMatchesVerse(occurrenceContextual, verseText)
+  ) {
+    return occurrenceContextual;
+  }
 
   // אֵת (H853) exerce função gramatical no hebraico bíblico; no português,
   // a forma correta de apresentar seu valor é explicar a função na frase.
@@ -1484,7 +1509,7 @@ export async function translateStrongEntry(
     ? String(context.book) + ":" + String(context.chapter) + ":" + String(context.verse) + ":" + String(context.wordIndex ?? "na")
     : "generic";
 
-  return cached("xlex:v5:" + entry.code + ":" + contextKey, async () => {
+  return cached("xlex:v6:" + entry.code + ":" + contextKey, async () => {
     try {
       const { data, error } = await supabase.functions.invoke<{
         meaning: string | null;
@@ -1559,26 +1584,48 @@ export async function translateStrongEntries(
   context?: Omit<LexiconContext, "wordIndex" | "word">,
 ): Promise<Record<string, StrongEntry>> {
   const codes = Object.keys(entries);
+  const originalWords = context?.originalWords ?? [];
   const translated = await Promise.all(
-    codes.map((code) => {
-      const wordIndex = context?.originalWords?.findIndex(
+    codes.map(async (code) => {
+      const occurrences = originalWords.filter(
         (word) => word.strong?.toUpperCase() === code.toUpperCase(),
       );
-      const word = wordIndex !== undefined && wordIndex >= 0 ? context?.originalWords?.[wordIndex] : undefined;
-      return translateStrongEntry(
-        entries[code],
-        context
-          ? {
-              ...context,
-              wordIndex: wordIndex !== undefined && wordIndex >= 0 ? wordIndex : null,
-              word: word?.word ?? null,
-            }
-          : undefined,
+
+      if (!occurrences.length) {
+        return translateStrongEntry(entries[code]);
+      }
+
+      const occurrenceEntries = await Promise.all(
+        occurrences.map((word) =>
+          translateStrongEntry(entries[code], {
+            ...context,
+            wordIndex: word.index,
+            word: word.word,
+          }),
+        ),
       );
+      const baseEntry = occurrenceEntries[0] ?? entries[code];
+      const contextualMeanings: Record<string, string> = {
+        ...(entries[code].contextualMeanings ?? {}),
+      };
+
+      occurrences.forEach((word, index) => {
+        const contextualMeaning = occurrenceEntries[index]?.contextualMeaning;
+        if (contextualMeaning && Number.isInteger(word.index)) {
+          contextualMeanings[String(word.index)] = contextualMeaning;
+        }
+      });
+
+      return {
+        ...baseEntry,
+        contextualMeanings,
+      };
     }),
   );
   const out: Record<string, StrongEntry> = {};
-  codes.forEach((c, i) => (out[c] = translated[i]));
+  codes.forEach((code, index) => {
+    out[code] = translated[index];
+  });
   return out;
 }
 
