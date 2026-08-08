@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { bookNameById } from "@/data/bible-books";
 import {
   approximatePtBr,
+  contextualMeaningFor,
   crossReferencesFor,
   fetchChapter,
   fetchOriginalVerse,
@@ -101,54 +102,31 @@ export const Route = createFileRoute("/_authenticated/biblia/estudo/$book/$chapt
 const UNAVAILABLE = "Informação indisponível na base consultada.";
 
 /**
- * Traduções alinhadas ao texto da versão em português, e não glossas isoladas
- * de dicionário. Cada palavra pode ter mais de uma tradução contextual (ex.
- * variantes aceitas na alinhagem) — por isso cada posição é um array, não uma
- * string única. Este conjunto pode crescer versículo a versículo à medida que
- * o alinhamento revisado é incorporado à base.
- */
-const CONTEXTUAL_WORDS: Record<string, string[][]> = {
-  "1:1:1": [
-    ["No princípio"],
-    ["criou", "fez"],
-    ["Deus"],
-    ["—"],
-    ["os céus", "o céu"],
-    ["e"],
-    ["a terra"],
-  ],
-};
-
-function contextualTranslationFor(
-  book: number,
-  chapter: number,
-  verse: number,
-  index: number,
-): string[] | null {
-  return CONTEXTUAL_WORDS[[book, chapter, verse].join(":")]?.[index] ?? null;
-}
-
-/**
- * Sentidos exibidos para uma palavra: prioriza a tradução contextual alinhada
- * ao versículo (CONTEXTUAL_WORDS) e cai para os sentidos do léxico
- * (definitions) ou para o `meaning` combinado, quando não há alinhamento
- * manual para aquela posição. Usada tanto na aba Interlinear quanto na aba
- * Palavras, para que as duas sempre mostrem a mesma tradução.
+ * A interface mostra um único sentido contextual por ocorrência. A seleção
+ * é centralizada em bible-source.ts para que Interlinear, Palavras e Léxico
+ * nunca exibam listas genéricas diferentes para o mesmo termo.
  */
 function sensesFor(
   book: number,
   chapter: number,
   verse: number,
   index: number,
+  word: OriginalWord | null | undefined,
   entry: StrongEntry | null | undefined,
 ): string[] {
-  const contextual = contextualTranslationFor(book, chapter, verse, index);
-  if (contextual) return contextual;
-  if (entry?.definitions?.length) return entry.definitions.slice(0, 3);
-  if (entry?.meaning) return [entry.meaning];
-  return [];
+  return [contextualMeaningFor(book, chapter, verse, index, word, entry)];
 }
 
+function contextualMeaningForEntry(
+  book: number,
+  chapter: number,
+  verse: number,
+  words: OriginalWord[],
+  entry: StrongEntry,
+): string {
+  const index = words.findIndex((word) => word.strong?.toUpperCase() === entry.code.toUpperCase());
+  return contextualMeaningFor(book, chapter, verse, index, index >= 0 ? words[index] : undefined, entry);
+}
 type VerseAnalysis = {
   verbos: string[];
   substantivos: string[];
@@ -226,6 +204,10 @@ function VerseStudy() {
     setLexiconLoading(true);
     setAnalysis(null);
 
+    const contextTextPromise = fetchChapter(translation, book, chapter)
+      .then((chapterVerses) => chapterVerses.find((item) => item.verse === verse)?.text ?? null)
+      .catch(() => null);
+
     void fetchOriginalVerse(book, chapter, verse)
       .then(async (loadedWords) => {
         if (cancelled) return;
@@ -239,12 +221,17 @@ function VerseStudy() {
         setWords(loadedWords);
         const codes = loadedWords.map((word) => word.strong).filter(Boolean) as string[];
         const raw = await fetchStrongEntries(codes);
-        if (cancelled) return;
-        setEntries(raw);
-        setLexiconLoading(false);
-        void translateStrongEntries(raw).then((translated) => {
-          if (!cancelled) setEntries(translated);
+        const contextText = await contextTextPromise;
+        const translated = await translateStrongEntries(raw, {
+          book,
+          chapter,
+          verse,
+          verseText: contextText,
+          originalWords: loadedWords,
         });
+        if (cancelled) return;
+        setEntries(translated);
+        setLexiconLoading(false);
       })
       .catch(() => {
         if (cancelled) return;
@@ -255,7 +242,6 @@ function VerseStudy() {
       .finally(() => {
         if (!cancelled) setWordsLoading(false);
       });
-
     return () => {
       cancelled = true;
     };
@@ -474,7 +460,7 @@ function VerseStudy() {
             <div className="space-y-3">
               {words.map((word, index) => {
                 const entry = word.strong ? entries[word.strong] : null;
-                const senses = sensesFor(book, chapter, verse, index, entry);
+                const senses = sensesFor(book, chapter, verse, index, word, entry);
                 return (
                   <button
                     key={word.index}
@@ -544,7 +530,7 @@ function VerseStudy() {
             <div className="space-y-3">
               {words.map((word, index) => {
                 const entry = word.strong ? entries[word.strong] : null;
-                const senses = sensesFor(book, chapter, verse, index, entry);
+                const senses = sensesFor(book, chapter, verse, index, word, entry);
                 return (
                   <article
                     key={word.index}
@@ -741,33 +727,24 @@ function VerseStudy() {
                     )}
 
                     <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
-                      Sentidos possíveis
+                      Sentido neste versículo
                     </p>
 
-                    {entry.definitions.length ? (
-                      <ol className="mt-2 space-y-2">
-                        {entry.definitions.map((definition, definitionIndex) => (
-                          <li
-                            key={definitionIndex}
-                            className="flex gap-2.5 rounded-2xl bg-surface-2/70 px-3 py-2.5"
-                          >
-                            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-extrabold text-primary">
-                              {definitionIndex + 1}
-                            </span>
-                            <span className="text-sm leading-snug text-foreground/90">
-                              {definition}
-                            </span>
-                          </li>
-                        ))}
-                      </ol>
-                    ) : (
-                      <p className="mt-2 text-sm text-muted-foreground">{UNAVAILABLE}</p>
-                    )}
+                    <ol className="mt-2 space-y-2">
+                      <li className="flex gap-2.5 rounded-2xl bg-surface-2/70 px-3 py-2.5">
+                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-extrabold text-primary">
+                          1
+                        </span>
+                        <span className="text-sm leading-snug text-foreground/90">
+                          {contextualMeaningForEntry(book, chapter, verse, words, entry)}
+                        </span>
+                      </li>
+                    </ol>
 
-                    <div className="mt-3 rounded-2xl border border-border/60 bg-background/50 p-3 text-[10px] leading-relaxed text-muted-foreground">
-                      Tradução em português baseada no léxico acadêmico BDB/Thayer. Pode conter
-                      imprecisões; confira sempre o sentido no contexto do versículo.
-                    </div>
+                    <p className="mt-3 rounded-2xl border border-border/60 bg-background/50 p-3 text-[10px] leading-relaxed text-muted-foreground">
+                      O sentido exibido foi selecionado para esta ocorrência. Os dados do idioma original
+                      e os códigos de Strong permanecem vinculados à fonte acadêmica consultada.
+                    </p>
                   </div>
                 </details>
               ))}
@@ -792,6 +769,14 @@ function VerseStudy() {
               word={openWord}
               entry={openWord.strong ? entries[openWord.strong] : undefined}
               occurrence={openWord.strong ? occ[openWord.strong] : undefined}
+              contextualMeaning={contextualMeaningFor(
+                book,
+                chapter,
+                verse,
+                openWord.index,
+                openWord,
+                openWord.strong ? entries[openWord.strong] : undefined,
+              )}
               onSpeak={() => speak(openWord.word)}
             />
           )}
@@ -887,14 +872,11 @@ function WordDetail({
 }: {
   word: OriginalWord;
   entry?: StrongEntry;
+  contextualMeaning: string;
   occurrence?: { c: number; f: number[]; l: number[] };
   onSpeak: () => void;
 }) {
-  const senses = entry?.definitions?.length
-    ? entry.definitions
-    : entry?.meaning
-      ? [entry.meaning]
-      : [];
+  const senses = [contextualMeaning];
   const pronunciation = approximatePtBr(entry?.transliteration ?? null);
   const { t } = useApp();
 
@@ -1104,8 +1086,8 @@ function WordDetail({
 
         {entry && (
           <SourceNote>
-            Definições traduzidas para português a partir do BDB/Thayer. Consulte o contexto do versículo
-            antes de escolher um sentido.
+            O sentido apresentado é contextual à ocorrência deste versículo; o texto original e o código
+            de Strong permitem conferir a análise na fonte acadêmica.
           </SourceNote>
         )}
       </div>
