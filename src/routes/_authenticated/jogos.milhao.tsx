@@ -69,6 +69,13 @@ function MillionPage() {
   const question = questions[index];
   const level = useMemo(() => [...MILLION_LEVELS].reverse().find((item) => score >= item.points) ?? MILLION_LEVELS[0], [score]);
 
+  useEffect(() => {
+    if (phase !== "answered") return;
+    window.requestAnimationFrame(() => {
+      document.querySelector(".game-answer-feedback")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }, [phase]);
+
   const prepare = useCallback((nextIndex: number, list: MillionQuestion[]) => {
     setIndex(nextIndex); setSelected(null); setHidden([]); setContextOpen(false); setConsultations(null); setTimeLeft(MILLION_DIFFICULTY[difficulty].timeLimit); startedAt.current = Date.now(); setPhase("playing");
   }, [difficulty]);
