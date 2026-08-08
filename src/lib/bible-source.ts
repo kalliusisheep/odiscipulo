@@ -372,14 +372,9 @@ export function contextualMeaningFor(
     : null;
   if (verified) return verified;
 
+  void index;
   const contextual = concisePortugueseMeaning(entry?.contextualMeaning);
   if (contextual && !containsEnglishLexicon(contextual)) return contextual;
-
-  const curated = entry?.curated ? concisePortugueseMeaning(entry.meaning) : null;
-  if (curated && !containsEnglishLexicon(curated)) return curated;
-
-  const fallback = concisePortugueseMeaning(entry?.meaning ?? entry?.definitions?.[0]);
-  if (fallback && !containsEnglishLexicon(fallback)) return fallback;
 
   return "Sentido contextual indisponível nesta fonte.";
 }
