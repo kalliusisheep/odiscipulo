@@ -3,6 +3,7 @@ import { serve } from "https://deno.land/std@0.203.0/http/server.ts";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
 type WordInput = {
@@ -12,102 +13,206 @@ type WordInput = {
   meaning: string | null;
 };
 
-const SYSTEM_PROMPT = `Você é um assistente de estudo bíblico. Receberá a lista de palavras
-de um versículo no idioma original (hebraico ou grego), cada uma com seu número de Strong,
-classe gramatical (quando disponível) e significado. Responda SOMENTE com um JSON válido,
-sem markdown, no formato:
-{
-  "verbos": ["lista de palavras (no original) identificadas como verbo"],
-  "substantivos": ["lista de palavras (no original) identificadas como substantivo"],
-  "resumo": "1-2 frases em português explicando a estrutura gramatical do versículo"
+type AnalysisResult = {
+  verbos: string[];
+  substantivos: string[];
+  resumo: string;
+};
+
+const SYSTEM_PROMPT = [
+  "Você é um assistente de estudo bíblico.",
+  "Receberá uma lista de palavras de um versículo no idioma original (hebraico ou grego), cada uma com seu número de Strong, classe gramatical quando disponível e significado.",
+  "Responda SOMENTE com um JSON válido, sem markdown, neste formato:",
+  "{",
+  '  "verbos": ["lista de palavras no original identificadas como verbo"],',
+  '  "substantivos": ["lista de palavras no original identificadas como substantivo"],',
+  '  "resumo": "1-2 frases em português explicando a estrutura gramatical do versículo"',
+  "}",
+  "Baseie-se apenas nas informações fornecidas. Se a classe gramatical não vier explícita, use seu conhecimento do idioma para classificá-la a partir da palavra e do Strong.",
+].join("\n");
+
+function jsonResponse(body: unknown, status = 200): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
 }
-Baseie-se apenas nas informações fornecidas; se a classe gramatical de uma palavra não vier
-explícita, use seu conhecimento do idioma para classificá-la a partir da palavra e do Strong.`;
+
+function optionalText(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const normalized = value.trim();
+  return normalized.length > 0 ? normalized : null;
+}
+
+function sanitizeWords(body: unknown): WordInput[] {
+  if (!body || typeof body !== "object") return [];
+
+  const rawWords = (body as { words?: unknown }).words;
+  if (!Array.isArray(rawWords)) return [];
+
+  return rawWords.slice(0, 80).reduce<WordInput[]>((result, item) => {
+    if (!item || typeof item !== "object") return result;
+
+    const record = item as Record<string, unknown>;
+    const word = optionalText(record.word);
+    if (!word) return result;
+
+    result.push({
+      word,
+      strong: optionalText(record.strong),
+      partOfSpeech: optionalText(record.partOfSpeech),
+      meaning: optionalText(record.meaning),
+    });
+    return result;
+  }, []);
+}
+
+function stringList(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .filter((item): item is string => typeof item === "string")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, 30);
+}
+
+function parseAnalysisResponse(rawText: string): AnalysisResult {
+  let candidate = rawText.trim();
+
+  candidate = candidate
+    .replace(/^\`\`\`(?:json)?\s*/i, "")
+    .replace(/\s*\`\`\`$/, "")
+    .trim();
+
+  const firstBrace = candidate.indexOf("{");
+  const lastBrace = candidate.lastIndexOf("}");
+  if (firstBrace >= 0 && lastBrace > firstBrace) {
+    candidate = candidate.slice(firstBrace, lastBrace + 1);
+  }
+
+  const parsed = JSON.parse(candidate) as Record<string, unknown>;
+  const resumo =
+    typeof parsed.resumo === "string" && parsed.resumo.trim().length > 0
+      ? parsed.resumo.trim()
+      : "A análise estrutural deste versículo não está disponível no momento.";
+
+  return {
+    verbos: stringList(parsed.verbos),
+    substantivos: stringList(parsed.substantivos),
+    resumo,
+  };
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { status: 204, headers: corsHeaders });
+  }
+
+  if (req.method !== "POST") {
+    return jsonResponse({ error: "Método não permitido" }, 405);
   }
 
   try {
-    const { words } = (await req.json()) as { words: WordInput[] };
+    const body = await req.json().catch(() => null);
+    const words = sanitizeWords(body);
 
-    const apiKey = Deno.env.get("GEMINI_API_KEY");
-    if (!apiKey) {
-      return new Response(JSON.stringify({ error: "GEMINI_API_KEY não configurada" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (words.length === 0) {
+      return jsonResponse(
+        { error: "Envie ao menos uma palavra válida no campo words." },
+        400,
+      );
     }
+
+    const apiKey = Deno.env.get("GEMINI_API_KEY")?.trim();
+    if (!apiKey) {
+      return jsonResponse({ error: "GEMINI_API_KEY não configurada" }, 500);
+    }
+
+    const configuredModel = Deno.env.get("GEMINI_MODEL")?.trim();
+    const models = [
+      configuredModel,
+      "gemini-2.5-flash",
+      "gemini-2.5-flash-lite",
+      "gemini-2.0-flash",
+      "gemini-1.5-flash",
+    ].filter((model, index, list): model is string => Boolean(model) && list.indexOf(model) === index);
 
     const userContent = words
       .map(
-        (w, i) =>
-          `${i + 1}. Palavra: ${w.word} | Strong: ${w.strong ?? "—"} | Classe: ${
-            w.partOfSpeech ?? "desconhecida"
-          } | Significado: ${w.meaning ?? "—"}`,
+        (word, index) =>
+          `${index + 1}. Palavra: ${word.word} | Strong: ${word.strong ?? "—"} | Classe: ${word.partOfSpeech ?? "desconhecida"} | Significado: ${word.meaning ?? "—"}`,
       )
       .join("\n");
 
-    // Modelos em ordem de preferência — o free tier do gemini-2.0-flash foi
-    // zerado (429 RESOURCE_EXHAUSTED), então tentamos os modelos atuais.
-    const MODELS = ["gemini-3.6-flash", "gemini-flash-latest", "gemini-2.5-flash"];
-
-    let res: Response | null = null;
     let lastError = "sem resposta";
-    for (const model of MODELS) {
-      const attempt = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-goog-api-key": apiKey,
-          },
-          body: JSON.stringify({
-            contents: [
-              {
-                role: "user",
-                parts: [{ text: `${SYSTEM_PROMPT}\n\nPalavras do versículo:\n${userContent}` }],
+    let responseText: string | null = null;
+
+    for (const model of models) {
+      try {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-goog-api-key": apiKey,
+            },
+            body: JSON.stringify({
+              contents: [
+                {
+                  role: "user",
+                  parts: [{ text: `${SYSTEM_PROMPT}\n\nPalavras do versículo:\n${userContent}` }],
+                },
+              ],
+              generationConfig: {
+                temperature: 0.2,
+                maxOutputTokens: 512,
+                responseMimeType: "application/json",
               },
-            ],
-            generationConfig: { responseMimeType: "application/json" },
-          }),
-        },
-      );
-      if (attempt.ok) {
-        res = attempt;
-        break;
+            }),
+          },
+        );
+
+        if (!response.ok) {
+          const details = (await response.text().catch(() => "")).slice(0, 300);
+          lastError = `${response.status}: ${details || "resposta sem detalhes"}`;
+          console.error(`verse-analysis: modelo ${model} falhou —`, lastError);
+          continue;
+        }
+
+        const data = await response.json();
+        responseText = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? null;
+        if (responseText) break;
+
+        lastError = "A API retornou uma resposta sem texto.";
+        console.error(`verse-analysis: modelo ${model} retornou texto vazio`);
+      } catch (error) {
+        lastError = error instanceof Error ? error.message : String(error);
+        console.error(`verse-analysis: falha de rede no modelo ${model} —`, lastError);
       }
-      lastError = `${attempt.status}: ${(await attempt.text().catch(() => "")).slice(0, 300)}`;
-      console.error(`verse-analysis: modelo ${model} falhou —`, lastError);
     }
 
-    if (!res) {
-      return new Response(JSON.stringify({ error: "Falha na API do Gemini", details: lastError }), {
-        status: 502,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (!responseText) {
+      return jsonResponse(
+        { error: "Falha na API do Gemini", details: lastError },
+        502,
+      );
     }
 
-    const data = await res.json();
-    const text: string | undefined = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text) {
-      return new Response(JSON.stringify({ error: "Resposta vazia do Gemini" }), {
-        status: 502,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    try {
+      return jsonResponse(parseAnalysisResponse(responseText));
+    } catch (error) {
+      const details = error instanceof Error ? error.message : String(error);
+      console.error("verse-analysis: JSON inválido retornado pelo Gemini —", details);
+      return jsonResponse(
+        { error: "Resposta inválida do Gemini", details },
+        502,
+      );
     }
-
-    const parsed = JSON.parse(text);
-
-    return new Response(JSON.stringify(parsed), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
-  } catch (err) {
-    return new Response(JSON.stringify({ error: String(err) }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+  } catch (error) {
+    const details = error instanceof Error ? error.message : String(error);
+    console.error("verse-analysis: erro inesperado —", details);
+    return jsonResponse({ error: "Erro interno ao analisar o versículo" }, 500);
   }
 });
