@@ -6,7 +6,7 @@ import { MILLION_DIFFICULTY, MILLION_QUESTIONS, randomMillionQuestions, randomMi
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { recordSharedGameResult } from "@/lib/game-leaderboard";
 import { shuffleWithSeed } from "@/lib/seeded-random";
-import { uniqueGameVariantContent } from "@/lib/game-content";
+import { normalizeGameContentKey, uniqueGameContent, uniqueGameVariantContent } from "@/lib/game-content";
 import { supabase } from "@/integrations/supabase/client";
 
 type SharedGameType = "personagem" | "versiculo" | "milhao";
@@ -84,9 +84,9 @@ function buildQuestions(gameType: SharedGameType, difficulty: GameDifficulty, se
   if (gameType === "personagem") {
     const preferred = BIBLICAL_CHARACTER_ROUNDS.filter((item) => item.difficulty === difficulty);
     const fallback = BIBLICAL_CHARACTER_ROUNDS.filter((item) => item.difficulty !== difficulty);
-    const source = uniqueGameVariantContent([...preferred, ...fallback], (item) => item.id);
+    const source = uniqueGameContent([...preferred, ...fallback], (item) => item.id);
     const shuffled = seed ? shuffleWithSeed(source, seed) : [...source];
-    return uniqueGameVariantContent(shuffled, (item) => item.id).map((item: BiblicalCharacter): SharedQuestion => {
+    return uniqueGameContent(shuffled, (item) => item.id).map((item: BiblicalCharacter): SharedQuestion => {
       const order = difficulty === "bereano" ? [2, 3, 1, 0] : difficulty === "dificil" ? [1, 2, 3, 0] : [0, 1, 2, 3];
       const hints = order.map((index) => item.hints[index]);
       return {
@@ -108,7 +108,13 @@ function buildQuestions(gameType: SharedGameType, difficulty: GameDifficulty, se
     const preferred = versesForDifficulty(difficulty);
     const fallback = BIBLICAL_VERSES.filter((item) => item.difficulty !== difficulty);
     const allCards = seed ? shuffleWithSeed([...preferred, ...fallback], seed) : [...preferred, ...fallback];
-    const uniqueCards = uniqueGameVariantContent(allCards, (item) => item.id);
+    const familyCards = uniqueGameContent(allCards, (item) => item.id);
+    const primaryKeys = new Set(familyCards.map((item) => normalizeGameContentKey(item.id)));
+    const variantCards = uniqueGameVariantContent(allCards, (item) => item.id)
+      .filter((item) => !primaryKeys.has(normalizeGameContentKey(item.id)));
+    // Keep one passage per family first; only use alternate prompts after
+    // every available passage has appeared, so 20-round matches stay valid.
+    const uniqueCards = [...familyCards, ...variantCards];
     return uniqueCards.map((item): SharedQuestion => ({
       id: item.id,
       prompt: item.text,
@@ -127,8 +133,8 @@ function buildQuestions(gameType: SharedGameType, difficulty: GameDifficulty, se
     ? randomMillionQuestionsWithSeed(millionDifficulty, 999, seed)
     : randomMillionQuestions(millionDifficulty, 999);
   const fallback = MILLION_QUESTIONS.filter((item) => item.difficulty !== millionDifficulty);
-  const source = uniqueGameVariantContent([...preferred, ...fallback], (item) => item.id);
-  const questions = uniqueGameVariantContent(source, (item) => item.id);
+  const source = uniqueGameContent([...preferred, ...fallback], (item) => item.id);
+  const questions = uniqueGameContent(source, (item) => item.id);
   return questions.map((item): SharedQuestion => ({
     id: item.id,
     prompt: item.prompt,
