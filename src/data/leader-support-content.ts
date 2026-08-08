@@ -214,6 +214,7 @@ function normalizeSupportLesson(
 
   return {
     ...lesson,
+    xp: lesson.xp ?? 50,
     intro: enrichedIntro,
     verses,
     deepDive: normalizeSupportText(
