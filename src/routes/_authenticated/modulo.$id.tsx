@@ -311,7 +311,7 @@ function DiscipleshipModuleView({
             const { error } = await supabase
               .from("lesson_progress")
               .upsert(
-                { user_id: user.user.id, lesson_id: selected.lesson.id, xp_gained: 0 },
+                { user_id: user.user.id, lesson_id: selected.lesson.id, xp_gained: selected.lesson.xp },
                 { onConflict: "user_id,lesson_id" },
               );
             if (error) {
