@@ -36,6 +36,63 @@ type RequestBody = {
   contextual?: ContextualPayload | null;
 };
 
+const CONTEXTUAL_FALLBACKS: Record<string, string> = {
+  H5921: "sobre",
+  H8414: "sem forma",
+  H8415: "sem forma",
+  H7307: "Espírito",
+  H7363: "pairava",
+  H430: "Deus",
+  H2822: "trevas",
+  H6440: "face",
+  H4325: "águas",
+  H8064: "os céus",
+  H776: "a terra",
+  H1961: "era",
+  H1254: "criou",
+  H7225: "No princípio",
+  H853: "marcador do objeto direto (sem tradução isolada)",
+  G2532: "e",
+  G3588: "o",
+  G2316: "Deus",
+  G2962: "Senhor",
+  G2424: "Jesus",
+  G5547: "Cristo",
+  G4151: "Espírito",
+  G3056: "Palavra",
+  G26: "amor",
+  G5485: "graça",
+  G4102: "fé",
+  G4991: "salvação",
+};
+
+function fallbackContextualMeaning(payload: {
+  meaning: string | null;
+  definitions: string[];
+  strongsGloss: string | null;
+  contextual: ContextualPayload | null;
+}): string | null {
+  const strong = payload.contextual?.strong?.toUpperCase() ?? null;
+  if (strong && CONTEXTUAL_FALLBACKS[strong]) return CONTEXTUAL_FALLBACKS[strong];
+
+  const candidates = [
+    payload.meaning,
+    payload.strongsGloss,
+    ...payload.definitions,
+  ];
+  for (const candidate of candidates) {
+    if (!candidate) continue;
+    const first = candidate.split(/\s*;\s*/)[0]?.trim() ?? "";
+    if (!first || /\b(?:the|and|from|used|denotes|proper noun|primitive root)\b/i.test(first)) continue;
+    const short = (first.split(/\s+[—–-]\s+/)[0] ?? first)
+      .split(/[,;:]/)[0]
+      ?.trim();
+    if (short) return short;
+  }
+
+  return payload.contextual ? "sentido determinado pelo contexto" : null;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -51,7 +108,7 @@ Deno.serve(async (req) => {
       contextual: body.contextual ?? null,
     };
     if (!payload.meaning && payload.definitions.length === 0 && !payload.strongsGloss && !payload.contextual) {
-      return Response.json({ ...payload, contextualMeaning: null }, { headers: corsHeaders });
+      return Response.json({ ...payload, contextualMeaning: fallbackContextualMeaning(payload) }, { headers: corsHeaders });
     }
 
     let lastError = "";
@@ -74,9 +131,10 @@ Deno.serve(async (req) => {
         const raw = (data.choices?.[0]?.message?.content ?? "{}").replace(/```json|```/g, "").trim();
         try {
           const parsed = JSON.parse(raw);
-          const contextualMeaning = typeof parsed.contextualMeaning === "string"
-            ? parsed.contextualMeaning.trim()
-            : null;
+          const contextualMeaning =
+            typeof parsed.contextualMeaning === "string" && parsed.contextualMeaning.trim()
+              ? parsed.contextualMeaning.trim()
+              : fallbackContextualMeaning(payload);
           return Response.json(
             {
               meaning: typeof parsed.meaning === "string" ? parsed.meaning : payload.meaning,
@@ -87,7 +145,7 @@ Deno.serve(async (req) => {
             { headers: corsHeaders },
           );
         } catch {
-          return Response.json({ ...payload, contextualMeaning: null }, { headers: corsHeaders });
+          return Response.json({ ...payload, contextualMeaning: fallbackContextualMeaning(payload) }, { headers: corsHeaders });
         }
       }
       lastError = `${res.status}: ${(await res.text().catch(() => "")).slice(0, 200)}`;
@@ -97,6 +155,16 @@ Deno.serve(async (req) => {
     return Response.json({ ...payload, contextualMeaning: null }, { headers: corsHeaders });
   } catch (e) {
     console.error("translate-lexicon:", e instanceof Error ? e.message : e);
-    return Response.json({ meaning: null, definitions: [], strongsGloss: null, contextualMeaning: null }, { headers: corsHeaders });
+    return Response.json({
+      meaning: null,
+      definitions: [],
+      strongsGloss: null,
+      contextualMeaning: fallbackContextualMeaning({
+        meaning: null,
+        definitions: [],
+        strongsGloss: null,
+        contextual: null,
+      }),
+    }, { headers: corsHeaders });
   }
 });
