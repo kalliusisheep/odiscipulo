@@ -39,37 +39,37 @@ import {
 const TABS = [
   {
     id: "original",
-    label: "Idioma original",
-    eyebrow: "Texto-base",
-    description: "Leia o versículo na língua em que foi escrito.",
+    labelKey: "bible.tabOriginal",
+    eyebrowKey: "bible.tabOriginalEyebrow",
+    descriptionKey: "bible.tabOriginalDescription",
     icon: ScrollText,
   },
   {
     id: "interlinear",
-    label: "Interlinear",
-    eyebrow: "Linha a linha",
-    description: "Compare cada termo original com sua tradução.",
+    labelKey: "bible.tabInterlinear",
+    eyebrowKey: "bible.tabInterlinearEyebrow",
+    descriptionKey: "bible.tabInterlinearDescription",
     icon: Layers3,
   },
   {
     id: "palavras",
-    label: "Palavras",
-    eyebrow: "Análise",
-    description: "Explore pronúncia, sentidos e função de cada palavra.",
+    labelKey: "bible.tabWords",
+    eyebrowKey: "bible.tabWordsEyebrow",
+    descriptionKey: "bible.tabWordsDescription",
     icon: Languages,
   },
   {
     id: "referencias",
-    label: "Referências",
-    eyebrow: "Conexões",
-    description: "Encontre outras passagens ligadas a este versículo.",
+    labelKey: "bible.tabReferences",
+    eyebrowKey: "bible.tabReferencesEyebrow",
+    descriptionKey: "bible.tabReferencesDescription",
     icon: GitBranch,
   },
   {
     id: "lexico",
-    label: "Léxico",
-    eyebrow: "Dicionário",
-    description: "Consulte os verbetes acadêmicos de Strong.",
+    labelKey: "bible.tabLexicon",
+    eyebrowKey: "bible.tabLexiconEyebrow",
+    descriptionKey: "bible.tabLexiconDescription",
     icon: BookOpen,
   },
 ] as const;
@@ -90,7 +90,7 @@ export const Route = createFileRoute("/_authenticated/biblia/estudo/$book/$chapt
       { property: "og:title", content: "Estudo do versículo — Disciple" },
       {
         property: "og:description",
-        content: "Estude o versículo nas línguas originais com fontes acadêmicas.",
+        content: "{t("bible.studyVerse")} nas línguas originais com fontes acadêmicas.",
       },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary" },
@@ -141,6 +141,7 @@ function VerseStudy() {
   const { aba } = Route.useSearch();
   const nav = useNavigate();
   const { translation } = useBiblePrefs();
+  const { t } = useApp();
 
   const [text, setText] = useState<string | null>(null);
   const [textLoading, setTextLoading] = useState(true);
@@ -247,7 +248,7 @@ function VerseStudy() {
     };
   }, [translation, book, chapter, verse]);
 
-  // Análise do versículo, gerada pelo Gemini a partir das palavras do
+  // {t("bible.verseAnalysis")}, gerada pelo Gemini a partir das palavras do
   // original e do léxico já carregado (roda de novo quando `entries` chega
   // da tradução, para a IA receber os dados já em português).
   useEffect(() => {
@@ -294,7 +295,13 @@ function VerseStudy() {
 
   const setTab = (id: TabId) => void nav({ to: ".", search: { aba: id }, replace: true });
 
-  const activeTab = TABS.find((tab) => tab.id === aba) ?? TABS[0];
+  const tabs = TABS.map((tab) => ({
+    ...tab,
+    label: t(tab.labelKey),
+    eyebrow: t(tab.eyebrowKey),
+    description: t(tab.descriptionKey),
+  }));
+  const activeTab = tabs.find((tab) => tab.id === aba) ?? tabs[0];
   const ActiveTabIcon = activeTab.icon;
   const lexicalEntries = useMemo(
     () => Object.values(entries).sort((left, right) => left.code.localeCompare(right.code)),
@@ -321,7 +328,7 @@ function VerseStudy() {
 
             <div className="min-w-0 flex-1">
               <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
-                Estude o versículo
+                {t("bible.studyVerse")}
               </p>
               <h1 className="truncate text-lg font-extrabold tracking-tight">
                 {bookNameById(book)} {chapter}:{verse}
@@ -337,7 +344,7 @@ function VerseStudy() {
             aria-label="Ferramentas de estudo"
             className="bible-study-tabs -mx-1 mt-3 flex snap-x gap-2 overflow-x-auto rounded-2xl border border-border/60 bg-surface/30 p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
-            {TABS.map((tab) => {
+            {tabs.map((tab) => {
               const TabIcon = tab.icon;
               const selected = aba === tab.id;
               return (
@@ -370,7 +377,7 @@ function VerseStudy() {
             <div className="flex items-center justify-between gap-3">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
                 <Sparkles className="h-3 w-3" />
-                Versículo em foco
+                {t("bible.focusVerse")}
               </span>
               <span className="text-[10px] font-medium text-muted-foreground">
                 {translationByCode(translation).full}
@@ -385,7 +392,7 @@ function VerseStudy() {
               </div>
             ) : (
               <p className="bible-verse-quote mt-4 text-[17px] font-semibold leading-relaxed text-foreground">
-                “{text ?? UNAVAILABLE}”
+                “{text ?? t("bible.infoUnavailable")}”
               </p>
             )}
 
@@ -410,7 +417,7 @@ function VerseStudy() {
             </p>
           </div>
           <span className="rounded-full bg-surface-2 px-2 py-1 text-[10px] font-bold text-muted-foreground">
-            {TABS.findIndex((tab) => tab.id === aba) + 1}/{TABS.length}
+            {tabs.findIndex((tab) => tab.id === aba) + 1}/{tabs.length}
           </span>
         </section>
 
@@ -419,8 +426,8 @@ function VerseStudy() {
 
           {!wordsLoading && origError && aba !== "referencias" && (
             <UnavailableState
-              title="Texto original indisponível"
-              description="Não foi possível consultar a base acadêmica para esta passagem agora."
+              title={t("bible.originalUnavailable")}
+              description={t("bible.originalUnavailableDescription")}
             />
           )}
 
@@ -430,10 +437,10 @@ function VerseStudy() {
                 <div className="flex items-center justify-between gap-3 border-b border-border/60 px-4 py-3">
                   <div>
                     <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-ancient">
-                      Texto original
+                      {t("bible.originalText")}
                     </p>
                     <p className="mt-0.5 text-xs text-muted-foreground">
-                      {lang === "hebraico" ? "Hebraico bíblico" : "Grego koiné"}
+                      {lang === "hebraico" ? t("bible.biblicalHebrew") : t("bible.koineGreek")}
                     </p>
                   </div>
                   <span className="rounded-full border border-ancient/25 bg-ancient/10 px-2.5 py-1 text-[10px] font-bold capitalize text-ancient">
@@ -450,8 +457,8 @@ function VerseStudy() {
               </section>
 
               <SourceNote>
-                <strong className="text-foreground/80">Fonte acadêmica:</strong> {sourceName}.
-                Os códigos de Strong conectam cada palavra ao léxico.
+                <strong className="text-foreground/80">{t("bible.academicSource")}:</strong> {sourceName}.
+                {t("bible.strongConnection")}
               </SourceNote>
             </div>
           )}
@@ -475,7 +482,7 @@ function VerseStudy() {
               <section className="overflow-hidden rounded-[28px] border border-border/50 bg-surface/[0.72] p-1 shadow-[0_18px_48px_-38px_hsl(var(--primary))]">
                 {words.map((word, index) => {
                   const entry = word.strong ? entries[word.strong] : null;
-                  const sense = sensesFor(book, chapter, verse, index, word, entry)[0] ?? UNAVAILABLE;
+                  const sense = sensesFor(book, chapter, verse, index, word, entry)[0] ?? t("bible.infoUnavailable");
 
                   return (
                     <button
@@ -504,7 +511,7 @@ function VerseStudy() {
                                 {word.word}
                               </p>
                               <p className="mt-2 truncate text-xs italic text-muted-foreground">
-                                {entry?.transliteration ?? "Transliteração indisponível"}
+                                {entry?.transliteration ?? "{t("bible.transliterationUnavailable")}"}
                               </p>
                             </div>
 
@@ -518,7 +525,7 @@ function VerseStudy() {
                           <div className="mt-3 grid grid-cols-2 gap-2">
                             <div className="min-w-0 rounded-2xl bg-background/45 px-3 py-2.5">
                               <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-                                Pronúncia
+                                {t("bible.pronunciation")}
                               </p>
                               <p className="mt-1 truncate text-xs font-semibold text-foreground">
                                 {approximatePtBr(entry?.transliteration ?? null) ?? "—"}
@@ -527,7 +534,7 @@ function VerseStudy() {
 
                             <div className="min-w-0 rounded-2xl bg-primary/[0.07] px-3 py-2.5 text-center">
                               <p className="text-center text-[9px] font-bold uppercase tracking-[0.12em] text-primary/75">
-                                Sentido no versículo
+                                {t("bible.contextMeaning")}
                               </p>
                               <p className="mt-1 truncate text-center text-xs font-semibold text-foreground">
                                 {sense}
@@ -536,7 +543,7 @@ function VerseStudy() {
                           </div>
 
                           <div className="mt-3 flex items-center justify-end gap-1 text-[11px] font-bold text-primary/80 transition-colors group-hover:text-primary">
-                            Abrir análise
+                            {t("bible.openAnalysis")}
                             <ChevronRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                           </div>
                         </div>
@@ -576,14 +583,14 @@ function VerseStudy() {
                           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                             <p className="ancient-text break-words text-xl text-ancient">{word.word}</p>
                             <span className="text-[10px] font-bold text-primary">
-                              {word.strong ?? "Sem Strong"}
+                              {word.strong ?? "{t("bible.noStrong")}"}
                             </span>
                           </div>
                           <p className="mt-0.5 text-xs italic text-muted-foreground">
-                            {entry?.transliteration ?? "Transliteração indisponível"}
+                            {entry?.transliteration ?? "{t("bible.transliterationUnavailable")}"}
                           </p>
                           <p className="mt-2 text-sm font-semibold leading-snug">
-                            {senses.length ? senses.join(" · ") : UNAVAILABLE}
+                            {senses.length ? senses.join(" · ") : t("bible.infoUnavailable")}
                           </p>
                           {entry?.partOfSpeech && (
                             <span className="mt-2 inline-flex rounded-full bg-surface-2 px-2 py-1 text-[10px] font-semibold text-muted-foreground">
@@ -602,7 +609,7 @@ function VerseStudy() {
                       className="flex w-14 shrink-0 flex-col items-center justify-center gap-1 border-l border-border/60 bg-primary/[0.06] text-primary transition-colors hover:bg-primary/10 active:bg-primary/15"
                     >
                       <Volume2 className="h-5 w-5" />
-                      <span className="text-[9px] font-bold">Ouvir</span>
+                      <span className="text-[9px] font-bold">{t("bible.listen")}</span>
                     </button>
                   </article>
                 );
@@ -630,17 +637,17 @@ function VerseStudy() {
                     </span>
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
-                        Visão geral
+                        {t("bible.overview")}
                       </p>
-                      <h3 className="text-sm font-extrabold">Análise do versículo</h3>
+                      <h3 className="text-sm font-extrabold">{t("bible.verseAnalysis")}</h3>
                     </div>
                   </div>
 
                   <p className="mt-4 text-sm font-medium leading-relaxed">{analysis.resumo}</p>
 
                   <div className="mt-4 space-y-3">
-                    <AnalysisTags label="Verbos" items={analysis.verbos} />
-                    <AnalysisTags label="Substantivos" items={analysis.substantivos} />
+                    <AnalysisTags label={t("bible.verbs")} items={analysis.verbos} />
+                    <AnalysisTags label={t("bible.nouns")} items={analysis.substantivos} />
                   </div>
 
                   <p className="mt-4 border-t border-border/60 pt-3 text-[10px] leading-relaxed text-muted-foreground">
@@ -665,8 +672,8 @@ function VerseStudy() {
 
               {!xrefsLoading && xrefs.length === 0 && (
                 <UnavailableState
-                  title="Nenhuma referência encontrada"
-                  description="A base consultada ainda não relacionou outras passagens a este versículo."
+                  title={t("bible.noCrossReferences")}
+                  description={t("bible.noCrossReferencesDescription")}
                 />
               )}
 
@@ -688,13 +695,13 @@ function VerseStudy() {
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-                        Conexão {index + 1}
+                        {t("bible.connection")} {index + 1}
                       </span>
                       <span className="mt-0.5 block text-sm font-extrabold">
                         {bookNameById(referenceBook)} {referenceChapter}:{referenceVerse}
                       </span>
                       <span className="mt-1 block text-xs text-muted-foreground">
-                        Abrir esta passagem no modo de estudo
+                        {t("bible.openPassageInStudy")}
                       </span>
                     </span>
                     <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground/50 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
@@ -703,7 +710,7 @@ function VerseStudy() {
 
               {!xrefsLoading && xrefs.length > 0 && (
                 <SourceNote>
-                  Referências cruzadas fornecidas por openbible.info sob licença CC-BY.
+                  {t("bible.crossReferenceSource")}
                 </SourceNote>
               )}
             </div>
@@ -715,8 +722,8 @@ function VerseStudy() {
 
               {!lexiconLoading && lexicalEntries.length === 0 && (
                 <UnavailableState
-                  title="Nenhum verbete disponível"
-                  description="Não encontramos dados lexicais para as palavras deste versículo nesta fonte."
+                  title={t("bible.noLexicon")}
+                  description={t("bible.noLexiconDescription")}
                 />
               )}
 
@@ -739,7 +746,7 @@ function VerseStudy() {
                         </span>
                       </span>
                       <span className="mt-0.5 block truncate text-xs italic text-muted-foreground">
-                        {entry.transliteration ?? "Transliteração indisponível"}
+                        {entry.transliteration ?? "{t("bible.transliterationUnavailable")}"}
                         {entry.phonetic ? " · " + entry.phonetic : ""}
                       </span>
                     </span>
@@ -754,7 +761,7 @@ function VerseStudy() {
                     )}
 
                     <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
-                      Sentido neste versículo
+                      {t("bible.contextMeaning")}
                     </p>
 
                     <ol className="mt-2 space-y-2">
@@ -778,7 +785,7 @@ function VerseStudy() {
 
               {lexicalEntries.length > 0 && (
                 <SourceNote>
-                  Fonte: Brown-Driver-Briggs / Thayer, concordância de Strong.
+                  {t("bible.lexiconSource")}
                 </SourceNote>
               )}
             </div>
@@ -965,7 +972,7 @@ function WordDetail({
                 {word.word}
               </p>
               <p className="mt-1 text-sm italic text-muted-foreground">
-                {entry?.transliteration ?? "Transliteração indisponível"}
+                {entry?.transliteration ?? "{t("bible.transliterationUnavailable")}"}
               </p>
               {pronunciation && (
                 <p className="mt-0.5 text-xs text-muted-foreground">
@@ -994,7 +1001,7 @@ function WordDetail({
             className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-2xl border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-bold text-primary transition-colors hover:bg-primary/15 active:scale-[0.98]"
           >
             <Volume2 className="h-4 w-4" />
-            Ouvir pronúncia
+            {t("bible.listenPronunciation")}
           </button>
         </div>
       </section>
@@ -1097,7 +1104,7 @@ function WordDetail({
         {entry && entry.related.length > 0 && (
           <section>
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
-              Palavras relacionadas
+              {t("bible.relatedWords")}
             </p>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {entry.related.map((relatedCode) => (
