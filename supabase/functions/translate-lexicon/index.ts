@@ -13,7 +13,7 @@ const SYSTEM_PROMPT = [
   "Responda sempre em português do Brasil.",
   "Traduza meaning, definitions e strongsGloss com fidelidade literal, sem inventar, resumir ou acrescentar comentário.",
   "Mantenha definitions como uma lista de sentidos ou glosas que estejam presentes na fonte.",
-  "Quando contextual.reference, contextual.verseText e contextual.word estiverem presentes, produza contextualMeaning com UM ÚNICO sentido que se encaixe naquela ocorrência.",
+  "Quando contextual.reference, contextual.translation, contextual.verseText e contextual.word estiverem presentes, produza contextualMeaning com UM ÚNICO sentido que se encaixe naquela ocorrência e na tradução selecionada.",
   "contextualMeaning deve ter de 1 a 8 palavras, sem lista de possibilidades, ponto e vírgula ou explicação teológica.",
   "Para אֵת/H853, escreva exatamente: marca o objeto direto.",
   "Quando houver contexto suficiente, escolha o melhor sentido contextual disponível e não retorne null.",
@@ -25,6 +25,7 @@ const SYSTEM_PROMPT = [
 
 type ContextualPayload = {
   reference?: string;
+  translation?: string;
   verseText?: string | null;
   word?: string | null;
   strong?: string | null;
