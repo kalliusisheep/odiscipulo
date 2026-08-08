@@ -145,6 +145,7 @@ function contextualCandidate(
   if (
     value &&
     !/^(?:nao|não|sim)$/i.test(value) &&
+    !/indisponível|indisponivel|tradução isolada|traducao isolada/i.test(value) &&
     contextualMeaningMatchesVerse(value, payload.contextual?.verseText)
   ) {
     return value;
@@ -153,8 +154,13 @@ function contextualCandidate(
 }
 
 function fallbackContextualMeaning(payload: LexiconPayload): string | null {
+  const verseText = payload.contextual?.verseText ?? null;
   const strong = payload.contextual?.strong?.toUpperCase() ?? null;
-  if (strong && CONTEXTUAL_FALLBACKS[strong]) return CONTEXTUAL_FALLBACKS[strong];
+  const known = strong ? CONTEXTUAL_FALLBACKS[strong] : null;
+
+  if (known && (strong === "H853" || contextualMeaningMatchesVerse(known, verseText))) {
+    return known;
+  }
 
   const candidates = [
     payload.meaning,
@@ -168,12 +174,18 @@ function fallbackContextualMeaning(payload: LexiconPayload): string | null {
     const short = (first.split(/\s+[—–-]\s+/)[0] ?? first)
       .split(/[,;:]/)[0]
       ?.trim();
-    if (short && !/\b(?:the|and|from|used|denotes|proper noun|primitive root)\b/i.test(short)) {
+    if (
+      short &&
+      !/\b(?:the|and|from|used|denotes|proper noun|primitive root)\b/i.test(short) &&
+      !/indisponível|indisponivel|tradução isolada|traducao isolada/i.test(short) &&
+      !/^(?:nao|não|sim)$/i.test(short) &&
+      contextualMeaningMatchesVerse(short, verseText)
+    ) {
       return short;
     }
   }
 
-  return payload.contextual ? "sentido determinado pelo contexto" : null;
+  return payload.contextual ? "sentido contextual não disponível" : null;
 }
 
 function parseJson(text: string): Record<string, unknown> {
