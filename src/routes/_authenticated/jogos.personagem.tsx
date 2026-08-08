@@ -6,7 +6,7 @@ import { SharedQuestionGame } from "@/components/games/SharedQuestionGame";
 import { BIBLICAL_CHARACTER_ROUNDS, CHARACTER_DIFFICULTY, isCorrectCharacterAnswer, type BiblicalCharacter, type GameDifficulty } from "@/data/biblical-characters";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { shuffleWithSeed } from "@/lib/seeded-random";
-import { normalizeGameContentKey, selectFreshGameVariants, uniqueGameContent } from "@/lib/game-content";
+import { normalizeGameContentKey, readRecentGameKeys, selectFreshGameVariants, uniqueGameContent } from "@/lib/game-content";
 import { recordGameResult } from "@/lib/game-leaderboard";
 
 export const Route = createFileRoute("/_authenticated/jogos/personagem")({
@@ -102,7 +102,7 @@ function PersonagemPage() {
     const source = uniqueGameContent([...preferred, ...fallback], (item) => item.id);
     const shuffled = seed ? shuffleWithSeed(source, seed) : [...source].sort(() => Math.random() - 0.5);
     const recentKey = `character_recent_questions_${difficulty}`;
-    const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
+    const recentIds = readRecentGameKeys(recentKey);
     const recentKeys = new Set(recentIds.map(normalizeGameContentKey));
     const recentFirst = [...shuffled].sort((first, second) => {
       const firstRecent = recentKeys.has(normalizeGameContentKey(first.id)) ? 1 : 0;
