@@ -70,6 +70,11 @@ function connectorPath(parent: { x: number; y: number }, child: { x: number; y: 
   const middleY = startY + (endY - startY) / 2;
   return `M ${parent.x} ${startY} V ${middleY} H ${child.x} V ${endY}`;
 }
+// No máximo 4 discípulos por linha; a partir do 5º, eles descem para uma nova
+// linha abaixo dos 4 primeiros, evitando que a árvore cresça infinitamente
+// para os lados.
+const MAX_CHILDREN_PER_ROW = 4;
+
 function computeLayout(nodes: TreeNode[]): { positions: Positions; width: number; height: number; root: TreeNode | null } {
   const root = nodes.find((n) => n.direction === "self") ?? null;
   const positions: Positions = new Map();
@@ -85,22 +90,34 @@ function computeLayout(nodes: TreeNode[]): { positions: Positions; width: number
       childrenOf.set(n.parent_id, list);
     });
 
-  let nextSlot = 0;
   const gridPos = new Map<string, { gx: number; gy: number }>();
 
-  function place(node: TreeNode, depth: number): number {
+  function place(node: TreeNode, gxStart: number, gyStart: number): { width: number; height: number } {
     const kids = (childrenOf.get(node.id) ?? []).sort((a, b) => a.display_name.localeCompare(b.display_name));
     if (kids.length === 0) {
-      const gx = nextSlot++;
-      gridPos.set(node.id, { gx, gy: depth });
-      return gx;
+      gridPos.set(node.id, { gx: gxStart, gy: gyStart });
+      return { width: 1, height: 1 };
     }
-    const childXs = kids.map((k) => place(k, depth + 1));
-    const gx = (childXs[0] + childXs[childXs.length - 1]) / 2;
-    gridPos.set(node.id, { gx, gy: depth });
-    return gx;
+
+    let maxWidth = 0;
+    let cursorY = gyStart + 1;
+    for (let i = 0; i < kids.length; i += MAX_CHILDREN_PER_ROW) {
+      const row = kids.slice(i, i + MAX_CHILDREN_PER_ROW);
+      let cursorX = gxStart;
+      let rowHeight = 1;
+      for (const kid of row) {
+        const res = place(kid, cursorX, cursorY);
+        cursorX += res.width;
+        rowHeight = Math.max(rowHeight, res.height);
+      }
+      maxWidth = Math.max(maxWidth, cursorX - gxStart);
+      cursorY += rowHeight;
+    }
+
+    gridPos.set(node.id, { gx: gxStart + (maxWidth - 1) / 2, gy: gyStart });
+    return { width: maxWidth, height: cursorY - gyStart };
   }
-  place(root, 0);
+  place(root, 0, 0);
 
   const ancestors = nodes.filter((n) => n.direction === "up").sort((a, b) => a.depth - b.depth);
   const rootGx = gridPos.get(root.id)!.gx;
@@ -116,6 +133,7 @@ function computeLayout(nodes: TreeNode[]): { positions: Positions; width: number
 
   return { positions, width: maxGx * COL_W + PAD * 2, height: maxGy * ROW_H + PAD * 2, root };
 }
+
 
 function computePortraitLayout(nodes: TreeNode[]): { positions: Positions; width: number; height: number; root: TreeNode | null } {
   const root = nodes.find((node) => node.direction === "self") ?? null;
