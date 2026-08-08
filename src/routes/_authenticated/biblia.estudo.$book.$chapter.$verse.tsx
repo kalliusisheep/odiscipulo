@@ -124,9 +124,18 @@ function contextualMeaningForEntry(
   verse: number,
   words: OriginalWord[],
   entry: StrongEntry,
+  verseText: string | null,
 ): string {
   const index = words.findIndex((word) => word.strong?.toUpperCase() === entry.code.toUpperCase());
-  return contextualMeaningFor(book, chapter, verse, index, index >= 0 ? words[index] : undefined, entry);
+  return contextualMeaningFor(
+    book,
+    chapter,
+    verse,
+    index,
+    index >= 0 ? words[index] : undefined,
+    entry,
+    verseText,
+  );
 }
 type VerseAnalysis = {
   verbos: string[];
@@ -770,7 +779,7 @@ function VerseStudy() {
                           1
                         </span>
                         <span className="text-sm leading-snug text-foreground/90">
-                          {contextualMeaningForEntry(book, chapter, verse, words, entry)}
+                          {contextualMeaningForEntry(book, chapter, verse, words, entry, text)}
                         </span>
                       </li>
                     </ol>
@@ -809,6 +818,7 @@ function VerseStudy() {
                 openWord.index,
                 openWord,
                 openWord.strong ? entries[openWord.strong] : undefined,
+                text,
               )}
               onSpeak={() => speak(openWord.word)}
             />
@@ -904,12 +914,14 @@ function WordDetail({
   entry,
   contextualMeaning,
   occurrence,
+  verseText,
   onSpeak,
 }: {
   word: OriginalWord;
   entry?: StrongEntry;
   contextualMeaning: string;
   occurrence?: { c: number; f: number[]; l: number[] };
+  verseText: string | null;
   onSpeak: () => void;
 }) {
   const senses = Array.from(
@@ -1098,41 +1110,3 @@ function WordDetail({
                     <span className="mt-0.5 block text-sm font-extrabold text-foreground">
                       {bookNameById(reference.book)} {reference.chapter}:{reference.verse}
                     </span>
-                  </span>
-                  <ChevronRight className="h-4 w-4 shrink-0 text-primary" />
-                </Link>
-              ))}
-            </div>
-            <p className="mt-3 text-[10px] leading-relaxed text-muted-foreground">
-              {t("bible.indexNote")}
-            </p>
-          </section>
-        )}
-
-        {entry && entry.related.length > 0 && (
-          <section>
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary">
-              {t("bible.relatedWords")}
-            </p>
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {entry.related.map((relatedCode) => (
-                <span
-                  key={relatedCode}
-                  className="rounded-full border border-primary/15 bg-primary/[0.07] px-3 py-1.5 text-xs font-bold text-primary"
-                >
-                  {relatedCode}
-                </span>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {entry && (
-          <SourceNote>
-            {t("bible.contextSourceNote")}
-          </SourceNote>
-        )}
-      </div>
-    </div>
-  );
-}
