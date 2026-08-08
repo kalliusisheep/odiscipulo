@@ -10,22 +10,9 @@
 // destas trilhas, se quiser persistir no futuro, pode reaproveitar a mesma
 // tabela de progresso das lições normais, guardando o `id` da trilha.
 
-import type { Original, Quiz, Verse } from "@/data/content";
+import type { Lesson, Original, Verse } from "@/data/content";
 
-export type SupportLesson = {
-  id: string;
-  title: string;
-  verse: Verse;
-  keywords: Original[]; // também alimentam o exercício "Relacione os termos"
-  intro: string[];
-  deepDive: string;
-  theologianQuote: { author: string; text: string; source?: string };
-  quiz: Quiz;
-  application: string;
-  prayer: string;
-  weeklyChallenge: string;
-  reflectionQuestion: string;
-};
+export type SupportLesson = Lesson;
 
 export type SupportModule = {
   id: string;
@@ -54,49 +41,72 @@ const buildSupportLesson = (
   moduleTitle: string,
   item: SupportLessonBlueprint,
   index: number,
-): SupportLesson => ({
-  id: moduleId + "-" + (index + 1),
-  title: item.title,
-  verse: {
+): SupportLesson => {
+  const keyword: Original = {
+    word: item.keyword[0],
+    translit: item.keyword[1],
+    meaning: item.keyword[2],
+    lang: item.keyword[3],
+  };
+  const verse: Verse = {
     ref: item.ref,
     textByVersion: { NVI: item.verse },
-    originals: [
+    originals: [keyword],
+  };
+  const topic = item.title.toLowerCase();
+
+  return {
+    id: moduleId + "-" + (index + 1),
+    title: item.title,
+    difficulty: Math.min(5, 2 + Math.floor(index / 3)) as 1 | 2 | 3 | 4 | 5,
+    intro: [
+      "Esta lição da trilha " + moduleTitle + " conecta a Palavra a uma decisão concreta de discipulado.",
+      item.focus,
+    ],
+    verses: [verse],
+    keywords: [keyword],
+    deepDive: item.teaching,
+    theologianQuote: {
+      author: "Síntese pastoral",
+      text:
+        "O discipulado amadurece quando a verdade sobre " +
+        topic +
+        " alcança decisões concretas, relacionamentos e hábitos.",
+    },
+    deepen: {
+      historicalContext: item.focus,
+      exegeticalNotes:
+        "Leia " +
+        item.ref +
+        " observando como o texto sustenta esta lição: " +
+        item.teaching,
+      theologicalDebate:
+        "Uma leitura madura sobre " +
+        topic +
+        " evita tanto o legalismo quanto a permissividade. A resposta cristã combina verdade, graça e responsabilidade: " +
+        item.action,
+    },
+    quizzes: [
       {
-        word: item.keyword[0],
-        translit: item.keyword[1],
-        meaning: item.keyword[2],
-        lang: item.keyword[3],
+        question: item.question,
+        options: item.options,
+        correctIndex: item.correctIndex,
+        explanation: item.explanation,
       },
     ],
-  },
-  keywords: [
-    {
-      word: item.keyword[0],
-      translit: item.keyword[1],
-      meaning: item.keyword[2],
-      lang: item.keyword[3],
-    },
-  ],
-  intro: [
-    "Esta lição da trilha " + moduleTitle + " conduz o discípulo a olhar para uma área concreta da vida à luz do evangelho.",
-    item.focus,
-  ],
-  deepDive: item.teaching,
-  theologianQuote: {
-    author: "Reflexão pastoral",
-    text: "A verdade bíblica se torna discipulado quando alcança decisões concretas, relacionamentos e hábitos.",
-  },
-  quiz: {
-    question: item.question,
-    options: item.options,
-    correctIndex: item.correctIndex,
-    explanation: item.explanation,
-  },
-  application: item.action,
-  prayer: "Senhor, forma em mim uma fé obediente e coerente com esta verdade. Dá-me graça para praticá-la com humildade. Amém.",
-  weeklyChallenge: item.challenge,
-  reflectionQuestion: "Que mudança concreta a lição sobre " + item.title.toLowerCase() + " pede de mim nesta semana?",
-});
+    application: item.action,
+    prayer:
+      "Senhor, forma em mim uma fé obediente e coerente com o que aprendi sobre " +
+      topic +
+      ". Dá-me graça para praticar esta verdade com humildade. Amém.",
+    weeklyChallenge: item.challenge,
+    reflectionQuestion:
+      "Que mudança concreta esta lição sobre " +
+      topic +
+      " pede de mim nesta semana?",
+    xp: 30 + index * 3,
+  };
+};
 
 const buildSupportModule = (
   id: string,
