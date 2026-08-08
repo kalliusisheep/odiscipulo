@@ -412,8 +412,9 @@ function ArvorePage() {
   }
 
   function resetView() {
-    setView({ scale: 1, tx: 24, ty: 24 });
+    setView(computeCenteredView(1));
   }
+
 
   async function exportPdf() {
     const layout = computePortraitLayout(nodes);
