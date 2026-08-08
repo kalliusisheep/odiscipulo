@@ -4,6 +4,7 @@ import { HIGHLIGHT_COLORS, normalizeHighlightColor, type HighlightColor } from "
 import { bookNameById } from "@/data/bible-books";
 import { BookOpen, Copy, GitCompareArrows, Highlighter, Library, PenLine, Star, X } from "lucide-react";
 import { ShareLessonButton } from "@/components/ShareLessonButton";
+import { useApp } from "@/lib/app-context";
 
 type Props = {
   open: boolean;
@@ -25,12 +26,13 @@ type Props = {
 
 export function VerseActionSheet(props: Props) {
   const { book, chapter, verse } = props;
+  const { t } = useApp();
   const ref = `${bookNameById(book)} ${chapter}:${verse}`;
 
   const actions = [
     {
       icon: Library,
-      label: "Referências cruzadas",
+      label: t("bible.crossReferences"),
       to: "/biblia/estudo/$book/$chapter/$verse" as const,
       search: { aba: "referencias" as const },
     },
@@ -45,8 +47,8 @@ export function VerseActionSheet(props: Props) {
         <div className="mx-auto mt-3 h-1.5 w-10 rounded-full bg-muted-foreground/30" />
         <div className="bible-sheet-header px-5 pt-4">
           <div className="flex items-center justify-between gap-3">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">Ações do versículo</p>
-            <span className="rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-bold text-muted-foreground">Toque para agir</span>
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary">{t("bible.actionsTitle")}</p>
+            <span className="rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-bold text-muted-foreground">{t("bible.tapToAct")}</span>
           </div>
           <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
             {ref} · {props.translationLabel}
@@ -59,7 +61,7 @@ export function VerseActionSheet(props: Props) {
         <div className="bible-highlight-palette mt-4 px-5" aria-label="Cores do marcador">
           <div className="mb-2 flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-muted-foreground">
             <Highlighter className="h-3.5 w-3.5 text-primary" />
-            <span>Escolha uma cor para marcar</span>
+            <span>{t("bible.chooseHighlight")}</span>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             {HIGHLIGHT_COLORS.map((c) => (
@@ -77,7 +79,7 @@ export function VerseActionSheet(props: Props) {
             ))}
             <button
               type="button"
-              aria-label="Remover marcação"
+              aria-label={t("bible.removeHighlight")}
               aria-pressed={!normalizeHighlightColor(props.currentColor)}
               onClick={props.onClearHighlight}
               className={`bible-highlight-swatch flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 bg-muted/60 text-muted-foreground transition-all active:scale-90 ${
@@ -103,7 +105,7 @@ export function VerseActionSheet(props: Props) {
               className="flex min-h-12 items-center justify-center gap-2 rounded-2xl text-center bg-primary px-3 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/25 transition-transform active:scale-[0.98]"
             >
               <BookOpen className="h-4 w-4 shrink-0" />
-              <span className="leading-tight">Estudar versículo</span>
+              <span className="leading-tight">{t("bible.studyVerse")}</span>
             </Link>
             <button
               type="button"
@@ -114,7 +116,7 @@ export function VerseActionSheet(props: Props) {
               className="flex min-h-12 items-center justify-center gap-2 rounded-2xl text-center border border-primary/25 bg-primary/10 px-3 py-3 text-sm font-semibold text-primary transition-all hover:bg-primary/15 active:scale-[0.98]"
             >
               <GitCompareArrows className="h-4 w-4 shrink-0" />
-              <span className="leading-tight">Comparar versões</span>
+              <span className="leading-tight">{t("bible.compareVersions")}</span>
             </button>
           </div>
           {actions.map((a) => (
@@ -131,13 +133,13 @@ export function VerseActionSheet(props: Props) {
           ))}
 
           <div className="col-span-2">
-            <SheetAction icon={PenLine} label="Adicionar anotação" onClick={props.onNote} />
+            <SheetAction icon={PenLine} label={t("bible.addNote")} onClick={props.onNote} />
           </div>
           <div className="col-span-2 grid grid-cols-2 gap-2">
-            <SheetAction icon={Copy} label="Copiar" onClick={props.onCopy} />
+            <SheetAction icon={Copy} label={t("bible.copy")} onClick={props.onCopy} />
             <SheetAction
               icon={Star}
-              label={props.isFavorite ? "Remover favorito" : "Favoritar"}
+              label={props.isFavorite ? t("bible.removeFavorite") : t("bible.favorite")}
               onClick={props.onFavorite}
               active={props.isFavorite}
             />
