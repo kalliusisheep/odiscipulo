@@ -791,11 +791,6 @@ export const theologyModules: TheologyModule[] = [
             "text": "E o autor de Hebreus 1:3 corrobora essa afirmação, revelando que o Filho é"
           },
           {
-            "type": "verse",
-            "text": "o resplendor da glória de Deus e a expressão exata do seu ser, sustentando todas as coisas por sua palavra poderosa.",
-            "reference": "Hebreus 1:3"
-          },
-          {
             "type": "paragraph",
             "text": "A ordem e as leis físicas do universo não funcionam por forças autônomas cegas, mas pela constante fidelidade e poder mantenedor da palavra de Deus. Esta preservação divina se aplica tanto ao domínio físico quanto à nossa vida e saúde espiritual. Jó expressa essa realidade em seu sofrimento, reconhecendo que dependemos do Criador para cada batimento cardíaco e cada fôlego de ar em nossos pulmões. Em Jó 12:10, lemos:"
           },
@@ -816,11 +811,6 @@ export const theologyModules: TheologyModule[] = [
           {
             "type": "paragraph",
             "text": "Para o cristão comum, a doutrina da preservação divina traz uma imensa segurança existencial e paz profunda. Saber que o universo é preservado pela Palavra de Cristo nos livra do terror de um colapso cósmico aleatório ou de uma destruição sem sentido. Além disso, no plano espiritual, a mesma mão divina que preserva o universo preserva a nossa salvação e a nossa comunhão com Ele até ao último dia, como o apóstolo Pedro assegura em 1Pedro 1:5:"
-          },
-          {
-            "type": "verse",
-            "text": "que, mediante a fé, são protegidos pelo poder de Deus até chegar a salvação prestes a ser revelada no último tempo.",
-            "reference": "1Pedro 1:5"
           },
           {
             "type": "paragraph",
@@ -1372,11 +1362,6 @@ export const theologyModules: TheologyModule[] = [
             "text": "A obra de salvação nos renova progressivamente à imagem de Cristo, que é a imagem perfeita do Deus invisível, como Paulo assevera em Colossenses 3:10"
           },
           {
-            "type": "verse",
-            "text": "e se revestiram do novo, que está sendo renovado em conhecimento, à imagem do seu Criador.",
-            "reference": "Colossenses 3:10"
-          },
-          {
             "type": "paragraph",
             "text": "Saber que fomos criados à imagem de Deus nos chama a respeitar a dignidade inegociável de cada pessoa humana, independentemente de sua etnia, estrato social ou capacidade intelectual, amando-as e servindo-as em nome de Jesus Cristo."
           }
@@ -1727,11 +1712,6 @@ export const theologyModules: TheologyModule[] = [
             "text": "E o apóstolo Paulo exorta a nossa expectativa no retorno de Cristo, descrevendo Sua identidade divina em Tito 2:13: enquanto aguardamos a bendita esperança"
           },
           {
-            "type": "verse",
-            "text": "a gloriosa manifestação de nosso grande Deus e Salvador, Jesus Cristo.",
-            "reference": "Tito 2:13"
-          },
-          {
             "type": "paragraph",
             "text": "O discípulo Tomé expressa essa fé salvífica ao tocar as feridas do Salvador ressuscitado em João 20:28:"
           },
@@ -1890,11 +1870,6 @@ export const theologyModules: TheologyModule[] = [
           {
             "type": "paragraph",
             "text": "Cristo como Sacerdote é o ministério messiânico pelo qual Jesus atua como o mediador supremo entre o Deus santo e a humanidade culpada, oferecendo-Se a Si mesmo na cruz como o sacrifício perfeito e suficiente para cobrir os nossos pecados e reconciliar-nos com Deus, e intercedendo perpetuamente em nosso favor diante do trono do Pai celestial. O autor de Hebreus detalha a superioridade e a eternidade do sacerdócio de Cristo em passagens gloriosas como Hebreus 7:24-25"
-          },
-          {
-            "type": "verse",
-            "text": "mas, visto que vive para sempre, Jesus tem um sacerdócio permanente. Consequentemente, ele é capaz de salvar definitivamente aqueles que, por meio dele, aproximam-se de Deus, pois vive sempre para interceder por eles.",
-            "reference": "Hebreus 7:24-25"
           },
           {
             "type": "paragraph",
@@ -2184,11 +2159,6 @@ export const theologyModules: TheologyModule[] = [
             "text": "E em Hebreus 1:3, lemos sobre a conclusão de Sua obra expiatória que O conduziu ao trono da glória divina:"
           },
           {
-            "type": "verse",
-            "text": "Depois de ter realizado a purificação dos pecados, ele se assentou à direita da Majestade nas alturas.",
-            "reference": "Hebreus 1:3"
-          },
-          {
             "type": "paragraph",
             "text": "E o apóstolo Paulo exalta a exaltação suprema de Cristo sobre cada potestade invisível em Filipenses 2:9-11, Estar assentado à direita do Pai significa que a obra salvífica de Cristo na terra foi plenamente consumada e aceita pelo Criador (Hebreus 10:12). Ele não precisa mais oferecer sacrifícios; Ele reina vitorioso, intercedendo perpetuamente em favor de nossa justificação e segurança espiritual. Essa verdade enche a nossa alma de profunda segurança existencial, sabendo que o nosso amado Salvador e Mediador governa soberanamente sobre toda a história humana."
           }
@@ -2261,11 +2231,6 @@ export const theologyModules: TheologyModule[] = [
           {
             "type": "paragraph",
             "text": "E o apóstolo Paulo atribui ao Espírito a onisciência infinita que pertence exclusiva e unicamente ao caráter divino em 1Coríntios 2:10-11"
-          },
-          {
-            "type": "verse",
-            "text": "pois o Espírito sonda todas as coisas, até mesmo as coisas mais profundas de Deus. Pois quem conhece os pensamentos do homem, a não ser o espírito do homem que nele está? Da mesma forma, ninguém conhece os pensamentos de Deus, a não ser o Espírito de Deus.",
-            "reference": "1Coríntios 2:10-11"
           },
           {
             "type": "paragraph",
@@ -2393,11 +2358,6 @@ export const theologyModules: TheologyModule[] = [
           {
             "type": "paragraph",
             "text": "E o apóstolo Paulo descreve as consequências práticas e relacionais desse viver cheio de Deus nos versículos seguintes, em Efésios 5:19-20"
-          },
-          {
-            "type": "verse",
-            "text": "falando entre vocês com salmos, hinos e cânticos espirituais, cantando e louvando de coração ao Senhor, dando graças constantemente a Deus Pai por todas as coisas, em nome de nosso Senhor Jesus Cristo.",
-            "reference": "Efésios 5:19-20"
           },
           {
             "type": "paragraph",
@@ -2615,11 +2575,6 @@ export const theologyModules: TheologyModule[] = [
             "text": "A regeneração é o ato secreto, soberano e instantâneo de Deus pelo qual Ele, por meio do Espírito Santo de Sua graça, comunica uma nova vida espiritual ao coração do crente arrependido que respondeu ao chamado de Deus, transformando a sua essência moral caída em uma nova criatura e capacitando-o de forma real para a comunhão viva com o Criador. A Escritura retrata essa ressurreição espiritual de forma marcante em passagens bíblicas clássicas como Tito 3:5"
           },
           {
-            "type": "verse",
-            "text": "ele nos salvou, não por causa de atos de justiça que tivéssemos praticado, mas devido à sua misericórdia, mediante o lavar regenerador e renovador do Espírito Santo.",
-            "reference": "Tito 3:5"
-          },
-          {
             "type": "paragraph",
             "text": "E o apóstolo Paulo resume o impacto cósmico interior dessa recriação de nossa essência em 2Coríntios 5:17:"
           },
@@ -2733,11 +2688,6 @@ export const theologyModules: TheologyModule[] = [
             "text": "A verdadeira fé salvadora vai além do mero assentimento intelectual aos fatos históricos de salvação; ela envolve o compromisso pessoal do coração que confia de forma ativa na pessoa viva de Jesus, como o apóstolo Paulo afirma em Romanos 10:9"
           },
           {
-            "type": "verse",
-            "text": "se você confessar com a sua boca que Jesus é Senhor e crer em seu coração que Deus o ressuscitou dos mortos, será salvo.",
-            "reference": "Romanos 10:9"
-          },
-          {
             "type": "paragraph",
             "text": "Esta fé viva opera em amor, gerando obediência e frutos de justiça que confirmam a autenticidade de nossa comunhão com Deus."
           }
@@ -2817,11 +2767,6 @@ export const theologyModules: TheologyModule[] = [
           {
             "type": "paragraph",
             "text": "A santificação progressiva é a obra cooperativa, progressiva e vitalícia de Deus e do homem na Nova Aliança, pela qual o crente regenerado é libertado de forma regular do poder e do domínio do pecado em sua vida e transformado à imagem moral e espiritual de Jesus Cristo em suas atitudes, pensamentos, palavras e ações diárias. A Escritura Sagrada exorta à nossa cooperação ativa e dependência graciosa na busca diária da santidade em Filipenses 2:12-13"
-          },
-          {
-            "type": "verse",
-            "text": "coloquem em ação a salvação de vocês com temor e tremor, pois é Deus quem efetua em vocês tanto o querer quanto o realizar, de acordo com a boa vontade dele.",
-            "reference": "Filipenses 2:12-13"
           },
           {
             "type": "paragraph",
@@ -2967,11 +2912,6 @@ export const theologyModules: TheologyModule[] = [
           {
             "type": "paragraph",
             "text": "A glorificação é o ponto culminante e final de todo o processo de salvação do crente, no qual, no retorno vitorioso de Jesus Cristo, as almas dos justos serão perfeitamente unidas aos seus corpos físicos ressuscitados, os quais serão transformados em corpos imortais, perfeitos, livres de toda a corrupção do pecado e revestidos da mesma glória celestial do Salvador. A Escritura Sagrada declara a realidade inegável dessa promessa cósmica de salvação total em 1Coríntios 15:52-53"
-          },
-          {
-            "type": "verse",
-            "text": "os mortos ressuscitarão incorruptíveis, e nós seremos transformados. Pois é necessário que aquilo que é corruptível se revista de incorruptibilidade, e aquilo que é mortal se revista de imortalidade.",
-            "reference": "1Coríntios 15:52-53"
           },
           {
             "type": "paragraph",
@@ -3306,18 +3246,8 @@ export const theologyModules: TheologyModule[] = [
             "text": "O sacerdócio universal dos crentes é a gloriosa verdade bíblica redescoberta na Reforma Protestante, de que, devido à mediação sacerdotal única de Jesus Cristo e de Sua expiação penal consumada na cruz, cada crente em Cristo possui livre e total acesso à presença soberana de Deus, sem qualquer necessidade de mediadores humanos, padres ou intercessores de santos falecidos. A Escritura Sagrada proclama essa dignidade inalienável e a nossa responsabilidade ministerial ativa em 1Pedro 2:5"
           },
           {
-            "type": "verse",
-            "text": "vocês também, como pedras vivas, estão sendo edificados como casa espiritual para serem sacerdócio santo, oferecendo sacrifícios espirituais agradáveis a Deus por meio de Jesus Cristo.",
-            "reference": "1Pedro 2:5"
-          },
-          {
             "type": "paragraph",
             "text": "E em Apocalipse 1:6, lemos a consolidação de nossa nova identidade de comunhão diante de Deus"
-          },
-          {
-            "type": "verse",
-            "text": "e nos constituiu reino e sacerdotes para servir a seu Deus e Pai. A ele sejam a glória e o poder para todo o sempre! Amém.",
-            "reference": "Apocalipse 1:6"
           },
           {
             "type": "paragraph",
@@ -3638,11 +3568,6 @@ export const theologyModules: TheologyModule[] = [
           {
             "type": "paragraph",
             "text": "E o apóstolo Paulo confessa essa mesma fé profética diante do conselho judaico, em Atos 24:15: e tenho em Deus a mesma esperança desses homens"
-          },
-          {
-            "type": "verse",
-            "text": "de que haverá ressurreição tanto de justos como de injustos.",
-            "reference": "Atos 24:15"
           },
           {
             "type": "paragraph",
