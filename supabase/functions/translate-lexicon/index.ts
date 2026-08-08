@@ -117,9 +117,9 @@ function normalizePayload(body: unknown): LexiconPayload {
 function normalizeContextMatchText(value: string): string {
   return value
     .normalize("NFD")
-    .replace(/[\\u0300-\\u036f]/g, "")
-    .replace(/[^\\p{L}\\p{N}\\s]/gu, " ")
-    .replace(/\\s+/g, " ")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    .replace(/\s+/g, " ")
     .trim()
     .toLocaleLowerCase("pt-BR");
 }
