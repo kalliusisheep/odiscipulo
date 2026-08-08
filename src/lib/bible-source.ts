@@ -1565,19 +1565,24 @@ export async function translateStrongEntry(
         },
       });
       if (error || !data) return fallbackTranslatedEntry(entry, context);
+      const safeEntry = fallbackTranslatedEntry(entry, context);
       const translatedMeaning =
-        typeof data.meaning === "string" && !containsEnglishLexicon(data.meaning)
+        typeof data.meaning === "string" &&
+        !containsEnglishLexicon(data.meaning) &&
+        !isUnavailableContextualMeaning(data.meaning)
           ? data.meaning.trim()
-          : entry.meaning;
+          : safeEntry.meaning;
       const translatedDefinitions = Array.isArray(data.definitions)
         ? data.definitions
             .map((definition) => normalizedPortugueseSense(definition))
             .filter((definition): definition is string => Boolean(definition))
         : [];
       const translatedGloss =
-        typeof data.strongsGloss === "string" && !containsEnglishLexicon(data.strongsGloss)
+        typeof data.strongsGloss === "string" &&
+        !containsEnglishLexicon(data.strongsGloss) &&
+        !isUnavailableContextualMeaning(data.strongsGloss)
           ? data.strongsGloss.trim()
-          : entry.strongsGloss;
+          : safeEntry.strongsGloss;
       const translatedContextCandidate =
         typeof data.contextualMeaning === "string"
           ? data.contextualMeaning.trim()
@@ -1588,15 +1593,15 @@ export async function translateStrongEntry(
         !isUnavailableContextualMeaning(translatedContextCandidate) &&
         contextualMeaningMatchesVerse(translatedContextCandidate, context?.verseText)
           ? translatedContextCandidate
-          : entry.contextualMeaning &&
-              contextualMeaningMatchesVerse(entry.contextualMeaning, context?.verseText)
-            ? entry.contextualMeaning
+          : safeEntry.contextualMeaning &&
+              contextualMeaningMatchesVerse(safeEntry.contextualMeaning, context?.verseText)
+            ? safeEntry.contextualMeaning
             : null;
 
       return {
-        ...entry,
+        ...safeEntry,
         meaning: translatedMeaning,
-        definitions: translatedDefinitions.length ? translatedDefinitions : entry.definitions,
+        definitions: translatedDefinitions.length ? translatedDefinitions : safeEntry.definitions,
         strongsGloss: translatedGloss,
         contextualMeaning: translatedContext,
         translationSource: "ai",
