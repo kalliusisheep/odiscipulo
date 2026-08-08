@@ -372,6 +372,7 @@ const VERIFIED_CONTEXTUAL_MEANINGS: Record<string, string> = {
   "1:1:2:H4325": "águas",
   "1:1:2:H5921": "sobre",
   "1:1:2:H7363": "pairava",
+  "3:1:1:H7121": "chamou",
 };
 
 /** Sentidos específicos quando a mesma partícula aparece mais de uma vez na ocorrência. */
@@ -395,6 +396,7 @@ const CONTEXTUAL_STRONG_FALLBACKS: Record<string, string> = {
   H1961: "era",
   H1254: "criou",
   H7225: "No princípio",
+  H7121: "chamou",
   H853: "marca o objeto direto",
   G2532: "e",
   G3588: "o",
@@ -413,6 +415,7 @@ const CONTEXTUAL_STRONG_FALLBACKS: Record<string, string> = {
 function contextualFallbackFromEntry(
   code: string | null,
   entry: StrongEntry | null | undefined,
+  verseText: string | null = null,
 ): string {
   if (code && CONTEXTUAL_STRONG_FALLBACKS[code]) {
     return CONTEXTUAL_STRONG_FALLBACKS[code];
@@ -450,6 +453,31 @@ function isUnavailableContextualMeaning(value: string): boolean {
     normalized.includes("indisponível") ||
     (normalized.includes("tradução") && normalized.includes("isolada"))
   );
+}
+
+function normalizeContextMatchText(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\\u0300-\\u036f]/g, "")
+    .replace(/[^\\p{L}\\p{N}\\s]/gu, " ")
+    .replace(/\\s+/g, " ")
+    .trim()
+    .toLocaleLowerCase("pt-BR");
+}
+
+function contextualMeaningMatchesVerse(
+  value: string,
+  verseText: string | null | undefined,
+): boolean {
+  if (!verseText) return true;
+
+  const meaning = normalizeContextMatchText(value);
+  const verse = normalizeContextMatchText(verseText);
+  if (meaning.length < 2 || verse.length === 0) return false;
+  if (verse.includes(meaning)) return true;
+
+  const words = meaning.split(" ").filter((word) => word.length >= 3);
+  return words.length > 0 && words.every((word) => verse.includes(word));
 }
 
 function normalizedPortugueseSense(value: string | null | undefined): string | null {
@@ -524,7 +552,8 @@ export function contextualMeaningFor(
   if (
     contextual &&
     !containsEnglishLexicon(contextual) &&
-    !isUnavailableContextualMeaning(contextual)
+    !isUnavailableContextualMeaning(contextual) &&
+    contextualMeaningMatchesVerse(contextual, verseText)
   ) {
     return contextual;
   }
@@ -1446,7 +1475,7 @@ export async function translateStrongEntry(
     ? String(context.book) + ":" + String(context.chapter) + ":" + String(context.verse) + ":" + String(context.wordIndex ?? "na")
     : "generic";
 
-  return cached("xlex:v4:" + entry.code + ":" + contextKey, async () => {
+  return cached("xlex:v5:" + entry.code + ":" + contextKey, async () => {
     try {
       const { data, error } = await supabase.functions.invoke<{
         meaning: string | null;
@@ -1489,7 +1518,8 @@ export async function translateStrongEntry(
       const translatedContext =
         typeof data.contextualMeaning === "string" &&
         !containsEnglishLexicon(data.contextualMeaning) &&
-        !isUnavailableContextualMeaning(data.contextualMeaning)
+        !isUnavailableContextualMeaning(data.contextualMeaning) &&
+        contextualMeaningMatchesVerse(data.contextualMeaning, context?.verseText)
           ? data.contextualMeaning.trim()
           : entry.contextualMeaning ?? null;
 
