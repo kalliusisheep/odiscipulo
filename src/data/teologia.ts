@@ -1211,7 +1211,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "No labor teológico histórico, a soberania de Deus é frequentemente tema de profundos debates entre a tradição arminiana e a reformada (calvinista). A visão reformada enfatiza a eleição incondicional de Deus desde a eternidade e o Seu controle causal meticuloso sobre todas as escolhas livres humanas, defendendo que a vontade de Deus é a causa primária direta de tudo o que ocorre. A visão arminiana e batista tradicional (adotada neste ---) defende com igual vigor a soberania e a presciência divina absoluta, mas compreende que Deus em Sua soberania escolheu criar seres morais dotados de arbítrio genuíno, governando por meio de influências persuasivas e permitindo de forma providencial que escolhas humanas reais tenham consequências eternas, sem que isso diminua o Seu controle ou frustre o Seu plano final de redenção"
+            "text": "No labor teológico histórico, a soberania de Deus é frequentemente tema de profundos debates entre a tradição arminiana e a reformada (calvinista). A visão reformada enfatiza a eleição incondicional de Deus desde a eternidade e o Seu controle causal meticuloso sobre todas as escolhas livres humanas, defendendo que a vontade de Deus é a causa primária direta de tudo o que ocorre. A visão arminiana e batista tradicional (adotada neste material) defende com igual vigor a soberania e a presciência divina absoluta, mas compreende que Deus em Sua soberania escolheu criar seres morais dotados de arbítrio genuíno, governando por meio de influências persuasivas e permitindo de forma providencial que escolhas humanas reais tenham consequências eternas, sem que isso diminua o Seu controle ou frustre o Seu plano final de redenção"
           },
           {
             "type": "paragraph",
@@ -1727,7 +1727,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "Na soteriologia arminiana e na herança batista aberta histórica defendidas neste ---, o livre-arbítrio foi gravemente afetado e escravizado pelo pecado na queda de Adão, tornando o ser humano incapaz de escolher a salvação em Cristo por suas próprias forças caídas. No entanto, Deus em Sua misericórdia estende a Graça Preveniente a todos através da proclamação do evangelho, libertando provisoriamente o arbítrio humano para que a pessoa possa aceitar ou rejeitar de forma voluntária o chamado salvífico de Deus, preservando tanto a soberania absoluta da graça divina quanto a responsabilidade moral humana pela incredulidade"
+            "text": "Na soteriologia arminiana e na herança batista aberta histórica defendidas neste material, o livre-arbítrio foi gravemente afetado e escravizado pelo pecado na queda de Adão, tornando o ser humano incapaz de escolher a salvação em Cristo por suas próprias forças caídas. No entanto, Deus em Sua misericórdia estende a Graça Preveniente a todos através da proclamação do evangelho, libertando provisoriamente o arbítrio humano para que a pessoa possa aceitar ou rejeitar de forma voluntária o chamado salvífico de Deus, preservando tanto a soberania absoluta da graça divina quanto a responsabilidade moral humana pela incredulidade"
           }
         ]
       },
@@ -2377,7 +2377,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "A visão da expiação ilimitada (e de linha batista tradicional e arminiana defendida neste ---) assevera que a morte de Cristo tem uma provisão universal suficiente para cobrir os pecados de cada ser humano, sendo a salvação aplicada de forma eficaz somente aos que creem de forma voluntária no evangelho. Eles apoiam-se em textos clássicos como 1João 2:2"
+            "text": "A visão da expiação ilimitada (e de linha batista tradicional e arminiana defendida neste material) assevera que a morte de Cristo tem uma provisão universal suficiente para cobrir os pecados de cada ser humano, sendo a salvação aplicada de forma eficaz somente aos que creem de forma voluntária no evangelho. Eles apoiam-se em textos clássicos como 1João 2:2"
           },
           {
             "type": "verse",
@@ -2850,7 +2850,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "A visão cessacionista moderada (e adotada de forma equilibrada neste ---) defende que os dons milagrosos revelatórios (como o dom apostólico de sinais de autoridade e as línguas como idiomas humanos com fins de sinal para os incrédulos) cumpriram plenamente o seu propósito primário de atestar e selar a revelação normativa dada por Deus até ao fechamento e suficiência do cânon bíblico"
+            "text": "A visão cessacionista moderada (e adotada de forma equilibrada neste material) defende que os dons milagrosos revelatórios (como o dom apostólico de sinais de autoridade e as línguas como idiomas humanos com fins de sinal para os incrédulos) cumpriram plenamente o seu propósito primário de atestar e selar a revelação normativa dada por Deus até ao fechamento e suficiência do cânon bíblico"
           },
           {
             "type": "paragraph",
@@ -2973,7 +2973,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "Na teologia arminiana e na tradição batista histórica defendidas neste ---, a graça preveniente preserva a soberania absoluta de Deus na salvação: nenhum ser humano pode se gloriar de sua conversão ou de sua fé, pois até mesmo a sua capacidade voluntária de escolher a Cristo foi um dom e uma concessão livre e bondosa do Criador. Nós adoramos ao Deus da graça, sabendo que Ele nos amou e nos buscou primeiro quando ainda estávamos mortos em nossos pecados"
+            "text": "Na teologia arminiana e na tradição batista histórica defendidas neste material, a graça preveniente preserva a soberania absoluta de Deus na salvação: nenhum ser humano pode se gloriar de sua conversão ou de sua fé, pois até mesmo a sua capacidade voluntária de escolher a Cristo foi um dom e uma concessão livre e bondosa do Criador. Nós adoramos ao Deus da graça, sabendo que Ele nos amou e nos buscou primeiro quando ainda estávamos mortos em nossos pecados"
           }
         ]
       },
@@ -3316,7 +3316,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "Na perspectiva batista clássica e arminiana adotada neste ---, Deus conhece de antemão todas as nossas escolhas e decisões reais, mas o Seu pré-conhecimento é descritivo e relacional, e não causal-mecânico. Ele sabe quem responderá de forma voluntária ao evangelho de Sua graça sob a influência de Sua Graça Preveniente, sem que o Seu conhecimento predeterminado coaja a liberdade e a responsabilidade moral humana pela sua própria incredulidade"
+            "text": "Na perspectiva batista clássica e arminiana adotada neste material, Deus conhece de antemão todas as nossas escolhas e decisões reais, mas o Seu pré-conhecimento é descritivo e relacional, e não causal-mecânico. Ele sabe quem responderá de forma voluntária ao evangelho de Sua graça sob a influência de Sua Graça Preveniente, sem que o Seu conhecimento predeterminado coaja a liberdade e a responsabilidade moral humana pela sua própria incredulidade"
           }
         ]
       },
@@ -3421,7 +3421,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "Na perspectiva arminiana e batista aberta defendida neste ---, os alertas bíblicos contra a apostasia são reais, sérios e funcionais. Eles agem de forma pedagógica na vida da igreja local para nos afastar da indolência e do orgulho, lembrando-nos de que a fé genuína persevera e se comprova através de um viver santo. Em vez de viver sob pânico constante de perder a salvação, o crente deve encarar os alertas como incentivos para buscar o preenchimento diário do Espírito Santo, confiando na Sua graça para perseverar firme até ao último dia"
+            "text": "Na perspectiva arminiana e batista aberta defendida neste material, os alertas bíblicos contra a apostasia são reais, sérios e funcionais. Eles agem de forma pedagógica na vida da igreja local para nos afastar da indolência e do orgulho, lembrando-nos de que a fé genuína persevera e se comprova através de um viver santo. Em vez de viver sob pânico constante de perder a salvação, o crente deve encarar os alertas como incentivos para buscar o preenchimento diário do Espírito Santo, confiando na Sua graça para perseverar firme até ao último dia"
           }
         ]
       },
@@ -3620,7 +3620,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "As três estruturas históricas clássicas na cristandade cristã são apresentadas com justiça: O Governo Episcopal: onde a liderança está concentrada na figura de bispos regionais com autoridade administrativa sobre várias igrejas. O Governo Presbiteriano: onde a autoridade está concentrada em conselhos de presbíteros eleitos de forma representativa pelas congregações. O Governo Congregacional*: (característico da tradição batista tradicional adotada neste ---) onde cada igreja local é soberana e autônoma, tomando as suas decisões de liderança, doutrina e administração através da assembleia democrática de seus próprios membros locais sob a oração sincera e guia do Espírito Santo"
+            "text": "As três estruturas históricas clássicas na cristandade cristã são apresentadas com justiça: O Governo Episcopal: onde a liderança está concentrada na figura de bispos regionais com autoridade administrativa sobre várias igrejas. O Governo Presbiteriano: onde a autoridade está concentrada em conselhos de presbíteros eleitos de forma representativa pelas congregações. O Governo Congregacional*: (característico da tradição batista tradicional adotada neste material) onde cada igreja local é soberana e autônoma, tomando as suas decisões de liderança, doutrina e administração através da assembleia democrática de seus próprios membros locais sob a oração sincera e guia do Espírito Santo"
           },
           {
             "type": "paragraph",
@@ -3775,7 +3775,7 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "Na tradição batista tradicional defendida neste ---, rejeitamos o pedobatismo (o batismo de recém-nascidos) e o batismo por aspersão como desconformes ao padrão neotestamentário de fé consciente e exegese do termo grego baptizo (imergir). O batismo constitui o portal visível de nossa entrada na membresia da igreja visível local, testificando de nossa adoção e compromisso moral perpétuo com o senhorio de Jesus"
+            "text": "Na tradição batista tradicional defendida neste material, rejeitamos o pedobatismo (o batismo de recém-nascidos) e o batismo por aspersão como desconformes ao padrão neotestamentário de fé consciente e exegese do termo grego baptizo (imergir). O batismo constitui o portal visível de nossa entrada na membresia da igreja visível local, testificando de nossa adoção e compromisso moral perpétuo com o senhorio de Jesus"
           }
         ]
       },
