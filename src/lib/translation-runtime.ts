@@ -757,7 +757,7 @@ function translateValue(value: string, language: AppLanguage): { source: string;
  * a partir da segunda visita a troca de idioma é instantânea.
  * ------------------------------------------------------------------ */
 
-const MACHINE_STORAGE_PREFIX = "disciple.autoTranslate.";
+const MACHINE_STORAGE_PREFIX = "disciple.autoTranslate.v2.";
 const machineCache = new Map<AppLanguage, Map<string, string>>();
 const pendingByLanguage = new Map<AppLanguage, Set<string>>();
 const inFlight = new Set<string>();
