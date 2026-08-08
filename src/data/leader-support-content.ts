@@ -34,29 +34,110 @@ function stableHash(value: string): number {
   return [...value].reduce((hash, character) => (hash * 31 + character.charCodeAt(0)) >>> 0, 7);
 }
 
+function normalizeSupportText(value: string): string {
+  return value
+    .replace(/\u00a0/g, " ")
+    .replace(/[ \t]+/g, " ")
+    .replace(/\s+([,.;:!?])/g, "$1")
+    .trim();
+}
+
+const COMPLETE_SUPPORT_VERSES: Record<string, string> = {
+  "Efésios 4:31-32":
+    "Livrem-se de toda amargura, indignação e ira, gritaria e calúnia, bem como de toda maldade. Sejam bondosos e compassivos uns para com os outros, perdoando-se mutuamente, assim como Deus perdoou vocês em Cristo.",
+  "Efésios 5:15-16":
+    "Tenham cuidado com a maneira como vocês vivem; que não seja como insensatos, mas como sábios, aproveitando ao máximo cada oportunidade, porque os dias são maus.",
+  "João 21:15-17":
+    "Quando terminaram de comer, Jesus disse a Simão Pedro: “Simão, filho de João, você me ama mais do que estes?” Disse ele: “Sim, Senhor, tu sabes que te amo”. Disse Jesus: “Cuide dos meus cordeiros”. Pela segunda vez Jesus disse: “Simão, filho de João, você me ama?” Ele respondeu: “Sim, Senhor, tu sabes que te amo”. Disse Jesus: “Pastoreie as minhas ovelhas”. Pela terceira vez ele lhe disse: “Simão, filho de João, você me ama?” Pedro ficou magoado por Jesus lhe ter perguntado pela terceira vez “Você me ama?” e lhe disse: “Senhor, tu sabes todas as coisas e sabes que te amo”. Jesus disse: “Cuide das minhas ovelhas.”",
+  "Atos 17:11":
+    "Os bereanos eram mais nobres do que os tessalonicenses, pois receberam a mensagem com grande interesse, examinando todos os dias as Escrituras para ver se tudo era assim mesmo.",
+  "Atos 8:36-38":
+    "Prosseguindo pela estrada, chegaram a um lugar onde havia água. O eunuco disse: “Olhe, aqui há água. Que me impede de ser batizado?” Então mandou parar a carruagem. Filipe e o eunuco desceram à água, e Filipe o batizou.",
+  "Gálatas 3:27-28":
+    "Pois os que em Cristo foram batizados, de Cristo se revestiram. Não há judeu nem grego, escravo nem livre, homem nem mulher; pois todos são um em Cristo Jesus.",
+  "Atos 2:41-42":
+    "Os que aceitaram a mensagem foram batizados, e naquele dia houve um acréscimo de cerca de três mil pessoas. Eles se dedicavam ao ensino dos apóstolos e à comunhão, ao partir do pão e às orações.",
+  "Isaías 14:13-14":
+    "Você dizia no coração: “Subirei aos céus; erguerei o meu trono acima das estrelas de Deus; sentar-me-ei no monte da assembleia, no ponto mais elevado do monte santo. Subirei mais alto que as nuvens; serei como o Altíssimo”.",
+  "Miqueias 6:8":
+    "Ele mostrou a você, ó homem, o que é bom e o que o Senhor exige: que você pratique a justiça, ame a fidelidade e ande humildemente com o seu Deus.",
+  "1 Coríntios 7:3-4":
+    "O marido cumpra os seus deveres conjugais para com a sua mulher, e da mesma forma a mulher para com o seu marido. A mulher não tem autoridade sobre o seu próprio corpo, mas sim o marido. Da mesma forma, o marido não tem autoridade sobre o seu próprio corpo, mas sim a mulher.",
+};
+
+function normalizeSupportVerse(verse: Verse): Verse {
+  const currentText = verse.textByVersion.NVI ?? "";
+  const text = COMPLETE_SUPPORT_VERSES[verse.ref] ?? currentText;
+  return {
+    ...verse,
+    textByVersion: {
+      ...verse.textByVersion,
+      NVI: normalizeSupportText(text),
+    },
+  };
+}
+
+function normalizeQuiz(
+  quiz: Quiz,
+  lessonTitle: string,
+  quizIndex: number,
+): Quiz {
+  const options = (quiz.options ?? [])
+    .map(normalizeSupportText)
+    .filter(Boolean);
+  const fallbackOptions = [
+    `Tratar ${lessonTitle.toLowerCase()} apenas como teoria, sem uma decisão observável.`,
+    `Concentrar-se somente em evitar o erro, sem cultivar uma resposta cristã positiva.`,
+    `Transferir toda a responsabilidade para outra pessoa e não prestar contas.`,
+    `Escolher a alternativa mais popular, sem examinar o texto bíblico.`,
+  ];
+  while (options.length < 4) {
+    const fallback = fallbackOptions[options.length];
+    if (!options.includes(fallback)) options.push(fallback);
+  }
+
+  const correctIndex =
+    Number.isInteger(quiz.correctIndex) &&
+    quiz.correctIndex >= 0 &&
+    quiz.correctIndex < options.length
+      ? quiz.correctIndex
+      : 0;
+
+  return {
+    ...quiz,
+    question: normalizeSupportText(quiz.question),
+    options,
+    correctIndex,
+    explanation: normalizeSupportText(
+      quiz.explanation ??
+        `A resposta deve ser conferida na passagem e lida à luz do contexto da lição ${quizIndex + 1}.`,
+    ),
+  };
+}
+
 function buildApplicationQuiz(
   lesson: SupportLessonSource,
   lessonKey: string,
 ): Quiz {
-  const topic = lesson.title.toLowerCase();
-  const correctOption = lesson.application;
+  const title = normalizeSupportText(lesson.title);
+  const correctOption = normalizeSupportText(lesson.application);
   const distractors = [
-    `Tratar ${topic} apenas como teoria, sem uma decisão observável na rotina.`,
+    `Tratar ${title.toLowerCase()} apenas como teoria, sem uma decisão observável na rotina.`,
     `Concentrar-se somente em evitar o erro, sem cultivar uma resposta cristã positiva.`,
     `Transferir toda a responsabilidade para outra pessoa e não prestar contas da própria decisão.`,
   ];
   const options = [correctOption, ...distractors];
-  const correctIndex = stableHash(lessonKey) % options.length;
+  const correctIndex = stableHash(lessonKey + ":application") % options.length;
   const rotatedOptions = [...options];
   const [answer] = rotatedOptions.splice(0, 1);
   rotatedOptions.splice(correctIndex, 0, answer);
 
   return {
-    question: `Qual decisão demonstra melhor que o ensino sobre "${lesson.title}" foi compreendido e aplicado?`,
+    question: `Qual decisão demonstra melhor que o ensino sobre "${title}" foi compreendido e aplicado?`,
     options: rotatedOptions,
     correctIndex,
     explanation:
-      `A aplicação precisa unir a verdade bíblica a uma decisão concreta: ${lesson.application} ${lesson.weeklyChallenge}`,
+      `A aplicação une a verdade bíblica a uma decisão concreta: ${normalizeSupportText(lesson.application)} ${normalizeSupportText(lesson.weeklyChallenge)}`,
   };
 }
 
@@ -65,36 +146,78 @@ function normalizeSupportLesson(
   lessonKey: string,
 ): SupportLesson {
   const { quiz: legacyQuiz, quizzes: sourceQuizzes, ...lesson } = source;
-  const primaryQuiz = sourceQuizzes?.[0] ?? legacyQuiz;
-  if (!primaryQuiz) {
+  const rawQuizzes = sourceQuizzes?.length
+    ? sourceQuizzes
+    : legacyQuiz
+      ? [legacyQuiz]
+      : [];
+  if (!rawQuizzes.length) {
     throw new Error(`A trilha "${source.id}" não possui um exercício principal.`);
   }
 
+  const normalizedQuizzes = rawQuizzes.map((quiz, index) =>
+    normalizeQuiz(quiz, source.title, index),
+  );
   const quizzes =
-    sourceQuizzes && sourceQuizzes.length >= 2
-      ? sourceQuizzes
-      : [primaryQuiz, buildApplicationQuiz(source, lessonKey)];
-
-  const firstVerse = source.verses[0];
-  const reference = firstVerse?.ref ?? "a passagem principal";
-  const enrichedIntro =
-    source.intro.length >= 3
-      ? source.intro
+    normalizedQuizzes.length >= 2
+      ? normalizedQuizzes
       : [
-          ...source.intro,
-          `Leia ${reference} no contexto do capítulo. Antes de aplicar, observe o que o texto afirma, a quem foi escrito e qual resposta ele espera.`,
+          ...normalizedQuizzes,
+          normalizeQuiz(buildApplicationQuiz(source, lessonKey), source.title, 1),
         ];
-  const deepen = source.deepen ?? {
-    historicalContext: `Leia ${reference} no contexto literário e histórico do capítulo. Pergunte qual problema, esperança ou decisão o texto enfrentava em seu primeiro contexto.`,
-    exegeticalNotes:
-      `${source.deepDive} Observe as palavras repetidas, os contrastes e a relação entre a afirmação bíblica e a resposta proposta nesta trilha.`,
-    theologicalDebate:
-      `Uma leitura pastoral equilibrada evita tanto o legalismo quanto a permissividade. A verdade deve ser recebida com graça, responsabilidade e acompanhamento da igreja local. ${source.action}`,
+
+  const verses = source.verses.map(normalizeSupportVerse);
+  const firstVerse = verses[0];
+  const reference = firstVerse?.ref ?? "a passagem principal";
+  const reflection = normalizeSupportText(source.reflectionQuestion);
+  const introCandidates = [
+    ...(source.intro ?? []).map(normalizeSupportText),
+    `Leia ${reference} no contexto do capítulo. Observe o que o texto afirma, a quem foi escrito e qual resposta ele espera antes de aplicar a lição.`,
+    reflection
+      ? `Ao concluir, responda com honestidade: ${reflection}`
+      : `Ao concluir, formule uma decisão concreta que demonstre como esta verdade alcançará sua rotina.`,
+  ].filter(Boolean);
+  const enrichedIntro = Array.from(new Set(introCandidates)).slice(0, 4);
+
+  const deepenSource = source.deepen ?? {};
+  const deepen = {
+    historicalContext: normalizeSupportText(
+      deepenSource.historicalContext ??
+        `Leia ${reference} no contexto literário e histórico do capítulo. Pergunte qual problema, esperança ou decisão o texto enfrentava em seu primeiro contexto.`,
+    ),
+    exegeticalNotes: normalizeSupportText(
+      deepenSource.exegeticalNotes ??
+        `${source.deepDive} Observe as palavras repetidas, os contrastes e a relação entre a afirmação bíblica e a resposta proposta nesta trilha.`,
+    ),
+    theologicalDebate: normalizeSupportText(
+      deepenSource.theologicalDebate ??
+        `Diferencie o ensino explícito do texto, as inferências teológicas e as opiniões secundárias. Uma aplicação madura evita tanto o legalismo quanto a permissividade e procura viver a verdade em comunhão com a igreja local. ${source.application}`,
+    ),
   };
 
   return {
     ...lesson,
     intro: enrichedIntro,
+    verses,
+    deepDive: normalizeSupportText(
+      source.deepDive ||
+        `A passagem ${reference} conduz a uma resposta de fé, santidade, comunhão e missão.`,
+    ),
+    application: normalizeSupportText(
+      source.application ||
+        `Pratique uma decisão concreta relacionada a ${source.title.toLowerCase()}.`,
+    ),
+    prayer: normalizeSupportText(
+      source.prayer ||
+        `Senhor, ajuda-me a viver com fidelidade o que aprendi sobre ${source.title.toLowerCase()}. Amém.`,
+    ),
+    weeklyChallenge: normalizeSupportText(
+      source.weeklyChallenge ||
+        `Pratique durante esta semana uma atitude coerente com ${source.title.toLowerCase()}.`,
+    ),
+    reflectionQuestion:
+      reflection ||
+      `Que mudança concreta esta lição sobre ${source.title.toLowerCase()} pede de mim nesta semana?`,
     deepen,
     quizzes,
   };
@@ -144,7 +267,9 @@ const buildSupportLesson = (
     ],
     verses: [verse],
     keywords: [keyword],
-    deepDive: item.teaching,
+    deepDive:
+      item.teaching +
+      "\n\nMétodo de leitura: observe o que o texto afirma, interprete-o no contexto e transforme essa verdade em santidade, comunhão e missão.",
     theologianQuote: {
       author: "Síntese pastoral",
       text:
@@ -153,16 +278,17 @@ const buildSupportLesson = (
         " alcança decisões concretas, relacionamentos e hábitos.",
     },
     deepen: {
-      historicalContext: item.focus,
-      exegeticalNotes:
+      historicalContext:
         "Leia " +
         item.ref +
-        " observando como o texto sustenta esta lição: " +
-        item.teaching,
+        " no contexto literário, histórico e canônico. " +
+        item.focus,
+      exegeticalNotes:
+        item.teaching +
+        " Observe as palavras-chave, os contrastes e o movimento do argumento antes de tirar conclusões.",
       theologicalDebate:
-        "Uma leitura madura sobre " +
-        topic +
-        " evita tanto o legalismo quanto a permissividade. A resposta cristã combina verdade, graça e responsabilidade: " +
+        "Diferencie o que o texto afirma com clareza das inferências e opiniões secundárias. " +
+        "Uma leitura pastoral equilibrada une verdade, graça e responsabilidade: " +
         item.action,
     },
     quizzes: [
@@ -929,7 +1055,7 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
     {
       title: "Perdoar como fomos perdoados",
       ref: "Efésios 4:31-32",
-      verse: "Livrem-se de toda amargura, indignação e ira... sejam bondosos e compassivos, perdoando-se mutuamente, assim como Deus os perdoou em Cristo.",
+      verse: "Livrem-se de toda amargura, indignação e ira, gritaria e calúnia, bem como de toda maldade. Sejam bondosos e compassivos uns para com os outros, perdoando-se mutuamente, assim como Deus perdoou vocês em Cristo.",
       keyword: ["χαρίζομαι", "charizomai", "perdoar por graça — conceder perdão como um presente, não como pagamento do outro", "grego"],
       focus: "Paulo não manda fingir que nada aconteceu; ele chama a substituir amargura por bondade e perdão ancorado em Cristo.",
       teaching: "O texto nomeia sentimentos que podem criar moradia na pessoa: amargura, indignação e ira. Perdoar é um processo de entregar a Deus o direito de vingança e escolher não alimentar a dívida como identidade. Isso pode coexistir com distância, denúncia e limites quando há abuso. A reconciliação exige verdade e segurança; o perdão não exige exposição ao perigo.",
@@ -1326,7 +1452,7 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
     {
       title: "Remir o tempo",
       ref: "Efésios 5:15-16",
-      verse: "Tenham cuidado com a maneira como vocês vivem... aproveitando ao máximo cada oportunidade, porque os dias são maus.",
+      verse: "Tenham cuidado com a maneira como vocês vivem; que não seja como insensatos, mas como sábios, aproveitando ao máximo cada oportunidade, porque os dias são maus.",
       keyword: ["ἐξαγοράζω", "exagorazō", "aproveitar — resgatar oportunidades para o bem em vez de desperdiçá-las", "grego"],
       focus: "Mordomia inclui tempo e atenção; servir bem exige escolher o que merece presença, não apenas acumular tarefas.",
       teaching: "Paulo chama os cristãos a viver com cuidado e sabedoria em dias difíceis. Aproveitar o tempo não é produzir sem parar, mas perceber oportunidades de amor, testemunho e serviço. Uma agenda lotada pode continuar sendo infiel se nunca houver espaço para pessoas. O discípulo administra energia, descanso e atenção para estar disponível ao que Deus coloca diante dele.",
@@ -1399,7 +1525,7 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
     {
       title: "Cuidar de pessoas",
       ref: "João 21:15-17",
-      verse: "Jesus disse: Cuide dos meus cordeiros... Pastoreie as minhas ovelhas... Cuide das minhas ovelhas.",
+      verse: "Quando terminaram de comer, Jesus disse a Simão Pedro: “Simão, filho de João, você me ama mais do que estes?” Disse ele: “Sim, Senhor, tu sabes que te amo”. Disse Jesus: “Cuide dos meus cordeiros”. Pela segunda vez Jesus disse: “Simão, filho de João, você me ama?” Ele respondeu: “Sim, Senhor, tu sabes que te amo”. Disse Jesus: “Pastoreie as minhas ovelhas”. Pela terceira vez ele lhe disse: “Simão, filho de João, você me ama?” Pedro ficou magoado por Jesus lhe ter perguntado pela terceira vez “Você me ama?” e lhe disse: “Senhor, tu sabes todas as coisas e sabes que te amo”. Jesus disse: “Cuide das minhas ovelhas.”",
       keyword: ["βόσκω", "boskō", "alimentar — oferecer cuidado, ensino e proteção ao povo de Jesus", "grego"],
       focus: "Jesus restaura Pedro e transforma sua relação com ele em chamado para cuidar de pessoas.",
       teaching: "As três perguntas de Jesus não são uma humilhação pública, mas uma restauração profunda que reconecta amor e responsabilidade. Pedro não recebe um palco; recebe cordeiros e ovelhas. Liderar é lembrar que as pessoas pertencem a Cristo, que algumas estão feridas e que o cuidado inclui alimento, proteção e presença.",
@@ -1441,7 +1567,7 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
     {
       title: "Examinar as Escrituras",
       ref: "Atos 17:11",
-      verse: "Os bereanos eram mais nobres... pois recebiam a mensagem com grande interesse, examinando todos os dias as Escrituras para ver se tudo era assim mesmo.",
+      verse: "Os bereanos eram mais nobres do que os tessalonicenses, pois receberam a mensagem com grande interesse, examinando todos os dias as Escrituras para ver se tudo era assim mesmo.",
       keyword: ["ἀνακρίνω", "anakrinō", "examinar — investigar com atenção antes de aceitar uma afirmação", "grego"],
       focus: "Líderes não formam dependentes de sua voz; ensinam pessoas a verificar tudo à luz das Escrituras.",
       teaching: "Os bereanos recebem o ensino com interesse, mas não suspendem o discernimento. Liderança saudável não teme perguntas nem exige confiança cega. O líder precisa estudar contexto, reconhecer limites e ensinar o povo a abrir a Bíblia. Isso também protege contra frases impactantes sem fundamento.",
@@ -1528,7 +1654,7 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
     {
       title: "Fé que confessa",
       ref: "Atos 8:36-38",
-      verse: "O que me impede de ser batizado? ... Então Filipe e o eunuco desceram à água, e Filipe o batizou.",
+      verse: "Prosseguindo pela estrada, chegaram a um lugar onde havia água. O eunuco disse: “Olhe, aqui há água. Que me impede de ser batizado?” Então mandou parar a carruagem. Filipe e o eunuco desceram à água, e Filipe o batizou.",
       keyword: ["πιστεύω", "pisteuō", "crer — confiar pessoalmente em Jesus e responder a ele", "grego"],
       focus: "O encontro do eunuco mostra que o batismo é resposta de fé e alegria, com ensino e compreensão.",
       teaching: "Filipe começa pela Escritura e anuncia Jesus. O eunuco responde com desejo de obedecer. O relato não trata o batismo como pressão social; ele nasce de uma confissão e de uma compreensão do evangelho. A igreja deve explicar com clareza, acolher perguntas e não usar urgência emocional para substituir convicção.",
@@ -1542,7 +1668,7 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
     {
       title: "Vestidos de Cristo",
       ref: "Gálatas 3:27-28",
-      verse: "Pois os que em Cristo foram batizados, de Cristo se revestiram. Não há judeu nem grego... pois todos são um em Cristo Jesus.",
+      verse: "Pois os que em Cristo foram batizados, de Cristo se revestiram. Não há judeu nem grego, escravo nem livre, homem nem mulher; pois todos são um em Cristo Jesus.",
       keyword: ["ἐνδύω", "endyō", "revestir-se — assumir uma nova identidade e pertencimento em Cristo", "grego"],
       focus: "O batismo comunica pertencimento a Cristo e uma nova comunidade que supera barreiras de status e origem.",
       teaching: "Paulo não apaga diferenças culturais, mas afirma que elas não definem valor ou acesso à graça. Revestir-se de Cristo significa que a identidade central é recebida nele. A igreja batizada precisa praticar essa unidade: acolher, corrigir favoritismos e reconhecer irmãos como membros do mesmo corpo.",
@@ -1584,7 +1710,7 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
     {
       title: "Uma comunidade perseverante",
       ref: "Atos 2:41-42",
-      verse: "Os que aceitaram a mensagem foram batizados... Eles se dedicavam ao ensino dos apóstolos e à comunhão, ao partir do pão e às orações.",
+      verse: "Os que aceitaram a mensagem foram batizados, e naquele dia houve um acréscimo de cerca de três mil pessoas. Eles se dedicavam ao ensino dos apóstolos e à comunhão, ao partir do pão e às orações.",
       keyword: ["προσκαρτερέω", "proskartereō", "dedicar-se — perseverar regularmente em ensino, comunhão e oração", "grego"],
       focus: "O batismo em Atos introduz pessoas em uma comunidade que aprende, compartilha e ora.",
       teaching: "O relato não termina na água. Os batizados passam a perseverar em práticas comunitárias. Isso corrige uma visão individualista do batismo: seguir Jesus inclui receber ensino, participar da mesa, orar e viver em comunhão. A igreja precisa acolher o recém-batizado em relacionamentos reais, não apenas registrar seu nome.",
@@ -1668,7 +1794,7 @@ const SUPPORT_MODULES_SOURCE: SupportModuleSource[] = [
         title: "Coração e Trono",
         verse: {
           ref: "Isaías 14:13-14",
-          textByVersion: { NVI: "Você, que dizia no coração: 'Subirei aos céus; erguerei o meu trono acima das estrelas de Deus... Serei como o Altíssimo.'" },
+          textByVersion: { NVI: "Você dizia no coração: “Subirei aos céus; erguerei o meu trono acima das estrelas de Deus; sentar-me-ei no monte da assembleia, no ponto mais elevado do monte santo. Subirei mais alto que as nuvens; serei como o Altíssimo”." },
         },
         keywords: [
           { word: "אֶעֱלֶה", translit: "e'ele", meaning: "'subirei' — verbo repetido cinco vezes no oráculo, mostrando a escalada da autoexaltação", lang: "hebraico" },
@@ -1889,7 +2015,7 @@ const SUPPORT_MODULES_SOURCE: SupportModuleSource[] = [
         title: "Caminho Constante",
         verse: {
           ref: "Miqueias 6:8",
-          textByVersion: { NVI: "Ele mostrou a você, ó homem, o que é bom... andar humildemente com o seu Deus." },
+          textByVersion: { NVI: "Ele mostrou a você, ó homem, o que é bom e o que o Senhor exige: que você pratique a justiça, ame a fidelidade e ande humildemente com o seu Deus." },
         },
         keywords: [
           { word: "הַצְנֵעַ לֶכֶת", translit: "hatsnéa léchet", meaning: "'andar humildemente' — expressão hebraica para uma caminhada discreta e constante, sem exibição", lang: "hebraico" },
@@ -2362,7 +2488,7 @@ const SUPPORT_MODULES_SOURCE: SupportModuleSource[] = [
         title: "Fidelidade e Corpo",
         verse: {
           ref: "1 Coríntios 7:3-4",
-          textByVersion: { NVI: "O marido cumpra os seus deveres conjugais para com a mulher, e da mesma forma a mulher para com o marido... pois o corpo da mulher não pertence só a ela, mas também ao marido." },
+          textByVersion: { NVI: "O marido cumpra os seus deveres conjugais para com a sua mulher, e da mesma forma a mulher para com o seu marido. A mulher não tem autoridade sobre o seu próprio corpo, mas sim o marido. Da mesma forma, o marido não tem autoridade sobre o seu próprio corpo, mas sim a mulher." },
         },
         keywords: [
           { word: "ὀφειλὴν", translit: "ofeilên", meaning: "'dever, obrigação' — a intimidade conjugal descrita como cuidado mútuo, não como direito unilateral", lang: "grego" },
