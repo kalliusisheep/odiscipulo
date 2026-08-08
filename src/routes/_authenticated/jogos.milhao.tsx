@@ -6,7 +6,7 @@ import { SharedQuestionGame } from "@/components/games/SharedQuestionGame";
 import { MILLION_DIFFICULTY, MILLION_LEVELS, MILLION_QUESTIONS, randomMillionQuestions, randomMillionQuestionsWithSeed, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { recordGameResult } from "@/lib/game-leaderboard";
-import { normalizeGameContentKey, selectFreshGameVariants, uniqueGameContent } from "@/lib/game-content";
+import { normalizeGameContentKey, readRecentGameKeys, selectFreshGameVariants, uniqueGameContent } from "@/lib/game-content";
 
 export const Route = createFileRoute("/_authenticated/jogos/milhao")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -85,7 +85,7 @@ function MillionPage() {
     startGameMusic("million");
     playGameSfx("start");
     const recentKey = `million_recent_questions_${difficulty}`;
-    const recentIds = JSON.parse(window.localStorage.getItem(recentKey) ?? "[]") as string[];
+    const recentIds = readRecentGameKeys(recentKey);
     const preferred = seed
       ? randomMillionQuestionsWithSeed(difficulty, 999, seed)
       : randomMillionQuestions(difficulty, 999);
