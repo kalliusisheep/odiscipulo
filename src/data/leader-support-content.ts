@@ -10,7 +10,7 @@
 // destas trilhas, se quiser persistir no futuro, pode reaproveitar a mesma
 // tabela de progresso das lições normais, guardando o `id` da trilha.
 
-import type { Lesson, Original, Verse } from "@/data/content";
+import type { Lesson, Original, Quiz, Verse } from "@/data/content";
 
 export type SupportLesson = Lesson;
 
@@ -20,6 +20,85 @@ export type SupportModule = {
   lessons: SupportLesson[];
 };
 
+
+type SupportLessonSource = Omit<SupportLesson, "quizzes"> & {
+  quiz?: Quiz;
+  quizzes?: Quiz[];
+};
+
+type SupportModuleSource = Omit<SupportModule, "lessons"> & {
+  lessons: SupportLessonSource[];
+};
+
+function stableHash(value: string): number {
+  return [...value].reduce((hash, character) => (hash * 31 + character.charCodeAt(0)) >>> 0, 7);
+}
+
+function buildApplicationQuiz(
+  lesson: SupportLessonSource,
+  lessonKey: string,
+): Quiz {
+  const topic = lesson.title.toLowerCase();
+  const correctOption = lesson.application;
+  const distractors = [
+    `Tratar ${topic} apenas como teoria, sem uma decisão observável na rotina.`,
+    `Concentrar-se somente em evitar o erro, sem cultivar uma resposta cristã positiva.`,
+    `Transferir toda a responsabilidade para outra pessoa e não prestar contas da própria decisão.`,
+  ];
+  const options = [correctOption, ...distractors];
+  const correctIndex = stableHash(lessonKey) % options.length;
+  const rotatedOptions = [...options];
+  const [answer] = rotatedOptions.splice(0, 1);
+  rotatedOptions.splice(correctIndex, 0, answer);
+
+  return {
+    question: `Qual decisão demonstra melhor que o ensino sobre "${lesson.title}" foi compreendido e aplicado?`,
+    options: rotatedOptions,
+    correctIndex,
+    explanation:
+      `A aplicação precisa unir a verdade bíblica a uma decisão concreta: ${lesson.application} ${lesson.weeklyChallenge}`,
+  };
+}
+
+function normalizeSupportLesson(
+  source: SupportLessonSource,
+  lessonKey: string,
+): SupportLesson {
+  const { quiz: legacyQuiz, quizzes: sourceQuizzes, ...lesson } = source;
+  const primaryQuiz = sourceQuizzes?.[0] ?? legacyQuiz;
+  if (!primaryQuiz) {
+    throw new Error(`A trilha "${source.id}" não possui um exercício principal.`);
+  }
+
+  const quizzes =
+    sourceQuizzes && sourceQuizzes.length >= 2
+      ? sourceQuizzes
+      : [primaryQuiz, buildApplicationQuiz(source, lessonKey)];
+
+  const firstVerse = source.verses[0];
+  const reference = firstVerse?.ref ?? "a passagem principal";
+  const enrichedIntro =
+    source.intro.length >= 3
+      ? source.intro
+      : [
+          ...source.intro,
+          `Leia ${reference} no contexto do capítulo. Antes de aplicar, observe o que o texto afirma, a quem foi escrito e qual resposta ele espera.`,
+        ];
+  const deepen = source.deepen ?? {
+    historicalContext: `Leia ${reference} no contexto literário e histórico do capítulo. Pergunte qual problema, esperança ou decisão o texto enfrentava em seu primeiro contexto.`,
+    exegeticalNotes:
+      `${source.deepDive} Observe as palavras repetidas, os contrastes e a relação entre a afirmação bíblica e a resposta proposta nesta trilha.`,
+    theologicalDebate:
+      `Uma leitura pastoral equilibrada evita tanto o legalismo quanto a permissividade. A verdade deve ser recebida com graça, responsabilidade e acompanhamento da igreja local. ${source.action}`,
+  };
+
+  return {
+    ...lesson,
+    intro: enrichedIntro,
+    deepen,
+    quizzes,
+  };
+}
 
 type SupportLessonBlueprint = {
   title: string;
@@ -1548,7 +1627,7 @@ const ADDITIONAL_SUPPORT_MODULES: SupportModule[] = [
 ];
 
 
-export const SUPPORT_MODULES: SupportModule[] = [
+const SUPPORT_MODULES_SOURCE: SupportModuleSource[] = [
   {
     id: "orgulho",
     title: "Orgulho",
@@ -2390,3 +2469,10 @@ export const SUPPORT_MODULES: SupportModule[] = [
   },
   ...ADDITIONAL_SUPPORT_MODULES,
 ];
+
+export const SUPPORT_MODULES: SupportModule[] = SUPPORT_MODULES_SOURCE.map((module) => ({
+  ...module,
+  lessons: module.lessons.map((lesson) =>
+    normalizeSupportLesson(lesson, `${module.id}:${lesson.id}`),
+  ),
+}));
