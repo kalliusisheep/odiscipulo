@@ -1111,7 +1111,6 @@ function WordDetail({
                     <span className="mt-0.5 block text-sm font-extrabold text-foreground">
                       {bookNameById(reference.book)} {reference.chapter}:{reference.verse}
                     </span>
-                    </span>
                   </span>
                   <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground/50 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
                 </Link>
