@@ -332,34 +332,31 @@ function TheologyStudyView({
 function TheologyContent({ chapter }: { chapter: TheologyChapter }) {
   const sourceBlocks = chapter.blocks ?? [{ type: "paragraph" as const, text: chapter.content }];
 
-  const blocks = sourceBlocks.filter((block) => {
-    if (block.type !== "verse") return true;
+  const blocks = sourceBlocks
+    .filter((block) => {
+      if (block.type !== "verse") return true;
 
-    const reference = block.reference?.trim() ?? "";
-    const hasBibleReference = /^(?:[1-3]\\s*)?[A-Za-zÀ-ÿ]+(?:\\s+[A-Za-zÀ-ÿ]+)*\\s+\\d+(?::\\d+(?:[-–]\\d+)?)?(?:,\\s*\\d+)?$/u.test(
-      reference,
-    );
-    const hasLegacyExplanatoryText =
-      /vara de medir|regra de medir|conjunto fechado de 66 livros|39 livros do Antigo Testamento|criou[”"']? o cânon|reconheceu a autoridade/i.test(
-        block.text,
-      );
+      const reference = block.reference?.trim() ?? "";
+      const hasBibleReference =
+        /^(?:[1-3]\s*)?[A-Za-zÀ-ÿ]+(?:\s+[A-Za-zÀ-ÿ]+)*\s+\d+(?::\d+(?:[-–]\d+)?)?(?:,\s*\d+)?$/u.test(
+          reference,
+        );
 
-    return hasBibleReference && !hasLegacyExplanatoryText;
-  }).reduce<
-    TheologyContentBlock[]
-  >((normalized, block) => {
-    const text = block.text.replace(/\s+/g, " ").trim();
-    if (!text) return normalized;
+      return hasBibleReference && Boolean(block.text.trim());
+    })
+    .reduce<TheologyContentBlock[]>((normalized, block) => {
+      const text = block.text.replace(/\s+/g, " ").trim();
+      if (!text) return normalized;
 
-    const previous = normalized.at(-1);
-    if (block.type === "paragraph" && previous?.type === "paragraph") {
-      previous.text = `${previous.text} ${text}`;
+      const previous = normalized.at(-1);
+      if (block.type === "paragraph" && previous?.type === "paragraph") {
+        previous.text = \`${previous.text} \`${text}\`;
+        return normalized;
+      }
+
+      normalized.push({ ...block, text });
       return normalized;
-    }
-
-    normalized.push({ ...block, text });
-    return normalized;
-  }, []);
+    }, []);
 
   return (
     <div className="space-y-5">
@@ -367,16 +364,16 @@ function TheologyContent({ chapter }: { chapter: TheologyChapter }) {
         block.type === "verse" ? (
           <blockquote
             key={"verse-" + index}
-            className="rounded-2xl border-l-2 border-primary/45 bg-primary/5 px-4 py-4"
+            className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.08] via-card to-background px-5 py-5 shadow-[0_12px_30px_-22px_hsl(var(--primary)/0.8)] before:pointer-events-none before:absolute before:inset-y-0 before:left-0 before:w-1 before:bg-primary/55 before:content-['']"
           >
-            <p className="text-[0.98rem] font-bold leading-7 text-foreground">
-              {block.text}
-            </p>
             {block.reference && (
-              <cite className="mt-3 block text-xs font-bold not-italic text-primary">
-                — {block.reference}
+              <cite className="mb-3 block text-[0.68rem] font-bold uppercase tracking-[0.16em] text-primary not-italic">
+                {block.reference} · NVI
               </cite>
             )}
+            <p className="text-[0.98rem] font-medium italic leading-7 text-foreground">
+              {block.text}
+            </p>
           </blockquote>
         ) : (
           <p key={"paragraph-" + index} className="text-[0.98rem] leading-7 text-foreground/90">
@@ -387,4 +384,3 @@ function TheologyContent({ chapter }: { chapter: TheologyChapter }) {
     </div>
   );
 }
-
