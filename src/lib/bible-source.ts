@@ -425,7 +425,7 @@ function isUnavailableContextualMeaning(value: string): boolean {
 
 function normalizedPortugueseSense(value: string | null | undefined): string | null {
   if (!value) return null;
-  const normalized = value.replace(/\\s+/g, " ").trim();
+  const normalized = value.replace(/\s+/g, " ").trim();
   if (normalized.length < 2 || normalized.length > 240) return null;
   if (containsEnglishLexicon(normalized) || isUnavailableContextualMeaning(normalized)) {
     return null;
@@ -442,7 +442,7 @@ export function verifiedLexicalVariants(entry: StrongEntry | null | undefined): 
   if (!entry) return [];
 
   const candidates = [
-    ...(entry.meaning?.split(/\\s*;\\s*/) ?? []),
+    ...(entry.meaning?.split(/\s*;\s*/) ?? []),
     ...(entry.definitions ?? []),
     entry.strongsGloss ?? null,
   ];
@@ -1111,7 +1111,7 @@ const CORE_TERMS: Record<string, CoreTermOverride> = {
 };
 
 function grab(html: string, label: string): string | null {
-  const re = new RegExp(`-\\s*${label}:\\s*(?:<b>)?(.*?)(?:</b>)?\\s*<p`, "i");
+  const re = new RegExp(`-\s*${label}:\s*(?:<b>)?(.*?)(?:</b>)?\s*<p`, "i");
   const m = html.match(re);
   const value = m ? stripTags(m[1]) : "";
   return value || null;
