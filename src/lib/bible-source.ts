@@ -342,6 +342,8 @@ const VERIFIED_CONTEXTUAL_MEANINGS: Record<string, string> = {
   "1:1:2:H6440": "face",
   "1:1:2:H7307": "Espírito",
   "1:1:2:H4325": "águas",
+  "1:1:2:H5921": "sobre",
+  "1:1:2:H7363": "pairava",
 };
 
 const CONTEXTUAL_STRONG_FALLBACKS: Record<string, string> = {
