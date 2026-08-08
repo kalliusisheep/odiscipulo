@@ -458,70 +458,97 @@ function VerseStudy() {
 
           {aba === "interlinear" && !wordsLoading && words && words.length > 0 && (
             <div className="space-y-3">
-              {words.map((word, index) => {
-                const entry = word.strong ? entries[word.strong] : null;
-                const senses = sensesFor(book, chapter, verse, index, word, entry);
-                return (
-                  <button
-                    key={word.index}
-                    type="button"
-                    onClick={() => setOpenWord(word)}
-                    className="group w-full rounded-[24px] border border-border/70 bg-surface p-4 text-left shadow-sm transition-all hover:border-primary/30 hover:bg-surface-2/50 active:scale-[0.99]"
-                  >
-                    <div className="flex items-start gap-3">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-xs font-extrabold text-primary">
-                        {index + 1}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-start justify-between gap-2">
-                          <p
-                            dir={lang === "hebraico" ? "rtl" : "ltr"}
-                            className="ancient-text break-words text-[22px] leading-tight text-ancient"
-                          >
-                            {word.word}
-                          </p>
-                          {word.strong && (
-                            <span className="shrink-0 rounded-full border border-primary/25 bg-primary/5 px-2 py-1 text-[10px] font-extrabold text-primary">
-                              {word.strong}
-                            </span>
-                          )}
+              <div className="flex items-end justify-between gap-3 px-1">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
+                    Linha a linha
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Palavra original e sentido neste versículo
+                  </p>
+                </div>
+                <span className="shrink-0 rounded-full bg-surface-2 px-2.5 py-1 text-[10px] font-bold text-muted-foreground">
+                  {words.length} termos
+                </span>
+              </div>
+
+              <section className="overflow-hidden rounded-[28px] border border-border/50 bg-surface/[0.72] p-1 shadow-[0_18px_48px_-38px_hsl(var(--primary))]">
+                {words.map((word, index) => {
+                  const entry = word.strong ? entries[word.strong] : null;
+                  const sense = sensesFor(book, chapter, verse, index, word, entry)[0] ?? UNAVAILABLE;
+
+                  return (
+                    <button
+                      key={word.index}
+                      type="button"
+                      onClick={() => setOpenWord(word)}
+                      aria-label={"Abrir análise de " + word.word}
+                      className={
+                        "group relative w-full rounded-[22px] px-3.5 py-4 text-left transition-all duration-200 " +
+                        (index > 0 ? "border-t border-border/40 " : "") +
+                        "hover:bg-surface-2/50 active:scale-[0.995] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                      }
+                    >
+                      <div className="flex items-start gap-3">
+                        <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-background/60 font-mono text-[10px] font-bold text-muted-foreground">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0">
+                              <p
+                                dir={lang === "hebraico" ? "rtl" : "ltr"}
+                                className="ancient-text break-words text-[23px] leading-none text-ancient"
+                              >
+                                {word.word}
+                              </p>
+                              <p className="mt-2 truncate text-xs italic text-muted-foreground">
+                                {entry?.transliteration ?? "Transliteração indisponível"}
+                              </p>
+                            </div>
+
+                            {word.strong && (
+                              <span className="shrink-0 rounded-full border border-border/60 bg-background/50 px-2.5 py-1 font-mono text-[10px] font-bold text-muted-foreground transition-colors group-hover:border-primary/30 group-hover:text-primary">
+                                {word.strong}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="mt-3 grid grid-cols-2 gap-2">
+                            <div className="min-w-0 rounded-2xl bg-background/45 px-3 py-2.5">
+                              <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+                                Pronúncia
+                              </p>
+                              <p className="mt-1 truncate text-xs font-semibold text-foreground">
+                                {approximatePtBr(entry?.transliteration ?? null) ?? "—"}
+                              </p>
+                            </div>
+
+                            <div className="min-w-0 rounded-2xl bg-primary/[0.07] px-3 py-2.5">
+                              <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary/75">
+                                Sentido no versículo
+                              </p>
+                              <p className="mt-1 truncate text-xs font-semibold text-foreground">
+                                {sense}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="mt-3 flex items-center justify-end gap-1 text-[11px] font-bold text-primary/80 transition-colors group-hover:text-primary">
+                            Abrir análise
+                            <ChevronRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+                          </div>
                         </div>
-                        <p className="mt-1 text-xs italic text-muted-foreground">
-                          {entry?.transliteration ?? "Transliteração indisponível"}
-                        </p>
                       </div>
-                    </div>
-
-                    <div className="mt-3 grid grid-cols-2 gap-2">
-                      <div className="rounded-2xl bg-surface-2/70 px-3 py-2.5">
-                        <p className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground">
-                          Pronúncia
-                        </p>
-                        <p className="mt-1 text-xs font-semibold text-foreground">
-                          {approximatePtBr(entry?.transliteration ?? null) ?? "—"}
-                        </p>
-                      </div>
-                      <div className="rounded-2xl bg-primary/[0.07] px-3 py-2.5">
-                        <p className="text-[9px] font-bold uppercase tracking-wider text-primary/75">
-                          Em português
-                        </p>
-                        <p className="mt-1 text-xs font-semibold leading-snug text-foreground">
-                          {senses.length ? senses.join(" · ") : "—"}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="mt-3 flex items-center justify-end gap-1 text-[11px] font-bold text-primary">
-                      Abrir análise
-                      <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-                    </div>
-                  </button>
-                );
-              })}
+                    </button>
+                  );
+                })}
+              </section>
 
               <SourceNote>
-                A tradução é alinhada ao contexto do versículo. Toque em qualquer palavra para
-                consultar sentidos, ocorrências e pronúncia.
+                O sentido em português é selecionado para esta ocorrência. Toque em qualquer termo para
+                consultar o idioma original, Strong, ocorrências e pronúncia.
               </SourceNote>
             </div>
           )}
