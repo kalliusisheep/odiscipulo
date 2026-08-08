@@ -28,6 +28,14 @@ export function VerseActionSheet(props: Props) {
   const { book, chapter, verse } = props;
   const { t } = useApp();
   const ref = `${bookNameById(book)} ${chapter}:${verse}`;
+  const highlightLabels: Record<HighlightColor, string> = {
+    white: t("bible.highlightWhite"),
+    yellow: t("bible.highlightYellow"),
+    blue: t("bible.highlightBlue"),
+    green: t("bible.highlightGreen"),
+    pink: t("bible.highlightPink"),
+    gray: t("bible.highlightGray"),
+  };
 
   const actions = [
     {
@@ -68,7 +76,7 @@ export function VerseActionSheet(props: Props) {
               <button
                 key={c.id}
                 type="button"
-                aria-label={`Destacar em ${c.label}`}
+                aria-label={highlightLabels[c.id]}
                 aria-pressed={normalizeHighlightColor(props.currentColor) === c.id}
                 data-highlight-color={c.id}
                 onClick={() => props.onHighlight(c.id)}
