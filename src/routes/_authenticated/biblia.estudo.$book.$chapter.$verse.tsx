@@ -90,7 +90,7 @@ export const Route = createFileRoute("/_authenticated/biblia/estudo/$book/$chapt
       { property: "og:title", content: "Estudo do versículo — Disciple" },
       {
         property: "og:description",
-        content: "{t("bible.studyVerse")} nas línguas originais com fontes acadêmicas.",
+        content: "Grego, hebraico, interlinear, léxico e referências cruzadas do versículo.",
       },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary" },
@@ -248,7 +248,7 @@ function VerseStudy() {
     };
   }, [translation, book, chapter, verse]);
 
-  // {t("bible.verseAnalysis")}, gerada pelo Gemini a partir das palavras do
+  // Análise do versículo, gerada pelo Gemini a partir das palavras do
   // original e do léxico já carregado (roda de novo quando `entries` chega
   // da tradução, para a IA receber os dados já em português).
   useEffect(() => {
@@ -511,7 +511,7 @@ function VerseStudy() {
                                 {word.word}
                               </p>
                               <p className="mt-2 truncate text-xs italic text-muted-foreground">
-                                {entry?.transliteration ?? "{t("bible.transliterationUnavailable")}"}
+                                {entry?.transliteration ?? t("bible.transliterationUnavailable")}
                               </p>
                             </div>
 
@@ -583,11 +583,11 @@ function VerseStudy() {
                           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                             <p className="ancient-text break-words text-xl text-ancient">{word.word}</p>
                             <span className="text-[10px] font-bold text-primary">
-                              {word.strong ?? "{t("bible.noStrong")}"}
+                              {word.strong ?? t("bible.noStrong")}
                             </span>
                           </div>
                           <p className="mt-0.5 text-xs italic text-muted-foreground">
-                            {entry?.transliteration ?? "{t("bible.transliterationUnavailable")}"}
+                            {entry?.transliteration ?? t("bible.transliterationUnavailable")}
                           </p>
                           <p className="mt-2 text-sm font-semibold leading-snug">
                             {senses.length ? senses.join(" · ") : t("bible.infoUnavailable")}
@@ -746,7 +746,7 @@ function VerseStudy() {
                         </span>
                       </span>
                       <span className="mt-0.5 block truncate text-xs italic text-muted-foreground">
-                        {entry.transliteration ?? "{t("bible.transliterationUnavailable")}"}
+                        {entry.transliteration ?? t("bible.transliterationUnavailable")}
                         {entry.phonetic ? " · " + entry.phonetic : ""}
                       </span>
                     </span>
@@ -974,7 +974,7 @@ function WordDetail({
                 {word.word}
               </p>
               <p className="mt-1 text-sm italic text-muted-foreground">
-                {entry?.transliteration ?? "{t("bible.transliterationUnavailable")}"}
+                {entry?.transliteration ?? t("bible.transliterationUnavailable")}
               </p>
               {pronunciation && (
                 <p className="mt-0.5 text-xs text-muted-foreground">
