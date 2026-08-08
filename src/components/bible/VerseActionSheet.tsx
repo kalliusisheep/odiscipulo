@@ -58,7 +58,7 @@ export function VerseActionSheet(props: Props) {
           </p>
         </div>
 
-        <div className="bible-highlight-palette mt-4 px-5" aria-label="Cores do marcador">
+        <div className="bible-highlight-palette mt-4 px-5" aria-label={t("bible.chooseHighlight")}>
           <div className="mb-2 flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-muted-foreground">
             <Highlighter className="h-3.5 w-3.5 text-primary" />
             <span>{t("bible.chooseHighlight")}</span>
@@ -91,7 +91,7 @@ export function VerseActionSheet(props: Props) {
               <X className="h-4 w-4" strokeWidth={2.5} />
             </button>
             <span className="ml-1 text-[11px] text-muted-foreground">
-              Toque para aplicar
+              {t("bible.tapToApply")}
             </span>
           </div>
         </div>
