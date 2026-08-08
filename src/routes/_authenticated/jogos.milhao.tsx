@@ -6,7 +6,7 @@ import { SharedQuestionGame } from "@/components/games/SharedQuestionGame";
 import { MILLION_DIFFICULTY, MILLION_LEVELS, MILLION_QUESTIONS, randomMillionQuestions, randomMillionQuestionsWithSeed, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { recordGameResult } from "@/lib/game-leaderboard";
-import { normalizeGameContentKey, uniqueGameVariantContent } from "@/lib/game-content";
+import { normalizeGameContentKey, selectFreshGameVariants, uniqueGameContent } from "@/lib/game-content";
 
 export const Route = createFileRoute("/_authenticated/jogos/milhao")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -66,7 +66,6 @@ function MillionPage() {
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [weakness, setWeakness] = useState<Record<string, { correct: number; total: number }>>({});
   const startedAt = useRef(0);
-  const sessionSeenRef = useRef<Set<string>>(new Set());
   const question = questions[index];
   const level = useMemo(() => [...MILLION_LEVELS].reverse().find((item) => score >= item.points) ?? MILLION_LEVELS[0], [score]);
 
@@ -84,12 +83,21 @@ function MillionPage() {
       ? randomMillionQuestionsWithSeed(difficulty, 999, seed)
       : randomMillionQuestions(difficulty, 999);
     const fallback = MILLION_QUESTIONS.filter((item) => item.difficulty !== difficulty);
-    const pool = uniqueGameVariantContent([...preferred, ...fallback], (item) => item.id);
+    // Question-type variants from the same fact are not separate knowledge
+    // cards for a single match. Start with one card per biblical fact.
+    const pool = uniqueGameContent([...preferred, ...fallback], (item) => item.id);
     const recentKeys = new Set(recentIds.map(normalizeGameContentKey));
-    const sessionCandidates = pool.filter((candidate) => !sessionSeenRef.current.has(normalizeGameContentKey(candidate.id)));
-    const fresh = sessionCandidates.filter((candidate) => !recentKeys.has(normalizeGameContentKey(candidate.id)));
-    const selectedQuestions = uniqueGameVariantContent([...fresh, ...sessionCandidates], (item) => item.id).slice(0, rounds);
-    selectedQuestions.forEach((item) => sessionSeenRef.current.add(normalizeGameContentKey(item.id)));
+    const recentFirst = [...pool].sort((first, second) => {
+      const firstRecent = recentKeys.has(normalizeGameContentKey(first.id)) ? 1 : 0;
+      const secondRecent = recentKeys.has(normalizeGameContentKey(second.id)) ? 1 : 0;
+      return firstRecent - secondRecent;
+    });
+    const selectedQuestions = selectFreshGameVariants({
+      gameKey: "milhao",
+      items: recentFirst,
+      amount: rounds,
+      getKey: (item) => item.id,
+    });
     const storedKeys = selectedQuestions.map((item) => normalizeGameContentKey(item.id));
     window.localStorage.setItem(recentKey, JSON.stringify([...new Set([...recentIds.map(normalizeGameContentKey), ...storedKeys])].slice(-Math.max(rounds * 5, 80))));
     setQuestions(selectedQuestions);
