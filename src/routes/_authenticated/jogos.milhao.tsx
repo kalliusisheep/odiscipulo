@@ -6,7 +6,7 @@ import { SharedQuestionGame } from "@/components/games/SharedQuestionGame";
 import { MILLION_DIFFICULTY, MILLION_LEVELS, MILLION_QUESTIONS, randomMillionQuestions, randomMillionQuestionsWithSeed, type MillionDifficulty, type MillionQuestion } from "@/data/biblical-million";
 import { playGameSfx, startGameMusic } from "@/lib/game-audio";
 import { recordGameResult } from "@/lib/game-leaderboard";
-import { normalizeGameContentKey, readRecentGameKeys, selectFreshGameVariants, uniqueGameContent } from "@/lib/game-content";
+import { normalizeGameContentKey, readRecentGameKeys, selectFreshGameVariants, uniqueGameVariantContent } from "@/lib/game-content";
 
 export const Route = createFileRoute("/_authenticated/jogos/milhao")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -92,7 +92,7 @@ function MillionPage() {
     const fallback = MILLION_QUESTIONS.filter((item) => item.difficulty !== difficulty);
     // Question-type variants from the same fact are not separate knowledge
     // cards for a single match. Start with one card per biblical fact.
-    const pool = uniqueGameContent([...preferred, ...fallback], (item) => item.id);
+    const pool = uniqueGameVariantContent([...preferred, ...fallback], (item) => item.id);
     const recentKeys = new Set(recentIds.map(normalizeGameContentKey));
     const recentFirst = [...pool].sort((first, second) => {
       const firstRecent = recentKeys.has(normalizeGameContentKey(first.id)) ? 1 : 0;
