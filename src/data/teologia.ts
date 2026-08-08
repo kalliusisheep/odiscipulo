@@ -768,7 +768,7 @@ export const theologyModules: TheologyModule[] = [
       {
         "id": "preservacao-divina",
         "title": "A Preservação Divina",
-        "content": "A preservação divina é o aspecto da providência pelo qual Deus sustenta continuamente todas as coisas criadas na existência e em funcionamento com as propriedades com que as dotou. O universo não tem poder de autoexistência independente. Se Deus retirasse por um único instante a Sua energia sustentadora e o Seu sopro de vida, toda a criação colapsaria imediatamente de volta ao nada absoluto de onde foi chamada. As Escrituras Sagradas declaram essa verdade com clareza em passagens profundas sobre a pessoa de Jesus Cristo como o sustentador invisível da ordem cósmica. Em Colossenses 1:17, o apóstolo Paulo afirma:\n\nEle é antes de todas as coisas, e nele tudo subsiste. (Colossenses 1:17)\n\nE o autor de Hebreus 1:3 corrobora essa afirmação, revelando que o Filho é: o resplendor da glória de Deus e a expressão exata do seu ser, sustentando todas as coisas por sua palavra poderosa. (Hebreus 1:3)\n\nA ordem e as leis físicas do universo não funcionam por forças autônomas cegas, mas pela constante fidelidade e poder mantenedor da palavra de Deus. Esta preservação divina se aplica tanto ao domínio físico quanto à nossa vida e saúde espiritual. Jó expressa essa realidade em seu sofrimento, reconhecendo que dependemos do Criador para cada batimento cardíaco e cada fôlego de ar em nossos pulmões. Em Jó 12:10, lemos:\n\nEm sua mão está a vida de cada criatura e o fôlego de toda a humanidade. (Jó 12:10)\n\nE na Nova Aliança, o apóstolo Paulo lembra os filósofos atenienses de nossa dependência vital do Senhor em Atos 17:28:\n\nPois nele vivemos, nos movemos e existimos. (Atos 17:28)\n\nPara o cristão comum, a doutrina da preservação divina traz uma imensa segurança existencial e paz profunda. Saber que o universo é preservado pela Palavra de Cristo nos livra do terror de um colapso cósmico aleatório ou de uma destruição sem sentido. Além disso, no plano espiritual, a mesma mão divina que preserva o universo preserva a nossa salvação e a nossa comunhão com Ele até ao último dia, como o apóstolo Pedro assegura em 1Pedro 1:5:\n\nque, mediante a fé, são protegidos pelo poder de Deus até chegar a salvação prestes a ser revelada no último tempo. (1Pedro 1:5)\n\nA preservação de Deus é o selo de Sua fidelidade perpétua para com Suas criaturas e para com a Sua aliança eterna de graça em Jesus Cristo.",
+        "content": "A preservação divina é o aspecto da providência pelo qual Deus sustenta continuamente todas as coisas criadas na existência e em funcionamento com as propriedades com que as dotou. O universo não tem poder de autoexistência independente. Se Deus retirasse por um único instante a Sua energia sustentadora e o Seu sopro de vida, toda a criação colapsaria imediatamente de volta ao nada absoluto de onde foi chamada. As Escrituras Sagradas declaram essa verdade com clareza em passagens profundas sobre a pessoa de Jesus Cristo como o sustentador invisível da ordem cósmica. Em Colossenses 1:17, o apóstolo Paulo afirma:\n\nEle é antes de todas as coisas, e nele tudo subsiste. (Colossenses 1:17)\n\nE o autor de Hebreus 1:3 corrobora essa afirmação, revelando que o Filho é\n\no resplendor da glória de Deus e a expressão exata do seu ser, sustentando todas as coisas por sua palavra poderosa. (Hebreus 1:3)\n\nA ordem e as leis físicas do universo não funcionam por forças autônomas cegas, mas pela constante fidelidade e poder mantenedor da palavra de Deus. Esta preservação divina se aplica tanto ao domínio físico quanto à nossa vida e saúde espiritual. Jó expressa essa realidade em seu sofrimento, reconhecendo que dependemos do Criador para cada batimento cardíaco e cada fôlego de ar em nossos pulmões. Em Jó 12:10, lemos:\n\nEm sua mão está a vida de cada criatura e o fôlego de toda a humanidade. (Jó 12:10)\n\nE na Nova Aliança, o apóstolo Paulo lembra os filósofos atenienses de nossa dependência vital do Senhor em Atos 17:28:\n\nPois nele vivemos, nos movemos e existimos. (Atos 17:28)\n\nPara o cristão comum, a doutrina da preservação divina traz uma imensa segurança existencial e paz profunda. Saber que o universo é preservado pela Palavra de Cristo nos livra do terror de um colapso cósmico aleatório ou de uma destruição sem sentido. Além disso, no plano espiritual, a mesma mão divina que preserva o universo preserva a nossa salvação e a nossa comunhão com Ele até ao último dia, como o apóstolo Pedro assegura em 1Pedro 1:5:\n\nque, mediante a fé, são protegidos pelo poder de Deus até chegar a salvação prestes a ser revelada no último tempo. (1Pedro 1:5)\n\nA preservação de Deus é o selo de Sua fidelidade perpétua para com Suas criaturas e para com a Sua aliança eterna de graça em Jesus Cristo.",
         "references": [
           "Colossenses 1:17",
           "Hebreus 1:3",
@@ -788,7 +788,12 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "E o autor de Hebreus 1:3 corrobora essa afirmação, revelando que o Filho é: o resplendor da glória de Deus e a expressão exata do seu ser, sustentando todas as coisas por sua palavra poderosa. (Hebreus 1:3)"
+            "text": "E o autor de Hebreus 1:3 corrobora essa afirmação, revelando que o Filho é"
+          },
+          {
+            "type": "verse",
+            "text": "o resplendor da glória de Deus e a expressão exata do seu ser, sustentando todas as coisas por sua palavra poderosa.",
+            "reference": "Hebreus 1:3"
           },
           {
             "type": "paragraph",
@@ -1337,7 +1342,7 @@ export const theologyModules: TheologyModule[] = [
       {
         "id": "imagem-de-deus",
         "title": "A Imagem de Deus no Homem (Imago Dei)",
-        "content": "A imagem de Deus no homem (Imago Dei) é a doutrina bíblica de que os seres humanos foram criados de forma única para serem como o Criador e para representá-Lo de forma moral, relacional, intelectual e funcional em toda a terra. Embora essa imagem tenha sido parcialmente distorcida e manchada pela queda de Adão no Éden, ela não foi completamente destruída, e a obra redentora de Jesus Cristo visa precisamente a sua restauração progressiva e final em nós. A Escritura estabelece essa identidade humana em Gênesis 1:27:\n\nCriou Deus o homem à sua imagem, à imagem de Deus o criou; homem e mulher os criou. (Gênesis 1:27)\n\nE após a queda de Adão, a Bíblia continua a reconhecer o valor intocável de cada vida humana com base nessa imagem em Tiago 3:9:\n\nCom a língua bendizemos ao Senhor e Pai, e com ela amaldiçoamos os homens, criados à semelhança de Deus. (Tiago 3:9)\n\nA obra de salvação nos renova progressivamente à imagem de Cristo, que é a imagem perfeita do Deus invisível, como Paulo assevera em Colossenses 3:10: e se revestiram do novo, que está sendo renovado em conhecimento, à imagem do seu Criador. (Colossenses 3:10)\n\nSaber que fomos criados à imagem de Deus nos chama a respeitar a dignidade inegociável de cada pessoa humana, independentemente de sua etnia, estrato social ou capacidade intelectual, amando-as e servindo-as em nome de Jesus Cristo.",
+        "content": "A imagem de Deus no homem (Imago Dei) é a doutrina bíblica de que os seres humanos foram criados de forma única para serem como o Criador e para representá-Lo de forma moral, relacional, intelectual e funcional em toda a terra. Embora essa imagem tenha sido parcialmente distorcida e manchada pela queda de Adão no Éden, ela não foi completamente destruída, e a obra redentora de Jesus Cristo visa precisamente a sua restauração progressiva e final em nós. A Escritura estabelece essa identidade humana em Gênesis 1:27:\n\nCriou Deus o homem à sua imagem, à imagem de Deus o criou; homem e mulher os criou. (Gênesis 1:27)\n\nE após a queda de Adão, a Bíblia continua a reconhecer o valor intocável de cada vida humana com base nessa imagem em Tiago 3:9:\n\nCom a língua bendizemos ao Senhor e Pai, e com ela amaldiçoamos os homens, criados à semelhança de Deus. (Tiago 3:9)\n\nA obra de salvação nos renova progressivamente à imagem de Cristo, que é a imagem perfeita do Deus invisível, como Paulo assevera em Colossenses 3:10\n\ne se revestiram do novo, que está sendo renovado em conhecimento, à imagem do seu Criador. (Colossenses 3:10)\n\nSaber que fomos criados à imagem de Deus nos chama a respeitar a dignidade inegociável de cada pessoa humana, independentemente de sua etnia, estrato social ou capacidade intelectual, amando-as e servindo-as em nome de Jesus Cristo.",
         "references": [
           "Gênesis 1:27",
           "Tiago 3:9",
@@ -1364,7 +1369,12 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "A obra de salvação nos renova progressivamente à imagem de Cristo, que é a imagem perfeita do Deus invisível, como Paulo assevera em Colossenses 3:10: e se revestiram do novo, que está sendo renovado em conhecimento, à imagem do seu Criador. (Colossenses 3:10)"
+            "text": "A obra de salvação nos renova progressivamente à imagem de Cristo, que é a imagem perfeita do Deus invisível, como Paulo assevera em Colossenses 3:10"
+          },
+          {
+            "type": "verse",
+            "text": "e se revestiram do novo, que está sendo renovado em conhecimento, à imagem do seu Criador.",
+            "reference": "Colossenses 3:10"
           },
           {
             "type": "paragraph",
@@ -1696,7 +1706,7 @@ export const theologyModules: TheologyModule[] = [
       {
         "id": "deidade-cristo",
         "title": "A Deidade de Cristo",
-        "content": "A deidade de Cristo é a verdade inegociável de que Jesus é plenamente e essencialmente Deus, consubstancial com o Pai e com o Espírito Santo, possuidor de todas as perfeições, atributos e glória eterna da única essência divina indivisível. A negação da plena deidade de Jesus Cristo desmorona todo o edifício da ortodoxia cristã e anula o valor infinito da cruz de nossa salvação. A Bíblia declara a plena deidade de Jesus de forma categórica em passagens sublimes como Colossenses 2:9:\n\nPois em Cristo habita corporalmente toda a plenitude da divindade. (Colossenses 2:9)\n\nE o apóstolo Paulo exorta a nossa expectativa no retorno de Cristo, descrevendo Sua identidade divina em Tito 2:13: enquanto aguardamos a bendita esperança: a gloriosa manifestação de nosso grande Deus e Salvador, Jesus Cristo. (Tito 2:13)\n\nO discípulo Tomé expressa essa fé salvífica ao tocar as feridas do Salvador ressuscitado em João 20:28:\n\nTomé lhe disse: “Senhor meu e Deus meu!” (João 20:28)\n\nCrer na plena deidade de Cristo garante a eficácia e a suficiência eterna de nossa salvação: somente um sacrifício de valor infinito, perpetrado pelo próprio Deus encarnado, poderia satisfazer a ira santa e justa de Deus contra o pecado, justificando de forma graciosa e forense o pecador que nele crê.",
+        "content": "A deidade de Cristo é a verdade inegociável de que Jesus é plenamente e essencialmente Deus, consubstancial com o Pai e com o Espírito Santo, possuidor de todas as perfeições, atributos e glória eterna da única essência divina indivisível. A negação da plena deidade de Jesus Cristo desmorona todo o edifício da ortodoxia cristã e anula o valor infinito da cruz de nossa salvação. A Bíblia declara a plena deidade de Jesus de forma categórica em passagens sublimes como Colossenses 2:9:\n\nPois em Cristo habita corporalmente toda a plenitude da divindade. (Colossenses 2:9)\n\nE o apóstolo Paulo exorta a nossa expectativa no retorno de Cristo, descrevendo Sua identidade divina em Tito 2:13: enquanto aguardamos a bendita esperança\n\na gloriosa manifestação de nosso grande Deus e Salvador, Jesus Cristo. (Tito 2:13)\n\nO discípulo Tomé expressa essa fé salvífica ao tocar as feridas do Salvador ressuscitado em João 20:28:\n\nTomé lhe disse: “Senhor meu e Deus meu!” (João 20:28)\n\nCrer na plena deidade de Cristo garante a eficácia e a suficiência eterna de nossa salvação: somente um sacrifício de valor infinito, perpetrado pelo próprio Deus encarnado, poderia satisfazer a ira santa e justa de Deus contra o pecado, justificando de forma graciosa e forense o pecador que nele crê.",
         "references": [
           "Colossenses 2:9",
           "Tito 2:13",
@@ -1714,7 +1724,12 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "E o apóstolo Paulo exorta a nossa expectativa no retorno de Cristo, descrevendo Sua identidade divina em Tito 2:13: enquanto aguardamos a bendita esperança: a gloriosa manifestação de nosso grande Deus e Salvador, Jesus Cristo. (Tito 2:13)"
+            "text": "E o apóstolo Paulo exorta a nossa expectativa no retorno de Cristo, descrevendo Sua identidade divina em Tito 2:13: enquanto aguardamos a bendita esperança"
+          },
+          {
+            "type": "verse",
+            "text": "a gloriosa manifestação de nosso grande Deus e Salvador, Jesus Cristo.",
+            "reference": "Tito 2:13"
           },
           {
             "type": "paragraph",
@@ -1866,7 +1881,7 @@ export const theologyModules: TheologyModule[] = [
       {
         "id": "cristo-sacerdote",
         "title": "Cristo como Sacerdote",
-        "content": "Cristo como Sacerdote é o ministério messiânico pelo qual Jesus atua como o mediador supremo entre o Deus santo e a humanidade culpada, oferecendo-Se a Si mesmo na cruz como o sacrifício perfeito e suficiente para cobrir os nossos pecados e reconciliar-nos com Deus, e intercedendo perpetuamente em nosso favor diante do trono do Pai celestial. O autor de Hebreus detalha a superioridade e a eternidade do sacerdócio de Cristo em passagens gloriosas como Hebreus 7:24-25: mas, visto que vive para sempre, Jesus tem um sacerdócio permanente. Consequentemente, ele é capaz de salvar definitivamente aqueles que, por meio dele, aproximam-se de Deus, pois vive sempre para interceder por eles. (Hebreus 7:24-25)\n\nE Ele exerceu o Seu sacerdócio supremo ao oferecer o Seu próprio sangue imaculado de uma vez por todas, em Hebreus 9:12:\n\nNão por meio de sangue de bodes e de novilhos, mas pelo seu próprio sangue, ele entrou no Santo dos Santos de uma vez por todas, obtendo eterna redenção. (Hebreus 9:12)\n\nSaber que Jesus Cristo é o nosso Sumo Sacerdote perfeito destrona todo o medo e culpa moral da nossa alma. Nós temos livre acesso ao trono da graça com total ousadia e confiança, sabendo que os Seus méritos sacerdotais nos cobrem de aceitação perpétua e de que a Sua oração constante nos guarda seguros de qualquer queda.",
+        "content": "Cristo como Sacerdote é o ministério messiânico pelo qual Jesus atua como o mediador supremo entre o Deus santo e a humanidade culpada, oferecendo-Se a Si mesmo na cruz como o sacrifício perfeito e suficiente para cobrir os nossos pecados e reconciliar-nos com Deus, e intercedendo perpetuamente em nosso favor diante do trono do Pai celestial. O autor de Hebreus detalha a superioridade e a eternidade do sacerdócio de Cristo em passagens gloriosas como Hebreus 7:24-25\n\nmas, visto que vive para sempre, Jesus tem um sacerdócio permanente. Consequentemente, ele é capaz de salvar definitivamente aqueles que, por meio dele, aproximam-se de Deus, pois vive sempre para interceder por eles. (Hebreus 7:24-25)\n\nE Ele exerceu o Seu sacerdócio supremo ao oferecer o Seu próprio sangue imaculado de uma vez por todas, em Hebreus 9:12:\n\nNão por meio de sangue de bodes e de novilhos, mas pelo seu próprio sangue, ele entrou no Santo dos Santos de uma vez por todas, obtendo eterna redenção. (Hebreus 9:12)\n\nSaber que Jesus Cristo é o nosso Sumo Sacerdote perfeito destrona todo o medo e culpa moral da nossa alma. Nós temos livre acesso ao trono da graça com total ousadia e confiança, sabendo que os Seus méritos sacerdotais nos cobrem de aceitação perpétua e de que a Sua oração constante nos guarda seguros de qualquer queda.",
         "references": [
           "Hebreus 7:24-25",
           "Hebreus 9:12"
@@ -1874,7 +1889,12 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "Cristo como Sacerdote é o ministério messiânico pelo qual Jesus atua como o mediador supremo entre o Deus santo e a humanidade culpada, oferecendo-Se a Si mesmo na cruz como o sacrifício perfeito e suficiente para cobrir os nossos pecados e reconciliar-nos com Deus, e intercedendo perpetuamente em nosso favor diante do trono do Pai celestial. O autor de Hebreus detalha a superioridade e a eternidade do sacerdócio de Cristo em passagens gloriosas como Hebreus 7:24-25: mas, visto que vive para sempre, Jesus tem um sacerdócio permanente. Consequentemente, ele é capaz de salvar definitivamente aqueles que, por meio dele, aproximam-se de Deus, pois vive sempre para interceder por eles. (Hebreus 7:24-25)"
+            "text": "Cristo como Sacerdote é o ministério messiânico pelo qual Jesus atua como o mediador supremo entre o Deus santo e a humanidade culpada, oferecendo-Se a Si mesmo na cruz como o sacrifício perfeito e suficiente para cobrir os nossos pecados e reconciliar-nos com Deus, e intercedendo perpetuamente em nosso favor diante do trono do Pai celestial. O autor de Hebreus detalha a superioridade e a eternidade do sacerdócio de Cristo em passagens gloriosas como Hebreus 7:24-25"
+          },
+          {
+            "type": "verse",
+            "text": "mas, visto que vive para sempre, Jesus tem um sacerdócio permanente. Consequentemente, ele é capaz de salvar definitivamente aqueles que, por meio dele, aproximam-se de Deus, pois vive sempre para interceder por eles.",
+            "reference": "Hebreus 7:24-25"
           },
           {
             "type": "paragraph",
@@ -2228,7 +2248,7 @@ export const theologyModules: TheologyModule[] = [
       {
         "id": "deidade-espirito",
         "title": "A Deidade do Espírito Santo",
-        "content": "A deidade do Espírito Santo é a verdade de que o Espírito de Deus é plenamente Deus, consubstancial e coeteo com o Pai e com o Filho, possuindo em Si mesmo todas as perfeições, atributos e glória divina da única e indivisível essência trinitária de Deus. Ele não é uma criatura angélica ou deidade menor; Ele é o Senhor e Doador da Vida. A Escritura Sagrada identifica o Espírito diretamente com a pessoa divina de Deus em passagens marcantes como Atos 5:3-4, onde Pedro confronta a mentira de Ananias: Disse então Pedro: 'Ananias, como você permitiu que Satanás enchesse o seu coração, a ponto de você mentir ao Espírito Santo?... Você não mentiu aos homens, mas sim a Deus. (Atos 5:3-4)\n\nE o apóstolo Paulo atribui ao Espírito a onisciência infinita que pertence exclusiva e unicamente ao caráter divino em 1Coríntios 2:10-11: pois o Espírito sonda todas as coisas, até mesmo as coisas mais profundas de Deus. Pois quem conhece os pensamentos do homem, a não ser o espírito do homem que nele está? Da mesma forma, ninguém conhece os pensamentos de Deus, a não ser o Espírito de Deus. (1Coríntios 2:10-11)\n\nCrer na plena deidade do Espírito Santo garante que a Sua obra de regeneração, santificação progressiva e habitação interior em nossos corações seja um autêntico e poderoso ato de graça divina. Ele nos reconecta diretamente com a presença de Deus, transformando as nossas vidas em templos vivos de Sua glória santa e capacitando a igreja local para cumprir a sua missão no mundo.",
+        "content": "A deidade do Espírito Santo é a verdade de que o Espírito de Deus é plenamente Deus, consubstancial e coeteo com o Pai e com o Filho, possuindo em Si mesmo todas as perfeições, atributos e glória divina da única e indivisível essência trinitária de Deus. Ele não é uma criatura angélica ou deidade menor; Ele é o Senhor e Doador da Vida. A Escritura Sagrada identifica o Espírito diretamente com a pessoa divina de Deus em passagens marcantes como Atos 5:3-4, onde Pedro confronta a mentira de Ananias: Disse então Pedro: 'Ananias, como você permitiu que Satanás enchesse o seu coração, a ponto de você mentir ao Espírito Santo?... Você não mentiu aos homens, mas sim a Deus. (Atos 5:3-4)\n\nE o apóstolo Paulo atribui ao Espírito a onisciência infinita que pertence exclusiva e unicamente ao caráter divino em 1Coríntios 2:10-11\n\npois o Espírito sonda todas as coisas, até mesmo as coisas mais profundas de Deus. Pois quem conhece os pensamentos do homem, a não ser o espírito do homem que nele está? Da mesma forma, ninguém conhece os pensamentos de Deus, a não ser o Espírito de Deus. (1Coríntios 2:10-11)\n\nCrer na plena deidade do Espírito Santo garante que a Sua obra de regeneração, santificação progressiva e habitação interior em nossos corações seja um autêntico e poderoso ato de graça divina. Ele nos reconecta diretamente com a presença de Deus, transformando as nossas vidas em templos vivos de Sua glória santa e capacitando a igreja local para cumprir a sua missão no mundo.",
         "references": [
           "Atos 5:3-4",
           "1Coríntios 2:10-11"
@@ -2240,7 +2260,12 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "E o apóstolo Paulo atribui ao Espírito a onisciência infinita que pertence exclusiva e unicamente ao caráter divino em 1Coríntios 2:10-11: pois o Espírito sonda todas as coisas, até mesmo as coisas mais profundas de Deus. Pois quem conhece os pensamentos do homem, a não ser o espírito do homem que nele está? Da mesma forma, ninguém conhece os pensamentos de Deus, a não ser o Espírito de Deus. (1Coríntios 2:10-11)"
+            "text": "E o apóstolo Paulo atribui ao Espírito a onisciência infinita que pertence exclusiva e unicamente ao caráter divino em 1Coríntios 2:10-11"
+          },
+          {
+            "type": "verse",
+            "text": "pois o Espírito sonda todas as coisas, até mesmo as coisas mais profundas de Deus. Pois quem conhece os pensamentos do homem, a não ser o espírito do homem que nele está? Da mesma forma, ninguém conhece os pensamentos de Deus, a não ser o Espírito de Deus.",
+            "reference": "1Coríntios 2:10-11"
           },
           {
             "type": "paragraph",
@@ -2350,7 +2375,7 @@ export const theologyModules: TheologyModule[] = [
       {
         "id": "preenchimento-espirito",
         "title": "O Preenchimento do Espírito Santo",
-        "content": "O preenchimento do Espírito Santo (ou ser cheio do Espírito) é a ordem bíblica progressiva e contínua que exorta o crente a submeter-se de forma voluntária e total ao controle, governo e influência transformadora do Espírito de Deus em sua vida diária, resultando em uma caminhada de adoração pura, comunhão fraternal profunda, obediência moral alegre e poder ministerial para testemunhar de Cristo. A Escritura Sagrada apresenta esse preenchimento como uma atitude diária oposta aos prazeres vazios do pecado em Efésios 5:18:\n\nNão se embriaguem com vinho, que leva à libertinagem, mas deixem-se encher pelo Espírito. (Efésios 5:18)\n\nE o apóstolo Paulo descreve as consequências práticas e relacionais desse viver cheio de Deus nos versículos seguintes, em Efésios 5:19-20: falando entre vocês com salmos, hinos e cânticos espirituais, cantando e louvando de coração ao Senhor, dando graças constantemente a Deus Pai por todas as coisas, em nome de nosso Senhor Jesus Cristo. (Efésios 5:19-20)\n\nDiferente do batismo no Espírito, que é um ato definitivo e posicional de Deus ocorrido uma única vez no momento da regeneração, o preenchimento do Espírito pode variar em intensidade e profundidade de acordo com o nosso arrependimento ético, nossa dedicação à oração e nossa obediência à Palavra de Deus. Ser cheio do Espírito nos dá o poder indispensável para produzir o caráter semelhante ao de Cristo e vencer a carne em nossa vida diária.",
+        "content": "O preenchimento do Espírito Santo (ou ser cheio do Espírito) é a ordem bíblica progressiva e contínua que exorta o crente a submeter-se de forma voluntária e total ao controle, governo e influência transformadora do Espírito de Deus em sua vida diária, resultando em uma caminhada de adoração pura, comunhão fraternal profunda, obediência moral alegre e poder ministerial para testemunhar de Cristo. A Escritura Sagrada apresenta esse preenchimento como uma atitude diária oposta aos prazeres vazios do pecado em Efésios 5:18:\n\nNão se embriaguem com vinho, que leva à libertinagem, mas deixem-se encher pelo Espírito. (Efésios 5:18)\n\nE o apóstolo Paulo descreve as consequências práticas e relacionais desse viver cheio de Deus nos versículos seguintes, em Efésios 5:19-20\n\nfalando entre vocês com salmos, hinos e cânticos espirituais, cantando e louvando de coração ao Senhor, dando graças constantemente a Deus Pai por todas as coisas, em nome de nosso Senhor Jesus Cristo. (Efésios 5:19-20)\n\nDiferente do batismo no Espírito, que é um ato definitivo e posicional de Deus ocorrido uma única vez no momento da regeneração, o preenchimento do Espírito pode variar em intensidade e profundidade de acordo com o nosso arrependimento ético, nossa dedicação à oração e nossa obediência à Palavra de Deus. Ser cheio do Espírito nos dá o poder indispensável para produzir o caráter semelhante ao de Cristo e vencer a carne em nossa vida diária.",
         "references": [
           "Efésios 5:18",
           "Efésios 5:19-20"
@@ -2367,7 +2392,12 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "E o apóstolo Paulo descreve as consequências práticas e relacionais desse viver cheio de Deus nos versículos seguintes, em Efésios 5:19-20: falando entre vocês com salmos, hinos e cânticos espirituais, cantando e louvando de coração ao Senhor, dando graças constantemente a Deus Pai por todas as coisas, em nome de nosso Senhor Jesus Cristo. (Efésios 5:19-20)"
+            "text": "E o apóstolo Paulo descreve as consequências práticas e relacionais desse viver cheio de Deus nos versículos seguintes, em Efésios 5:19-20"
+          },
+          {
+            "type": "verse",
+            "text": "falando entre vocês com salmos, hinos e cânticos espirituais, cantando e louvando de coração ao Senhor, dando graças constantemente a Deus Pai por todas as coisas, em nome de nosso Senhor Jesus Cristo.",
+            "reference": "Efésios 5:19-20"
           },
           {
             "type": "paragraph",
@@ -2574,7 +2604,7 @@ export const theologyModules: TheologyModule[] = [
       {
         "id": "regeneracao",
         "title": "A Regeneração",
-        "content": "A regeneração é o ato secreto, soberano e instantâneo de Deus pelo qual Ele, por meio do Espírito Santo de Sua graça, comunica uma nova vida espiritual ao coração do crente arrependido que respondeu ao chamado de Deus, transformando a sua essência moral caída em uma nova criatura e capacitando-o de forma real para a comunhão viva com o Criador. A Escritura retrata essa ressurreição espiritual de forma marcante em passagens bíblicas clássicas como Tito 3:5: ele nos salvou, não por causa de atos de justiça que tivéssemos praticado, mas devido à sua misericórdia, mediante o lavar regenerador e renovador do Espírito Santo. (Tito 3:5)\n\nE o apóstolo Paulo resume o impacto cósmico interior dessa recriação de nossa essência em 2Coríntios 5:17:\n\nPortanto, se alguém está em Cristo, é nova criação. As coisas antigas já passaram; eis que surgiram coisas novas! (2Coríntios 5:17)\n\nA regeneração é inteiramente uma obra monergística da parte de Deus: o ser humano não desempenha qualquer papel meritório nesse despertar espiritual. Uma vez regenerado, o cristão passa a possuir uma nova afeição, um sincero amor à Palavra de Deus e o desejo diário de cultivar a santidade prática, revelando os frutos da nova criação no mundo.",
+        "content": "A regeneração é o ato secreto, soberano e instantâneo de Deus pelo qual Ele, por meio do Espírito Santo de Sua graça, comunica uma nova vida espiritual ao coração do crente arrependido que respondeu ao chamado de Deus, transformando a sua essência moral caída em uma nova criatura e capacitando-o de forma real para a comunhão viva com o Criador. A Escritura retrata essa ressurreição espiritual de forma marcante em passagens bíblicas clássicas como Tito 3:5\n\nele nos salvou, não por causa de atos de justiça que tivéssemos praticado, mas devido à sua misericórdia, mediante o lavar regenerador e renovador do Espírito Santo. (Tito 3:5)\n\nE o apóstolo Paulo resume o impacto cósmico interior dessa recriação de nossa essência em 2Coríntios 5:17:\n\nPortanto, se alguém está em Cristo, é nova criação. As coisas antigas já passaram; eis que surgiram coisas novas! (2Coríntios 5:17)\n\nA regeneração é inteiramente uma obra monergística da parte de Deus: o ser humano não desempenha qualquer papel meritório nesse despertar espiritual. Uma vez regenerado, o cristão passa a possuir uma nova afeição, um sincero amor à Palavra de Deus e o desejo diário de cultivar a santidade prática, revelando os frutos da nova criação no mundo.",
         "references": [
           "Tito 3:5",
           "2Coríntios 5:17"
@@ -2582,7 +2612,12 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A regeneração é o ato secreto, soberano e instantâneo de Deus pelo qual Ele, por meio do Espírito Santo de Sua graça, comunica uma nova vida espiritual ao coração do crente arrependido que respondeu ao chamado de Deus, transformando a sua essência moral caída em uma nova criatura e capacitando-o de forma real para a comunhão viva com o Criador. A Escritura retrata essa ressurreição espiritual de forma marcante em passagens bíblicas clássicas como Tito 3:5: ele nos salvou, não por causa de atos de justiça que tivéssemos praticado, mas devido à sua misericórdia, mediante o lavar regenerador e renovador do Espírito Santo. (Tito 3:5)"
+            "text": "A regeneração é o ato secreto, soberano e instantâneo de Deus pelo qual Ele, por meio do Espírito Santo de Sua graça, comunica uma nova vida espiritual ao coração do crente arrependido que respondeu ao chamado de Deus, transformando a sua essência moral caída em uma nova criatura e capacitando-o de forma real para a comunhão viva com o Criador. A Escritura retrata essa ressurreição espiritual de forma marcante em passagens bíblicas clássicas como Tito 3:5"
+          },
+          {
+            "type": "verse",
+            "text": "ele nos salvou, não por causa de atos de justiça que tivéssemos praticado, mas devido à sua misericórdia, mediante o lavar regenerador e renovador do Espírito Santo.",
+            "reference": "Tito 3:5"
           },
           {
             "type": "paragraph",
@@ -2668,7 +2703,7 @@ export const theologyModules: TheologyModule[] = [
       {
         "id": "fe-salvadora",
         "title": "A Fé Salvadora",
-        "content": "A fé salvadora é a atitude profunda de total dependência, confiança e entrega pessoal do pecador arrependido à pessoa e à obra de Jesus Cristo na cruz, na qual o indivíduo reconhece a sua própria incapacidade espiritual de se salvar e descansa inteiramente nos méritos imaculados do Salvador para o seu perdão, reconciliação e salvação eterna. As Escrituras Sagradas ensinam que a fé viva constitui o único meio instrumental gratuito de nossa redenção em Efésios 2:8-9:\n\nPois vocês são salvos pela graça, por meio da fé, e isto não vem de vocês, é dom de Deus; não por obras, para que ninguém se glorie. (Efésios 2:8-9)\n\nE a definição teológica de fé está registrada com inabalável firmeza de esperança em Hebreus 11:1:\n\nOra, a fé é a certeza daquilo que esperamos e a prova das coisas que não vemos. (Hebreus 11:1)\n\nA verdadeira fé salvadora vai além do mero assentimento intelectual aos fatos históricos de salvação; ela envolve o compromisso pessoal do coração que confia de forma ativa na pessoa viva de Jesus, como o apóstolo Paulo afirma em Romanos 10:9: se você confessar com a sua boca que Jesus é Senhor e crer em seu coração que Deus o ressuscitou dos mortos, será salvo. (Romanos 10:9)\n\nEsta fé viva opera em amor, gerando obediência e frutos de justiça que confirmam a autenticidade de nossa comunhão com Deus.",
+        "content": "A fé salvadora é a atitude profunda de total dependência, confiança e entrega pessoal do pecador arrependido à pessoa e à obra de Jesus Cristo na cruz, na qual o indivíduo reconhece a sua própria incapacidade espiritual de se salvar e descansa inteiramente nos méritos imaculados do Salvador para o seu perdão, reconciliação e salvação eterna. As Escrituras Sagradas ensinam que a fé viva constitui o único meio instrumental gratuito de nossa redenção em Efésios 2:8-9:\n\nPois vocês são salvos pela graça, por meio da fé, e isto não vem de vocês, é dom de Deus; não por obras, para que ninguém se glorie. (Efésios 2:8-9)\n\nE a definição teológica de fé está registrada com inabalável firmeza de esperança em Hebreus 11:1:\n\nOra, a fé é a certeza daquilo que esperamos e a prova das coisas que não vemos. (Hebreus 11:1)\n\nA verdadeira fé salvadora vai além do mero assentimento intelectual aos fatos históricos de salvação; ela envolve o compromisso pessoal do coração que confia de forma ativa na pessoa viva de Jesus, como o apóstolo Paulo afirma em Romanos 10:9\n\nse você confessar com a sua boca que Jesus é Senhor e crer em seu coração que Deus o ressuscitou dos mortos, será salvo. (Romanos 10:9)\n\nEsta fé viva opera em amor, gerando obediência e frutos de justiça que confirmam a autenticidade de nossa comunhão com Deus.",
         "references": [
           "Efésios 2:8-9",
           "Hebreus 11:1",
@@ -2695,7 +2730,12 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "A verdadeira fé salvadora vai além do mero assentimento intelectual aos fatos históricos de salvação; ela envolve o compromisso pessoal do coração que confia de forma ativa na pessoa viva de Jesus, como o apóstolo Paulo afirma em Romanos 10:9: se você confessar com a sua boca que Jesus é Senhor e crer em seu coração que Deus o ressuscitou dos mortos, será salvo. (Romanos 10:9)"
+            "text": "A verdadeira fé salvadora vai além do mero assentimento intelectual aos fatos históricos de salvação; ela envolve o compromisso pessoal do coração que confia de forma ativa na pessoa viva de Jesus, como o apóstolo Paulo afirma em Romanos 10:9"
+          },
+          {
+            "type": "verse",
+            "text": "se você confessar com a sua boca que Jesus é Senhor e crer em seu coração que Deus o ressuscitou dos mortos, será salvo.",
+            "reference": "Romanos 10:9"
           },
           {
             "type": "paragraph",
@@ -2768,7 +2808,7 @@ export const theologyModules: TheologyModule[] = [
       {
         "id": "santificacao-progressiva",
         "title": "A Santificação Progressiva",
-        "content": "A santificação progressiva é a obra cooperativa, progressiva e vitalícia de Deus e do homem na Nova Aliança, pela qual o crente regenerado é libertado de forma regular do poder e do domínio do pecado em sua vida e transformado à imagem moral e espiritual de Jesus Cristo em suas atitudes, pensamentos, palavras e ações diárias. A Escritura Sagrada exorta à nossa cooperação ativa e dependência graciosa na busca diária da santidade em Filipenses 2:12-13: coloquem em ação a salvação de vocês com temor e tremor, pois é Deus quem efetua em vocês tanto o querer quanto o realizar, de acordo com a boa vontade dele. (Filipenses 2:12-13)\n\nE o autor de Hebreus 12:14 destaca a urgência inegociável do crescimento ético para a integridade de nossa comunhão com o Senhor:\n\nEsforcem-se para viver em paz com todos e para serem santos; sem santidade ninguém verá o Senhor. (Hebreus 12:14)\n\nDiferente da justificação forense, que é um ato legal instantâneo e monergístico de Deus ocorrido uma única vez, a santificação progressiva exige do crente o uso diário dos meios de graça (leitura da Bíblia, oração, arrependimento ético, jejum e comunhão na igreja) para mortificar os desejos da carne e manifestar o caráter puro de Cristo no mundo.",
+        "content": "A santificação progressiva é a obra cooperativa, progressiva e vitalícia de Deus e do homem na Nova Aliança, pela qual o crente regenerado é libertado de forma regular do poder e do domínio do pecado em sua vida e transformado à imagem moral e espiritual de Jesus Cristo em suas atitudes, pensamentos, palavras e ações diárias. A Escritura Sagrada exorta à nossa cooperação ativa e dependência graciosa na busca diária da santidade em Filipenses 2:12-13\n\ncoloquem em ação a salvação de vocês com temor e tremor, pois é Deus quem efetua em vocês tanto o querer quanto o realizar, de acordo com a boa vontade dele. (Filipenses 2:12-13)\n\nE o autor de Hebreus 12:14 destaca a urgência inegociável do crescimento ético para a integridade de nossa comunhão com o Senhor:\n\nEsforcem-se para viver em paz com todos e para serem santos; sem santidade ninguém verá o Senhor. (Hebreus 12:14)\n\nDiferente da justificação forense, que é um ato legal instantâneo e monergístico de Deus ocorrido uma única vez, a santificação progressiva exige do crente o uso diário dos meios de graça (leitura da Bíblia, oração, arrependimento ético, jejum e comunhão na igreja) para mortificar os desejos da carne e manifestar o caráter puro de Cristo no mundo.",
         "references": [
           "Filipenses 2:12-13",
           "Hebreus 12:14"
@@ -2776,7 +2816,12 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A santificação progressiva é a obra cooperativa, progressiva e vitalícia de Deus e do homem na Nova Aliança, pela qual o crente regenerado é libertado de forma regular do poder e do domínio do pecado em sua vida e transformado à imagem moral e espiritual de Jesus Cristo em suas atitudes, pensamentos, palavras e ações diárias. A Escritura Sagrada exorta à nossa cooperação ativa e dependência graciosa na busca diária da santidade em Filipenses 2:12-13: coloquem em ação a salvação de vocês com temor e tremor, pois é Deus quem efetua em vocês tanto o querer quanto o realizar, de acordo com a boa vontade dele. (Filipenses 2:12-13)"
+            "text": "A santificação progressiva é a obra cooperativa, progressiva e vitalícia de Deus e do homem na Nova Aliança, pela qual o crente regenerado é libertado de forma regular do poder e do domínio do pecado em sua vida e transformado à imagem moral e espiritual de Jesus Cristo em suas atitudes, pensamentos, palavras e ações diárias. A Escritura Sagrada exorta à nossa cooperação ativa e dependência graciosa na busca diária da santidade em Filipenses 2:12-13"
+          },
+          {
+            "type": "verse",
+            "text": "coloquem em ação a salvação de vocês com temor e tremor, pois é Deus quem efetua em vocês tanto o querer quanto o realizar, de acordo com a boa vontade dele.",
+            "reference": "Filipenses 2:12-13"
           },
           {
             "type": "paragraph",
@@ -2913,7 +2958,7 @@ export const theologyModules: TheologyModule[] = [
       {
         "id": "glorificacao",
         "title": "A Glorificação",
-        "content": "A glorificação é o ponto culminante e final de todo o processo de salvação do crente, no qual, no retorno vitorioso de Jesus Cristo, as almas dos justos serão perfeitamente unidas aos seus corpos físicos ressuscitados, os quais serão transformados em corpos imortais, perfeitos, livres de toda a corrupção do pecado e revestidos da mesma glória celestial do Salvador. A Escritura Sagrada declara a realidade inegável dessa promessa cósmica de salvação total em 1Coríntios 15:52-53: os mortos ressuscitarão incorruptíveis, e nós seremos transformados. Pois é necessário que aquilo que é corruptível se revista de incorruptibilidade, e aquilo que é mortal se revista de imortalidade. (1Coríntios 15:52-53)\n\nE o apóstolo Paulo exalta o alvo glorioso e redentor dessa transformação final em Filipenses 3:20-21:\n\nA nossa cidadania, porém, está nos céus, de onde esperamos ansiosamente um Salvador, o Senhor Jesus Cristo. Pelo poder que o capacita a sujeitar a si todas as coisas, ele transformará os nossos corpos humilhados, para serem semelhantes ao seu corpo glorioso. (Filipenses 3:20-21)\n\nA glorificação é a restauração definitiva da imagem de Deus no homem, capacitando-nos plenamente para reinar e habitar eternamente na presença inefável do Criador, livres de todas as dores físicas, sofrimentos morais e lágrimas terrestres, na nova criação de paz.",
+        "content": "A glorificação é o ponto culminante e final de todo o processo de salvação do crente, no qual, no retorno vitorioso de Jesus Cristo, as almas dos justos serão perfeitamente unidas aos seus corpos físicos ressuscitados, os quais serão transformados em corpos imortais, perfeitos, livres de toda a corrupção do pecado e revestidos da mesma glória celestial do Salvador. A Escritura Sagrada declara a realidade inegável dessa promessa cósmica de salvação total em 1Coríntios 15:52-53\n\nos mortos ressuscitarão incorruptíveis, e nós seremos transformados. Pois é necessário que aquilo que é corruptível se revista de incorruptibilidade, e aquilo que é mortal se revista de imortalidade. (1Coríntios 15:52-53)\n\nE o apóstolo Paulo exalta o alvo glorioso e redentor dessa transformação final em Filipenses 3:20-21:\n\nA nossa cidadania, porém, está nos céus, de onde esperamos ansiosamente um Salvador, o Senhor Jesus Cristo. Pelo poder que o capacita a sujeitar a si todas as coisas, ele transformará os nossos corpos humilhados, para serem semelhantes ao seu corpo glorioso. (Filipenses 3:20-21)\n\nA glorificação é a restauração definitiva da imagem de Deus no homem, capacitando-nos plenamente para reinar e habitar eternamente na presença inefável do Criador, livres de todas as dores físicas, sofrimentos morais e lágrimas terrestres, na nova criação de paz.",
         "references": [
           "1Coríntios 15:52-53",
           "Filipenses 3:20-21"
@@ -2921,7 +2966,12 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "A glorificação é o ponto culminante e final de todo o processo de salvação do crente, no qual, no retorno vitorioso de Jesus Cristo, as almas dos justos serão perfeitamente unidas aos seus corpos físicos ressuscitados, os quais serão transformados em corpos imortais, perfeitos, livres de toda a corrupção do pecado e revestidos da mesma glória celestial do Salvador. A Escritura Sagrada declara a realidade inegável dessa promessa cósmica de salvação total em 1Coríntios 15:52-53: os mortos ressuscitarão incorruptíveis, e nós seremos transformados. Pois é necessário que aquilo que é corruptível se revista de incorruptibilidade, e aquilo que é mortal se revista de imortalidade. (1Coríntios 15:52-53)"
+            "text": "A glorificação é o ponto culminante e final de todo o processo de salvação do crente, no qual, no retorno vitorioso de Jesus Cristo, as almas dos justos serão perfeitamente unidas aos seus corpos físicos ressuscitados, os quais serão transformados em corpos imortais, perfeitos, livres de toda a corrupção do pecado e revestidos da mesma glória celestial do Salvador. A Escritura Sagrada declara a realidade inegável dessa promessa cósmica de salvação total em 1Coríntios 15:52-53"
+          },
+          {
+            "type": "verse",
+            "text": "os mortos ressuscitarão incorruptíveis, e nós seremos transformados. Pois é necessário que aquilo que é corruptível se revista de incorruptibilidade, e aquilo que é mortal se revista de imortalidade.",
+            "reference": "1Coríntios 15:52-53"
           },
           {
             "type": "paragraph",
@@ -3245,7 +3295,7 @@ export const theologyModules: TheologyModule[] = [
       {
         "id": "sacerdocio-universal",
         "title": "O Sacerdócio Universal dos Crentes",
-        "content": "O sacerdócio universal dos crentes é a gloriosa verdade bíblica redescoberta na Reforma Protestante, de que, devido à mediação sacerdotal única de Jesus Cristo e de Sua expiação penal consumada na cruz, cada crente em Cristo possui livre e total acesso à presença soberana de Deus, sem qualquer necessidade de mediadores humanos, padres ou intercessores de santos falecidos. A Escritura Sagrada proclama essa dignidade inalienável e a nossa responsabilidade ministerial ativa em 1Pedro 2:5: vocês também, como pedras vivas, estão sendo edificados como casa espiritual para serem sacerdócio santo, oferecendo sacrifícios espirituais agradáveis a Deus por meio de Jesus Cristo. (1Pedro 2:5)\n\nE em Apocalipse 1:6, lemos a consolidação de nossa nova identidade de comunhão diante de Deus: e nos constituiu reino e sacerdotes para servir a seu Deus e Pai. A ele sejam a glória e o poder para todo o sempre! Amém. (Apocalipse 1:6)\n\nO sacerdócio de todos os crentes não elimina a liderança ministerial pastoral sadia e o governo eclesiástico ordenado na igreja visível local. Pelo contrário, ele nos chama ao ministério de reconciliação voluntária, à intercessão mútua em oração, à exortação ética em amor e ao dever de proclamar as grandezas do Senhor que nos chamou das trevas para a sua maravilhosa luz no cotidiano.",
+        "content": "O sacerdócio universal dos crentes é a gloriosa verdade bíblica redescoberta na Reforma Protestante, de que, devido à mediação sacerdotal única de Jesus Cristo e de Sua expiação penal consumada na cruz, cada crente em Cristo possui livre e total acesso à presença soberana de Deus, sem qualquer necessidade de mediadores humanos, padres ou intercessores de santos falecidos. A Escritura Sagrada proclama essa dignidade inalienável e a nossa responsabilidade ministerial ativa em 1Pedro 2:5\n\nvocês também, como pedras vivas, estão sendo edificados como casa espiritual para serem sacerdócio santo, oferecendo sacrifícios espirituais agradáveis a Deus por meio de Jesus Cristo. (1Pedro 2:5)\n\nE em Apocalipse 1:6, lemos a consolidação de nossa nova identidade de comunhão diante de Deus\n\ne nos constituiu reino e sacerdotes para servir a seu Deus e Pai. A ele sejam a glória e o poder para todo o sempre! Amém. (Apocalipse 1:6)\n\nO sacerdócio de todos os crentes não elimina a liderança ministerial pastoral sadia e o governo eclesiástico ordenado na igreja visível local. Pelo contrário, ele nos chama ao ministério de reconciliação voluntária, à intercessão mútua em oração, à exortação ética em amor e ao dever de proclamar as grandezas do Senhor que nos chamou das trevas para a sua maravilhosa luz no cotidiano.",
         "references": [
           "1Pedro 2:5",
           "Apocalipse 1:6"
@@ -3253,11 +3303,21 @@ export const theologyModules: TheologyModule[] = [
         "blocks": [
           {
             "type": "paragraph",
-            "text": "O sacerdócio universal dos crentes é a gloriosa verdade bíblica redescoberta na Reforma Protestante, de que, devido à mediação sacerdotal única de Jesus Cristo e de Sua expiação penal consumada na cruz, cada crente em Cristo possui livre e total acesso à presença soberana de Deus, sem qualquer necessidade de mediadores humanos, padres ou intercessores de santos falecidos. A Escritura Sagrada proclama essa dignidade inalienável e a nossa responsabilidade ministerial ativa em 1Pedro 2:5: vocês também, como pedras vivas, estão sendo edificados como casa espiritual para serem sacerdócio santo, oferecendo sacrifícios espirituais agradáveis a Deus por meio de Jesus Cristo. (1Pedro 2:5)"
+            "text": "O sacerdócio universal dos crentes é a gloriosa verdade bíblica redescoberta na Reforma Protestante, de que, devido à mediação sacerdotal única de Jesus Cristo e de Sua expiação penal consumada na cruz, cada crente em Cristo possui livre e total acesso à presença soberana de Deus, sem qualquer necessidade de mediadores humanos, padres ou intercessores de santos falecidos. A Escritura Sagrada proclama essa dignidade inalienável e a nossa responsabilidade ministerial ativa em 1Pedro 2:5"
+          },
+          {
+            "type": "verse",
+            "text": "vocês também, como pedras vivas, estão sendo edificados como casa espiritual para serem sacerdócio santo, oferecendo sacrifícios espirituais agradáveis a Deus por meio de Jesus Cristo.",
+            "reference": "1Pedro 2:5"
           },
           {
             "type": "paragraph",
-            "text": "E em Apocalipse 1:6, lemos a consolidação de nossa nova identidade de comunhão diante de Deus: e nos constituiu reino e sacerdotes para servir a seu Deus e Pai. A ele sejam a glória e o poder para todo o sempre! Amém. (Apocalipse 1:6)"
+            "text": "E em Apocalipse 1:6, lemos a consolidação de nossa nova identidade de comunhão diante de Deus"
+          },
+          {
+            "type": "verse",
+            "text": "e nos constituiu reino e sacerdotes para servir a seu Deus e Pai. A ele sejam a glória e o poder para todo o sempre! Amém.",
+            "reference": "Apocalipse 1:6"
           },
           {
             "type": "paragraph",
@@ -3560,7 +3620,7 @@ export const theologyModules: TheologyModule[] = [
       {
         "id": "ressurreicao-final",
         "title": "A Ressurreição Final",
-        "content": "A ressurreição final é o grandioso ato de poder soberano de Deus no último dia da história, no qual os corpos físicos de todas as pessoas que já viveram e morreram na terra serão reconstituídos e ressuscitados, unindo-se de forma permanente às suas almas conscientes para comparecerem perante o tribunal e o julgamento definitivo de Jesus Cristo. A Escritura Sagrada declara a realidade inegável dessa promessa cósmica de salvação e julgamento em passagens evangélicas fundamentais como João 5:28-29:\n\nNão fiquem admirados com isso, pois está chegando a hora em que todos os que estiverem nos túmulos ouvirão a sua voz e sairão; os que fizeram o bem ressuscitarão para a vida, e os que fizeram o mal ressuscitarão para serem condenados. (João 5:28-29)\n\nE o apóstolo Paulo confessa essa mesma fé profética diante do conselho judaico, em Atos 24:15: e tenho em Deus a mesma esperança desses homens: de que haverá ressurreição tanto de justos como de injustos. (Atos 24:15)\n\nA ressurreição final garante que a nossa história humana visível importa e que o Criador é fiel à Sua criação física, Para os crentes, ela é o penhor definitivo de nossa vitória sobre a dor e o pecado através de um corpo glorificado, igual ao de Jesus Cristo.",
+        "content": "A ressurreição final é o grandioso ato de poder soberano de Deus no último dia da história, no qual os corpos físicos de todas as pessoas que já viveram e morreram na terra serão reconstituídos e ressuscitados, unindo-se de forma permanente às suas almas conscientes para comparecerem perante o tribunal e o julgamento definitivo de Jesus Cristo. A Escritura Sagrada declara a realidade inegável dessa promessa cósmica de salvação e julgamento em passagens evangélicas fundamentais como João 5:28-29:\n\nNão fiquem admirados com isso, pois está chegando a hora em que todos os que estiverem nos túmulos ouvirão a sua voz e sairão; os que fizeram o bem ressuscitarão para a vida, e os que fizeram o mal ressuscitarão para serem condenados. (João 5:28-29)\n\nE o apóstolo Paulo confessa essa mesma fé profética diante do conselho judaico, em Atos 24:15: e tenho em Deus a mesma esperança desses homens\n\nde que haverá ressurreição tanto de justos como de injustos. (Atos 24:15)\n\nA ressurreição final garante que a nossa história humana visível importa e que o Criador é fiel à Sua criação física, Para os crentes, ela é o penhor definitivo de nossa vitória sobre a dor e o pecado através de um corpo glorificado, igual ao de Jesus Cristo.",
         "references": [
           "João 5:28-29",
           "Atos 24:15"
@@ -3577,7 +3637,12 @@ export const theologyModules: TheologyModule[] = [
           },
           {
             "type": "paragraph",
-            "text": "E o apóstolo Paulo confessa essa mesma fé profética diante do conselho judaico, em Atos 24:15: e tenho em Deus a mesma esperança desses homens: de que haverá ressurreição tanto de justos como de injustos. (Atos 24:15)"
+            "text": "E o apóstolo Paulo confessa essa mesma fé profética diante do conselho judaico, em Atos 24:15: e tenho em Deus a mesma esperança desses homens"
+          },
+          {
+            "type": "verse",
+            "text": "de que haverá ressurreição tanto de justos como de injustos.",
+            "reference": "Atos 24:15"
           },
           {
             "type": "paragraph",
