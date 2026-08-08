@@ -1,25 +1,25 @@
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-const GATEWAY_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
-const MODELS = ["gemini-3.6-flash", "gemini-flash-latest"];
+const GATEWAY_URL =
+  "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
 
-// Traduz os dados do léxico e, quando recebe uma referência concreta,
-// escolhe somente o sentido contextual daquela ocorrência bíblica.
-const SYSTEM_PROMPT = `Você é um tradutor técnico de léxico bíblico.
-Trabalhe com verbetes Brown-Driver-Briggs (hebraico) e Thayer (grego).
-Responda sempre em português do Brasil.
-Regras obrigatórias:
-- Traduza meaning, definitions e strongsGloss com fidelidade literal, sem inventar, resumir ou acrescentar comentário.
-- Quando contextual.reference, contextual.verseText e contextual.word estiverem presentes, produza contextualMeaning com UM ÚNICO sentido que se encaixe naquela ocorrência.
-- contextualMeaning deve ter de 1 a 8 palavras, sem lista de possibilidades, sem ponto e vírgula e sem explicação teológica.
-- Use a função gramatical contextual para partículas sem equivalente lexical. Para אֵת/H853, escreva: marca o objeto direto.
-- Não escolha um significado apenas porque é o mais comum no dicionário; respeite o texto do versículo e a função da palavra.
-- Quando houver referência, texto do versículo ou palavra original, escolha o melhor sentido contextual disponível e não retorne null; use null somente quando não existir nenhum dado lexical.
-- Preserve códigos Strong, nomes próprios e transliterações.
-- Responda APENAS com JSON válido, sem markdown, no formato exato recebido.`;
+const SYSTEM_PROMPT = [
+  "Você é um tradutor técnico de léxico bíblico.",
+  "Trabalhe somente com os dados fornecidos dos verbetes Brown-Driver-Briggs (hebraico) e Thayer (grego).",
+  "Responda sempre em português do Brasil.",
+  "Traduza meaning, definitions e strongsGloss com fidelidade literal, sem inventar, resumir ou acrescentar comentário.",
+  "Mantenha definitions como uma lista de sentidos ou glosas que estejam presentes na fonte.",
+  "Quando contextual.reference, contextual.verseText e contextual.word estiverem presentes, produza contextualMeaning com UM ÚNICO sentido que se encaixe naquela ocorrência.",
+  "contextualMeaning deve ter de 1 a 8 palavras, sem lista de possibilidades, ponto e vírgula ou explicação teológica.",
+  "Para אֵת/H853, escreva exatamente: marca o objeto direto.",
+  "Quando houver contexto suficiente, escolha o melhor sentido contextual disponível e não retorne null.",
+  "Preserve códigos Strong, nomes próprios e transliterações.",
+  "Responda APENAS com JSON válido no mesmo formato do objeto recebido.",
+].join("\n");
 
 type ContextualPayload = {
   reference?: string;
@@ -30,10 +30,17 @@ type ContextualPayload = {
 };
 
 type RequestBody = {
-  meaning?: string | null;
-  definitions?: string[];
-  strongsGloss?: string | null;
-  contextual?: ContextualPayload | null;
+  meaning?: unknown;
+  definitions?: unknown;
+  strongsGloss?: unknown;
+  contextual?: unknown;
+};
+
+type LexiconPayload = {
+  meaning: string | null;
+  definitions: string[];
+  strongsGloss: string | null;
+  contextual: ContextualPayload | null;
 };
 
 const CONTEXTUAL_FALLBACKS: Record<string, string> = {
@@ -66,12 +73,44 @@ const CONTEXTUAL_FALLBACKS: Record<string, string> = {
   G4991: "salvação",
 };
 
-function fallbackContextualMeaning(payload: {
-  meaning: string | null;
-  definitions: string[];
-  strongsGloss: string | null;
-  contextual: ContextualPayload | null;
-}): string | null {
+function jsonResponse(body: unknown, status = 200): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
+
+function textValue(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const normalized = value.trim();
+  return normalized.length > 0 ? normalized : null;
+}
+
+function stringList(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((item): item is string => typeof item === "string")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, 30);
+}
+
+function normalizePayload(body: unknown): LexiconPayload {
+  const input = (body ?? {}) as RequestBody;
+  const contextual =
+    input.contextual && typeof input.contextual === "object"
+      ? (input.contextual as ContextualPayload)
+      : null;
+
+  return {
+    meaning: textValue(input.meaning),
+    definitions: stringList(input.definitions),
+    strongsGloss: textValue(input.strongsGloss),
+    contextual,
+  };
+}
+
+function fallbackContextualMeaning(payload: LexiconPayload): string | null {
   const strong = payload.contextual?.strong?.toUpperCase() ?? null;
   if (strong && CONTEXTUAL_FALLBACKS[strong]) return CONTEXTUAL_FALLBACKS[strong];
 
@@ -80,91 +119,153 @@ function fallbackContextualMeaning(payload: {
     payload.strongsGloss,
     ...payload.definitions,
   ];
+
   for (const candidate of candidates) {
-    if (!candidate) continue;
     const first = candidate.split(/\s*;\s*/)[0]?.trim() ?? "";
-    if (!first || /\b(?:the|and|from|used|denotes|proper noun|primitive root)\b/i.test(first)) continue;
+    if (!first) continue;
     const short = (first.split(/\s+[—–-]\s+/)[0] ?? first)
       .split(/[,;:]/)[0]
       ?.trim();
-    if (short) return short;
+    if (short && !/\b(?:the|and|from|used|denotes|proper noun|primitive root)\b/i.test(short)) {
+      return short;
+    }
   }
 
   return payload.contextual ? "sentido determinado pelo contexto" : null;
 }
 
+function parseJson(text: string): Record<string, unknown> {
+  const fence = String.fromCharCode(96).repeat(3);
+  let candidate = text.trim();
+
+  if (candidate.startsWith(fence)) {
+    candidate = candidate.slice(fence.length).replace(/^json\s*/i, "").trim();
+    if (candidate.endsWith(fence)) {
+      candidate = candidate.slice(0, -fence.length).trim();
+    }
+  }
+
+  const firstBrace = candidate.indexOf("{");
+  const lastBrace = candidate.lastIndexOf("}");
+  if (firstBrace >= 0 && lastBrace > firstBrace) {
+    candidate = candidate.slice(firstBrace, lastBrace + 1);
+  }
+
+  return JSON.parse(candidate) as Record<string, unknown>;
+}
+
+function fallbackPayload(payload: LexiconPayload): Record<string, unknown> {
+  return {
+    ...payload,
+    contextualMeaning: fallbackContextualMeaning(payload),
+  };
+}
+
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  if (req.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: corsHeaders });
+  }
+
+  if (req.method !== "POST") {
+    return jsonResponse({ error: "Método não permitido" }, 405);
+  }
 
   try {
-    const apiKey = Deno.env.get("GEMINI_API_KEY");
-    if (!apiKey) return Response.json({ error: "GEMINI_API_KEY ausente" }, { status: 500, headers: corsHeaders });
-
-    const body: RequestBody = await req.json();
-    const payload = {
-      meaning: body.meaning ?? null,
-      definitions: body.definitions ?? [],
-      strongsGloss: body.strongsGloss ?? null,
-      contextual: body.contextual ?? null,
-    };
-    if (!payload.meaning && payload.definitions.length === 0 && !payload.strongsGloss && !payload.contextual) {
-      return Response.json({ ...payload, contextualMeaning: fallbackContextualMeaning(payload) }, { headers: corsHeaders });
+    const apiKey = Deno.env.get("GEMINI_API_KEY")?.trim();
+    if (!apiKey) {
+      return jsonResponse({ error: "GEMINI_API_KEY ausente" }, 500);
     }
 
-    let lastError = "";
-    for (const model of MODELS) {
-      const res = await fetch(GATEWAY_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
-        body: JSON.stringify({
-          model,
-          messages: [
-            { role: "system", content: SYSTEM_PROMPT },
-            { role: "user", content: JSON.stringify(payload) },
-          ],
-          response_format: { type: "json_object" },
-        }),
-      });
+    const body = await req.json().catch(() => null);
+    const payload = normalizePayload(body);
 
-      if (res.ok) {
-        const data = await res.json();
-        const raw = (data.choices?.[0]?.message?.content ?? "{}").replace(/```json|```/g, "").trim();
+    if (
+      !payload.meaning &&
+      payload.definitions.length === 0 &&
+      !payload.strongsGloss &&
+      !payload.contextual
+    ) {
+      return jsonResponse(fallbackPayload(payload));
+    }
+
+    const configuredModel = Deno.env.get("GEMINI_MODEL")?.trim();
+    const models = [
+      configuredModel,
+      "gemini-2.5-flash",
+      "gemini-2.5-flash-lite",
+      "gemini-2.0-flash",
+    ].filter((model, index, list): model is string => Boolean(model) && list.indexOf(model) === index);
+
+    let lastError = "sem resposta";
+
+    for (const model of models) {
+      try {
+        const response = await fetch(GATEWAY_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + apiKey,
+          },
+          body: JSON.stringify({
+            model,
+            messages: [
+              { role: "system", content: SYSTEM_PROMPT },
+              { role: "user", content: JSON.stringify(payload) },
+            ],
+            response_format: { type: "json_object" },
+            temperature: 0.1,
+          }),
+        });
+
+        if (!response.ok) {
+          lastError = response.status + ": " + (await response.text().catch(() => "")).slice(0, 300);
+          console.error("translate-lexicon: modelo " + model + " falhou —", lastError);
+          continue;
+        }
+
+        const data = await response.json();
+        const raw = data?.choices?.[0]?.message?.content;
+        if (typeof raw !== "string" || !raw.trim()) {
+          lastError = "A API retornou uma resposta vazia.";
+          continue;
+        }
+
         try {
-          const parsed = JSON.parse(raw);
+          const parsed = parseJson(raw);
           const contextualMeaning =
             typeof parsed.contextualMeaning === "string" && parsed.contextualMeaning.trim()
               ? parsed.contextualMeaning.trim()
               : fallbackContextualMeaning(payload);
-          return Response.json(
-            {
-              meaning: typeof parsed.meaning === "string" ? parsed.meaning : payload.meaning,
-              definitions: Array.isArray(parsed.definitions) ? parsed.definitions : payload.definitions,
-              strongsGloss: typeof parsed.strongsGloss === "string" ? parsed.strongsGloss : payload.strongsGloss,
-              contextualMeaning: contextualMeaning || null,
-            },
-            { headers: corsHeaders },
-          );
-        } catch {
-          return Response.json({ ...payload, contextualMeaning: fallbackContextualMeaning(payload) }, { headers: corsHeaders });
+
+          return jsonResponse({
+            meaning: typeof parsed.meaning === "string" ? parsed.meaning.trim() : payload.meaning,
+            definitions: stringList(parsed.definitions),
+            strongsGloss:
+              typeof parsed.strongsGloss === "string"
+                ? parsed.strongsGloss.trim()
+                : payload.strongsGloss,
+            contextualMeaning,
+          });
+        } catch (error) {
+          lastError = error instanceof Error ? error.message : String(error);
+          console.error("translate-lexicon: JSON inválido —", lastError);
         }
+      } catch (error) {
+        lastError = error instanceof Error ? error.message : String(error);
+        console.error("translate-lexicon: falha de rede —", lastError);
       }
-      lastError = `${res.status}: ${(await res.text().catch(() => "")).slice(0, 200)}`;
     }
 
-    console.error("translate-lexicon:", lastError);
-    return Response.json({ ...payload, contextualMeaning: null }, { headers: corsHeaders });
-  } catch (e) {
-    console.error("translate-lexicon:", e instanceof Error ? e.message : e);
-    return Response.json({
+    console.error("translate-lexicon: todos os modelos falharam —", lastError);
+    return jsonResponse(fallbackPayload(payload));
+  } catch (error) {
+    const details = error instanceof Error ? error.message : String(error);
+    console.error("translate-lexicon: erro inesperado —", details);
+    return jsonResponse({
       meaning: null,
       definitions: [],
       strongsGloss: null,
-      contextualMeaning: fallbackContextualMeaning({
-        meaning: null,
-        definitions: [],
-        strongsGloss: null,
-        contextual: null,
-      }),
-    }, { headers: corsHeaders });
+      contextualMeaning: null,
+    }, 500);
   }
 });
