@@ -21,7 +21,8 @@ export type SupportModule = {
 };
 
 
-type SupportLessonSource = Omit<SupportLesson, "quizzes" | "verses"> & {
+type SupportLessonSource = Omit<SupportLesson, "quizzes" | "verses" | "xp"> & {
+  xp?: number;
   verse?: Verse;
   verses?: Verse[];
   quiz?: Quiz;
