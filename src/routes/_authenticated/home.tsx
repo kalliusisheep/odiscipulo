@@ -20,7 +20,7 @@ import {
 import { MessagesLinkButton } from "@/components/MessagesLinkButton";
 import { VerseOfDayCard } from "@/components/home/VerseOfDayCard";
 import { useApp } from "@/lib/app-context";
-import { ArrowUpRight, BookOpen, BookOpenCheck, Check, ChevronRight, Crown, Flame, HeartHandshake, MessageCircle, Sparkles, UsersRound } from "lucide-react";
+import { ArrowUpRight, Check, ChevronRight, Crown, Flame, HeartHandshake, Sparkles } from "lucide-react";
 import { ChallengePanel } from "@/components/ChallengeProgressBar";
 import { LeaderResources } from "@/components/LeaderResources";
 
@@ -478,21 +478,6 @@ function LiderInline() {
           >
             Abrir painel <ArrowUpRight className="h-4 w-4" />
           </Link>
-        </div>
-      </section>
-
-      <section className="grid grid-cols-3 gap-2.5" aria-label="Recursos do modo líder">
-        <div className="card-elevated flex min-h-[76px] flex-col justify-between p-3">
-          <UsersRound className="h-4 w-4 text-primary" />
-          <span className="text-[11px] font-bold">Pessoas</span>
-        </div>
-        <div className="card-elevated flex min-h-[76px] flex-col justify-between p-3">
-          <MessageCircle className="h-4 w-4 text-success" />
-          <span className="text-[11px] font-bold">Conversas</span>
-        </div>
-        <div className="card-elevated flex min-h-[76px] flex-col justify-between p-3">
-          <BookOpenCheck className="h-4 w-4 text-ancient" />
-          <span className="text-[11px] font-bold">Formação</span>
         </div>
       </section>
 
