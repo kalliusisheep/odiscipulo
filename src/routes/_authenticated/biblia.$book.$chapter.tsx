@@ -927,9 +927,16 @@ function ChapterReader() {
             setNoteText("");
           }}
           onCopy={async () => {
-            await navigator.clipboard.writeText(`"${selectedText}"\n— ${fullRef}`);
-            toast.success("Versículo copiado");
-            setSelected(null);
+            try {
+              if (!navigator.clipboard?.writeText) {
+                throw new Error("Clipboard API indisponível");
+              }
+              await navigator.clipboard.writeText(`"${selectedText}"\n— ${fullRef}`);
+              toast.success("Versículo copiado");
+              setSelected(null);
+            } catch {
+              toast.error("Não foi possível copiar o versículo. Tente novamente.");
+            }
           }}
           onCompare={() => {
             setSelected(null);
