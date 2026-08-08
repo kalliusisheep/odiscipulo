@@ -1,5 +1,3 @@
-import { serve } from "https://deno.land/std@0.203.0/http/server.ts";
-
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -107,7 +105,26 @@ function parseAnalysisResponse(rawText: string): AnalysisResult {
   };
 }
 
-serve(async (req) => {
+function fallbackAnalysis(words: WordInput[]): AnalysisResult {
+  const verbos = words
+    .filter((word) => /\b(?:verbo|verb|ação|acção|fazer|criar|ser|estar|dizer|vir|ir)\b/i.test(word.partOfSpeech ?? ""))
+    .map((word) => word.word)
+    .slice(0, 12);
+
+  const substantivos = words
+    .filter((word) => /\b(?:substantivo|noun|nome)\b/i.test(word.partOfSpeech ?? ""))
+    .map((word) => word.word)
+    .slice(0, 12);
+
+  return {
+    verbos,
+    substantivos,
+    resumo:
+      "A análise automática detalhada está temporariamente indisponível. As palavras e classificações disponíveis continuam preservadas para estudo.",
+  };
+}
+
+Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: corsHeaders });
   }
@@ -129,7 +146,7 @@ serve(async (req) => {
 
     const apiKey = Deno.env.get("GEMINI_API_KEY")?.trim();
     if (!apiKey) {
-      return jsonResponse({ error: "GEMINI_API_KEY não configurada" }, 500);
+      return jsonResponse(fallbackAnalysis(words));
     }
 
     const configuredModel = Deno.env.get("GEMINI_MODEL")?.trim();
@@ -197,10 +214,8 @@ serve(async (req) => {
     }
 
     if (!responseText) {
-      return jsonResponse(
-        { error: "Falha na API do Gemini", details: lastError },
-        502,
-      );
+      console.error("verse-analysis: usando fallback local —", lastError);
+      return jsonResponse(fallbackAnalysis(words));
     }
 
     try {
@@ -208,10 +223,8 @@ serve(async (req) => {
     } catch (error) {
       const details = error instanceof Error ? error.message : String(error);
       console.error("verse-analysis: JSON inválido retornado pelo Gemini —", details);
-      return jsonResponse(
-        { error: "Resposta inválida do Gemini", details },
-        502,
-      );
+      console.error("verse-analysis: usando fallback após resposta inválida —", details);
+      return jsonResponse(fallbackAnalysis(words));
     }
   } catch (error) {
     const details = error instanceof Error ? error.message : String(error);
